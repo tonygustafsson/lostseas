@@ -29,7 +29,7 @@ const CreateNextUserByEmail = gql`
 export default NextAuth({
   providers: [
     CredentialsProvider({
-      name: "Email and Password",
+      name: "Credentials",
       authorize: async (credentials) => {
         const { user } = (await client.request(GetUserByEmail, {
           email: credentials?.email,
@@ -65,16 +65,18 @@ export default NextAuth({
       },
       credentials: {
         email: {
-          label: "Email",
-          type: "email",
-          placeholder: "jamie@hygraph.com",
+          label: "Username",
+          type: "username",
         },
         password: {
           label: "Password",
           type: "password",
-          placeholder: "Password",
         },
       },
     }),
   ],
+  pages: {
+    signIn: "/login",
+    error: "/login", // Error code passed in query string as ?error=
+  },
 });
