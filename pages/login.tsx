@@ -11,8 +11,8 @@ export default function Login({
     <form method="post" action="/api/auth/callback/credentials">
       <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
       <label>
-        Email
-        <input name="email" type="email" />
+        Username
+        <input name="email" type="text" />
       </label>
       <label>
         Password
