@@ -5,10 +5,14 @@ import type {
 import { getCsrfToken } from "next-auth/react";
 import pacifico from "@/font-pacifico";
 import Button from "@/components/ui/Button";
+import { useRouter } from "next/router";
 
 export default function Login({
   csrfToken,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const router = useRouter();
+  const error = router.query.error;
+
   return (
     <form
       method="post"
@@ -30,6 +34,8 @@ export default function Login({
           className="text-black px-2 ml-4"
         />
       </label>
+
+      {error && <p className="text-red-500">{error}</p>}
 
       <Button type="submit">Sign in</Button>
     </form>

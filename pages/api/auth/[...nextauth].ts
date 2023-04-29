@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { compare, hash } from "bcrypt";
+import { compare } from "bcrypt";
 import { GraphQLClient, gql } from "graphql-request";
 
 const client = new GraphQLClient(process.env.HYGRAPH_ENDPOINT || "", {
@@ -18,14 +18,6 @@ const GetUserByEmail = gql`
   }
 `;
 
-const CreateNextUserByEmail = gql`
-  mutation CreateNextUserByEmail($email: String!, $password: String!) {
-    newUser: createNextUser(data: { email: $email, password: $password }) {
-      id
-    }
-  }
-`;
-
 export default NextAuth({
   providers: [
     CredentialsProvider({
@@ -35,25 +27,12 @@ export default NextAuth({
           email: credentials?.email,
         })) as any;
 
-        if (!user) {
-          const { newUser } = (await client.request(CreateNextUserByEmail, {
-            email: credentials?.email,
-            password: await hash(credentials?.password || "", 12),
-          })) as any;
-
-          return {
-            id: newUser.id,
-            username: credentials?.email,
-            email: credentials?.email,
-          };
-        }
-
         const isValid = await compare(
           credentials?.password || "",
-          user.password
+          user?.password || ""
         );
 
-        if (!isValid) {
+        if (!user || !isValid) {
           throw new Error("Wrong credentials. Try again.");
         }
 
