@@ -1,29 +1,8 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
-
-function AuthLinks() {
-  const { data: session, status } = useSession();
-
-  const loading = status === "loading";
-
-  if (loading) return null;
-
-  return (
-    <>
-      {session ? (
-        <p>
-          <p>Signed in as {session?.user?.email}</p>
-          <button onClick={() => signOut()}>Sign out</button>
-        </p>
-      ) : (
-        <>
-          <button onClick={() => signIn()}>Sign in</button>
-        </>
-      )}
-    </>
-  );
-}
+import { SessionProvider } from "next-auth/react";
+import AuthPanel from "@/components/AuthPanel";
+import { useEffect } from "react";
 
 export default function App({
   Component,
@@ -31,7 +10,7 @@ export default function App({
 }: AppProps) {
   return (
     <SessionProvider>
-      <AuthLinks />
+      <AuthPanel />
 
       <Component {...pageProps} />
     </SessionProvider>
