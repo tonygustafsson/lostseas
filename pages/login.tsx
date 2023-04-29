@@ -3,22 +3,35 @@ import type {
   InferGetServerSidePropsType,
 } from "next";
 import { getCsrfToken } from "next-auth/react";
+import pacifico from "@/font-pacifico";
+import Button from "@/components/ui/Button";
 
 export default function Login({
   csrfToken,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <form method="post" action="/api/auth/callback/credentials">
+    <form
+      method="post"
+      action="/api/auth/callback/credentials"
+      className={`flex flex-col gap-4 max-w-md ${pacifico.className}`}
+    >
       <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
+
       <label>
         Username
-        <input name="email" type="text" />
+        <input name="email" type="text" className="text-black px-2 ml-4" />
       </label>
+
       <label>
         Password
-        <input name="password" type="password" />
+        <input
+          name="password"
+          type="password"
+          className="text-black px-2 ml-4"
+        />
       </label>
-      <button type="submit">Sign in</button>
+
+      <Button type="submit">Sign in</Button>
     </form>
   );
 }

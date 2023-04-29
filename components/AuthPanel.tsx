@@ -12,7 +12,7 @@ const AuthPanel = () => {
     <>
       {session ? (
         <p>
-          <p>Signed in as {session?.user?.email}</p>
+          <p className="font-serif">Signed in as {session?.user?.email}</p>
           <Button onClick={() => signOut()}>Sign out</Button>
         </p>
       ) : (
