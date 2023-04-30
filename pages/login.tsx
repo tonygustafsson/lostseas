@@ -17,7 +17,7 @@ export default function Login({
     <form
       method="post"
       action="/api/auth/callback/credentials"
-      className={`flex flex-col gap-4 max-w-md ${pacifico.className}`}
+      className={`${pacifico.variable} flex flex-col gap-4 max-w-md`}
     >
       <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
 

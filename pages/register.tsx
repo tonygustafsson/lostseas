@@ -34,7 +34,7 @@ export default function Register() {
   return (
     <form
       onSubmit={handleSubmit}
-      className={`flex flex-col gap-4 max-w-md ${pacifico.className}`}
+      className={`${pacifico.variable} flex flex-col gap-4 max-w-md`}
     >
       <label>
         Name

@@ -13,13 +13,13 @@ const AuthPanel = () => {
     <>
       {session ? (
         <>
-          <p className="font-serif">Signed in as {session?.user?.name}</p>
+          <p>Signed in as {session?.user?.name}</p>
           <Button onClick={() => signOut()}>Sign out</Button>
         </>
       ) : (
         <>
           <Button onClick={() => signIn()}>Sign in</Button>
-          <Link href="/register" className="font-serif text-xs">
+          <Link href="/register" className="text-xs">
             Register
           </Link>
         </>
