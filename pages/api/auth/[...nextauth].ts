@@ -1,14 +1,8 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
-import { GraphQLClient, gql } from "graphql-request";
 import { GetFullUser, GetUserByEmail } from "@/graphql/user";
-
-const client = new GraphQLClient(process.env.HYGRAPH_ENDPOINT || "", {
-  headers: {
-    Authorization: `Bearer ${process.env.HYGRAPH_TOKEN}`,
-  },
-});
+import client from "@/graphql/client";
 
 export default NextAuth({
   providers: [

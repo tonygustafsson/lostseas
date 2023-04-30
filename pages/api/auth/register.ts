@@ -1,12 +1,6 @@
 import { CreateNextUserByEmail } from "@/graphql/user";
 import { hash } from "bcrypt";
-import { GraphQLClient, gql } from "graphql-request";
-
-const client = new GraphQLClient(process.env.HYGRAPH_ENDPOINT || "", {
-  headers: {
-    Authorization: `Bearer ${process.env.HYGRAPH_TOKEN}`,
-  },
-});
+import client from "@/graphql/client";
 
 export default async function handler(req: any, res: any) {
   const { newUser } = (await client.request(CreateNextUserByEmail, {
