@@ -2,31 +2,13 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
 import { GraphQLClient, gql } from "graphql-request";
+import { GetFullUser, GetUserByEmail } from "@/graphql/user";
 
 const client = new GraphQLClient(process.env.HYGRAPH_ENDPOINT || "", {
   headers: {
     Authorization: `Bearer ${process.env.HYGRAPH_TOKEN}`,
   },
 });
-
-const GetUserByEmail = gql`
-  query GetUserByEmail($email: String!) {
-    user: nextUser(where: { email: $email }, stage: DRAFT) {
-      id
-      password
-    }
-  }
-`;
-
-const GetFullUser = gql`
-  query GetFullUser($email: String!) {
-    user: nextUser(where: { email: $email }, stage: DRAFT) {
-      id
-      name
-      email
-    }
-  }
-`;
 
 export default NextAuth({
   providers: [
