@@ -36,6 +36,8 @@ export default function Register() {
       onSubmit={handleSubmit}
       className={`${pacifico.variable} flex flex-col gap-4 max-w-md`}
     >
+      <h2 className="text-2xl">Player</h2>
+
       <label>
         Name
         <input name="name" type="text" className="text-black px-2 ml-4" />
@@ -51,6 +53,26 @@ export default function Register() {
         <input
           name="password"
           type="password"
+          className="text-black px-2 ml-4"
+        />
+      </label>
+
+      <h2 className="text-2xl">Character</h2>
+
+      <label>
+        Name
+        <input
+          name="character_name"
+          type="text"
+          className="text-black px-2 ml-4"
+        />
+      </label>
+
+      <label>
+        Age
+        <input
+          name="character_age"
+          type="number"
           className="text-black px-2 ml-4"
         />
       </label>

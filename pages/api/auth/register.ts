@@ -7,6 +7,11 @@ export default async function handler(req: any, res: any) {
     name: req.body.name,
     email: req.body.email,
     password: await hash(req.body.password || "", 12),
+
+    character: {
+      name: req.body.character_name,
+      age: req.body.character_age,
+    },
   })) as any;
 
   res.status(200).json({ id: newUser.id });
