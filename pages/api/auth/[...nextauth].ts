@@ -18,6 +18,16 @@ const GetUserByEmail = gql`
   }
 `;
 
+const GetFullUser = gql`
+  query GetFullUser($email: String!) {
+    user: nextUser(where: { email: $email }, stage: DRAFT) {
+      id
+      name
+      email
+    }
+  }
+`;
+
 export default NextAuth({
   providers: [
     CredentialsProvider({
@@ -54,6 +64,15 @@ export default NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async session({ session }) {
+      const { user } = (await client.request(GetFullUser, {
+        email: session?.user?.email,
+      })) as any;
+
+      return { ...session, user: { ...session.user, ...user } };
+    },
+  },
   pages: {
     signIn: "/login",
     error: "/login", // Error code passed in query string as ?error=
