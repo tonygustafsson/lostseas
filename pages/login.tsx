@@ -23,7 +23,12 @@ export default function Login({
 
       <label>
         Username
-        <input name="email" type="text" className="text-black px-2 ml-4" />
+        <input
+          name="email"
+          type="text"
+          autoFocus
+          className="text-black px-2 ml-4"
+        />
       </label>
 
       <label>
