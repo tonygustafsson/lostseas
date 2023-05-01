@@ -6,6 +6,7 @@ import { getCsrfToken } from "next-auth/react";
 import pacifico from "@/font-pacifico";
 import Button from "@/components/ui/Button";
 import { useRouter } from "next/router";
+import DefaultLayout from "@/components/layouts/default";
 
 export default function Login({
   csrfToken,
@@ -14,36 +15,38 @@ export default function Login({
   const error = router.query.error;
 
   return (
-    <form
-      method="post"
-      action="/api/auth/callback/credentials"
-      className={`${pacifico.variable} flex flex-col gap-4 max-w-md`}
-    >
-      <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
+    <DefaultLayout>
+      <form
+        method="post"
+        action="/api/auth/callback/credentials"
+        className={`${pacifico.variable} flex flex-col gap-4 max-w-md`}
+      >
+        <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
 
-      <label>
-        Username
-        <input
-          name="email"
-          type="text"
-          autoFocus
-          className="text-black px-2 ml-4"
-        />
-      </label>
+        <label>
+          Username
+          <input
+            name="email"
+            type="text"
+            autoFocus
+            className="text-black px-2 ml-4"
+          />
+        </label>
 
-      <label>
-        Password
-        <input
-          name="password"
-          type="password"
-          className="text-black px-2 ml-4"
-        />
-      </label>
+        <label>
+          Password
+          <input
+            name="password"
+            type="password"
+            className="text-black px-2 ml-4"
+          />
+        </label>
 
-      {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-red-500">{error}</p>}
 
-      <Button type="submit">Sign in</Button>
-    </form>
+        <Button type="submit">Sign in</Button>
+      </form>
+    </DefaultLayout>
   );
 }
 

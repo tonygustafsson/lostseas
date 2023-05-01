@@ -9,8 +9,6 @@ export default function App({
 }: AppProps) {
   return (
     <SessionProvider>
-      <Header />
-
       <Component {...pageProps} />
     </SessionProvider>
   );
