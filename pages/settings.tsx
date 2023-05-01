@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import DefaultLayout from "@/components/layouts/default";
 import CenteredLayout from "@/components/layouts/centered";
+import TextField from "@/components/ui/TextField";
 
 export default function Settings() {
   const router = useRouter();
@@ -51,38 +52,30 @@ export default function Settings() {
 
         <input type="hidden" name="id" defaultValue={session?.user?.id || ""} />
 
-        <label htmlFor="name">Name</label>
-
-        <input
+        <TextField
+          label="Name"
           id="name"
           name="name"
-          type="text"
           defaultValue={session?.user?.name || ""}
-          className="text-black px-2"
         />
 
         <h2 className="font-serif text-2xl mt-8">Character</h2>
 
-        <label htmlFor="characterName">Name</label>
-
-        <input
+        <TextField
+          label="Name"
           id="characterName"
           name="characterName"
-          type="text"
           defaultValue={session?.user?.characterName || ""}
-          className="text-black px-2"
         />
 
-        <label htmlFor="characterAge">Age</label>
-
-        <input
+        <TextField
+          label="Age"
           id="characterAge"
           name="characterAge"
           type="number"
+          defaultValue={String(session?.user?.characterAge) || ""}
           min={15}
           max={80}
-          defaultValue={session?.user?.characterAge || ""}
-          className="text-black px-2"
         />
 
         {error && <p className="text-red-500">{error}</p>}
