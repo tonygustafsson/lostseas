@@ -11,3 +11,7 @@ body {
   color: var(--foreground);
   background: var(--background);
 }
+
+label {
+  font-weight: bold;
+}

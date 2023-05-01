@@ -3,6 +3,7 @@ import Button from "@/components/ui/Button";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import DefaultLayout from "@/components/layouts/default";
+import CenteredLayout from "@/components/layouts/centered";
 
 export default function Register() {
   const router = useRouter();
@@ -32,58 +33,65 @@ export default function Register() {
   };
 
   return (
-    <DefaultLayout>
+    <CenteredLayout>
+      <h1 className="font-serif text-4xl mb-8">Register</h1>
+
       <form
         onSubmit={handleSubmit}
-        className={`${pacifico.variable} flex flex-col gap-4 max-w-md`}
+        className={`${pacifico.variable} flex flex-col gap-4`}
       >
-        <h2 className="text-2xl">Player</h2>
+        <h2 className="font-serif text-2xl">Player</h2>
 
-        <label>
-          Name
-          <input name="name" type="text" className="text-black px-2 ml-4" />
-        </label>
+        <label htmlFor="name">Name</label>
 
-        <label>
-          Username
-          <input name="email" type="text" className="text-black px-2 ml-4" />
-        </label>
+        <input id="name" name="name" type="text" className="text-black px-2" />
 
-        <label>
-          Password
-          <input
-            name="password"
-            type="password"
-            className="text-black px-2 ml-4"
-          />
-        </label>
+        <label htmlFor="email">Username</label>
 
-        <h2 className="text-2xl">Character</h2>
+        <input
+          id="email"
+          name="email"
+          type="text"
+          className="text-black px-2"
+        />
 
-        <label>
-          Name
-          <input
-            name="characterName"
-            type="text"
-            className="text-black px-2 ml-4"
-          />
-        </label>
+        <label htmlFor="password">Password</label>
 
-        <label>
-          Age
-          <input
-            name="characterAge"
-            type="number"
-            min={15}
-            max={80}
-            className="text-black px-2 ml-4"
-          />
-        </label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          className="text-black px-2"
+        />
+
+        <h2 className="font-serif text-2xl mt-8">Character</h2>
+
+        <label htmlFor="characterName">Name</label>
+
+        <input
+          id="characterName"
+          name="characterName"
+          type="text"
+          className="text-black px-2"
+        />
+
+        <label htmlFor="characterAge">Age</label>
+
+        <input
+          id="characterAge"
+          name="characterAge"
+          type="number"
+          min={15}
+          max={80}
+          className="text-black px-2"
+        />
 
         {error && <p className="text-red-500">{error}</p>}
 
-        <Button type="submit">Register</Button>
+        <Button type="submit" className="mt-4">
+          Register
+        </Button>
       </form>
-    </DefaultLayout>
+    </CenteredLayout>
   );
 }

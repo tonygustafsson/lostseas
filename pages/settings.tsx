@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import DefaultLayout from "@/components/layouts/default";
+import CenteredLayout from "@/components/layouts/centered";
 
 export default function Settings() {
   const router = useRouter();
@@ -39,53 +40,57 @@ export default function Settings() {
   }
 
   return (
-    <DefaultLayout>
+    <CenteredLayout>
+      <h1 className="font-serif text-4xl mb-8">Settings</h1>
+
       <form
         onSubmit={handleSubmit}
         className={`${pacifico.variable} flex flex-col gap-4 max-w-md`}
       >
-        <h2 className="text-2xl">Player</h2>
+        <h2 className="font-serif text-2xl">Player</h2>
 
         <input type="hidden" name="id" defaultValue={session?.user?.id || ""} />
 
-        <label>
-          Name
-          <input
-            name="name"
-            type="text"
-            defaultValue={session?.user?.name || ""}
-            className="text-black px-2 ml-4"
-          />
-        </label>
+        <label htmlFor="name">Name</label>
 
-        <h2 className="text-2xl">Character</h2>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          defaultValue={session?.user?.name || ""}
+          className="text-black px-2"
+        />
 
-        <label>
-          Name
-          <input
-            name="characterName"
-            type="text"
-            defaultValue={session?.user?.characterName || ""}
-            className="text-black px-2 ml-4"
-          />
-        </label>
+        <h2 className="font-serif text-2xl mt-8">Character</h2>
 
-        <label>
-          Age
-          <input
-            name="characterAge"
-            type="number"
-            min={15}
-            max={80}
-            defaultValue={session?.user?.characterAge || ""}
-            className="text-black px-2 ml-4"
-          />
-        </label>
+        <label htmlFor="characterName">Name</label>
+
+        <input
+          id="characterName"
+          name="characterName"
+          type="text"
+          defaultValue={session?.user?.characterName || ""}
+          className="text-black px-2"
+        />
+
+        <label htmlFor="characterAge">Age</label>
+
+        <input
+          id="characterAge"
+          name="characterAge"
+          type="number"
+          min={15}
+          max={80}
+          defaultValue={session?.user?.characterAge || ""}
+          className="text-black px-2"
+        />
 
         {error && <p className="text-red-500">{error}</p>}
 
-        <Button type="submit">Save</Button>
+        <Button type="submit" className="mt-4">
+          Save
+        </Button>
       </form>
-    </DefaultLayout>
+    </CenteredLayout>
   );
 }
