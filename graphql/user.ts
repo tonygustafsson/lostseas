@@ -15,18 +15,48 @@ export const GetFullUser = gql`
       id
       name
       email
+      characterName
+      characterAge
     }
   }
 `;
 
-export const CreateNextUserByEmail = gql`
+export const CreateNextUser = gql`
   mutation CreateNextUserByEmail(
     $name: String!
     $email: String!
     $password: String!
+    $characterName: String!
+    $characterAge: Int!
   ) {
     newUser: createNextUser(
-      data: { name: $name, email: $email, password: $password }
+      data: {
+        name: $name
+        email: $email
+        password: $password
+        characterName: $characterName
+        characterAge: $characterAge
+      }
+    ) {
+      id
+    }
+  }
+`;
+
+export const UpdateNextUser = gql`
+  mutation UpdateNextUserById(
+    $id: ID!
+    $name: String!
+    $characterName: String!
+    $characterAge: Int!
+  ) {
+    updateUser: updateNextUser(
+      where: { id: $id }
+      data: {
+        name: $name
+        characterName: $characterName
+        characterAge: $characterAge
+      }
     ) {
       id
     }

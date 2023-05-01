@@ -2,9 +2,11 @@ import pacifico from "@/font-pacifico";
 import Button from "@/components/ui/Button";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
-export default function Register() {
+export default function Settings() {
   const router = useRouter();
+  const { data: session, update } = useSession();
 
   const [error, setError] = useState<string | null>(null);
 
@@ -14,7 +16,7 @@ export default function Register() {
     const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
     try {
-      const response = await fetch("/api/auth/register", {
+      const response = await fetch("/api/auth/settings", {
         method: "POST",
         body: json,
         headers: {
@@ -24,6 +26,7 @@ export default function Register() {
 
       const responseJson = await response.json();
 
+      update();
       router.push("/");
     } catch (error: any) {
       setError(error.message);
@@ -37,21 +40,14 @@ export default function Register() {
     >
       <h2 className="text-2xl">Player</h2>
 
+      <input type="hidden" name="id" defaultValue={session?.user?.id || ""} />
+
       <label>
         Name
-        <input name="name" type="text" className="text-black px-2 ml-4" />
-      </label>
-
-      <label>
-        Username
-        <input name="email" type="text" className="text-black px-2 ml-4" />
-      </label>
-
-      <label>
-        Password
         <input
-          name="password"
-          type="password"
+          name="name"
+          type="text"
+          defaultValue={session?.user?.name || ""}
           className="text-black px-2 ml-4"
         />
       </label>
@@ -63,6 +59,7 @@ export default function Register() {
         <input
           name="characterName"
           type="text"
+          defaultValue={session?.user?.characterName || ""}
           className="text-black px-2 ml-4"
         />
       </label>
@@ -74,13 +71,14 @@ export default function Register() {
           type="number"
           min={15}
           max={80}
+          defaultValue={session?.user?.characterAge || ""}
           className="text-black px-2 ml-4"
         />
       </label>
 
       {error && <p className="text-red-500">{error}</p>}
 
-      <Button type="submit">Register</Button>
+      <Button type="submit">Save</Button>
     </form>
   );
 }

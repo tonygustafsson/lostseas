@@ -10,11 +10,14 @@ const AuthPanel = () => {
   if (loading) return null;
 
   return (
-    <>
+    <div className="bg-slate-800 flex gap-4 p-4 mb-4 justify-end align-middle">
       {session ? (
         <>
           <p>Signed in as {session?.user?.name}</p>
           <Button onClick={() => signOut()}>Sign out</Button>
+          <Link href="/settings" className="text-xs">
+            Settings
+          </Link>{" "}
         </>
       ) : (
         <>
@@ -24,7 +27,7 @@ const AuthPanel = () => {
           </Link>
         </>
       )}
-    </>
+    </div>
   );
 };
 

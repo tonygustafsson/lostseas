@@ -1,21 +1,18 @@
-import { CreateNextUser } from "@/graphql/user";
-import { hash } from "bcrypt";
+import { UpdateNextUser } from "@/graphql/user";
 import client from "@/graphql/client";
 
 export default async function handler(req: any, res: any) {
   const requestJson = {
+    id: req.body.id,
     name: req.body.name,
-    email: req.body.email,
-    password: await hash(req.body.password || "", 12),
-
     characterName: req.body.characterName,
     characterAge: parseInt(req.body.characterAge),
   };
 
-  const { newUser } = (await client.request(
-    CreateNextUser,
+  const { updateUser } = (await client.request(
+    UpdateNextUser,
     requestJson
   )) as any;
 
-  res.status(200).json({ id: newUser.id });
+  res.status(200).json({ id: updateUser.id });
 }
