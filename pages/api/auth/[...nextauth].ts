@@ -48,9 +48,14 @@ export default NextAuth({
 
       return { ...session, user: { ...session.user, ...user } };
     },
+    async redirect({ baseUrl }) {
+      return baseUrl;
+    },
   },
   pages: {
     signIn: "/login",
     error: "/login", // Error code passed in query string as ?error=
   },
+  secret: process.env.NEXTAUTH_SECRET,
+  debug: false,
 });
