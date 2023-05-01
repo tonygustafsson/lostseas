@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 
 export default function Settings() {
   const router = useRouter();
-  const { data: session, update } = useSession();
+  const { data: session, update, status } = useSession();
 
   const [error, setError] = useState<string | null>(null);
 
@@ -32,6 +32,10 @@ export default function Settings() {
       setError(error.message);
     }
   };
+
+  if (status !== "authenticated") {
+    return <p>Access denied</p>;
+  }
 
   return (
     <form
