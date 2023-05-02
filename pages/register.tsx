@@ -5,7 +5,7 @@ import CenteredLayout from "@/components/layouts/centered";
 import Button from "@/components/ui/Button";
 import pacifico from "@/font-pacifico";
 
-export default function Register() {
+const Register = () => {
   const router = useRouter();
 
   const [error, setError] = useState<string | null>(null);
@@ -92,4 +92,6 @@ export default function Register() {
       </form>
     </CenteredLayout>
   );
-}
+};
+
+export default Register;

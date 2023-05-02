@@ -1,7 +1,7 @@
 import client from "@/graphql/client";
 import { UpdateNextUser } from "@/graphql/user";
 
-export default async function handler(req: any, res: any) {
+const settings = async (req: any, res: any) => {
   const requestJson = {
     id: req.body.id,
     name: req.body.name,
@@ -15,4 +15,6 @@ export default async function handler(req: any, res: any) {
   )) as any;
 
   res.status(200).json({ id: updateUser.id });
-}
+};
+
+export default settings;

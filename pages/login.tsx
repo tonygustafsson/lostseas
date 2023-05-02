@@ -9,9 +9,9 @@ import CenteredLayout from "@/components/layouts/centered";
 import Button from "@/components/ui/Button";
 import pacifico from "@/font-pacifico";
 
-export default function Login({
+const Login = ({
   csrfToken,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const error = router.query.error;
 
@@ -53,7 +53,9 @@ export default function Login({
       </form>
     </CenteredLayout>
   );
-}
+};
+
+export default Login;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {

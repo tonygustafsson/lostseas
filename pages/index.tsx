@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 
 import DefaultLayout from "@/components/layouts/default";
 
-export default function Home() {
+const Home = () => {
   const { data: session, status } = useSession();
 
   return (
@@ -14,4 +14,6 @@ export default function Home() {
       )}
     </DefaultLayout>
   );
-}
+};
+
+export default Home;

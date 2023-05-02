@@ -7,7 +7,7 @@ import Button from "@/components/ui/Button";
 import TextField from "@/components/ui/TextField";
 import pacifico from "@/font-pacifico";
 
-export default function Settings() {
+const Settings = () => {
   const router = useRouter();
   const { data: session, update, status } = useSession();
 
@@ -84,4 +84,6 @@ export default function Settings() {
       </form>
     </CenteredLayout>
   );
-}
+};
+
+export default Settings;

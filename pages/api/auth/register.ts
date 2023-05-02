@@ -3,7 +3,7 @@ import { hash } from "bcrypt";
 import client from "@/graphql/client";
 import { CreateNextUser } from "@/graphql/user";
 
-export default async function handler(req: any, res: any) {
+const register = async (req: any, res: any) => {
   const requestJson = {
     name: req.body.name,
     email: req.body.email,
@@ -19,4 +19,6 @@ export default async function handler(req: any, res: any) {
   )) as any;
 
   res.status(200).json({ id: newUser.id });
-}
+};
+
+export default register;
