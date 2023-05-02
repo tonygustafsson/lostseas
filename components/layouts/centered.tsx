@@ -1,4 +1,5 @@
 import pacifico from "@/font-pacifico";
+
 import Header from "../Header";
 
 export default function CenteredLayout({
