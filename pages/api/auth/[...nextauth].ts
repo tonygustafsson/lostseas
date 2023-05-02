@@ -1,9 +1,9 @@
-import { compare } from "bcrypt";
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import { compare } from "bcrypt"
+import NextAuth from "next-auth"
+import CredentialsProvider from "next-auth/providers/credentials"
 
-import client from "@/graphql/client";
-import { GetFullUser, GetUserByEmail } from "@/graphql/user";
+import client from "@/graphql/client"
+import { GetFullUser, GetUserByEmail } from "@/graphql/user"
 
 export default NextAuth({
   providers: [
@@ -12,22 +12,22 @@ export default NextAuth({
       authorize: async (credentials) => {
         const { user } = (await client.request(GetUserByEmail, {
           email: credentials?.email,
-        })) as any;
+        })) as any
 
         const isValid = await compare(
           credentials?.password || "",
           user?.password || ""
-        );
+        )
 
         if (!user || !isValid) {
-          throw new Error("Wrong credentials. Try again.");
+          throw new Error("Wrong credentials. Try again.")
         }
 
         return {
           id: user.id,
           username: credentials?.email,
           email: credentials?.email,
-        };
+        }
       },
       credentials: {
         email: {
@@ -45,12 +45,12 @@ export default NextAuth({
     async session({ session }) {
       const { user } = (await client.request(GetFullUser, {
         email: session?.user?.email,
-      })) as any;
+      })) as any
 
-      return { ...session, user: { ...session.user, ...user } };
+      return { ...session, user: { ...session.user, ...user } }
     },
     async redirect({ baseUrl }) {
-      return baseUrl;
+      return baseUrl
     },
   },
   pages: {
@@ -59,4 +59,4 @@ export default NextAuth({
   },
   secret: process.env.NEXTAUTH_SECRET,
   debug: false,
-});
+})

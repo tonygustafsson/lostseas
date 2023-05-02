@@ -1,9 +1,9 @@
-import { useSession } from "next-auth/react";
+import { useSession } from "next-auth/react"
 
-import DefaultLayout from "@/components/layouts/default";
+import DefaultLayout from "@/components/layouts/default"
 
 const Home = () => {
-  const { data: session, status } = useSession();
+  const { data: session, status } = useSession()
 
   return (
     <DefaultLayout>
@@ -13,7 +13,7 @@ const Home = () => {
         <p>You are {session?.user?.characterName}</p>
       )}
     </DefaultLayout>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

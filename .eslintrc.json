@@ -5,6 +5,7 @@
   "rules": {
     // ESLint
     "arrow-body-style": [1, "as-needed"],
+    "semi": [2, "never"],
     "object-shorthand": 1,
     "no-unused-vars": 0, // Avoid conflict with @typescript-eslint/no-unused-vars
 

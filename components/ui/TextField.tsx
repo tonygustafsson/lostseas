@@ -38,6 +38,6 @@ const TextField = ({
         required={required}
       />
     </div>
-  );
+  )
 
-export default TextField;
+export default TextField

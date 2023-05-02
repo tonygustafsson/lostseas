@@ -1,19 +1,19 @@
-import { useRouter } from "next/router";
-import { useState } from "react";
+import { useRouter } from "next/router"
+import { useState } from "react"
 
-import CenteredLayout from "@/components/layouts/centered";
-import Button from "@/components/ui/Button";
-import pacifico from "@/font-pacifico";
+import CenteredLayout from "@/components/layouts/centered"
+import Button from "@/components/ui/Button"
+import pacifico from "@/font-pacifico"
 
 const Register = () => {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const json = JSON.stringify(Object.fromEntries(formData.entries()));
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    const json = JSON.stringify(Object.fromEntries(formData.entries()))
 
     try {
       await fetch("/api/auth/register", {
@@ -22,13 +22,13 @@ const Register = () => {
         headers: {
           "Content-Type": "application/json",
         },
-      });
+      })
 
-      router.push("/");
+      router.push("/")
     } catch (error: any) {
-      setError(error.message);
+      setError(error.message)
     }
-  };
+  }
 
   return (
     <CenteredLayout>
@@ -91,7 +91,7 @@ const Register = () => {
         </Button>
       </form>
     </CenteredLayout>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register

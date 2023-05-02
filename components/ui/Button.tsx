@@ -13,6 +13,6 @@ const Button = ({ type = "button", onClick, className, children }: Props) => (
   >
     {children}
   </button>
-);
+)
 
-export default Button;
+export default Button

@@ -1,6 +1,6 @@
-import { Head, Html, Main, NextScript } from "next/document";
+import { Head, Html, Main, NextScript } from "next/document"
 
-import pacifico from "@/font-pacifico";
+import pacifico from "@/font-pacifico"
 
 const Document = () => (
   <Html lang="en" className={pacifico.variable}>
@@ -11,6 +11,6 @@ const Document = () => (
       <NextScript />
     </body>
   </Html>
-);
+)
 
-export default Document;
+export default Document

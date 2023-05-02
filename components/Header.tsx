@@ -1,14 +1,14 @@
-import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
+import Link from "next/link"
+import { signOut, useSession } from "next-auth/react"
 
-import Button from "./ui/Button";
+import Button from "./ui/Button"
 
 const Header = () => {
-  const { data: session, status } = useSession();
+  const { data: session, status } = useSession()
 
-  const loading = status === "loading";
+  const loading = status === "loading"
 
-  if (loading) return null;
+  if (loading) return null
 
   return (
     <div className="bg-slate-800 flex gap-4 p-4 mb-4 justify-between">
@@ -38,7 +38,7 @@ const Header = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

@@ -1,19 +1,19 @@
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
-} from "next";
-import { useRouter } from "next/router";
-import { getCsrfToken } from "next-auth/react";
+} from "next"
+import { useRouter } from "next/router"
+import { getCsrfToken } from "next-auth/react"
 
-import CenteredLayout from "@/components/layouts/centered";
-import Button from "@/components/ui/Button";
-import pacifico from "@/font-pacifico";
+import CenteredLayout from "@/components/layouts/centered"
+import Button from "@/components/ui/Button"
+import pacifico from "@/font-pacifico"
 
 const Login = ({
   csrfToken,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const router = useRouter();
-  const error = router.query.error;
+  const router = useRouter()
+  const error = router.query.error
 
   return (
     <CenteredLayout>
@@ -52,15 +52,15 @@ const Login = ({
         </Button>
       </form>
     </CenteredLayout>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: {
       csrfToken: await getCsrfToken(context),
     },
-  };
+  }
 }

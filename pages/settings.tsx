@@ -1,22 +1,22 @@
-import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
+import { useState } from "react"
 
-import CenteredLayout from "@/components/layouts/centered";
-import Button from "@/components/ui/Button";
-import TextField from "@/components/ui/TextField";
-import pacifico from "@/font-pacifico";
+import CenteredLayout from "@/components/layouts/centered"
+import Button from "@/components/ui/Button"
+import TextField from "@/components/ui/TextField"
+import pacifico from "@/font-pacifico"
 
 const Settings = () => {
-  const router = useRouter();
-  const { data: session, update, status } = useSession();
+  const router = useRouter()
+  const { data: session, update, status } = useSession()
 
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const json = JSON.stringify(Object.fromEntries(formData.entries()));
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    const json = JSON.stringify(Object.fromEntries(formData.entries()))
 
     try {
       await fetch("/api/auth/settings", {
@@ -25,17 +25,17 @@ const Settings = () => {
         headers: {
           "Content-Type": "application/json",
         },
-      });
+      })
 
-      update();
-      router.push("/");
+      update()
+      router.push("/")
     } catch (error: any) {
-      setError(error.message);
+      setError(error.message)
     }
-  };
+  }
 
   if (status !== "authenticated") {
-    return <p>Access denied</p>;
+    return <p>Access denied</p>
   }
 
   return (
@@ -83,7 +83,7 @@ const Settings = () => {
         </Button>
       </form>
     </CenteredLayout>
-  );
-};
+  )
+}
 
-export default Settings;
+export default Settings

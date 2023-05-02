@@ -1,5 +1,5 @@
-import client from "@/graphql/client";
-import { UpdateNextUser } from "@/graphql/user";
+import client from "@/graphql/client"
+import { UpdateNextUser } from "@/graphql/user"
 
 const settings = async (req: any, res: any) => {
   const requestJson = {
@@ -7,14 +7,14 @@ const settings = async (req: any, res: any) => {
     name: req.body.name,
     characterName: req.body.characterName,
     characterAge: parseInt(req.body.characterAge),
-  };
+  }
 
   const { updateUser } = (await client.request(
     UpdateNextUser,
     requestJson
-  )) as any;
+  )) as any
 
-  res.status(200).json({ id: updateUser.id });
-};
+  res.status(200).json({ id: updateUser.id })
+}
 
-export default settings;
+export default settings
