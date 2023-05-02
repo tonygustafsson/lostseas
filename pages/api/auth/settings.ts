@@ -1,7 +1,9 @@
+import { NextApiRequest, NextApiResponse } from "next/types"
+
 import client from "@/graphql/client"
 import { UpdateNextUser } from "@/graphql/user"
 
-const settings = async (req: any, res: any) => {
+const settings = async (req: NextApiRequest, res: NextApiResponse) => {
   const requestJson = {
     id: req.body.id,
     name: req.body.name,

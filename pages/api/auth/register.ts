@@ -1,9 +1,10 @@
 import { hash } from "bcrypt"
+import { NextApiRequest, NextApiResponse } from "next/types"
 
 import client from "@/graphql/client"
 import { CreateNextUser } from "@/graphql/user"
 
-const register = async (req: any, res: any) => {
+const register = async (req: NextApiRequest, res: NextApiResponse) => {
   const requestJson = {
     name: req.body.name,
     email: req.body.email,
