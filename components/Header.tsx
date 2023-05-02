@@ -20,7 +20,7 @@ const Header = () => {
         <div className="flex gap-4 items-center align-middle">
           <p className="text-sm">Signed in as {session?.user?.name}</p>
 
-          <Link href="/settings" className="text-xs">
+          <Link href="/settings">
             <Button>Settings</Button>
           </Link>
 
@@ -28,11 +28,11 @@ const Header = () => {
         </div>
       ) : (
         <div className="flex gap-4 justify-end align-middle">
-          <Link href="/login" className="text-xs">
+          <Link href="/login">
             <Button>Sign in</Button>
           </Link>
 
-          <Link href="/register" className="text-xs">
+          <Link href="/register">
             <Button>Register</Button>
           </Link>
         </div>
