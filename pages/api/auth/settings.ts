@@ -1,5 +1,5 @@
-import { UpdateNextUser } from "@/graphql/user";
 import client from "@/graphql/client";
+import { UpdateNextUser } from "@/graphql/user";
 
 export default async function handler(req: any, res: any) {
   const requestJson = {

@@ -1,9 +1,9 @@
-import pacifico from "@/font-pacifico";
-import Button from "@/components/ui/Button";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import DefaultLayout from "@/components/layouts/default";
+
 import CenteredLayout from "@/components/layouts/centered";
+import Button from "@/components/ui/Button";
+import pacifico from "@/font-pacifico";
 
 export default function Register() {
   const router = useRouter();
@@ -16,15 +16,13 @@ export default function Register() {
     const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
     try {
-      const response = await fetch("/api/auth/register", {
+      await fetch("/api/auth/register", {
         method: "POST",
         body: json,
         headers: {
           "Content-Type": "application/json",
         },
       });
-
-      const responseJson = await response.json();
 
       router.push("/");
     } catch (error: any) {

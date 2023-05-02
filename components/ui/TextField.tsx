@@ -18,8 +18,7 @@ const TextField = ({
   required,
   min,
   max,
-}: Props) => {
-  return (
+}: Props) => (
     <div>
       <label
         htmlFor={id}
@@ -40,6 +39,5 @@ const TextField = ({
       />
     </div>
   );
-};
 
 export default TextField;

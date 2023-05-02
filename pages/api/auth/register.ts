@@ -1,6 +1,7 @@
-import { CreateNextUser } from "@/graphql/user";
 import { hash } from "bcrypt";
+
 import client from "@/graphql/client";
+import { CreateNextUser } from "@/graphql/user";
 
 export default async function handler(req: any, res: any) {
   const requestJson = {

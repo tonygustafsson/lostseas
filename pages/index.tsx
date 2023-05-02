@@ -1,5 +1,6 @@
-import DefaultLayout from "@/components/layouts/default";
 import { useSession } from "next-auth/react";
+
+import DefaultLayout from "@/components/layouts/default";
 
 export default function Home() {
   const { data: session, status } = useSession();

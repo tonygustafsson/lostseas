@@ -1,6 +1,7 @@
-import { signIn, signOut, useSession } from "next-auth/react";
-import Button from "./ui/Button";
 import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
+
+import Button from "./ui/Button";
 
 const Header = () => {
   const { data: session, status } = useSession();

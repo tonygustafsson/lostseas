@@ -1,8 +1,9 @@
+import { compare } from "bcrypt";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { compare } from "bcrypt";
-import { GetFullUser, GetUserByEmail } from "@/graphql/user";
+
 import client from "@/graphql/client";
+import { GetFullUser, GetUserByEmail } from "@/graphql/user";
 
 export default NextAuth({
   providers: [

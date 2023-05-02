@@ -2,11 +2,12 @@ import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
 } from "next";
-import { getCsrfToken } from "next-auth/react";
-import pacifico from "@/font-pacifico";
-import Button from "@/components/ui/Button";
 import { useRouter } from "next/router";
+import { getCsrfToken } from "next-auth/react";
+
 import CenteredLayout from "@/components/layouts/centered";
+import Button from "@/components/ui/Button";
+import pacifico from "@/font-pacifico";
 
 export default function Login({
   csrfToken,

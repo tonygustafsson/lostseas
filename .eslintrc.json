@@ -1,3 +1,29 @@
 {
-  "extends": "next/core-web-vitals"
+  "parser": "@typescript-eslint/parser",
+  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  "plugins": ["@typescript-eslint", "unused-imports", "simple-import-sort"],
+  "rules": {
+    // ESLint
+    "arrow-body-style": [1, "as-needed"],
+    "object-shorthand": 1,
+    "no-unused-vars": 0, // Avoid conflict with @typescript-eslint/no-unused-vars
+
+    // TypeScript
+    "@typescript-eslint/no-unused-vars": [
+      2,
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-empty-interface": 0,
+    "@typescript-eslint/no-non-null-assertion": 0,
+
+    // Imports and exports
+    "unused-imports/no-unused-imports": 1,
+    "simple-import-sort/imports": 1,
+    "simple-import-sort/exports": 1
+  }
 }

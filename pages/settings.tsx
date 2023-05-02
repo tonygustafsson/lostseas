@@ -1,11 +1,11 @@
-import pacifico from "@/font-pacifico";
-import Button from "@/components/ui/Button";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import { useSession } from "next-auth/react";
-import DefaultLayout from "@/components/layouts/default";
+import { useState } from "react";
+
 import CenteredLayout from "@/components/layouts/centered";
+import Button from "@/components/ui/Button";
 import TextField from "@/components/ui/TextField";
+import pacifico from "@/font-pacifico";
 
 export default function Settings() {
   const router = useRouter();
@@ -19,15 +19,13 @@ export default function Settings() {
     const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
     try {
-      const response = await fetch("/api/auth/settings", {
+      await fetch("/api/auth/settings", {
         method: "POST",
         body: json,
         headers: {
           "Content-Type": "application/json",
         },
       });
-
-      const responseJson = await response.json();
 
       update();
       router.push("/");
