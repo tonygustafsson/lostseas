@@ -7,7 +7,7 @@ import { getCsrfToken } from "next-auth/react"
 
 import CenteredLayout from "@/components/layouts/centered"
 import Button from "@/components/ui/Button"
-import pacifico from "@/font-pacifico"
+import TextField from "@/components/ui/TextField"
 
 const Login = ({
   csrfToken,
@@ -22,27 +22,16 @@ const Login = ({
       <form
         method="post"
         action="/api/auth/callback/credentials"
-        className={`${pacifico.variable} flex flex-col gap-2 max-w-md`}
+        className="w-full flex flex-col gap-2 max-w-md"
       >
-        <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
+        <TextField type="hidden" name="csrfToken" defaultValue={csrfToken} />
 
-        <label htmlFor="email">Username</label>
-
-        <input
-          id="email"
-          name="email"
-          type="text"
-          autoFocus
-          className="text-black px-2"
-        />
-
-        <label htmlFor="password">Password</label>
-
-        <input
+        <TextField label="Username" id="email" name="email" autoFocus />
+        <TextField
+          type="password"
+          label="Password"
           id="password"
           name="password"
-          type="password"
-          className="text-black px-2"
         />
 
         {error && <p className="text-red-500">{error}</p>}

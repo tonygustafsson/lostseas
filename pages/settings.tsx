@@ -5,7 +5,6 @@ import { useState } from "react"
 import CenteredLayout from "@/components/layouts/centered"
 import Button from "@/components/ui/Button"
 import TextField from "@/components/ui/TextField"
-import pacifico from "@/font-pacifico"
 
 const Settings = () => {
   const router = useRouter()
@@ -44,11 +43,15 @@ const Settings = () => {
 
       <form
         onSubmit={handleSubmit}
-        className={`${pacifico.variable} flex flex-col gap-4 max-w-md`}
+        className="w-full flex flex-col gap-4 max-w-md max-w-md"
       >
         <h2 className="font-serif text-2xl">Player</h2>
 
-        <input type="hidden" name="id" defaultValue={session?.user?.id || ""} />
+        <TextField
+          type="hidden"
+          name="id"
+          defaultValue={session?.user?.id || ""}
+        />
 
         <TextField
           label="Name"

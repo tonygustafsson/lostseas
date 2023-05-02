@@ -3,7 +3,7 @@ import { useState } from "react"
 
 import CenteredLayout from "@/components/layouts/centered"
 import Button from "@/components/ui/Button"
-import pacifico from "@/font-pacifico"
+import TextField from "@/components/ui/TextField"
 
 const Register = () => {
   const router = useRouter()
@@ -36,52 +36,29 @@ const Register = () => {
 
       <form
         onSubmit={handleSubmit}
-        className={`${pacifico.variable} flex flex-col gap-4`}
+        className="w-full flex flex-col gap-4 max-w-md"
       >
         <h2 className="font-serif text-2xl">Player</h2>
 
-        <label htmlFor="name">Name</label>
-
-        <input id="name" name="name" type="text" className="text-black px-2" />
-
-        <label htmlFor="email">Username</label>
-
-        <input
-          id="email"
-          name="email"
-          type="text"
-          className="text-black px-2"
-        />
-
-        <label htmlFor="password">Password</label>
-
-        <input
+        <TextField id="name" name="name" label="Name" autoFocus />
+        <TextField id="email" name="email" label="Username" />
+        <TextField
           id="password"
           name="password"
           type="password"
-          className="text-black px-2"
+          label="Password"
         />
 
         <h2 className="font-serif text-2xl mt-8">Character</h2>
 
-        <label htmlFor="characterName">Name</label>
-
-        <input
-          id="characterName"
-          name="characterName"
-          type="text"
-          className="text-black px-2"
-        />
-
-        <label htmlFor="characterAge">Age</label>
-
-        <input
-          id="characterAge"
-          name="characterAge"
+        <TextField id="characterName" name="characterName" label="Name" />
+        <TextField
           type="number"
           min={15}
           max={80}
-          className="text-black px-2"
+          id="characterAge"
+          name="characterAge"
+          label="Age"
         />
 
         {error && <p className="text-red-500">{error}</p>}
