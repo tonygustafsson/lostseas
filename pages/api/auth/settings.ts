@@ -9,12 +9,11 @@ const settings = async (req: any, res: any) => {
     characterAge: parseInt(req.body.characterAge),
   }
 
-  const { updateUser } = (await client.request(
-    UpdateNextUser,
-    requestJson
-  )) as any
+  const { user } = (await client.request(UpdateNextUser, requestJson)) as {
+    user: User
+  }
 
-  res.status(200).json({ id: updateUser.id })
+  res.status(200).json({ id: user.id })
 }
 
 export default settings

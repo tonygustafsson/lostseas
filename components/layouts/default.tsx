@@ -5,7 +5,7 @@ import Header from "../Header"
 export default function DefaultLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <>

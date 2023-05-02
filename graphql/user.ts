@@ -1,4 +1,4 @@
-import { gql } from "graphql-request";
+import { gql } from "graphql-request"
 
 export const GetUserByEmail = gql`
   query GetUserByEmail($email: String!) {
@@ -7,7 +7,7 @@ export const GetUserByEmail = gql`
       password
     }
   }
-`;
+`
 
 export const GetFullUser = gql`
   query GetFullUser($email: String!) {
@@ -19,7 +19,7 @@ export const GetFullUser = gql`
       characterAge
     }
   }
-`;
+`
 
 export const CreateNextUser = gql`
   mutation CreateNextUserByEmail(
@@ -29,7 +29,7 @@ export const CreateNextUser = gql`
     $characterName: String!
     $characterAge: Int!
   ) {
-    newUser: createNextUser(
+    user: createNextUser(
       data: {
         name: $name
         email: $email
@@ -41,7 +41,7 @@ export const CreateNextUser = gql`
       id
     }
   }
-`;
+`
 
 export const UpdateNextUser = gql`
   mutation UpdateNextUserById(
@@ -50,7 +50,7 @@ export const UpdateNextUser = gql`
     $characterName: String!
     $characterAge: Int!
   ) {
-    updateUser: updateNextUser(
+    user: updateNextUser(
       where: { id: $id }
       data: {
         name: $name
@@ -61,4 +61,4 @@ export const UpdateNextUser = gql`
       id
     }
   }
-`;
+`

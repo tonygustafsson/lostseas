@@ -13,12 +13,11 @@ const register = async (req: any, res: any) => {
     characterAge: parseInt(req.body.characterAge),
   }
 
-  const { newUser } = (await client.request(
-    CreateNextUser,
-    requestJson
-  )) as any
+  const { user } = (await client.request(CreateNextUser, requestJson)) as {
+    user: User
+  }
 
-  res.status(200).json({ id: newUser.id })
+  res.status(200).json({ id: user.id })
 }
 
 export default register

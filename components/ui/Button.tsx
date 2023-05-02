@@ -1,9 +1,9 @@
 type Props = {
-  type?: "button" | "submit" | "reset";
-  onClick?: () => void;
-  className?: string;
-  children: React.ReactNode;
-};
+  type?: "button" | "submit" | "reset"
+  onClick?: () => void
+  className?: string
+  children: React.ReactNode
+}
 
 const Button = ({ type = "button", onClick, className, children }: Props) => (
   <button

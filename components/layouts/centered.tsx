@@ -5,7 +5,7 @@ import Header from "../Header"
 export default function CenteredLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <>

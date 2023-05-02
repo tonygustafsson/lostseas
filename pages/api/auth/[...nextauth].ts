@@ -12,7 +12,7 @@ export default NextAuth({
       authorize: async (credentials) => {
         const { user } = (await client.request(GetUserByEmail, {
           email: credentials?.email,
-        })) as any
+        })) as { user: User }
 
         const isValid = await compare(
           credentials?.password || "",
@@ -45,7 +45,7 @@ export default NextAuth({
     async session({ session }) {
       const { user } = (await client.request(GetFullUser, {
         email: session?.user?.email,
-      })) as any
+      })) as { user: User }
 
       return { ...session, user: { ...session.user, ...user } }
     },
