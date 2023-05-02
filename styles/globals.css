@@ -2,16 +2,3 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground: rgb(240, 240, 240);
-  --background: rgb(20, 20, 20);
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-}
-
-label {
-  font-weight: bold;
-}
