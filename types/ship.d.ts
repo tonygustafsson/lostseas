@@ -1,4 +1,5 @@
 type Ship = {
-    name: string
-    type: "Frigate" | "Sloop" | "Galleon"
+  id: string
+  name: string
+  type: "Frigate" | "Sloop" | "Galleon"
 }

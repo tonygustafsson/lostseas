@@ -12,7 +12,7 @@ const Home = () => {
     const { ship } = (await client.request(CreateShip, {
       name: "My new ship",
       type: "Sloop",
-    })) as { ship: Ship }
+    })) as { ship: Pick<Ship, "name" | "type" | "id"> }
 
     console.log(ship)
   }
