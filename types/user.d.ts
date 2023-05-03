@@ -8,4 +8,5 @@ type User = {
   password: string
   publishedAt: string
   updatedAt: string
+  ships: Ship[]
 }

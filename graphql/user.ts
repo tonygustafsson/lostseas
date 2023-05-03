@@ -17,6 +17,10 @@ export const GetFullUser = gql`
       email
       characterName
       characterAge
+      ships {
+        name
+        type
+      }
     }
   }
 `
