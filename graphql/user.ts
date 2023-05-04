@@ -17,7 +17,7 @@ export const GetFullUser = gql`
       email
       characterName
       characterAge
-      ships {
+      ships(last: 100) {
         name
         type
       }
