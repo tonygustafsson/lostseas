@@ -5,16 +5,25 @@ import Button from "@/components/ui/Button"
 import { CreateShip } from "@/graphql/ship"
 import client from "@/graphql/client"
 
+enum ShipType {
+  FRIGATE = "Frigate",
+  SLOOP = "Sloop",
+  GALLEON = "Galleon",
+}
+
 const Home = () => {
   const { data: session, status } = useSession()
 
   const handleCreateShip = async () => {
-    const { ship } = (await client.request(CreateShip, {
-      name: "My new ship",
-      type: "Sloop",
-    })) as { ship: Pick<Ship, "name" | "type" | "id"> }
+    const newShip = await fetch("/api/createShip", {
+      method: "POST",
+      body: "",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
 
-    console.log(ship)
+    console.log(newShip)
   }
 
   return (
