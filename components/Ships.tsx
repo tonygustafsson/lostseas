@@ -36,9 +36,23 @@ const Ships = () => {
       headers: {
         "Content-Type": "application/json",
       },
-    })
+    }).then(() => update())
+  }
 
-    update()
+  const handleDeleteShip = async (id: string) => {
+    if (!id) return
+
+    const shipData = {
+      id,
+    }
+
+    await fetch("/api/ship/delete", {
+      method: "DELETE",
+      body: JSON.stringify(shipData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(() => update())
   }
 
   if (status === "loading") {

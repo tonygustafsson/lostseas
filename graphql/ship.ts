@@ -11,3 +11,11 @@ export const CreateShip = gql`
     }
   }
 `
+
+export const DeleteShip = gql`
+  mutation DeleteShip($id: ID!) {
+    deleteShip(where: { id: $id }) {
+      id
+    }
+  }
+`
