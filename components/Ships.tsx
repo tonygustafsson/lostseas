@@ -1,9 +1,10 @@
 import { useSession } from "next-auth/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import Button from "@/components/ui/Button"
 
 import TextField from "./ui/TextField"
+import Select from "./ui/Select"
 
 enum ShipType {
   FRIGATE = "Frigate",
@@ -64,19 +65,18 @@ const Ships = () => {
           onChange={setShipName}
         />
 
-        <select
+        <Select
+          label="Ship type"
+          name="ship_type"
+          id="ship_type"
+          options={Object.values(ShipType)}
+          onChange={setShipType}
           className="mt-4"
-          value={shipType}
-          onChange={(e) => setShipType(e.target.value as ShipType)}
-        >
-          {Object.values(ShipType).map((type) => (
-            <option key={`ship-type-${type}`} value={type}>
-              {type}
-            </option>
-          ))}
-        </select>
+        />
 
-        <Button type="submit">Create new ship</Button>
+        <Button type="submit" className="mt-4">
+          Create new ship
+        </Button>
       </form>
     </>
   )
