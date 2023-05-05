@@ -5,6 +5,7 @@ import Button from "@/components/ui/Button"
 
 import TextField from "./ui/TextField"
 import Select from "./ui/Select"
+import Table from "./ui/Table"
 
 enum ShipType {
   FRIGATE = "Frigate",
@@ -44,15 +45,12 @@ const Ships = () => {
     <>
       {!!session?.user?.ships?.length && (
         <>
-          <h3 className="text-xl mt-8 mb-2">Ships</h3>
+          <h3 className="text-xl text mt-8 mb-2">Ships</h3>
 
-          <ul>
-            {(session?.user?.ships || []).map((ship, idx) => (
-              <li key={`ship-${idx}`}>
-                {ship.name} ({ship.type})
-              </li>
-            ))}
-          </ul>
+          <Table
+            headings={["Name", "Type"]}
+            rows={session?.user?.ships.map((row) => [row.name, row.type])}
+          />
         </>
       )}
 
