@@ -56,7 +56,10 @@ const Ships = () => {
         </>
       )}
 
-      <form onSubmit={handleCreateShip} className="mt-8 w-4/12">
+      <form
+        onSubmit={handleCreateShip}
+        className="mt-8 flex items-bottom gap-3"
+      >
         <TextField
           label="Ship name"
           name="ship_name"
@@ -71,10 +74,9 @@ const Ships = () => {
           id="ship_type"
           options={Object.values(ShipType)}
           onChange={setShipType}
-          className="mt-4"
         />
 
-        <Button type="submit" className="mt-4">
+        <Button type="submit" className="mt-7">
           Create new ship
         </Button>
       </form>
