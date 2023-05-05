@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react"
-import { useEffect, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 
 import Button from "@/components/ui/Button"
 
@@ -14,12 +14,14 @@ enum ShipType {
 }
 
 const Ships = () => {
-  const { data: session, update } = useSession()
+  const { data: session, update, status } = useSession()
 
   const [shipName, setShipName] = useState("")
   const [shipType, setShipType] = useState(ShipType.GALLEON)
 
-  const handleCreateShip = async () => {
+  const handleCreateShip = async (e: FormEvent) => {
+    e.preventDefault()
+
     if (!shipName || !shipType) return
 
     const shipData = {
@@ -27,8 +29,6 @@ const Ships = () => {
       type: shipType,
       userId: session?.user?.id,
     }
-
-    console.log({ shipData })
 
     await fetch("/api/ship/create", {
       method: "POST",
@@ -39,6 +39,10 @@ const Ships = () => {
     })
 
     update()
+  }
+
+  if (status === "loading") {
+    return <p>Loading...</p>
   }
 
   return (
