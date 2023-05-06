@@ -26,7 +26,7 @@ const Settings = () => {
         },
       })
 
-      update()
+      await update()
       router.push("/")
     } catch (error: any) {
       setError(error.message)

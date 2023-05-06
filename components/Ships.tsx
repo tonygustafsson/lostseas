@@ -14,7 +14,7 @@ enum ShipType {
 }
 
 const Ships = () => {
-  const { data: session, update, status } = useSession()
+  const { data: session, update } = useSession()
 
   const [shipName, setShipName] = useState("")
   const [shipType, setShipType] = useState(ShipType.GALLEON)
@@ -36,7 +36,9 @@ const Ships = () => {
       headers: {
         "Content-Type": "application/json",
       },
-    }).then(() => update())
+    })
+
+    await update()
   }
 
   const handleDeleteShip = async (id: string) => {
@@ -47,11 +49,9 @@ const Ships = () => {
       headers: {
         "Content-Type": "application/json",
       },
-    }).then(() => update())
-  }
+    })
 
-  if (status === "loading") {
-    return <p>Loading...</p>
+    await update()
   }
 
   return (

@@ -4,11 +4,7 @@ import { signOut, useSession } from "next-auth/react"
 import Button from "./ui/Button"
 
 const Header = () => {
-  const { data: session, status } = useSession()
-
-  const loading = status === "loading"
-
-  if (loading) return null
+  const { data: session } = useSession()
 
   return (
     <div className="bg-slate-800 flex gap-4 p-4 mb-4 justify-between">

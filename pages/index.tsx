@@ -10,8 +10,6 @@ const Home = () => {
     <DefaultLayout>
       <h1 className="font-serif text-4xl mb-4">Havanas tavern</h1>
 
-      {status === "loading" && <p>Loading...</p>}
-
       {status === "authenticated" && (
         <>
           <p>

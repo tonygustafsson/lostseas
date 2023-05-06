@@ -1,12 +1,17 @@
+import { useSession } from "next-auth/react"
+
 import pacifico from "@/font-pacifico"
 
 import Header from "../Header"
+import Spinner from "../Spinner"
 
 export default function CenteredLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const { status } = useSession()
+
   return (
     <>
       <Header />
@@ -16,6 +21,8 @@ export default function CenteredLayout({
       >
         {children}
       </main>
+
+      {status === "loading" && <Spinner />}
     </>
   )
 }
