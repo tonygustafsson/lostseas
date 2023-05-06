@@ -21,19 +21,21 @@ const Header = () => {
           <p className="text-sm">Signed in as {session?.user?.name}</p>
 
           <Link href="/settings">
-            <Button>Settings</Button>
+            <Button size="lg">Settings</Button>
           </Link>
 
-          <Button onClick={() => signOut()}>Sign out</Button>
+          <Button size="lg" onClick={() => signOut()}>
+            Sign out
+          </Button>
         </div>
       ) : (
         <div className="flex gap-4 justify-end align-middle">
           <Link href="/login">
-            <Button>Sign in</Button>
+            <Button size="lg">Sign in</Button>
           </Link>
 
           <Link href="/register">
-            <Button>Register</Button>
+            <Button size="lg">Register</Button>
           </Link>
         </div>
       )}

@@ -67,9 +67,11 @@ const Ships = () => {
               row.type,
               <Button
                 key={`ship-remove-${idx}`}
+                size="sm"
+                className="ml-auto flex"
                 onClick={() => handleDeleteShip(row.id)}
               >
-                Remove
+                Delete
               </Button>,
             ])}
           />
@@ -96,7 +98,7 @@ const Ships = () => {
           onChange={setShipType}
         />
 
-        <Button type="submit" className="mt-7">
+        <Button type="submit" size="sm" className="mt-7">
           Create new ship
         </Button>
       </form>
