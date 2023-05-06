@@ -8,7 +8,7 @@ const Home = () => {
 
   return (
     <DefaultLayout>
-      <h1 className="font-serif text-4xl mb-4">Lost Seas</h1>
+      <h1 className="font-serif text-4xl mb-4">Havanas tavern</h1>
 
       {status === "loading" && <p>Loading...</p>}
 

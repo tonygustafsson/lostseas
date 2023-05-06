@@ -12,8 +12,8 @@ const Header = () => {
 
   return (
     <div className="bg-slate-800 flex gap-4 p-4 mb-4 justify-between">
-      <Link href="/" className="font-serif text-3xl">
-        Lost Seas
+      <Link href="/" className="font-serif text-3xl flex gap-3 items-center">
+        <span className="text-5xl font-medium -mt-2">☠</span> Lost Seas
       </Link>
 
       {session ? (
