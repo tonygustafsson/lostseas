@@ -18,6 +18,7 @@ export const GetFullUser = gql`
       characterName
       characterAge
       ships(last: 100) {
+        id
         name
         type
       }

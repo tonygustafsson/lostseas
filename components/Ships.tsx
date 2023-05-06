@@ -1,11 +1,11 @@
 import { useSession } from "next-auth/react"
-import { FormEvent, useEffect, useState } from "react"
+import { FormEvent, useState } from "react"
 
 import Button from "@/components/ui/Button"
 
-import TextField from "./ui/TextField"
 import Select from "./ui/Select"
 import Table from "./ui/Table"
+import TextField from "./ui/TextField"
 
 enum ShipType {
   FRIGATE = "Frigate",
@@ -42,13 +42,8 @@ const Ships = () => {
   const handleDeleteShip = async (id: string) => {
     if (!id) return
 
-    const shipData = {
-      id,
-    }
-
-    await fetch("/api/ship/delete", {
+    await fetch(`/api/ship/delete/${id}`, {
       method: "DELETE",
-      body: JSON.stringify(shipData),
       headers: {
         "Content-Type": "application/json",
       },
@@ -66,8 +61,17 @@ const Ships = () => {
           <h3 className="text-xl text mt-8 mb-2">Ships</h3>
 
           <Table
-            headings={["Name", "Type"]}
-            rows={session?.user?.ships.map((row) => [row.name, row.type])}
+            headings={["Name", "Type", ""]}
+            rows={session?.user?.ships.map((row, idx) => [
+              row.name,
+              row.type,
+              <Button
+                key={`ship-remove-${idx}`}
+                onClick={() => handleDeleteShip(row.id)}
+              >
+                Remove
+              </Button>,
+            ])}
           />
         </>
       )}
