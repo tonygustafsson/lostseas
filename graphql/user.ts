@@ -1,8 +1,8 @@
 import { gql } from "graphql-request"
 
-export const GetUserByEmail = gql`
-  query GetUserByEmail($email: String!) {
-    user: nextUser(where: { email: $email }, stage: DRAFT) {
+export const GetAuthUser = gql`
+  query GetAuthUser($username: String!) {
+    user: nextUser(where: { username: $username }, stage: DRAFT) {
       id
       password
     }
@@ -10,11 +10,11 @@ export const GetUserByEmail = gql`
 `
 
 export const GetFullUser = gql`
-  query GetFullUser($email: String!) {
-    user: nextUser(where: { email: $email }, stage: DRAFT) {
+  query GetFullUser($username: String!) {
+    user: nextUser(where: { username: $username }, stage: DRAFT) {
       id
       name
-      email
+      username
       characterName
       characterAge
       ships(last: 100) {
@@ -27,9 +27,9 @@ export const GetFullUser = gql`
 `
 
 export const CreateNextUser = gql`
-  mutation CreateNextUserByEmail(
+  mutation CreateNextUser(
     $name: String!
-    $email: String!
+    $username: String!
     $password: String!
     $characterName: String!
     $characterAge: Int!
@@ -37,7 +37,7 @@ export const CreateNextUser = gql`
     user: createNextUser(
       data: {
         name: $name
-        email: $email
+        username: $username
         password: $password
         characterName: $characterName
         characterAge: $characterAge
@@ -49,7 +49,7 @@ export const CreateNextUser = gql`
 `
 
 export const UpdateNextUser = gql`
-  mutation UpdateNextUserById(
+  mutation UpdateNextUser(
     $id: ID!
     $name: String!
     $characterName: String!

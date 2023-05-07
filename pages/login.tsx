@@ -26,7 +26,7 @@ const Login = ({
       >
         <TextField type="hidden" name="csrfToken" defaultValue={csrfToken} />
 
-        <TextField label="Username" id="email" name="email" autoFocus />
+        <TextField label="Username" id="username" name="username" autoFocus />
         <TextField
           type="password"
           label="Password"

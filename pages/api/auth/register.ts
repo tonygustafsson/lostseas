@@ -7,7 +7,7 @@ import { CreateNextUser } from "@/graphql/user"
 const register = async (req: NextApiRequest, res: NextApiResponse) => {
   const requestJson = {
     name: req.body.name,
-    email: req.body.email,
+    username: req.body.username,
     password: await hash(req.body.password || "", 12),
 
     characterName: req.body.characterName,

@@ -3,15 +3,15 @@ import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 
 import client from "@/graphql/client"
-import { GetFullUser, GetUserByEmail } from "@/graphql/user"
+import { GetAuthUser, GetFullUser } from "@/graphql/user"
 
 export default NextAuth({
   providers: [
     CredentialsProvider({
       name: "Credentials",
       authorize: async (credentials) => {
-        const { user } = (await client.request(GetUserByEmail, {
-          email: credentials?.email,
+        const { user } = (await client.request(GetAuthUser, {
+          username: credentials?.username,
         })) as { user: User }
 
         const isValid = await compare(
@@ -25,12 +25,11 @@ export default NextAuth({
 
         return {
           id: user.id,
-          username: credentials?.email,
-          email: credentials?.email,
+          email: credentials?.username, // Next Auth requires an email
         }
       },
       credentials: {
-        email: {
+        username: {
           label: "Username",
           type: "username",
         },
@@ -44,7 +43,7 @@ export default NextAuth({
   callbacks: {
     async session({ session }) {
       const { user } = (await client.request(GetFullUser, {
-        email: session?.user?.email,
+        username: session?.user?.email, // Next Auth requires an email
       })) as { user: User }
 
       return { ...session, user: { ...session.user, ...user } }

@@ -2,7 +2,7 @@ type User = {
   characterAge: number
   characterName: string
   createdAt: string
-  email: string
+  username: string
   id: string
   name: string
   password: string

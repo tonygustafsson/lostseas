@@ -41,7 +41,7 @@ const Register = () => {
         <h2 className="font-serif text-2xl">Player</h2>
 
         <TextField id="name" name="name" label="Name" autoFocus />
-        <TextField id="email" name="email" label="Username" />
+        <TextField id="username" name="username" label="Username" />
         <TextField
           id="password"
           name="password"
