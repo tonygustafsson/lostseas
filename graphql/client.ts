@@ -6,4 +6,13 @@ const client = new GraphQLClient(process.env.HYGRAPH_ENDPOINT || "", {
   },
 })
 
+export const highPerformanceClient = new GraphQLClient(
+  process.env.HYGRAPH_HIGH_PERFORMANCE_ENDPOINT || "",
+  {
+    headers: {
+      Authorization: `Bearer ${process.env.HYGRAPH_TOKEN}`,
+    },
+  }
+)
+
 export default client

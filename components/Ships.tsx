@@ -2,6 +2,7 @@ import { useSession } from "next-auth/react"
 import { FormEvent, useState } from "react"
 
 import Button from "@/components/ui/Button"
+import { useShips, useShipsMutations } from "@/hooks/queries/useShips"
 
 import Select from "./ui/Select"
 import Table from "./ui/Table"
@@ -14,7 +15,9 @@ enum ShipType {
 }
 
 const Ships = () => {
-  const { data: session, update } = useSession()
+  const { data: session } = useSession()
+  const { data: ships } = useShips()
+  const { create, remove } = useShipsMutations()
 
   const [shipName, setShipName] = useState("")
   const [shipType, setShipType] = useState(ShipType.GALLEON)
@@ -22,47 +25,32 @@ const Ships = () => {
   const handleCreateShip = async (e: FormEvent) => {
     e.preventDefault()
 
-    if (!shipName || !shipType) return
+    if (!shipName || !shipType || !session?.user?.id) return
 
     const shipData = {
       name: shipName,
       type: shipType,
-      userId: session?.user?.id,
+      userId: session.user?.id,
     }
 
-    await fetch("/api/ship/create", {
-      method: "POST",
-      body: JSON.stringify(shipData),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-
-    await update()
+    create(shipData)
   }
 
   const handleDeleteShip = async (id: string) => {
     if (!id) return
 
-    await fetch(`/api/ship/delete/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-
-    await update()
+    remove(id)
   }
 
   return (
     <>
-      {!!session?.user?.ships?.length && (
+      {!!ships?.length && (
         <>
           <h3 className="text-xl text mt-8 mb-2">Ships</h3>
 
           <Table
             headings={["Name", "Type", ""]}
-            rows={session?.user?.ships.map((row, idx) => [
+            rows={ships.map((row, idx) => [
               row.name,
               row.type,
               <Button

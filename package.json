@@ -7,9 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint:fix": "next lint --fix"
+    "lint:fix": "next lint --fix",
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
+    "@tanstack/react-query": "^4.29.7",
     "@types/node": "18.16.2",
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.1",
@@ -28,6 +30,8 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "3.3.1",
+    "@graphql-codegen/client-preset": "^3.0.1",
     "@types/bcrypt": "^5.0.0",
     "@typescript-eslint/eslint-plugin": "^5.59.2",
     "@typescript-eslint/parser": "^5.59.2",
