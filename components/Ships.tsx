@@ -34,12 +34,15 @@ const Ships = () => {
     }
 
     create(shipData)
+
+    setShipName("")
+    setShipType(ShipType.FRIGATE)
   }
 
   const handleDeleteShip = async (id: string) => {
     if (!id) return
 
-    remove(id)
+    await remove(id)
   }
 
   return (
