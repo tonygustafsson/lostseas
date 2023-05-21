@@ -1,5 +1,4 @@
 import Link from "next/link"
-import { useEffect } from "react"
 
 import DefaultLayout from "@/components/layouts/default"
 import Ships from "@/components/Ships"
@@ -8,10 +7,6 @@ import { useUser } from "@/hooks/queries/useUser"
 
 const Home = () => {
   const { data: user } = useUser()
-
-  useEffect(() => {
-    console.log({ user })
-  }, [user])
 
   return (
     <DefaultLayout>
