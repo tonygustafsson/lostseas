@@ -3,10 +3,10 @@ import Link from "next/link"
 import DefaultLayout from "@/components/layouts/default"
 import Ships from "@/components/Ships"
 import Button from "@/components/ui/Button"
-import { useUser } from "@/hooks/queries/useUser"
+import { useGetUser } from "@/hooks/queries/useUser"
 
 const Home = () => {
-  const { data: user } = useUser()
+  const { data: user } = useGetUser()
 
   return (
     <DefaultLayout>

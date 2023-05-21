@@ -4,11 +4,11 @@ import { useState } from "react"
 import CenteredLayout from "@/components/layouts/centered"
 import Button from "@/components/ui/Button"
 import TextField from "@/components/ui/TextField"
-import { useUser } from "@/hooks/queries/useUser"
+import { useGetUser } from "@/hooks/queries/useUser"
 
 const Settings = () => {
   const router = useRouter()
-  const { data: user } = useUser()
+  const { data: user } = useGetUser()
 
   const [error, setError] = useState<string | null>(null)
 

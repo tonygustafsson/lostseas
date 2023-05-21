@@ -1,5 +1,7 @@
+import { useEffect } from "react"
+
 import pacifico from "@/font-pacifico"
-import { useUser } from "@/hooks/queries/useUser"
+import { useGetUser } from "@/hooks/queries/useUser"
 
 import Header from "../Header"
 import Spinner from "../Spinner"
@@ -9,7 +11,11 @@ export default function DefaultLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { isLoading, isStale } = useUser()
+  const { isLoading, isStale } = useGetUser()
+
+  useEffect(() => {
+    console.log({ isLoading, isStale })
+  }, [isLoading, isStale])
 
   return (
     <>

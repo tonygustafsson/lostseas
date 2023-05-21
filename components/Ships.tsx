@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react"
 
 import Button from "@/components/ui/Button"
-import { useUser, useUserMutations } from "@/hooks/queries/useUser"
+import { useGetUser, useUserMutations } from "@/hooks/queries/useUser"
 
 import Select from "./ui/Select"
 import Table from "./ui/Table"
@@ -14,7 +14,7 @@ enum ShipType {
 }
 
 const Ships = () => {
-  const { data: user } = useUser()
+  const { data: user } = useGetUser()
   const { createShip, removeShip } = useUserMutations()
 
   const [shipName, setShipName] = useState("")

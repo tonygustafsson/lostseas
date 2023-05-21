@@ -1,11 +1,11 @@
 import Link from "next/link"
 
-import { useUser } from "@/hooks/queries/useUser"
+import { useGetUser } from "@/hooks/queries/useUser"
 
 import Button from "./ui/Button"
 
 const Header = () => {
-  const { data: user } = useUser()
+  const { data: user } = useGetUser()
 
   const signOut = () => {
     window.localStorage.removeItem("userId")

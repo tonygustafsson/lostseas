@@ -99,7 +99,7 @@ const handleChangeSettings = async ({
   return json
 }
 
-export const useUser = () =>
+export const useGetUser = () =>
   useQuery(["user"], fetchUser, {
     enabled:
       typeof window !== "undefined" && !!window.localStorage.getItem("userId"),
