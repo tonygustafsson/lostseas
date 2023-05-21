@@ -1,4 +1,6 @@
 import { useRouter } from "next/router"
+import QrScanner from "qr-scanner"
+import { useEffect, useRef } from "react"
 
 import CenteredLayout from "@/components/layouts/centered"
 import Button from "@/components/ui/Button"
@@ -8,6 +10,8 @@ const Login = () => {
   const router = useRouter()
   const error = router.query.error
 
+  const restoreUserIdVideoRef = useRef<HTMLVideoElement>(null)
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
@@ -16,6 +20,25 @@ const Login = () => {
     window.localStorage.setItem("userId", userId?.toString() || "")
     router.push("/")
   }
+
+  useEffect(() => {
+    const startQrScanner = async () => {
+      if (!restoreUserIdVideoRef.current) return
+
+      const qrScanner = new QrScanner(
+        restoreUserIdVideoRef.current,
+        (result) => {
+          const userId = result.data
+          window.localStorage.setItem("userId", userId)
+          router.push("/")
+        },
+        {}
+      )
+      await qrScanner.start()
+    }
+
+    startQrScanner()
+  }, [restoreUserIdVideoRef, router])
 
   return (
     <CenteredLayout>
@@ -35,6 +58,10 @@ const Login = () => {
           Sign in
         </Button>
       </form>
+
+      <h2 className="font-serif text-4xl mb-8">Sign in using QR code</h2>
+
+      <video width={300} height={300} ref={restoreUserIdVideoRef}></video>
     </CenteredLayout>
   )
 }

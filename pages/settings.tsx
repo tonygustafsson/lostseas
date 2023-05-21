@@ -1,4 +1,5 @@
 import { useRouter } from "next/router"
+import { useQRCode } from "next-qrcode"
 import { useState } from "react"
 
 import CenteredLayout from "@/components/layouts/centered"
@@ -9,6 +10,7 @@ import { useGetUser } from "@/hooks/queries/useUser"
 const Settings = () => {
   const router = useRouter()
   const { data: user } = useGetUser()
+  const { SVG } = useQRCode()
 
   const [error, setError] = useState<string | null>(null)
 
@@ -80,6 +82,25 @@ const Settings = () => {
           Save
         </Button>
       </form>
+
+      <h2 className="font-serif text-2xl my-8">Save your game</h2>
+
+      <p>
+        You can download or photograph the QR code below and login with it using
+        a webcam.
+      </p>
+
+      <SVG
+        text={user?.id || ""}
+        options={{
+          margin: 2,
+          width: 300,
+          color: {
+            dark: "#000000",
+            light: "#ffffff",
+          },
+        }}
+      />
     </CenteredLayout>
   )
 }
