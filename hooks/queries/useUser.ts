@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/router"
+import { useMemo } from "react"
 
 const fetchUser = async () => {
   const userId = window.localStorage.getItem("userId")
@@ -160,6 +161,20 @@ export const useUserMutations = () => {
     }
   )
 
+  const isLoading = useMemo(
+    () =>
+      registrationIsLoading ||
+      changeSettingsIsLoading ||
+      creatingShipIsLoading ||
+      removingShipIsLoading,
+    [
+      registrationIsLoading,
+      changeSettingsIsLoading,
+      creatingShipIsLoading,
+      removingShipIsLoading,
+    ]
+  )
+
   return {
     register,
     registrationIsLoading,
@@ -169,5 +184,6 @@ export const useUserMutations = () => {
     creatingShipIsLoading,
     removeShip,
     removingShipIsLoading,
+    isLoading,
   }
 }

@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 
 import pacifico from "@/font-pacifico"
-import { useGetUser } from "@/hooks/queries/useUser"
+import { useGetUser, useUserMutations } from "@/hooks/queries/useUser"
 
 import Header from "../Header"
 import Spinner from "../Spinner"
@@ -12,10 +12,11 @@ export default function DefaultLayout({
   children: React.ReactNode
 }) {
   const { isLoading, isStale } = useGetUser()
+  const { isLoading: mutationIsLoading } = useUserMutations()
 
   useEffect(() => {
-    console.log({ isLoading, isStale })
-  }, [isLoading, isStale])
+    console.log({ isLoading, isStale, mutationIsLoading })
+  }, [isLoading, isStale, mutationIsLoading])
 
   return (
     <>
@@ -25,7 +26,7 @@ export default function DefaultLayout({
         {children}
       </main>
 
-      {isLoading && !isStale && <Spinner />}
+      {(isLoading || mutationIsLoading) && !isStale && <Spinner />}
     </>
   )
 }
