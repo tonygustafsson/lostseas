@@ -1,6 +1,5 @@
-import { useSession } from "next-auth/react"
-
 import pacifico from "@/font-pacifico"
+import { useUser } from "@/hooks/queries/useUser"
 
 import Header from "../Header"
 import Spinner from "../Spinner"
@@ -10,7 +9,7 @@ export default function DefaultLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { status } = useSession()
+  const { isLoading, isStale } = useUser()
 
   return (
     <>
@@ -20,7 +19,7 @@ export default function DefaultLayout({
         {children}
       </main>
 
-      {status === "loading" && <Spinner />}
+      {isLoading && !isStale && <Spinner />}
     </>
   )
 }

@@ -1,29 +1,34 @@
 import Link from "next/link"
-import { useSession } from "next-auth/react"
+import { useEffect } from "react"
 
 import DefaultLayout from "@/components/layouts/default"
 import Ships from "@/components/Ships"
 import Button from "@/components/ui/Button"
+import { useUser } from "@/hooks/queries/useUser"
 
 const Home = () => {
-  const { data: session, status } = useSession()
+  const { data: user } = useUser()
+
+  useEffect(() => {
+    console.log({ user })
+  }, [user])
 
   return (
     <DefaultLayout>
-      {status === "authenticated" && (
+      {user && (
         <>
           <h1 className="font-serif text-4xl mb-4">Havanas tavern</h1>
 
           <p>
-            You are {session?.user?.characterName} and are{" "}
-            {session?.user?.characterAge} years old.
+            You are {user?.characterName} and are {user?.characterAge} years
+            old.
           </p>
 
           <Ships />
         </>
       )}
 
-      {status === "unauthenticated" && (
+      {!user && (
         <>
           <h1 className="font-serif text-4xl mb-8">Signed out</h1>
 

@@ -1,8 +1,7 @@
-import { useSession } from "next-auth/react"
 import { FormEvent, useState } from "react"
 
 import Button from "@/components/ui/Button"
-import { useShips, useShipsMutations } from "@/hooks/queries/useShips"
+import { useUser, useUserMutations } from "@/hooks/queries/useUser"
 
 import Select from "./ui/Select"
 import Table from "./ui/Table"
@@ -15,9 +14,8 @@ enum ShipType {
 }
 
 const Ships = () => {
-  const { data: session } = useSession()
-  const { data: ships } = useShips()
-  const { create, remove } = useShipsMutations()
+  const { data: user } = useUser()
+  const { createShip, removeShip } = useUserMutations()
 
   const [shipName, setShipName] = useState("")
   const [shipType, setShipType] = useState(ShipType.GALLEON)
@@ -25,42 +23,42 @@ const Ships = () => {
   const handleCreateShip = async (e: FormEvent) => {
     e.preventDefault()
 
-    if (!shipName || !shipType || !session?.user?.id) return
+    if (!shipName || !shipType) return
 
     const shipData = {
+      userId: user?.id || "",
       name: shipName,
       type: shipType,
-      userId: session.user?.id,
     }
 
-    create(shipData)
+    createShip(shipData)
 
     setShipName("")
     setShipType(ShipType.FRIGATE)
   }
 
-  const handleDeleteShip = async (id: string) => {
+  const handleRemoveShip = async (id: string) => {
     if (!id) return
 
-    await remove(id)
+    removeShip({ shipId: id, userId: user?.id || "" })
   }
 
   return (
     <>
-      {!!ships?.length && (
+      {!!Object.values(user?.ships || [])?.length && (
         <>
           <h3 className="text-xl text mt-8 mb-2">Ships</h3>
 
           <Table
             headings={["Name", "Type", ""]}
-            rows={ships.map((row, idx) => [
-              row.name,
-              row.type,
+            rows={Object.values(user?.ships || []).map((ship, idx) => [
+              ship.name,
+              ship.type,
               <Button
                 key={`ship-remove-${idx}`}
                 size="sm"
                 className="ml-auto flex"
-                onClick={() => handleDeleteShip(row.id)}
+                onClick={() => handleRemoveShip(ship.id)}
               >
                 Delete
               </Button>,
@@ -73,6 +71,13 @@ const Ships = () => {
         onSubmit={handleCreateShip}
         className="mt-8 flex items-bottom gap-3"
       >
+        <TextField
+          type="hidden"
+          name="userId"
+          id="userId"
+          value={user?.id || ""}
+        />
+
         <TextField
           label="Ship name"
           name="ship_name"

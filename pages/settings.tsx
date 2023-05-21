@@ -1,14 +1,14 @@
 import { useRouter } from "next/router"
-import { useSession } from "next-auth/react"
 import { useState } from "react"
 
 import CenteredLayout from "@/components/layouts/centered"
 import Button from "@/components/ui/Button"
 import TextField from "@/components/ui/TextField"
+import { useUser } from "@/hooks/queries/useUser"
 
 const Settings = () => {
   const router = useRouter()
-  const { data: session, update, status } = useSession()
+  const { data: user } = useUser()
 
   const [error, setError] = useState<string | null>(null)
 
@@ -18,7 +18,7 @@ const Settings = () => {
     const json = JSON.stringify(Object.fromEntries(formData.entries()))
 
     try {
-      await fetch("/api/auth/settings", {
+      await fetch("/api/user/settings", {
         method: "POST",
         body: json,
         headers: {
@@ -26,14 +26,13 @@ const Settings = () => {
         },
       })
 
-      await update()
       router.push("/")
     } catch (error: any) {
       setError(error.message)
     }
   }
 
-  if (status !== "authenticated") {
+  if (!user) {
     return <p>Access denied</p>
   }
 
@@ -47,17 +46,13 @@ const Settings = () => {
       >
         <h2 className="font-serif text-2xl">Player</h2>
 
-        <TextField
-          type="hidden"
-          name="id"
-          defaultValue={session?.user?.id || ""}
-        />
+        <TextField type="hidden" name="userId" defaultValue={user?.id || ""} />
 
         <TextField
           label="Name"
           id="name"
           name="name"
-          defaultValue={session?.user?.name || ""}
+          defaultValue={user?.name || ""}
         />
 
         <h2 className="font-serif text-2xl mt-8">Character</h2>
@@ -66,7 +61,7 @@ const Settings = () => {
           label="Name"
           id="characterName"
           name="characterName"
-          defaultValue={session?.user?.characterName || ""}
+          defaultValue={user?.characterName || ""}
         />
 
         <TextField
@@ -74,7 +69,7 @@ const Settings = () => {
           id="characterAge"
           name="characterAge"
           type="number"
-          defaultValue={String(session?.user?.characterAge) || ""}
+          defaultValue={String(user?.characterAge) || ""}
           min={15}
           max={80}
         />

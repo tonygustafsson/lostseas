@@ -1,21 +1,19 @@
+import { ref, update } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
-import client from "@/graphql/client"
-import { UpdateNextUser } from "@/graphql/user"
+import db from "@/firebase/db"
 
 const settings = async (req: NextApiRequest, res: NextApiResponse) => {
-  const requestJson = {
-    id: req.body.id,
+  const userId = req.body.userId
+
+  const updates = {
     name: req.body.name,
     characterName: req.body.characterName,
     characterAge: parseInt(req.body.characterAge),
-  }
+  } as Record<User["id"], Partial<User>>
+  await update(ref(db, userId), updates)
 
-  const { user } = (await client.request(UpdateNextUser, requestJson)) as {
-    user: User
-  }
-
-  res.status(200).json({ id: user.id })
+  res.status(200).json(userId)
 }
 
 export default settings

@@ -1,10 +1,16 @@
 import Link from "next/link"
-import { signOut, useSession } from "next-auth/react"
+
+import { useUser } from "@/hooks/queries/useUser"
 
 import Button from "./ui/Button"
 
 const Header = () => {
-  const { data: session } = useSession()
+  const { data: user } = useUser()
+
+  const signOut = () => {
+    window.localStorage.removeItem("userId")
+    window.location.href = "/"
+  }
 
   return (
     <div className="bg-slate-800 flex gap-4 p-4 mb-4 justify-between">
@@ -12,9 +18,9 @@ const Header = () => {
         <span className="text-5xl font-medium -mt-2">☠</span> Lost Seas
       </Link>
 
-      {session ? (
+      {user ? (
         <div className="flex gap-4 items-center align-middle">
-          <p className="text-sm">Signed in as {session?.user?.name}</p>
+          <p className="text-sm">Signed in as {user?.name}</p>
 
           <Link href="/settings">
             <Button size="lg">Settings</Button>

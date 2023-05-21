@@ -1,19 +1,21 @@
-import type {
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-} from "next"
 import { useRouter } from "next/router"
-import { getCsrfToken } from "next-auth/react"
 
 import CenteredLayout from "@/components/layouts/centered"
 import Button from "@/components/ui/Button"
 import TextField from "@/components/ui/TextField"
 
-const Login = ({
-  csrfToken,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Login = () => {
   const router = useRouter()
   const error = router.query.error
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    const userId = formData.get("userId")
+
+    window.localStorage.setItem("userId", userId?.toString() || "")
+    router.push("/")
+  }
 
   return (
     <CenteredLayout>
@@ -21,18 +23,11 @@ const Login = ({
 
       <form
         method="post"
-        action="/api/auth/callback/credentials"
+        action="/api/user/login"
+        onSubmit={handleSubmit}
         className="w-full flex flex-col gap-2 max-w-md"
       >
-        <TextField type="hidden" name="csrfToken" defaultValue={csrfToken} />
-
-        <TextField label="Username" id="username" name="username" autoFocus />
-        <TextField
-          type="password"
-          label="Password"
-          id="password"
-          name="password"
-        />
+        <TextField label="User ID" id="userId" name="userId" autoFocus />
 
         {error && <p className="text-red-500">{error}</p>}
 
@@ -45,11 +40,3 @@ const Login = ({
 }
 
 export default Login
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  return {
-    props: {
-      csrfToken: await getCsrfToken(context),
-    },
-  }
-}
