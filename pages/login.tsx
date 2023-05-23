@@ -1,9 +1,10 @@
 import { useRouter } from "next/router"
 import QrScanner from "qr-scanner"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import CenteredLayout from "@/components/layouts/centered"
 import Button from "@/components/ui/Button"
+import Modal from "@/components/ui/Modal"
 import TextField from "@/components/ui/TextField"
 
 const Login = () => {
@@ -11,6 +12,8 @@ const Login = () => {
   const error = router.query.error
 
   const restoreUserIdVideoRef = useRef<HTMLVideoElement>(null)
+
+  const [isQrScannerOpen, setIsQrScannerOpen] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -38,7 +41,7 @@ const Login = () => {
     }
 
     startQrScanner()
-  }, [restoreUserIdVideoRef, router])
+  }, [restoreUserIdVideoRef, router, isQrScannerOpen])
 
   return (
     <CenteredLayout>
@@ -50,7 +53,14 @@ const Login = () => {
         onSubmit={handleSubmit}
         className="w-full flex flex-col gap-2 max-w-md"
       >
-        <TextField label="User ID" id="userId" name="userId" autoFocus />
+        <TextField
+          label="User ID"
+          id="userId"
+          name="userId"
+          autoFocus
+          pattern="^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          title="User ID must be a valid UUID"
+        />
 
         {error && <p className="text-red-500">{error}</p>}
 
@@ -59,9 +69,23 @@ const Login = () => {
         </Button>
       </form>
 
-      <h2 className="font-serif text-4xl mb-8">Sign in using QR code</h2>
+      <Button
+        size="lg"
+        onClick={() => setIsQrScannerOpen(!isQrScannerOpen)}
+        className="mt-8"
+      >
+        Sign in using QR code
+      </Button>
 
-      <video width={300} height={300} ref={restoreUserIdVideoRef}></video>
+      <Modal
+        isOpen={isQrScannerOpen}
+        title="Scan QR code"
+        onClose={() => setIsQrScannerOpen(false)}
+      >
+        <p className="mb-4">Scan the QR code to sign in</p>
+
+        <video width={500} height={500} ref={restoreUserIdVideoRef}></video>
+      </Modal>
     </CenteredLayout>
   )
 }

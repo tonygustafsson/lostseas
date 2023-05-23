@@ -44,7 +44,7 @@ const Settings = () => {
 
       <form
         onSubmit={handleSubmit}
-        className="w-full flex flex-col gap-4 max-w-md max-w-md"
+        className="w-full flex flex-col gap-4 max-w-md"
       >
         <h2 className="font-serif text-2xl">Player</h2>
 
@@ -83,24 +83,26 @@ const Settings = () => {
         </Button>
       </form>
 
-      <h2 className="font-serif text-2xl my-8">Save your game</h2>
+      <div className="w-full flex flex-col gap-4 max-w-md mt-8">
+        <h2 className="font-serif text-2xl">Save your game</h2>
 
-      <p>
-        You can download or photograph the QR code below and login with it using
-        a webcam.
-      </p>
+        <p>
+          You can download or photograph the QR code below and login with it
+          using a webcam.
+        </p>
 
-      <SVG
-        text={user?.id || ""}
-        options={{
-          margin: 2,
-          width: 300,
-          color: {
-            dark: "#000000",
-            light: "#ffffff",
-          },
-        }}
-      />
+        <SVG
+          text={user?.id || ""}
+          options={{
+            margin: 2,
+            width: 300,
+            color: {
+              dark: "#000000",
+              light: "#ffffff",
+            },
+          }}
+        />
+      </div>
     </CenteredLayout>
   )
 }
