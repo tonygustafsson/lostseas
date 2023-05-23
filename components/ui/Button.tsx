@@ -2,6 +2,7 @@ type Props = {
   type?: "button" | "submit" | "reset"
   size?: "sm" | "md" | "lg"
   onClick?: () => void
+  disabled?: boolean
   className?: string
   children: React.ReactNode
 }
@@ -11,11 +12,13 @@ const Button = ({
   size = "md",
   onClick,
   className,
+  disabled,
   children,
 }: Props) => (
   <button
     type={type}
     onClick={onClick}
+    disabled={disabled}
     className={`
       ${className}
       inline-block
@@ -37,6 +40,10 @@ const Button = ({
       active:bg-slate-700
       ${size === "sm" && "text-xs px-4 pb-1.5 pt-1.5"}
       ${size === "lg" && "text-md px-8 pt-3 pb-3"}
+      ${
+        disabled &&
+        "opacity-50 hover:bg-slate-600 active:bg-slate-600 cursor-normal"
+      }
     `}
   >
     {children}

@@ -18,7 +18,7 @@ const Ships = () => {
   const { createShip, removeShip } = useUserMutations()
 
   const [shipName, setShipName] = useState("")
-  const [shipType, setShipType] = useState(ShipType.GALLEON)
+  const [shipType, setShipType] = useState(ShipType.FRIGATE)
 
   const handleCreateShip = async (e: FormEvent) => {
     e.preventDefault()
@@ -90,11 +90,12 @@ const Ships = () => {
           label="Ship type"
           name="ship_type"
           id="ship_type"
+          value={shipType}
           options={Object.values(ShipType)}
           onChange={setShipType}
         />
 
-        <Button type="submit" size="sm" className="mt-7">
+        <Button type="submit" size="sm" className="mt-7" disabled={!shipName}>
           Create new ship
         </Button>
       </form>
