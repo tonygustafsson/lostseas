@@ -8,12 +8,14 @@ const createShip = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
 
   const shipId = crypto.randomUUID()
+  const createdDate = new Date().getTime()
   const userId = req.body.userId
 
-  const requestJson = {
+  const requestJson: CreateShipServerRequest = {
     id: shipId,
     name: req.body.name,
     type: req.body.type,
+    createdDate,
   }
 
   const existingShips = await get(child(dbRef, `${userId}/ships`))

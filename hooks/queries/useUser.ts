@@ -22,14 +22,10 @@ const fetchUser = async () => {
   }
 }
 
-const handleRegisterUser = async ({
-  name,
-  characterName,
-  characterAge,
-}: User) => {
+const handleRegisterUser = async (userData: CreateUserClientRequest) => {
   const data = await fetch("/api/user/register", {
     method: "POST",
-    body: JSON.stringify({ name, characterName, characterAge }),
+    body: JSON.stringify(userData),
     headers: {
       "Content-Type": "application/json",
     },
@@ -39,14 +35,12 @@ const handleRegisterUser = async ({
   return userId
 }
 
-const handleCreateShip = async ({
-  userId,
-  name,
-  type,
-}: Omit<Ship, "id"> & { userId: User["id"] }) => {
+const handleCreateShip = async (
+  shipData: CreateShipClientRequest & { userId: User["id"] }
+) => {
   const data = await fetch("/api/ship/create", {
     method: "PUT",
-    body: JSON.stringify({ userId, name, type }),
+    body: JSON.stringify(shipData),
     headers: {
       "Content-Type": "application/json",
     },
@@ -76,16 +70,12 @@ const handleRemoveShip = async ({
   return response
 }
 
-const handleChangeSettings = async ({
-  name,
-  characterName,
-  characterAge,
-}: User) => {
+const handleChangeSettings = async (userData: CreateUserClientRequest) => {
   const userId = window.localStorage.getItem("userId")
 
   const data = await fetch("/api/user/settings", {
     method: "POST",
-    body: JSON.stringify({ userId, name, characterName, characterAge }),
+    body: JSON.stringify({ userId, ...userData }),
     headers: {
       "Content-Type": "application/json",
     },
@@ -113,8 +103,7 @@ export const useUserMutations = () => {
   const router = useRouter()
 
   const { mutate: register, isLoading: registrationIsLoading } = useMutation(
-    ({ name, characterName, characterAge }: User) =>
-      handleRegisterUser({ name, characterName, characterAge, id: "0" }),
+    (userData: CreateUserClientRequest) => handleRegisterUser(userData),
     {
       onSuccess: (userId: string) => {
         window.localStorage.setItem("userId", userId)
@@ -128,8 +117,7 @@ export const useUserMutations = () => {
 
   const { mutate: changeSettings, isLoading: changeSettingsIsLoading } =
     useMutation(
-      ({ name, characterName, characterAge }: User) =>
-        handleChangeSettings({ name, characterName, characterAge, id: "0" }),
+      (userData: CreateUserClientRequest) => handleChangeSettings(userData),
       {
         onSuccess: () => {
           queryClient.invalidateQueries(["user"])
@@ -140,8 +128,8 @@ export const useUserMutations = () => {
     )
 
   const { mutate: createShip, isLoading: creatingShipIsLoading } = useMutation(
-    ({ userId, name, type }: Omit<Ship, "id"> & { userId: User["id"] }) =>
-      handleCreateShip({ userId, name, type }),
+    (shipData: CreateShipClientRequest & { userId: User["id"] }) =>
+      handleCreateShip(shipData),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["user"])

@@ -50,10 +50,13 @@ const Ships = () => {
           <h3 className="text-xl text mt-8 mb-2">Ships</h3>
 
           <Table
-            headings={["Name", "Type", ""]}
+            headings={["Name", "Type", "Created", ""]}
             rows={Object.values(user?.ships || []).map((ship, idx) => [
               ship.name,
               ship.type,
+              `${new Date(ship.createdDate).toLocaleDateString()} ${new Date(
+                ship.createdDate
+              ).toLocaleTimeString()}`,
               <Button
                 key={`ship-remove-${idx}`}
                 size="sm"

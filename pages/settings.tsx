@@ -42,6 +42,8 @@ const Settings = () => {
     <CenteredLayout>
       <h1 className="font-serif text-4xl mb-8">Settings</h1>
 
+      <p>Account created: {new Date(user?.createdDate).toLocaleDateString()}</p>
+
       <form
         onSubmit={handleSubmit}
         className="w-full flex flex-col gap-4 max-w-md"
