@@ -3,7 +3,7 @@ type User = {
   characterName: string
   id: string
   name: string
-  ships?: Ship[]
+  ships?: Record<string, Ship>
   createdDate: number
 }
 
