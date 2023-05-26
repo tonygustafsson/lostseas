@@ -1,14 +1,15 @@
 import { FormEvent } from "react"
 
 import Button from "@/components/ui/Button"
-import { useGetPlayer, usePlayerMutations } from "@/hooks/queries/usePlayer"
+import { useCrewMembersMutations } from "@/hooks/queries/useCrewMembers"
+import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Table from "./ui/Table"
 import TextField from "./ui/TextField"
 
 const CrewMembers = () => {
   const { data: player } = useGetPlayer()
-  const { createCrewMember, removeCrewMember } = usePlayerMutations()
+  const { createCrewMember, removeCrewMember } = useCrewMembersMutations()
 
   const handleCreateCrewMember = async (e: FormEvent) => {
     e.preventDefault()

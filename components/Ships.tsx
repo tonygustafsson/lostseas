@@ -1,7 +1,8 @@
 import { FormEvent, useState } from "react"
 
 import Button from "@/components/ui/Button"
-import { useGetPlayer, usePlayerMutations } from "@/hooks/queries/usePlayer"
+import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { useShipMutations } from "@/hooks/queries/useShips"
 
 import Select from "./ui/Select"
 import Table from "./ui/Table"
@@ -15,7 +16,7 @@ enum ShipType {
 
 const Ships = () => {
   const { data: player } = useGetPlayer()
-  const { createShip, removeShip } = usePlayerMutations()
+  const { createShip, removeShip } = useShipMutations()
 
   const [shipType, setShipType] = useState(ShipType.FRIGATE)
 
