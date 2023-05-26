@@ -534,6 +534,7 @@ const names = [
   "Zo",
 ]
 
-const getEnglishMaleName = () => names[Math.floor(Math.random() * names.length)]
+const getEnglishFemaleName = () =>
+  names[Math.floor(Math.random() * names.length)]
 
-export default getEnglishMaleName
+export default getEnglishFemaleName

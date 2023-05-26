@@ -3,17 +3,19 @@ import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import db from "@/firebase/db"
+import getShipName from "@/utils/getShipName"
 
 const createShip = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
 
   const shipId = crypto.randomUUID()
   const createdDate = new Date().getTime()
+  const shipName = getShipName()
   const userId = req.body.userId
 
   const requestJson: CreateShipServerRequest = {
     id: shipId,
-    name: req.body.name,
+    name: shipName,
     type: req.body.type,
     createdDate,
   }

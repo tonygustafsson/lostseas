@@ -5,5 +5,5 @@ type Ship = {
   createdDate: number
 }
 
-type CreateShipClientRequest = Omit<Ship, "id" | "createdDate">
+type CreateShipClientRequest = Omit<Ship, "id" | "name" | "createdDate">
 type CreateShipServerRequest = Ship

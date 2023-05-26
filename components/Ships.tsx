@@ -17,23 +17,18 @@ const Ships = () => {
   const { data: user } = useGetUser()
   const { createShip, removeShip } = useUserMutations()
 
-  const [shipName, setShipName] = useState("")
   const [shipType, setShipType] = useState(ShipType.FRIGATE)
 
   const handleCreateShip = async (e: FormEvent) => {
     e.preventDefault()
 
-    if (!shipName || !shipType) return
-
     const shipData = {
       userId: user?.id || "",
-      name: shipName,
       type: shipType,
     }
 
     createShip(shipData)
 
-    setShipName("")
     setShipType(ShipType.FRIGATE)
   }
 
@@ -81,14 +76,6 @@ const Ships = () => {
           value={user?.id || ""}
         />
 
-        <TextField
-          label="Ship name"
-          name="ship_name"
-          id="ship_name"
-          value={shipName}
-          onChange={setShipName}
-        />
-
         <Select
           label="Ship type"
           name="ship_type"
@@ -98,7 +85,7 @@ const Ships = () => {
           onChange={setShipType}
         />
 
-        <Button type="submit" size="sm" className="mt-7" disabled={!shipName}>
+        <Button type="submit" size="sm" className="mt-7">
           Create new ship
         </Button>
       </form>
