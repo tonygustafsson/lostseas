@@ -3,21 +3,24 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 
 import db from "@/firebase/db"
 
-/** Sort ships on Server instead of in Firebase because it would require
+/** Sort items on Server instead of in Firebase because it would require
  * a specific request for ships otherwise.
  */
-const sortShipsByDate = (ships?: Record<string, Ship>) => {
-  const shipArray = Object.values(ships || []) as Ship[]
+const sortByDate = (ships?: Record<string, Ship | CrewMember>) => {
+  const shipArray = Object.values(ships || []) as Ship[] | CrewMember[]
 
   if (!shipArray.length) {
     return
   }
 
   return shipArray
-    .sort((a: Ship, b: Ship) => a.createdDate - b.createdDate)
+    .sort(
+      (a: Ship | CrewMember, b: Ship | CrewMember) =>
+        a.createdDate - b.createdDate
+    )
     .reduce(
       (acc, curr) => ((acc[curr.id] = curr), acc),
-      {} as Record<string, Ship>
+      {} as Record<string, Ship | CrewMember>
     )
 }
 
@@ -39,7 +42,11 @@ const getUser = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  result.ships = sortShipsByDate(result.ships)
+  result.ships = sortByDate(result.ships) as Record<string, Ship>
+  result.crewMembers = sortByDate(result.crewMembers) as Record<
+    string,
+    CrewMember
+  >
 
   res.status(200).json(result)
 }
