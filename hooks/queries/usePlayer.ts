@@ -39,6 +39,19 @@ const handleRegisterUser = async (userData: CreatePlayerClientRequest) => {
   return userId
 }
 
+const handleTravel = async (input: { userId: Player["id"]; town: Town }) => {
+  const data = await fetch("/api/character/travel", {
+    method: "POST",
+    body: JSON.stringify(input),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  const result = await data.json()
+
+  return result
+}
+
 const handleCreateShip = async (
   shipData: CreateShipClientRequest & { userId: Player["id"] }
 ) => {
@@ -172,6 +185,16 @@ export const usePlayerMutations = () => {
       }
     )
 
+  const { mutate: travel, isLoading: travelIsLoading } = useMutation(
+    (data: { userId: Player["id"]; town: Town }) => handleTravel(data),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+      },
+      onError: (error) => console.error(error),
+    }
+  )
+
   const { mutate: createShip, isLoading: creatingShipIsLoading } = useMutation(
     (shipData: CreateShipClientRequest & { userId: Player["id"] }) =>
       handleCreateShip(shipData),
@@ -230,7 +253,8 @@ export const usePlayerMutations = () => {
       creatingShipIsLoading ||
       removingShipIsLoading ||
       creatingCrewMemberIsLoading ||
-      removingCrewMemberIsLoading,
+      removingCrewMemberIsLoading ||
+      travelIsLoading,
     [
       registrationIsLoading,
       changeSettingsIsLoading,
@@ -238,6 +262,7 @@ export const usePlayerMutations = () => {
       removingShipIsLoading,
       creatingCrewMemberIsLoading,
       removingCrewMemberIsLoading,
+      travelIsLoading,
     ]
   )
 
@@ -254,6 +279,8 @@ export const usePlayerMutations = () => {
     creatingCrewMemberIsLoading,
     removeCrewMember,
     removingCrewMemberIsLoading,
+    travel,
+    travelIsLoading,
     isLoading,
   }
 }

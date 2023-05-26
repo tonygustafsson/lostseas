@@ -3,6 +3,7 @@ import Link from "next/link"
 import CrewMembers from "@/components/CrewMembers"
 import DefaultLayout from "@/components/layouts/default"
 import Ships from "@/components/Ships"
+import Travel from "@/components/Travel"
 import Button from "@/components/ui/Button"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
@@ -21,6 +22,10 @@ const Home = () => {
             You are {player?.character.name} and are a {player?.character.age}{" "}
             year old {player?.character.gender.toLowerCase()}.
           </p>
+
+          <div className="mt-4">
+            <Travel />
+          </div>
 
           <Ships />
           <CrewMembers />

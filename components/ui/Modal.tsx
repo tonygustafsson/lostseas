@@ -9,7 +9,10 @@ const Modal = ({ isOpen, title, onClose, children }: Props) => {
   if (!isOpen) return null
 
   return (
-    <dialog open={isOpen} className="bg-black border-white border rounded pt-0">
+    <dialog
+      open={isOpen}
+      className="bg-black border-white border rounded pt-0 max-w-3xl w-full"
+    >
       <div className="flex items-center justify-between">
         {title && <h1 className="text-white">{title}</h1>}
 
