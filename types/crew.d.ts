@@ -2,7 +2,7 @@ type CrewMember = {
   id: string
   name: string
   age: number
-  gender: "male" | "female"
+  gender: "Male" | "Female"
   createdDate: number
 }
 

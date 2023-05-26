@@ -14,9 +14,9 @@ const createCrewMember = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const crewMemberId = crypto.randomUUID()
   const createdDate = new Date().getTime()
-  const gender = Math.random() > 0.25 ? "male" : "female"
+  const gender = Math.random() > 0.25 ? "Male" : "Female"
   const name = `${
-    gender === "male" ? getEnglishMaleName() : getEnglishFemaleName()
+    gender === "Male" ? getEnglishMaleName() : getEnglishFemaleName()
   } ${getEnglishSurname()}`
   const age = Math.floor(Math.random() * (70 - 14 + 1) + 14)
 
