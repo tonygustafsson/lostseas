@@ -7,6 +7,11 @@ type Player = {
   createdDate: number
 }
 
-type CreatePlayerServerRequest = Omit<Player, "id" | "ships">
+type CreatePlayerServerRequest = Omit<Player, "id" | "ships" | "crewMembers">
 
-type CreatePlayerClientRequest = Omit<Player, "id" | "createdDate" | "ships">
+type CreatePlayerClientRequest = Omit<
+  Player,
+  "id" | "createdDate" | "ships" | "crewMembers"
+>
+
+type UpdatePlayerClientRequest = Partial<CreatePlayerClientRequest>

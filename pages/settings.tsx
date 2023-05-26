@@ -1,4 +1,3 @@
-import { useRouter } from "next/router"
 import { useQRCode } from "next-qrcode"
 import { useState } from "react"
 
@@ -6,14 +5,13 @@ import CenteredLayout from "@/components/layouts/centered"
 import Button from "@/components/ui/Button"
 import Select from "@/components/ui/Select"
 import TextField from "@/components/ui/TextField"
-import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { useGetPlayer, usePlayerMutations } from "@/hooks/queries/usePlayer"
 
 const Settings = () => {
-  const router = useRouter()
   const { data: player } = useGetPlayer()
+  const { changeSettings } = usePlayerMutations()
   const { SVG } = useQRCode()
 
-  const [error, setError] = useState<string | null>(null)
   const [characterGender, setCharacterGender] = useState<"Male" | "Female">(
     player?.character.gender || "Male"
   )
@@ -21,21 +19,9 @@ const Settings = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
-    const json = JSON.stringify(Object.fromEntries(formData.entries()))
+    const data = Object.fromEntries(formData.entries())
 
-    try {
-      await fetch("/api/user/settings", {
-        method: "POST",
-        body: json,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-
-      router.push("/")
-    } catch (error: any) {
-      setError(error.message)
-    }
+    changeSettings(data)
   }
 
   if (!player) {
@@ -96,8 +82,6 @@ const Settings = () => {
           min={15}
           max={80}
         />
-
-        {error && <p className="text-red-500">{error}</p>}
 
         <Button type="submit" className="mt-4">
           Save

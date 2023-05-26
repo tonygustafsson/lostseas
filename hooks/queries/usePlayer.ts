@@ -109,7 +109,7 @@ const handleRemoveCrewMember = async ({
   return response
 }
 
-const handleChangeSettings = async (userData: CreatePlayerClientRequest) => {
+const handleChangeSettings = async (userData: UpdatePlayerClientRequest) => {
   const userId = window.localStorage.getItem(LOCAL_STORAGE_PLAYER_ID_KEY)
 
   const data = await fetch("/api/user/settings", {
@@ -162,7 +162,7 @@ export const usePlayerMutations = () => {
 
   const { mutate: changeSettings, isLoading: changeSettingsIsLoading } =
     useMutation(
-      (userData: CreatePlayerClientRequest) => handleChangeSettings(userData),
+      (userData: UpdatePlayerClientRequest) => handleChangeSettings(userData),
       {
         onSuccess: () => {
           queryClient.invalidateQueries([PLAYER_QUERY_KEY])
