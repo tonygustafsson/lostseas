@@ -13,7 +13,9 @@ const Home = () => {
     <DefaultLayout>
       {player && (
         <>
-          <h1 className="font-serif text-4xl mb-4">Havanas tavern</h1>
+          <h1 className="font-serif text-4xl mb-4">
+            {player?.character.town}s tavern
+          </h1>
 
           <p>
             You are {player?.character.name} and are a {player?.character.age}{" "}

@@ -2,11 +2,13 @@ import crypto from "crypto"
 import { ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
+import { TOWNS } from "@/constants/towns"
 import db from "@/firebase/db"
 
 const register = async (req: NextApiRequest, res: NextApiResponse) => {
   const userId = crypto.randomUUID()
   const createdDate = new Date().getTime()
+  const startingTown = TOWNS[Math.floor(Math.random() * TOWNS.length)]
 
   const requestJson: CreatePlayerServerRequest = {
     user: {
@@ -16,6 +18,7 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
       name: req.body.character_name,
       gender: req.body.character_gender,
       age: parseInt(req.body.character_age),
+      town: startingTown,
     },
     createdDate,
   }
