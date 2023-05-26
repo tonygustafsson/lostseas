@@ -3,6 +3,8 @@ import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import db from "@/firebase/db"
+import getEnglishMaleName from "@/utils/getEnglishMaleName"
+import getEnglishSurname from "@/utils/getEnglishSurname"
 
 const createCrewMember = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
@@ -10,7 +12,7 @@ const createCrewMember = async (req: NextApiRequest, res: NextApiResponse) => {
   const crewMemberId = crypto.randomUUID()
   const createdDate = new Date().getTime()
   const userId = req.body.userId
-  const name = "Sigfrid"
+  const name = `${getEnglishMaleName()} ${getEnglishSurname()}`
   const gender = "male"
   const age = 32
 
