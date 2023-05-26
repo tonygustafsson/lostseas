@@ -4,7 +4,7 @@ import CenteredLayout from "@/components/layouts/centered"
 import Button from "@/components/ui/Button"
 import Select from "@/components/ui/Select"
 import TextField from "@/components/ui/TextField"
-import { usePlayerMutations } from "@/hooks/queries/useUser"
+import { usePlayerMutations } from "@/hooks/queries/usePlayer"
 
 const Register = () => {
   const { register } = usePlayerMutations()

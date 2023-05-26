@@ -1,7 +1,7 @@
 import { FormEvent } from "react"
 
 import Button from "@/components/ui/Button"
-import { useGetPlayer, usePlayerMutations } from "@/hooks/queries/useUser"
+import { useGetPlayer, usePlayerMutations } from "@/hooks/queries/usePlayer"
 
 import Table from "./ui/Table"
 import TextField from "./ui/TextField"

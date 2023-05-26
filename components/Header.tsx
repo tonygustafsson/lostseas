@@ -1,6 +1,7 @@
 import Link from "next/link"
 
-import { useGetPlayer } from "@/hooks/queries/useUser"
+import { LOCAL_STORAGE_PLAYER_ID_KEY } from "@/constants/system"
+import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Button from "./ui/Button"
 
@@ -8,7 +9,7 @@ const Header = () => {
   const { data: player } = useGetPlayer()
 
   const signOut = () => {
-    window.localStorage.removeItem("userId")
+    window.localStorage.removeItem(LOCAL_STORAGE_PLAYER_ID_KEY)
     window.location.href = "/"
   }
 

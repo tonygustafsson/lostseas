@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react"
 
 import Button from "@/components/ui/Button"
-import { useGetPlayer, usePlayerMutations } from "@/hooks/queries/useUser"
+import { useGetPlayer, usePlayerMutations } from "@/hooks/queries/usePlayer"
 
 import Select from "./ui/Select"
 import Table from "./ui/Table"

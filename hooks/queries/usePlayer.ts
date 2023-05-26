@@ -2,14 +2,18 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/router"
 import { useMemo } from "react"
 
-const fetchUser = async () => {
-  const userId = window.localStorage.getItem("userId")
+import { LOCAL_STORAGE_PLAYER_ID_KEY } from "@/constants/system"
+
+const PLAYER_QUERY_KEY = "player"
+
+const fetchPlayer = async () => {
+  const userId = window.localStorage.getItem(LOCAL_STORAGE_PLAYER_ID_KEY)
 
   try {
     const res = await fetch(`/api/user/get/${userId}`)
 
     if (res.status !== 200) {
-      window.localStorage.removeItem("userId")
+      window.localStorage.removeItem(LOCAL_STORAGE_PLAYER_ID_KEY)
       window.location.href = "/"
       return null
     }
@@ -106,7 +110,7 @@ const handleRemoveCrewMember = async ({
 }
 
 const handleChangeSettings = async (userData: CreatePlayerClientRequest) => {
-  const userId = window.localStorage.getItem("userId")
+  const userId = window.localStorage.getItem(LOCAL_STORAGE_PLAYER_ID_KEY)
 
   const data = await fetch("/api/user/settings", {
     method: "POST",
@@ -126,11 +130,17 @@ const handleChangeSettings = async (userData: CreatePlayerClientRequest) => {
 }
 
 export const useGetPlayer = () =>
-  useQuery(["user"], fetchUser, {
+  useQuery([PLAYER_QUERY_KEY], fetchPlayer, {
     enabled:
-      typeof window !== "undefined" && !!window.localStorage.getItem("userId"),
+      typeof window !== "undefined" &&
+      !!window.localStorage.getItem(LOCAL_STORAGE_PLAYER_ID_KEY),
     select: (user) =>
-      user ? { ...user, id: window.localStorage.getItem("userId") } : null,
+      user
+        ? {
+            ...user,
+            id: window.localStorage.getItem(LOCAL_STORAGE_PLAYER_ID_KEY),
+          }
+        : null,
   })
 
 export const usePlayerMutations = () => {
@@ -141,9 +151,9 @@ export const usePlayerMutations = () => {
     (userData: CreatePlayerClientRequest) => handleRegisterUser(userData),
     {
       onSuccess: (userId: string) => {
-        window.localStorage.setItem("userId", userId)
+        window.localStorage.setItem(LOCAL_STORAGE_PLAYER_ID_KEY, userId)
 
-        queryClient.invalidateQueries(["user"])
+        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
         router.push("/")
       },
       onError: (error) => console.error(error),
@@ -155,7 +165,7 @@ export const usePlayerMutations = () => {
       (userData: CreatePlayerClientRequest) => handleChangeSettings(userData),
       {
         onSuccess: () => {
-          queryClient.invalidateQueries(["user"])
+          queryClient.invalidateQueries([PLAYER_QUERY_KEY])
           router.push("/")
         },
         onError: (error) => console.error(error),
@@ -167,7 +177,7 @@ export const usePlayerMutations = () => {
       handleCreateShip(shipData),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["user"])
+        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
       },
       onError: (error) => console.error(error),
     }
@@ -178,7 +188,7 @@ export const usePlayerMutations = () => {
       handleRemoveShip({ userId, shipId }),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["user"])
+        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
       },
       onError: (error) => console.error(error),
     }
@@ -190,7 +200,7 @@ export const usePlayerMutations = () => {
         handleCreateCrewMember(crewData),
       {
         onSuccess: () => {
-          queryClient.invalidateQueries(["user"])
+          queryClient.invalidateQueries([PLAYER_QUERY_KEY])
         },
         onError: (error) => console.error(error),
       }
@@ -207,7 +217,7 @@ export const usePlayerMutations = () => {
       }) => handleRemoveCrewMember({ userId, crewMemberId }),
       {
         onSuccess: () => {
-          queryClient.invalidateQueries(["user"])
+          queryClient.invalidateQueries([PLAYER_QUERY_KEY])
         },
         onError: (error) => console.error(error),
       }

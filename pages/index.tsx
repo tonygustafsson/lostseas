@@ -4,7 +4,7 @@ import CrewMembers from "@/components/CrewMembers"
 import DefaultLayout from "@/components/layouts/default"
 import Ships from "@/components/Ships"
 import Button from "@/components/ui/Button"
-import { useGetPlayer } from "@/hooks/queries/useUser"
+import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 const Home = () => {
   const { data: player } = useGetPlayer()

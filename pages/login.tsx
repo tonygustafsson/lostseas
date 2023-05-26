@@ -6,6 +6,7 @@ import CenteredLayout from "@/components/layouts/centered"
 import Button from "@/components/ui/Button"
 import Modal from "@/components/ui/Modal"
 import TextField from "@/components/ui/TextField"
+import { LOCAL_STORAGE_PLAYER_ID_KEY } from "@/constants/system"
 
 const Login = () => {
   const router = useRouter()
@@ -20,7 +21,10 @@ const Login = () => {
     const formData = new FormData(e.currentTarget)
     const userId = formData.get("userId")
 
-    window.localStorage.setItem("userId", userId?.toString() || "")
+    window.localStorage.setItem(
+      LOCAL_STORAGE_PLAYER_ID_KEY,
+      userId?.toString() || ""
+    )
     router.push("/")
   }
 
@@ -32,7 +36,7 @@ const Login = () => {
         restoreUserIdVideoRef.current,
         (result) => {
           const userId = result.data
-          window.localStorage.setItem("userId", userId)
+          window.localStorage.setItem(LOCAL_STORAGE_PLAYER_ID_KEY, userId)
           router.push("/")
         },
         {}

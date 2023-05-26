@@ -6,7 +6,7 @@ import CenteredLayout from "@/components/layouts/centered"
 import Button from "@/components/ui/Button"
 import Select from "@/components/ui/Select"
 import TextField from "@/components/ui/TextField"
-import { useGetPlayer } from "@/hooks/queries/useUser"
+import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 const Settings = () => {
   const router = useRouter()

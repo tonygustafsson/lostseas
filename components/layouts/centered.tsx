@@ -1,5 +1,5 @@
 import pacifico from "@/font-pacifico"
-import { useGetPlayer } from "@/hooks/queries/useUser"
+import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Header from "../Header"
 import Spinner from "../Spinner"
