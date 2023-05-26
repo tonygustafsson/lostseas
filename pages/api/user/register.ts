@@ -8,10 +8,15 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
   const userId = crypto.randomUUID()
   const createdDate = new Date().getTime()
 
-  const requestJson: CreateUserServerRequest = {
-    name: req.body.name,
-    characterName: req.body.characterName,
-    characterAge: parseInt(req.body.characterAge),
+  const requestJson: CreatePlayerServerRequest = {
+    user: {
+      name: req.body.user_name,
+    },
+    character: {
+      name: req.body.character_name,
+      gender: req.body.character_gender,
+      age: parseInt(req.body.character_age),
+    },
     createdDate,
   }
 

@@ -1,15 +1,22 @@
+import { useState } from "react"
+
 import CenteredLayout from "@/components/layouts/centered"
 import Button from "@/components/ui/Button"
+import Select from "@/components/ui/Select"
 import TextField from "@/components/ui/TextField"
-import { useUserMutations } from "@/hooks/queries/useUser"
+import { usePlayerMutations } from "@/hooks/queries/useUser"
 
 const Register = () => {
-  const { register } = useUserMutations()
+  const { register } = usePlayerMutations()
+
+  const [characterGender, setCharacterGender] = useState("Male")
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
-    const inputData = Object.fromEntries(formData.entries()) as unknown as User
+    const inputData = Object.fromEntries(
+      formData.entries()
+    ) as unknown as Player
 
     register(inputData)
   }
@@ -24,17 +31,27 @@ const Register = () => {
       >
         <h2 className="font-serif text-2xl">Player</h2>
 
-        <TextField id="name" name="name" label="Name" autoFocus />
+        <TextField id="user_name" name="user_name" label="Name" autoFocus />
 
         <h2 className="font-serif text-2xl mt-8">Character</h2>
 
-        <TextField id="characterName" name="characterName" label="Name" />
+        <TextField id="character_name" name="character_name" label="Name" />
+
+        <Select
+          label="Gender"
+          name="character_gender"
+          id="character_gender"
+          value={characterGender}
+          options={["Male", "Female"]}
+          onChange={(e) => setCharacterGender(e.target.value)}
+        />
+
         <TextField
           type="number"
           min={15}
           max={80}
-          id="characterAge"
-          name="characterAge"
+          id="character_age"
+          name="character_age"
           label="Age"
         />
 

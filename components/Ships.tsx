@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react"
 
 import Button from "@/components/ui/Button"
-import { useGetUser, useUserMutations } from "@/hooks/queries/useUser"
+import { useGetPlayer, usePlayerMutations } from "@/hooks/queries/useUser"
 
 import Select from "./ui/Select"
 import Table from "./ui/Table"
@@ -14,8 +14,8 @@ enum ShipType {
 }
 
 const Ships = () => {
-  const { data: user } = useGetUser()
-  const { createShip, removeShip } = useUserMutations()
+  const { data: player } = useGetPlayer()
+  const { createShip, removeShip } = usePlayerMutations()
 
   const [shipType, setShipType] = useState(ShipType.FRIGATE)
 
@@ -23,7 +23,7 @@ const Ships = () => {
     e.preventDefault()
 
     const shipData = {
-      userId: user?.id || "",
+      userId: player?.id || "",
       type: shipType,
     }
 
@@ -35,18 +35,18 @@ const Ships = () => {
   const handleRemoveShip = async (id: string) => {
     if (!id) return
 
-    removeShip({ shipId: id, userId: user?.id || "" })
+    removeShip({ shipId: id, userId: player?.id || "" })
   }
 
   return (
     <>
-      {!!Object.values(user?.ships || [])?.length && (
+      {!!Object.values(player?.ships || [])?.length && (
         <>
           <h3 className="text-xl text mt-8 mb-2">Ships</h3>
 
           <Table
             headings={["Name", "Type", "Created", ""]}
-            rows={Object.values(user?.ships || []).map((ship, idx) => [
+            rows={Object.values(player?.ships || []).map((ship, idx) => [
               ship.name,
               ship.type,
               `${new Date(ship.createdDate).toLocaleDateString()} ${new Date(
@@ -73,7 +73,7 @@ const Ships = () => {
           type="hidden"
           name="userId"
           id="userId"
-          value={user?.id || ""}
+          value={player?.id || ""}
         />
 
         <Select
@@ -82,7 +82,7 @@ const Ships = () => {
           id="ship_type"
           value={shipType}
           options={Object.values(ShipType)}
-          onChange={setShipType}
+          onChange={(e) => setShipType(e.target.value)}
         />
 
         <Button type="submit" size="sm" className="mt-7">

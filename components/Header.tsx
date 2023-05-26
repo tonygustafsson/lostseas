@@ -1,11 +1,11 @@
 import Link from "next/link"
 
-import { useGetUser } from "@/hooks/queries/useUser"
+import { useGetPlayer } from "@/hooks/queries/useUser"
 
 import Button from "./ui/Button"
 
 const Header = () => {
-  const { data: user } = useGetUser()
+  const { data: player } = useGetPlayer()
 
   const signOut = () => {
     window.localStorage.removeItem("userId")
@@ -18,9 +18,9 @@ const Header = () => {
         <span className="text-5xl font-medium -mt-2">☠</span> Lost Seas
       </Link>
 
-      {user ? (
+      {player ? (
         <div className="flex gap-4 items-center align-middle">
-          <p className="text-sm">Signed in as {user?.name}</p>
+          <p className="text-sm">Signed in as {player?.user.name}</p>
 
           <Link href="/settings">
             <Button size="lg">Settings</Button>

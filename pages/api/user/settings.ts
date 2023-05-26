@@ -7,10 +7,16 @@ const settings = async (req: NextApiRequest, res: NextApiResponse) => {
   const userId = req.body.userId
 
   const updates = {
-    name: req.body.name,
-    characterName: req.body.characterName,
-    characterAge: parseInt(req.body.characterAge),
-  } as Record<User["id"], Partial<User>>
+    user: {
+      name: req.body.user_name,
+    },
+    character: {
+      name: req.body.character_name,
+      gender: req.body.character_gender,
+      age: parseInt(req.body.character_age),
+    },
+  } as Record<Player["id"], Partial<Player>>
+
   await update(ref(db, userId), updates)
 
   res.status(200).json(userId)

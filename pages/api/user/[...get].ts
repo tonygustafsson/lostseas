@@ -35,7 +35,7 @@ const getUser = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
   const data = await get(child(dbRef, userId))
 
-  const result = data.val() as User
+  const result = data.val() as Player
 
   if (!result) {
     res.status(404).json({ message: "No user found" })

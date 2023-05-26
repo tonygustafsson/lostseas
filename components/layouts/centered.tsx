@@ -1,5 +1,5 @@
 import pacifico from "@/font-pacifico"
-import { useGetUser } from "@/hooks/queries/useUser"
+import { useGetPlayer } from "@/hooks/queries/useUser"
 
 import Header from "../Header"
 import Spinner from "../Spinner"
@@ -9,7 +9,7 @@ export default function CenteredLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { isLoading, isStale } = useGetUser()
+  const { isLoading, isStale } = useGetPlayer()
 
   return (
     <>

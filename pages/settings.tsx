@@ -4,15 +4,19 @@ import { useState } from "react"
 
 import CenteredLayout from "@/components/layouts/centered"
 import Button from "@/components/ui/Button"
+import Select from "@/components/ui/Select"
 import TextField from "@/components/ui/TextField"
-import { useGetUser } from "@/hooks/queries/useUser"
+import { useGetPlayer } from "@/hooks/queries/useUser"
 
 const Settings = () => {
   const router = useRouter()
-  const { data: user } = useGetUser()
+  const { data: player } = useGetPlayer()
   const { SVG } = useQRCode()
 
   const [error, setError] = useState<string | null>(null)
+  const [characterGender, setCharacterGender] = useState<"Male" | "Female">(
+    player?.character.gender || "Male"
+  )
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -34,7 +38,7 @@ const Settings = () => {
     }
   }
 
-  if (!user) {
+  if (!player) {
     return <p>Access denied</p>
   }
 
@@ -42,7 +46,9 @@ const Settings = () => {
     <CenteredLayout>
       <h1 className="font-serif text-4xl mb-8">Settings</h1>
 
-      <p>Account created: {new Date(user?.createdDate).toLocaleDateString()}</p>
+      <p>
+        Account created: {new Date(player?.createdDate).toLocaleDateString()}
+      </p>
 
       <form
         onSubmit={handleSubmit}
@@ -50,30 +56,43 @@ const Settings = () => {
       >
         <h2 className="font-serif text-2xl">Player</h2>
 
-        <TextField type="hidden" name="userId" defaultValue={user?.id || ""} />
+        <TextField
+          type="hidden"
+          name="userId"
+          defaultValue={player?.id || ""}
+        />
 
         <TextField
           label="Name"
-          id="name"
-          name="name"
-          defaultValue={user?.name || ""}
+          id="user_name"
+          name="user_name"
+          defaultValue={player.user?.name || ""}
         />
 
         <h2 className="font-serif text-2xl mt-8">Character</h2>
 
         <TextField
           label="Name"
-          id="characterName"
-          name="characterName"
-          defaultValue={user?.characterName || ""}
+          id="character_name"
+          name="character_name"
+          defaultValue={player?.character.name || ""}
+        />
+
+        <Select
+          label="Gender"
+          name="character_gender"
+          id="character_gender"
+          value={characterGender}
+          onChange={(e) => setCharacterGender(e.target.value)}
+          options={["Male", "Female"]}
         />
 
         <TextField
           label="Age"
-          id="characterAge"
-          name="characterAge"
+          id="character_age"
+          name="character_age"
           type="number"
-          defaultValue={String(user?.characterAge) || ""}
+          defaultValue={String(player?.character.age) || ""}
           min={15}
           max={80}
         />
@@ -94,7 +113,7 @@ const Settings = () => {
         </p>
 
         <SVG
-          text={user?.id || ""}
+          text={player?.id || ""}
           options={{
             margin: 2,
             width: 300,

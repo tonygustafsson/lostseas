@@ -14,7 +14,7 @@ const fetchUser = async () => {
       return null
     }
 
-    const data = (await res.json()) as User
+    const data = (await res.json()) as Player
     return data
   } catch (error) {
     console.error(error)
@@ -22,7 +22,7 @@ const fetchUser = async () => {
   }
 }
 
-const handleRegisterUser = async (userData: CreateUserClientRequest) => {
+const handleRegisterUser = async (userData: CreatePlayerClientRequest) => {
   const data = await fetch("/api/user/register", {
     method: "POST",
     body: JSON.stringify(userData),
@@ -36,7 +36,7 @@ const handleRegisterUser = async (userData: CreateUserClientRequest) => {
 }
 
 const handleCreateShip = async (
-  shipData: CreateShipClientRequest & { userId: User["id"] }
+  shipData: CreateShipClientRequest & { userId: Player["id"] }
 ) => {
   const data = await fetch("/api/ship/create", {
     method: "PUT",
@@ -55,7 +55,7 @@ const handleRemoveShip = async ({
   shipId,
 }: {
   shipId: Ship["id"]
-  userId: User["id"]
+  userId: Player["id"]
 }) => {
   const url = `/api/ship/remove/${userId}/${shipId}`
 
@@ -90,7 +90,7 @@ const handleRemoveCrewMember = async ({
   crewMemberId,
 }: {
   crewMemberId: CrewMember["id"]
-  userId: User["id"]
+  userId: Player["id"]
 }) => {
   const url = `/api/crewMembers/remove/${userId}/${crewMemberId}`
 
@@ -105,7 +105,7 @@ const handleRemoveCrewMember = async ({
   return response
 }
 
-const handleChangeSettings = async (userData: CreateUserClientRequest) => {
+const handleChangeSettings = async (userData: CreatePlayerClientRequest) => {
   const userId = window.localStorage.getItem("userId")
 
   const data = await fetch("/api/user/settings", {
@@ -125,7 +125,7 @@ const handleChangeSettings = async (userData: CreateUserClientRequest) => {
   return json
 }
 
-export const useGetUser = () =>
+export const useGetPlayer = () =>
   useQuery(["user"], fetchUser, {
     enabled:
       typeof window !== "undefined" && !!window.localStorage.getItem("userId"),
@@ -133,12 +133,12 @@ export const useGetUser = () =>
       user ? { ...user, id: window.localStorage.getItem("userId") } : null,
   })
 
-export const useUserMutations = () => {
+export const usePlayerMutations = () => {
   const queryClient = useQueryClient()
   const router = useRouter()
 
   const { mutate: register, isLoading: registrationIsLoading } = useMutation(
-    (userData: CreateUserClientRequest) => handleRegisterUser(userData),
+    (userData: CreatePlayerClientRequest) => handleRegisterUser(userData),
     {
       onSuccess: (userId: string) => {
         window.localStorage.setItem("userId", userId)
@@ -152,7 +152,7 @@ export const useUserMutations = () => {
 
   const { mutate: changeSettings, isLoading: changeSettingsIsLoading } =
     useMutation(
-      (userData: CreateUserClientRequest) => handleChangeSettings(userData),
+      (userData: CreatePlayerClientRequest) => handleChangeSettings(userData),
       {
         onSuccess: () => {
           queryClient.invalidateQueries(["user"])
@@ -163,7 +163,7 @@ export const useUserMutations = () => {
     )
 
   const { mutate: createShip, isLoading: creatingShipIsLoading } = useMutation(
-    (shipData: CreateShipClientRequest & { userId: User["id"] }) =>
+    (shipData: CreateShipClientRequest & { userId: Player["id"] }) =>
       handleCreateShip(shipData),
     {
       onSuccess: () => {
@@ -174,7 +174,7 @@ export const useUserMutations = () => {
   )
 
   const { mutate: removeShip, isLoading: removingShipIsLoading } = useMutation(
-    ({ userId, shipId }: { shipId: Ship["id"]; userId: User["id"] }) =>
+    ({ userId, shipId }: { shipId: Ship["id"]; userId: Player["id"] }) =>
       handleRemoveShip({ userId, shipId }),
     {
       onSuccess: () => {
@@ -203,7 +203,7 @@ export const useUserMutations = () => {
         crewMemberId,
       }: {
         crewMemberId: CrewMember["id"]
-        userId: User["id"]
+        userId: Player["id"]
       }) => handleRemoveCrewMember({ userId, crewMemberId }),
       {
         onSuccess: () => {

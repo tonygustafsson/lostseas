@@ -1,20 +1,20 @@
 import { FormEvent } from "react"
 
 import Button from "@/components/ui/Button"
-import { useGetUser, useUserMutations } from "@/hooks/queries/useUser"
+import { useGetPlayer, usePlayerMutations } from "@/hooks/queries/useUser"
 
 import Table from "./ui/Table"
 import TextField from "./ui/TextField"
 
 const CrewMembers = () => {
-  const { data: user } = useGetUser()
-  const { createCrewMember, removeCrewMember } = useUserMutations()
+  const { data: player } = useGetPlayer()
+  const { createCrewMember, removeCrewMember } = usePlayerMutations()
 
   const handleCreateCrewMember = async (e: FormEvent) => {
     e.preventDefault()
 
     const crewData: CreateCrewMemberClientRequest = {
-      userId: user?.id || "",
+      userId: player?.id || "",
     }
 
     createCrewMember(crewData)
@@ -23,18 +23,18 @@ const CrewMembers = () => {
   const handleRemoveCrewMember = async (id: string) => {
     if (!id) return
 
-    removeCrewMember({ crewMemberId: id, userId: user?.id || "" })
+    removeCrewMember({ crewMemberId: id, userId: player?.id || "" })
   }
 
   return (
     <>
-      {!!Object.values(user?.crewMembers || [])?.length && (
+      {!!Object.values(player?.crewMembers || [])?.length && (
         <>
           <h3 className="text-xl text mt-8 mb-2">Crew members</h3>
 
           <Table
             headings={["Name", "Age", "Gender", "Created", ""]}
-            rows={Object.values(user?.crewMembers || []).map(
+            rows={Object.values(player?.crewMembers || []).map(
               (crewMember, idx) => [
                 crewMember.name,
                 crewMember.age,
@@ -66,7 +66,7 @@ const CrewMembers = () => {
           type="hidden"
           name="userId"
           id="userId"
-          value={user?.id || ""}
+          value={player?.id || ""}
         />
 
         <Button type="submit" size="sm" className="mt-7">
