@@ -4,6 +4,7 @@ type User = {
   id: string
   name: string
   ships?: Record<string, Ship>
+  crewMembers?: Record<string, CrewMember>
   createdDate: number
 }
 

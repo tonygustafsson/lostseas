@@ -70,6 +70,41 @@ const handleRemoveShip = async ({
   return response
 }
 
+const handleCreateCrewMember = async (
+  crewData: CreateCrewMemberClientRequest
+) => {
+  const data = await fetch("/api/crewMembers/create", {
+    method: "PUT",
+    body: JSON.stringify(crewData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  const crewMemberId = await data.json()
+
+  return crewMemberId
+}
+
+const handleRemoveCrewMember = async ({
+  userId,
+  crewMemberId,
+}: {
+  crewMemberId: CrewMember["id"]
+  userId: User["id"]
+}) => {
+  const url = `/api/crewMembers/remove/${userId}/${crewMemberId}`
+
+  const data = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  const response = await data.json()
+
+  return response
+}
+
 const handleChangeSettings = async (userData: CreateUserClientRequest) => {
   const userId = window.localStorage.getItem("userId")
 
@@ -149,17 +184,50 @@ export const useUserMutations = () => {
     }
   )
 
+  const { mutate: createCrewMember, isLoading: creatingCrewMemberIsLoading } =
+    useMutation(
+      (crewData: CreateCrewMemberClientRequest) =>
+        handleCreateCrewMember(crewData),
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries(["user"])
+        },
+        onError: (error) => console.error(error),
+      }
+    )
+
+  const { mutate: removeCrewMember, isLoading: removingCrewMemberIsLoading } =
+    useMutation(
+      ({
+        userId,
+        crewMemberId,
+      }: {
+        crewMemberId: CrewMember["id"]
+        userId: User["id"]
+      }) => handleRemoveCrewMember({ userId, crewMemberId }),
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries(["user"])
+        },
+        onError: (error) => console.error(error),
+      }
+    )
+
   const isLoading = useMemo(
     () =>
       registrationIsLoading ||
       changeSettingsIsLoading ||
       creatingShipIsLoading ||
-      removingShipIsLoading,
+      removingShipIsLoading ||
+      creatingCrewMemberIsLoading ||
+      removingCrewMemberIsLoading,
     [
       registrationIsLoading,
       changeSettingsIsLoading,
       creatingShipIsLoading,
       removingShipIsLoading,
+      creatingCrewMemberIsLoading,
+      removingCrewMemberIsLoading,
     ]
   )
 
@@ -172,6 +240,10 @@ export const useUserMutations = () => {
     creatingShipIsLoading,
     removeShip,
     removingShipIsLoading,
+    createCrewMember,
+    creatingCrewMemberIsLoading,
+    removeCrewMember,
+    removingCrewMemberIsLoading,
     isLoading,
   }
 }

@@ -1,5 +1,6 @@
 import Link from "next/link"
 
+import CrewMembers from "@/components/CrewMembers"
 import DefaultLayout from "@/components/layouts/default"
 import Ships from "@/components/Ships"
 import Button from "@/components/ui/Button"
@@ -20,6 +21,7 @@ const Home = () => {
           </p>
 
           <Ships />
+          <CrewMembers />
         </>
       )}
 
