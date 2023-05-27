@@ -8,7 +8,7 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import Modal from "./ui/Modal"
 
 const Travel = () => {
-  const { travel } = useCharacter()
+  const { travel, isTraveling } = useCharacter()
   const { data: player } = useGetPlayer()
 
   const [travelModalIsOpen, setTravelModalIsOpen] = useState(false)
@@ -20,7 +20,11 @@ const Travel = () => {
 
   return (
     <>
-      <Button size="lg" onClick={() => setTravelModalIsOpen(true)}>
+      <Button
+        size="lg"
+        onClick={() => setTravelModalIsOpen(true)}
+        disabled={isTraveling}
+      >
         Travel
       </Button>
 

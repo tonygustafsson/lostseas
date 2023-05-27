@@ -9,7 +9,8 @@ import TextField from "./ui/TextField"
 
 const CrewMembers = () => {
   const { data: player } = useGetPlayer()
-  const { create, remove } = useCrewMembers()
+  const { create, creatingIsLoading, remove, removingIsLoading } =
+    useCrewMembers()
 
   const handleCreateCrewMember = async (e: FormEvent) => {
     e.preventDefault()
@@ -50,6 +51,7 @@ const CrewMembers = () => {
                   size="sm"
                   className="ml-auto flex"
                   onClick={() => handleRemoveCrewMember(crewMember.id)}
+                  disabled={removingIsLoading}
                 >
                   Delete
                 </Button>,
@@ -70,7 +72,7 @@ const CrewMembers = () => {
           value={player?.id || ""}
         />
 
-        <Button type="submit" className="mt-7">
+        <Button type="submit" className="mt-7" disabled={creatingIsLoading}>
           Create new crew member
         </Button>
       </form>

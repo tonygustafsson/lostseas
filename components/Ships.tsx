@@ -16,7 +16,7 @@ enum ShipType {
 
 const Ships = () => {
   const { data: player } = useGetPlayer()
-  const { create, remove } = useShips()
+  const { create, creatingIsLoading, remove, removingIsLoading } = useShips()
 
   const [shipType, setShipType] = useState(ShipType.FRIGATE)
 
@@ -58,6 +58,7 @@ const Ships = () => {
                 size="sm"
                 className="ml-auto flex"
                 onClick={() => handleRemoveShip(ship.id)}
+                disabled={removingIsLoading}
               >
                 Delete
               </Button>,
@@ -86,7 +87,12 @@ const Ships = () => {
           onChange={(e) => setShipType(e.target.value)}
         />
 
-        <Button type="submit" size="sm" className="mt-7">
+        <Button
+          type="submit"
+          size="sm"
+          className="mt-7"
+          disabled={creatingIsLoading}
+        >
           Create new ship
         </Button>
       </form>

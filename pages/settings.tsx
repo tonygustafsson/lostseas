@@ -9,7 +9,7 @@ import { useGetPlayer, usePlayer } from "@/hooks/queries/usePlayer"
 
 const Settings = () => {
   const { data: player } = useGetPlayer()
-  const { changeSettings } = usePlayer()
+  const { changeSettings, changeSettingsIsLoading } = usePlayer()
   const { SVG } = useQRCode()
 
   const [characterGender, setCharacterGender] = useState<"Male" | "Female">(
@@ -83,7 +83,11 @@ const Settings = () => {
           max={80}
         />
 
-        <Button type="submit" className="mt-4">
+        <Button
+          type="submit"
+          className="mt-4"
+          disabled={changeSettingsIsLoading}
+        >
           Save
         </Button>
       </form>

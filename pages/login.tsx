@@ -25,6 +25,7 @@ const Login = () => {
       LOCAL_STORAGE_PLAYER_ID_KEY,
       userId?.toString() || ""
     )
+
     router.push("/")
   }
 

@@ -7,7 +7,7 @@ import TextField from "@/components/ui/TextField"
 import { usePlayer } from "@/hooks/queries/usePlayer"
 
 const Register = () => {
-  const { register } = usePlayer()
+  const { register, registrationIsLoading } = usePlayer()
 
   const [characterGender, setCharacterGender] = useState("Male")
 
@@ -55,7 +55,7 @@ const Register = () => {
           label="Age"
         />
 
-        <Button type="submit" className="mt-4">
+        <Button type="submit" className="mt-4" disabled={registrationIsLoading}>
           Register
         </Button>
       </form>

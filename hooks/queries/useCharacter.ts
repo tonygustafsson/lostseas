@@ -7,7 +7,7 @@ import { PLAYER_QUERY_KEY } from "./usePlayer"
 export const useCharacter = () => {
   const queryClient = useQueryClient()
 
-  const { mutate: travel, isLoading: travelIsLoading } = useMutation(
+  const { mutate: travel, isLoading: isTraveling } = useMutation(
     (data: { userId: Player["id"]; town: Town }) =>
       apiRequest("/api/character/travel", data, "POST"),
     {
@@ -27,7 +27,7 @@ export const useCharacter = () => {
 
   return {
     travel,
-    travelIsLoading,
+    isTraveling,
     move,
     isMoving,
   }

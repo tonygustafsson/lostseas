@@ -8,7 +8,7 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import Modal from "./ui/Modal"
 
 const Move = () => {
-  const { move } = useCharacter()
+  const { move, isMoving } = useCharacter()
   const { data: player } = useGetPlayer()
 
   const [moveModalIsOpen, setMoveModalIsOpen] = useState(false)
@@ -20,7 +20,11 @@ const Move = () => {
 
   return (
     <>
-      <Button size="lg" onClick={() => setMoveModalIsOpen(true)}>
+      <Button
+        size="lg"
+        onClick={() => setMoveModalIsOpen(true)}
+        disabled={isMoving}
+      >
         Move
       </Button>
 
