@@ -5,11 +5,11 @@ import CenteredLayout from "@/components/layouts/centered"
 import Button from "@/components/ui/Button"
 import Select from "@/components/ui/Select"
 import TextField from "@/components/ui/TextField"
-import { useGetPlayer, usePlayerMutations } from "@/hooks/queries/usePlayer"
+import { useGetPlayer, usePlayer } from "@/hooks/queries/usePlayer"
 
 const Settings = () => {
   const { data: player } = useGetPlayer()
-  const { changeSettings } = usePlayerMutations()
+  const { changeSettings } = usePlayer()
   const { SVG } = useQRCode()
 
   const [characterGender, setCharacterGender] = useState<"Male" | "Female">(

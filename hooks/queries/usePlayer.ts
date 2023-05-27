@@ -42,7 +42,7 @@ export const useGetPlayer = () =>
     }
   )
 
-export const usePlayerMutations = () => {
+export const usePlayer = () => {
   const queryClient = useQueryClient()
   const router = useRouter()
 

@@ -4,10 +4,10 @@ import CenteredLayout from "@/components/layouts/centered"
 import Button from "@/components/ui/Button"
 import Select from "@/components/ui/Select"
 import TextField from "@/components/ui/TextField"
-import { usePlayerMutations } from "@/hooks/queries/usePlayer"
+import { usePlayer } from "@/hooks/queries/usePlayer"
 
 const Register = () => {
-  const { register } = usePlayerMutations()
+  const { register } = usePlayer()
 
   const [characterGender, setCharacterGender] = useState("Male")
 

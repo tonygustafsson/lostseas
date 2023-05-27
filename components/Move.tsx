@@ -2,13 +2,13 @@ import { useState } from "react"
 
 import Button from "@/components/ui/Button"
 import { LOCATIONS } from "@/constants/locations"
-import { useCharacterMutations } from "@/hooks/queries/useCharacter"
+import { useCharacter } from "@/hooks/queries/useCharacter"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Modal from "./ui/Modal"
 
 const Move = () => {
-  const { move } = useCharacterMutations()
+  const { move } = useCharacter()
   const { data: player } = useGetPlayer()
 
   const [moveModalIsOpen, setMoveModalIsOpen] = useState(false)

@@ -4,10 +4,10 @@ import apiRequest from "@/utils/apiRequest"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
 
-export const useShipMutations = () => {
+export const useShips = () => {
   const queryClient = useQueryClient()
 
-  const { mutate: createShip, isLoading: creatingShipIsLoading } = useMutation(
+  const { mutate: create, isLoading: creatingIsLoading } = useMutation(
     (shipData: CreateShipClientRequest & { userId: Player["id"] }) =>
       apiRequest(`/api/ship/create`, shipData, "PUT"),
     {
@@ -16,7 +16,7 @@ export const useShipMutations = () => {
     }
   )
 
-  const { mutate: removeShip, isLoading: removingShipIsLoading } = useMutation(
+  const { mutate: remove, isLoading: removingIsLoading } = useMutation(
     ({ userId, shipId }: { shipId: Ship["id"]; userId: Player["id"] }) =>
       apiRequest(
         `/api/ship/remove/${userId}/${shipId}`,
@@ -30,9 +30,9 @@ export const useShipMutations = () => {
   )
 
   return {
-    createShip,
-    creatingShipIsLoading,
-    removeShip,
-    removingShipIsLoading,
+    create,
+    creatingIsLoading,
+    remove,
+    removingIsLoading,
   }
 }

@@ -1,7 +1,7 @@
 import { FormEvent } from "react"
 
 import Button from "@/components/ui/Button"
-import { useCrewMembersMutations } from "@/hooks/queries/useCrewMembers"
+import { useCrewMembers } from "@/hooks/queries/useCrewMembers"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Table from "./ui/Table"
@@ -9,7 +9,7 @@ import TextField from "./ui/TextField"
 
 const CrewMembers = () => {
   const { data: player } = useGetPlayer()
-  const { createCrewMember, removeCrewMember } = useCrewMembersMutations()
+  const { create, remove } = useCrewMembers()
 
   const handleCreateCrewMember = async (e: FormEvent) => {
     e.preventDefault()
@@ -18,13 +18,13 @@ const CrewMembers = () => {
       userId: player?.id || "",
     }
 
-    createCrewMember(crewData)
+    create(crewData)
   }
 
   const handleRemoveCrewMember = async (id: string) => {
     if (!id) return
 
-    removeCrewMember({ crewMemberId: id, userId: player?.id || "" })
+    remove({ crewMemberId: id, userId: player?.id || "" })
   }
 
   return (

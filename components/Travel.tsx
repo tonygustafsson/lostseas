@@ -2,13 +2,13 @@ import { useState } from "react"
 
 import Button from "@/components/ui/Button"
 import { TOWNS } from "@/constants/locations"
-import { useCharacterMutations } from "@/hooks/queries/useCharacter"
+import { useCharacter } from "@/hooks/queries/useCharacter"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Modal from "./ui/Modal"
 
 const Travel = () => {
-  const { travel } = useCharacterMutations()
+  const { travel } = useCharacter()
   const { data: player } = useGetPlayer()
 
   const [travelModalIsOpen, setTravelModalIsOpen] = useState(false)

@@ -4,7 +4,7 @@ import apiRequest from "@/utils/apiRequest"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
 
-export const useCharacterMutations = () => {
+export const useCharacter = () => {
   const queryClient = useQueryClient()
 
   const { mutate: travel, isLoading: travelIsLoading } = useMutation(

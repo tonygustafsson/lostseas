@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react"
 
 import Button from "@/components/ui/Button"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-import { useShipMutations } from "@/hooks/queries/useShips"
+import { useShips } from "@/hooks/queries/useShips"
 
 import Select from "./ui/Select"
 import Table from "./ui/Table"
@@ -16,7 +16,7 @@ enum ShipType {
 
 const Ships = () => {
   const { data: player } = useGetPlayer()
-  const { createShip, removeShip } = useShipMutations()
+  const { create, remove } = useShips()
 
   const [shipType, setShipType] = useState(ShipType.FRIGATE)
 
@@ -28,7 +28,7 @@ const Ships = () => {
       type: shipType,
     }
 
-    createShip(shipData)
+    create(shipData)
 
     setShipType(ShipType.FRIGATE)
   }
@@ -36,7 +36,7 @@ const Ships = () => {
   const handleRemoveShip = async (id: string) => {
     if (!id) return
 
-    removeShip({ shipId: id, userId: player?.id || "" })
+    remove({ shipId: id, userId: player?.id || "" })
   }
 
   return (
