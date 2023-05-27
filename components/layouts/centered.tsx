@@ -9,7 +9,7 @@ export default function CenteredLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { isLoading, isStale } = useGetPlayer()
+  const { isLoading } = useGetPlayer()
 
   return (
     <>
@@ -21,7 +21,7 @@ export default function CenteredLayout({
         {children}
       </main>
 
-      {isLoading && !isStale && <Spinner />}
+      {isLoading && <Spinner />}
     </>
   )
 }

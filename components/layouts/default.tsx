@@ -9,7 +9,7 @@ export default function DefaultLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { isLoading, isStale } = useGetPlayer()
+  const { isLoading } = useGetPlayer()
 
   return (
     <>
@@ -19,7 +19,7 @@ export default function DefaultLayout({
         {children}
       </main>
 
-      {isLoading && !isStale && <Spinner />}
+      {isLoading && <Spinner />}
     </>
   )
 }
