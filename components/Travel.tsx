@@ -20,11 +20,9 @@ const Travel = () => {
 
   return (
     <>
-      <div className="w-1/2">
-        <Button size="lg" onClick={() => setTravelModalIsOpen(true)}>
-          Travel
-        </Button>
-      </div>
+      <Button size="lg" onClick={() => setTravelModalIsOpen(true)}>
+        Travel
+      </Button>
 
       <Modal
         isOpen={travelModalIsOpen}

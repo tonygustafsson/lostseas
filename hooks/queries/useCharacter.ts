@@ -26,8 +26,34 @@ export const useCharacterMutations = () => {
     }
   )
 
+  const { mutate: move, isLoading: isMoving } = useMutation(
+    async (data: {
+      userId: Player["id"]
+      location: TownLocation | SeaLocation
+    }) => {
+      const inputData = await fetch("/api/character/move", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      const result = await inputData.json()
+
+      return result
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+      },
+      onError: (error) => console.error(error),
+    }
+  )
+
   return {
     travel,
     travelIsLoading,
+    move,
+    isMoving,
   }
 }

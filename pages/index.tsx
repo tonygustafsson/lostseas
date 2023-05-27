@@ -2,6 +2,7 @@ import Link from "next/link"
 
 import CrewMembers from "@/components/CrewMembers"
 import DefaultLayout from "@/components/layouts/default"
+import Move from "@/components/Move"
 import Ships from "@/components/Ships"
 import Travel from "@/components/Travel"
 import Button from "@/components/ui/Button"
@@ -23,7 +24,8 @@ const Home = () => {
             year old {player?.character.gender.toLowerCase()}.
           </p>
 
-          <div className="mt-4">
+          <div className="flex gap-4 mt-4">
+            <Move />
             <Travel />
           </div>
 
