@@ -33,7 +33,9 @@ const createCrewMember = async (req: NextApiRequest, res: NextApiResponse) => {
     ? { ...existingCrewMembers.val(), [crewMemberId]: requestJson }
     : { [crewMemberId]: requestJson }
 
-  await set(ref(db, `${userId}/crewMembers`), result)
+  await set(ref(db, `${userId}/crewMembers`), result).catch((error) => {
+    res.status(500).json({ error })
+  })
 
   res.status(200).json({ success: true })
 }

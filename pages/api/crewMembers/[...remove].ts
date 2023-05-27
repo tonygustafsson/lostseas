@@ -7,7 +7,11 @@ const removeCrewMember = async (req: NextApiRequest, res: NextApiResponse) => {
   const userId = req.url?.split("/")?.[4]
   const crewMemberId = req.url?.split("/")?.[5]
 
-  await remove(ref(db, `${userId}/crewMembers/${crewMemberId}`))
+  await remove(ref(db, `${userId}/crewMembers/${crewMemberId}`)).catch(
+    (error) => {
+      res.status(500).json({ error })
+    }
+  )
 
   res.status(200).json({ success: true })
 }

@@ -25,7 +25,9 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
     createdDate,
   }
 
-  await set(ref(db, userId), requestJson)
+  await set(ref(db, userId), requestJson).catch((error) => {
+    res.status(500).json({ error })
+  })
 
   res.status(200).json(userId)
 }

@@ -23,7 +23,11 @@ const settings = async (req: NextApiRequest, res: NextApiResponse) => {
     age: parseInt(req.body.character_age),
   }
 
-  await update(ref(db, `${userId}/character`), characterUpdate)
+  await update(ref(db, `${userId}/character`), characterUpdate).catch(
+    (error) => {
+      res.status(500).json({ error })
+    }
+  )
 
   res.status(200).json({ success: true })
 }

@@ -25,7 +25,9 @@ const createShip = async (req: NextApiRequest, res: NextApiResponse) => {
     ? { ...existingShips.val(), [shipId]: requestJson }
     : { [shipId]: requestJson }
 
-  await set(ref(db, `${userId}/ships`), result)
+  await set(ref(db, `${userId}/ships`), result).catch((error) => {
+    res.status(500).json({ error })
+  })
 
   res.status(200).json({ success: true })
 }

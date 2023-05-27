@@ -35,6 +35,11 @@ const getUser = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
   const data = await get(child(dbRef, userId))
 
+  if (!data.exists()) {
+    res.status(404).json({ message: "No user found" })
+    return
+  }
+
   const result = data.val() as Player
 
   if (!result) {
