@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/router"
 
 import { LOCAL_STORAGE_PLAYER_ID_KEY } from "@/constants/system"
+import apiRequest from "@/utils/apiRequest"
 
 export const PLAYER_QUERY_KEY = "player"
 
@@ -46,18 +47,8 @@ export const usePlayerMutations = () => {
   const router = useRouter()
 
   const { mutate: register, isLoading: registrationIsLoading } = useMutation(
-    async (userData: CreatePlayerClientRequest) => {
-      const data = await fetch("/api/user/register", {
-        method: "POST",
-        body: JSON.stringify(userData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      const userId = await data.json()
-
-      return userId
-    },
+    (userData: CreatePlayerClientRequest) =>
+      apiRequest("/api/user/register", userData, "PUT"),
     {
       onSuccess: (userId: string) => {
         window.localStorage.setItem(LOCAL_STORAGE_PLAYER_ID_KEY, userId)
@@ -71,25 +62,8 @@ export const usePlayerMutations = () => {
 
   const { mutate: changeSettings, isLoading: changeSettingsIsLoading } =
     useMutation(
-      async (userData: UpdatePlayerClientRequest) => {
-        const userId = window.localStorage.getItem(LOCAL_STORAGE_PLAYER_ID_KEY)
-
-        const data = await fetch("/api/user/settings", {
-          method: "POST",
-          body: JSON.stringify({ userId, ...userData }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-
-        if (data.status !== 200) {
-          throw new Error("User not found")
-        }
-
-        const json = await data.json()
-
-        return json
-      },
+      (userData: UpdatePlayerClientRequest) =>
+        apiRequest("/api/user/settings", userData, "POST"),
       {
         onSuccess: () => {
           queryClient.invalidateQueries([PLAYER_QUERY_KEY])
