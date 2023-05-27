@@ -70,7 +70,7 @@ const CrewMembers = () => {
           value={player?.id || ""}
         />
 
-        <Button type="submit" size="sm" className="mt-7">
+        <Button type="submit" className="mt-7">
           Create new crew member
         </Button>
       </form>

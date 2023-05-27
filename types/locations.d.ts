@@ -15,3 +15,14 @@ type Town =
   | "San Juan"
   | "Havana"
   | "Villa Hermosa"
+
+type TownLocation =
+  | "Bank"
+  | "Tavern"
+  | "Market"
+  | "Shop"
+  | "Shipyard"
+  | "City hall"
+  | "Docks"
+
+type SeaLocation = "Sea" | "Harbor"

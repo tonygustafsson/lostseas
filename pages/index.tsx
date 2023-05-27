@@ -15,7 +15,7 @@ const Home = () => {
       {player && (
         <>
           <h1 className="font-serif text-4xl mb-4">
-            {player?.character.town}s tavern
+            {player?.character.town}s {player?.character.location}
           </h1>
 
           <p>

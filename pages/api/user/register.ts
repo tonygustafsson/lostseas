@@ -2,7 +2,8 @@ import crypto from "crypto"
 import { ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
-import { TOWNS } from "@/constants/towns"
+import { LOCATIONS } from "@/constants/locations"
+import { TOWNS } from "@/constants/locations"
 import db from "@/firebase/db"
 
 const register = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -19,6 +20,7 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
       gender: req.body.character_gender,
       age: parseInt(req.body.character_age),
       town: startingTown,
+      location: LOCATIONS.harbor,
     },
     createdDate,
   }

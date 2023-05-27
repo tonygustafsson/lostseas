@@ -3,4 +3,5 @@ type Character = {
   name: string
   gender: "Male" | "Female"
   town: Town
+  location: TownLocation | SeaLocation
 }
