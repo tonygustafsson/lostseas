@@ -1,5 +1,6 @@
+import { useIsFetching } from "@tanstack/react-query"
+
 import pacifico from "@/font-pacifico"
-import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Header from "../Header"
 import Spinner from "../Spinner"
@@ -9,7 +10,7 @@ export default function CenteredLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { isLoading } = useGetPlayer()
+  const isFetching = useIsFetching()
 
   return (
     <>
@@ -21,7 +22,7 @@ export default function CenteredLayout({
         {children}
       </main>
 
-      {isLoading && <Spinner />}
+      {isFetching && <Spinner />}
     </>
   )
 }
