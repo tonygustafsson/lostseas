@@ -95,6 +95,15 @@ const Settings = () => {
       <div className="w-full flex flex-col gap-4 max-w-md mt-8">
         <h2 className="font-serif text-2xl">Save your game</h2>
 
+        <h3 className="font-serif text-large">By User ID</h3>
+
+        <p>
+          Here is the User ID that you can use for logging in:
+          <pre className="text-green-300">{player?.id}</pre>
+        </p>
+
+        <h3 className="font-serif text-large">By QR code</h3>
+
         <p>
           You can download or photograph the QR code below and login with it
           using a webcam.
