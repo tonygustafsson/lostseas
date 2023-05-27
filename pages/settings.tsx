@@ -97,10 +97,9 @@ const Settings = () => {
 
         <h3 className="font-serif text-large">By User ID</h3>
 
-        <p>
-          Here is the User ID that you can use for logging in:
-          <pre className="text-green-300">{player?.id}</pre>
-        </p>
+        <p>Here is the User ID that you can use for logging in:</p>
+
+        <pre className="text-green-300">{player?.id}</pre>
 
         <h3 className="font-serif text-large">By QR code</h3>
 
