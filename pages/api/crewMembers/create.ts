@@ -35,7 +35,7 @@ const createCrewMember = async (req: NextApiRequest, res: NextApiResponse) => {
 
   await set(ref(db, `${userId}/crewMembers`), result)
 
-  res.status(200).json(userId)
+  res.status(200).json({ success: true })
 }
 
 export default createCrewMember

@@ -25,7 +25,7 @@ const settings = async (req: NextApiRequest, res: NextApiResponse) => {
 
   await update(ref(db, `${userId}/character`), characterUpdate)
 
-  res.status(200).json(userId)
+  res.status(200).json({ success: true })
 }
 
 export default settings

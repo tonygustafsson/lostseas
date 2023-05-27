@@ -9,7 +9,7 @@ const removeCrewMember = async (req: NextApiRequest, res: NextApiResponse) => {
 
   await remove(ref(db, `${userId}/crewMembers/${crewMemberId}`))
 
-  res.status(200).json(crewMemberId)
+  res.status(200).json({ success: true })
 }
 
 export default removeCrewMember
