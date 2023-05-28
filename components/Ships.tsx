@@ -1,6 +1,6 @@
+import { Button } from "@material-tailwind/react"
 import { FormEvent, useState } from "react"
 
-import Button from "@/components/ui/Button"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShips } from "@/hooks/queries/useShips"
 
@@ -87,12 +87,7 @@ const Ships = () => {
           onChange={(e) => setShipType(e.target.value)}
         />
 
-        <Button
-          type="submit"
-          size="sm"
-          className="mt-7"
-          disabled={creatingIsLoading}
-        >
+        <Button type="submit" className="mt-7" disabled={creatingIsLoading}>
           Create new ship
         </Button>
       </form>

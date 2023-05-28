@@ -1,3 +1,4 @@
+import { Button } from "@material-tailwind/react"
 import Link from "next/link"
 
 import CrewMembers from "@/components/CrewMembers"
@@ -5,7 +6,6 @@ import DefaultLayout from "@/components/layouts/default"
 import Move from "@/components/Move"
 import Ships from "@/components/Ships"
 import Travel from "@/components/Travel"
-import Button from "@/components/ui/Button"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 const Home = () => {

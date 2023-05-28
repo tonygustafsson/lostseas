@@ -1,6 +1,6 @@
+import { Button } from "@material-tailwind/react"
 import { useState } from "react"
 
-import Button from "@/components/ui/Button"
 import { LOCATIONS } from "@/constants/locations"
 import { useCharacter } from "@/hooks/queries/useCharacter"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"

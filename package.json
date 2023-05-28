@@ -10,6 +10,7 @@
     "lint:fix": "next lint --fix"
   },
   "dependencies": {
+    "@material-tailwind/react": "^2.0.1",
     "@tanstack/react-query": "^4.29.7",
     "@tanstack/react-query-devtools": "^4.29.7",
     "@types/node": "18.16.2",

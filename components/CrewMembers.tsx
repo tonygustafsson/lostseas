@@ -1,6 +1,6 @@
+import { Button } from "@material-tailwind/react"
 import { FormEvent } from "react"
 
-import Button from "@/components/ui/Button"
 import { useCrewMembers } from "@/hooks/queries/useCrewMembers"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
