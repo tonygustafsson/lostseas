@@ -6,22 +6,21 @@ import db from "@/firebase/db"
 /** Sort items on Server instead of in Firebase because it would require
  * a specific request for ships otherwise.
  */
-const sortByDate = (ships?: Record<string, Ship | CrewMember>) => {
-  const shipArray = Object.values(ships || []) as Ship[] | CrewMember[]
+const sortByDate = <T extends Ship | CrewMember>(items?: Record<string, T>) => {
+  const itemsArray = Object.values(items || []) as T[]
 
-  if (!shipArray.length) {
+  if (!itemsArray.length) {
     return
   }
 
-  return shipArray
-    .sort(
-      (a: Ship | CrewMember, b: Ship | CrewMember) =>
-        a.createdDate - b.createdDate
-    )
+  const result = itemsArray
+    .sort((a, b) => a.createdDate - b.createdDate)
     .reduce(
       (acc, curr) => ((acc[curr.id] = curr), acc),
-      {} as Record<string, Ship | CrewMember>
+      {} as Record<string, T>
     )
+
+  return result
 }
 
 const getUser = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -47,11 +46,8 @@ const getUser = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  result.ships = sortByDate(result.ships) as Record<string, Ship>
-  result.crewMembers = sortByDate(result.crewMembers) as Record<
-    string,
-    CrewMember
-  >
+  result.ships = sortByDate<Ship>(result.ships)
+  result.crewMembers = sortByDate<CrewMember>(result.crewMembers)
 
   res.status(200).json(result)
 }
