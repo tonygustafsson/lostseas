@@ -1,29 +1,34 @@
+import { forwardRef } from "react"
+
 type Props = {
-  isOpen: boolean
+  id: string
   title?: string
-  onClose: () => void
   children: React.ReactNode
 }
 
-const Modal = ({ isOpen, title, onClose, children }: Props) => {
-  if (!isOpen) return null
+const Modal = forwardRef<HTMLInputElement, Props>(
+  ({ id, title, children }, ref) => (
+    <>
+      <input type="checkbox" id={id} className="modal-toggle" ref={ref} />
 
-  return (
-    <dialog
-      open={isOpen}
-      className="bg-black border-white border rounded pt-0 max-w-3xl w-full"
-    >
-      <div className="flex items-center justify-between">
-        {title && <h1 className="text-white">{title}</h1>}
+      <label htmlFor={id} className="modal cursor-pointer">
+        <label className="modal-box relative" htmlFor="">
+          <label
+            htmlFor={id}
+            className="btn btn-sm btn-circle absolute right-2 top-2"
+          >
+            ✕
+          </label>
 
-        <button onClick={onClose} className="text-white text-4xl">
-          &times;
-        </button>
-      </div>
+          {title && <h3 className="font-bold text-xl mb-4">{title}</h3>}
 
-      {children}
-    </dialog>
+          <div className="py-4">{children}</div>
+        </label>
+      </label>
+    </>
   )
-}
+)
+
+Modal.displayName = "Modal"
 
 export default Modal

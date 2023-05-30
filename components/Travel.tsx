@@ -1,46 +1,36 @@
-import { useState } from "react"
-
 import { TOWNS } from "@/constants/locations"
 import { useCharacter } from "@/hooks/queries/useCharacter"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Modal from "./ui/Modal"
 
-const Travel = () => {
-  const { travel, isTraveling } = useCharacter()
-  const { data: player } = useGetPlayer()
+const modalId = "travel-modal"
 
-  const [travelModalIsOpen, setTravelModalIsOpen] = useState(false)
+const Travel = () => {
+  const { travel } = useCharacter()
+  const { data: player } = useGetPlayer()
 
   const handleTravel = (town: Town) => {
     travel({ userId: player?.id || "", town })
-    setTravelModalIsOpen(false)
   }
 
   return (
     <>
-      <button
-        className="btn btn-primary"
-        onClick={() => setTravelModalIsOpen(true)}
-        disabled={isTraveling}
-      >
+      <label htmlFor={modalId} className="btn btn-primary">
         Travel
-      </button>
+      </label>
 
-      <Modal
-        isOpen={travelModalIsOpen}
-        title="Pick your destination"
-        onClose={() => setTravelModalIsOpen(false)}
-      >
+      <Modal id={modalId} title="Pick your destination">
         <div className="flex flex-wrap gap-2">
           {TOWNS.map((town, idx) => (
-            <button
+            <label
               key={`destination-${town}-${idx}`}
               className="btn btn-secondary btn-sm"
               onClick={() => handleTravel(town)}
+              htmlFor={modalId}
             >
               {town}
-            </button>
+            </label>
           ))}
         </div>
       </Modal>

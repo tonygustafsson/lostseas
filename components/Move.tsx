@@ -1,46 +1,36 @@
-import { useState } from "react"
-
 import { LOCATIONS } from "@/constants/locations"
 import { useCharacter } from "@/hooks/queries/useCharacter"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Modal from "./ui/Modal"
 
-const Move = () => {
-  const { move, isMoving } = useCharacter()
-  const { data: player } = useGetPlayer()
+const modalId = "move-modal"
 
-  const [moveModalIsOpen, setMoveModalIsOpen] = useState(false)
+const Move = () => {
+  const { move } = useCharacter()
+  const { data: player } = useGetPlayer()
 
   const handleMove = (location: TownLocation | SeaLocation) => {
     move({ userId: player?.id || "", location })
-    setMoveModalIsOpen(false)
   }
 
   return (
     <>
-      <button
-        className="btn btn-primary"
-        onClick={() => setMoveModalIsOpen(true)}
-        disabled={isMoving}
-      >
+      <label htmlFor={modalId} className="btn btn-primary">
         Move
-      </button>
+      </label>
 
-      <Modal
-        isOpen={moveModalIsOpen}
-        title="Pick your location"
-        onClose={() => setMoveModalIsOpen(false)}
-      >
+      <Modal id={modalId} title="Pick your location">
         <div className="flex flex-wrap gap-2">
           {Object.values(LOCATIONS).map((location, idx) => (
-            <button
+            <label
               key={`destination-${location}-${idx}`}
               className="btn btn-secondary"
               onClick={() => handleMove(location)}
+              htmlFor={modalId}
             >
               {location}
-            </button>
+            </label>
           ))}
         </div>
       </Modal>
