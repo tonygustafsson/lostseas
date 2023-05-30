@@ -1,10 +1,10 @@
-import { Button } from "@material-tailwind/react"
 import { useState } from "react"
 
 import { LOCATIONS } from "@/constants/locations"
 import { useCharacter } from "@/hooks/queries/useCharacter"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
+import Button from "./ui/Button"
 import Modal from "./ui/Modal"
 
 const Move = () => {

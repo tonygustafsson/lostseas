@@ -1,7 +1,7 @@
-import { Button } from "@material-tailwind/react"
 import { useState } from "react"
 
 import CenteredLayout from "@/components/layouts/centered"
+import Button from "@/components/ui/Button"
 import Select from "@/components/ui/Select"
 import TextField from "@/components/ui/TextField"
 import { usePlayer } from "@/hooks/queries/usePlayer"

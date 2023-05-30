@@ -1,27 +1,19 @@
-import { Card, Typography } from "@material-tailwind/react"
-
 type Props = {
   headings: string[]
   rows: React.ReactNode[][]
 }
 
 const Table = ({ headings, rows }: Props) => (
-  <Card className="overflow-auto w-full rounded-lg">
-    <table className="w-full min-w-max table-auto text-left">
-      <thead className="bg-gray-800">
+  <div className="overflow-auto lg:overflow-visible">
+    <table className="table text-gray-400 border-separate  space-y-6 text-sm w-1/2">
+      <thead className="bg-gray-900 text-gray-300">
         <tr>
           {headings.map((heading, idx) => (
             <th
               key={`table-heading-${heading}-${idx}`}
-              className="bg-blue-gray-900 p-4"
+              className="text-left p-1.5"
             >
-              <Typography
-                variant="small"
-                color="white"
-                className="font-bold leading-none opacity-70"
-              >
-                {heading}
-              </Typography>
+              {heading}
             </th>
           ))}
         </tr>
@@ -33,24 +25,18 @@ const Table = ({ headings, rows }: Props) => (
             key={`table-row-${row.flatMap((column) =>
               column?.toString()
             )}-${idx}`}
-            className="even:bg-gray-800 odd:bg-gray-900"
+            className={idx % 2 !== 0 ? "bg-gray-900" : "bg-gray-800"}
           >
             {row.map((column, idx) => (
-              <td key={`table-column-${column}-${idx}`} className="py-2 px-4">
-                <Typography
-                  variant="small"
-                  color="white"
-                  className="font-normal"
-                >
-                  {column}
-                </Typography>
+              <td key={`table-column-${column}-${idx}`} className="p-1.5">
+                {column}
               </td>
             ))}
           </tr>
         ))}
       </tbody>
     </table>
-  </Card>
+  </div>
 )
 
 export default Table

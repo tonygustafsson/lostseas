@@ -1,9 +1,9 @@
-import { Button } from "@material-tailwind/react"
 import { FormEvent, useState } from "react"
 
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShips } from "@/hooks/queries/useShips"
 
+import Button from "./ui/Button"
 import Select from "./ui/Select"
 import Table from "./ui/Table"
 import TextField from "./ui/TextField"

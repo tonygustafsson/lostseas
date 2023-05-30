@@ -1,9 +1,9 @@
-import { Button } from "@material-tailwind/react"
 import { useRouter } from "next/router"
 import QrScanner from "qr-scanner"
 import { useEffect, useRef, useState } from "react"
 
 import CenteredLayout from "@/components/layouts/centered"
+import Button from "@/components/ui/Button"
 import Modal from "@/components/ui/Modal"
 import TextField from "@/components/ui/TextField"
 import { LOCAL_STORAGE_PLAYER_ID_KEY } from "@/constants/system"
