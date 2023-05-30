@@ -20,7 +20,7 @@ export default function DefaultLayout({
         {children}
       </main>
 
-      {isFetching && <Spinner />}
+      {!!isFetching && <Spinner />}
     </>
   )
 }

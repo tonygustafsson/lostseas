@@ -4,7 +4,6 @@ import { TOWNS } from "@/constants/locations"
 import { useCharacter } from "@/hooks/queries/useCharacter"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
-import Button from "./ui/Button"
 import Modal from "./ui/Modal"
 
 const Travel = () => {
@@ -20,13 +19,13 @@ const Travel = () => {
 
   return (
     <>
-      <Button
-        size="lg"
+      <button
+        className="btn btn-primary"
         onClick={() => setTravelModalIsOpen(true)}
         disabled={isTraveling}
       >
         Travel
-      </Button>
+      </button>
 
       <Modal
         isOpen={travelModalIsOpen}
@@ -35,13 +34,13 @@ const Travel = () => {
       >
         <div className="flex flex-wrap gap-2">
           {TOWNS.map((town, idx) => (
-            <Button
+            <button
               key={`destination-${town}-${idx}`}
-              className="text-white"
+              className="btn btn-secondary btn-sm"
               onClick={() => handleTravel(town)}
             >
               {town}
-            </Button>
+            </button>
           ))}
         </div>
       </Modal>

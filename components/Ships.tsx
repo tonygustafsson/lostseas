@@ -3,7 +3,6 @@ import { FormEvent, useState } from "react"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShips } from "@/hooks/queries/useShips"
 
-import Button from "./ui/Button"
 import Select from "./ui/Select"
 import Table from "./ui/Table"
 import TextField from "./ui/TextField"
@@ -53,15 +52,14 @@ const Ships = () => {
               `${new Date(ship.createdDate).toLocaleDateString()} ${new Date(
                 ship.createdDate
               ).toLocaleTimeString()}`,
-              <Button
+              <button
                 key={`ship-remove-${idx}`}
-                size="sm"
-                className="ml-auto flex"
+                className="btn btn-secondary btn-sm ml-auto flex"
                 onClick={() => handleRemoveShip(ship.id)}
                 disabled={removingIsLoading}
               >
                 Delete
-              </Button>,
+              </button>,
             ])}
           />
         </>
@@ -87,9 +85,13 @@ const Ships = () => {
           onChange={(e) => setShipType(e.target.value)}
         />
 
-        <Button type="submit" className="mt-7" disabled={creatingIsLoading}>
+        <button
+          type="submit"
+          className="btn btn-primary mt-7"
+          disabled={creatingIsLoading}
+        >
           Create new ship
-        </Button>
+        </button>
       </form>
     </>
   )

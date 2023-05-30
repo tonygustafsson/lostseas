@@ -3,7 +3,6 @@ import QrScanner from "qr-scanner"
 import { useEffect, useRef, useState } from "react"
 
 import CenteredLayout from "@/components/layouts/centered"
-import Button from "@/components/ui/Button"
 import Modal from "@/components/ui/Modal"
 import TextField from "@/components/ui/TextField"
 import { LOCAL_STORAGE_PLAYER_ID_KEY } from "@/constants/system"
@@ -69,18 +68,17 @@ const Login = () => {
 
         {error && <p className="text-red-500">{error}</p>}
 
-        <Button type="submit" className="mt-4">
+        <button type="submit" className="btn btn-primary btn-large mt-4">
           Sign in
-        </Button>
+        </button>
       </form>
 
-      <Button
-        size="lg"
+      <button
         onClick={() => setIsQrScannerOpen(!isQrScannerOpen)}
-        className="mt-8"
+        className="btn btn-secondary mt-8 w-full max-w-md"
       >
         Sign in using QR code
-      </Button>
+      </button>
 
       <Modal
         isOpen={isQrScannerOpen}

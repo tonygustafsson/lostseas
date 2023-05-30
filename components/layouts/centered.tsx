@@ -22,7 +22,7 @@ export default function CenteredLayout({
         {children}
       </main>
 
-      {isFetching && <Spinner />}
+      {!!isFetching && <Spinner />}
     </>
   )
 }

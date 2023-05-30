@@ -2,7 +2,6 @@ import { useQRCode } from "next-qrcode"
 import { useState } from "react"
 
 import CenteredLayout from "@/components/layouts/centered"
-import Button from "@/components/ui/Button"
 import Select from "@/components/ui/Select"
 import TextField from "@/components/ui/TextField"
 import { useGetPlayer, usePlayer } from "@/hooks/queries/usePlayer"
@@ -83,13 +82,13 @@ const Settings = () => {
           max={80}
         />
 
-        <Button
+        <button
           type="submit"
-          className="mt-4"
+          className="btn btn-primary mt-4"
           disabled={changeSettingsIsLoading}
         >
           Save
-        </Button>
+        </button>
       </form>
 
       <div className="w-full flex flex-col gap-4 max-w-md mt-8">

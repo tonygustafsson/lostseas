@@ -3,7 +3,6 @@ import { FormEvent } from "react"
 import { useCrewMembers } from "@/hooks/queries/useCrewMembers"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
-import Button from "./ui/Button"
 import Table from "./ui/Table"
 import TextField from "./ui/TextField"
 
@@ -46,15 +45,14 @@ const CrewMembers = () => {
                 ).toLocaleDateString()} ${new Date(
                   crewMember.createdDate
                 ).toLocaleTimeString()}`,
-                <Button
+                <button
                   key={`crew-member-remove-${idx}`}
-                  size="sm"
-                  className="ml-auto flex"
+                  className="btn btn-secondary btn-sm ml-auto flex"
                   onClick={() => handleRemoveCrewMember(crewMember.id)}
                   disabled={removingIsLoading}
                 >
                   Delete
-                </Button>,
+                </button>,
               ]
             )}
           />
@@ -72,9 +70,13 @@ const CrewMembers = () => {
           value={player?.id || ""}
         />
 
-        <Button type="submit" className="mt-7" disabled={creatingIsLoading}>
+        <button
+          type="submit"
+          className="btn btn-primary mt-7"
+          disabled={creatingIsLoading}
+        >
           Create new crew member
-        </Button>
+        </button>
       </form>
     </>
   )

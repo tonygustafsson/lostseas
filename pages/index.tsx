@@ -5,7 +5,6 @@ import DefaultLayout from "@/components/layouts/default"
 import Move from "@/components/Move"
 import Ships from "@/components/Ships"
 import Travel from "@/components/Travel"
-import Button from "@/components/ui/Button"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 const Home = () => {
@@ -40,11 +39,11 @@ const Home = () => {
 
           <div className="flex gap-4">
             <Link href="/login">
-              <Button size="lg">Sign in</Button>
+              <button className="btn btn-primary btn-lg">Sign in</button>
             </Link>
 
             <Link href="/register">
-              <Button size="lg">Register</Button>
+              <button className="btn btn-primary btn-lg">Register</button>
             </Link>
           </div>
         </>

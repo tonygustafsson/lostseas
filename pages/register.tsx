@@ -1,7 +1,6 @@
 import { useState } from "react"
 
 import CenteredLayout from "@/components/layouts/centered"
-import Button from "@/components/ui/Button"
 import Select from "@/components/ui/Select"
 import TextField from "@/components/ui/TextField"
 import { usePlayer } from "@/hooks/queries/usePlayer"
@@ -55,9 +54,13 @@ const Register = () => {
           label="Age"
         />
 
-        <Button type="submit" className="mt-4" disabled={registrationIsLoading}>
+        <button
+          type="submit"
+          className="btn btn-primary mt-4"
+          disabled={registrationIsLoading}
+        >
           Register
-        </Button>
+        </button>
       </form>
     </CenteredLayout>
   )

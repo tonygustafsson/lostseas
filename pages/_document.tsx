@@ -6,7 +6,7 @@ const Document = () => (
   <Html lang="en" className={pacifico.variable}>
     <Head />
 
-    <body className="bg-black text-white">
+    <body>
       <Main />
       <NextScript />
     </body>

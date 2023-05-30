@@ -4,7 +4,6 @@ import { LOCATIONS } from "@/constants/locations"
 import { useCharacter } from "@/hooks/queries/useCharacter"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
-import Button from "./ui/Button"
 import Modal from "./ui/Modal"
 
 const Move = () => {
@@ -20,13 +19,13 @@ const Move = () => {
 
   return (
     <>
-      <Button
-        size="lg"
+      <button
+        className="btn btn-primary"
         onClick={() => setMoveModalIsOpen(true)}
         disabled={isMoving}
       >
         Move
-      </Button>
+      </button>
 
       <Modal
         isOpen={moveModalIsOpen}
@@ -35,13 +34,13 @@ const Move = () => {
       >
         <div className="flex flex-wrap gap-2">
           {Object.values(LOCATIONS).map((location, idx) => (
-            <Button
+            <button
               key={`destination-${location}-${idx}`}
-              className="text-white"
+              className="btn btn-secondary"
               onClick={() => handleMove(location)}
             >
               {location}
-            </Button>
+            </button>
           ))}
         </div>
       </Modal>
