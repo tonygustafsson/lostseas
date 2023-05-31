@@ -4,33 +4,23 @@ type Props = {
   name: string
   value?: string
   options: string[]
-  className?: string
   onChange?: (value: any) => void
 }
 
-const Select = ({
-  id,
-  label,
-  name,
-  value,
-  options,
-  className,
-  onChange,
-}: Props) => (
-  <div className={className}>
-    <label
-      htmlFor={id}
-      className="block mb-2 text-sm font-medium text-white dark:text-white"
-    >
-      {label}
-    </label>
+const Select = ({ id, label, name, value, options, onChange }: Props) => (
+  <div className="form-control w-full">
+    {label && (
+      <label htmlFor={id} className="label">
+        {label}
+      </label>
+    )}
 
     <select
       id={id}
       name={name}
       value={value}
       onChange={onChange}
-      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-[11px] dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      className="select select-bordered"
     >
       {options.map((option) => (
         <option key={`select-option-${option}`} value={option}>
