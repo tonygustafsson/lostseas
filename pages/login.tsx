@@ -2,7 +2,7 @@ import { useRouter } from "next/router"
 import QrScanner from "qr-scanner"
 import { useEffect, useRef } from "react"
 
-import CenteredLayout from "@/components/layouts/centered"
+import DefaultLayout from "@/components/layouts/default"
 import Modal from "@/components/ui/Modal"
 import TextField from "@/components/ui/TextField"
 import { LOCAL_STORAGE_PLAYER_ID_KEY } from "@/constants/system"
@@ -60,7 +60,7 @@ const Login = () => {
   }, [restoreUserIdVideoRef, router, modalControlRef])
 
   return (
-    <CenteredLayout>
+    <DefaultLayout>
       <h1 className="font-serif text-4xl mb-8">Sign in</h1>
 
       <form
@@ -97,7 +97,7 @@ const Login = () => {
 
         <video width={500} height={500} ref={restoreUserIdVideoRef}></video>
       </Modal>
-    </CenteredLayout>
+    </DefaultLayout>
   )
 }
 

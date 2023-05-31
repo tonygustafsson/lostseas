@@ -65,10 +65,7 @@ const Ships = () => {
         </>
       )}
 
-      <form
-        onSubmit={handleCreateShip}
-        className="mt-8 flex items-bottom gap-3"
-      >
+      <form onSubmit={handleCreateShip} className="mt-8 flex items-end gap-3">
         <TextField
           type="hidden"
           name="userId"
@@ -87,7 +84,7 @@ const Ships = () => {
 
         <button
           type="submit"
-          className="btn btn-primary mt-7"
+          className="btn btn-primary"
           disabled={creatingIsLoading}
         >
           Create new ship

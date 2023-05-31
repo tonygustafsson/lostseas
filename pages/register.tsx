@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import CenteredLayout from "@/components/layouts/centered"
+import DefaultLayout from "@/components/layouts/default"
 import Select from "@/components/ui/Select"
 import TextField from "@/components/ui/TextField"
 import { usePlayer } from "@/hooks/queries/usePlayer"
@@ -21,7 +21,7 @@ const Register = () => {
   }
 
   return (
-    <CenteredLayout>
+    <DefaultLayout>
       <h1 className="font-serif text-4xl mb-8">Register</h1>
 
       <form
@@ -62,7 +62,7 @@ const Register = () => {
           Register
         </button>
       </form>
-    </CenteredLayout>
+    </DefaultLayout>
   )
 }
 

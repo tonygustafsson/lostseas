@@ -1,7 +1,7 @@
 import { useQRCode } from "next-qrcode"
 import { useState } from "react"
 
-import CenteredLayout from "@/components/layouts/centered"
+import DefaultLayout from "@/components/layouts/default"
 import Select from "@/components/ui/Select"
 import TextField from "@/components/ui/TextField"
 import { useGetPlayer, usePlayer } from "@/hooks/queries/usePlayer"
@@ -28,7 +28,7 @@ const Settings = () => {
   }
 
   return (
-    <CenteredLayout>
+    <DefaultLayout>
       <h1 className="font-serif text-4xl mb-8">Settings</h1>
 
       <p>
@@ -119,7 +119,7 @@ const Settings = () => {
           }}
         />
       </div>
-    </CenteredLayout>
+    </DefaultLayout>
   )
 }
 
