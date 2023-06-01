@@ -16,10 +16,7 @@ const Home = () => {
             {player?.character.town}s {player?.character.location}
           </h1>
 
-          <p>
-            You are {player?.character.name} and are a {player?.character.age}{" "}
-            year old {player?.character.gender.toLowerCase()}.
-          </p>
+          <p>Take a look around, {player?.character.name}!</p>
 
           <div className="flex gap-4 mt-4">
             <Move />

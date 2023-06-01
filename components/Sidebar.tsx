@@ -1,12 +1,11 @@
 import Link from "next/link"
+import { FiLogIn, FiLogOut, FiSettings, FiUserPlus } from "react-icons/fi"
 import {
-  FiLogIn,
-  FiLogOut,
-  FiSettings,
-  FiUser,
-  FiUserPlus,
-} from "react-icons/fi"
-import { GiPirateCoat, GiShoonerSailboat } from "react-icons/gi"
+  GiPirateCoat,
+  GiPirateFlag,
+  GiPirateHat,
+  GiShoonerSailboat,
+} from "react-icons/gi"
 
 import { LOCAL_STORAGE_PLAYER_ID_KEY } from "@/constants/system"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -23,22 +22,22 @@ const Sidebar = () => {
     <div className="w-80 py-8 px-4 bg-base-300 ">
       <Link
         href="/"
-        className="font-serif text-3xl flex gap-3 items-center mb-4"
+        className="font-serif text-3xl flex gap-3 items-center mb-4 mx-2"
       >
-        <span className="text-5xl font-medium -mt-2">☠</span> Lost Seas
+        <GiPirateFlag className="h-8 w-8" /> Lost Seas
       </Link>
 
       <ul className="menu text-base-content">
         {player ? (
           <>
             <li>
-              <a>
-                <FiUser className="h-5 w-5" />
-                Playing as {player?.user.name}
-              </a>
+              <Link href="/">
+                <GiPirateHat className="h-5 w-5" />
+                Play
+              </Link>
             </li>
 
-            <li>
+            <li className="mt-4">
               <Link href="/ships">
                 <GiShoonerSailboat className="h-5 w-5" />
                 Ships
@@ -52,7 +51,7 @@ const Sidebar = () => {
               </Link>
             </li>
 
-            <li>
+            <li className="mt-4">
               <Link href="/settings">
                 <FiSettings className="h-5 w-5" />
                 Settings
@@ -84,6 +83,26 @@ const Sidebar = () => {
           </>
         )}
       </ul>
+
+      <div className="card w-full bg-base-100 shadow-xl mt-8">
+        <figure className="mt-4">
+          <GiPirateHat className="h-14 w-14" />
+        </figure>
+
+        <div className="card-body pt-2">
+          <h2 className="card-title">{player?.character.name}</h2>
+          <p>
+            You are a {player?.character.age} year old{" "}
+            {player?.character.gender.toLowerCase()}.
+          </p>
+
+          <div className="card-actions justify-end">
+            <Link href="/settings">
+              <button className="btn btn-secondary btn-sm">Change</button>
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
