@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { FiLogIn, FiLogOut, FiSettings, FiUserPlus } from "react-icons/fi"
 import {
+  GiOpenedFoodCan,
   GiPirateCoat,
   GiPirateFlag,
   GiPirateHat,
@@ -48,6 +49,13 @@ const Sidebar = () => {
               <Link href="/crew">
                 <GiPirateCoat className="h-5 w-5" />
                 Crew members
+              </Link>
+            </li>
+
+            <li>
+              <Link href="/inventory">
+                <GiOpenedFoodCan className="h-5 w-5" />
+                Inventory
               </Link>
             </li>
 
