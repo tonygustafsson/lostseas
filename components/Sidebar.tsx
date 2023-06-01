@@ -6,6 +6,7 @@ import {
   FiUser,
   FiUserPlus,
 } from "react-icons/fi"
+import { GiPirateCoat, GiShoonerSailboat } from "react-icons/gi"
 
 import { LOCAL_STORAGE_PLAYER_ID_KEY } from "@/constants/system"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -35,6 +36,20 @@ const Sidebar = () => {
                 <FiUser className="h-5 w-5" />
                 Playing as {player?.user.name}
               </a>
+            </li>
+
+            <li>
+              <Link href="/ships">
+                <GiShoonerSailboat className="h-5 w-5" />
+                Ships
+              </Link>
+            </li>
+
+            <li>
+              <Link href="/crew">
+                <GiPirateCoat className="h-5 w-5" />
+                Crew members
+              </Link>
             </li>
 
             <li>

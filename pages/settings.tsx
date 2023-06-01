@@ -29,9 +29,9 @@ const Settings = () => {
 
   return (
     <DefaultLayout>
-      <h1 className="font-serif text-4xl mb-8">Settings</h1>
+      <h1 className="text-3xl font-serif text mb-8">Settings</h1>
 
-      <p>
+      <p className="mb-4">
         Account created: {new Date(player?.createdDate).toLocaleDateString()}
       </p>
 

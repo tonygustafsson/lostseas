@@ -1,0 +1,87 @@
+import { FormEvent } from "react"
+
+import DefaultLayout from "@/components/layouts/default"
+import Table from "@/components/ui/Table"
+import TextField from "@/components/ui/TextField"
+import { useCrewMembers } from "@/hooks/queries/useCrewMembers"
+import { useGetPlayer } from "@/hooks/queries/usePlayer"
+
+const Crew = () => {
+  const { data: player } = useGetPlayer()
+  const { create, creatingIsLoading, remove, removingIsLoading } =
+    useCrewMembers()
+
+  const handleCreateCrewMember = async (e: FormEvent) => {
+    e.preventDefault()
+
+    const crewData: CreateCrewMemberClientRequest = {
+      userId: player?.id || "",
+    }
+
+    create(crewData)
+  }
+
+  const handleRemoveCrewMember = async (id: string) => {
+    if (!id) return
+
+    remove({ crewMemberId: id, userId: player?.id || "" })
+  }
+
+  return (
+    <DefaultLayout>
+      <>
+        <h1 className="text-3xl font-serif text mb-8">Crew members</h1>
+
+        {!!Object.values(player?.crewMembers || [])?.length && (
+          <>
+            <Table
+              headings={["Name", "Age", "Gender", "Created", ""]}
+              rows={Object.values(player?.crewMembers || []).map(
+                (crewMember, idx) => [
+                  crewMember.name,
+                  crewMember.age,
+                  crewMember.gender,
+                  `${new Date(
+                    crewMember.createdDate
+                  ).toLocaleDateString()} ${new Date(
+                    crewMember.createdDate
+                  ).toLocaleTimeString()}`,
+                  <button
+                    key={`crew-member-remove-${idx}`}
+                    className="btn btn-secondary btn-sm ml-auto flex"
+                    onClick={() => handleRemoveCrewMember(crewMember.id)}
+                    disabled={removingIsLoading}
+                  >
+                    Delete
+                  </button>,
+                ]
+              )}
+            />
+          </>
+        )}
+
+        <form
+          onSubmit={handleCreateCrewMember}
+          className="mt-8 flex items-bottom gap-3"
+        >
+          <TextField
+            type="hidden"
+            name="userId"
+            id="userId"
+            value={player?.id || ""}
+          />
+
+          <button
+            type="submit"
+            className="btn btn-primary mt-7"
+            disabled={creatingIsLoading}
+          >
+            Create new crew member
+          </button>
+        </form>
+      </>
+    </DefaultLayout>
+  )
+}
+
+export default Crew
