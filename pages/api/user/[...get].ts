@@ -46,8 +46,8 @@ const getUser = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  result.ships = sortByDate<Ship>(result.ships)
-  result.crewMembers = sortByDate<CrewMember>(result.crewMembers)
+  result.ships = sortByDate<Ship>(result.ships) ?? {}
+  result.crewMembers = sortByDate<CrewMember>(result.crewMembers) ?? {}
 
   res.status(200).json(result)
 }

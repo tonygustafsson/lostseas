@@ -1,29 +1,18 @@
-import crypto from "crypto"
 import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import db from "@/firebase/db"
-import getShipName from "@/utils/getShipName"
+import createNewShips from "@/utils/createNewShips"
 
 const createShip = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
-
-  const shipId = crypto.randomUUID()
-  const createdDate = new Date().getTime()
-  const shipName = getShipName()
   const userId = req.body.userId
-
-  const requestJson: CreateShipServerRequest = {
-    id: shipId,
-    name: shipName,
-    type: req.body.type,
-    createdDate,
-  }
+  const ship = createNewShips(1, req.body.type)
 
   const existingShips = await get(child(dbRef, `${userId}/ships`))
   const result = existingShips.val()
-    ? { ...existingShips.val(), [shipId]: requestJson }
-    : { [shipId]: requestJson }
+    ? { ...existingShips.val(), ...ship }
+    : ship
 
   await set(ref(db, `${userId}/ships`), result).catch((error) => {
     res.status(500).json({ error })

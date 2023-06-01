@@ -1,16 +1,17 @@
 type Player = {
   id: string
-  character: Character
-  ships?: Record<string, Ship>
-  crewMembers?: Record<string, CrewMember>
   createdDate: number
+  character: Character
+  ships: Record<string, Ship>
+  crewMembers: Record<string, CrewMember>
+  inventory: Inventory
 }
 
-type CreatePlayerServerRequest = Omit<Player, "id" | "ships" | "crewMembers">
+type CreatePlayerServerRequest = Omit<Player, "id">
 
 type CreatePlayerClientRequest = Omit<
   Player,
-  "id" | "createdDate" | "ships" | "crewMembers"
+  "id" | "createdDate" | "ships" | "crewMembers" | "inventory"
 >
 
 type UpdatePlayerClientRequest = Partial<CreatePlayerClientRequest>
