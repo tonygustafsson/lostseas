@@ -12,9 +12,6 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
   const startingTown = TOWNS[Math.floor(Math.random() * TOWNS.length)]
 
   const requestJson: CreatePlayerServerRequest = {
-    user: {
-      name: req.body.user_name,
-    },
     character: {
       name: req.body.character_name,
       gender: req.body.character_gender,

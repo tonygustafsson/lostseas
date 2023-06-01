@@ -84,25 +84,27 @@ const Sidebar = () => {
         )}
       </ul>
 
-      <div className="card w-full bg-base-100 shadow-xl mt-8">
-        <figure className="mt-4">
-          <GiPirateHat className="h-14 w-14" />
-        </figure>
+      {player && (
+        <div className="card w-full bg-base-100 shadow-xl mt-8">
+          <figure className="mt-4">
+            <GiPirateHat className="h-14 w-14" />
+          </figure>
 
-        <div className="card-body pt-2">
-          <h2 className="card-title">{player?.character.name}</h2>
-          <p>
-            You are a {player?.character.age} year old{" "}
-            {player?.character.gender.toLowerCase()}.
-          </p>
+          <div className="card-body pt-2">
+            <h2 className="card-title">{player?.character.name}</h2>
+            <p>
+              You are a {player?.character.age} year old{" "}
+              {player?.character.gender.toLowerCase()}.
+            </p>
 
-          <div className="card-actions justify-end">
-            <Link href="/settings">
-              <button className="btn btn-secondary btn-sm">Change</button>
-            </Link>
+            <div className="card-actions justify-end">
+              <Link href="/settings">
+                <button className="btn btn-secondary btn-sm">Change</button>
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

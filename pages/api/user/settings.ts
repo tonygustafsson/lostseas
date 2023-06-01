@@ -7,14 +7,6 @@ const settings = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
   const userId = req.body.userId
 
-  const existingUser = await get(child(dbRef, `${userId}/user`))
-  const userUpdate = {
-    ...existingUser.val(),
-    name: req.body.user_name,
-  }
-
-  await update(ref(db, `${userId}/user`), userUpdate)
-
   const existingCharacter = await get(child(dbRef, `${userId}/character`))
   const characterUpdate = {
     ...existingCharacter.val(),

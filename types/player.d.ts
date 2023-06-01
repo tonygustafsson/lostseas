@@ -1,6 +1,5 @@
 type Player = {
   id: string
-  user: User
   character: Character
   ships?: Record<string, Ship>
   crewMembers?: Record<string, CrewMember>

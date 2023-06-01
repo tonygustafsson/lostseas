@@ -39,22 +39,13 @@ const Settings = () => {
         onSubmit={handleSubmit}
         className="w-full flex flex-col gap-4 max-w-md"
       >
-        <h2 className="font-serif text-2xl">Player</h2>
-
         <TextField
           type="hidden"
           name="userId"
           defaultValue={player?.id || ""}
         />
 
-        <TextField
-          label="Name"
-          id="user_name"
-          name="user_name"
-          defaultValue={player.user?.name || ""}
-        />
-
-        <h2 className="font-serif text-2xl mt-8">Character</h2>
+        <h2 className="font-serif text-2xl mt-4">Character</h2>
 
         <TextField
           label="Name"

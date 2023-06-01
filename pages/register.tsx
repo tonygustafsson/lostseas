@@ -28,10 +28,6 @@ const Register = () => {
         onSubmit={handleSubmit}
         className="w-full flex flex-col gap-4 max-w-md"
       >
-        <h2 className="font-serif text-2xl">Player</h2>
-
-        <TextField id="user_name" name="user_name" label="Name" autoFocus />
-
         <h2 className="font-serif text-2xl mt-8">Character</h2>
 
         <TextField id="character_name" name="character_name" label="Name" />
