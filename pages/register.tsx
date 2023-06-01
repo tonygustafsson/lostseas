@@ -4,11 +4,23 @@ import DefaultLayout from "@/components/layouts/default"
 import Select from "@/components/ui/Select"
 import TextField from "@/components/ui/TextField"
 import { usePlayer } from "@/hooks/queries/usePlayer"
+import getEnglishFemaleName from "@/utils/getEnglishFemaleName"
+import getEnglishMaleName from "@/utils/getEnglishMaleName"
+import getEnglishSurname from "@/utils/getEnglishSurname"
 
 const Register = () => {
   const { register, registrationIsLoading } = usePlayer()
 
-  const [characterGender, setCharacterGender] = useState("Male")
+  const randomGender: CrewMember["gender"] =
+    Math.random() > 0.25 ? "Male" : "Female"
+  const randomName = `${
+    randomGender === "Male" ? getEnglishMaleName() : getEnglishFemaleName()
+  } ${getEnglishSurname()}`
+  const randomAge = Math.floor(Math.random() * (70 - 14 + 1) + 14)
+
+  const [characterName, setCharacterName] = useState(randomName)
+  const [characterAge, setCharacterAge] = useState(randomAge)
+  const [characterGender, setCharacterGender] = useState(randomGender)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -30,7 +42,14 @@ const Register = () => {
       >
         <h2 className="font-serif text-2xl mt-8">Character</h2>
 
-        <TextField id="character_name" name="character_name" label="Name" />
+        <TextField
+          id="character_name"
+          name="character_name"
+          label="Name"
+          value={characterName}
+          onChange={(e) => setCharacterName(e)}
+          required
+        />
 
         <Select
           label="Gender"
@@ -43,11 +62,14 @@ const Register = () => {
 
         <TextField
           type="number"
+          required
           min={15}
           max={80}
           id="character_age"
           name="character_age"
           label="Age"
+          value={characterAge.toString()}
+          onChange={(e) => setCharacterAge(parseInt(e))}
         />
 
         <button
