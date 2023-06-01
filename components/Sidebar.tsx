@@ -1,4 +1,11 @@
 import Link from "next/link"
+import {
+  FiLogIn,
+  FiLogOut,
+  FiSettings,
+  FiUser,
+  FiUserPlus,
+} from "react-icons/fi"
 
 import { LOCAL_STORAGE_PLAYER_ID_KEY } from "@/constants/system"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -24,25 +31,40 @@ const Sidebar = () => {
         {player ? (
           <>
             <li>
-              <a>Playing as {player?.user.name}</a>
+              <a>
+                <FiUser className="h-5 w-5" />
+                Playing as {player?.user.name}
+              </a>
             </li>
 
             <li>
-              <Link href="/settings">Settings</Link>
+              <Link href="/settings">
+                <FiSettings className="h-5 w-5" />
+                Settings
+              </Link>
             </li>
 
             <li>
-              <a onClick={() => signOut()}>Sign out</a>
+              <a onClick={() => signOut()}>
+                <FiLogOut className="h-5 w-5" />
+                Sign out
+              </a>
             </li>
           </>
         ) : (
           <>
             <li>
-              <Link href="/login">Sign in</Link>
+              <Link href="/login">
+                <FiLogIn className="h-5 w-5" />
+                Sign in
+              </Link>
             </li>
 
             <li>
-              <Link href="/register">Register</Link>
+              <Link href="/register">
+                <FiUserPlus className="h-5 w-5" />
+                Register
+              </Link>
             </li>
           </>
         )}
