@@ -107,7 +107,7 @@ const Sidebar = () => {
       </ul>
 
       {player && (
-        <div className="card w-full bg-base-100 shadow-xl mt-8">
+        <div className="card w-full bg-base-100 shadow-lg mt-8 rounded-md">
           <figure className="mt-4">
             <GiPirateHat className="h-14 w-14" />
           </figure>
