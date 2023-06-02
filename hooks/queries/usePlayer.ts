@@ -60,23 +60,8 @@ export const usePlayer = () => {
     }
   )
 
-  const { mutate: changeSettings, isLoading: changeSettingsIsLoading } =
-    useMutation(
-      (userData: UpdatePlayerClientRequest) =>
-        apiRequest("/api/user/settings", userData, "POST"),
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-          router.push("/")
-        },
-        onError: (error) => console.error(error),
-      }
-    )
-
   return {
     register,
     registrationIsLoading,
-    changeSettings,
-    changeSettingsIsLoading,
   }
 }

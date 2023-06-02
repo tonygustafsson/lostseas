@@ -3,6 +3,7 @@ import { useRouter } from "next/router"
 import { FiLogIn, FiLogOut, FiSettings, FiUserPlus } from "react-icons/fi"
 import {
   GiCoins,
+  GiHoodedFigure,
   GiOpenedFoodCan,
   GiPirateCoat,
   GiPirateFlag,
@@ -53,6 +54,17 @@ const Sidebar = () => {
 
             <li
               className={`mt-4 ${
+                pathname === "/status" ? "bg-info-content" : "transparent"
+              }`}
+            >
+              <Link href="/status">
+                <GiPirateCoat className="h-5 w-5" />
+                Status
+              </Link>
+            </li>
+
+            <li
+              className={`${
                 pathname === "/ships" ? "bg-info-content" : "transparent"
               }`}
             >
@@ -71,7 +83,7 @@ const Sidebar = () => {
               }`}
             >
               <Link href="/crew">
-                <GiPirateCoat className="h-5 w-5" />
+                <GiHoodedFigure className="h-5 w-5" />
                 Crew members
                 <span className="badge badge-sm badge-primary">
                   {numberOfCrewMembers}

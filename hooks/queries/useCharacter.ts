@@ -25,10 +25,23 @@ export const useCharacter = () => {
     }
   )
 
+  const { mutate: update, isLoading: updateIsLoading } = useMutation(
+    (userData: UpdatePlayerClientRequest) =>
+      apiRequest("/api/character/update", userData, "POST"),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+      },
+      onError: (error) => console.error(error),
+    }
+  )
+
   return {
     travel,
     isTraveling,
     move,
     isMoving,
+    update,
+    updateIsLoading,
   }
 }

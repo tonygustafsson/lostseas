@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 
 import db from "@/firebase/db"
 
-const settings = async (req: NextApiRequest, res: NextApiResponse) => {
+const updateCharacter = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
   const userId = req.body.userId
 
@@ -24,4 +24,4 @@ const settings = async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(200).json({ success: true })
 }
 
-export default settings
+export default updateCharacter
