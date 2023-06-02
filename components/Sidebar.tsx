@@ -17,6 +17,7 @@ const Sidebar = () => {
 
   const numberOfCrewMembers = Object.values(player?.crewMembers ?? {}).length
   const numberOfShips = Object.values(player?.ships ?? {}).length
+  const numberOfInventoryItems = Object.values(player?.inventory ?? {}).length
 
   const signOut = () => {
     window.localStorage.removeItem(LOCAL_STORAGE_PLAYER_ID_KEY)
@@ -66,6 +67,9 @@ const Sidebar = () => {
               <Link href="/inventory">
                 <GiOpenedFoodCan className="h-5 w-5" />
                 Inventory
+                <span className="badge badge-sm badge-primary">
+                  {numberOfInventoryItems}
+                </span>
               </Link>
             </li>
 
