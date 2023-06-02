@@ -30,7 +30,7 @@ const Sidebar = () => {
   }
 
   return (
-    <div className="w-80 py-8 px-4 bg-base-300 ">
+    <div className="w-80 py-8 px-4 bg-gray-800">
       <Link
         href="/"
         className="font-serif text-3xl flex gap-3 items-center mb-4 mx-2"
@@ -151,7 +151,7 @@ const Sidebar = () => {
       </ul>
 
       {player && (
-        <div className="card w-full bg-base-100 shadow-lg mt-8 rounded-md">
+        <div className="card w-full bg-gray-900 shadow-lg mt-8 rounded-md">
           <figure className="mt-4">
             <GiPirateHat className="h-14 w-14" />
           </figure>
@@ -172,7 +172,7 @@ const Sidebar = () => {
               {player?.character.nationality}.
             </p>
 
-            <div className="stats">
+            <div className="stats bg-gray-900">
               <div className="stat px-0 py-2">
                 <div className="stat-figure text-secondary">
                   <GiCoins className="h-8 w-8" />
@@ -185,7 +185,7 @@ const Sidebar = () => {
             </div>
 
             <div className="card-actions justify-end">
-              <Link href="/settings">
+              <Link href="/status">
                 <button className="btn btn-secondary btn-sm">More info</button>
               </Link>
             </div>

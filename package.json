@@ -10,14 +10,14 @@
     "lint:fix": "next lint --fix"
   },
   "dependencies": {
-    "@tanstack/react-query": "^4.29.7",
-    "@tanstack/react-query-devtools": "^4.29.7",
+    "@tanstack/react-query": "^4.29.12",
+    "@tanstack/react-query-devtools": "^4.29.12",
     "@types/node": "18.16.2",
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.1",
     "autoprefixer": "10.4.14",
     "bcrypt": "^5.1.0",
-    "daisyui": "^2.52.0",
+    "daisyui": "^3.0.1",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.1",
     "firebase": "^9.22.0",
