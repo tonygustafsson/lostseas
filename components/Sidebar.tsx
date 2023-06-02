@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { FiLogIn, FiLogOut, FiSettings, FiUserPlus } from "react-icons/fi"
 import {
   GiCoins,
@@ -14,6 +15,7 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 const Sidebar = () => {
   const { data: player } = useGetPlayer()
+  const { pathname } = useRouter()
 
   const numberOfCrewMembers = Object.values(player?.crewMembers ?? {}).length
   const numberOfShips = Object.values(player?.ships ?? {}).length
@@ -36,14 +38,22 @@ const Sidebar = () => {
       <ul className="menu text-base-content">
         {player ? (
           <>
-            <li>
+            <li
+              className={`${
+                pathname === "/" ? "bg-info-content" : "transparent"
+              }`}
+            >
               <Link href="/">
                 <GiPirateHat className="h-5 w-5" />
                 Play
               </Link>
             </li>
 
-            <li className="mt-4">
+            <li
+              className={`mt-4 ${
+                pathname === "/ships" ? "bg-info-content" : "transparent"
+              }`}
+            >
               <Link href="/ships">
                 <GiShoonerSailboat className="h-5 w-5" />
                 Ships
@@ -53,7 +63,11 @@ const Sidebar = () => {
               </Link>
             </li>
 
-            <li>
+            <li
+              className={`${
+                pathname === "/crew" ? "bg-info-content" : "transparent"
+              }`}
+            >
               <Link href="/crew">
                 <GiPirateCoat className="h-5 w-5" />
                 Crew members
@@ -63,7 +77,11 @@ const Sidebar = () => {
               </Link>
             </li>
 
-            <li>
+            <li
+              className={`${
+                pathname === "/inventory" ? "bg-info-content" : "transparent"
+              }`}
+            >
               <Link href="/inventory">
                 <GiOpenedFoodCan className="h-5 w-5" />
                 Inventory
@@ -73,7 +91,11 @@ const Sidebar = () => {
               </Link>
             </li>
 
-            <li className="mt-4">
+            <li
+              className={`mt-4 ${
+                pathname === "/settings" ? "bg-info-content" : "transparent"
+              }`}
+            >
               <Link href="/settings">
                 <FiSettings className="h-5 w-5" />
                 Settings
@@ -89,14 +111,22 @@ const Sidebar = () => {
           </>
         ) : (
           <>
-            <li>
+            <li
+              className={`${
+                pathname === "/login" ? "bg-info-content" : "transparent"
+              }`}
+            >
               <Link href="/login">
                 <FiLogIn className="h-5 w-5" />
                 Sign in
               </Link>
             </li>
 
-            <li>
+            <li
+              className={`${
+                pathname === "/register" ? "bg-info-content" : "transparent"
+              }`}
+            >
               <Link href="/register">
                 <FiUserPlus className="h-5 w-5" />
                 Register
