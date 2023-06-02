@@ -174,7 +174,7 @@ const Sidebar = () => {
 
             <div className="card-actions justify-end">
               <Link href="/settings">
-                <button className="btn btn-secondary btn-sm">Change</button>
+                <button className="btn btn-secondary btn-sm">More info</button>
               </Link>
             </div>
           </div>
