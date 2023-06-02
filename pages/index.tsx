@@ -13,12 +13,12 @@ const Home = () => {
       {player && (
         <>
           <div
-            className="hero"
+            className="hero rounded-lg"
             style={{ backgroundImage: `url("img/place/docks_england.png")` }}
           >
             <div className="hero-overlay bg-opacity-50"></div>
             <div className="hero-content text-center text-neutral-content py-24">
-              <div className="max-w-2xl bg-base-300 bg-opacity-60 p-8">
+              <div className="max-w-2xl bg-base-300 bg-opacity-60 p-8 rounded-lg">
                 <h1 className="font-serif mb-5 text-5xl">
                   {player?.character.town}s {player?.character.location}
                 </h1>

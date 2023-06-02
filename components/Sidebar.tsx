@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { FiLogIn, FiLogOut, FiSettings, FiUserPlus } from "react-icons/fi"
 import {
+  GiCoins,
   GiOpenedFoodCan,
   GiPirateCoat,
   GiPirateFlag,
@@ -13,6 +14,9 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 const Sidebar = () => {
   const { data: player } = useGetPlayer()
+
+  const numberOfCrewMembers = Object.values(player?.crewMembers ?? {}).length
+  const numberOfShips = Object.values(player?.ships ?? {}).length
 
   const signOut = () => {
     window.localStorage.removeItem(LOCAL_STORAGE_PLAYER_ID_KEY)
@@ -42,6 +46,9 @@ const Sidebar = () => {
               <Link href="/ships">
                 <GiShoonerSailboat className="h-5 w-5" />
                 Ships
+                <span className="badge badge-sm badge-primary">
+                  {numberOfShips}
+                </span>
               </Link>
             </li>
 
@@ -49,6 +56,9 @@ const Sidebar = () => {
               <Link href="/crew">
                 <GiPirateCoat className="h-5 w-5" />
                 Crew members
+                <span className="badge badge-sm badge-primary">
+                  {numberOfCrewMembers}
+                </span>
               </Link>
             </li>
 
@@ -98,12 +108,25 @@ const Sidebar = () => {
             <GiPirateHat className="h-14 w-14" />
           </figure>
 
-          <div className="card-body pt-2">
+          <div className="card-body p-6 pt-2">
             <h2 className="card-title">{player?.character.name}</h2>
+
             <p>
               You are a {player?.character.age} year old{" "}
               {player?.character.gender.toLowerCase()}.
             </p>
+
+            <div className="stats">
+              <div className="stat px-0 py-2">
+                <div className="stat-figure text-secondary">
+                  <GiCoins className="h-8 w-8" />
+                </div>
+                <div className="stat-title">Doubloons</div>
+                <div className="stat-value text-2xl">
+                  {player?.inventory.doubloons}
+                </div>
+              </div>
+            </div>
 
             <div className="card-actions justify-end">
               <Link href="/settings">
