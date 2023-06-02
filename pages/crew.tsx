@@ -1,4 +1,5 @@
 import { FormEvent } from "react"
+import { FiTrash2 } from "react-icons/fi"
 
 import DefaultLayout from "@/components/layouts/default"
 import Table from "@/components/ui/Table"
@@ -52,7 +53,7 @@ const Crew = () => {
                     onClick={() => handleRemoveCrewMember(crewMember.id)}
                     disabled={removingIsLoading}
                   >
-                    Delete
+                    <FiTrash2 />
                   </button>,
                 ]
               )}

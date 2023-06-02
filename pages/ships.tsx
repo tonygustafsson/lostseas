@@ -1,4 +1,5 @@
 import { FormEvent, useState } from "react"
+import { FiTrash2 } from "react-icons/fi"
 
 import DefaultLayout from "@/components/layouts/default"
 import Select from "@/components/ui/Select"
@@ -59,7 +60,7 @@ const Ships = () => {
                   onClick={() => handleRemoveShip(ship.id)}
                   disabled={removingIsLoading}
                 >
-                  Delete
+                  <FiTrash2 />
                 </button>,
               ])}
             />
