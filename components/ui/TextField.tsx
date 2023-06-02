@@ -8,6 +8,7 @@ type Props = {
   required?: boolean
   min?: number
   max?: number
+  minLength?: number
   autoFocus?: boolean
   pattern?: string
   title?: string
@@ -24,6 +25,7 @@ const TextField = ({
   required,
   min,
   max,
+  minLength,
   autoFocus,
   pattern,
   title,
@@ -45,6 +47,7 @@ const TextField = ({
       required={required}
       min={min}
       max={max}
+      minLength={minLength}
       autoFocus={autoFocus}
       pattern={pattern}
       title={title}

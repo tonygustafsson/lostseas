@@ -13,6 +13,8 @@ import {
 import { LOCAL_STORAGE_PLAYER_ID_KEY } from "@/constants/system"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
+import Flag from "./icons/Flag"
+
 const Sidebar = () => {
   const { data: player } = useGetPlayer()
   const { pathname } = useRouter()
@@ -143,11 +145,19 @@ const Sidebar = () => {
           </figure>
 
           <div className="card-body p-6 pt-2">
-            <h2 className="card-title">{player?.character.name}</h2>
+            <h2 className="card-title">
+              <Flag
+                nation={player?.character.nationality}
+                size={24}
+                className="opacity-[0.8]"
+              />
+              {player?.character.name}
+            </h2>
 
             <p>
               You are a {player?.character.age} year old{" "}
-              {player?.character.gender.toLowerCase()}.
+              {player?.character.gender.toLowerCase()} from{" "}
+              {player?.character.nationality}.
             </p>
 
             <div className="stats">

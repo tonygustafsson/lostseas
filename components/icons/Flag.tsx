@@ -1,10 +1,10 @@
 type Props = {
   nation: Nation | undefined
-  width?: number
-  height?: number
+  size?: number
+  className?: string
 }
 
-const Flag = ({ nation, width = 32, height = 32 }: Props) => {
+const Flag = ({ nation, size = 32, className }: Props) => {
   if (!nation) {
     return null
   }
@@ -13,9 +13,10 @@ const Flag = ({ nation, width = 32, height = 32 }: Props) => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 640 480"
-      width={width}
-      height={height}
+      width={size}
+      height={size}
       aria-label={nation}
+      className={className}
     >
       {nation === "England" && (
         <>

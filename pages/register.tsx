@@ -3,10 +3,12 @@ import { useState } from "react"
 import DefaultLayout from "@/components/layouts/default"
 import Select from "@/components/ui/Select"
 import TextField from "@/components/ui/TextField"
+import { NATIONS } from "@/constants/locations"
 import { usePlayer } from "@/hooks/queries/usePlayer"
 import getEnglishFemaleName from "@/utils/getEnglishFemaleName"
 import getEnglishMaleName from "@/utils/getEnglishMaleName"
 import getEnglishSurname from "@/utils/getEnglishSurname"
+import { getRandomInt } from "@/utils/random"
 
 const Register = () => {
   const { register, registrationIsLoading } = usePlayer()
@@ -16,11 +18,14 @@ const Register = () => {
   const randomName = `${
     randomGender === "Male" ? getEnglishMaleName() : getEnglishFemaleName()
   } ${getEnglishSurname()}`
-  const randomAge = Math.floor(Math.random() * (70 - 14 + 1) + 14)
+  const randomAge = getRandomInt(14, 70)
+  const randomNationalityIndex = getRandomInt(0, 3)
+  const randomNationality = NATIONS[randomNationalityIndex]
 
-  const [characterName, setCharacterName] = useState(randomName)
-  const [characterAge, setCharacterAge] = useState(randomAge)
-  const [characterGender, setCharacterGender] = useState(randomGender)
+  const [name, setName] = useState(randomName)
+  const [age, setAge] = useState(randomAge)
+  const [gender, setGender] = useState(randomGender)
+  const [nationality, setNationality] = useState(randomNationality)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -43,33 +48,43 @@ const Register = () => {
         <h2 className="font-serif text-2xl mt-8">Character</h2>
 
         <TextField
-          id="character_name"
-          name="character_name"
+          id="name"
+          name="name"
           label="Name"
-          value={characterName}
-          onChange={(e) => setCharacterName(e)}
+          value={name}
+          minLength={3}
+          onChange={(e) => setName(e)}
           required
         />
 
         <Select
+          label="Nationality"
+          name="nationality"
+          id="nationality"
+          value={nationality}
+          options={NATIONS}
+          onChange={(e) => setNationality(e.target.value)}
+        />
+
+        <Select
           label="Gender"
-          name="character_gender"
-          id="character_gender"
-          value={characterGender}
+          name="gender"
+          id="gender"
+          value={gender}
           options={["Male", "Female"]}
-          onChange={(e) => setCharacterGender(e.target.value)}
+          onChange={(e) => setGender(e.target.value)}
         />
 
         <TextField
           type="number"
           required
-          min={15}
-          max={80}
-          id="character_age"
-          name="character_age"
+          min={14}
+          max={70}
+          id="age"
+          name="age"
           label="Age"
-          value={characterAge.toString()}
-          onChange={(e) => setCharacterAge(parseInt(e))}
+          value={age.toString()}
+          onChange={(e) => setAge(parseInt(e))}
         />
 
         <button

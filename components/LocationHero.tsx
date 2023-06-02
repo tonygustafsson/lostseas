@@ -1,5 +1,5 @@
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-import getTownNation from "@/utils/getTownNation"
+import { getTownsNationality } from "@/utils/townNation"
 
 import Flag from "./icons/Flag"
 import Move from "./Move"
@@ -7,7 +7,7 @@ import Travel from "./Travel"
 
 const LocationHero = () => {
   const { data: player } = useGetPlayer()
-  const nation = getTownNation(player?.character.town)
+  const nation = getTownsNationality(player?.character.town)
 
   if (!player) return null
 
@@ -28,9 +28,7 @@ const LocationHero = () => {
           </h1>
 
           <h2 className="font-serif mb-5 text-2xl flex gap-3 justify-center">
-            <div className="opacity-[0.8]">
-              <Flag nation={nation} />
-            </div>
+            <Flag nation={nation} className="opacity-[0.8]" />
             {nation}
           </h2>
 
