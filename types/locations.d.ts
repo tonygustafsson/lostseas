@@ -25,4 +25,6 @@ type TownLocation =
   | "City hall"
   | "Docks"
 
+type Nation = "England" | "France" | "Spain" | "Holland"
+
 type SeaLocation = "Sea" | "Harbor"

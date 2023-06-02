@@ -1,10 +1,12 @@
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import getTownNation from "@/utils/getTownNation"
 
 import Move from "./Move"
 import Travel from "./Travel"
 
 const LocationHero = () => {
   const { data: player } = useGetPlayer()
+  const nation = getTownNation(player?.character.town)
 
   if (!player) return null
 
@@ -20,9 +22,10 @@ const LocationHero = () => {
       <div className="hero-overlay bg-opacity-50"></div>
       <div className="hero-content text-center text-neutral-content py-24">
         <div className="max-w-2xl bg-base-300 bg-opacity-60 p-8 rounded-lg">
-          <h1 className="font-serif mb-5 text-5xl">
+          <h1 className="font-serif mb-3 text-5xl">
             {player?.character.town}s {player?.character.location}
           </h1>
+          <h2 className="font-serif mb-5 text-2xl">{nation}</h2>
 
           <p className="mb-5">
             Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda

@@ -17,6 +17,8 @@ export const TOWNS = [
   "Villa Hermosa",
 ] as Town[]
 
+export const NATIONS = ["England", "France", "Spain", "Holland"] as Nation[]
+
 export const LOCATIONS = {
   bank: "Bank",
   tavern: "Tavern",
