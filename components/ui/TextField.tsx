@@ -31,7 +31,7 @@ const TextField = ({
   title,
   onChange,
 }: Props) => (
-  <div className={`form-control ${type !== "hidden" ? "w-full" : ""}`}>
+  <div className={`${type !== "hidden" ? "form-control w-full" : ""}`}>
     {label && (
       <label htmlFor={id} className="label">
         {label}

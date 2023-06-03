@@ -30,7 +30,7 @@ const Sidebar = () => {
   }
 
   return (
-    <div className="w-80 py-8 px-4 bg-base-300 ">
+    <div className="w-80 py-8 px-4 bg-gray-900">
       <Link
         href="/"
         className="font-serif text-3xl flex gap-3 items-center mb-4 mx-2"
@@ -38,36 +38,26 @@ const Sidebar = () => {
         <GiPirateFlag className="h-8 w-8" /> Lost Seas
       </Link>
 
-      <ul className="menu text-base-content">
+      <ul className="sidebar-menu">
         {player ? (
           <>
-            <li
-              className={`${
-                pathname === "/" ? "bg-info-content" : "transparent"
-              }`}
-            >
+            <li className={`${pathname === "/" ? "active" : ""}`}>
               <Link href="/">
                 <GiPirateHat className="h-5 w-5" />
                 Play
               </Link>
             </li>
 
-            <li
-              className={`mt-4 ${
-                pathname === "/status" ? "bg-info-content" : "transparent"
-              }`}
-            >
+            <li className="sidebar-menu-separator" aria-hidden></li>
+
+            <li className={`${pathname === "/status" ? "active" : ""}`}>
               <Link href="/status">
                 <GiPirateCoat className="h-5 w-5" />
                 Status
               </Link>
             </li>
 
-            <li
-              className={`${
-                pathname === "/ships" ? "bg-info-content" : "transparent"
-              }`}
-            >
+            <li className={`${pathname === "/ships" ? "active" : ""}`}>
               <Link href="/ships">
                 <GiShoonerSailboat className="h-5 w-5" />
                 Ships
@@ -77,11 +67,7 @@ const Sidebar = () => {
               </Link>
             </li>
 
-            <li
-              className={`${
-                pathname === "/crew" ? "bg-info-content" : "transparent"
-              }`}
-            >
+            <li className={`${pathname === "/crew" ? "active" : ""}`}>
               <Link href="/crew">
                 <GiHoodedFigure className="h-5 w-5" />
                 Crew members
@@ -91,11 +77,7 @@ const Sidebar = () => {
               </Link>
             </li>
 
-            <li
-              className={`${
-                pathname === "/inventory" ? "bg-info-content" : "transparent"
-              }`}
-            >
+            <li className={`${pathname === "/inventory" ? "active" : ""}`}>
               <Link href="/inventory">
                 <GiOpenedFoodCan className="h-5 w-5" />
                 Inventory
@@ -105,11 +87,9 @@ const Sidebar = () => {
               </Link>
             </li>
 
-            <li
-              className={`mt-4 ${
-                pathname === "/settings" ? "bg-info-content" : "transparent"
-              }`}
-            >
+            <li className="sidebar-menu-separator" aria-hidden></li>
+
+            <li className={`${pathname === "/settings" ? "active" : ""}`}>
               <Link href="/settings">
                 <FiSettings className="h-5 w-5" />
                 Settings
@@ -125,22 +105,14 @@ const Sidebar = () => {
           </>
         ) : (
           <>
-            <li
-              className={`${
-                pathname === "/login" ? "bg-info-content" : "transparent"
-              }`}
-            >
+            <li className={`${pathname === "/login" ? "active" : ""}`}>
               <Link href="/login">
                 <FiLogIn className="h-5 w-5" />
                 Sign in
               </Link>
             </li>
 
-            <li
-              className={`${
-                pathname === "/register" ? "bg-info-content" : "transparent"
-              }`}
-            >
+            <li className={`${pathname === "/register" ? "active" : ""}`}>
               <Link href="/register">
                 <FiUserPlus className="h-5 w-5" />
                 Register
@@ -151,7 +123,7 @@ const Sidebar = () => {
       </ul>
 
       {player && (
-        <div className="card w-full bg-base-100 shadow-lg mt-8 rounded-md">
+        <div className="card w-full bg-gray-800 shadow-lg mt-8 rounded-md">
           <figure className="mt-4">
             <GiPirateHat className="h-14 w-14" />
           </figure>
@@ -172,7 +144,7 @@ const Sidebar = () => {
               {player?.character.nationality}.
             </p>
 
-            <div className="stats">
+            <div className="stats bg-gray-800">
               <div className="stat px-0 py-2">
                 <div className="stat-figure text-secondary">
                   <GiCoins className="h-8 w-8" />
@@ -185,7 +157,7 @@ const Sidebar = () => {
             </div>
 
             <div className="card-actions justify-end">
-              <Link href="/settings">
+              <Link href="/status">
                 <button className="btn btn-secondary btn-sm">More info</button>
               </Link>
             </div>

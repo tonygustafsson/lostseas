@@ -63,7 +63,7 @@ const Crew = () => {
 
         <form
           onSubmit={handleCreateCrewMember}
-          className="mt-8 flex items-bottom gap-3"
+          className="flex items-bottom gap-3"
         >
           <TextField
             type="hidden"
