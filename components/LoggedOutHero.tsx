@@ -8,7 +8,12 @@ const LoggedOutHero = () => {
   if (player) return null
 
   return (
-    <div className="hero rounded-lg">
+    <div
+      className="hero rounded-lg"
+      style={{
+        backgroundImage: `url("img/place/tavern_england.png")`,
+      }}
+    >
       <div className="hero-overlay bg-opacity-50"></div>
       <div className="hero-content text-center text-neutral-content py-24">
         <div className="max-w-2xl bg-base-300 bg-opacity-60 p-8 rounded-lg">
