@@ -1,3 +1,4 @@
+import { useCharacter } from "@/hooks/queries/useCharacter"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getTownsNationality } from "@/utils/townNation"
 
@@ -7,7 +8,21 @@ import Travel from "./Travel"
 
 const LocationHero = () => {
   const { data: player } = useGetPlayer()
+  const { move, sailOut } = useCharacter()
+
   const nation = getTownsNationality(player?.character.town)
+
+  const isOnSeas =
+    player?.character.location === "Sea" ||
+    player?.character.location === "Harbor"
+
+  const handleLand = () => {
+    move({ userId: player?.id || "", location: "Docks" })
+  }
+
+  const handleSailOut = () => {
+    sailOut({ userId: player?.id || "" })
+  }
 
   if (!player) return null
 
@@ -24,13 +39,17 @@ const LocationHero = () => {
       <div className="hero-content text-center text-neutral-content py-24">
         <div className="max-w-2xl bg-base-300 bg-opacity-60 p-8 rounded-lg">
           <h1 className="font-serif mb-4 text-5xl">
-            {player?.character.town}s {player?.character.location}
+            {player?.character.location === "Sea"
+              ? "Open Seas"
+              : `${player?.character.town}s ${player?.character.location}`}
           </h1>
 
-          <h2 className="font-serif mb-5 text-2xl flex gap-3 justify-center">
-            <Flag nation={nation} className="opacity-[0.8]" />
-            {nation}
-          </h2>
+          {player?.character.location !== "Sea" && (
+            <h2 className="font-serif mb-5 text-2xl flex gap-3 justify-center">
+              <Flag nation={nation} className="opacity-[0.8]" />
+              {nation}
+            </h2>
+          )}
 
           <p className="mb-5">
             Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
@@ -39,8 +58,20 @@ const LocationHero = () => {
           </p>
 
           <div className="flex gap-4 mt-4 justify-center">
-            <Move />
-            <Travel />
+            {!isOnSeas && (
+              <>
+                <Move />
+                <button className="btn btn-primary" onClick={handleSailOut}>
+                  Sail the Seas
+                </button>
+              </>
+            )}
+            {isOnSeas && <Travel />}
+            {player?.character.location === "Harbor" && (
+              <button className="btn btn-primary" onClick={handleLand}>
+                Land
+              </button>
+            )}
           </div>
         </div>
       </div>

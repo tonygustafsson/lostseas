@@ -3,6 +3,6 @@ type Character = {
   name: string
   gender: "Male" | "Female"
   nationality: Nation
-  town: Town
+  town: Town | undefined
   location: TownLocation | SeaLocation
 }

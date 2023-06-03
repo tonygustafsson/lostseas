@@ -25,6 +25,15 @@ export const useCharacter = () => {
     }
   )
 
+  const { mutate: sailOut, isLoading: isSailingOut } = useMutation(
+    (data: { userId: Player["id"] }) =>
+      apiRequest("/api/character/sailout", data, "POST"),
+    {
+      onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),
+      onError: (error) => console.error(error),
+    }
+  )
+
   const { mutate: update, isLoading: updateIsLoading } = useMutation(
     (userData: UpdatePlayerClientRequest) =>
       apiRequest("/api/character/update", userData, "POST"),
@@ -41,6 +50,8 @@ export const useCharacter = () => {
     isTraveling,
     move,
     isMoving,
+    sailOut,
+    isSailingOut,
     update,
     updateIsLoading,
   }

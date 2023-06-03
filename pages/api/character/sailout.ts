@@ -3,14 +3,13 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 
 import db from "@/firebase/db"
 
-const travel = async (req: NextApiRequest, res: NextApiResponse) => {
+const sailout = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
   const userId: Player["id"] = req.body.userId
-  const town: Town = req.body.town
-  const location: SeaLocation = "Harbor"
+  const location: SeaLocation = "Sea"
 
   const existingCharacter = await get(child(dbRef, `${userId}/character`))
-  const result = { ...existingCharacter.val(), town, location }
+  const result = { ...existingCharacter.val(), location, town: null }
 
   await set(ref(db, `${userId}/character`), result).catch((error) => {
     res.status(500).json({ error })
@@ -19,4 +18,4 @@ const travel = async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(200).json({ success: true })
 }
 
-export default travel
+export default sailout
