@@ -1,4 +1,4 @@
-import { GiCoins, GiFoodChain, GiWaterFlask } from "react-icons/gi"
+import { GiCoins, GiMeat, GiWaterFlask } from "react-icons/gi"
 
 import DefaultLayout from "@/components/layouts/default"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -22,9 +22,9 @@ const Inventory = () => {
             key={`inventory-${item}`}
           >
             <div className="stat-figure text-secondary">
-              {item === "Doubloons" && <GiCoins className="h-8 w-8" />}
-              {item === "Food" && <GiFoodChain className="h-8 w-8" />}
-              {item === "Water" && <GiWaterFlask className="h-8 w-8" />}
+              {item === "Doubloons" && <GiCoins className="h-10 w-10" />}
+              {item === "Food" && <GiMeat className="h-10 w-10" />}
+              {item === "Water" && <GiWaterFlask className="h-10 w-10" />}
             </div>
             <div className="stat-title">{item}</div>
             <div className="stat-value">{possession}</div>
