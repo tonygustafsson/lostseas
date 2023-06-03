@@ -5,4 +5,5 @@ type Character = {
   nationality: Nation
   town: Town | undefined
   location: TownLocation | SeaLocation
+  doubloons: number
 }

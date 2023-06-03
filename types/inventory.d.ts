@@ -1,5 +1,4 @@
 type Inventory = {
-  doubloons: number
   food: number
   water: number
   porcelain?: number

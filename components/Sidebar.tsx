@@ -151,7 +151,7 @@ const Sidebar = () => {
                 </div>
                 <div className="stat-title">Doubloons</div>
                 <div className="stat-value text-2xl">
-                  {player?.inventory.doubloons}
+                  {player?.character.doubloons}
                 </div>
               </div>
             </div>

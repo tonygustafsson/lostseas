@@ -8,6 +8,8 @@ import {
   GiWaterFlask,
 } from "react-icons/gi"
 
+import { prices } from "@/constants/prices"
+
 type ItemProps = {
   title: string
   description: string
@@ -22,6 +24,15 @@ const Item = ({ title, description, icon }: ItemProps) => (
       <h2 className="card-title">{title}</h2>
 
       <p>{description}</p>
+
+      <div className="flex gap-2 mt-2">
+        <div className="badge badge-secondary">
+          Buy: {prices[title.toLowerCase() as keyof Inventory].buy} dbl
+        </div>
+        <div className="badge badge-secondary">
+          Sell: {prices[title.toLowerCase() as keyof Inventory].sell} dbl
+        </div>
+      </div>
 
       <div className="card-actions justify-end mt-2">
         <button className="btn btn-sm">Sell</button>

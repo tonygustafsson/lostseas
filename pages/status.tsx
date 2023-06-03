@@ -49,13 +49,11 @@ const Status = () => {
             />
             {player?.character.name}
           </h2>
-
           <p>
             You are a {player?.character.age} year old{" "}
             {player?.character.gender.toLowerCase()} from{" "}
             {player?.character.nationality}.
           </p>
-
           <div className="stats bg-gray-700 mt-4">
             <div className="stat">
               <div className="stat-figure text-secondary">
@@ -63,11 +61,11 @@ const Status = () => {
               </div>
               <div className="stat-title">Doubloons</div>
               <div className="stat-value text-2xl">
-                {player?.inventory.doubloons}
+                {player?.character.doubloons}
               </div>
             </div>
           </div>
-
+          v
           <div className="card-actions justify-end mt-4">
             <label
               htmlFor={characterModalId}
