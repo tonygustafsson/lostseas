@@ -33,10 +33,10 @@ const LocationHero = () => {
       style={{
         backgroundImage: `url("img/place/${player?.character.location
           .replace(" ", "-")
-          .toLowerCase()}_england.png")`,
+          .toLowerCase()}.webp")`,
       }}
     >
-      <div className="hero-overlay bg-opacity-50"></div>
+      <div className="hero-overlay bg-opacity-20"></div>
       <div className="hero-content text-center text-neutral-content py-24">
         <div className="max-w-2xl min-w-[600px] bg-base-300 bg-opacity-60 p-8 rounded-lg">
           <h1 className="font-serif mb-4 text-5xl">
