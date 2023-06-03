@@ -2,6 +2,6 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "cSpell.words": ["lostseas"],
+  "cSpell.words": ["daisyui", "lostseas", "qrcode", "tailwindcss", "tanstack"],
   "typescript.tsdk": "node_modules/typescript/lib"
 }
