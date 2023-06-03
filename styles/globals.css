@@ -4,29 +4,39 @@
 
 .table-zebra tbody tr:nth-child(even) {
     /* Temporary hack since DaisyUI 3.0.1 has buggy zebra tables */
-    @apply bg-neutral-900
+    @apply bg-neutral-900;
 }
 
 .table-zebra thead th {
-    @apply bg-neutral-900 text-sm rounded-tl-md rounded-tr-md
+    @apply bg-neutral-900 text-sm rounded-tl-md rounded-tr-md;
 }
 
 .sidebar-menu {
-    @apply menu text-base px-0 text-base-content
+    @apply menu text-base px-0 text-base-content;
 }
 
 .sidebar-menu li {
-    @apply my-0.5
+    @apply my-0.5;
 }
 
 .sidebar-menu > li.active {
-    @apply bg-gray-800
+    @apply bg-gray-800;
 }
 
 .sidebar-menu li:hover {
-    @apply bg-gray-800
+    @apply bg-gray-800;
 }
 
 li.sidebar-menu-separator {
-    @apply my-4 h-[1px] border-b border-gray-800
+    @apply my-4 h-[1px] border-b border-gray-800;
 }
+
+.global-loading-indicator {
+    @apply fixed top-0 left-0 w-screen h-screen bg-opacity-50 bg-base-100;
+    content: "";
+}
+
+.global-loading-indicator > .spinner {
+    @apply loading loading-ring w-20 fixed top-1/4 left-1/2 -translate-y-1/4 -translate-x-1/2;
+}
+

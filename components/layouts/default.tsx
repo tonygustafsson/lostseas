@@ -24,7 +24,9 @@ export default function DefaultLayout({
       </div>
 
       {!!isFetching && (
-        <span className="loading loading-ring loading-lg fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"></span>
+        <div className="global-loading-indicator">
+          <div className="spinner"></div>
+        </div>
       )}
     </>
   )
