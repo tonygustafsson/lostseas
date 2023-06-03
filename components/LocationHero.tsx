@@ -1,3 +1,4 @@
+import { LOCATION_DESCRIPTION } from "@/constants/text"
 import { useCharacter } from "@/hooks/queries/useCharacter"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getTownsNationality } from "@/utils/townNation"
@@ -37,7 +38,7 @@ const LocationHero = () => {
     >
       <div className="hero-overlay bg-opacity-50"></div>
       <div className="hero-content text-center text-neutral-content py-24">
-        <div className="max-w-2xl bg-base-300 bg-opacity-60 p-8 rounded-lg">
+        <div className="max-w-2xl min-w-[600px] bg-base-300 bg-opacity-60 p-8 rounded-lg">
           <h1 className="font-serif mb-4 text-5xl">
             {player?.character.location === "Sea"
               ? "Open Seas"
@@ -52,9 +53,7 @@ const LocationHero = () => {
           )}
 
           <p className="mb-5">
-            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-            excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
-            a id nisi.
+            {LOCATION_DESCRIPTION[player?.character.location]}
           </p>
 
           <div className="flex gap-4 mt-4 justify-center">
