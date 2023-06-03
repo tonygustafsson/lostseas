@@ -39,7 +39,7 @@ const Status = () => {
     <DefaultLayout>
       <h1 className="text-3xl font-serif text mb-6">Status</h1>
 
-      <div className="card w-full bg-gray-900 shadow-lg mt-8 rounded-md">
+      <div className="card w-full bg-gray-800 shadow-lg mt-8 rounded-md">
         <div className="card-body p-6">
           <h2 className="card-title">
             <Flag
@@ -56,7 +56,7 @@ const Status = () => {
             {player?.character.nationality}.
           </p>
 
-          <div className="stats bg-gray-800 mt-4">
+          <div className="stats bg-gray-700 mt-4">
             <div className="stat">
               <div className="stat-figure text-secondary">
                 <GiCoins className="h-8 w-8" />

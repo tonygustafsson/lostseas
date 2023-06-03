@@ -67,7 +67,10 @@ const Ships = () => {
           </>
         )}
 
-        <form onSubmit={handleCreateShip} className="mt-8 flex items-end gap-3">
+        <form
+          onSubmit={handleCreateShip}
+          className="mt-8 flex flex-wrap items-end gap-3"
+        >
           <TextField
             type="hidden"
             name="userId"
