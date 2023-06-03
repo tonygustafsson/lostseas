@@ -22,16 +22,18 @@ const Move = () => {
 
       <Modal id={modalId} title="Pick your location">
         <div className="flex flex-wrap gap-2">
-          {Object.values(LOCATIONS).map((location, idx) => (
-            <label
-              key={`destination-${location}-${idx}`}
-              className="btn btn-secondary"
-              onClick={() => handleMove(location)}
-              htmlFor={modalId}
-            >
-              {location}
-            </label>
-          ))}
+          {Object.values(LOCATIONS)
+            .filter((location) => location !== "Sea" && location !== "Harbor")
+            .map((location, idx) => (
+              <label
+                key={`destination-${location}-${idx}`}
+                className="btn btn-secondary"
+                onClick={() => handleMove(location)}
+                htmlFor={modalId}
+              >
+                {location}
+              </label>
+            ))}
         </div>
       </Modal>
     </>
