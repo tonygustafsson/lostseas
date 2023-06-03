@@ -9,83 +9,119 @@ import {
 } from "react-icons/gi"
 
 import { prices } from "@/constants/prices"
+import { useInventory } from "@/hooks/queries/useInventory"
+import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 type ItemProps = {
+  userId?: Player["id"]
   title: string
   description: string
   icon: React.ReactElement
 }
 
-const Item = ({ title, description, icon }: ItemProps) => (
-  <div className="card w-72 bg-base-100 shadow-xl pt-4">
-    <figure>{icon}</figure>
+const Item = ({ userId, title, description, icon }: ItemProps) => {
+  const { buy, sell } = useInventory()
 
-    <div className="card-body pt-2">
-      <h2 className="card-title">{title}</h2>
+  const handleBuy = () => {
+    buy({
+      userId: userId || "",
+      item: title.toLowerCase() as keyof Inventory,
+    })
+  }
 
-      <p>{description}</p>
+  const handleSell = () => {
+    sell({
+      userId: userId || "",
+      item: title.toLowerCase() as keyof Inventory,
+    })
+  }
 
-      <div className="flex gap-2 mt-2">
-        <div className="badge badge-secondary">
-          Buy: {prices[title.toLowerCase() as keyof Inventory].buy} dbl
+  return (
+    <div className="card w-72 bg-base-100 shadow-xl pt-4">
+      <figure>{icon}</figure>
+
+      <div className="card-body pt-2">
+        <h2 className="card-title">{title}</h2>
+
+        <p>{description}</p>
+
+        <div className="flex gap-2 mt-2">
+          <div className="badge badge-secondary">
+            Buy: {prices[title.toLowerCase() as keyof Inventory].buy} dbl
+          </div>
+          <div className="badge badge-secondary">
+            Sell: {prices[title.toLowerCase() as keyof Inventory].sell} dbl
+          </div>
         </div>
-        <div className="badge badge-secondary">
-          Sell: {prices[title.toLowerCase() as keyof Inventory].sell} dbl
-        </div>
-      </div>
 
-      <div className="card-actions justify-end mt-2">
-        <button className="btn btn-sm">Sell</button>
-        <button className="btn btn-primary btn-sm">Buy</button>
+        <div className="card-actions justify-end mt-2">
+          <button className="btn btn-sm" onClick={handleSell}>
+            Sell
+          </button>
+          <button className="btn btn-primary btn-sm" onClick={handleBuy}>
+            Buy
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-)
+  )
+}
 
-const Shop = () => (
-  <div className="flex flex-wrap gap-6">
-    <Item
-      title="Food"
-      description="You need food to travel the open seas."
-      icon={<GiMeat className="text-6xl text-primary" />}
-    />
+const Shop = () => {
+  const { data: player } = useGetPlayer()
 
-    <Item
-      title="Water"
-      description="You need water to travel the open seas."
-      icon={<GiWaterFlask className="text-6xl text-primary" />}
-    />
+  return (
+    <div className="flex flex-wrap gap-6">
+      <Item
+        title="Food"
+        description="You need food to travel the open seas."
+        icon={<GiMeat className="text-6xl text-primary" />}
+        userId={player?.id || ""}
+      />
 
-    <Item
-      title="Porcelain"
-      description="A great trading asset. Not used for anything specific."
-      icon={<GiPorcelainVase className="text-6xl text-primary" />}
-    />
+      <Item
+        title="Water"
+        description="You need water to travel the open seas."
+        icon={<GiWaterFlask className="text-6xl text-primary" />}
+        userId={player?.id || ""}
+      />
 
-    <Item
-      title="Spices"
-      description="A great trading asset. Not used for anything specific."
-      icon={<GiPowder className="text-6xl text-primary" />}
-    />
+      <Item
+        title="Porcelain"
+        description="A great trading asset. Not used for anything specific."
+        icon={<GiPorcelainVase className="text-6xl text-primary" />}
+        userId={player?.id || ""}
+      />
 
-    <Item
-      title="Silk"
-      description="A great trading asset. Not used for anything specific."
-      icon={<GiRolledCloth className="text-6xl text-primary" />}
-    />
+      <Item
+        title="Spices"
+        description="A great trading asset. Not used for anything specific."
+        icon={<GiPowder className="text-6xl text-primary" />}
+        userId={player?.id || ""}
+      />
 
-    <Item
-      title="Tobacco"
-      description="A great trading asset and can also make your crew happy."
-      icon={<GiSmokingPipe className="text-6xl text-primary" />}
-    />
+      <Item
+        title="Silk"
+        description="A great trading asset. Not used for anything specific."
+        icon={<GiRolledCloth className="text-6xl text-primary" />}
+        userId={player?.id || ""}
+      />
 
-    <Item
-      title="Rum"
-      description="A great trading asset and can also make your crew happy."
-      icon={<GiBrandyBottle className="text-6xl text-primary" />}
-    />
-  </div>
-)
+      <Item
+        title="Tobacco"
+        description="A great trading asset and can also make your crew happy."
+        icon={<GiSmokingPipe className="text-6xl text-primary" />}
+        userId={player?.id || ""}
+      />
+
+      <Item
+        title="Rum"
+        description="A great trading asset and can also make your crew happy."
+        icon={<GiBrandyBottle className="text-6xl text-primary" />}
+        userId={player?.id || ""}
+      />
+    </div>
+  )
+}
 
 export default Shop

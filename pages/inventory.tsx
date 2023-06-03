@@ -1,4 +1,13 @@
-import { GiCoins, GiMeat, GiWaterFlask } from "react-icons/gi"
+import {
+  GiBrandyBottle,
+  GiCoins,
+  GiMeat,
+  GiPorcelainVase,
+  GiPowder,
+  GiRolledCloth,
+  GiSmokingPipe,
+  GiWaterFlask,
+} from "react-icons/gi"
 
 import DefaultLayout from "@/components/layouts/default"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -25,6 +34,13 @@ const Inventory = () => {
               {item === "Doubloons" && <GiCoins className="h-10 w-10" />}
               {item === "Food" && <GiMeat className="h-10 w-10" />}
               {item === "Water" && <GiWaterFlask className="h-10 w-10" />}
+              {item === "Porcelain" && (
+                <GiPorcelainVase className="h-10 w-10" />
+              )}
+              {item === "Spices" && <GiPowder className="h-10 w-10" />}
+              {item === "Silk" && <GiRolledCloth className="h-10 w-10" />}
+              {item === "Tobacco" && <GiSmokingPipe className="h-10 w-10" />}
+              {item === "Rum" && <GiBrandyBottle className="h-10 w-10" />}
             </div>
             <div className="stat-title">{item}</div>
             <div className="stat-value">{possession}</div>
