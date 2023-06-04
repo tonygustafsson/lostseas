@@ -5,7 +5,7 @@ type Props = {
 
 const Table = ({ headings, rows }: Props) => (
   <div className="overflow-x-auto">
-    <table className="table table-zebra">
+    <table className="table table-zebra bg-gray-950 bg-opacity-25">
       <thead>
         <tr>
           {headings.map((heading, idx) => (
@@ -20,7 +20,6 @@ const Table = ({ headings, rows }: Props) => (
             key={`table-row-${row.flatMap((column) =>
               column?.toString()
             )}-${idx}`}
-            className="table-zebra"
           >
             {row.map((column, idx) => (
               <td key={`table-column-${column}-${idx}`}>{column}</td>

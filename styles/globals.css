@@ -2,13 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-.table-zebra tbody tr:nth-child(even) {
-    /* Temporary hack since DaisyUI 3.0.1 has buggy zebra tables */
-    @apply bg-neutral-900;
-}
-
-.table-zebra thead th {
-    @apply bg-neutral-900 text-sm rounded-tl-md rounded-tr-md;
+.table-zebra thead tr {
+    @apply border-0
 }
 
 .sidebar-menu {
