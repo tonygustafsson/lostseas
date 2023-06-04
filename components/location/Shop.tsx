@@ -1,3 +1,4 @@
+import { useState } from "react"
 import {
   GiBrandyBottle,
   GiMeat,
@@ -12,6 +13,8 @@ import { prices } from "@/constants/prices"
 import { useInventory } from "@/hooks/queries/useInventory"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
+import TextField from "../ui/TextField"
+
 type ItemProps = {
   userId?: Player["id"]
   title: string
@@ -22,10 +25,31 @@ type ItemProps = {
 const Item = ({ userId, title, description, icon }: ItemProps) => {
   const { buy, sell } = useInventory()
 
+  const [quantity, setQuantity] = useState(1)
+
+  const changeQuantity = (value: string) => {
+    if (value === "") {
+      setQuantity(1)
+    } else {
+      setQuantity(parseInt(value))
+    }
+  }
+
+  const increase = () => {
+    setQuantity((prev) => prev + 1)
+  }
+
+  const decrease = () => {
+    if (quantity > 1) {
+      setQuantity((prev) => prev - 1)
+    }
+  }
+
   const handleBuy = () => {
     buy({
       userId: userId || "",
       item: title.toLowerCase() as keyof Inventory,
+      quantity,
     })
   }
 
@@ -33,11 +57,12 @@ const Item = ({ userId, title, description, icon }: ItemProps) => {
     sell({
       userId: userId || "",
       item: title.toLowerCase() as keyof Inventory,
+      quantity,
     })
   }
 
   return (
-    <div className="card w-72 bg-base-100 shadow-xl pt-4">
+    <div className="card w-80 bg-base-100 shadow-xl pt-4">
       <figure>{icon}</figure>
 
       <div className="card-body pt-2">
@@ -54,7 +79,33 @@ const Item = ({ userId, title, description, icon }: ItemProps) => {
           </div>
         </div>
 
-        <div className="card-actions justify-end mt-2">
+        <div className="card-actions justify-end mt-4 gap-2">
+          <div className="join">
+            <button
+              onClick={decrease}
+              className="btn btn-sm btn-primary join-item"
+            >
+              -
+            </button>
+            <TextField
+              value={quantity.toString()}
+              onChange={changeQuantity}
+              type="number"
+              name={""}
+              size="sm"
+              fullWidth={false}
+              className={`join-item ${quantity < 10 && "w-9"} ${
+                quantity < 100 && "w-11"
+              } ${quantity < 1000 && "w-14"} hide-number-arrows`}
+            />
+            <button
+              onClick={increase}
+              className="btn btn-sm btn-primary join-item"
+            >
+              +
+            </button>
+          </div>
+
           <button className="btn btn-sm" onClick={handleSell}>
             Sell
           </button>

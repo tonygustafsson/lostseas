@@ -35,3 +35,11 @@ li.sidebar-menu-separator {
     @apply loading loading-ring w-20 fixed top-1/4 left-1/2 -translate-y-1/4 -translate-x-1/2;
 }
 
+input.hide-number-arrows::-webkit-outer-spin-button,
+input.hide-number-arrows::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input.hide-number-arrows[type=number] {
+  -moz-appearance: textfield;
+}

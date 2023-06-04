@@ -3,6 +3,8 @@ type Props = {
   label?: string
   name: string
   type?: string
+  size?: "xs" | "sm" | "md" | "lg"
+  fullWidth?: boolean
   value?: string
   defaultValue?: string
   required?: boolean
@@ -12,6 +14,7 @@ type Props = {
   autoFocus?: boolean
   pattern?: string
   title?: string
+  className?: string
   onChange?: (value: string) => void
 }
 
@@ -22,6 +25,8 @@ const TextField = ({
   type = "text",
   value,
   defaultValue,
+  size,
+  fullWidth = true,
   required,
   min,
   max,
@@ -29,6 +34,7 @@ const TextField = ({
   autoFocus,
   pattern,
   title,
+  className,
   onChange,
 }: Props) => (
   <div className={`${type !== "hidden" ? "form-control w-full" : ""}`}>
@@ -51,7 +57,11 @@ const TextField = ({
       autoFocus={autoFocus}
       pattern={pattern}
       title={title}
-      className="input input-bordered w-full"
+      className={`input input-bordered ${size === "xs" && "input-xs"} ${
+        size === "sm" && "input-sm"
+      } ${size === "md" && "input-md"} ${size === "lg" && "input-lg"} ${
+        fullWidth && "w-full"
+      } ${className}`}
       onChange={(e) => onChange?.(e.target.value)}
     />
   </div>

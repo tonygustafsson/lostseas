@@ -8,7 +8,7 @@ export const useInventory = () => {
   const queryClient = useQueryClient()
 
   const { mutate: buy, isLoading: isBuying } = useMutation(
-    (data: { userId: Player["id"]; item: keyof Inventory }) =>
+    (data: { userId: Player["id"]; item: keyof Inventory; quantity: number }) =>
       apiRequest("/api/shop/buy", data, "POST"),
     {
       onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),
@@ -17,7 +17,7 @@ export const useInventory = () => {
   )
 
   const { mutate: sell, isLoading: isSelling } = useMutation(
-    (data: { userId: Player["id"]; item: keyof Inventory }) =>
+    (data: { userId: Player["id"]; item: keyof Inventory; quantity: number }) =>
       apiRequest("/api/shop/sell", data, "POST"),
     {
       onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),

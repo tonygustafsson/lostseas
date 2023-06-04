@@ -6,26 +6,26 @@ import db from "@/firebase/db"
 
 const shopSell = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
-  const { userId, item } = req.body
+  const { userId, item, quantity } = req.body
 
   if (!item || !Object.keys(prices).includes(item || "")) {
     res.status(400).json({ error: "Not a valid item" })
     return
   }
 
-  const price = prices[item as keyof typeof prices].sell
+  const totalPrice = prices[item as keyof typeof prices].sell * quantity
 
   const existingInventoryRef = await get(child(dbRef, `${userId}/inventory`))
   const existingInventory = existingInventoryRef.val()
 
-  if (existingInventory[item] < 1) {
+  if (existingInventory[item] < quantity) {
     res.status(400).json({ error: "Not enough items" })
     return
   }
 
   const inventoryResult = {
     ...existingInventory,
-    [item]: existingInventory[item] - 1,
+    [item]: existingInventory[item] - quantity,
   }
 
   await set(ref(db, `${userId}/inventory`), inventoryResult).catch((error) => {
@@ -36,7 +36,7 @@ const shopSell = async (req: NextApiRequest, res: NextApiResponse) => {
   const existingCharacter = existingCharacterRef.val()
   const characterResult = {
     ...existingCharacter,
-    doubloons: existingCharacter.doubloons + price,
+    doubloons: existingCharacter.doubloons + totalPrice,
   }
 
   await set(ref(db, `${userId}/character`), characterResult).catch((error) => {
