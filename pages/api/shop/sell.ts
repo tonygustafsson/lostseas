@@ -9,7 +9,7 @@ const shopSell = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId, item, quantity } = req.body
 
   if (!item || !Object.keys(PRICES).includes(item || "")) {
-    res.status(400).json({ error: "Not a valid item" })
+    res.status(400).json({ error: "Not a valid item", item })
     return
   }
 
@@ -19,7 +19,7 @@ const shopSell = async (req: NextApiRequest, res: NextApiResponse) => {
   const existingInventory = existingInventoryRef.val()
 
   if (existingInventory[item] < quantity) {
-    res.status(400).json({ error: "Not enough items" })
+    res.status(400).json({ error: `Not enough ${item}.`, item })
     return
   }
 
@@ -43,15 +43,13 @@ const shopSell = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(500).json({ error })
   })
 
-  res
-    .status(200)
-    .json({
-      success: true,
-      item,
-      quantity,
-      totalQuantity: inventoryResult[item],
-      totalPrice,
-    })
+  res.status(200).json({
+    success: true,
+    item,
+    quantity,
+    totalQuantity: inventoryResult[item],
+    totalPrice,
+  })
 }
 
 export default shopSell

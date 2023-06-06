@@ -56,6 +56,10 @@ input.hide-number-arrows[type=number] {
     @apply shadow-2xl drop-shadow-2xl border-[3px] rounded-lg bg-slate-800 p-6 pt-4 min-w-[400px]
 }
 
+.toast .alert.alert-success {
+    @apply text-white border-success;
+}
+
 .toast .alert .title {
     @apply text-xl font-bold
 }

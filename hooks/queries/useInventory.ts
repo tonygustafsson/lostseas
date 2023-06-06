@@ -18,6 +18,7 @@ export const useInventory = () => {
           setToast({
             title: `Could not buy ${item}`,
             message: error,
+            variant: "error",
           })
 
           return
@@ -28,6 +29,7 @@ export const useInventory = () => {
         setToast({
           title: `You bought ${quantity} pcs of ${item}`,
           message: `It cost you ${totalPrice} dbl and your now have ${totalQuantity} pcs of ${item}`,
+          variant: "success",
         })
       },
       onError: (error) => console.error(error),
@@ -41,8 +43,9 @@ export const useInventory = () => {
       onSuccess: ({ error, quantity, item, totalPrice, totalQuantity }) => {
         if (error) {
           setToast({
-            title: `Could not buy ${item}`,
+            title: `Could not sell ${item}`,
             message: error,
+            variant: "error",
           })
 
           return
@@ -53,6 +56,7 @@ export const useInventory = () => {
         setToast({
           title: `You sold ${quantity} pcs of ${item}`,
           message: `It received ${totalPrice} dbl and your now have ${totalQuantity} pcs of ${item}`,
+          variant: "success",
         })
       },
       onError: (error) => console.error(error),

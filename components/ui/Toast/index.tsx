@@ -1,3 +1,5 @@
+import { FiCheckCircle, FiXCircle } from "react-icons/fi"
+
 import { useToast } from "./context"
 
 const Toast = () => {
@@ -13,7 +15,12 @@ const Toast = () => {
           className={`toast toast-top toast-end ${toast.visible ? "open" : ""}`}
         >
           <div className="alert flex-col flex items-start">
-            <span className="title">{toast.title}</span>
+            <div className="flex gap-2 items-center">
+              {toast.variant === "success" && <FiCheckCircle size={24} />}
+              {toast.variant === "error" && <FiXCircle size={24} />}
+              <span className="title">{toast.title}</span>
+            </div>
+
             <span>{toast.message}</span>
           </div>
 

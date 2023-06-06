@@ -6,8 +6,6 @@ import {
   useReducer,
 } from "react"
 
-export type ToastVariant = "info" | "success" | "warning" | "error"
-
 export type ToastProps = {
   id?: string
   visible?: boolean
@@ -15,7 +13,7 @@ export type ToastProps = {
   href?: string
   title?: string
   message?: string | JSX.Element
-  variant?: ToastVariant
+  variant?: "success" | "error"
 }
 
 export interface State {
@@ -101,11 +99,13 @@ export const ToastProvider = (props: { children: React.ReactNode }) => {
     (toast: ToastProps) => {
       const id = crypto.randomUUID()
 
+      // Create it, won't show yet
       dispatch({
         type: "SET_TOAST",
         toast: { ...toast, id },
       })
 
+      // Show it afterwards to give animation a chance
       setTimeout(() => {
         dispatch({
           type: "SHOW_TOAST",
@@ -113,6 +113,7 @@ export const ToastProvider = (props: { children: React.ReactNode }) => {
         })
       }, 25)
 
+      // Hide it after a while
       setTimeout(() => {
         dispatch({
           type: "HIDE_TOAST",
@@ -120,6 +121,7 @@ export const ToastProvider = (props: { children: React.ReactNode }) => {
         })
       }, AUTOHIDE_DURATION - TRANSITION_DURATION)
 
+      // Remove it after the animation is done
       setTimeout(() => {
         dispatch({
           type: "REMOVE_TOAST",

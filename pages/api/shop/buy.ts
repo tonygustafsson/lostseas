@@ -29,7 +29,7 @@ const shopBuy = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   await set(ref(db, `${userId}/character`), characterResult).catch((error) => {
-    res.status(500).json({ error })
+    res.status(500).json({ error, item })
   })
 
   const existingInventoryRef = await get(child(dbRef, `${userId}/inventory`))
@@ -43,7 +43,7 @@ const shopBuy = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   await set(ref(db, `${userId}/inventory`), inventoryResult).catch((error) => {
-    res.status(500).json({ error })
+    res.status(500).json({ error, item })
   })
 
   res.status(200).json({

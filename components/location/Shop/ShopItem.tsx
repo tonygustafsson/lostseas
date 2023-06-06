@@ -20,7 +20,7 @@ const ShopItem = ({ player, item, description, icon }: Props) => {
   const price = PRICES[item]
   const buyingDisabled =
     quantity * price.buy > (player?.character.doubloons || Infinity)
-  const sellingDisabled = quantity > (player?.inventory[item] || Infinity)
+  const sellingDisabled = quantity > (player?.inventory[item] || 0)
 
   const changeQuantity = (value: string) => {
     if (value === "") {
