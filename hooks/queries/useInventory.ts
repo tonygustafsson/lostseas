@@ -17,8 +17,8 @@ export const useInventory = () => {
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
 
         setToast({
-          message: "Item purchased",
-          type: "success",
+          title: "Item purchased",
+          message: "You bought x of y for 500 dbl",
           autoHideDuration: 5000,
         })
       },
@@ -35,7 +35,6 @@ export const useInventory = () => {
 
         setToast({
           message: "Item sold",
-          type: "success",
           autoHideDuration: 5000,
         })
       },
