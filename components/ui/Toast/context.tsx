@@ -11,7 +11,6 @@ export type ToastVariant = "info" | "success" | "warning" | "error"
 export type ToastProps = {
   id?: string
   visible?: boolean
-  autoHideDuration?: number | null /* null never autocloses */
   buttonText?: string
   href?: string
   title?: string

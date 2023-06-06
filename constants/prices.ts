@@ -1,4 +1,4 @@
-export const prices: Record<keyof Inventory, { buy: number; sell: number }> = {
+export const PRICES: Record<keyof Inventory, { buy: number; sell: number }> = {
   food: {
     buy: 16,
     sell: 11,

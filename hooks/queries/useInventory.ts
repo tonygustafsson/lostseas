@@ -13,13 +13,21 @@ export const useInventory = () => {
     (data: { userId: Player["id"]; item: keyof Inventory; quantity: number }) =>
       apiRequest("/api/shop/buy", data, "POST"),
     {
-      onSuccess: () => {
+      onSuccess: (response) => {
+        if (response.error) {
+          setToast({
+            title: "Could not buy",
+            message: response.error,
+          })
+
+          return
+        }
+
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
 
         setToast({
           title: "Item purchased",
           message: "You bought x of y for 500 dbl",
-          autoHideDuration: 5000,
         })
       },
       onError: (error) => console.error(error),
@@ -34,8 +42,8 @@ export const useInventory = () => {
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
 
         setToast({
-          message: "Item sold",
-          autoHideDuration: 5000,
+          title: "Item sold",
+          message: "Item sold for x dbl",
         })
       },
       onError: (error) => console.error(error),

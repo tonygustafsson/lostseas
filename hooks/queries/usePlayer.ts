@@ -18,14 +18,13 @@ export const useGetPlayer = () =>
         if (res.status !== 200) {
           window.localStorage.removeItem(LOCAL_STORAGE_PLAYER_ID_KEY)
           window.location.href = "/"
-          return null
+          return
         }
 
         const data = (await res.json()) as Player
         return data
       } catch (error) {
         console.error(error)
-        return null
       }
     },
     {
@@ -36,9 +35,11 @@ export const useGetPlayer = () =>
         user
           ? {
               ...user,
-              id: window.localStorage.getItem(LOCAL_STORAGE_PLAYER_ID_KEY),
+              id: window.localStorage.getItem(
+                LOCAL_STORAGE_PLAYER_ID_KEY
+              ) as Player["id"],
             }
-          : null,
+          : undefined,
     }
   )
 
