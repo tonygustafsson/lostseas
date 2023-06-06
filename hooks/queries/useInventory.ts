@@ -13,11 +13,11 @@ export const useInventory = () => {
     (data: { userId: Player["id"]; item: keyof Inventory; quantity: number }) =>
       apiRequest("/api/shop/buy", data, "POST"),
     {
-      onSuccess: (response) => {
-        if (response.error) {
+      onSuccess: ({ error, quantity, item, totalPrice, totalQuantity }) => {
+        if (error) {
           setToast({
-            title: "Could not buy",
-            message: response.error,
+            title: `Could not buy ${item}`,
+            message: error,
           })
 
           return
@@ -26,8 +26,8 @@ export const useInventory = () => {
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
 
         setToast({
-          title: "Item purchased",
-          message: "You bought x of y for 500 dbl",
+          title: `You bought ${quantity} pcs of ${item}`,
+          message: `It cost you ${totalPrice} dbl and your now have ${totalQuantity} pcs of ${item}`,
         })
       },
       onError: (error) => console.error(error),
@@ -38,12 +38,21 @@ export const useInventory = () => {
     (data: { userId: Player["id"]; item: keyof Inventory; quantity: number }) =>
       apiRequest("/api/shop/sell", data, "POST"),
     {
-      onSuccess: () => {
+      onSuccess: ({ error, quantity, item, totalPrice, totalQuantity }) => {
+        if (error) {
+          setToast({
+            title: `Could not buy ${item}`,
+            message: error,
+          })
+
+          return
+        }
+
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
 
         setToast({
-          title: "Item sold",
-          message: "Item sold for x dbl",
+          title: `You sold ${quantity} pcs of ${item}`,
+          message: `It received ${totalPrice} dbl and your now have ${totalQuantity} pcs of ${item}`,
         })
       },
       onError: (error) => console.error(error),

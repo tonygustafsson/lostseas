@@ -46,7 +46,13 @@ const shopBuy = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(500).json({ error })
   })
 
-  res.status(200).json({ success: true })
+  res.status(200).json({
+    success: true,
+    item,
+    quantity,
+    totalQuantity: inventoryResult[item],
+    totalPrice,
+  })
 }
 
 export default shopBuy
