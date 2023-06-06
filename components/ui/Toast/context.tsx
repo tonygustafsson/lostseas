@@ -131,21 +131,20 @@ export const ToastProvider = (props: { children: React.ReactNode }) => {
     [dispatch]
   )
 
-  const hideToast = useCallback(
-    (id: string) =>
+  const removeToast = useCallback(
+    (id: string) => {
       dispatch({
         type: "HIDE_TOAST",
         id,
-      }),
-    [dispatch]
-  )
+      })
 
-  const removeToast = useCallback(
-    (id: string) =>
-      dispatch({
-        type: "REMOVE_TOAST",
-        id,
-      }),
+      setTimeout(() => {
+        dispatch({
+          type: "REMOVE_TOAST",
+          id,
+        })
+      }, AUTOHIDE_DURATION)
+    },
     [dispatch]
   )
 
@@ -153,7 +152,6 @@ export const ToastProvider = (props: { children: React.ReactNode }) => {
     () => ({
       ...state,
       setToast,
-      hideToast,
       removeToast,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps

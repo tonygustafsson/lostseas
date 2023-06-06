@@ -1,13 +1,7 @@
-import { useEffect } from "react"
-
 import { useToast } from "./context"
 
 const Toast = () => {
-  const { toasts } = useToast()
-
-  useEffect(() => {
-    console.log({ toasts })
-  }, [toasts])
+  const { toasts, removeToast } = useToast()
 
   if (!Object.values(toasts).length) return null
 
@@ -23,7 +17,9 @@ const Toast = () => {
             <span>{toast.message}</span>
           </div>
 
-          <button className="close">✕</button>
+          <button className="close" onClick={() => removeToast(toast.id || "")}>
+            ✕
+          </button>
         </div>
       ))}
     </>
