@@ -65,7 +65,7 @@ const Status = () => {
               </div>
             </div>
           </div>
-          v
+
           <div className="card-actions justify-end mt-4">
             <label
               htmlFor={characterModalId}

@@ -1,29 +1,19 @@
 import { useState } from "react"
-import {
-  GiBrandyBottle,
-  GiMeat,
-  GiPorcelainVase,
-  GiPowder,
-  GiRolledCloth,
-  GiSmokingPipe,
-  GiWaterFlask,
-} from "react-icons/gi"
 
 import { PRICES } from "@/constants/prices"
 import { useInventory } from "@/hooks/queries/useInventory"
-import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { capitalize } from "@/utils/string"
 
-import TextField from "../ui/TextField"
+import TextField from "../../ui/TextField"
 
-type ItemProps = {
+type Props = {
   player?: Player
   item: keyof Inventory
   description: string
   icon: React.ReactElement
 }
 
-const Item = ({ player, item, description, icon }: ItemProps) => {
+const ShopItem = ({ player, item, description, icon }: Props) => {
   const { buy, sell } = useInventory()
   const [quantity, setQuantity] = useState(1)
 
@@ -71,7 +61,13 @@ const Item = ({ player, item, description, icon }: ItemProps) => {
       <figure>{icon}</figure>
 
       <div className="card-body pt-2">
-        <h2 className="card-title">{capitalize(item)}</h2>
+        <div className="indicator">
+          <h2 className="card-title mr-6">{capitalize(item)}</h2>
+
+          <span className="indicator-item indicator-middle badge badge-primary">
+            {player?.inventory[item] || 0}
+          </span>
+        </div>
 
         <p>{description}</p>
 
@@ -131,61 +127,4 @@ const Item = ({ player, item, description, icon }: ItemProps) => {
   )
 }
 
-const Shop = () => {
-  const { data: player } = useGetPlayer()
-
-  return (
-    <div className="flex flex-wrap gap-6">
-      <Item
-        item="food"
-        description="You need food to travel the open seas."
-        icon={<GiMeat className="text-6xl text-primary" />}
-        player={player}
-      />
-
-      <Item
-        item="water"
-        description="You need water to travel the open seas."
-        icon={<GiWaterFlask className="text-6xl text-primary" />}
-        player={player}
-      />
-
-      <Item
-        item="porcelain"
-        description="A great trading asset. Not used for anything specific."
-        icon={<GiPorcelainVase className="text-6xl text-primary" />}
-        player={player}
-      />
-
-      <Item
-        item="spices"
-        description="A great trading asset. Not used for anything specific."
-        icon={<GiPowder className="text-6xl text-primary" />}
-        player={player}
-      />
-
-      <Item
-        item="silk"
-        description="A great trading asset. Not used for anything specific."
-        icon={<GiRolledCloth className="text-6xl text-primary" />}
-        player={player}
-      />
-
-      <Item
-        item="tobacco"
-        description="A great trading asset and can also make your crew happy."
-        icon={<GiSmokingPipe className="text-6xl text-primary" />}
-        player={player}
-      />
-
-      <Item
-        item="rum"
-        description="A great trading asset and can also make your crew happy."
-        icon={<GiBrandyBottle className="text-6xl text-primary" />}
-        player={player}
-      />
-    </div>
-  )
-}
-
-export default Shop
+export default ShopItem
