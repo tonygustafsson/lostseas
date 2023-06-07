@@ -1,6 +1,5 @@
 import {
   GiBrandyBottle,
-  GiCoins,
   GiMeat,
   GiPorcelainVase,
   GiPowder,
@@ -31,7 +30,6 @@ const Inventory = () => {
             key={`inventory-${item}`}
           >
             <div className="stat-figure text-secondary">
-              {item === "Doubloons" && <GiCoins className="h-10 w-10" />}
               {item === "Food" && <GiMeat className="h-10 w-10" />}
               {item === "Water" && <GiWaterFlask className="h-10 w-10" />}
               {item === "Porcelain" && (

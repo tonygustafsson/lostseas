@@ -54,8 +54,9 @@ const Status = () => {
             {player?.character.gender.toLowerCase()} from{" "}
             {player?.character.nationality}.
           </p>
-          <div className="stats bg-gray-700 mt-4">
-            <div className="stat">
+
+          <div className="stats gap-4 mt-4">
+            <div className="stat bg-gray-700">
               <div className="stat-figure text-secondary">
                 <GiCoins className="h-8 w-8" />
               </div>
@@ -64,6 +65,30 @@ const Status = () => {
                 {player?.character.doubloons}
               </div>
             </div>
+
+            {player?.character.account && (
+              <div className="stat bg-gray-700">
+                <div className="stat-figure text-secondary">
+                  <GiCoins className="h-8 w-8" />
+                </div>
+                <div className="stat-title">Bank account</div>
+                <div className="stat-value text-2xl">
+                  {player?.character.account}
+                </div>
+              </div>
+            )}
+
+            {player?.character.loan && (
+              <div className="stat bg-gray-700">
+                <div className="stat-figure text-secondary">
+                  <GiCoins className="h-8 w-8" />
+                </div>
+                <div className="stat-title">Bank loan</div>
+                <div className="stat-value text-2xl">
+                  {player?.character.loan}
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="card-actions justify-end mt-4">

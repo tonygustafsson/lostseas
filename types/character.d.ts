@@ -6,4 +6,6 @@ type Character = {
   town: Town | undefined
   location: TownLocation | SeaLocation
   doubloons: number
+  account?: number
+  loan?: number
 }
