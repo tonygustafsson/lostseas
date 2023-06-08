@@ -2,39 +2,68 @@ import { useState } from "react"
 import { GiCoins } from "react-icons/gi"
 
 import TextField from "@/components/ui/TextField"
+import { LOAN_LIMIT } from "@/constants/bank"
 import { useBank } from "@/hooks/queries/useBank"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 const Bank = () => {
   const { data: player } = useGetPlayer()
-  const { deposit, withdraw } = useBank()
+  const { deposit, withdraw, loan, repay } = useBank()
 
   const maxDeposit = player?.character.doubloons
   const maxWithdrawal = player?.character.account || 0
+  const maxLoan = LOAN_LIMIT - (player?.character.loan || 0)
+  const maxRepay = player?.character.loan || 0
 
   const [accountInput, setAccountInput] = useState("")
   const [withdrawalInput, setWithdrawalInput] = useState("")
+  const [loanInput, setLoanInput] = useState("")
+  const [repayInput, setRepayInput] = useState("")
 
-  const handleDeposit = (e: React.FormEvent<HTMLFormElement>) => {
+  const getFormData = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const formData = new FormData(e.currentTarget)
     const userId = formData.get("userId") as string
     const amount = parseInt(formData.get("amount") as string)
 
+    return { userId, amount }
+  }
+
+  const handleDeposit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    const { userId, amount } = getFormData(e)
     deposit({ userId, amount })
-    e.currentTarget["amount"].value = ""
+
+    setAccountInput("")
   }
 
   const handleWithdrawal = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const formData = new FormData(e.currentTarget)
-    const userId = formData.get("userId") as string
-    const amount = parseInt(formData.get("amount") as string)
-
+    const { userId, amount } = getFormData(e)
     withdraw({ userId, amount })
-    e.currentTarget["amount"].value = ""
+
+    setWithdrawalInput("")
+  }
+
+  const handleLoan = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    const { userId, amount } = getFormData(e)
+    loan({ userId, amount })
+
+    setLoanInput("")
+  }
+
+  const handleRepay = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    const { userId, amount } = getFormData(e)
+    repay({ userId, amount })
+
+    setRepayInput("")
   }
 
   return (
@@ -144,6 +173,82 @@ const Bank = () => {
             }
           >
             Withdrawal
+          </button>
+        </form>
+      </div>
+
+      <div className="w-full flex gap-8">
+        <form className="w-full mt-4" onSubmit={handleLoan}>
+          <h2 className="text-2xl font-serif font-semibold mt-8 mb-4">
+            Take a loan
+          </h2>
+
+          <p>
+            You can loan up to {LOAN_LIMIT} doubloons. It will come with an
+            interest of 10% though.
+          </p>
+
+          <TextField
+            type="hidden"
+            name="userId"
+            defaultValue={player?.id || ""}
+          />
+
+          <TextField
+            name="amount"
+            label="Amount"
+            type="number"
+            max={maxLoan}
+            value={loanInput}
+            onChange={(value) => setLoanInput(value)}
+            min={1}
+            required
+          />
+
+          <button
+            type="submit"
+            className="btn btn-primary mt-4"
+            disabled={
+              parseInt(loanInput) + (player?.character.loan || 0) > LOAN_LIMIT
+            }
+          >
+            Take loan
+          </button>
+        </form>
+
+        <form className="w-full mt-4" onSubmit={handleRepay}>
+          <h2 className="text-2xl font-serif font-semibold mt-8 mb-4">
+            Repay loan
+          </h2>
+
+          <p>Repay your loan to be able to take more loans down the road.</p>
+
+          <TextField
+            type="hidden"
+            name="userId"
+            defaultValue={player?.id || ""}
+          />
+
+          <TextField
+            name="amount"
+            label="Amount"
+            type="number"
+            max={maxRepay}
+            value={repayInput}
+            onChange={(value) => setRepayInput(value)}
+            min={1}
+            required
+          />
+
+          <button
+            type="submit"
+            className="btn btn-primary mt-4"
+            disabled={
+              parseInt(repayInput) > (player?.character.loan || 0) ||
+              parseInt(repayInput) > (player?.character.doubloons || 0)
+            }
+          >
+            Repay loan
           </button>
         </form>
       </div>

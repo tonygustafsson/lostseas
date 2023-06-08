@@ -1,9 +1,10 @@
 import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
+import { LOAN_LIMIT } from "@/constants/bank"
 import db from "@/firebase/db"
 
-const bankDeposit = async (req: NextApiRequest, res: NextApiResponse) => {
+const bankLoan = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
   const { userId, amount } = req.body
 
@@ -15,17 +16,18 @@ const bankDeposit = async (req: NextApiRequest, res: NextApiResponse) => {
   const existingCharacterRef = await get(child(dbRef, `${userId}/character`))
   const existingCharacter = existingCharacterRef.val()
 
-  if (existingCharacter.doubloons < amount) {
-    res.status(400).json({ error: "Not enough doubloons" })
+  if ((existingCharacter.loan || 0) + amount > LOAN_LIMIT) {
+    res.status(400).json({
+      error: `You cannot loan more than a total of ${LOAN_LIMIT} dbl.`,
+    })
     return
   }
 
+  // TODO: Add interest
   const characterResult = {
     ...existingCharacter,
-    doubloons: existingCharacter.doubloons - amount,
-    account: existingCharacter.account
-      ? existingCharacter.account + amount
-      : amount,
+    doubloons: existingCharacter.doubloons + amount,
+    loan: existingCharacter.loan ? existingCharacter.loan + amount : amount,
   }
 
   await set(ref(db, `${userId}/character`), characterResult).catch((error) => {
@@ -36,7 +38,8 @@ const bankDeposit = async (req: NextApiRequest, res: NextApiResponse) => {
     success: true,
     amount,
     doubloons: characterResult.doubloons,
+    loan: characterResult.loan,
   })
 }
 
-export default bankDeposit
+export default bankLoan

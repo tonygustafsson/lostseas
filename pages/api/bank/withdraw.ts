@@ -7,6 +7,11 @@ const bankWithdraw = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
   const { userId, amount } = req.body
 
+  if (amount < 1) {
+    res.status(400).json({ error: "You cannot repay less than 1 doubloon." })
+    return
+  }
+
   const existingCharacterRef = await get(child(dbRef, `${userId}/character`))
   const existingCharacter = existingCharacterRef.val()
 

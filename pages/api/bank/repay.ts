@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 
 import db from "@/firebase/db"
 
-const bankDeposit = async (req: NextApiRequest, res: NextApiResponse) => {
+const bankRepay = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
   const { userId, amount } = req.body
 
@@ -15,17 +15,20 @@ const bankDeposit = async (req: NextApiRequest, res: NextApiResponse) => {
   const existingCharacterRef = await get(child(dbRef, `${userId}/character`))
   const existingCharacter = existingCharacterRef.val()
 
-  if (existingCharacter.doubloons < amount) {
-    res.status(400).json({ error: "Not enough doubloons" })
+  if (existingCharacter.loan < amount) {
+    res
+      .status(400)
+      .json({ error: "You cannot repay more than you owe the bank." })
     return
   }
 
   const characterResult = {
     ...existingCharacter,
     doubloons: existingCharacter.doubloons - amount,
-    account: existingCharacter.account
-      ? existingCharacter.account + amount
-      : amount,
+    loan:
+      existingCharacter.loan - amount === 0
+        ? null
+        : existingCharacter.loan - amount,
   }
 
   await set(ref(db, `${userId}/character`), characterResult).catch((error) => {
@@ -36,7 +39,8 @@ const bankDeposit = async (req: NextApiRequest, res: NextApiResponse) => {
     success: true,
     amount,
     doubloons: characterResult.doubloons,
+    loan: characterResult.loan,
   })
 }
 
-export default bankDeposit
+export default bankRepay

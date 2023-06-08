@@ -11,7 +11,7 @@ const LoggedOutHero = () => {
     <div
       className="hero rounded-lg"
       style={{
-        backgroundImage: `url("img/place/tavern.webp)`,
+        backgroundImage: `url("img/place/tavern.webp")`,
       }}
     >
       <div className="hero-overlay bg-opacity-50"></div>

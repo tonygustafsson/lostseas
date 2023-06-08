@@ -25,10 +25,32 @@ export const useBank = () => {
     }
   )
 
+  const { mutate: loan, isLoading: isLoaning } = useMutation(
+    (data: { userId: Player["id"]; amount: number }) =>
+      apiRequest("/api/bank/loan", data, "POST"),
+    {
+      onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),
+      onError: (error) => console.error(error),
+    }
+  )
+
+  const { mutate: repay, isLoading: isRepaying } = useMutation(
+    (data: { userId: Player["id"]; amount: number }) =>
+      apiRequest("/api/bank/repay", data, "POST"),
+    {
+      onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),
+      onError: (error) => console.error(error),
+    }
+  )
+
   return {
     deposit,
     isDepositing,
     withdraw,
     isWithdrawing,
+    loan,
+    isLoaning,
+    repay,
+    isRepaying,
   }
 }
