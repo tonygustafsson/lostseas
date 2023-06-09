@@ -3,11 +3,21 @@ import { useEffect } from "react"
 import { useModal } from "./context"
 
 const Modal = () => {
-  const { modals, removeModal } = useModal()
+  const { modals, removeModal, removeAllModals } = useModal()
 
   useEffect(() => {
-    console.log({ modals })
-  }, [modals])
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        removeAllModals()
+      }
+    }
+
+    window.addEventListener("keydown", handleEsc)
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc)
+    }
+  }, [removeAllModals])
 
   if (!Object.values(modals).length) return null
 

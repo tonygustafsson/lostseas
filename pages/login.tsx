@@ -16,10 +16,6 @@ const Login = () => {
   const restoreUserIdVideoRef = useRef<HTMLVideoElement>(null)
   const [qrScanner, setQrScanner] = useState<QrScanner | null>(null)
 
-  useEffect(() => {
-    console.log({ qrScanner, restoreUserIdVideoRef })
-  }, [qrScanner, restoreUserIdVideoRef])
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)

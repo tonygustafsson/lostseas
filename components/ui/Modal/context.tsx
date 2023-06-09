@@ -37,6 +37,12 @@ type Action =
       type: "REMOVE_MODAL"
       id: string
     }
+  | {
+      type: "HIDE_ALL_MODALS"
+    }
+  | {
+      type: "REMOVE_ALL_MODALS"
+    }
 
 const initialState: State = {
   modals: {},
@@ -90,6 +96,21 @@ const modalReducer = (state: State, action: Action) => {
         modals,
       }
     }
+    case "HIDE_ALL_MODALS": {
+      return {
+        ...state,
+        modals: (Object.keys(state.modals) as ModalId[]).reduce((acc, id) => {
+          acc[id] = { ...state.modals[id], open: false }
+          return acc
+        }, {} as Record<string, ModalProps>),
+      }
+    }
+    case "REMOVE_ALL_MODALS": {
+      return {
+        ...state,
+        modals: {},
+      }
+    }
   }
 }
 
@@ -132,11 +153,30 @@ export const ModalProvider = (props: { children: React.ReactNode }) => {
     [state.modals]
   )
 
+  const removeAllModals = useCallback(() => {
+    if (!Object.keys(state.modals).length) return
+
+    Object.keys(state.modals).forEach((id) => {
+      state.modals[id]?.onClose?.()
+    })
+
+    dispatch({
+      type: "HIDE_ALL_MODALS",
+    })
+
+    setTimeout(() => {
+      dispatch({
+        type: "REMOVE_ALL_MODALS",
+      })
+    }, 300)
+  }, [state.modals])
+
   const value = useMemo(
     () => ({
       ...state,
       setModal,
       removeModal,
+      removeAllModals,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state]
@@ -155,6 +195,7 @@ export const useModal = () => {
   return context as State & {
     setModal: (modal: ModalProps) => void
     removeModal: (id: string) => void
+    removeAllModals: () => void
   }
 }
 
