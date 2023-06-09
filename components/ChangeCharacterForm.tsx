@@ -34,9 +34,10 @@ const ChangeCharacterForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
+    mode: "onChange",
   })
 
   useEffect(() => {
@@ -44,10 +45,7 @@ const ChangeCharacterForm = () => {
   }, [errors])
 
   const onSubmit: SubmitHandler<ValidationSchema> = async (data) => {
-    console.log({ data, errors })
-
     update(data)
-
     removeModal("editcharacter")
   }
 
@@ -86,7 +84,7 @@ const ChangeCharacterForm = () => {
       <button
         type="submit"
         className="btn btn-primary mt-4"
-        disabled={updateIsLoading}
+        disabled={!isValid || updateIsLoading}
       >
         Save
       </button>
