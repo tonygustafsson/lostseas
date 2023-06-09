@@ -6,7 +6,7 @@ import {
   useReducer,
 } from "react"
 
-export type ModalId = "move" | "travel" | "qrscanner"
+export type ModalId = "move" | "travel" | "qrscanner" | "editcharacter"
 
 export type ModalProps = {
   id: ModalId

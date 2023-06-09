@@ -15,7 +15,7 @@ const Modal = () => {
     <>
       {Object.values(modals).map((modal) => (
         <dialog key={`modal-${modal.id}`} className="modal modal-open">
-          <form method="dialog" className="modal-box pt-4">
+          <div className="modal-box pt-4">
             <h3 className="font-bold text-xl mb-6 text-center">
               {modal.title}
             </h3>
@@ -30,7 +30,7 @@ const Modal = () => {
                 ✕
               </button>
             </div>
-          </form>
+          </div>
         </dialog>
       ))}
     </>

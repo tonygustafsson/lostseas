@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 import QrScanner from "qr-scanner"
-import { useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import DefaultLayout from "@/components/layouts/default"
 import { useModal } from "@/components/ui/Modal/context"
@@ -14,6 +14,11 @@ const Login = () => {
   const error = router.query.error
 
   const restoreUserIdVideoRef = useRef<HTMLVideoElement>(null)
+  const [qrScanner, setQrScanner] = useState<QrScanner | null>(null)
+
+  useEffect(() => {
+    console.log({ qrScanner, restoreUserIdVideoRef })
+  }, [qrScanner, restoreUserIdVideoRef])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -28,11 +33,32 @@ const Login = () => {
     router.push("/")
   }
 
+  useEffect(() => {
+    if (!restoreUserIdVideoRef.current) return
+
+    const qrScanner = new QrScanner(
+      restoreUserIdVideoRef.current,
+      (result) => {
+        const userId = result.data
+        window.localStorage.setItem(LOCAL_STORAGE_PLAYER_ID_KEY, userId)
+        router.push("/")
+
+        qrScanner.stop()
+        removeModal("qrscanner")
+      },
+      {}
+    )
+
+    qrScanner.start()
+
+    setQrScanner(qrScanner)
+  }, [removeModal, restoreUserIdVideoRef, router])
+
   const openQrScannerModal = () => {
     setModal({
       id: "qrscanner",
       title: "Scan QR code",
-      onClose: () => alert("oki"),
+      onClose: () => qrScanner?.stop(),
       content: (
         <>
           <p className="mb-4">Scan the QR code to sign in</p>
@@ -40,24 +66,6 @@ const Login = () => {
           <video width={500} height={500} ref={restoreUserIdVideoRef}></video>
         </>
       ),
-    })
-
-    requestAnimationFrame(async () => {
-      if (!restoreUserIdVideoRef.current) return
-
-      const qrScanner = new QrScanner(
-        restoreUserIdVideoRef.current,
-        (result) => {
-          const userId = result.data
-          window.localStorage.setItem(LOCAL_STORAGE_PLAYER_ID_KEY, userId)
-          router.push("/")
-
-          qrScanner.stop()
-          removeModal("qrscanner")
-        },
-        {}
-      )
-      await qrScanner.start()
     })
   }
 
