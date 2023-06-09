@@ -14,7 +14,10 @@ const Modal = () => {
   return (
     <>
       {Object.values(modals).map((modal) => (
-        <dialog key={`modal-${modal.id}`} className="modal modal-open">
+        <dialog
+          key={`modal-${modal.id}`}
+          className={`modal ${modal.open ? "modal-open" : ""}`}
+        >
           <div className="modal-box pt-4">
             <h3 className="font-bold text-xl mb-6 text-center">
               {modal.title}

@@ -12,6 +12,7 @@ export type ModalProps = {
   id: ModalId
   title: string
   content: React.ReactNode
+  open?: boolean
   onClose?: () => void
 }
 
@@ -23,6 +24,14 @@ type Action =
   | {
       type: "SET_MODAL"
       modal: ModalProps
+    }
+  | {
+      type: "OPEN_MODAL"
+      id: string
+    }
+  | {
+      type: "HIDE_MODAL"
+      id: string
     }
   | {
       type: "REMOVE_MODAL"
@@ -43,6 +52,28 @@ const modalReducer = (state: State, action: Action) => {
       const modals = {
         ...state.modals,
         [action.modal.id]: action.modal,
+      }
+
+      return {
+        ...state,
+        modals,
+      }
+    }
+    case "OPEN_MODAL": {
+      const modals = {
+        ...state.modals,
+        [action.id]: { ...state.modals[action.id], open: true },
+      }
+
+      return {
+        ...state,
+        modals,
+      }
+    }
+    case "HIDE_MODAL": {
+      const modals = {
+        ...state.modals,
+        [action.id]: { ...state.modals[action.id], open: false },
       }
 
       return {
@@ -71,6 +102,13 @@ export const ModalProvider = (props: { children: React.ReactNode }) => {
         type: "SET_MODAL",
         modal,
       })
+
+      setTimeout(() => {
+        dispatch({
+          type: "OPEN_MODAL",
+          id: modal.id,
+        })
+      }, 0)
     },
     [dispatch]
   )
@@ -80,9 +118,16 @@ export const ModalProvider = (props: { children: React.ReactNode }) => {
       state.modals[id]?.onClose?.()
 
       dispatch({
-        type: "REMOVE_MODAL",
+        type: "HIDE_MODAL",
         id,
       })
+
+      setTimeout(() => {
+        dispatch({
+          type: "REMOVE_MODAL",
+          id,
+        })
+      }, 300)
     },
     [state.modals]
   )
