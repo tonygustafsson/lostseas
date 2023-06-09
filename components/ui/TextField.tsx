@@ -8,14 +8,14 @@ type Props = {
   value?: string
   defaultValue?: string
   required?: boolean
-  min?: number
-  max?: number
+  min?: number | string
+  max?: number | string
   minLength?: number
   autoFocus?: boolean
   pattern?: string
   title?: string
   className?: string
-  onChange?: (value: string) => void
+  onChange?: (value: any) => void
 }
 
 const TextField = ({
