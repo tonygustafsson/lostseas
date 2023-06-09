@@ -67,3 +67,7 @@ input.hide-number-arrows[type=number] {
 .toast .close {
     @apply btn  btn-sm absolute right-6 top-6
 }
+
+.modal-box {
+    @apply text-white
+}

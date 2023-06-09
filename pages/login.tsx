@@ -1,20 +1,19 @@
 import { useRouter } from "next/router"
 import QrScanner from "qr-scanner"
-import { useEffect, useRef } from "react"
+import { useRef } from "react"
 
 import DefaultLayout from "@/components/layouts/default"
-import Modal from "@/components/ui/Modal"
+import { useModal } from "@/components/ui/Modal/context"
 import TextField from "@/components/ui/TextField"
 import { LOCAL_STORAGE_PLAYER_ID_KEY } from "@/constants/system"
 
-const modalId = "qrscanner-modal"
-
 const Login = () => {
   const router = useRouter()
+  const { setModal, removeModal } = useModal()
+
   const error = router.query.error
 
   const restoreUserIdVideoRef = useRef<HTMLVideoElement>(null)
-  const modalControlRef = useRef<HTMLInputElement>(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -29,35 +28,38 @@ const Login = () => {
     router.push("/")
   }
 
-  useEffect(() => {
-    const startQrScanner = async () => {
-      requestAnimationFrame(async () => {
-        if (!restoreUserIdVideoRef.current) return
+  const openQrScannerModal = () => {
+    setModal({
+      id: "qrscanner",
+      title: "Scan QR code",
+      onClose: () => alert("oki"),
+      content: (
+        <>
+          <p className="mb-4">Scan the QR code to sign in</p>
 
-        const qrScanner = new QrScanner(
-          restoreUserIdVideoRef.current,
-          (result) => {
-            const userId = result.data
-            window.localStorage.setItem(LOCAL_STORAGE_PLAYER_ID_KEY, userId)
-            router.push("/")
-          },
-          {}
-        )
-        await qrScanner.start()
-      })
-    }
-
-    modalControlRef.current?.addEventListener("change", (e) => {
-      if (e.target instanceof HTMLInputElement) {
-        if (e.target.checked) {
-          console.log("start qr scanner")
-          startQrScanner()
-        } else {
-          restoreUserIdVideoRef.current?.pause()
-        }
-      }
+          <video width={500} height={500} ref={restoreUserIdVideoRef}></video>
+        </>
+      ),
     })
-  }, [restoreUserIdVideoRef, router, modalControlRef])
+
+    requestAnimationFrame(async () => {
+      if (!restoreUserIdVideoRef.current) return
+
+      const qrScanner = new QrScanner(
+        restoreUserIdVideoRef.current,
+        (result) => {
+          const userId = result.data
+          window.localStorage.setItem(LOCAL_STORAGE_PLAYER_ID_KEY, userId)
+          router.push("/")
+
+          qrScanner.stop()
+          removeModal("qrscanner")
+        },
+        {}
+      )
+      await qrScanner.start()
+    })
+  }
 
   return (
     <DefaultLayout>
@@ -85,18 +87,12 @@ const Login = () => {
         </button>
       </form>
 
-      <label
-        htmlFor={modalId}
+      <button
+        onClick={openQrScannerModal}
         className="btn btn-secondary mt-8 w-full max-w-md"
       >
         Sign in using QR code
-      </label>
-
-      <Modal id={modalId} title="Scan QR code" ref={modalControlRef}>
-        <p className="mb-4">Scan the QR code to sign in</p>
-
-        <video width={500} height={500} ref={restoreUserIdVideoRef}></video>
-      </Modal>
+      </button>
     </DefaultLayout>
   )
 }
