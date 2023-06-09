@@ -7,20 +7,13 @@ import Select from "@/components/ui/Select"
 import TextField from "@/components/ui/TextField"
 import { useCharacter } from "@/hooks/queries/useCharacter"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import validationRules from "@/utils/validation"
 
 const validationSchema = z.object({
-  userId: z
-    .string()
-    .refine(
-      (value) =>
-        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(
-          value
-        ),
-      "User GUID is malformatted"
-    ),
-  name: z.string().min(3).max(50),
-  gender: z.enum(["Male", "Female"]),
-  age: z.number().min(15).max(80),
+  userId: validationRules.userId,
+  name: validationRules.character.name,
+  gender: validationRules.character.gender,
+  age: validationRules.character.age,
 })
 
 type ValidationSchema = z.infer<typeof validationSchema>
