@@ -5,14 +5,14 @@ import db from "@/firebase/db"
 
 const updateCharacter = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
-  const userId = req.body.userId
+  const { userId, name, gender, age } = req.body
 
   const existingCharacter = await get(child(dbRef, `${userId}/character`))
   const characterUpdate = {
     ...existingCharacter.val(),
-    name: req.body.character_name,
-    gender: req.body.character_gender,
-    age: parseInt(req.body.character_age),
+    name,
+    gender,
+    age,
   }
 
   await update(ref(db, `${userId}/character`), characterUpdate).catch(

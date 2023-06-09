@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useState } from "react"
+import { useEffect } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -10,7 +10,17 @@ import { useCharacter } from "@/hooks/queries/useCharacter"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 const validationSchema = z.object({
+  userId: z
+    .string()
+    .refine(
+      (value) =>
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(
+          value
+        ),
+      "User GUID is malformatted"
+    ),
   name: z.string().min(3).max(50),
+  gender: z.enum(["Male", "Female"]),
   age: z.number().min(15).max(80),
 })
 
@@ -29,16 +39,16 @@ const ChangeCharacterForm = () => {
     resolver: zodResolver(validationSchema),
   })
 
-  const [characterGender, setCharacterGender] = useState<"Male" | "Female">(
-    player?.character.gender || "Male"
-  )
+  useEffect(() => {
+    console.log({ errors })
+  }, [errors])
 
   const onSubmit: SubmitHandler<ValidationSchema> = async (data) => {
-    console.log(data)
+    console.log({ data, errors })
 
-    //update(data)
+    update(data)
 
-    //removeModal("editcharacter")
+    removeModal("editcharacter")
   }
 
   return (
@@ -46,28 +56,31 @@ const ChangeCharacterForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="w-full flex flex-col gap-4"
     >
-      <TextField type="hidden" name="userId" defaultValue={player?.id || ""} />
+      <TextField
+        type="hidden"
+        {...register("userId", { value: player?.id || "" })}
+      />
 
       <TextField
         label="Name"
         defaultValue={player?.character.name || ""}
         {...register("name")}
+        error={errors.name?.message}
       />
 
       <Select
         label="Gender"
-        name="character_gender"
         id="character_gender"
-        value={characterGender}
-        onChange={(e) => setCharacterGender(e.target.value)}
         options={["Male", "Female"]}
+        {...register("gender", { value: player?.character.gender || "Male" })}
       />
 
       <TextField
         label="Age"
         type="number"
         defaultValue={String(player?.character.age) || ""}
-        {...register("age")}
+        {...register("age", { valueAsNumber: true })}
+        error={errors.age?.message}
       />
 
       <button
