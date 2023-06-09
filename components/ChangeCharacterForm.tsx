@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useEffect } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -40,10 +39,6 @@ const ChangeCharacterForm = () => {
     mode: "onChange",
   })
 
-  useEffect(() => {
-    console.log({ errors })
-  }, [errors])
-
   const onSubmit: SubmitHandler<ValidationSchema> = async (data) => {
     update(data)
     removeModal("editcharacter")
@@ -61,14 +56,12 @@ const ChangeCharacterForm = () => {
 
       <TextField
         label="Name"
-        defaultValue={player?.character.name || ""}
-        {...register("name")}
+        {...register("name", { value: player?.character.name || "" })}
         error={errors.name?.message}
       />
 
       <Select
         label="Gender"
-        id="character_gender"
         options={["Male", "Female"]}
         {...register("gender", { value: player?.character.gender || "Male" })}
       />
@@ -76,8 +69,10 @@ const ChangeCharacterForm = () => {
       <TextField
         label="Age"
         type="number"
-        defaultValue={String(player?.character.age) || ""}
-        {...register("age", { valueAsNumber: true })}
+        {...register("age", {
+          valueAsNumber: true,
+          value: player?.character.age,
+        })}
         error={errors.age?.message}
       />
 
