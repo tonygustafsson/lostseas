@@ -10,9 +10,12 @@ import { getRandomTown } from "@/utils/townNation"
 import { registrationValidationSchema } from "@/utils/validation"
 
 const register = async (req: NextApiRequest, res: NextApiResponse) => {
-  const validation = await registrationValidationSchema.parseAsync(req.body)
-
-  console.log(validation)
+  try {
+    await registrationValidationSchema.parseAsync(req.body)
+  } catch (error) {
+    res.status(400).json({ error })
+    return
+  }
 
   const { name, nationality, gender, age }: Character = req.body
 
