@@ -7,11 +7,14 @@ import db from "@/firebase/db"
 import createNewCrewMembers from "@/utils/createNewCrewMembers"
 import createNewShips from "@/utils/createNewShips"
 import { getRandomTown } from "@/utils/townNation"
+import { registrationValidationSchema } from "@/utils/validation"
 
 const register = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { name, nationality, gender, age }: Character = req.body
+  const validation = await registrationValidationSchema.parseAsync(req.body)
 
-  console.log({ name, nationality, gender, age })
+  console.log(validation)
+
+  const { name, nationality, gender, age }: Character = req.body
 
   if (name?.length < 3) {
     res.status(400).json({ error: "Name must be at least 3 characters long" })

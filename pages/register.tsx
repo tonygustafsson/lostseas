@@ -11,16 +11,9 @@ import getEnglishFemaleName from "@/utils/getEnglishFemaleName"
 import getEnglishMaleName from "@/utils/getEnglishMaleName"
 import getEnglishSurname from "@/utils/getEnglishSurname"
 import { getRandomInt } from "@/utils/random"
-import validationRules from "@/utils/validation"
+import { registrationValidationSchema } from "@/utils/validation"
 
-const validationSchema = z.object({
-  name: validationRules.character.name,
-  nationality: validationRules.character.nationality,
-  gender: validationRules.character.gender,
-  age: validationRules.character.age,
-})
-
-type ValidationSchema = z.infer<typeof validationSchema>
+type ValidationSchema = z.infer<typeof registrationValidationSchema>
 
 const Register = () => {
   const { register: playerRegister, registrationIsLoading } = usePlayer()
@@ -39,7 +32,7 @@ const Register = () => {
     handleSubmit,
     formState: { errors, isValid, isDirty },
   } = useForm<ValidationSchema>({
-    resolver: zodResolver(validationSchema),
+    resolver: zodResolver(registrationValidationSchema),
     mode: "onChange",
   })
 

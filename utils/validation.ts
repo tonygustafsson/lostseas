@@ -12,4 +12,13 @@ const validationRules = {
   },
 }
 
+const registrationValidationSchema = z.object({
+  name: validationRules.character.name,
+  nationality: validationRules.character.nationality,
+  gender: validationRules.character.gender,
+  age: validationRules.character.age,
+})
+
+export { registrationValidationSchema }
+
 export default validationRules
