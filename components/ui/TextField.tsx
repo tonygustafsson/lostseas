@@ -1,6 +1,6 @@
 import { forwardRef, InputHTMLAttributes } from "react"
 
-type Props = InputHTMLAttributes<HTMLInputElement> & {
+type Props = Omit<InputHTMLAttributes<HTMLInputElement>, "size"> & {
   label?: string
   size?: "xs" | "sm" | "md" | "lg"
   fullWidth?: boolean
