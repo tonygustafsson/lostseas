@@ -1,7 +1,7 @@
 import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
-import { BANK_LOAN_INTEREST, LOAN_LIMIT } from "@/constants/bank"
+import { LOAN_LIMIT } from "@/constants/bank"
 import db from "@/firebase/db"
 
 const bankLoan = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -23,14 +23,10 @@ const bankLoan = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const amountWithInterest = amount * BANK_LOAN_INTEREST
-
   const characterResult = {
     ...existingCharacter,
     doubloons: existingCharacter.doubloons + amount,
-    loan: existingCharacter.loan
-      ? existingCharacter.loan + amountWithInterest
-      : amountWithInterest,
+    loan: existingCharacter.loan ? existingCharacter.loan + amount : amount,
   }
 
   await set(ref(db, `${userId}/character`), characterResult).catch((error) => {

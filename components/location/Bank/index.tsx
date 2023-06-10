@@ -4,7 +4,7 @@ import { GiCoins } from "react-icons/gi"
 import { z } from "zod"
 
 import TextField from "@/components/ui/TextField"
-import { BANK_LOAN_INTEREST, LOAN_LIMIT } from "@/constants/bank"
+import { LOAN_LIMIT } from "@/constants/bank"
 import { useBank } from "@/hooks/queries/useBank"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import validationRules from "@/utils/validation"
@@ -18,7 +18,7 @@ const Bank = () => {
     amount: z
       .number()
       .min(1)
-      .max(player?.character.doubloons || 0),
+      .max(player?.character.loan ? 0 : player?.character.doubloons || 0),
   })
 
   type AccountValidationSchema = z.infer<typeof accountValidationSchema>
@@ -38,7 +38,7 @@ const Bank = () => {
     amount: z
       .number()
       .min(1)
-      .max(LOAN_LIMIT * BANK_LOAN_INTEREST - (player?.character.loan || 0)),
+      .max(LOAN_LIMIT - (player?.character.loan || 0)),
   })
 
   type LoanValidationSchema = z.infer<typeof loanValidationSchema>
@@ -151,6 +151,13 @@ const Bank = () => {
             at sea.
           </p>
 
+          {player?.character.loan && (
+            <strong className="mt-4 block">
+              You cannot deposit any money until your loan has been fully
+              repaid.
+            </strong>
+          )}
+
           <TextField
             type="hidden"
             {...accountRegister("userId", { value: player?.id || "" })}
@@ -211,8 +218,8 @@ const Bank = () => {
           </h2>
 
           <p>
-            You can loan up to {LOAN_LIMIT} doubloons. It will come with an
-            interest of {Math.ceil(BANK_LOAN_INTEREST * 100 - 100)}% though.
+            You can loan up to {LOAN_LIMIT} doubloons. If you have a loan you
+            cannot add funds to your account though until it has been repaid.
           </p>
 
           <TextField
