@@ -1,24 +1,62 @@
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
+import { SubmitHandler, useForm } from "react-hook-form"
 import { GiCoins } from "react-icons/gi"
+import { z } from "zod"
 
 import TextField from "@/components/ui/TextField"
 import { LOAN_LIMIT } from "@/constants/bank"
 import { useBank } from "@/hooks/queries/useBank"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import validationRules from "@/utils/validation"
 
 const Bank = () => {
   const { data: player } = useGetPlayer()
   const { deposit, withdraw, loan, repay } = useBank()
 
-  const maxDeposit = player?.character.doubloons
-  const maxWithdrawal = player?.character.account || 0
   const maxLoan = LOAN_LIMIT - (player?.character.loan || 0)
   const maxRepay = player?.character.loan || 0
 
-  const [accountInput, setAccountInput] = useState("")
-  const [withdrawalInput, setWithdrawalInput] = useState("")
   const [loanInput, setLoanInput] = useState("")
   const [repayInput, setRepayInput] = useState("")
+
+  const accountValidationSchema = z.object({
+    userId: validationRules.userId,
+    amount: z
+      .number()
+      .min(1)
+      .max(player?.character.doubloons || 0),
+  })
+
+  type AccountValidationSchema = z.infer<typeof accountValidationSchema>
+
+  const withdrawalValidationSchema = z.object({
+    userId: validationRules.userId,
+    amount: z
+      .number()
+      .min(1)
+      .max(player?.character.account || 0),
+  })
+
+  type WithdrawalValidationSchema = z.infer<typeof withdrawalValidationSchema>
+
+  const {
+    register: accountRegister,
+    handleSubmit: accountHandleSubmit,
+    formState: { errors: accountErrors, isValid: accountIsValid },
+  } = useForm<AccountValidationSchema>({
+    resolver: zodResolver(accountValidationSchema),
+    mode: "onChange",
+  })
+
+  const {
+    register: withdrawalRegister,
+    handleSubmit: withdrawalHandleSubmit,
+    formState: { errors: withdrawalErrors, isValid: withdrawalIsValid },
+  } = useForm<WithdrawalValidationSchema>({
+    resolver: zodResolver(withdrawalValidationSchema),
+    mode: "onChange",
+  })
 
   const getFormData = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -30,23 +68,11 @@ const Bank = () => {
     return { userId, amount }
   }
 
-  const handleDeposit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const handleDeposit: SubmitHandler<AccountValidationSchema> = (data) =>
+    deposit(data)
 
-    const { userId, amount } = getFormData(e)
-    deposit({ userId, amount })
-
-    setAccountInput("")
-  }
-
-  const handleWithdrawal = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    const { userId, amount } = getFormData(e)
-    withdraw({ userId, amount })
-
-    setWithdrawalInput("")
-  }
+  const handleWithdrawal: SubmitHandler<WithdrawalValidationSchema> = (data) =>
+    withdraw(data)
 
   const handleLoan = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -103,7 +129,10 @@ const Bank = () => {
       </div>
 
       <div className="w-full flex gap-8">
-        <form className="w-full mt-4" onSubmit={handleDeposit}>
+        <form
+          className="w-full mt-4"
+          onSubmit={accountHandleSubmit(handleDeposit)}
+        >
           <h2 className="text-2xl font-serif font-semibold mt-8 mb-4">
             Make deposit
           </h2>
@@ -115,33 +144,29 @@ const Bank = () => {
 
           <TextField
             type="hidden"
-            name="userId"
-            defaultValue={player?.id || ""}
+            {...accountRegister("userId", { value: player?.id || "" })}
           />
 
           <TextField
-            name="amount"
             label="Amount"
             type="number"
-            max={maxDeposit}
-            value={accountInput}
-            onChange={(value) => setAccountInput(value)}
-            min={1}
-            required
+            {...accountRegister("amount", { valueAsNumber: true })}
+            error={accountErrors.amount?.message}
           />
 
           <button
             type="submit"
             className="btn btn-primary mt-4"
-            disabled={
-              parseInt(accountInput) > (player?.character.doubloons || 0)
-            }
+            disabled={!accountIsValid}
           >
             Deposit
           </button>
         </form>
 
-        <form className="w-full mt-4" onSubmit={handleWithdrawal}>
+        <form
+          className="w-full mt-4"
+          onSubmit={withdrawalHandleSubmit(handleWithdrawal)}
+        >
           <h2 className="text-2xl font-serif font-semibold mt-8 mb-4">
             Make withdrawal
           </h2>
@@ -150,27 +175,20 @@ const Bank = () => {
 
           <TextField
             type="hidden"
-            name="userId"
-            defaultValue={player?.id || ""}
+            {...withdrawalRegister("userId", { value: player?.id || "" })}
           />
 
           <TextField
-            name="amount"
             label="Amount"
             type="number"
-            max={maxWithdrawal}
-            value={withdrawalInput}
-            onChange={(value) => setWithdrawalInput(value)}
-            min={1}
-            required
+            {...withdrawalRegister("amount", { valueAsNumber: true })}
+            error={withdrawalErrors.amount?.message}
           />
 
           <button
             type="submit"
             className="btn btn-primary mt-4"
-            disabled={
-              parseInt(withdrawalInput) > (player?.character.account || 0)
-            }
+            disabled={!withdrawalIsValid}
           >
             Withdrawal
           </button>
