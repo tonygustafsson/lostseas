@@ -56,6 +56,7 @@ const Bank = () => {
   const {
     register: accountRegister,
     handleSubmit: accountHandleSubmit,
+    reset: accountReset,
     formState: { errors: accountErrors, isValid: accountIsValid },
   } = useForm<AccountValidationSchema>({
     resolver: zodResolver(accountValidationSchema),
@@ -65,6 +66,7 @@ const Bank = () => {
   const {
     register: withdrawalRegister,
     handleSubmit: withdrawalHandleSubmit,
+    reset: withdrawalReset,
     formState: { errors: withdrawalErrors, isValid: withdrawalIsValid },
   } = useForm<WithdrawalValidationSchema>({
     resolver: zodResolver(withdrawalValidationSchema),
@@ -74,6 +76,7 @@ const Bank = () => {
   const {
     register: loanRegister,
     handleSubmit: loanHandleSubmit,
+    reset: loanReset,
     formState: { errors: loanErrors, isValid: loanIsValid },
   } = useForm<LoanValidationSchema>({
     resolver: zodResolver(loanValidationSchema),
@@ -83,23 +86,34 @@ const Bank = () => {
   const {
     register: repayRegister,
     handleSubmit: repayHandleSubmit,
+    reset: repayReset,
     formState: { errors: repayErrors, isValid: repayIsValid },
   } = useForm<RepayValidationSchema>({
     resolver: zodResolver(repayValidationSchema),
     mode: "onChange",
   })
 
-  const handleDeposit: SubmitHandler<AccountValidationSchema> = (data) =>
+  const handleDeposit: SubmitHandler<AccountValidationSchema> = (data) => {
     deposit(data)
+    accountReset()
+  }
 
-  const handleWithdrawal: SubmitHandler<WithdrawalValidationSchema> = (data) =>
+  const handleWithdrawal: SubmitHandler<WithdrawalValidationSchema> = (
+    data
+  ) => {
     withdraw(data)
+    withdrawalReset()
+  }
 
-  const handleLoan: SubmitHandler<WithdrawalValidationSchema> = (data) =>
+  const handleLoan: SubmitHandler<WithdrawalValidationSchema> = (data) => {
     loan(data)
+    loanReset()
+  }
 
-  const handleRepay: SubmitHandler<RepayValidationSchema> = (data) =>
+  const handleRepay: SubmitHandler<RepayValidationSchema> = (data) => {
     repay(data)
+    repayReset()
+  }
 
   return (
     <>
