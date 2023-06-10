@@ -13,6 +13,8 @@ type Props = {
   icon: React.ReactElement
 }
 
+// TODO: Make use of zod for validation, not sure how with buying and selling are two different actions
+
 const ShopItem = ({ player, item, description, icon }: Props) => {
   const { buy, sell } = useInventory()
   const [quantity, setQuantity] = useState(1)
