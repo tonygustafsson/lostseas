@@ -2,8 +2,16 @@ import { child, get, ref, update } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import db from "@/firebase/db"
+import { changeCharacterValidationSchema } from "@/utils/validation"
 
 const updateCharacter = async (req: NextApiRequest, res: NextApiResponse) => {
+  try {
+    await changeCharacterValidationSchema.parseAsync(req.body)
+  } catch (error) {
+    res.status(400).json({ error })
+    return
+  }
+
   const dbRef = ref(db)
   const { userId, name, gender, age } = req.body
 

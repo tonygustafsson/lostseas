@@ -7,16 +7,9 @@ import Select from "@/components/ui/Select"
 import TextField from "@/components/ui/TextField"
 import { useCharacter } from "@/hooks/queries/useCharacter"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-import validationRules from "@/utils/validation"
+import { changeCharacterValidationSchema } from "@/utils/validation"
 
-const validationSchema = z.object({
-  userId: validationRules.userId,
-  name: validationRules.character.name,
-  gender: validationRules.character.gender,
-  age: validationRules.character.age,
-})
-
-type ValidationSchema = z.infer<typeof validationSchema>
+type ValidationSchema = z.infer<typeof changeCharacterValidationSchema>
 
 const ChangeCharacterForm = () => {
   const { data: player } = useGetPlayer()
@@ -28,7 +21,7 @@ const ChangeCharacterForm = () => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<ValidationSchema>({
-    resolver: zodResolver(validationSchema),
+    resolver: zodResolver(changeCharacterValidationSchema),
     mode: "onChange",
   })
 

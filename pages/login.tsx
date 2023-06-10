@@ -9,13 +9,9 @@ import DefaultLayout from "@/components/layouts/default"
 import { useModal } from "@/components/ui/Modal/context"
 import TextField from "@/components/ui/TextField"
 import { LOCAL_STORAGE_PLAYER_ID_KEY } from "@/constants/system"
-import validationRules from "@/utils/validation"
+import { loginValidationSchema } from "@/utils/validation"
 
-const validationSchema = z.object({
-  userId: validationRules.userId,
-})
-
-type ValidationSchema = z.infer<typeof validationSchema>
+type ValidationSchema = z.infer<typeof loginValidationSchema>
 
 const Login = () => {
   const router = useRouter()
@@ -31,7 +27,7 @@ const Login = () => {
     handleSubmit,
     formState: { errors, isValid, isDirty },
   } = useForm<ValidationSchema>({
-    resolver: zodResolver(validationSchema),
+    resolver: zodResolver(loginValidationSchema),
     mode: "onChange",
   })
 
