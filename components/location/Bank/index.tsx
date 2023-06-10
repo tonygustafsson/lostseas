@@ -4,7 +4,7 @@ import { GiCoins } from "react-icons/gi"
 import { z } from "zod"
 
 import TextField from "@/components/ui/TextField"
-import { LOAN_LIMIT } from "@/constants/bank"
+import { BANK_LOAN_INTEREST, LOAN_LIMIT } from "@/constants/bank"
 import { useBank } from "@/hooks/queries/useBank"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import validationRules from "@/utils/validation"
@@ -38,7 +38,7 @@ const Bank = () => {
     amount: z
       .number()
       .min(1)
-      .max(LOAN_LIMIT - (player?.character.loan || 0)),
+      .max(LOAN_LIMIT * BANK_LOAN_INTEREST - (player?.character.loan || 0)),
   })
 
   type LoanValidationSchema = z.infer<typeof loanValidationSchema>
@@ -212,7 +212,7 @@ const Bank = () => {
 
           <p>
             You can loan up to {LOAN_LIMIT} doubloons. It will come with an
-            interest of 10% though.
+            interest of {Math.ceil(BANK_LOAN_INTEREST * 100 - 100)}% though.
           </p>
 
           <TextField
