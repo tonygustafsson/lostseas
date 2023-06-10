@@ -9,7 +9,9 @@ import createNewShips from "@/utils/createNewShips"
 import { getRandomTown } from "@/utils/townNation"
 
 const register = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { name, nationality, gender, age } = req.body
+  const { name, nationality, gender, age }: Character = req.body
+
+  console.log({ name, nationality, gender, age })
 
   if (name?.length < 3) {
     res.status(400).json({ error: "Name must be at least 3 characters long" })
@@ -43,7 +45,7 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
       name,
       nationality,
       gender,
-      age: parseInt(age),
+      age,
       town: startingTown,
       location: LOCATIONS.harbor,
       doubloons: 300,

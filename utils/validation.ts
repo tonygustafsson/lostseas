@@ -1,17 +1,12 @@
 import { z } from "zod"
 
+import { NATIONS } from "@/constants/locations"
+
 const validationRules = {
-  userId: z
-    .string()
-    .refine(
-      (value) =>
-        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(
-          value
-        ),
-      "User GUID is malformatet"
-    ),
+  userId: z.string().uuid(),
   character: {
     name: z.string().min(3).max(50),
+    nationality: z.enum(NATIONS as any), // TODO: Fix any, const works but an array cannot be typed as const
     gender: z.enum(["Male", "Female"]),
     age: z.number().min(15).max(80),
   },
