@@ -1,4 +1,6 @@
-import { useState } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { SubmitHandler, useForm } from "react-hook-form"
+import { z } from "zod"
 
 import DefaultLayout from "@/components/layouts/default"
 import Select from "@/components/ui/Select"
@@ -9,9 +11,12 @@ import getEnglishFemaleName from "@/utils/getEnglishFemaleName"
 import getEnglishMaleName from "@/utils/getEnglishMaleName"
 import getEnglishSurname from "@/utils/getEnglishSurname"
 import { getRandomInt } from "@/utils/random"
+import { registrationValidationSchema } from "@/utils/validation"
+
+type ValidationSchema = z.infer<typeof registrationValidationSchema>
 
 const Register = () => {
-  const { register, registrationIsLoading } = usePlayer()
+  const { register: playerRegister, registrationIsLoading } = usePlayer()
 
   const randomGender: CrewMember["gender"] =
     Math.random() > 0.25 ? "Male" : "Female"
@@ -22,19 +27,17 @@ const Register = () => {
   const randomNationalityIndex = getRandomInt(0, 3)
   const randomNationality = NATIONS[randomNationalityIndex]
 
-  const [name, setName] = useState(randomName)
-  const [age, setAge] = useState(randomAge)
-  const [gender, setGender] = useState(randomGender)
-  const [nationality, setNationality] = useState(randomNationality)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid, isDirty },
+  } = useForm<ValidationSchema>({
+    resolver: zodResolver(registrationValidationSchema),
+    mode: "onChange",
+  })
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    const inputData = Object.fromEntries(
-      formData.entries()
-    ) as unknown as Player
-
-    register(inputData)
+  const onSubmit: SubmitHandler<ValidationSchema> = async (data) => {
+    playerRegister(data)
   }
 
   return (
@@ -42,55 +45,44 @@ const Register = () => {
       <h1 className="font-serif text-4xl mb-8">Register</h1>
 
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         className="w-full flex flex-col gap-4 max-w-md"
       >
         <h2 className="font-serif text-2xl mt-8">Character</h2>
 
         <TextField
-          id="name"
-          name="name"
           label="Name"
-          value={name}
-          minLength={3}
-          onChange={(e) => setName(e)}
-          required
+          {...register("name", { value: randomName })}
+          error={errors.name?.message}
         />
 
         <Select
           label="Nationality"
-          name="nationality"
-          id="nationality"
-          value={nationality}
           options={NATIONS}
-          onChange={(e) => setNationality(e.target.value)}
+          {...register("nationality", { value: randomNationality })}
         />
 
         <Select
           label="Gender"
-          name="gender"
-          id="gender"
-          value={gender}
           options={["Male", "Female"]}
-          onChange={(e) => setGender(e.target.value)}
+          {...register("gender", { value: randomGender })}
         />
 
         <TextField
           type="number"
-          required
-          min={14}
-          max={70}
-          id="age"
-          name="age"
           label="Age"
-          value={age.toString()}
-          onChange={(e) => setAge(parseInt(e))}
+          {...register("age", { value: randomAge, valueAsNumber: true })}
+          error={errors.age?.message}
         />
 
         <button
           type="submit"
           className="btn btn-primary mt-4"
-          disabled={registrationIsLoading}
+          disabled={
+            (!isValid && isDirty) ||
+            registrationIsLoading ||
+            registrationIsLoading
+          }
         >
           Register
         </button>

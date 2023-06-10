@@ -23,7 +23,6 @@ const bankLoan = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  // TODO: Add interest
   const characterResult = {
     ...existingCharacter,
     doubloons: existingCharacter.doubloons + amount,

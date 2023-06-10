@@ -9,9 +9,12 @@ type Player = {
 
 type CreatePlayerServerRequest = Omit<Player, "id">
 
-type CreatePlayerClientRequest = Omit<
-  Player,
-  "id" | "createdDate" | "ships" | "crewMembers" | "inventory"
+type CreatePlayerClientRequest = Pick<
+  Character,
+  "name",
+  "gender",
+  "age",
+  "nationality"
 >
 
 type UpdatePlayerClientRequest = Partial<CreatePlayerClientRequest>

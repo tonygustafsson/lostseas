@@ -13,6 +13,8 @@ type Props = {
   icon: React.ReactElement
 }
 
+// TODO: Make use of zod for validation, not sure how with buying and selling are two different actions
+
 const ShopItem = ({ player, item, description, icon }: Props) => {
   const { buy, sell } = useInventory()
   const [quantity, setQuantity] = useState(1)
@@ -22,11 +24,11 @@ const ShopItem = ({ player, item, description, icon }: Props) => {
     quantity * price.buy > (player?.character.doubloons || Infinity)
   const sellingDisabled = quantity > (player?.inventory[item] || 0)
 
-  const changeQuantity = (value: string) => {
-    if (value === "") {
+  const changeQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === "") {
       setQuantity(1)
     } else {
-      setQuantity(parseInt(value))
+      setQuantity(parseInt(e.target.value))
     }
   }
 

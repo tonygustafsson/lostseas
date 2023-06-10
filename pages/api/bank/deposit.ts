@@ -15,6 +15,13 @@ const bankDeposit = async (req: NextApiRequest, res: NextApiResponse) => {
   const existingCharacterRef = await get(child(dbRef, `${userId}/character`))
   const existingCharacter = existingCharacterRef.val()
 
+  if (existingCharacter.loan) {
+    res
+      .status(400)
+      .json({ error: "You cannot add funds until your loan is fully repaid." })
+    return
+  }
+
   if (existingCharacter.doubloons < amount) {
     res.status(400).json({ error: "Not enough doubloons" })
     return

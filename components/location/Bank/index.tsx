@@ -1,69 +1,118 @@
-import { useState } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { SubmitHandler, useForm } from "react-hook-form"
 import { GiCoins } from "react-icons/gi"
+import { z } from "zod"
 
 import TextField from "@/components/ui/TextField"
 import { LOAN_LIMIT } from "@/constants/bank"
 import { useBank } from "@/hooks/queries/useBank"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import validationRules from "@/utils/validation"
 
 const Bank = () => {
   const { data: player } = useGetPlayer()
   const { deposit, withdraw, loan, repay } = useBank()
 
-  const maxDeposit = player?.character.doubloons
-  const maxWithdrawal = player?.character.account || 0
-  const maxLoan = LOAN_LIMIT - (player?.character.loan || 0)
-  const maxRepay = player?.character.loan || 0
+  const accountValidationSchema = z.object({
+    userId: validationRules.userId,
+    amount: z
+      .number()
+      .min(1)
+      .max(player?.character.loan ? 0 : player?.character.doubloons || 0),
+  })
 
-  const [accountInput, setAccountInput] = useState("")
-  const [withdrawalInput, setWithdrawalInput] = useState("")
-  const [loanInput, setLoanInput] = useState("")
-  const [repayInput, setRepayInput] = useState("")
+  type AccountValidationSchema = z.infer<typeof accountValidationSchema>
 
-  const getFormData = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const withdrawalValidationSchema = z.object({
+    userId: validationRules.userId,
+    amount: z
+      .number()
+      .min(1)
+      .max(player?.character.account || 0),
+  })
 
-    const formData = new FormData(e.currentTarget)
-    const userId = formData.get("userId") as string
-    const amount = parseInt(formData.get("amount") as string)
+  type WithdrawalValidationSchema = z.infer<typeof withdrawalValidationSchema>
 
-    return { userId, amount }
+  const loanValidationSchema = z.object({
+    userId: validationRules.userId,
+    amount: z
+      .number()
+      .min(1)
+      .max(LOAN_LIMIT - (player?.character.loan || 0)),
+  })
+
+  type LoanValidationSchema = z.infer<typeof loanValidationSchema>
+
+  const repayValidationSchema = z.object({
+    userId: validationRules.userId,
+    amount: z
+      .number()
+      .min(1)
+      .max(player?.character.loan || player?.character.doubloons || 0),
+  })
+
+  type RepayValidationSchema = z.infer<typeof repayValidationSchema>
+
+  const {
+    register: accountRegister,
+    handleSubmit: accountHandleSubmit,
+    reset: accountReset,
+    formState: { errors: accountErrors, isValid: accountIsValid },
+  } = useForm<AccountValidationSchema>({
+    resolver: zodResolver(accountValidationSchema),
+    mode: "onChange",
+  })
+
+  const {
+    register: withdrawalRegister,
+    handleSubmit: withdrawalHandleSubmit,
+    reset: withdrawalReset,
+    formState: { errors: withdrawalErrors, isValid: withdrawalIsValid },
+  } = useForm<WithdrawalValidationSchema>({
+    resolver: zodResolver(withdrawalValidationSchema),
+    mode: "onChange",
+  })
+
+  const {
+    register: loanRegister,
+    handleSubmit: loanHandleSubmit,
+    reset: loanReset,
+    formState: { errors: loanErrors, isValid: loanIsValid },
+  } = useForm<LoanValidationSchema>({
+    resolver: zodResolver(loanValidationSchema),
+    mode: "onChange",
+  })
+
+  const {
+    register: repayRegister,
+    handleSubmit: repayHandleSubmit,
+    reset: repayReset,
+    formState: { errors: repayErrors, isValid: repayIsValid },
+  } = useForm<RepayValidationSchema>({
+    resolver: zodResolver(repayValidationSchema),
+    mode: "onChange",
+  })
+
+  const handleDeposit: SubmitHandler<AccountValidationSchema> = (data) => {
+    deposit(data)
+    accountReset()
   }
 
-  const handleDeposit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    const { userId, amount } = getFormData(e)
-    deposit({ userId, amount })
-
-    setAccountInput("")
+  const handleWithdrawal: SubmitHandler<WithdrawalValidationSchema> = (
+    data
+  ) => {
+    withdraw(data)
+    withdrawalReset()
   }
 
-  const handleWithdrawal = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    const { userId, amount } = getFormData(e)
-    withdraw({ userId, amount })
-
-    setWithdrawalInput("")
+  const handleLoan: SubmitHandler<WithdrawalValidationSchema> = (data) => {
+    loan(data)
+    loanReset()
   }
 
-  const handleLoan = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    const { userId, amount } = getFormData(e)
-    loan({ userId, amount })
-
-    setLoanInput("")
-  }
-
-  const handleRepay = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    const { userId, amount } = getFormData(e)
-    repay({ userId, amount })
-
-    setRepayInput("")
+  const handleRepay: SubmitHandler<RepayValidationSchema> = (data) => {
+    repay(data)
+    repayReset()
   }
 
   return (
@@ -103,7 +152,10 @@ const Bank = () => {
       </div>
 
       <div className="w-full flex gap-8">
-        <form className="w-full mt-4" onSubmit={handleDeposit}>
+        <form
+          className="w-full mt-4"
+          onSubmit={accountHandleSubmit(handleDeposit)}
+        >
           <h2 className="text-2xl font-serif font-semibold mt-8 mb-4">
             Make deposit
           </h2>
@@ -113,35 +165,38 @@ const Bank = () => {
             at sea.
           </p>
 
+          {player?.character.loan && (
+            <strong className="mt-4 block">
+              You cannot deposit any money until your loan has been fully
+              repaid.
+            </strong>
+          )}
+
           <TextField
             type="hidden"
-            name="userId"
-            defaultValue={player?.id || ""}
+            {...accountRegister("userId", { value: player?.id || "" })}
           />
 
           <TextField
-            name="amount"
             label="Amount"
             type="number"
-            max={maxDeposit}
-            value={accountInput}
-            onChange={(value) => setAccountInput(value)}
-            min={1}
-            required
+            {...accountRegister("amount", { valueAsNumber: true })}
+            error={accountErrors.amount?.message}
           />
 
           <button
             type="submit"
             className="btn btn-primary mt-4"
-            disabled={
-              parseInt(accountInput) > (player?.character.doubloons || 0)
-            }
+            disabled={!accountIsValid}
           >
             Deposit
           </button>
         </form>
 
-        <form className="w-full mt-4" onSubmit={handleWithdrawal}>
+        <form
+          className="w-full mt-4"
+          onSubmit={withdrawalHandleSubmit(handleWithdrawal)}
+        >
           <h2 className="text-2xl font-serif font-semibold mt-8 mb-4">
             Make withdrawal
           </h2>
@@ -150,27 +205,20 @@ const Bank = () => {
 
           <TextField
             type="hidden"
-            name="userId"
-            defaultValue={player?.id || ""}
+            {...withdrawalRegister("userId", { value: player?.id || "" })}
           />
 
           <TextField
-            name="amount"
             label="Amount"
             type="number"
-            max={maxWithdrawal}
-            value={withdrawalInput}
-            onChange={(value) => setWithdrawalInput(value)}
-            min={1}
-            required
+            {...withdrawalRegister("amount", { valueAsNumber: true })}
+            error={withdrawalErrors.amount?.message}
           />
 
           <button
             type="submit"
             className="btn btn-primary mt-4"
-            disabled={
-              parseInt(withdrawalInput) > (player?.character.account || 0)
-            }
+            disabled={!withdrawalIsValid}
           >
             Withdrawal
           </button>
@@ -178,45 +226,38 @@ const Bank = () => {
       </div>
 
       <div className="w-full flex gap-8">
-        <form className="w-full mt-4" onSubmit={handleLoan}>
+        <form className="w-full mt-4" onSubmit={loanHandleSubmit(handleLoan)}>
           <h2 className="text-2xl font-serif font-semibold mt-8 mb-4">
             Take a loan
           </h2>
 
           <p>
-            You can loan up to {LOAN_LIMIT} doubloons. It will come with an
-            interest of 10% though.
+            You can loan up to {LOAN_LIMIT} doubloons. If you have a loan you
+            cannot add funds to your account though until it has been repaid.
           </p>
 
           <TextField
             type="hidden"
-            name="userId"
-            defaultValue={player?.id || ""}
+            {...loanRegister("userId", { value: player?.id || "" })}
           />
 
           <TextField
-            name="amount"
             label="Amount"
             type="number"
-            max={maxLoan}
-            value={loanInput}
-            onChange={(value) => setLoanInput(value)}
-            min={1}
-            required
+            {...loanRegister("amount", { valueAsNumber: true })}
+            error={loanErrors.amount?.message}
           />
 
           <button
             type="submit"
             className="btn btn-primary mt-4"
-            disabled={
-              parseInt(loanInput) + (player?.character.loan || 0) > LOAN_LIMIT
-            }
+            disabled={!loanIsValid}
           >
             Take loan
           </button>
         </form>
 
-        <form className="w-full mt-4" onSubmit={handleRepay}>
+        <form className="w-full mt-4" onSubmit={repayHandleSubmit(handleRepay)}>
           <h2 className="text-2xl font-serif font-semibold mt-8 mb-4">
             Repay loan
           </h2>
@@ -225,28 +266,20 @@ const Bank = () => {
 
           <TextField
             type="hidden"
-            name="userId"
-            defaultValue={player?.id || ""}
+            {...repayRegister("userId", { value: player?.id || "" })}
           />
 
           <TextField
-            name="amount"
             label="Amount"
             type="number"
-            max={maxRepay}
-            value={repayInput}
-            onChange={(value) => setRepayInput(value)}
-            min={1}
-            required
+            {...repayRegister("amount", { valueAsNumber: true })}
+            error={repayErrors.amount?.message}
           />
 
           <button
             type="submit"
             className="btn btn-primary mt-4"
-            disabled={
-              parseInt(repayInput) > (player?.character.loan || 0) ||
-              parseInt(repayInput) > (player?.character.doubloons || 0)
-            }
+            disabled={!repayIsValid}
           >
             Repay loan
           </button>

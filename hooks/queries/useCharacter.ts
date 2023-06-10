@@ -35,8 +35,8 @@ export const useCharacter = () => {
   )
 
   const { mutate: update, isLoading: updateIsLoading } = useMutation(
-    (userData: UpdatePlayerClientRequest) =>
-      apiRequest("/api/character/update", userData, "POST"),
+    (characterData: Partial<Character>) =>
+      apiRequest("/api/character/update", characterData, "POST"),
     {
       onSuccess: () => {
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])

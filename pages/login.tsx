@@ -1,11 +1,17 @@
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/router"
 import QrScanner from "qr-scanner"
 import { useEffect, useRef, useState } from "react"
+import { SubmitHandler, useForm } from "react-hook-form"
+import { z } from "zod"
 
 import DefaultLayout from "@/components/layouts/default"
 import { useModal } from "@/components/ui/Modal/context"
 import TextField from "@/components/ui/TextField"
 import { LOCAL_STORAGE_PLAYER_ID_KEY } from "@/constants/system"
+import { loginValidationSchema } from "@/utils/validation"
+
+type ValidationSchema = z.infer<typeof loginValidationSchema>
 
 const Login = () => {
   const router = useRouter()
@@ -16,14 +22,19 @@ const Login = () => {
   const restoreUserIdVideoRef = useRef<HTMLVideoElement>(null)
   const [qrScanner, setQrScanner] = useState<QrScanner | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    const userId = formData.get("userId")
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid, isDirty },
+  } = useForm<ValidationSchema>({
+    resolver: zodResolver(loginValidationSchema),
+    mode: "onChange",
+  })
 
+  const onSubmit: SubmitHandler<ValidationSchema> = async (data) => {
     window.localStorage.setItem(
       LOCAL_STORAGE_PLAYER_ID_KEY,
-      userId?.toString() || ""
+      data.userId?.toString() || ""
     )
 
     router.push("/")
@@ -72,21 +83,23 @@ const Login = () => {
       <form
         method="post"
         action="/api/user/login"
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         className="w-full flex flex-col gap-2 max-w-md"
       >
         <TextField
           label="User ID"
-          id="userId"
-          name="userId"
           autoFocus
-          pattern="^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$"
-          title="User ID must be a valid UUID"
+          {...register("userId")}
+          error={errors.userId?.message}
         />
 
         {error && <p className="text-red-500">{error}</p>}
 
-        <button type="submit" className="btn btn-primary btn-large mt-4">
+        <button
+          type="submit"
+          className="btn btn-primary btn-large mt-4"
+          disabled={!isValid && isDirty}
+        >
           Sign in
         </button>
       </form>
