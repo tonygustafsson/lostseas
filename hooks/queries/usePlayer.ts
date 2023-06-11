@@ -6,14 +6,12 @@ import apiRequest from "@/utils/apiRequest"
 
 export const PLAYER_QUERY_KEY = "player"
 
-const playerCookieValue = getCookie(PLAYER_ID_COOKIE_NAME)
+const playerId = getCookie(PLAYER_ID_COOKIE_NAME) as Player["id"] | undefined
 
 export const useGetPlayer = () =>
   useQuery(
     [PLAYER_QUERY_KEY],
     async () => {
-      const playerId = getCookie(PLAYER_ID_COOKIE_NAME)
-
       try {
         const res = await fetch(`/api/user/get/${playerId}`)
 
@@ -30,12 +28,12 @@ export const useGetPlayer = () =>
       }
     },
     {
-      enabled: !!playerCookieValue,
+      enabled: !!playerId,
       select: (user) =>
         user
           ? {
               ...user,
-              id: playerCookieValue as Player["id"],
+              id: playerId,
             }
           : undefined,
     }
