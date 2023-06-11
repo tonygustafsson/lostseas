@@ -1,9 +1,8 @@
 import { setCookie } from "cookies-next"
-import { child, get, ref } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db from "@/firebase/db"
+import { getPlayer } from "@/utils/db/getPlayer"
 import { loginValidationSchema } from "@/utils/validation"
 
 const login = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -15,11 +14,9 @@ const login = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const { playerId }: { playerId: Player["id"] } = req.body
+  const player = await getPlayer(playerId)
 
-  const dbRef = ref(db)
-  const data = await get(child(dbRef, playerId))
-
-  if (!data.exists()) {
+  if (!player) {
     res.status(404).json({ message: "No user found" })
     return
   }
