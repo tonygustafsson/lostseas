@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { deleteCookie, getCookie, setCookie } from "cookies-next"
-import { useRouter } from "next/router"
+import { deleteCookie, getCookie } from "cookies-next"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import apiRequest from "@/utils/apiRequest"
@@ -44,7 +43,6 @@ export const useGetPlayer = () =>
 
 export const usePlayer = () => {
   const queryClient = useQueryClient()
-  const router = useRouter()
 
   const { mutate: login, isLoading: isLoggingIn } = useMutation(
     (playerId: Player["id"]) =>
@@ -71,11 +69,9 @@ export const usePlayer = () => {
     (userData: CreatePlayerClientRequest) =>
       apiRequest("/api/user/register", userData, "PUT"),
     {
-      onSuccess: (playerId: string) => {
-        setCookie(PLAYER_ID_COOKIE_NAME, playerId)
-
+      onSuccess: () => {
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-        router.push("/")
+        window.location.href = "/"
       },
       onError: (error) => console.error(error),
     }
