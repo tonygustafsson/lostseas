@@ -16,10 +16,11 @@ export const getPlayer = async (playerId: Player["id"] | undefined) => {
     return null
   }
 
-  const result = data.val() as Player
+  const player = data.val() as Player
 
-  result.ships = sortByDate<Ship>(result.ships) ?? {}
-  result.crewMembers = sortByDate<CrewMember>(result.crewMembers) ?? {}
+  player.id = playerId
+  player.ships = sortByDate<Ship>(player.ships) ?? {}
+  player.crewMembers = sortByDate<CrewMember>(player.crewMembers) ?? {}
 
-  return result
+  return player
 }

@@ -29,13 +29,6 @@ export const useGetPlayer = () =>
     },
     {
       enabled: !!playerId,
-      select: (user) =>
-        user
-          ? {
-              ...user,
-              id: playerId,
-            }
-          : undefined,
     }
   )
 

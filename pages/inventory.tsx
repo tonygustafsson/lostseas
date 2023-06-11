@@ -1,3 +1,4 @@
+import { GetServerSideProps } from "next"
 import {
   GiBrandyBottle,
   GiMeat,
@@ -10,6 +11,7 @@ import {
 
 import DefaultLayout from "@/components/layouts/default"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSideProps"
 import { capitalize } from "@/utils/string"
 
 const Inventory = () => {
@@ -48,5 +50,8 @@ const Inventory = () => {
     </DefaultLayout>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) =>
+  getLoggedInServerSideProps(context)
 
 export default Inventory

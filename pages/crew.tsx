@@ -1,3 +1,4 @@
+import { GetServerSideProps } from "next"
 import { FormEvent } from "react"
 import { FiTrash2 } from "react-icons/fi"
 
@@ -6,6 +7,7 @@ import Table from "@/components/ui/Table"
 import TextField from "@/components/ui/TextField"
 import { useCrewMembers } from "@/hooks/queries/useCrewMembers"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSideProps"
 
 const Crew = () => {
   const { data: player } = useGetPlayer()
@@ -84,5 +86,8 @@ const Crew = () => {
     </DefaultLayout>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) =>
+  getLoggedInServerSideProps(context)
 
 export default Crew

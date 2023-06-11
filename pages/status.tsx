@@ -1,3 +1,4 @@
+import { GetServerSideProps } from "next"
 import Link from "next/link"
 import { GiCoins } from "react-icons/gi"
 
@@ -6,6 +7,7 @@ import Flag from "@/components/icons/Flag"
 import DefaultLayout from "@/components/layouts/default"
 import { useModal } from "@/components/ui/Modal/context"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSideProps"
 
 const Status = () => {
   const { data: player } = useGetPlayer()
@@ -96,5 +98,8 @@ const Status = () => {
     </DefaultLayout>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) =>
+  getLoggedInServerSideProps(context)
 
 export default Status

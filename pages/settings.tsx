@@ -1,7 +1,9 @@
+import { GetServerSideProps } from "next"
 import { useQRCode } from "next-qrcode"
 
 import DefaultLayout from "@/components/layouts/default"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSideProps"
 
 const Settings = () => {
   const { data: player } = useGetPlayer()
@@ -56,5 +58,8 @@ const Settings = () => {
     </DefaultLayout>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) =>
+  getLoggedInServerSideProps(context)
 
 export default Settings
