@@ -8,7 +8,7 @@ import { z } from "zod"
 import DefaultLayout from "@/components/layouts/default"
 import { useModal } from "@/components/ui/Modal/context"
 import TextField from "@/components/ui/TextField"
-import { LOCAL_STORAGE_PLAYER_ID_KEY } from "@/constants/system"
+import { usePlayer } from "@/hooks/queries/usePlayer"
 import { loginValidationSchema } from "@/utils/validation"
 
 type ValidationSchema = z.infer<typeof loginValidationSchema>
@@ -16,6 +16,7 @@ type ValidationSchema = z.infer<typeof loginValidationSchema>
 const Login = () => {
   const router = useRouter()
   const { setModal, removeModal } = useModal()
+  const { login } = usePlayer()
 
   const error = router.query.error
 
@@ -31,13 +32,8 @@ const Login = () => {
     mode: "onChange",
   })
 
-  const onSubmit: SubmitHandler<ValidationSchema> = async (data) => {
-    window.localStorage.setItem(
-      LOCAL_STORAGE_PLAYER_ID_KEY,
-      data.userId?.toString() || ""
-    )
-
-    router.push("/")
+  const onSubmit: SubmitHandler<ValidationSchema> = (data) => {
+    login(data.playerId?.toString() || "")
   }
 
   useEffect(() => {
@@ -46,9 +42,8 @@ const Login = () => {
     const qrScanner = new QrScanner(
       restoreUserIdVideoRef.current,
       (result) => {
-        const userId = result.data
-        window.localStorage.setItem(LOCAL_STORAGE_PLAYER_ID_KEY, userId)
-        router.push("/")
+        const playerId = result.data
+        login(playerId)
 
         qrScanner.stop()
         removeModal("qrscanner")
@@ -59,7 +54,7 @@ const Login = () => {
     qrScanner.start()
 
     setQrScanner(qrScanner)
-  }, [removeModal, restoreUserIdVideoRef, router])
+  }, [login, removeModal, restoreUserIdVideoRef, router])
 
   const openQrScannerModal = () => {
     setModal({
@@ -89,8 +84,8 @@ const Login = () => {
         <TextField
           label="User ID"
           autoFocus
-          {...register("userId")}
-          error={errors.userId?.message}
+          {...register("playerId")}
+          error={errors.playerId?.message}
         />
 
         {error && <p className="text-red-500">{error}</p>}

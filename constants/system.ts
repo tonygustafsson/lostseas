@@ -1,1 +1,1 @@
-export const LOCAL_STORAGE_PLAYER_ID_KEY = "lostseas-player"
+export const PLAYER_ID_COOKIE_NAME = "lostseas-player"

@@ -1,3 +1,6 @@
+import { dehydrate, QueryClient } from "@tanstack/react-query"
+import { GetServerSideProps } from "next"
+
 import DefaultLayout from "@/components/layouts/default"
 import Bank from "@/components/location/Bank"
 import Market from "@/components/location/Market"
@@ -21,6 +24,27 @@ const Home = () => {
       </div>
     </DefaultLayout>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const queryClient = new QueryClient()
+
+  const cookieString = context.req.headers.cookie
+  const cookies = cookieString?.split("; ").reduce((acc, cookie) => {
+    const [key, value] = cookie.split("=")
+    acc[key] = value
+    return acc
+  }, {} as { [key: string]: string })
+
+  if (cookies?.playerId) {
+    console.log(cookies?.playerId)
+  }
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  }
 }
 
 export default Home
