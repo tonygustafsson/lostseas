@@ -6,7 +6,9 @@ import db from "@/firebase/db"
 /** Sort items on Server instead of in Firebase because it would require
  * a specific request for ships otherwise.
  */
-const sortByDate = <T extends Ship | CrewMember>(items?: Record<string, T>) => {
+export const sortByDate = <T extends Ship | CrewMember>(
+  items?: Record<string, T>
+) => {
   const itemsArray = Object.values(items || []) as T[]
 
   if (!itemsArray.length) {
