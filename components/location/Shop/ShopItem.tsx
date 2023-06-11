@@ -1,6 +1,7 @@
 import { useState } from "react"
 
-import { PRICES } from "@/constants/prices"
+import MerchandiseIcon from "@/components/MerchandiseIcon"
+import { MERCHANDISE } from "@/constants/merchandise"
 import { useInventory } from "@/hooks/queries/useInventory"
 import { capitalize } from "@/utils/string"
 
@@ -9,19 +10,17 @@ import TextField from "../../ui/TextField"
 type Props = {
   player?: Player
   item: keyof Inventory
-  description: string
-  icon: React.ReactElement
 }
 
 // TODO: Make use of zod for validation, not sure how with buying and selling are two different actions
 
-const ShopItem = ({ player, item, description, icon }: Props) => {
+const ShopItem = ({ player, item }: Props) => {
   const { buy, sell } = useInventory()
   const [quantity, setQuantity] = useState(1)
 
-  const price = PRICES[item]
+  const merchandise = MERCHANDISE[item]
   const buyingDisabled =
-    quantity * price.buy > (player?.character.doubloons || Infinity)
+    quantity * merchandise.buy > (player?.character.doubloons || Infinity)
   const sellingDisabled = quantity > (player?.inventory[item] || 0)
 
   const changeQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +59,9 @@ const ShopItem = ({ player, item, description, icon }: Props) => {
 
   return (
     <div className="card w-80 bg-base-100 shadow-xl pt-4">
-      <figure>{icon}</figure>
+      <figure>
+        <MerchandiseIcon item={item} />
+      </figure>
 
       <div className="card-body pt-2">
         <div className="indicator">
@@ -71,14 +72,14 @@ const ShopItem = ({ player, item, description, icon }: Props) => {
           </span>
         </div>
 
-        <p>{description}</p>
+        <p>{MERCHANDISE[item].description}</p>
 
         <div className="flex gap-2 mt-2">
           <div className="badge badge-secondary">
-            Buy: {PRICES[item].buy} dbl
+            Buy: {MERCHANDISE[item].buy} dbl
           </div>
           <div className="badge badge-secondary">
-            Sell: {PRICES[item].sell} dbl
+            Sell: {MERCHANDISE[item].sell} dbl
           </div>
         </div>
 

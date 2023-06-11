@@ -1,19 +1,20 @@
 import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
-import { PRICES } from "@/constants/prices"
+import { MERCHANDISE } from "@/constants/merchandise"
 import db from "@/firebase/db"
 
 const shopSell = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
   const { userId, item, quantity } = req.body
 
-  if (!item || !Object.keys(PRICES).includes(item || "")) {
+  if (!item || !Object.keys(MERCHANDISE).includes(item || "")) {
     res.status(400).json({ error: "Not a valid item", item })
     return
   }
 
-  const totalPrice = PRICES[item as keyof typeof PRICES].sell * quantity
+  const totalPrice =
+    MERCHANDISE[item as keyof typeof MERCHANDISE].sell * quantity
 
   const existingInventoryRef = await get(child(dbRef, `${userId}/inventory`))
   const existingInventory = existingInventoryRef.val()
