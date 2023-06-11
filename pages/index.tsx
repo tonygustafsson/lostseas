@@ -1,4 +1,5 @@
 import { dehydrate, QueryClient } from "@tanstack/react-query"
+import { getCookie } from "cookies-next"
 import { GetServerSideProps } from "next"
 
 import DefaultLayout from "@/components/layouts/default"
@@ -7,6 +8,7 @@ import Market from "@/components/location/Market"
 import Shop from "@/components/location/Shop"
 import LocationHero from "@/components/LocationHero"
 import LoggedOutHero from "@/components/LoggedOutHero"
+import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 const Home = () => {
@@ -29,16 +31,12 @@ const Home = () => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient()
 
-  const cookieString = context.req.headers.cookie
-  const cookies = cookieString?.split("; ").reduce((acc, cookie) => {
-    const [key, value] = cookie.split("=")
-    acc[key] = value
-    return acc
-  }, {} as { [key: string]: string })
+  const playerId = getCookie(PLAYER_ID_COOKIE_NAME, {
+    req: context.req,
+    res: context.res,
+  })
 
-  if (cookies?.playerId) {
-    console.log(cookies?.playerId)
-  }
+  console.log(playerId)
 
   return {
     props: {
