@@ -23,21 +23,21 @@ const marketBuy = async (req: NextApiRequest, res: NextApiResponse) => {
   const state = existingLocationStates as LocationState
 
   if (!state.market) {
-    res.status(400).json({ error: "Not a valid item" })
+    res.status(400).json({ error: "Not a valid item", item })
     return
   }
 
   const stateItem = state.market.items?.[item as keyof typeof MERCHANDISE]
 
   if (!stateItem) {
-    res.status(400).json({ error: "Not a valid item" })
+    res.status(400).json({ error: "Not a valid item", item })
     return
   }
 
   const totalPrice = stateItem?.price * stateItem.quantity
 
   if (existingCharacter.doubloons < totalPrice) {
-    res.status(400).json({ error: "Not enough doubloons" })
+    res.status(400).json({ error: "Not enough doubloons", item })
     return
   }
 
@@ -71,7 +71,6 @@ const marketBuy = async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(200).json({
     success: true,
     item,
-    stateItem,
     totalQuantity: inventoryResult[item],
     totalPrice,
   })

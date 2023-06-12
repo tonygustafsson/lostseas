@@ -1,17 +1,26 @@
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import { MERCHANDISE } from "@/constants/merchandise"
+import { useInventory } from "@/hooks/queries/useInventory"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { capitalize } from "@/utils/string"
 
 const Market = () => {
   const { data: player } = useGetPlayer()
+  const { acceptMarketBargain } = useInventory()
 
   const items = player?.locationStates?.market?.items
+
+  const handleAccept = (item: keyof LocationStateMarketItems) => {
+    acceptMarketBargain({
+      playerId: player?.id || "",
+      item,
+    })
+  }
 
   return (
     <div className="flex flex-wrap gap-6">
       {Object.entries(items || {}).map(([item, { price, quantity }]) => {
-        const inventoryItem = item as keyof Inventory
+        const inventoryItem = item as keyof LocationStateMarketItems
 
         return (
           <div
@@ -48,7 +57,12 @@ const Market = () => {
               </div>
 
               <div className="card-actions justify-end mt-4 gap-2">
-                <button className="btn btn-primary btn-sm">Buy</button>
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={() => handleAccept(inventoryItem)}
+                >
+                  Buy
+                </button>
               </div>
             </div>
           </div>
