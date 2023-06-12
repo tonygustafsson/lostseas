@@ -17,11 +17,7 @@ const Crew = () => {
   const handleCreateCrewMember = async (e: FormEvent) => {
     e.preventDefault()
 
-    const crewData: CreateCrewMemberClientRequest = {
-      playerId: player?.id || "",
-    }
-
-    create(crewData)
+    create(player?.id || "")
   }
 
   const handleRemoveCrewMember = async (id: string) => {

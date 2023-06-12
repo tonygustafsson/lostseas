@@ -6,7 +6,6 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 import { LOCATIONS } from "@/constants/locations"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import db from "@/firebase/db"
-import createNewCrewMembers from "@/utils/createNewCrewMembers"
 import createNewShips from "@/utils/createNewShips"
 import { getRandomTown } from "@/utils/townNation"
 import { registrationValidationSchema } from "@/utils/validation"
@@ -26,7 +25,7 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
   const startingTown = getRandomTown(nationality)
 
   const ships = createNewShips(1, "Sloop")
-  const crewMembers = createNewCrewMembers(4)
+  const crewMembersCount = 4
 
   const requestJson: CreatePlayerServerRequest = {
     character: {
@@ -43,7 +42,11 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
       water: 40,
     },
     ships,
-    crewMembers,
+    crewMembers: {
+      count: crewMembersCount,
+      health: 100,
+      mood: 100,
+    },
     createdDate,
   }
 

@@ -18,7 +18,7 @@ type ValidationSchema = z.infer<typeof registrationValidationSchema>
 const Register = () => {
   const { register: playerRegister, registrationIsLoading } = usePlayer()
 
-  const randomGender: CrewMember["gender"] =
+  const randomGender: Character["gender"] =
     Math.random() > 0.25 ? "Male" : "Female"
   const randomName = `${
     randomGender === "Male" ? getEnglishMaleName() : getEnglishFemaleName()
