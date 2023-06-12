@@ -2,7 +2,7 @@ import { useState } from "react"
 
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import { MERCHANDISE } from "@/constants/merchandise"
-import { useInventory } from "@/hooks/queries/useInventory"
+import { useShop } from "@/hooks/queries/useShop"
 import { capitalize } from "@/utils/string"
 
 import TextField from "../../ui/TextField"
@@ -15,7 +15,7 @@ type Props = {
 // TODO: Make use of zod for validation, not sure how with buying and selling are two different actions
 
 const ShopItem = ({ player, item }: Props) => {
-  const { buy, sell } = useInventory()
+  const { buy, sell } = useShop()
   const [quantity, setQuantity] = useState(1)
 
   const merchandise = MERCHANDISE[item]

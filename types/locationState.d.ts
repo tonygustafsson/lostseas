@@ -1,5 +1,8 @@
 type LocationState = {
-  market?: Record<"items", LocationStateMarketItems>
+  market?: {
+    visited: true | undefined
+    items: LocationStateMarketItems
+  }
 }
 
 type LocationStateMarketItems = Record<

@@ -1,12 +1,12 @@
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import { MERCHANDISE } from "@/constants/merchandise"
-import { useInventory } from "@/hooks/queries/useInventory"
+import { useMarket } from "@/hooks/queries/useMarket"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { capitalize } from "@/utils/string"
 
 const Market = () => {
   const { data: player } = useGetPlayer()
-  const { acceptMarketBargain } = useInventory()
+  const { acceptMarketBargain } = useMarket()
 
   const items = player?.locationStates?.market?.items
 
@@ -41,11 +41,11 @@ const Market = () => {
               </div>
 
               <p>
-                You find {quantity}{" "}
+                You find <strong>{quantity}</strong>{" "}
                 {quantity === 1
                   ? MERCHANDISE[inventoryItem].singleUnit
                   : MERCHANDISE[inventoryItem].unit}{" "}
-                of {item} for {price} doubloons.
+                of {item} for <strong>{price} doubloons</strong>.
               </p>
 
               <p>{MERCHANDISE[inventoryItem].description}</p>
@@ -68,6 +68,12 @@ const Market = () => {
           </div>
         )
       })}
+
+      {!Object.keys(items || {}).length && (
+        <div className="my-8">
+          <p className="text-xl">There are no items for sale.</p>
+        </div>
+      )}
     </div>
   )
 }

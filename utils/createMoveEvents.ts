@@ -38,6 +38,7 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
     })
 
     const newEvent: LocationState["market"] = {
+      visited: true,
       items,
     }
 
