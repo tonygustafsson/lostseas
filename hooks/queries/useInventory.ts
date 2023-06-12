@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 import { useToast } from "@/components/ui/Toast/context"
+import { MERCHANDISE } from "@/constants/merchandise"
 import apiRequest from "@/utils/apiRequest"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
@@ -29,9 +30,14 @@ export const useInventory = () => {
 
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
 
+        const unit =
+          quantity === 1
+            ? MERCHANDISE[item as keyof Inventory].singleUnit
+            : MERCHANDISE[item as keyof Inventory].unit
+
         setToast({
-          title: `You bought ${quantity} pcs of ${item}`,
-          message: `It cost you ${totalPrice} dbl and your now have ${totalQuantity} pcs of ${item}`,
+          title: `You bought ${quantity} ${unit} of ${item}`,
+          message: `It cost you ${totalPrice} dbl and your now have ${totalQuantity} ${unit} of ${item}`,
           variant: "success",
         })
       },
@@ -59,9 +65,14 @@ export const useInventory = () => {
 
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
 
+        const unit =
+          quantity === 1
+            ? MERCHANDISE[item as keyof Inventory].singleUnit
+            : MERCHANDISE[item as keyof Inventory].unit
+
         setToast({
-          title: `You sold ${quantity} pcs of ${item}`,
-          message: `It received ${totalPrice} dbl and your now have ${totalQuantity} pcs of ${item}`,
+          title: `You sold ${quantity} ${unit} of ${item}`,
+          message: `It received ${totalPrice} dbl and your now have ${totalQuantity} ${unit} of ${item}`,
           variant: "success",
         })
       },

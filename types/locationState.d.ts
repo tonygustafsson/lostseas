@@ -1,5 +1,8 @@
 type LocationState = {
-  market?: {
-    items: Partial<Inventory>
-  }
+  market?: Record<"items", LocationStateMarketItems>
 }
+
+type LocationStateMarketItems = Record<
+  keyof Inventory,
+  Record<"quantity" | "price", number>
+>

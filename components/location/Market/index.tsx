@@ -1,5 +1,4 @@
 import MerchandiseIcon from "@/components/MerchandiseIcon"
-import { MARKET_AVAILABLE_ITEMS } from "@/constants/market"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { capitalize } from "@/utils/string"
@@ -7,44 +6,54 @@ import { capitalize } from "@/utils/string"
 const Market = () => {
   const { data: player } = useGetPlayer()
 
-  const items = MARKET_AVAILABLE_ITEMS.filter((item) =>
-    Object.keys(player?.locationStates?.market?.items || {}).includes(item)
-  )
+  const items = player?.locationStates?.market?.items
 
   return (
     <div className="flex flex-wrap gap-6">
-      {items.map((item) => (
-        <div
-          className="card w-80 bg-base-100 shadow-xl pt-4"
-          key={`market-item-${item}`}
-        >
-          <figure>
-            <MerchandiseIcon item={item} />
-          </figure>
+      {Object.entries(items || {}).map(([item, { price, quantity }]) => {
+        const inventoryItem = item as keyof Inventory
 
-          <div className="card-body pt-2">
-            <div className="indicator">
-              <h2 className="card-title mr-6">{capitalize(item)}</h2>
+        return (
+          <div
+            className="card w-80 bg-base-100 shadow-xl pt-4"
+            key={`market-item-${item}`}
+          >
+            <figure>
+              <MerchandiseIcon item={inventoryItem} />
+            </figure>
 
-              <span className="indicator-item indicator-middle badge badge-primary">
-                {player?.inventory[item] || 0}
-              </span>
-            </div>
+            <div className="card-body pt-2">
+              <div className="indicator">
+                <h2 className="card-title mr-6">{capitalize(item)}</h2>
 
-            <p>{MERCHANDISE[item].description}</p>
+                <span className="indicator-item indicator-middle badge badge-primary">
+                  {player?.inventory[inventoryItem] || 0}
+                </span>
+              </div>
 
-            <div className="flex gap-2 mt-2">
-              <div className="badge badge-secondary">
-                Price: {MERCHANDISE[item].buy} dbl
+              <p>
+                You find {quantity}{" "}
+                {quantity === 1
+                  ? MERCHANDISE[inventoryItem].singleUnit
+                  : MERCHANDISE[inventoryItem].unit}{" "}
+                of {item} for {price} doubloons.
+              </p>
+
+              <p>{MERCHANDISE[inventoryItem].description}</p>
+
+              <div className="flex gap-2 mt-2">
+                <div className="badge badge-secondary">
+                  Price: {price * quantity} dbl
+                </div>
+              </div>
+
+              <div className="card-actions justify-end mt-4 gap-2">
+                <button className="btn btn-primary btn-sm">Buy</button>
               </div>
             </div>
-
-            <div className="card-actions justify-end mt-4 gap-2">
-              <button className="btn btn-primary btn-sm">Buy</button>
-            </div>
           </div>
-        </div>
-      ))}
+        )
+      })}
     </div>
   )
 }

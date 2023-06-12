@@ -2,6 +2,7 @@ import { GetServerSideProps } from "next"
 
 import DefaultLayout from "@/components/layouts/default"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
+import { MERCHANDISE } from "@/constants/merchandise"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSideProps"
 import { capitalize } from "@/utils/string"
@@ -9,7 +10,10 @@ import { capitalize } from "@/utils/string"
 const Inventory = () => {
   const { data: player } = useGetPlayer()
 
-  const rows = Object.entries(player?.inventory || [])
+  const rows = Object.entries(player?.inventory || []) as [
+    keyof Inventory,
+    number
+  ][]
 
   return (
     <DefaultLayout>
@@ -25,7 +29,14 @@ const Inventory = () => {
               <MerchandiseIcon item={item as keyof Inventory} size="5xl" />
             </div>
             <div className="stat-title">{capitalize(item)}</div>
-            <div className="stat-value">{possession}</div>
+            <div className="stat-value">
+              {possession}{" "}
+              <span className="text-sm">
+                {possession === 1
+                  ? MERCHANDISE[item].singleUnit
+                  : MERCHANDISE[item].unit}
+              </span>
+            </div>
           </div>
         ))}
       </div>
