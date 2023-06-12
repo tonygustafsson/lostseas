@@ -1,8 +1,10 @@
+import { setCookie } from "cookies-next"
 import crypto from "crypto"
 import { ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { LOCATIONS } from "@/constants/locations"
+import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import db from "@/firebase/db"
 import createNewCrewMembers from "@/utils/createNewCrewMembers"
 import createNewShips from "@/utils/createNewShips"
@@ -19,7 +21,7 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const { name, nationality, gender, age }: Character = req.body
 
-  const userId = crypto.randomUUID()
+  const playerId = crypto.randomUUID()
   const createdDate = new Date().getTime()
   const startingTown = getRandomTown(nationality)
 
@@ -45,11 +47,13 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
     createdDate,
   }
 
-  await set(ref(db, userId), requestJson).catch((error) => {
+  await set(ref(db, playerId), requestJson).catch((error) => {
     res.status(500).json({ error })
   })
 
-  res.status(200).json(userId)
+  setCookie(PLAYER_ID_COOKIE_NAME, playerId, { req, res })
+
+  res.status(200).json(playerId)
 }
 
 export default register

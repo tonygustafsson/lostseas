@@ -1,22 +1,22 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { useRouter } from "next/router"
+import { deleteCookie, getCookie } from "cookies-next"
 
-import { LOCAL_STORAGE_PLAYER_ID_KEY } from "@/constants/system"
+import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import apiRequest from "@/utils/apiRequest"
 
 export const PLAYER_QUERY_KEY = "player"
+
+const playerId = getCookie(PLAYER_ID_COOKIE_NAME) as Player["id"] | undefined
 
 export const useGetPlayer = () =>
   useQuery(
     [PLAYER_QUERY_KEY],
     async () => {
-      const userId = window.localStorage.getItem(LOCAL_STORAGE_PLAYER_ID_KEY)
-
       try {
-        const res = await fetch(`/api/user/get/${userId}`)
+        const res = await fetch(`/api/user/get/${playerId}`)
 
         if (res.status !== 200) {
-          window.localStorage.removeItem(LOCAL_STORAGE_PLAYER_ID_KEY)
+          deleteCookie(PLAYER_ID_COOKIE_NAME)
           window.location.href = "/"
           return
         }
@@ -28,40 +28,51 @@ export const useGetPlayer = () =>
       }
     },
     {
-      enabled:
-        typeof window !== "undefined" &&
-        !!window.localStorage.getItem(LOCAL_STORAGE_PLAYER_ID_KEY),
-      select: (user) =>
-        user
-          ? {
-              ...user,
-              id: window.localStorage.getItem(
-                LOCAL_STORAGE_PLAYER_ID_KEY
-              ) as Player["id"],
-            }
-          : undefined,
+      enabled: !!playerId,
     }
   )
 
 export const usePlayer = () => {
   const queryClient = useQueryClient()
-  const router = useRouter()
+
+  const { mutate: login, isLoading: isLoggingIn } = useMutation(
+    (playerId: Player["id"]) =>
+      apiRequest("/api/user/login", { playerId }, "POST"),
+    {
+      onSuccess: () => {
+        window.location.href = "/"
+      },
+      onError: (error) => console.error(error),
+    }
+  )
+
+  const { mutate: logout, isLoading: isLoggingOut } = useMutation(
+    () => apiRequest("/api/user/logout", {}, "POST"),
+    {
+      onSuccess: () => {
+        window.location.href = "/"
+      },
+      onError: (error) => console.error(error),
+    }
+  )
 
   const { mutate: register, isLoading: registrationIsLoading } = useMutation(
     (userData: CreatePlayerClientRequest) =>
       apiRequest("/api/user/register", userData, "PUT"),
     {
-      onSuccess: (userId: string) => {
-        window.localStorage.setItem(LOCAL_STORAGE_PLAYER_ID_KEY, userId)
-
+      onSuccess: () => {
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-        router.push("/")
+        window.location.href = "/"
       },
       onError: (error) => console.error(error),
     }
   )
 
   return {
+    login,
+    isLoggingIn,
+    logout,
+    isLoggingOut,
     register,
     registrationIsLoading,
   }

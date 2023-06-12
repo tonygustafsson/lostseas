@@ -1,3 +1,4 @@
+import { GetServerSideProps } from "next"
 import { FormEvent, useState } from "react"
 import { FiTrash2 } from "react-icons/fi"
 
@@ -7,6 +8,7 @@ import Table from "@/components/ui/Table"
 import TextField from "@/components/ui/TextField"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShips } from "@/hooks/queries/useShips"
+import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSideProps"
 
 enum ShipType {
   FRIGATE = "Frigate",
@@ -99,5 +101,8 @@ const Ships = () => {
     </DefaultLayout>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) =>
+  getLoggedInServerSideProps(context)
 
 export default Ships

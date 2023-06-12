@@ -1,3 +1,5 @@
+import { GetServerSideProps } from "next"
+
 import DefaultLayout from "@/components/layouts/default"
 import Bank from "@/components/location/Bank"
 import Market from "@/components/location/Market"
@@ -5,6 +7,7 @@ import Shop from "@/components/location/Shop"
 import LocationHero from "@/components/LocationHero"
 import LoggedOutHero from "@/components/LoggedOutHero"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSideProps"
 
 const Home = () => {
   const { data: player } = useGetPlayer()
@@ -22,5 +25,8 @@ const Home = () => {
     </DefaultLayout>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) =>
+  getLoggedInServerSideProps(context)
 
 export default Home

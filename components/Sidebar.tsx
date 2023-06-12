@@ -11,23 +11,18 @@ import {
   GiShoonerSailboat,
 } from "react-icons/gi"
 
-import { LOCAL_STORAGE_PLAYER_ID_KEY } from "@/constants/system"
-import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { useGetPlayer, usePlayer } from "@/hooks/queries/usePlayer"
 
 import Flag from "./icons/Flag"
 
 const Sidebar = () => {
   const { data: player } = useGetPlayer()
   const { pathname } = useRouter()
+  const { logout } = usePlayer()
 
   const numberOfCrewMembers = Object.values(player?.crewMembers ?? {}).length
   const numberOfShips = Object.values(player?.ships ?? {}).length
   const numberOfInventoryItems = Object.values(player?.inventory ?? {}).length
-
-  const signOut = () => {
-    window.localStorage.removeItem(LOCAL_STORAGE_PLAYER_ID_KEY)
-    window.location.href = "/"
-  }
 
   return (
     <div className="w-80 py-8 px-4 bg-gray-900">
@@ -97,7 +92,7 @@ const Sidebar = () => {
             </li>
 
             <li>
-              <a onClick={() => signOut()}>
+              <a onClick={() => logout()}>
                 <FiLogOut className="h-5 w-5" />
                 Sign out
               </a>

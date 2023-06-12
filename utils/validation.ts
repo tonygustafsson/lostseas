@@ -20,7 +20,7 @@ const registrationValidationSchema = z.object({
 })
 
 const loginValidationSchema = z.object({
-  userId: validationRules.userId,
+  playerId: validationRules.userId,
 })
 
 const changeCharacterValidationSchema = z.object({
