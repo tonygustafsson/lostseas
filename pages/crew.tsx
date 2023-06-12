@@ -1,6 +1,8 @@
 import { GetServerSideProps } from "next"
 import { FormEvent } from "react"
-import { GiCoins } from "react-icons/gi"
+import { BsHeartPulseFill } from "react-icons/bs"
+import { FaUsers } from "react-icons/fa"
+import { TbMoodSmileBeam } from "react-icons/tb"
 
 import DefaultLayout from "@/components/layouts/default"
 import TextField from "@/components/ui/TextField"
@@ -33,7 +35,7 @@ const Crew = () => {
         <div className="stats bg-transparent gap-2 mt-4">
           <div className="stat bg-gray-700">
             <div className="stat-figure text-secondary">
-              <GiCoins className="h-8 w-8" />
+              <FaUsers className="h-8 w-8" />
             </div>
             <div className="stat-title">Count</div>
             <div className="stat-value text-2xl">
@@ -43,7 +45,7 @@ const Crew = () => {
 
           <div className="stat bg-gray-700">
             <div className="stat-figure text-secondary">
-              <GiCoins className="h-8 w-8" />
+              <BsHeartPulseFill className="h-8 w-8" />
             </div>
             <div className="stat-title">Health</div>
             <div className="stat-value text-2xl">
@@ -53,7 +55,7 @@ const Crew = () => {
 
           <div className="stat bg-gray-700">
             <div className="stat-figure text-secondary">
-              <GiCoins className="h-8 w-8" />
+              <TbMoodSmileBeam className="h-8 w-8" />
             </div>
             <div className="stat-title">Mood</div>
             <div className="stat-value text-2xl">

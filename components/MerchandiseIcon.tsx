@@ -6,10 +6,11 @@ import {
   GiRolledCloth,
   GiSmokingPipe,
   GiWaterFlask,
+  GiWineBottle,
 } from "react-icons/gi"
 
 type Props = {
-  item: keyof Inventory
+  item: string
   size?:
     | "xs"
     | "sm"
@@ -52,6 +53,12 @@ const MerchandiseIcon = ({ item, size = "6xl", className }: Props) => {
     case "rum":
       return (
         <GiBrandyBottle className={`text-${size} text-primary ${className}`} />
+      )
+    case "dinner":
+      return <GiMeat className={`text-${size} text-primary ${className}`} />
+    case "wine":
+      return (
+        <GiWineBottle className={`text-${size} text-primary ${className}`} />
       )
     default:
       return null
