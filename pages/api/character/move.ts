@@ -5,13 +5,13 @@ import db from "@/firebase/db"
 
 const move = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
-  const userId = req.body.userId as Player["id"]
+  const playerId = req.body.playerId as Player["id"]
   const destination = req.body.location as Character["location"]
 
-  const existingCharacter = await get(child(dbRef, `${userId}/character`))
+  const existingCharacter = await get(child(dbRef, `${playerId}/character`))
   const result = { ...existingCharacter.val(), location: destination }
 
-  await set(ref(db, `${userId}/character`), result).catch((error) => {
+  await set(ref(db, `${playerId}/character`), result).catch((error) => {
     res.status(500).json({ error })
   })
 
@@ -19,7 +19,7 @@ const move = async (req: NextApiRequest, res: NextApiResponse) => {
     // TODO: Do this in server side props instead
 
     const existingEvent = await get(
-      child(dbRef, `${userId}/locationEvent/market`)
+      child(dbRef, `${playerId}/locationEvent/market`)
     )
 
     if (!existingEvent.exists()) {
@@ -31,7 +31,7 @@ const move = async (req: NextApiRequest, res: NextApiResponse) => {
 
       const eventResult = { ...existingEvent.val(), ...newEvent }
 
-      await set(ref(db, `${userId}/locationEvent/market`), eventResult).catch(
+      await set(ref(db, `${playerId}/locationEvent/market`), eventResult).catch(
         (error) => {
           res.status(500).json({ error })
         }

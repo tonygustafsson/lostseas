@@ -5,14 +5,14 @@ import db from "@/firebase/db"
 
 const bankWithdraw = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
-  const { userId, amount } = req.body
+  const { playerId, amount } = req.body
 
   if (amount < 1) {
     res.status(400).json({ error: "You cannot repay less than 1 doubloon." })
     return
   }
 
-  const existingCharacterRef = await get(child(dbRef, `${userId}/character`))
+  const existingCharacterRef = await get(child(dbRef, `${playerId}/character`))
   const existingCharacter = existingCharacterRef.val()
 
   if (existingCharacter.account < amount) {
@@ -29,9 +29,11 @@ const bankWithdraw = async (req: NextApiRequest, res: NextApiResponse) => {
         : existingCharacter.account - amount,
   }
 
-  await set(ref(db, `${userId}/character`), characterResult).catch((error) => {
-    res.status(500).json({ error, amount })
-  })
+  await set(ref(db, `${playerId}/character`), characterResult).catch(
+    (error) => {
+      res.status(500).json({ error, amount })
+    }
+  )
 
   res.status(200).json({
     success: true,

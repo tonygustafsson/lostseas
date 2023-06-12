@@ -8,7 +8,7 @@ export const useBank = () => {
   const queryClient = useQueryClient()
 
   const { mutate: deposit, isLoading: isDepositing } = useMutation(
-    (data: { userId: Player["id"]; amount: number }) =>
+    (data: { playerId: Player["id"]; amount: number }) =>
       apiRequest("/api/bank/deposit", data, "POST"),
     {
       onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),
@@ -17,7 +17,7 @@ export const useBank = () => {
   )
 
   const { mutate: withdraw, isLoading: isWithdrawing } = useMutation(
-    (data: { userId: Player["id"]; amount: number }) =>
+    (data: { playerId: Player["id"]; amount: number }) =>
       apiRequest("/api/bank/withdraw", data, "POST"),
     {
       onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),
@@ -26,7 +26,7 @@ export const useBank = () => {
   )
 
   const { mutate: loan, isLoading: isLoaning } = useMutation(
-    (data: { userId: Player["id"]; amount: number }) =>
+    (data: { playerId: Player["id"]; amount: number }) =>
       apiRequest("/api/bank/loan", data, "POST"),
     {
       onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),
@@ -35,7 +35,7 @@ export const useBank = () => {
   )
 
   const { mutate: repay, isLoading: isRepaying } = useMutation(
-    (data: { userId: Player["id"]; amount: number }) =>
+    (data: { playerId: Player["id"]; amount: number }) =>
       apiRequest("/api/bank/repay", data, "POST"),
     {
       onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),

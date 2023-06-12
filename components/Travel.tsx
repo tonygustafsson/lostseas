@@ -49,7 +49,7 @@ const Travel = () => {
   }
 
   const handleTravel = (town: Town) => {
-    travel({ userId: player?.id || "", town })
+    travel({ playerId: player?.id || "", town })
     removeModal("travel")
   }
 

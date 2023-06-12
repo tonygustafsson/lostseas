@@ -20,7 +20,7 @@ const Login = () => {
 
   const error = router.query.error
 
-  const restoreUserIdVideoRef = useRef<HTMLVideoElement>(null)
+  const restoreplayerIdVideoRef = useRef<HTMLVideoElement>(null)
   const [qrScanner, setQrScanner] = useState<QrScanner | null>(null)
 
   const {
@@ -37,10 +37,10 @@ const Login = () => {
   }
 
   useEffect(() => {
-    if (!restoreUserIdVideoRef.current) return
+    if (!restoreplayerIdVideoRef.current) return
 
     const qrScanner = new QrScanner(
-      restoreUserIdVideoRef.current,
+      restoreplayerIdVideoRef.current,
       (result) => {
         const playerId = result.data
         login(playerId)
@@ -54,7 +54,7 @@ const Login = () => {
     qrScanner.start()
 
     setQrScanner(qrScanner)
-  }, [login, removeModal, restoreUserIdVideoRef, router])
+  }, [login, removeModal, restoreplayerIdVideoRef, router])
 
   const openQrScannerModal = () => {
     setModal({
@@ -65,7 +65,7 @@ const Login = () => {
         <>
           <p className="mb-4">Scan the QR code to sign in</p>
 
-          <video width={500} height={500} ref={restoreUserIdVideoRef}></video>
+          <video width={500} height={500} ref={restoreplayerIdVideoRef}></video>
         </>
       ),
     })

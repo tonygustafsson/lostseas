@@ -6,7 +6,7 @@ import db from "@/firebase/db"
 
 const shopBuy = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
-  const { userId, item, quantity } = req.body
+  const { playerId, item, quantity } = req.body
 
   if (!item || !Object.keys(MERCHANDISE).includes(item || "")) {
     res.status(400).json({ error: "Not a valid item" })
@@ -16,7 +16,7 @@ const shopBuy = async (req: NextApiRequest, res: NextApiResponse) => {
   const totalPrice =
     MERCHANDISE[item as keyof typeof MERCHANDISE].buy * quantity
 
-  const existingCharacterRef = await get(child(dbRef, `${userId}/character`))
+  const existingCharacterRef = await get(child(dbRef, `${playerId}/character`))
   const existingCharacter = existingCharacterRef.val()
 
   if (existingCharacter.doubloons < totalPrice) {
@@ -29,11 +29,13 @@ const shopBuy = async (req: NextApiRequest, res: NextApiResponse) => {
     doubloons: existingCharacter.doubloons - totalPrice,
   }
 
-  await set(ref(db, `${userId}/character`), characterResult).catch((error) => {
-    res.status(500).json({ error, item })
-  })
+  await set(ref(db, `${playerId}/character`), characterResult).catch(
+    (error) => {
+      res.status(500).json({ error, item })
+    }
+  )
 
-  const existingInventoryRef = await get(child(dbRef, `${userId}/inventory`))
+  const existingInventoryRef = await get(child(dbRef, `${playerId}/inventory`))
   const existingInventory = existingInventoryRef.val()
 
   const inventoryResult = {
@@ -43,9 +45,11 @@ const shopBuy = async (req: NextApiRequest, res: NextApiResponse) => {
       : quantity,
   }
 
-  await set(ref(db, `${userId}/inventory`), inventoryResult).catch((error) => {
-    res.status(500).json({ error, item })
-  })
+  await set(ref(db, `${playerId}/inventory`), inventoryResult).catch(
+    (error) => {
+      res.status(500).json({ error, item })
+    }
+  )
 
   res.status(200).json({
     success: true,

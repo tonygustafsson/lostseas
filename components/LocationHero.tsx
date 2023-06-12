@@ -18,11 +18,11 @@ const LocationHero = () => {
     player?.character.location === "Harbor"
 
   const handleLand = () => {
-    move({ userId: player?.id || "", location: "Docks" })
+    move({ playerId: player?.id || "", location: "Docks" })
   }
 
   const handleSailOut = () => {
-    sailOut({ userId: player?.id || "" })
+    sailOut({ playerId: player?.id || "" })
   }
 
   if (!player) return null

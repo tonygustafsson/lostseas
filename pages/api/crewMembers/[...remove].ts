@@ -4,10 +4,10 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 import db from "@/firebase/db"
 
 const removeCrewMember = async (req: NextApiRequest, res: NextApiResponse) => {
-  const userId = req.url?.split("/")?.[4]
+  const playerId = req.url?.split("/")?.[4]
   const crewMemberId = req.url?.split("/")?.[5]
 
-  await remove(ref(db, `${userId}/crewMembers/${crewMemberId}`)).catch(
+  await remove(ref(db, `${playerId}/crewMembers/${crewMemberId}`)).catch(
     (error) => {
       res.status(500).json({ error })
     }

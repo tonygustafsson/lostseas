@@ -5,14 +5,14 @@ import db from "@/firebase/db"
 
 const travel = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
-  const userId: Player["id"] = req.body.userId
+  const playerId: Player["id"] = req.body.playerId
   const town: Town = req.body.town
   const location: SeaLocation = "Harbor"
 
-  const existingCharacter = await get(child(dbRef, `${userId}/character`))
+  const existingCharacter = await get(child(dbRef, `${playerId}/character`))
   const result = { ...existingCharacter.val(), town, location }
 
-  await set(ref(db, `${userId}/character`), result).catch((error) => {
+  await set(ref(db, `${playerId}/character`), result).catch((error) => {
     res.status(500).json({ error })
   })
 

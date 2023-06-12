@@ -34,7 +34,7 @@ const Move = () => {
   }
 
   const handleMove = (location: TownLocation | SeaLocation) => {
-    move({ userId: player?.id || "", location })
+    move({ playerId: player?.id || "", location })
     removeModal("move")
   }
 

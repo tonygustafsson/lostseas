@@ -43,7 +43,7 @@ const ShopItem = ({ player, item }: Props) => {
 
   const handleBuy = () => {
     buy({
-      userId: player?.id || "",
+      playerId: player?.id || "",
       item,
       quantity,
     })
@@ -51,7 +51,7 @@ const ShopItem = ({ player, item }: Props) => {
 
   const handleSell = () => {
     sell({
-      userId: player?.id || "",
+      playerId: player?.id || "",
       item,
       quantity,
     })

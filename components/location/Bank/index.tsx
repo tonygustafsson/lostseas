@@ -14,7 +14,7 @@ const Bank = () => {
   const { deposit, withdraw, loan, repay } = useBank()
 
   const accountValidationSchema = z.object({
-    userId: validationRules.userId,
+    playerId: validationRules.playerId,
     amount: z
       .number()
       .min(1)
@@ -24,7 +24,7 @@ const Bank = () => {
   type AccountValidationSchema = z.infer<typeof accountValidationSchema>
 
   const withdrawalValidationSchema = z.object({
-    userId: validationRules.userId,
+    playerId: validationRules.playerId,
     amount: z
       .number()
       .min(1)
@@ -34,7 +34,7 @@ const Bank = () => {
   type WithdrawalValidationSchema = z.infer<typeof withdrawalValidationSchema>
 
   const loanValidationSchema = z.object({
-    userId: validationRules.userId,
+    playerId: validationRules.playerId,
     amount: z
       .number()
       .min(1)
@@ -44,7 +44,7 @@ const Bank = () => {
   type LoanValidationSchema = z.infer<typeof loanValidationSchema>
 
   const repayValidationSchema = z.object({
-    userId: validationRules.userId,
+    playerId: validationRules.playerId,
     amount: z
       .number()
       .min(1)
@@ -174,7 +174,7 @@ const Bank = () => {
 
           <TextField
             type="hidden"
-            {...accountRegister("userId", { value: player?.id || "" })}
+            {...accountRegister("playerId", { value: player?.id || "" })}
           />
 
           <TextField
@@ -205,7 +205,7 @@ const Bank = () => {
 
           <TextField
             type="hidden"
-            {...withdrawalRegister("userId", { value: player?.id || "" })}
+            {...withdrawalRegister("playerId", { value: player?.id || "" })}
           />
 
           <TextField
@@ -238,7 +238,7 @@ const Bank = () => {
 
           <TextField
             type="hidden"
-            {...loanRegister("userId", { value: player?.id || "" })}
+            {...loanRegister("playerId", { value: player?.id || "" })}
           />
 
           <TextField
@@ -266,7 +266,7 @@ const Bank = () => {
 
           <TextField
             type="hidden"
-            {...repayRegister("userId", { value: player?.id || "" })}
+            {...repayRegister("playerId", { value: player?.id || "" })}
           />
 
           <TextField

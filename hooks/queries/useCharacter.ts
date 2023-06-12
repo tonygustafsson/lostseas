@@ -8,7 +8,7 @@ export const useCharacter = () => {
   const queryClient = useQueryClient()
 
   const { mutate: travel, isLoading: isTraveling } = useMutation(
-    (data: { userId: Player["id"]; town: Town }) =>
+    (data: { playerId: Player["id"]; town: Town }) =>
       apiRequest("/api/character/travel", data, "POST"),
     {
       onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),
@@ -17,7 +17,7 @@ export const useCharacter = () => {
   )
 
   const { mutate: move, isLoading: isMoving } = useMutation(
-    (data: { userId: Player["id"]; location: TownLocation | SeaLocation }) =>
+    (data: { playerId: Player["id"]; location: TownLocation | SeaLocation }) =>
       apiRequest("/api/character/move", data, "POST"),
     {
       onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),
@@ -26,7 +26,7 @@ export const useCharacter = () => {
   )
 
   const { mutate: sailOut, isLoading: isSailingOut } = useMutation(
-    (data: { userId: Player["id"] }) =>
+    (data: { playerId: Player["id"] }) =>
       apiRequest("/api/character/sailout", data, "POST"),
     {
       onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),

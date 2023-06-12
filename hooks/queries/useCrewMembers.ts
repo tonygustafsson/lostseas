@@ -18,15 +18,15 @@ export const useCrewMembers = () => {
 
   const { mutate: remove, isLoading: removingIsLoading } = useMutation(
     ({
-      userId,
+      playerId,
       crewMemberId,
     }: {
       crewMemberId: CrewMember["id"]
-      userId: Player["id"]
+      playerId: Player["id"]
     }) =>
       apiRequest(
-        `/api/crewMembers/remove/${userId}/${crewMemberId}`,
-        { userId, crewMemberId },
+        `/api/crewMembers/remove/${playerId}/${crewMemberId}`,
+        { playerId, crewMemberId },
         "DELETE"
       ),
     {

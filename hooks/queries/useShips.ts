@@ -8,7 +8,7 @@ export const useShips = () => {
   const queryClient = useQueryClient()
 
   const { mutate: create, isLoading: creatingIsLoading } = useMutation(
-    (shipData: CreateShipClientRequest & { userId: Player["id"] }) =>
+    (shipData: CreateShipClientRequest & { playerId: Player["id"] }) =>
       apiRequest(`/api/ship/create`, shipData, "PUT"),
     {
       onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),
@@ -17,10 +17,10 @@ export const useShips = () => {
   )
 
   const { mutate: remove, isLoading: removingIsLoading } = useMutation(
-    ({ userId, shipId }: { shipId: Ship["id"]; userId: Player["id"] }) =>
+    ({ playerId, shipId }: { shipId: Ship["id"]; playerId: Player["id"] }) =>
       apiRequest(
-        `/api/ship/remove/${userId}/${shipId}`,
-        { userId, shipId },
+        `/api/ship/remove/${playerId}/${shipId}`,
+        { playerId, shipId },
         "DELETE"
       ),
     {

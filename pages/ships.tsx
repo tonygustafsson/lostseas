@@ -26,7 +26,7 @@ const Ships = () => {
     e.preventDefault()
 
     const shipData = {
-      userId: player?.id || "",
+      playerId: player?.id || "",
       type: shipType,
     }
 
@@ -38,7 +38,7 @@ const Ships = () => {
   const handleRemoveShip = async (id: string) => {
     if (!id) return
 
-    remove({ shipId: id, userId: player?.id || "" })
+    remove({ shipId: id, playerId: player?.id || "" })
   }
 
   return (
@@ -75,8 +75,8 @@ const Ships = () => {
         >
           <TextField
             type="hidden"
-            name="userId"
-            id="userId"
+            name="playerId"
+            id="playerId"
             value={player?.id || ""}
           />
 

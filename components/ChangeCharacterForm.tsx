@@ -37,7 +37,7 @@ const ChangeCharacterForm = () => {
     >
       <TextField
         type="hidden"
-        {...register("userId", { value: player?.id || "" })}
+        {...register("playerId", { value: player?.id || "" })}
       />
 
       <TextField

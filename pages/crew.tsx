@@ -18,7 +18,7 @@ const Crew = () => {
     e.preventDefault()
 
     const crewData: CreateCrewMemberClientRequest = {
-      userId: player?.id || "",
+      playerId: player?.id || "",
     }
 
     create(crewData)
@@ -27,7 +27,7 @@ const Crew = () => {
   const handleRemoveCrewMember = async (id: string) => {
     if (!id) return
 
-    remove({ crewMemberId: id, userId: player?.id || "" })
+    remove({ crewMemberId: id, playerId: player?.id || "" })
   }
 
   return (
@@ -69,8 +69,8 @@ const Crew = () => {
         >
           <TextField
             type="hidden"
-            name="userId"
-            id="userId"
+            name="playerId"
+            id="playerId"
             value={player?.id || ""}
           />
 

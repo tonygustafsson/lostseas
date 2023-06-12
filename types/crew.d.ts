@@ -6,5 +6,5 @@ type CrewMember = {
   createdDate: number
 }
 
-type CreateCrewMemberClientRequest = { userId: Player["id"] }
+type CreateCrewMemberClientRequest = { playerId: Player["id"] }
 type CreateCrewMemberServerRequest = CrewMember
