@@ -9,7 +9,7 @@ export const useCrewMembers = () => {
 
   const { mutate: create, isLoading: creatingIsLoading } = useMutation(
     (playerId: Player["id"]) =>
-      apiRequest("/api/crewMembers/create", { playerId }, "PUT"),
+      apiRequest("/api/crewMembers/create", { playerId }, "POST"),
     {
       onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),
       onError: (error) => console.error(error),
@@ -18,7 +18,7 @@ export const useCrewMembers = () => {
 
   const { mutate: remove, isLoading: removingIsLoading } = useMutation(
     (playerId: Player["id"]) =>
-      apiRequest(`/api/crewMembers/remove/${playerId}`, { playerId }, "DELETE"),
+      apiRequest("/api/crewMembers/remove", { playerId }, "POST"),
     {
       onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),
       onError: (error) => console.error(error),

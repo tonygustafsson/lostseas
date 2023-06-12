@@ -1,9 +1,8 @@
 import { GetServerSideProps } from "next"
 import { FormEvent } from "react"
-import { FiTrash2 } from "react-icons/fi"
+import { GiCoins } from "react-icons/gi"
 
 import DefaultLayout from "@/components/layouts/default"
-import Table from "@/components/ui/Table"
 import TextField from "@/components/ui/TextField"
 import { useCrewMembers } from "@/hooks/queries/useCrewMembers"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -20,10 +19,10 @@ const Crew = () => {
     create(player?.id || "")
   }
 
-  const handleRemoveCrewMember = async (id: string) => {
-    if (!id) return
+  const handleRemoveCrewMember = async (e: FormEvent) => {
+    e.preventDefault()
 
-    remove({ crewMemberId: id, playerId: player?.id || "" })
+    remove(player?.id || "")
   }
 
   return (
@@ -31,33 +30,37 @@ const Crew = () => {
       <>
         <h1 className="text-3xl font-serif text mb-8">Crew members</h1>
 
-        {!!Object.values(player?.crewMembers || [])?.length && (
-          <>
-            <Table
-              headings={["Name", "Age", "Gender", "Created", ""]}
-              rows={Object.values(player?.crewMembers || []).map(
-                (crewMember, idx) => [
-                  crewMember.name,
-                  crewMember.age,
-                  crewMember.gender,
-                  `${new Date(
-                    crewMember.createdDate
-                  ).toLocaleDateString()} ${new Date(
-                    crewMember.createdDate
-                  ).toLocaleTimeString()}`,
-                  <button
-                    key={`crew-member-remove-${idx}`}
-                    className="btn btn-secondary btn-sm ml-auto flex"
-                    onClick={() => handleRemoveCrewMember(crewMember.id)}
-                    disabled={removingIsLoading}
-                  >
-                    <FiTrash2 />
-                  </button>,
-                ]
-              )}
-            />
-          </>
-        )}
+        <div className="stats bg-transparent gap-2 mt-4">
+          <div className="stat bg-gray-700">
+            <div className="stat-figure text-secondary">
+              <GiCoins className="h-8 w-8" />
+            </div>
+            <div className="stat-title">Count</div>
+            <div className="stat-value text-2xl">
+              {player?.crewMembers.count}
+            </div>
+          </div>
+
+          <div className="stat bg-gray-700">
+            <div className="stat-figure text-secondary">
+              <GiCoins className="h-8 w-8" />
+            </div>
+            <div className="stat-title">Health</div>
+            <div className="stat-value text-2xl">
+              {player?.crewMembers.health}
+            </div>
+          </div>
+
+          <div className="stat bg-gray-700">
+            <div className="stat-figure text-secondary">
+              <GiCoins className="h-8 w-8" />
+            </div>
+            <div className="stat-title">Mood</div>
+            <div className="stat-value text-2xl">
+              {player?.crewMembers.mood}
+            </div>
+          </div>
+        </div>
 
         <form
           onSubmit={handleCreateCrewMember}
@@ -76,6 +79,25 @@ const Crew = () => {
             disabled={creatingIsLoading}
           >
             Create new crew member
+          </button>
+        </form>
+        <form
+          onSubmit={handleRemoveCrewMember}
+          className="flex items-bottom gap-3"
+        >
+          <TextField
+            type="hidden"
+            name="playerId"
+            id="playerId"
+            value={player?.id || ""}
+          />
+
+          <button
+            type="submit"
+            className="btn btn-primary mt-7"
+            disabled={removingIsLoading}
+          >
+            Remove a crew member
           </button>
         </form>
       </>

@@ -2,7 +2,7 @@ import { child, get, ref } from "firebase/database"
 
 import db from "@/firebase/db"
 
-import { sortByDate } from "../sort"
+import { sortShipsByDate } from "../sort"
 
 export const getPlayer = async (playerId: Player["id"] | undefined) => {
   if (!playerId) {
@@ -19,8 +19,7 @@ export const getPlayer = async (playerId: Player["id"] | undefined) => {
   const player = data.val() as Player
 
   player.id = playerId
-  player.ships = sortByDate<Ship>(player.ships) ?? {}
-  player.crewMembers = sortByDate<CrewMember>(player.crewMembers) ?? {}
+  player.ships = sortShipsByDate<Ship>(player.ships) ?? {}
 
   return player
 }
