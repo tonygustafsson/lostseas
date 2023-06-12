@@ -1,15 +1,7 @@
 import { GetServerSideProps } from "next"
-import {
-  GiBrandyBottle,
-  GiMeat,
-  GiPorcelainVase,
-  GiPowder,
-  GiRolledCloth,
-  GiSmokingPipe,
-  GiWaterFlask,
-} from "react-icons/gi"
 
 import DefaultLayout from "@/components/layouts/default"
+import MerchandiseIcon from "@/components/MerchandiseIcon"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSideProps"
 import { capitalize } from "@/utils/string"
@@ -17,9 +9,7 @@ import { capitalize } from "@/utils/string"
 const Inventory = () => {
   const { data: player } = useGetPlayer()
 
-  const rows = Object.entries(player?.inventory || []).map(
-    ([item, possession]) => [capitalize(item), possession]
-  )
+  const rows = Object.entries(player?.inventory || [])
 
   return (
     <DefaultLayout>
@@ -32,17 +22,9 @@ const Inventory = () => {
             key={`inventory-${item}`}
           >
             <div className="stat-figure text-secondary">
-              {item === "Food" && <GiMeat className="h-10 w-10" />}
-              {item === "Water" && <GiWaterFlask className="h-10 w-10" />}
-              {item === "Porcelain" && (
-                <GiPorcelainVase className="h-10 w-10" />
-              )}
-              {item === "Spices" && <GiPowder className="h-10 w-10" />}
-              {item === "Silk" && <GiRolledCloth className="h-10 w-10" />}
-              {item === "Tobacco" && <GiSmokingPipe className="h-10 w-10" />}
-              {item === "Rum" && <GiBrandyBottle className="h-10 w-10" />}
+              <MerchandiseIcon item={item as keyof Inventory} size="5xl" />
             </div>
-            <div className="stat-title">{item}</div>
+            <div className="stat-title">{capitalize(item)}</div>
             <div className="stat-value">{possession}</div>
           </div>
         ))}
