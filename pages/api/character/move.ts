@@ -2,6 +2,7 @@ import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import db from "@/firebase/db"
+import { createMoveEvents } from "@/utils/createMoveEvents"
 
 const move = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
@@ -15,29 +16,7 @@ const move = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(500).json({ error })
   })
 
-  if (destination === "Market") {
-    // TODO: Do this in server side props instead
-
-    const existingEvent = await get(
-      child(dbRef, `${playerId}/locationEvent/market`)
-    )
-
-    if (!existingEvent.exists()) {
-      const newEvent: LocationState["market"] = {
-        items: {
-          food: 12,
-        },
-      }
-
-      const eventResult = { ...existingEvent.val(), ...newEvent }
-
-      await set(ref(db, `${playerId}/locationEvent/market`), eventResult).catch(
-        (error) => {
-          res.status(500).json({ error })
-        }
-      )
-    }
-  }
+  await createMoveEvents({ playerId, destination })
 
   res.status(200).json({ success: true })
 }

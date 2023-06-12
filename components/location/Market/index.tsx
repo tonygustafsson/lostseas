@@ -7,9 +7,13 @@ import { capitalize } from "@/utils/string"
 const Market = () => {
   const { data: player } = useGetPlayer()
 
+  const items = MARKET_AVAILABLE_ITEMS.filter((item) =>
+    Object.keys(player?.locationStates?.market?.items || {}).includes(item)
+  )
+
   return (
     <div className="flex flex-wrap gap-6">
-      {MARKET_AVAILABLE_ITEMS.map((item) => (
+      {items.map((item) => (
         <div
           className="card w-80 bg-base-100 shadow-xl pt-4"
           key={`market-item-${item}`}
