@@ -25,7 +25,7 @@ const ShopItem = ({ player, item }: Props) => {
   return (
     <div className="card w-80 bg-base-100 shadow-xl pt-4">
       <figure>
-        <MerchandiseIcon item={item} />
+        <MerchandiseIcon item={item} size="xl" />
       </figure>
 
       <div className="card-body pt-2">

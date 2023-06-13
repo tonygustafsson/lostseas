@@ -11,54 +11,60 @@ import {
 
 type Props = {
   item: string
-  size?:
-    | "xs"
-    | "sm"
-    | "md"
-    | "lg"
-    | "xl"
-    | "2xl"
-    | "3xl"
-    | "4xl"
-    | "5xl"
-    | "6xl"
-    | "7xl"
-    | "8xl"
-    | "9xl"
+  size?: "xs" | "sm" | "md" | "lg" | "xl"
   className?: string
 }
 
-const MerchandiseIcon = ({ item, size = "6xl", className }: Props) => {
+const getSizeClass = (size: string) => {
+  switch (size) {
+    case "xs":
+      return "w-5 h-5"
+    case "sm":
+      return "w-7 h-7"
+    case "md":
+      return "w-9 h-9"
+    case "lg":
+      return "w-11 h-11"
+    case "xl":
+      return "w-16 h-16"
+    default:
+      return "w-8 h-8"
+  }
+}
+
+const MerchandiseIcon = ({ item, size = "md", className = "" }: Props) => {
+  const sizeClass = getSizeClass(size)
+
   switch (item) {
     case "food":
-      return <GiMeat className={`text-${size} text-primary ${className}`} />
+      return <GiMeat className={`${sizeClass} text-primary ${className}`} />
     case "water":
       return (
-        <GiWaterFlask className={`text-${size} text-primary ${className}`} />
+        <GiWaterFlask className={`${sizeClass} text-primary ${className}`} />
       )
     case "porcelain":
       return (
-        <GiPorcelainVase className={`text-${size} text-primary ${className}`} />
+        <GiPorcelainVase className={`${sizeClass} text-primary ${className}`} />
       )
     case "spices":
-      return <GiPowder className={`text-${size} text-primary ${className}`} />
+      return <GiPowder className={`${sizeClass} text-primary ${className}`} />
     case "silk":
       return (
-        <GiRolledCloth className={`text-${size} text-primary ${className}`} />
+        <GiRolledCloth className={`${sizeClass} text-primary ${className}`} />
       )
     case "tobacco":
       return (
-        <GiSmokingPipe className={`text-${size} text-primary ${className}`} />
+        <GiSmokingPipe className={`${sizeClass} text-primary ${className}`} />
       )
     case "rum":
       return (
-        <GiBrandyBottle className={`text-${size} text-primary ${className}`} />
+        <GiBrandyBottle className={`${sizeClass} text-primary ${className}`} />
       )
     case "dinner":
-      return <GiMeat className={`text-${size} text-primary ${className}`} />
+      return <GiMeat className={`${sizeClass} text-primary ${className}`} />
     case "wine":
       return (
-        <GiWineBottle className={`text-${size} text-primary ${className}`} />
+        <GiWineBottle className={`${sizeClass} text-primary ${className}`} />
       )
     default:
       return null
