@@ -1,6 +1,7 @@
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import { TAVERN_ITEMS } from "@/constants/tavern"
+import { useTavern } from "@/hooks/queries/useTavern"
 import { capitalize } from "@/utils/string"
 
 type Props = {
@@ -11,16 +12,17 @@ type Props = {
 // TODO: Make use of zod for validation, not sure how with buying and selling are two different actions
 
 const ShopItem = ({ player, item }: Props) => {
+  const { buy } = useTavern()
+
   const merchandise = TAVERN_ITEMS[item]
   const price = merchandise.price * (player?.crewMembers.count || 0)
   const buyingDisabled = price > (player?.character.doubloons || Infinity)
 
   const handlePurchase = () => {
-    /*     buy({
+    buy({
       playerId: player?.id || "",
       item,
-      quantity,
-    }) */
+    })
   }
 
   return (
