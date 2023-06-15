@@ -1,7 +1,7 @@
 type Ship = {
   id: string
   name: string
-  type: "Frigate" | "Sloop" | "Galleon"
+  type: "Brig" | "Merchantman" | "Galleon" | "Frigate"
   createdDate: number
 }
 

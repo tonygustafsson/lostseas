@@ -9,11 +9,13 @@ import TextField from "@/components/ui/TextField"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShips } from "@/hooks/queries/useShips"
 import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSideProps"
+import { capitalize } from "@/utils/string"
 
 enum ShipType {
-  FRIGATE = "Frigate",
-  SLOOP = "Sloop",
+  BRIG = "Brig",
+  MERCHANTMAN = "Merchantman",
   GALLEON = "Galleon",
+  FRIGATE = "Frigate",
 }
 
 const Ships = () => {
@@ -52,7 +54,7 @@ const Ships = () => {
               headings={["Name", "Type", "Created", ""]}
               rows={Object.values(player?.ships || []).map((ship, idx) => [
                 ship.name,
-                ship.type,
+                capitalize(ship.type),
                 `${new Date(ship.createdDate).toLocaleDateString()} ${new Date(
                   ship.createdDate
                 ).toLocaleTimeString()}`,
