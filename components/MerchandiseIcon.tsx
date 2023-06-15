@@ -1,13 +1,17 @@
 import {
   GiBrandyBottle,
+  GiCargoShip,
   GiMeat,
   GiPorcelainVase,
   GiPowder,
   GiRolledCloth,
+  GiShoonerSailboat,
+  GiSmallFishingSailboat,
   GiSmokingPipe,
   GiWaterFlask,
   GiWineBottle,
 } from "react-icons/gi"
+import { TbSailboat } from "react-icons/tb"
 
 type Props = {
   item: string
@@ -34,38 +38,35 @@ const getSizeClass = (size: string) => {
 
 const MerchandiseIcon = ({ item, size = "md", className = "" }: Props) => {
   const sizeClass = getSizeClass(size)
+  const iconClass = `${sizeClass} text-primary ${className}`
 
   switch (item) {
     case "food":
-      return <GiMeat className={`${sizeClass} text-primary ${className}`} />
+      return <GiMeat className={iconClass} />
     case "water":
-      return (
-        <GiWaterFlask className={`${sizeClass} text-primary ${className}`} />
-      )
+      return <GiWaterFlask className={iconClass} />
     case "porcelain":
-      return (
-        <GiPorcelainVase className={`${sizeClass} text-primary ${className}`} />
-      )
+      return <GiPorcelainVase className={iconClass} />
     case "spices":
-      return <GiPowder className={`${sizeClass} text-primary ${className}`} />
+      return <GiPowder className={iconClass} />
     case "silk":
-      return (
-        <GiRolledCloth className={`${sizeClass} text-primary ${className}`} />
-      )
+      return <GiRolledCloth className={iconClass} />
     case "tobacco":
-      return (
-        <GiSmokingPipe className={`${sizeClass} text-primary ${className}`} />
-      )
+      return <GiSmokingPipe className={iconClass} />
     case "rum":
-      return (
-        <GiBrandyBottle className={`${sizeClass} text-primary ${className}`} />
-      )
+      return <GiBrandyBottle className={iconClass} />
     case "dinner":
-      return <GiMeat className={`${sizeClass} text-primary ${className}`} />
+      return <GiMeat className={iconClass} />
     case "wine":
-      return (
-        <GiWineBottle className={`${sizeClass} text-primary ${className}`} />
-      )
+      return <GiWineBottle className={iconClass} />
+    case "brig":
+      return <TbSailboat className={iconClass} />
+    case "merchantman":
+      return <GiCargoShip className={iconClass} />
+    case "galleon":
+      return <GiShoonerSailboat className={iconClass} />
+    case "frigate":
+      return <GiSmallFishingSailboat className={iconClass} />
     default:
       return null
   }
