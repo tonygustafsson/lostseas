@@ -20,7 +20,6 @@ const Sidebar = () => {
   const { pathname } = useRouter()
   const { logout } = usePlayer()
 
-  const numberOfCrewMembers = Object.values(player?.crewMembers ?? {}).length
   const numberOfShips = Object.values(player?.ships ?? {}).length
   const numberOfInventoryItems = Object.values(player?.inventory ?? {}).length
 
@@ -67,7 +66,7 @@ const Sidebar = () => {
                 <GiHoodedFigure className="h-5 w-5" />
                 Crew members
                 <span className="badge badge-sm badge-primary">
-                  {numberOfCrewMembers}
+                  {player?.crewMembers.count}
                 </span>
               </Link>
             </li>

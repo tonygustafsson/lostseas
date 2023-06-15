@@ -69,6 +69,7 @@ const marketBuy = async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(200).json({
     success: true,
     item,
+    quantity: stateItem.quantity,
     totalQuantity: result.inventory[item],
     totalPrice,
   })

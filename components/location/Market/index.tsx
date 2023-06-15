@@ -1,3 +1,4 @@
+import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { useMarket } from "@/hooks/queries/useMarket"
@@ -23,49 +24,39 @@ const Market = () => {
         const inventoryItem = item as keyof LocationStateMarketItems
 
         return (
-          <div
-            className="card w-80 bg-base-100 shadow-xl pt-4"
-            key={`market-item-${item}`}
-          >
-            <figure>
-              <MerchandiseIcon item={inventoryItem} />
-            </figure>
+          <MerchandiseCard
+            key={`market-${item}`}
+            title={capitalize(item)}
+            indicator={player?.inventory[inventoryItem]?.toString() || "0"}
+            icon={<MerchandiseIcon item={inventoryItem} />}
+            body={
+              <>
+                <p>
+                  You find <strong>{quantity}</strong>{" "}
+                  {quantity === 1
+                    ? MERCHANDISE[inventoryItem].singleUnit
+                    : MERCHANDISE[inventoryItem].unit}{" "}
+                  of {item} for <strong>{price} doubloons</strong>.
+                </p>
 
-            <div className="card-body pt-2">
-              <div className="indicator">
-                <h2 className="card-title mr-6">{capitalize(item)}</h2>
+                <p>{MERCHANDISE[inventoryItem].description}</p>
 
-                <span className="indicator-item indicator-middle badge badge-primary">
-                  {player?.inventory[inventoryItem] || 0}
-                </span>
-              </div>
-
-              <p>
-                You find <strong>{quantity}</strong>{" "}
-                {quantity === 1
-                  ? MERCHANDISE[inventoryItem].singleUnit
-                  : MERCHANDISE[inventoryItem].unit}{" "}
-                of {item} for <strong>{price} doubloons</strong>.
-              </p>
-
-              <p>{MERCHANDISE[inventoryItem].description}</p>
-
-              <div className="flex gap-2 mt-2">
-                <div className="badge badge-secondary">
-                  Price: {price * quantity} dbl
+                <div className="flex gap-2 mt-2">
+                  <div className="badge badge-secondary">
+                    Price: {price * quantity} dbl
+                  </div>
                 </div>
-              </div>
-
-              <div className="card-actions justify-end mt-4 gap-2">
-                <button
-                  className="btn btn-primary btn-sm"
-                  onClick={() => handleAccept(inventoryItem)}
-                >
-                  Buy
-                </button>
-              </div>
-            </div>
-          </div>
+              </>
+            }
+            actions={
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={() => handleAccept(inventoryItem)}
+              >
+                Buy
+              </button>
+            }
+          />
         )
       })}
 
