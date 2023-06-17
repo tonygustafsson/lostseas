@@ -1,40 +1,15 @@
 import { GetServerSideProps } from "next"
-import { FormEvent, useState } from "react"
 import { FiTrash2 } from "react-icons/fi"
 
 import DefaultLayout from "@/components/layouts/default"
-import Select from "@/components/ui/Select"
 import Table from "@/components/ui/Table"
-import TextField from "@/components/ui/TextField"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShips } from "@/hooks/queries/useShips"
 import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSideProps"
 
-enum ShipType {
-  BRIG = "Brig",
-  MERCHANTMAN = "Merchantman",
-  GALLEON = "Galleon",
-  FRIGATE = "Frigate",
-}
-
 const Ships = () => {
   const { data: player } = useGetPlayer()
-  const { create, creatingIsLoading, remove, removingIsLoading } = useShips()
-
-  const [shipType, setShipType] = useState(ShipType.FRIGATE)
-
-  const handleCreateShip = async (e: FormEvent) => {
-    e.preventDefault()
-
-    const shipData = {
-      playerId: player?.id || "",
-      type: shipType,
-    }
-
-    create(shipData)
-
-    setShipType(ShipType.FRIGATE)
-  }
+  const { remove, removingIsLoading } = useShips()
 
   const handleRemoveShip = async (id: string) => {
     if (!id) return
@@ -69,35 +44,6 @@ const Ships = () => {
             />
           </>
         )}
-
-        <form
-          onSubmit={handleCreateShip}
-          className="mt-8 flex flex-wrap items-end gap-3"
-        >
-          <TextField
-            type="hidden"
-            name="playerId"
-            id="playerId"
-            value={player?.id || ""}
-          />
-
-          <Select
-            label="Ship type"
-            name="ship_type"
-            id="ship_type"
-            value={shipType}
-            options={Object.values(ShipType)}
-            onChange={(e) => setShipType(e.target.value)}
-          />
-
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={creatingIsLoading}
-          >
-            Create new ship
-          </button>
-        </form>
       </>
     </DefaultLayout>
   )
