@@ -1,4 +1,4 @@
-import { child, get, ref, set } from "firebase/database"
+import { child, get, ref, remove, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { SHIP_TYPES } from "@/constants/ship"
@@ -6,7 +6,8 @@ import db from "@/firebase/db"
 
 const shipyardSell = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
-  const { playerId, id } = req.body
+
+  const { playerId, id }: { playerId: Player["id"]; id: Ship["id"] } = req.body
 
   const playerRef = await get(child(dbRef, playerId))
   const player = playerRef.val() as Player
@@ -25,16 +26,17 @@ const shipyardSell = async (req: NextApiRequest, res: NextApiResponse) => {
     ...player,
     character: {
       ...player.character,
-      doubloons: player.character.doubloons - totalPrice,
-    },
-    ships: {
-      ...player.ships,
-      [id]: null,
+      doubloons: player.character.doubloons + totalPrice,
     },
   }
 
   await set(ref(db, playerId), result).catch((error) => {
     res.status(500).json({ error, ship })
+  })
+
+  await remove(ref(db, `${playerId}/ships/${id}`)).catch((error) => {
+    res.status(500).json({ error, ship })
+    return
   })
 
   res.status(200).json({

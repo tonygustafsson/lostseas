@@ -3,7 +3,6 @@ import MerchandiseIcon from "@/components/MerchandiseIcon"
 import { SHIP_TYPES } from "@/constants/ship"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShipyard } from "@/hooks/queries/useShipyard"
-import { capitalize } from "@/utils/string"
 
 const Shipyard = () => {
   const { data: player } = useGetPlayer()
@@ -23,7 +22,7 @@ const Shipyard = () => {
         {Object.entries(SHIP_TYPES).map(([shipType, { description, buy }]) => (
           <MerchandiseCard
             key={`shipyard-buy-${shipType}`}
-            title={capitalize(shipType)}
+            title={shipType}
             //indicator={player?.inventory[inventoryItem]?.toString() || "0"}
             icon={<MerchandiseIcon size="lg" item={shipType} />}
             body={
@@ -56,7 +55,7 @@ const Shipyard = () => {
           return (
             <MerchandiseCard
               key={`shipyard-sell-${name}`}
-              title={`${capitalize(type)}: ${capitalize(name)}`}
+              title={`${type}: ${name}`}
               //indicator={player?.inventory[inventoryItem]?.toString() || "0"}
               icon={<MerchandiseIcon size="lg" item={type} />}
               body={

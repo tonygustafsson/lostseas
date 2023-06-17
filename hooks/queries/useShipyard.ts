@@ -39,7 +39,7 @@ export const useShipyard = () => {
 
   const { mutate: sell, isLoading: isSelling } = useMutation(
     (data: { playerId: Player["id"]; id: Ship["id"] }) =>
-      apiRequest("/api/shop/sell", data, "POST"),
+      apiRequest("/api/shipyard/sell", data, "POST"),
     {
       onSuccess: ({ error, ship, totalPrice }) => {
         if (error) {
