@@ -82,33 +82,40 @@ const Sea = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto opacity-80">
-      <svg
-        version="1.1"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
-        viewBox={`0 0 ${mapWidth} ${mapHeight}`}
-        preserveAspectRatio="xMinYMin meet"
-      >
-        <image
-          width={mapWidth}
-          height={mapHeight}
-          xlinkHref="img/map/spanish-main.jpg"
-        />
+    <>
+      <h1 className="cursor-pointer hover:scale-125 transform transition">
+        Map
+      </h1>
 
-        {Object.entries(towns).map(([town, { x, y }]) => (
+      <div className="max-w-7xl mx-auto opacity-80">
+        <svg
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlnsXlink="http://www.w3.org/1999/xlink"
+          viewBox={`0 0 ${mapWidth} ${mapHeight}`}
+          preserveAspectRatio="xMinYMin meet"
+        >
           <image
-            key={`sea-map-${town}`}
-            width="20"
-            height="20"
-            x={x}
-            y={y}
-            xlinkHref="img/map/town.svg"
-            onClick={() => handleTravel(town as Town)}
+            width={mapWidth}
+            height={mapHeight}
+            xlinkHref="img/map/spanish-main.jpg"
           />
-        ))}
-      </svg>
-    </div>
+
+          {Object.entries(towns).map(([town, { x, y }]) => (
+            <image
+              key={`sea-map-${town}`}
+              width="20"
+              height="20"
+              x={x}
+              y={y}
+              xlinkHref="img/map/town.svg"
+              className="cursor-pointer hover:scale-125 origin-center transition-transform"
+              onClick={() => handleTravel(town as Town)}
+            />
+          ))}
+        </svg>
+      </div>
+    </>
   )
 }
 
