@@ -1,58 +1,45 @@
 import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
-import { MERCHANDISE } from "@/constants/merchandise"
+import { SHIP_TYPES } from "@/constants/ship"
 import db from "@/firebase/db"
 
 const shipyardSell = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
-  const { playerId, item, quantity } = req.body
+  const { playerId, id } = req.body
 
-  if (!item || !Object.keys(MERCHANDISE).includes(item || "")) {
-    res.status(400).json({ error: "Not a valid item", item })
+  const playerRef = await get(child(dbRef, playerId))
+  const player = playerRef.val() as Player
+
+  const ship = player.ships[id]
+
+  if (!ship) {
+    res.status(400).json({ error: "Not a valid item" })
     return
   }
 
-  const totalPrice =
-    MERCHANDISE[item as keyof typeof MERCHANDISE].sell * quantity
+  const shipInfo = SHIP_TYPES[ship.type as keyof typeof SHIP_TYPES]
+  const totalPrice = shipInfo.sell
 
-  const existingInventoryRef = await get(child(dbRef, `${playerId}/inventory`))
-  const existingInventory = existingInventoryRef.val()
-
-  if (existingInventory[item] < quantity) {
-    res.status(400).json({ error: `Not enough ${item}.`, item })
-    return
+  const result: Player = {
+    ...player,
+    character: {
+      ...player.character,
+      doubloons: player.character.doubloons - totalPrice,
+    },
+    ships: {
+      ...player.ships,
+      [id]: null,
+    },
   }
 
-  const inventoryResult = {
-    ...existingInventory,
-    [item]: existingInventory[item] - quantity,
-  }
-
-  await set(ref(db, `${playerId}/inventory`), inventoryResult).catch(
-    (error) => {
-      res.status(500).json({ error })
-    }
-  )
-
-  const existingCharacterRef = await get(child(dbRef, `${playerId}/character`))
-  const existingCharacter = existingCharacterRef.val()
-  const characterResult = {
-    ...existingCharacter,
-    doubloons: existingCharacter.doubloons + totalPrice,
-  }
-
-  await set(ref(db, `${playerId}/character`), characterResult).catch(
-    (error) => {
-      res.status(500).json({ error })
-    }
-  )
+  await set(ref(db, playerId), result).catch((error) => {
+    res.status(500).json({ error, ship })
+  })
 
   res.status(200).json({
     success: true,
-    item,
-    quantity,
-    totalQuantity: inventoryResult[item],
+    ship,
     totalPrice,
   })
 }

@@ -7,18 +7,22 @@ import { capitalize } from "@/utils/string"
 
 const Shipyard = () => {
   const { data: player } = useGetPlayer()
-  const { buy } = useShipyard()
+  const { buy, sell } = useShipyard()
 
   const handleBuy = (item: keyof typeof SHIP_TYPES) => {
     buy({ playerId: player?.id || "", item })
   }
 
+  const handleSell = (id: Ship["id"]) => {
+    sell({ playerId: player?.id || "", id })
+  }
+
   return (
-    <div className="flex flex-wrap gap-6">
-      {Object.entries(SHIP_TYPES).map(
-        ([shipType, { description, buy, sell }]) => (
+    <>
+      <div className="flex flex-wrap gap-6">
+        {Object.entries(SHIP_TYPES).map(([shipType, { description, buy }]) => (
           <MerchandiseCard
-            key={`shipyard-${shipType}`}
+            key={`shipyard-buy-${shipType}`}
             title={capitalize(shipType)}
             //indicator={player?.inventory[inventoryItem]?.toString() || "0"}
             icon={<MerchandiseIcon size="lg" item={shipType} />}
@@ -26,9 +30,8 @@ const Shipyard = () => {
               <>
                 <p>{description}</p>
 
-                <div className="flex gap-2 mt-2">
-                  <div className="badge badge-secondary">Buy: {buy} dbl</div>
-                  <div className="badge badge-secondary">Sell: {sell} dbl</div>
+                <div className="flex gap-2">
+                  <div className="badge badge-secondary">Price: {buy} dbl</div>
                 </div>
               </>
             }
@@ -41,9 +44,45 @@ const Shipyard = () => {
               </button>
             }
           />
-        )
-      )}
-    </div>
+        ))}
+      </div>
+
+      <div className="flex flex-wrap gap-6 mt-8">
+        {Object.entries(player?.ships || []).map(([id, { name, type }]) => {
+          const shipInfo = SHIP_TYPES[type as keyof typeof SHIP_TYPES]
+
+          if (!shipInfo) return null
+
+          return (
+            <MerchandiseCard
+              key={`shipyard-sell-${name}`}
+              title={`${capitalize(type)}: ${capitalize(name)}`}
+              //indicator={player?.inventory[inventoryItem]?.toString() || "0"}
+              icon={<MerchandiseIcon size="lg" item={type} />}
+              body={
+                <>
+                  <p>{shipInfo.description}</p>
+
+                  <div className="flex gap-2">
+                    <div className="badge badge-secondary">
+                      Price: {shipInfo.sell} dbl
+                    </div>
+                  </div>
+                </>
+              }
+              actions={
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={() => handleSell(id)}
+                >
+                  Sell
+                </button>
+              }
+            />
+          )
+        })}
+      </div>
+    </>
   )
 }
 

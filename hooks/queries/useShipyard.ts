@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 import { useToast } from "@/components/ui/Toast/context"
-import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_TYPES } from "@/constants/ship"
 import apiRequest from "@/utils/apiRequest"
 
@@ -39,16 +38,13 @@ export const useShipyard = () => {
   )
 
   const { mutate: sell, isLoading: isSelling } = useMutation(
-    (data: {
-      playerId: Player["id"]
-      item: keyof Inventory
-      quantity: number
-    }) => apiRequest("/api/shop/sell", data, "POST"),
+    (data: { playerId: Player["id"]; id: Ship["id"] }) =>
+      apiRequest("/api/shop/sell", data, "POST"),
     {
-      onSuccess: ({ error, quantity, item, totalPrice, totalQuantity }) => {
+      onSuccess: ({ error, ship, totalPrice }) => {
         if (error) {
           setToast({
-            title: `Could not sell ${item}`,
+            title: `Could not sell your ship ${ship.name}`,
             message: error,
             variant: "error",
           })
@@ -58,14 +54,9 @@ export const useShipyard = () => {
 
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
 
-        const unit =
-          quantity === 1
-            ? MERCHANDISE[item as keyof Inventory].singleUnit
-            : MERCHANDISE[item as keyof Inventory].unit
-
         setToast({
-          title: `You sold ${quantity} ${unit} of ${item}`,
-          message: `It received ${totalPrice} dbl and your now have ${totalQuantity} ${unit} of ${item}`,
+          title: `You sold your ${ship.type} ${ship.name}`,
+          message: `It received ${totalPrice} dbl.`,
           variant: "success",
         })
       },

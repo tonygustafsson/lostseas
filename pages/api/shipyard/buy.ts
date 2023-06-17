@@ -29,8 +29,6 @@ const shipyardBuy = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const newShip = createNewShip(shipItem as Ship["type"])
 
-  console.log(newShip)
-
   const result: Player = {
     ...player,
     character: {

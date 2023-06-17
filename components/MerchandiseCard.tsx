@@ -8,7 +8,7 @@ type Props = {
 
 const MerchandiseCard = ({ title, icon, indicator, body, actions }: Props) => (
   <div className="card w-80 bg-base-100 shadow-xl">
-    <figure className="gap-3 bg-gray-800 py-3 mb-2">
+    <figure className="gap-3 bg-gray-800 py-3 mb-2 px-6">
       {icon}
 
       {indicator ? (
