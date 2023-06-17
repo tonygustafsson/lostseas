@@ -59,13 +59,13 @@ const MerchandiseIcon = ({ item, size = "md", className = "" }: Props) => {
       return <GiMeat className={iconClass} />
     case "wine":
       return <GiWineBottle className={iconClass} />
-    case "brig":
+    case "Brig":
       return <TbSailboat className={iconClass} />
-    case "merchantman":
+    case "Merchantman":
       return <GiCargoShip className={iconClass} />
-    case "galleon":
+    case "Galleon":
       return <GiShoonerSailboat className={iconClass} />
-    case "frigate":
+    case "Frigate":
       return <GiSmallFishingSailboat className={iconClass} />
     default:
       return null

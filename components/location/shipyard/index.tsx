@@ -55,7 +55,7 @@ const Shipyard = () => {
           return (
             <MerchandiseCard
               key={`shipyard-sell-${name}`}
-              title={`${type}: ${name}`}
+              title={name}
               //indicator={player?.inventory[inventoryItem]?.toString() || "0"}
               icon={<MerchandiseIcon size="lg" item={type} />}
               body={
@@ -74,7 +74,7 @@ const Shipyard = () => {
                   className="btn btn-primary btn-sm"
                   onClick={() => handleSell(id)}
                 >
-                  Sell
+                  Sell {type}
                 </button>
               }
             />
