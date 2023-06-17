@@ -44,7 +44,7 @@ export const useShipyard = () => {
       onSuccess: ({ error, ship, totalPrice }) => {
         if (error) {
           setToast({
-            title: `Could not sell your ship ${ship.name}`,
+            title: `Could not sell your ship`,
             message: error,
             variant: "error",
           })
