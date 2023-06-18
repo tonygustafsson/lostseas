@@ -71,3 +71,7 @@ input.hide-number-arrows[type=number] {
 .modal-box {
     @apply text-white
 }
+
+button[disabled] svg {
+    @apply text-gray-600
+}
