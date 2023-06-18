@@ -1,4 +1,13 @@
 import { GetServerSideProps } from "next"
+import { AiOutlineShop } from "react-icons/ai"
+import { BsTools } from "react-icons/bs"
+import {
+  GiBank,
+  GiFarmer,
+  GiSmallFishingSailboat,
+  GiTavernSign,
+} from "react-icons/gi"
+import { RiBankLine } from "react-icons/ri"
 
 import DefaultLayout from "@/components/layouts/default"
 import Bank from "@/components/location/Bank"
@@ -18,6 +27,36 @@ const Home = () => {
   return (
     <DefaultLayout>
       <LocationHero />
+
+      <div className="bg-gray-900 rounded-b-lg p-4 flex items-center flex-col">
+        <span className="text-xl font-serif">Change location</span>
+
+        <div className="flex flex-wrap gap-4 mt-4 justify-center">
+          <button className="btn btn-lg capitalize bg-gray-800">
+            <AiOutlineShop className="text-cyan-600 w-8 h-8" />
+            Shop
+          </button>
+          <button className="btn btn-lg capitalize bg-gray-800">
+            <GiTavernSign className="text-cyan-600 w-8 h-8" /> Tavern
+          </button>
+          <button className="btn btn-lg capitalize bg-gray-800">
+            <GiBank className="text-cyan-600 w-8 h-8" /> Bank
+          </button>
+          <button className="btn btn-lg capitalize bg-gray-800">
+            <GiFarmer className="text-cyan-600 w-8 h-8" /> Market
+          </button>
+          <button className="btn btn-lg capitalize bg-gray-800">
+            <BsTools className="text-cyan-600 w-7 h-7" /> Shipyard
+          </button>
+          <button className="btn btn-lg capitalize bg-gray-800">
+            <RiBankLine className="text-cyan-600 w-8 h-8" /> City hall
+          </button>
+          <button className="btn btn-lg capitalize btn-primary">
+            <GiSmallFishingSailboat className="text-white w-8 h-8" /> Set sails
+          </button>
+        </div>
+      </div>
+
       <LoggedOutHero />
 
       <div className="mt-8">

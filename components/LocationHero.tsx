@@ -33,7 +33,7 @@ const LocationHero = () => {
 
   return (
     <div
-      className="hero rounded-lg"
+      className="hero rounded-lg rounded-b-none"
       style={{
         backgroundImage: `url("img/place/${player?.character.location
           .replace(" ", "-")
