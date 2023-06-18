@@ -21,7 +21,7 @@ const LocationHero = () => {
     move({ playerId: player?.id || "", location: "Docks" })
   }
 
-  const handleLeavePort = () => {
+  const handleExplore = () => {
     explore({ playerId: player?.id || "" })
   }
 
@@ -69,14 +69,22 @@ const LocationHero = () => {
                 </button>
               </>
             )}
-            {player?.character.location === "Sea" && <Travel />}
+            {player?.character.location === "Sea" && (
+              <>
+                <Travel />
+
+                <button className="btn btn-primary" onClick={handleExplore}>
+                  Explore
+                </button>
+              </>
+            )}
             {player?.character.location === "Harbor" && (
               <>
                 <button className="btn btn-primary" onClick={handleLand}>
                   Land
                 </button>
 
-                <button className="btn btn-primary" onClick={handleLeavePort}>
+                <button className="btn btn-primary" onClick={handleExplore}>
                   Leave port
                 </button>
               </>
