@@ -9,7 +9,7 @@ import Travel from "./Travel"
 
 const LocationHero = () => {
   const { data: player } = useGetPlayer()
-  const { move, sailOut } = useCharacter()
+  const { move, sailOut, explore } = useCharacter()
 
   const nation = getTownsNationality(player?.character.town)
 
@@ -19,6 +19,10 @@ const LocationHero = () => {
 
   const handleLand = () => {
     move({ playerId: player?.id || "", location: "Docks" })
+  }
+
+  const handleLeavePort = () => {
+    explore({ playerId: player?.id || "" })
   }
 
   const handleSailOut = () => {
@@ -65,11 +69,17 @@ const LocationHero = () => {
                 </button>
               </>
             )}
-            {isOnSeas && <Travel />}
+            {player?.character.location === "Sea" && <Travel />}
             {player?.character.location === "Harbor" && (
-              <button className="btn btn-primary" onClick={handleLand}>
-                Land
-              </button>
+              <>
+                <button className="btn btn-primary" onClick={handleLand}>
+                  Land
+                </button>
+
+                <button className="btn btn-primary" onClick={handleLeavePort}>
+                  Leave port
+                </button>
+              </>
             )}
           </div>
         </div>
