@@ -61,7 +61,7 @@ const LocationHero = () => {
               <>
                 <Move />
                 <button className="btn btn-primary" onClick={handleSailOut}>
-                  Sail the Seas
+                  Set sails
                 </button>
               </>
             )}
