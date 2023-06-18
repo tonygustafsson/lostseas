@@ -7,13 +7,17 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 const mapWidth = 850
 const mapHeight = 540
 
-type TownLocations = Record<Town, { nation: Nation; x: number; y: number }>
+type TownLocations = Record<
+  Town,
+  { nation: Nation; x: number; y: number; textAlign?: "bottom" | "right" }
+>
 
 const towns: TownLocations = {
   "Charles Towne": {
     nation: "England",
     x: 388,
     y: 47,
+    textAlign: "bottom",
   },
   Barbados: {
     nation: "England",
@@ -29,6 +33,7 @@ const towns: TownLocations = {
     nation: "England",
     x: 207,
     y: 303,
+    textAlign: "right",
   },
   Tortuga: {
     nation: "France",
@@ -44,6 +49,7 @@ const towns: TownLocations = {
     nation: "France",
     x: 752,
     y: 353,
+    textAlign: "right",
   },
   Biloxi: {
     nation: "France",
@@ -84,11 +90,13 @@ const towns: TownLocations = {
     nation: "Holland",
     x: 720,
     y: 301,
+    textAlign: "right",
   },
   "St. Eustatius": {
     nation: "Holland",
     x: 741,
     y: 327,
+    textAlign: "right",
   },
 }
 
@@ -161,36 +169,39 @@ const Sea = () => {
             xlinkHref="img/map/spanish-main.jpg"
           />
 
-          {Object.entries(towns).map(([town, { x, y }]) => (
-            <>
-              <image
-                key={`sea-map-town-${town}`}
-                width="20"
-                height="20"
-                x={x}
-                y={y}
-                xlinkHref="img/map/town.svg"
-                className="cursor-pointer w-5 h-5 hover:h-6 hover:w-6 hover:-translate-x-[2px] hover:-translate-y-[2px] "
-                onClick={() => handleTravel(town as Town)}
-                data-town={town}
-                onMouseOver={onMouseOverTown}
-                onMouseOut={onMouseOutTown}
-              />
+          {Object.entries(towns).map(
+            ([town, { x, y, textAlign = "bottom" }]) => (
+              <>
+                <image
+                  key={`sea-map-town-${town}`}
+                  width="20"
+                  height="20"
+                  x={x}
+                  y={y}
+                  xlinkHref="img/map/town.svg"
+                  className="cursor-pointer w-5 h-5 hover:h-6 hover:w-6 hover:-translate-x-[2px] hover:-translate-y-[2px] "
+                  onClick={() => handleTravel(town as Town)}
+                  data-town={town}
+                  onMouseOver={onMouseOverTown}
+                  onMouseOut={onMouseOutTown}
+                />
 
-              <text
-                x={x - town.length * 2}
-                y={y + 34}
-                fontSize="12px"
-                fontFamily="monospace"
-                className="bg-white"
-                fill="white"
-                opacity={0.6}
-                filter="url(#solid)"
-              >
-                {town}
-              </text>
-            </>
-          ))}
+                <text
+                  x={textAlign === "bottom" ? x - town.length * 2 : x + 26}
+                  y={textAlign === "bottom" ? y + 34 : y + 15}
+                  fontSize="10px"
+                  fontFamily="monospace"
+                  className="bg-white"
+                  fill="white"
+                  opacity={0.6}
+                  filter="url(#solid)"
+                  style={{ userSelect: "none" }}
+                >
+                  {town}
+                </text>
+              </>
+            )
+          )}
         </svg>
       </div>
     </>
