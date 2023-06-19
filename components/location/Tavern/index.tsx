@@ -11,19 +11,35 @@ const Tavern = () => {
 
   return (
     <>
-      <ActionCard
-        title="A bunch of sailors approach you"
-        message="Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-              excepturi exercitationem quasi. In deleniti eaque aut repudiandae
-              et a id nisi."
-        icon={<GiPirateCaptain className="w-20 h-20 text-secondary" />}
-        actions={
-          <>
-            <button className="btn btn-primary">Talk to them</button>
-            <button className="btn btn-secondary">Ignore them</button>
-          </>
-        }
-      />
+      {player?.locationStates?.tavern?.noOfSailors &&
+        !player?.locationStates.tavern.isHostile && (
+          <ActionCard
+            title={`${player?.locationStates?.tavern?.noOfSailors} sailors approach you`}
+            message="After a couple of drinks and a few games of cards, it turns out they want to join you on your adventure."
+            icon={<GiPirateCaptain className="w-20 h-20 text-secondary" />}
+            actions={
+              <>
+                <button className="btn btn-primary">Take them in</button>
+                <button className="btn btn-secondary">Pass</button>
+              </>
+            }
+          />
+        )}
+
+      {player?.locationStates?.tavern?.noOfSailors &&
+        player?.locationStates.tavern.isHostile && (
+          <ActionCard
+            title={`${player?.locationStates?.tavern?.noOfSailors} sailors approach you`}
+            message="After a couple of drinks they start to get aggressive and want to fight you."
+            icon={<GiPirateCaptain className="w-20 h-20 text-secondary" />}
+            actions={
+              <>
+                <button className="btn btn-primary">Fight them</button>
+                <button className="btn btn-secondary">Avoid</button>
+              </>
+            }
+          />
+        )}
 
       <h2 className="text-3xl font-serif mb-8">Buy</h2>
 

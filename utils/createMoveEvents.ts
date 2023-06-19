@@ -50,4 +50,51 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
       }
     )
   }
+
+  if (destination === "Tavern") {
+    const dbRef = ref(db)
+
+    if (Math.random() < 0.5) {
+      return // 50% chance of no event
+    }
+
+    const existingEvent = await get(
+      child(dbRef, `${playerId}/locationStates/tavern`)
+    )
+
+    if (existingEvent.exists()) {
+      return
+    }
+
+    const crewMembersRef = await get(child(dbRef, `${playerId}/crewMembers`))
+    const crewMembers = crewMembersRef.val()?.count || 0
+
+    let noOfSailors = 0
+
+    if (crewMembers === 0) {
+      noOfSailors = 1
+    } else if (crewMembers <= 10) {
+      noOfSailors = Math.round(crewMembers * (getRandomInt(10, 25) / 100))
+    } else if (crewMembers <= 20) {
+      noOfSailors = Math.round(crewMembers * (getRandomInt(8, 15) / 100))
+    } else if (crewMembers > 20) {
+      noOfSailors = Math.round(crewMembers * (getRandomInt(4, 10) / 100))
+    }
+
+    const isHostile = Math.random() < 0.3
+
+    const newEvent: LocationState["tavern"] = {
+      visited: true,
+      noOfSailors,
+      isHostile,
+    }
+
+    const eventResult = { ...existingEvent.val(), ...newEvent }
+
+    await set(ref(db, `${playerId}/locationStates/tavern`), eventResult).catch(
+      (error) => {
+        throw new Error(error)
+      }
+    )
+  }
 }

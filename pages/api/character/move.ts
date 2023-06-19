@@ -9,8 +9,9 @@ const move = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerId = req.body.playerId as Player["id"]
   const destination = req.body.location as Character["location"]
 
-  const existingCharacter = await get(child(dbRef, `${playerId}/character`))
-  const result = { ...existingCharacter.val(), location: destination }
+  const existingCharacterRef = await get(child(dbRef, `${playerId}/character`))
+  const character = existingCharacterRef.val()
+  const result = { ...character, location: destination }
 
   await set(ref(db, `${playerId}/character`), result).catch((error) => {
     res.status(500).json({ error })

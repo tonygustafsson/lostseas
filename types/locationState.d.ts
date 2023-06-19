@@ -3,6 +3,11 @@ type LocationState = {
     visited: true | undefined
     items: LocationStateMarketItems
   }
+  tavern?: {
+    visited: true | undefined
+    noOfSailors: number
+    isHostile: boolean
+  }
 }
 
 type LocationStateMarketItems = Record<
