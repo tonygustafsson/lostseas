@@ -1,4 +1,4 @@
-import { child, get, ref, set } from "firebase/database"
+import { child, get, ref, remove, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import db from "@/firebase/db"
@@ -20,6 +20,12 @@ const explore = async (req: NextApiRequest, res: NextApiResponse) => {
 
   await set(ref(db, `${playerId}/character`), result).catch((error) => {
     res.status(500).json({ error })
+  })
+
+  // Reset location states
+  await remove(ref(db, `${playerId}/locationStates`)).catch((error) => {
+    res.status(500).json({ error })
+    return
   })
 
   res.status(200).json({ success: true })
