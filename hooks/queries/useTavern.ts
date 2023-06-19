@@ -37,8 +37,67 @@ export const useTavern = () => {
     }
   )
 
+  const { mutate: acceptNewCrewMembers, isLoading: isAcceptingNewCrewMembers } =
+    useMutation(
+      (data: { playerId: Player["id"] }) =>
+        apiRequest("/api/tavern/acceptNewCrewMembers", data, "POST"),
+      {
+        onSuccess: ({ error, numberOfSailors }) => {
+          if (error) {
+            setToast({
+              title: `Could accept new crew members`,
+              message: error,
+              variant: "error",
+            })
+
+            return
+          }
+
+          queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+
+          setToast({
+            title: `You took ${numberOfSailors} in as your crew`,
+            message: `Your whole crew couldn't be happier`,
+            variant: "success",
+          })
+        },
+        onError: (error) => console.error(error),
+      }
+    )
+
+  const { mutate: ignoreSailors, isLoading: isIgnoringSailors } = useMutation(
+    (data: { playerId: Player["id"] }) =>
+      apiRequest("/api/tavern/ignoreSailors", data, "POST"),
+    {
+      onSuccess: ({ error, numberOfSailors }) => {
+        if (error) {
+          setToast({
+            title: `Could ignore sailors`,
+            message: error,
+            variant: "error",
+          })
+
+          return
+        }
+
+        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+
+        setToast({
+          title: `You ignored the ${numberOfSailors} sailors`,
+          message: `You said "No thank you" and just walked away`,
+          variant: "success",
+        })
+      },
+      onError: (error) => console.error(error),
+    }
+  )
+
   return {
     buy,
     isBuying,
+    acceptNewCrewMembers,
+    isAcceptingNewCrewMembers,
+    ignoreSailors,
+    isIgnoringSailors,
   }
 }

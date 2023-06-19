@@ -3,15 +3,25 @@ import { GiPirateCaptain } from "react-icons/gi"
 import ActionCard from "@/components/ActionCard"
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { useTavern } from "@/hooks/queries/useTavern"
 
 import ShopItem from "./ShopItem"
 
 const Tavern = () => {
   const { data: player } = useGetPlayer()
+  const { acceptNewCrewMembers, ignoreSailors } = useTavern()
+
+  const handleAcceptNewCrewMembers = () => {
+    acceptNewCrewMembers({ playerId: player?.id || "" })
+  }
+
+  const handleIgnoreSailors = () => {
+    ignoreSailors({ playerId: player?.id || "" })
+  }
 
   return (
     <>
-      {player?.locationStates?.tavern?.noOfSailors &&
+      {!!player?.locationStates?.tavern?.noOfSailors &&
         !player?.locationStates.tavern.isHostile && (
           <ActionCard
             title={`${player?.locationStates?.tavern?.noOfSailors} sailors approach you`}
@@ -19,14 +29,24 @@ const Tavern = () => {
             icon={<GiPirateCaptain className="w-20 h-20 text-secondary" />}
             actions={
               <>
-                <button className="btn btn-primary">Take them in</button>
-                <button className="btn btn-secondary">Pass</button>
+                <button
+                  className="btn btn-primary"
+                  onClick={handleAcceptNewCrewMembers}
+                >
+                  Take them in
+                </button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={handleIgnoreSailors}
+                >
+                  Pass
+                </button>
               </>
             }
           />
         )}
 
-      {player?.locationStates?.tavern?.noOfSailors &&
+      {!!player?.locationStates?.tavern?.noOfSailors &&
         player?.locationStates.tavern.isHostile && (
           <ActionCard
             title={`${player?.locationStates?.tavern?.noOfSailors} sailors approach you`}
@@ -35,7 +55,12 @@ const Tavern = () => {
             actions={
               <>
                 <button className="btn btn-primary">Fight them</button>
-                <button className="btn btn-secondary">Avoid</button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={handleIgnoreSailors}
+                >
+                  Avoid
+                </button>
               </>
             }
           />
