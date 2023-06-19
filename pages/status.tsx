@@ -74,6 +74,15 @@ const Status = () => {
             </div>
           </div>
 
+          <div className="card-actions justify-end mt-4">
+            <button
+              onClick={openCharacterEditModal}
+              className="btn btn-primary btn-sm"
+            >
+              Change
+            </button>
+          </div>
+
           <div className="stats gap-4 mt-4">
             <div className="stat bg-gray-700">
               <div className="stat-figure text-secondary">
@@ -111,13 +120,6 @@ const Status = () => {
           </div>
 
           <div className="card-actions justify-end mt-4">
-            <button
-              onClick={openCharacterEditModal}
-              className="btn btn-secondary btn-sm"
-            >
-              Change
-            </button>
-
             <Link href="/inventory">
               <button className="btn btn-primary btn-sm">Inventory</button>
             </Link>
