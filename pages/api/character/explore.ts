@@ -9,8 +9,14 @@ const explore = async (req: NextApiRequest, res: NextApiResponse) => {
   const town = null
   const location: SeaLocation = "Sea"
 
-  const existingCharacter = await get(child(dbRef, `${playerId}/character`))
-  const result = { ...existingCharacter.val(), town, location }
+  const existingCharacterRef = await get(child(dbRef, `${playerId}/character`))
+  const existingCharacter = existingCharacterRef.val()
+  const result = {
+    ...existingCharacter,
+    town,
+    location,
+    week: existingCharacter.week + 1,
+  }
 
   await set(ref(db, `${playerId}/character`), result).catch((error) => {
     res.status(500).json({ error })

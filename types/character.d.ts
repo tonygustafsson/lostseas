@@ -8,4 +8,5 @@ type Character = {
   doubloons: number
   account?: number
   loan?: number
+  week: number
 }
