@@ -65,6 +65,41 @@ export const useTavern = () => {
       }
     )
 
+  const { mutate: fightSailors, isLoading: isFightingSailors } = useMutation(
+    (data: { playerId: Player["id"] }) =>
+      apiRequest("/api/tavern/fightSailors", data, "POST"),
+    {
+      onSuccess: ({ error, numberOfSailors, success, loot, healthLoss }) => {
+        if (error) {
+          setToast({
+            title: `Could ignore sailors`,
+            message: error,
+            variant: "error",
+          })
+
+          return
+        }
+
+        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+
+        if (success) {
+          setToast({
+            title: `You fought ${numberOfSailors} sailors sailors and won!`,
+            message: `You got ${loot} dbl. Your crew lost ${healthLoss}% health.`,
+            variant: "success",
+          })
+        } else {
+          setToast({
+            title: `You fought ${numberOfSailors} sailors and lost`,
+            message: `Ouch! Your crew lost ${healthLoss}% health.`,
+            variant: "error",
+          })
+        }
+      },
+      onError: (error) => console.error(error),
+    }
+  )
+
   const { mutate: ignoreSailors, isLoading: isIgnoringSailors } = useMutation(
     (data: { playerId: Player["id"] }) =>
       apiRequest("/api/tavern/ignoreSailors", data, "POST"),
@@ -97,6 +132,8 @@ export const useTavern = () => {
     isBuying,
     acceptNewCrewMembers,
     isAcceptingNewCrewMembers,
+    fightSailors,
+    isFightingSailors,
     ignoreSailors,
     isIgnoringSailors,
   }

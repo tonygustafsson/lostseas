@@ -54,15 +54,31 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
   if (destination === "Tavern") {
     const dbRef = ref(db)
 
-    if (Math.random() < 0.5) {
-      return // 50% chance of no event
-    }
-
     const existingEvent = await get(
       child(dbRef, `${playerId}/locationStates/tavern`)
     )
 
     if (existingEvent.exists()) {
+      return
+    }
+
+    if (Math.random() < 0.5) {
+      // 50% chance of no event
+      const ignoreEvent: LocationState["tavern"] = {
+        visited: true,
+        noOfSailors: 0,
+        isHostile: false,
+      }
+
+      const eventResult = { ...existingEvent.val(), ...ignoreEvent }
+
+      await set(
+        ref(db, `${playerId}/locationStates/tavern`),
+        eventResult
+      ).catch((error) => {
+        throw new Error(error)
+      })
+
       return
     }
 

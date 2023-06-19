@@ -9,10 +9,14 @@ import ShopItem from "./ShopItem"
 
 const Tavern = () => {
   const { data: player } = useGetPlayer()
-  const { acceptNewCrewMembers, ignoreSailors } = useTavern()
+  const { acceptNewCrewMembers, fightSailors, ignoreSailors } = useTavern()
 
   const handleAcceptNewCrewMembers = () => {
     acceptNewCrewMembers({ playerId: player?.id || "" })
+  }
+
+  const handleFightSailors = () => {
+    fightSailors({ playerId: player?.id || "" })
   }
 
   const handleIgnoreSailors = () => {
@@ -54,7 +58,12 @@ const Tavern = () => {
             icon={<GiPirateCaptain className="w-20 h-20 text-secondary" />}
             actions={
               <>
-                <button className="btn btn-primary">Fight them</button>
+                <button
+                  className="btn btn-primary"
+                  onClick={handleFightSailors}
+                >
+                  Fight them
+                </button>
                 <button
                   className="btn btn-secondary"
                   onClick={handleIgnoreSailors}
