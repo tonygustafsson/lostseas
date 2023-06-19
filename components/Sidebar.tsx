@@ -10,12 +10,12 @@ import {
   GiPirateHat,
   GiShoonerSailboat,
 } from "react-icons/gi"
-import { IoPartlySunnyOutline } from "react-icons/io5"
 
 import { useGetPlayer, usePlayer } from "@/hooks/queries/usePlayer"
 import { getCurrentDate } from "@/utils/date"
 
 import Flag from "./icons/Flag"
+import WeatherIcon from "./WeatherIcon"
 
 const Sidebar = () => {
   const { data: player } = useGetPlayer()
@@ -168,7 +168,7 @@ const Sidebar = () => {
             <div className="card-body px-6 py-4">
               <div className="flex items-center justify-between">
                 <span className="font-bold text-base">{currentDate}</span>
-                <IoPartlySunnyOutline className="h-8 w-8 text-secondary" />
+                <WeatherIcon className="h-8 w-8 text-secondary" />
               </div>
             </div>
           </div>
