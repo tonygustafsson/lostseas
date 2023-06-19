@@ -1,31 +1,14 @@
 import { GetServerSideProps } from "next"
-import { FormEvent } from "react"
 import { BsHeartPulseFill } from "react-icons/bs"
 import { FaUsers } from "react-icons/fa"
 import { TbMoodSmileBeam } from "react-icons/tb"
 
 import DefaultLayout from "@/components/layouts/default"
-import TextField from "@/components/ui/TextField"
-import { useCrewMembers } from "@/hooks/queries/useCrewMembers"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSideProps"
 
 const Crew = () => {
   const { data: player } = useGetPlayer()
-  const { create, creatingIsLoading, remove, removingIsLoading } =
-    useCrewMembers()
-
-  const handleCreateCrewMember = async (e: FormEvent) => {
-    e.preventDefault()
-
-    create(player?.id || "")
-  }
-
-  const handleRemoveCrewMember = async (e: FormEvent) => {
-    e.preventDefault()
-
-    remove(player?.id || "")
-  }
 
   return (
     <DefaultLayout>
@@ -63,45 +46,6 @@ const Crew = () => {
             </div>
           </div>
         </div>
-
-        <form
-          onSubmit={handleCreateCrewMember}
-          className="flex items-bottom gap-3"
-        >
-          <TextField
-            type="hidden"
-            name="playerId"
-            id="playerId"
-            value={player?.id || ""}
-          />
-
-          <button
-            type="submit"
-            className="btn btn-primary mt-7"
-            disabled={creatingIsLoading}
-          >
-            Create new crew member
-          </button>
-        </form>
-        <form
-          onSubmit={handleRemoveCrewMember}
-          className="flex items-bottom gap-3"
-        >
-          <TextField
-            type="hidden"
-            name="playerId"
-            id="playerId"
-            value={player?.id || ""}
-          />
-
-          <button
-            type="submit"
-            className="btn btn-primary mt-7"
-            disabled={removingIsLoading}
-          >
-            Remove a crew member
-          </button>
-        </form>
       </>
     </DefaultLayout>
   )
