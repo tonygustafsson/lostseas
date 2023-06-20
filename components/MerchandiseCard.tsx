@@ -13,14 +13,14 @@ const MerchandiseCard = ({ title, icon, indicator, body, actions }: Props) => (
 
       {indicator ? (
         <div className="indicator">
-          <h2 className="card-title mr-8">{title}</h2>
+          <h2 className="card-title font-serif text-lg mr-8">{title}</h2>
 
           <span className="indicator-item indicator-middle badge badge-primary">
             {indicator}
           </span>
         </div>
       ) : (
-        <h2 className="card-title mr-8">{title}</h2>
+        <h2 className="card-title font-serif mr-8">{title}</h2>
       )}
     </figure>
 

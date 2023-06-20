@@ -12,7 +12,15 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        serif: ["var(--font-pacifico)", ...defaultTheme.fontFamily.serif],
+        serif: ["var(--font-almendra)", ...defaultTheme.fontFamily.serif],
+        sans: ["var(--font-actor)", ...defaultTheme.fontFamily.sans],
+      },
+      fontSize: {
+        ...defaultTheme.fontSize,
+        xs: "0.75rem",
+        sm: "0.875rem",
+        base: "1.125rem",
+        lg: "1.25rem",
       },
       colors: {
         primary: "#FFD700",

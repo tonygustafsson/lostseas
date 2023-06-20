@@ -1,6 +1,6 @@
 import { useIsFetching } from "@tanstack/react-query"
 
-import pacifico from "@/font-pacifico"
+import { actor, almendra } from "@/fonts"
 
 import Sidebar from "../Sidebar"
 
@@ -17,7 +17,7 @@ export default function DefaultLayout({
         <Sidebar />
 
         <main
-          className={`${pacifico.variable} flex flex-col w-full py-8 px-12 bg-base-200`}
+          className={`${almendra.variable} ${actor.variable} flex flex-col w-full py-8 px-12 bg-base-200`}
         >
           {children}
         </main>

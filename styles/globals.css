@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    @apply text-base;
+}
+
+button {
+    @apply font-serif
+}
+
 .table-zebra thead tr {
     @apply border-0
 }
@@ -11,7 +19,7 @@
 }
 
 .sidebar-menu li {
-    @apply my-0.5;
+    @apply font-serif text-lg my-0.5;
 }
 
 .sidebar-menu > li.active {
