@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    @apply text-base;
+html {
+   font-size: 20px;
 }
 
 button {

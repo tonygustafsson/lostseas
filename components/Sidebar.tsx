@@ -127,7 +127,7 @@ const Sidebar = () => {
             </figure>
 
             <div className="card-body p-6 pt-2">
-              <h2 className="card-title gap-4">
+              <h2 className="card-title font-serif gap-4">
                 <Flag
                   nation={player?.character.nationality}
                   size={28}
@@ -148,7 +148,7 @@ const Sidebar = () => {
                     <GiCoins className="h-8 w-8" />
                   </div>
                   <div className="stat-title">Doubloons</div>
-                  <div className="stat-value text-2xl">
+                  <div className="stat-value text-xl">
                     {player?.character.doubloons}
                   </div>
                 </div>

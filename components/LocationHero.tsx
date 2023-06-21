@@ -35,22 +35,22 @@ const LocationHero = () => {
 
   const TownMoveMap = {
     Shop: {
-      icon: <AiOutlineShop className="text-cyan-600 w-7 h-7" />,
+      icon: <AiOutlineShop className="text-cyan-600 w-6 h-6" />,
     },
     Tavern: {
-      icon: <GiTavernSign className="text-cyan-600 w-7 h-7" />,
+      icon: <GiTavernSign className="text-cyan-600 w-6 h-6" />,
     },
     Bank: {
-      icon: <GiBank className="text-cyan-600 w-7 h-7" />,
+      icon: <GiBank className="text-cyan-600 w-6 h-6" />,
     },
     Market: {
-      icon: <GiFarmer className="text-cyan-600 w-7 h-7" />,
+      icon: <GiFarmer className="text-cyan-600 w-6 h-6" />,
     },
     Shipyard: {
-      icon: <BsTools className="text-cyan-600 w-6 h-6" />,
+      icon: <BsTools className="text-cyan-600 w-5 h-5" />,
     },
     Harbor: {
-      icon: <GiSmallFishingSailboat className="text-white w-7 h-7" />,
+      icon: <GiSmallFishingSailboat className="text-white w-6 h-6" />,
     },
   }
 
@@ -76,13 +76,13 @@ const LocationHero = () => {
             </h1>
 
             {player?.character.location !== "Sea" && (
-              <h2 className="font-serif mb-5 text-2xl flex gap-3 justify-center">
+              <h2 className="font-serif mb-5 text-2xl flex gap-3 justify-center items-center">
                 <Flag nation={nation} className="opacity-[0.8]" />
                 {nation}
               </h2>
             )}
 
-            <p className="mb-5">
+            <p className="mb-5 text-sm">
               {LOCATION_DESCRIPTION[player?.character.location]}
             </p>
           </div>
@@ -94,13 +94,13 @@ const LocationHero = () => {
           <>
             <span className="text-xl font-serif">Change location</span>
 
-            <div className="flex flex-wrap mt-4 gap-1 justify-center join">
+            <div className="flex flex-wrap mt-4 justify-center join">
               {Object.entries(TownMoveMap).map(([location, { icon }]) => (
                 <button
                   key={`change-location-${location}`}
-                  className={`btn ${
+                  className={`btn text-base ${
                     location === "Harbor" ? "btn-primary" : " bg-gray-800"
-                  } btn-lg capitalize  join-item`}
+                  } btn capitalize  join-item`}
                   onClick={() =>
                     handleMove(location as TownLocation | SeaLocation)
                   }
@@ -115,20 +115,20 @@ const LocationHero = () => {
         )}
 
         {player.character.location === "Harbor" && (
-          <div className="flex flex-wrap mt-4 gap-1 justify-center join">
+          <div className="flex flex-wrap mt-4 justify-center join">
             <button
-              className="btn btn-lg bg-gray-800 capitalize join-item"
+              className="btn text-base bg-gray-800 capitalize join-item"
               onClick={() => handleMove("Docks")}
             >
-              <GiAnchor className="text-cyan-600 w-6 h-6" />
+              <GiAnchor className="text-cyan-600 w-5 h-5" />
               Land
             </button>
 
             <button
-              className="btn btn-lg bg-gray-800 capitalize join-item"
+              className="btn text-base bg-gray-800 capitalize join-item"
               onClick={handleExplore}
             >
-              <GiSmallFishingSailboat className="text-cyan-600 w-7 h-7" />
+              <GiSmallFishingSailboat className="text-cyan-600 w-6 h-6" />
               Sail Out
             </button>
           </div>
@@ -136,7 +136,7 @@ const LocationHero = () => {
 
         {player.character.location === "Sea" && (
           <button
-            className="btn btn-lg bg-gray-800 capitalize join-item"
+            className="btn text-base bg-gray-800 capitalize join-item"
             onClick={handleExplore}
           >
             <GiSmallFishingSailboat className="text-cyan-600 w-7 h-7" />

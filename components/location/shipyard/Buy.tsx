@@ -19,7 +19,7 @@ const ShipyardBuy = () => {
           key={`shipyard-buy-${shipType}`}
           title={shipType}
           //indicator={player?.inventory[inventoryItem]?.toString() || "0"}
-          icon={<MerchandiseIcon size="lg" item={shipType} />}
+          icon={<MerchandiseIcon item={shipType} />}
           body={
             <>
               <p>{description}</p>

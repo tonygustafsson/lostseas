@@ -17,10 +17,6 @@ module.exports = {
       },
       fontSize: {
         ...defaultTheme.fontSize,
-        xs: "0.75rem",
-        sm: "0.875rem",
-        base: "1.125rem",
-        lg: "1.25rem",
       },
       colors: {
         primary: "#FFD700",
