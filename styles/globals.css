@@ -19,7 +19,7 @@ button {
 }
 
 .sidebar-menu li {
-    @apply font-serif text-lg my-0.5;
+    @apply font-serif my-0.5;
 }
 
 .sidebar-menu > li.active {

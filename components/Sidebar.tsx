@@ -27,7 +27,7 @@ const Sidebar = () => {
   const currentDate = getCurrentDate(player?.character.week || 0)
 
   return (
-    <div className="w-80 py-8 px-4 bg-gray-900">
+    <div className="w-72 py-8 px-4 bg-gray-900">
       <Link
         href="/"
         className="font-serif text-3xl flex gap-3 items-center mb-4 mx-2"
