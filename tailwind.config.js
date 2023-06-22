@@ -15,9 +15,6 @@ module.exports = {
         serif: ["var(--font-almendra)", ...defaultTheme.fontFamily.serif],
         sans: ["var(--font-actor)", ...defaultTheme.fontFamily.sans],
       },
-      fontSize: {
-        ...defaultTheme.fontSize,
-      },
       colors: {
         primary: "#FFD700",
         secondary: "#FFD700",
@@ -43,5 +40,6 @@ module.exports = {
         },
       },
     ],
+    logs: false,
   },
 }
