@@ -1,4 +1,4 @@
-import { StoryObj } from "@storybook/react"
+import { Meta, StoryObj } from "@storybook/react"
 import React from "react"
 
 const TypographySansDisplay = () => (
@@ -37,13 +37,13 @@ const TypographySerifDisplay = () => (
   </>
 )
 
-export default {
+const Story: Meta = {
   component: TypographySansDisplay,
 }
 
-export const Sans: StoryObj<typeof TypographySansDisplay> = {
-  render: TypographySansDisplay,
-}
+export default Story
+
+export const Sans: StoryObj<typeof TypographySansDisplay> = {}
 export const Serif: StoryObj<typeof TypographySerifDisplay> = {
   render: TypographySerifDisplay,
 }
