@@ -1,20 +1,28 @@
 import { useState } from "react"
 
+import LocationTabs from "@/components/LocationTabs"
+
 import ShopBuy from "./Buy"
 import ShopSell from "./Sell"
-import ShopTabs from "./Tabs"
 
-export type ShopTab = "Buy" | "Sell"
+export type ShopTab = "buy" | "sell"
 
 const Shop = () => {
-  const [tab, setTab] = useState<ShopTab>("Buy")
+  const [tab, setTab] = useState<ShopTab>("buy")
 
   return (
     <>
-      <ShopTabs tab={tab} setTab={setTab} />
+      <LocationTabs<ShopTab>
+        items={[
+          { id: "buy", label: "Buy" },
+          { id: "sell", label: "Sell" },
+        ]}
+        currentTab={tab}
+        setCurrentTab={setTab}
+      />
 
-      {tab === "Buy" && <ShopBuy />}
-      {tab === "Sell" && <ShopSell />}
+      {tab === "buy" && <ShopBuy />}
+      {tab === "sell" && <ShopSell />}
     </>
   )
 }

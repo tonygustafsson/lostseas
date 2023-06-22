@@ -2,20 +2,20 @@ import { useState } from "react"
 import { GiPirateCaptain } from "react-icons/gi"
 
 import ActionCard from "@/components/ActionCard"
+import LocationTabs from "@/components/LocationTabs"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useTavern } from "@/hooks/queries/useTavern"
 
 import TavernBuy from "./Buy"
 import TavernDice from "./Dice"
-import TavernTabs from "./Tabs"
 
-export type TavernTab = "Buy" | "Dice"
+export type TavernTab = "buy" | "dice"
 
 const Tavern = () => {
   const { data: player } = useGetPlayer()
   const { acceptNewCrewMembers, fightSailors, ignoreSailors } = useTavern()
 
-  const [tab, setTab] = useState<TavernTab>("Buy")
+  const [tab, setTab] = useState<TavernTab>("buy")
 
   const handleAcceptNewCrewMembers = () => {
     acceptNewCrewMembers({ playerId: player?.id || "" })
@@ -81,10 +81,17 @@ const Tavern = () => {
           />
         )}
 
-      <TavernTabs tab={tab} setTab={setTab} />
+      <LocationTabs<TavernTab>
+        items={[
+          { id: "buy", label: "Buy" },
+          { id: "dice", label: "Play dice" },
+        ]}
+        currentTab={tab}
+        setCurrentTab={setTab}
+      />
 
-      {tab === "Buy" && <TavernBuy />}
-      {tab === "Dice" && <TavernDice />}
+      {tab === "buy" && <TavernBuy />}
+      {tab === "dice" && <TavernDice />}
     </>
   )
 }
