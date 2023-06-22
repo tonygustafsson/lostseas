@@ -4,10 +4,22 @@ type Props = {
   indicator?: string
   body: React.ReactNode
   actions?: React.ReactNode
+  disabled?: boolean
 }
 
-const MerchandiseCard = ({ title, icon, indicator, body, actions }: Props) => (
-  <div className="card w-80 bg-base-100 shadow-xl">
+const MerchandiseCard = ({
+  title,
+  icon,
+  indicator,
+  body,
+  actions,
+  disabled,
+}: Props) => (
+  <div
+    className={`card w-80 bg-base-100 shadow-xl ${
+      disabled ? "opacity-50" : ""
+    }`}
+  >
     <figure className="gap-3 bg-gray-800 py-3 mb-2 px-6">
       {icon}
 

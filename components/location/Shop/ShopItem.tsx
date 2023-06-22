@@ -11,11 +11,12 @@ import TextField from "../../ui/TextField"
 type Props = {
   player?: Player
   item: keyof Inventory
+  type: "Buy" | "Sell"
 }
 
 // TODO: Make use of zod for validation, not sure how with buying and selling are two different actions
 
-const ShopItem = ({ player, item }: Props) => {
+const ShopItem = ({ player, item, type }: Props) => {
   const { buy, sell } = useShop()
   const [quantity, setQuantity] = useState(1)
 
@@ -58,22 +59,32 @@ const ShopItem = ({ player, item }: Props) => {
     })
   }
 
+  if (type === "Sell" && !player?.inventory[item]) {
+    return null
+  }
+
   return (
     <MerchandiseCard
       title={capitalize(item)}
       indicator={player?.inventory[item]?.toString() || "0"}
       icon={<MerchandiseIcon item={item} />}
+      disabled={type === "Buy" ? buyingDisabled : sellingDisabled}
       body={
         <>
           <p>{MERCHANDISE[item].description}</p>
 
           <div className="flex gap-2 mt-2">
-            <div className="badge badge-secondary">
-              Buy: {MERCHANDISE[item].buy} dbl
-            </div>
-            <div className="badge badge-secondary">
-              Sell: {MERCHANDISE[item].sell} dbl
-            </div>
+            {type === "Buy" && (
+              <div className="badge badge-secondary">
+                Price: {MERCHANDISE[item].buy} dbl
+              </div>
+            )}
+
+            {type === "Sell" && (
+              <div className="badge badge-secondary">
+                Worth: {MERCHANDISE[item].sell} dbl
+              </div>
+            )}
           </div>
         </>
       }
@@ -107,14 +118,7 @@ const ShopItem = ({ player, item }: Props) => {
             </button>
           </div>
 
-          <div className="flex gap-3">
-            <button
-              className="btn btn-sm"
-              onClick={handleSell}
-              disabled={sellingDisabled}
-            >
-              Sell
-            </button>
+          {type === "Buy" && (
             <button
               className="btn btn-primary btn-sm"
               onClick={handleBuy}
@@ -122,7 +126,17 @@ const ShopItem = ({ player, item }: Props) => {
             >
               Buy
             </button>
-          </div>
+          )}
+
+          {type === "Sell" && (
+            <button
+              className="btn btn-sm"
+              onClick={handleSell}
+              disabled={sellingDisabled}
+            >
+              Sell
+            </button>
+          )}
         </>
       }
     />

@@ -1,21 +1,21 @@
-import { MERCHANDISE } from "@/constants/merchandise"
-import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { useState } from "react"
 
-import ShopItem from "./ShopItem"
+import ShopBuy from "./Buy"
+import ShopSell from "./Sell"
+import ShopTabs from "./Tabs"
+
+export type ShopTab = "Buy" | "Sell"
 
 const Shop = () => {
-  const { data: player } = useGetPlayer()
+  const [tab, setTab] = useState<ShopTab>("Buy")
 
   return (
-    <div className="flex flex-wrap gap-6">
-      {Object.keys(MERCHANDISE).map((item) => (
-        <ShopItem
-          key={`shop-item-${item}`}
-          item={item as keyof Inventory}
-          player={player}
-        />
-      ))}
-    </div>
+    <>
+      <ShopTabs tab={tab} setTab={setTab} />
+
+      {tab === "Buy" && <ShopBuy />}
+      {tab === "Sell" && <ShopSell />}
+    </>
   )
 }
 
