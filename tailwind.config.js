@@ -27,7 +27,7 @@ module.exports = {
   daisyui: {
     themes: [
       {
-        mytheme: {
+        lostSeasTheme: {
           primary: "#0e7490",
           secondary: "#6b7280",
           accent: "#1FB2A5",

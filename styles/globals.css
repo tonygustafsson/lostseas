@@ -10,8 +10,7 @@
 
 html {
    font-size: 18px;
-
-   }
+}
 
 button {
     @apply font-serif;
