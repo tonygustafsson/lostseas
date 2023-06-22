@@ -30,6 +30,7 @@ const ShopItem = ({ player, item }: Props) => {
       key={`market-${item}`}
       title={capitalize(item)}
       icon={<MerchandiseIcon item={item} />}
+      disabled={buyingDisabled}
       body={
         <>
           <p>{TAVERN_ITEMS[item].description}</p>

@@ -1,15 +1,21 @@
+import { useState } from "react"
 import { GiPirateCaptain } from "react-icons/gi"
 
 import ActionCard from "@/components/ActionCard"
-import { TAVERN_ITEMS } from "@/constants/tavern"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useTavern } from "@/hooks/queries/useTavern"
 
-import ShopItem from "./ShopItem"
+import TavernBuy from "./Buy"
+import TavernDice from "./Dice"
+import TavernTabs from "./Tabs"
+
+export type TavernTab = "Buy" | "Dice"
 
 const Tavern = () => {
   const { data: player } = useGetPlayer()
   const { acceptNewCrewMembers, fightSailors, ignoreSailors } = useTavern()
+
+  const [tab, setTab] = useState<TavernTab>("Buy")
 
   const handleAcceptNewCrewMembers = () => {
     acceptNewCrewMembers({ playerId: player?.id || "" })
@@ -75,17 +81,10 @@ const Tavern = () => {
           />
         )}
 
-      <h2 className="text-3xl font-serif mb-8">Buy</h2>
+      <TavernTabs tab={tab} setTab={setTab} />
 
-      <div className="flex flex-wrap gap-6">
-        {Object.keys(TAVERN_ITEMS).map((item) => (
-          <ShopItem
-            key={`tavern-item-${item}`}
-            item={item as keyof typeof TAVERN_ITEMS}
-            player={player}
-          />
-        ))}
-      </div>
+      {tab === "Buy" && <TavernBuy />}
+      {tab === "Dice" && <TavernDice />}
     </>
   )
 }
