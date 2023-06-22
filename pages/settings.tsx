@@ -32,11 +32,11 @@ const Settings = () => {
           can login using it.
         </p>
 
-        <h3 className="text-xl">Your User ID</h3>
+        <h3 className="text-xl font-serif">Your User ID</h3>
 
         <div className="alert alert-info">{player?.id}</div>
 
-        <h3 className="text-xl">QR code</h3>
+        <h3 className="text-xl font-serif">QR code</h3>
 
         <p>
           You can also download or photograph the QR code below and login with

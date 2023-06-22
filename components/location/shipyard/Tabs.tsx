@@ -8,7 +8,7 @@ type Props = {
 const ShipyardTabs = ({ tab, setTab }: Props) => (
   <div className="tabs justify-center mb-8">
     <a
-      className={`tab tab-lg text-2xl tab-bordered font-bold px-8 ${
+      className={`tab tab-lg font-serif text-2xl tab-bordered font-bold px-8 ${
         tab === "Buy" ? "tab-active" : ""
       }`}
       onClick={() => setTab("Buy")}
@@ -16,7 +16,7 @@ const ShipyardTabs = ({ tab, setTab }: Props) => (
       Buy
     </a>
     <a
-      className={`tab tab-lg text-2xl tab-bordered font-bold px-8 ${
+      className={`tab tab-lg font-serif text-2xl tab-bordered font-bold px-8 ${
         tab === "Sell" ? "tab-active" : ""
       }`}
       onClick={() => setTab("Sell")}
@@ -24,7 +24,7 @@ const ShipyardTabs = ({ tab, setTab }: Props) => (
       Sell
     </a>
     <a
-      className={`tab tab-lg text-2xl tab-bordered font-bold px-8 ${
+      className={`tab tab-lg font-serif text-2xl tab-bordered font-bold px-8 ${
         tab === "Repair" ? "tab-active" : ""
       }`}
       onClick={() => setTab("Repair")}

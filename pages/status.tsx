@@ -46,7 +46,7 @@ const Status = () => {
                 />
               </div>
               <div className="stat-title">Nationality</div>
-              <div className="stat-value text-2xl">
+              <div className="stat-value text-xl">
                 {player?.character.nationality}
               </div>
             </div>
@@ -56,7 +56,7 @@ const Status = () => {
                 <BiTime className="h-8 w-8" />
               </div>
               <div className="stat-title">Age</div>
-              <div className="stat-value text-2xl">{player?.character.age}</div>
+              <div className="stat-value text-xl">{player?.character.age}</div>
             </div>
 
             <div className="stat bg-gray-700">
@@ -68,7 +68,7 @@ const Status = () => {
                 )}
               </div>
               <div className="stat-title">Gender</div>
-              <div className="stat-value text-2xl">
+              <div className="stat-value text-xl">
                 {player?.character.gender}
               </div>
             </div>
@@ -89,7 +89,7 @@ const Status = () => {
                 <GiCoins className="h-8 w-8" />
               </div>
               <div className="stat-title">Doubloons</div>
-              <div className="stat-value text-2xl">
+              <div className="stat-value text-xl">
                 {player?.character.doubloons}
               </div>
             </div>
@@ -100,7 +100,7 @@ const Status = () => {
                   <GiCoins className="h-8 w-8" />
                 </div>
                 <div className="stat-title">Bank account</div>
-                <div className="stat-value text-2xl">
+                <div className="stat-value text-xl">
                   {player?.character.account}
                 </div>
               </div>
@@ -112,7 +112,7 @@ const Status = () => {
                   <GiCoins className="h-8 w-8" />
                 </div>
                 <div className="stat-title">Bank loan</div>
-                <div className="stat-value text-2xl">
+                <div className="stat-value text-xl">
                   {player?.character.loan}
                 </div>
               </div>

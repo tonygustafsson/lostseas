@@ -11,11 +11,11 @@ const ActionCard = ({ title, message, actions, icon }: Props) => (
       {icon}
 
       <div className="max-w-3xl">
-        <h1 className="text-2xl font-bold">{title}</h1>
+        <h1 className="text-2xl font-serif font-bold">{title}</h1>
 
-        <p className="pt-4">{message}</p>
+        <p className="pt-2">{message}</p>
 
-        {actions && <div className="flex gap-4 pt-6">{actions}</div>}
+        {actions && <div className="flex gap-4 pt-4">{actions}</div>}
       </div>
     </div>
   </div>

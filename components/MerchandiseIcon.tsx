@@ -26,7 +26,7 @@ const getSizeClass = (size: string) => {
     case "sm":
       return "w-7 h-7"
     case "md":
-      return "w-9 h-9"
+      return "w-7 h-7"
     case "lg":
       return "w-11 h-11"
     case "xl":
