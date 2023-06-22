@@ -127,7 +127,7 @@ const Sidebar = () => {
             </figure>
 
             <div className="card-body p-6 pt-2">
-              <h2 className="card-title font-serif gap-4">
+              <h2 className="card-title font-serif gap-2">
                 <Flag
                   nation={player?.character.nationality}
                   size={28}

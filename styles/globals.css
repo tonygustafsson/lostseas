@@ -2,9 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-   font-size: 20px;
+/* TODO: Split file and use tailwind variables as much as possible */
+
+:root {
+    --btn-text-case: none;
 }
+
+html {
+   font-size: 18px;
+
+   }
 
 button {
     @apply font-serif
@@ -82,4 +89,8 @@ input.hide-number-arrows[type=number] {
 
 button[disabled] svg {
     @apply text-gray-600
+}
+
+.stats .stat {
+    @apply py-3;
 }

@@ -100,7 +100,7 @@ const LocationHero = () => {
                   key={`change-location-${location}`}
                   className={`btn text-base ${
                     location === "Harbor" ? "btn-primary" : " bg-gray-800"
-                  } btn capitalize  join-item`}
+                  } btn join-item`}
                   onClick={() =>
                     handleMove(location as TownLocation | SeaLocation)
                   }
@@ -117,7 +117,7 @@ const LocationHero = () => {
         {player.character.location === "Harbor" && (
           <div className="flex flex-wrap mt-4 justify-center join">
             <button
-              className="btn text-base bg-gray-800 capitalize join-item"
+              className="btn text-base bg-gray-800 join-item"
               onClick={() => handleMove("Docks")}
             >
               <GiAnchor className="text-cyan-600 w-5 h-5" />
@@ -125,7 +125,7 @@ const LocationHero = () => {
             </button>
 
             <button
-              className="btn text-base bg-gray-800 capitalize join-item"
+              className="btn text-base bg-gray-800 join-item"
               onClick={handleExplore}
             >
               <GiSmallFishingSailboat className="text-cyan-600 w-6 h-6" />
@@ -136,7 +136,7 @@ const LocationHero = () => {
 
         {player.character.location === "Sea" && (
           <button
-            className="btn text-base bg-gray-800 capitalize join-item"
+            className="btn text-base bg-gray-800 join-item"
             onClick={handleExplore}
           >
             <GiSmallFishingSailboat className="text-cyan-600 w-7 h-7" />

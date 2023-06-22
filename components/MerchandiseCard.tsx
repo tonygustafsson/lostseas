@@ -24,7 +24,7 @@ const MerchandiseCard = ({ title, icon, indicator, body, actions }: Props) => (
       )}
     </figure>
 
-    <div className="card-body pt-2 pb-2 px-6">{body}</div>
+    <div className="card-body text-sm pt-2 pb-2 px-6">{body}</div>
 
     {actions && (
       <div className="card-actions mx-6 my-6 gap-2 justify-between">
