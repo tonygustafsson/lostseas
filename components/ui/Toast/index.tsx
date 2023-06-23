@@ -18,7 +18,7 @@ const Toast = () => {
             <div className="flex gap-2 items-center">
               {toast.variant === "success" && <FiCheckCircle size={24} />}
               {toast.variant === "error" && <FiXCircle size={24} />}
-              <span className="title">{toast.title}</span>
+              <span className="title mr-8">{toast.title}</span>
             </div>
 
             <span>{toast.message}</span>

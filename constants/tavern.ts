@@ -27,3 +27,12 @@ export const TAVERN_ITEMS = {
       "Few things will bring more joy to your crew than grog and rum. Buy some and their mood will increase by 10.",
   },
 }
+
+export const DICE_PERCENTAGE_VALUES = [5, 10, 25, 50, 75, 100]
+export const DICE_PERCENTAGE_DEFAULT_VALUE = 10
+export const DICE_RANDOM_MIN = 1
+export const DICE_RANDOM_MAX = 40
+export const DICE_WON = 7 // 7 <= 40
+export const DICE_WON_MULTIPLIER_MIN = 2
+export const DICE_WON_MULTIPLIER_MAX = 5
+export const DICE_JACKPOT_MULTIPLIER = 40

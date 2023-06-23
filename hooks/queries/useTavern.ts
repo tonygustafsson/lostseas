@@ -131,10 +131,10 @@ export const useTavern = () => {
     (data: { playerId: Player["id"]; betPercentage: number }) =>
       apiRequest("/api/tavern/dice", data, "POST"),
     {
-      onSuccess: ({ error, bet, doubloons }) => {
+      onSuccess: ({ error, bet, doubloons, diceResults }) => {
         if (error) {
           setToast({
-            title: `Could ignore sailors`,
+            title: `Could not place bet`,
             message: error,
             variant: "error",
           })
@@ -144,10 +144,23 @@ export const useTavern = () => {
 
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
 
+        let title = ""
+
+        if (diceResults === "win") {
+          title = `You played made a bet of ${bet} dbl and won!`
+        } else if (diceResults === "jackpot") {
+          title = `You played made a bet of ${bet} dbl and won the jackpot!`
+        } else {
+          title = `You played made a bet of ${bet} dbl and lost`
+        }
+
         setToast({
-          title: `You played made a bet of ${bet} dbl and lost`,
-          message: `You now have ${doubloons} dbl left`,
-          variant: "error",
+          title,
+          message: `You now have ${doubloons} dbl in total.`,
+          variant:
+            diceResults === "win" || diceResults === "jackpot"
+              ? "success"
+              : "error",
         })
       },
       onError: (error) => console.error(error),
