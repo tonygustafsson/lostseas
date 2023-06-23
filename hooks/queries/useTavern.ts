@@ -127,6 +127,33 @@ export const useTavern = () => {
     }
   )
 
+  const { mutate: playDice, isLoading: isPlayingDice } = useMutation(
+    (data: { playerId: Player["id"]; betPercentage: number }) =>
+      apiRequest("/api/tavern/dice", data, "POST"),
+    {
+      onSuccess: ({ error, bet, doubloons }) => {
+        if (error) {
+          setToast({
+            title: `Could ignore sailors`,
+            message: error,
+            variant: "error",
+          })
+
+          return
+        }
+
+        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+
+        setToast({
+          title: `You played made a bet of ${bet} dbl and lost`,
+          message: `You now have ${doubloons} dbl left`,
+          variant: "error",
+        })
+      },
+      onError: (error) => console.error(error),
+    }
+  )
+
   return {
     buy,
     isBuying,
@@ -136,5 +163,7 @@ export const useTavern = () => {
     isFightingSailors,
     ignoreSailors,
     isIgnoringSailors,
+    playDice,
+    isPlayingDice,
   }
 }

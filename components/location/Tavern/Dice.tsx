@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { useTavern } from "@/hooks/queries/useTavern"
 
 export type TavernTab = "Buy" | "Dice"
 
@@ -18,21 +19,20 @@ const getBet = (percentage: number, doubloons: number) => {
 
 const TavernDice = () => {
   const { data: player } = useGetPlayer()
+  const { playDice } = useTavern()
 
   const [betPercentage, setBetPercentage] = useState(BET_DEFAULT)
-  const [bet, setBet] = useState(
-    getBet(BET_DEFAULT, player?.character.doubloons || 0)
-  )
 
-  useEffect(() => {
-    setBet(getBet(betPercentage, player?.character.doubloons || 0))
-  }, [betPercentage, player?.character.doubloons])
-
+  const bet = getBet(betPercentage, player?.character.doubloons || 0)
   const profitMin = Math.floor(bet * PROFIT_MIN)
   const profitMax = Math.floor(bet * PROFIT_MAX)
   const profitJackpot = Math.floor(bet * PROFIT_JACKPOT)
 
   const disabled = bet > (player?.character.doubloons || 0)
+
+  const handlePlayDice = () => {
+    playDice({ playerId: player?.id || "", betPercentage })
+  }
 
   return (
     <div className="flex flex-col items-center">
@@ -50,7 +50,11 @@ const TavernDice = () => {
             </button>
           ))}
 
-          <button className="btn btn-lg btn-primary ml-4" disabled={disabled}>
+          <button
+            className="btn btn-lg btn-primary ml-4"
+            disabled={disabled}
+            onClick={handlePlayDice}
+          >
             Play
           </button>
         </div>
