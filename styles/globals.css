@@ -12,8 +12,12 @@ html {
    font-size: 18px;
 }
 
-button {
+.btn {
     @apply font-serif;
+}
+
+.btn-lg {
+    @apply min-h-12 h-12
 }
 
 .table-zebra thead tr {
