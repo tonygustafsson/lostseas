@@ -20,6 +20,8 @@ const tavernDice = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const diceResults = getRandomDiceResults()
   const diceReturns = getDiceReturns(diceResults, bet)
+
+  console.log({ bet, diceResults, diceReturns })
   const doubloonsResult = character.doubloons + diceReturns
 
   const result: Character = {

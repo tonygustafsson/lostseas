@@ -107,7 +107,7 @@ export const useTavern = () => {
       onSuccess: ({ error, numberOfSailors }) => {
         if (error) {
           setToast({
-            title: `Could ignore sailors`,
+            title: `Could not ignore sailors`,
             message: error,
             variant: "error",
           })
@@ -146,7 +146,7 @@ export const useTavern = () => {
 
         let title = ""
 
-        if (diceResults === "win") {
+        if (diceResults === "won") {
           title = `You played made a bet of ${bet} dbl and won!`
         } else if (diceResults === "jackpot") {
           title = `You played made a bet of ${bet} dbl and won the jackpot!`
@@ -158,7 +158,7 @@ export const useTavern = () => {
           title,
           message: `You now have ${doubloons} dbl in total.`,
           variant:
-            diceResults === "win" || diceResults === "jackpot"
+            diceResults === "won" || diceResults === "jackpot"
               ? "success"
               : "error",
         })
