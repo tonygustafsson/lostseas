@@ -1,6 +1,6 @@
 import crypto from "crypto"
 
-import getShipName from "./getShipName"
+import getShipName from "./names/getShipName"
 
 const createNewShip = (type: Ship["type"]) => {
   const name = getShipName()

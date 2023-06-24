@@ -12,10 +12,12 @@ import { registrationValidationSchema } from "@/utils/validation"
 
 type ValidationSchema = z.infer<typeof registrationValidationSchema>
 
-const Register = () => {
-  const { register: playerRegister, registrationIsLoading } = usePlayer()
+type Props = {
+  randomCharacter: CharacterCreation
+}
 
-  const randomCharacter = getRandomCharacter()
+const Register = ({ randomCharacter }: Props) => {
+  const { register: playerRegister, registrationIsLoading } = usePlayer()
 
   const {
     register,
@@ -102,6 +104,16 @@ const Register = () => {
       </form>
     </DefaultLayout>
   )
+}
+
+export const getServerSideProps = async () => {
+  const randomCharacter = getRandomCharacter()
+
+  return {
+    props: {
+      randomCharacter,
+    },
+  }
 }
 
 export default Register
