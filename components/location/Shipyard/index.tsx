@@ -21,6 +21,7 @@ const Shipyard = () => {
         currentTab={tab}
         setCurrentTab={setTab}
       />
+
       {tab === "buy" && <ShipyardBuy />}
       {tab === "sell" && <ShipyardSell />}
       {tab === "repair" && <p>Not implemented yet.</p>}
