@@ -36,12 +36,13 @@ export const MERCHANDISE: Record<
     unit: "crates",
     description: "A great trading asset. Not used for anything specific.",
   },
-  silk: {
-    buy: 45,
-    sell: 31,
-    singleUnit: "crate",
-    unit: "crates",
-    description: "A great trading asset. Not used for anything specific.",
+  medicine: {
+    buy: 40,
+    sell: 25,
+    singleUnit: "box",
+    unit: "boxes",
+    description:
+      "You can heal your crew with this mix of willow bark and herbs.",
   },
   tobacco: {
     buy: 75,

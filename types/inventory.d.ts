@@ -3,7 +3,7 @@ type Inventory = {
   water: number
   porcelain?: number
   spices?: number
-  silk?: number
+  medicine?: number
   tobacco?: number
   rum?: number
 }

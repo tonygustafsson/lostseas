@@ -4,13 +4,13 @@ import {
   GiMeat,
   GiPorcelainVase,
   GiPowder,
-  GiRolledCloth,
   GiShoonerSailboat,
   GiSmallFishingSailboat,
   GiSmokingPipe,
   GiWaterFlask,
   GiWineBottle,
 } from "react-icons/gi"
+import { RiMedicineBottleLine } from "react-icons/ri"
 import { TbSailboat } from "react-icons/tb"
 
 type Props = {
@@ -49,8 +49,8 @@ const MerchandiseIcon = ({ item, size = "md", className = "" }: Props) => {
       return <GiPorcelainVase className={iconClass} />
     case "spices":
       return <GiPowder className={iconClass} />
-    case "silk":
-      return <GiRolledCloth className={iconClass} />
+    case "medicine":
+      return <RiMedicineBottleLine className={iconClass} />
     case "tobacco":
       return <GiSmokingPipe className={iconClass} />
     case "rum":
