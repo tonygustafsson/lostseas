@@ -7,10 +7,7 @@ import Select from "@/components/ui/Select"
 import TextField from "@/components/ui/TextField"
 import { NATIONS } from "@/constants/locations"
 import { usePlayer } from "@/hooks/queries/usePlayer"
-import getEnglishFemaleName from "@/utils/getEnglishFemaleName"
-import getEnglishMaleName from "@/utils/getEnglishMaleName"
-import getEnglishSurname from "@/utils/getEnglishSurname"
-import { getRandomInt } from "@/utils/random"
+import { getRandomCharacter } from "@/utils/getRandomCharacter"
 import { registrationValidationSchema } from "@/utils/validation"
 
 type ValidationSchema = z.infer<typeof registrationValidationSchema>
@@ -18,18 +15,12 @@ type ValidationSchema = z.infer<typeof registrationValidationSchema>
 const Register = () => {
   const { register: playerRegister, registrationIsLoading } = usePlayer()
 
-  const randomGender: Character["gender"] =
-    Math.random() > 0.25 ? "Male" : "Female"
-  const randomName = `${
-    randomGender === "Male" ? getEnglishMaleName() : getEnglishFemaleName()
-  } ${getEnglishSurname()}`
-  const randomAge = getRandomInt(14, 70)
-  const randomNationalityIndex = getRandomInt(0, 3)
-  const randomNationality = NATIONS[randomNationalityIndex]
+  const randomCharacter = getRandomCharacter()
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isValid, isDirty },
   } = useForm<ValidationSchema>({
     resolver: zodResolver(registrationValidationSchema),
@@ -38,6 +29,17 @@ const Register = () => {
 
   const onSubmit: SubmitHandler<ValidationSchema> = async (data) => {
     playerRegister(data)
+  }
+
+  const fetchNewRandomCharacter = async () => {
+    const randomCharacterResponse = await fetch(`/api/user/getRandomCharacter`)
+    const randomCharacter =
+      (await randomCharacterResponse.json()) as CharacterCreation
+
+    setValue("name", randomCharacter.name)
+    setValue("nationality", randomCharacter.nationality)
+    setValue("gender", randomCharacter.gender)
+    setValue("age", randomCharacter.age)
   }
 
   return (
@@ -52,26 +54,29 @@ const Register = () => {
 
         <TextField
           label="Name"
-          {...register("name", { value: randomName })}
+          {...register("name", { value: randomCharacter.name })}
           error={errors.name?.message}
         />
 
         <Select
           label="Nationality"
           options={NATIONS}
-          {...register("nationality", { value: randomNationality })}
+          {...register("nationality", { value: randomCharacter.nationality })}
         />
 
         <Select
           label="Gender"
           options={["Male", "Female"]}
-          {...register("gender", { value: randomGender })}
+          {...register("gender", { value: randomCharacter.gender })}
         />
 
         <TextField
           type="number"
           label="Age"
-          {...register("age", { value: randomAge, valueAsNumber: true })}
+          {...register("age", {
+            value: randomCharacter.age,
+            valueAsNumber: true,
+          })}
           error={errors.age?.message}
         />
 
@@ -85,6 +90,14 @@ const Register = () => {
           }
         >
           Register
+        </button>
+
+        <button
+          onClick={fetchNewRandomCharacter}
+          type="button"
+          className="btn btn-secondary mt-4"
+        >
+          Randomize character
         </button>
       </form>
     </DefaultLayout>

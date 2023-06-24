@@ -10,3 +10,8 @@ type Character = {
   loan?: number
   week: number
 }
+
+type CharacterCreation = Pick<
+  Character,
+  "name" | "nationality" | "gender" | "age"
+>
