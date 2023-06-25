@@ -56,6 +56,15 @@ const ShipyardRepair = () => {
             />
           )
         })}
+
+      {!Object.keys(player?.ships || {}).length && (
+        <p>You do not own any ships currently.</p>
+      )}
+
+      {!!Object.keys(player?.ships || {}).length &&
+        !Object.entries(player?.ships || []).filter(
+          ([_, { health }]) => health < 100
+        ).length && <p>All your ships are in perfect health</p>}
     </div>
   )
 }

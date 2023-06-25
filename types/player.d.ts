@@ -2,7 +2,7 @@ type Player = {
   id: string
   createdDate: number
   character: Character
-  ships: Record<string, Ship>
+  ships?: Record<string, Ship>
   crewMembers: CrewMembers
   inventory: Inventory
   locationStates?: LocationState
