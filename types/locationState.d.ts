@@ -1,12 +1,15 @@
 type LocationState = {
   market?: {
-    visited: true | undefined
+    visited: true | undefined | null
     items: LocationStateMarketItems
   }
   tavern?: {
-    visited: true | undefined
+    visited: true | undefined | null
     noOfSailors: number
     isHostile: boolean
+  }
+  docks?: {
+    leaveErrors: true | undefined | null
   }
 }
 

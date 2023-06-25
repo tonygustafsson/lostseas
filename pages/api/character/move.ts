@@ -3,16 +3,22 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 
 import db from "@/firebase/db"
 import { createMoveEvents } from "@/utils/createMoveEvents"
+import { validateHarbor } from "@/utils/validateHarbor"
 
 const move = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = ref(db)
   const playerId = req.body.playerId as Player["id"]
   const destination = req.body.location as Character["location"]
 
-  const existingCharacterRef = await get(child(dbRef, `${playerId}/character`))
-  const character = existingCharacterRef.val()
+  let destinationOverride: Character["location"] | undefined
+  let locationState: LocationState | undefined
 
-  const currentLocation = character.location as SeaLocation | TownLocation
+  const playerRef = await get(child(dbRef, playerId))
+  const player = playerRef.val() as Player
+
+  const currentLocation = player.character.location as
+    | SeaLocation
+    | TownLocation
 
   if (currentLocation === destination) {
     return
@@ -33,9 +39,40 @@ const move = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const result = { ...character, location: destination }
+  if (destination === "Harbor") {
+    // Check ships, crew status, food and water before you can leave town
+    const harborValidation = validateHarbor(player)
 
-  await set(ref(db, `${playerId}/character`), result).catch((error) => {
+    if (!harborValidation.success) {
+      destinationOverride = "Docks"
+
+      locationState = {
+        docks: {
+          leaveErrors: true,
+        },
+      }
+    } else {
+      locationState = {
+        docks: {
+          leaveErrors: null,
+        },
+      }
+    }
+  }
+
+  const result: Player = {
+    ...player,
+    character: {
+      ...player.character,
+      location: destinationOverride || destination,
+    },
+    locationStates: {
+      ...player.locationStates,
+      ...locationState,
+    },
+  }
+
+  await set(ref(db, playerId), result).catch((error) => {
     res.status(500).json({ error })
   })
 

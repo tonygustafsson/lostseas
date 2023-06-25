@@ -56,6 +56,10 @@ const ShipyardSell = () => {
           )
         }
       )}
+
+      {!Object.keys(player?.ships || {}).length && (
+        <p>You do not own any ships currently.</p>
+      )}
     </div>
   )
 }

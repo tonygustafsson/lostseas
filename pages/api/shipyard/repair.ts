@@ -12,7 +12,7 @@ const shipyardRepair = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerRef = await get(child(dbRef, playerId))
   const player = playerRef.val() as Player
 
-  const ship = player.ships[id]
+  const ship = (player.ships || {})[id]
 
   if (!ship) {
     res.status(400).json({ error: "Not a valid item" })
