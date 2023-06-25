@@ -2,7 +2,7 @@ import { useIsFetching } from "@tanstack/react-query"
 
 import { actor, almendra } from "@/fonts"
 
-import Sidebar from "../Sidebar"
+import Menu from "../menu"
 
 export default function DefaultLayout({
   children,
@@ -13,11 +13,11 @@ export default function DefaultLayout({
 
   return (
     <>
-      <div className="flex min-h-screen">
-        <Sidebar />
+      <div className="flex flex-col lg:flex-row min-h-screen">
+        <Menu />
 
         <main
-          className={`${almendra.variable} ${actor.variable} flex flex-col w-full py-8 px-12 bg-base-200`}
+          className={`${almendra.variable} ${actor.variable} flex flex-col w-full py-8 px-2 lg:px-12 bg-base-200`}
         >
           {children}
         </main>

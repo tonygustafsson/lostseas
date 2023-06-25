@@ -67,8 +67,8 @@ const LocationHero = () => {
         }}
       >
         <div className="hero-overlay bg-opacity-20"></div>
-        <div className="hero-content text-center text-neutral-content py-24">
-          <div className="max-w-2xl min-w-[600px] bg-base-300 bg-opacity-60 p-8 rounded-lg">
+        <div className="hero-content text-center text-neutral-content py-8 lg:py-24">
+          <div className="max-w-full lg:max-w-2xl lg:min-w-[600px] bg-base-300 bg-opacity-60 p-8 rounded-lg">
             <h1 className="font-serif mb-4 text-5xl">
               {player?.character.location === "Sea"
                 ? "Open Seas"
@@ -94,7 +94,7 @@ const LocationHero = () => {
           <>
             <span className="text-xl font-serif">Change location</span>
 
-            <div className="flex flex-wrap mt-4 justify-center join">
+            <div className="flex flex-wrap mt-4 justify-center gap-2 lg:gap-0 lg:join">
               {Object.entries(TownMoveMap).map(([location, { icon }]) => (
                 <button
                   key={`change-location-${location}`}
