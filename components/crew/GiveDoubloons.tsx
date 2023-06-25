@@ -5,11 +5,11 @@ import MerchandiseIcon from "@/components/MerchandiseIcon"
 import TextField from "@/components/ui/TextField"
 import { useCrew } from "@/hooks/queries/useCrew"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-import { getMedicineEffectiveness } from "@/utils/crew"
+import { getDoubloonsEffectiveness } from "@/utils/crew"
 
 const GiveDoubloons = () => {
   const { data: player } = useGetPlayer()
-  const { giveMedicine } = useCrew()
+  const { giveDoubloons } = useCrew()
 
   const [quantity, setQuantity] = useState(1)
 
@@ -31,23 +31,23 @@ const GiveDoubloons = () => {
     }
   }
 
-  const medicineEffectiveness = useMemo(
+  const effectiveness = useMemo(
     () =>
-      getMedicineEffectiveness(
+      getDoubloonsEffectiveness(
         player?.crewMembers.count || 0,
-        player?.crewMembers.health || 0,
+        player?.crewMembers.mood || 0,
         quantity
       ),
     [player?.crewMembers, quantity]
   )
 
-  const medicineIsDisabled = useMemo(
-    () => (player?.inventory.medicine || 0) < quantity || quantity < 1,
-    [player?.inventory.medicine, quantity]
+  const isDisabled = useMemo(
+    () => (player?.character.doubloons || 0) < quantity || quantity < 1,
+    [player?.character.doubloons, quantity]
   )
 
-  const handleGiveMedicine = () => {
-    giveMedicine({ playerId: player?.id || "", medicine: quantity })
+  const handleSubmit = () => {
+    giveDoubloons({ playerId: player?.id || "", doubloons: quantity })
   }
 
   return (
@@ -55,7 +55,7 @@ const GiveDoubloons = () => {
       title="Give Doubloons"
       indicator={player?.character.doubloons?.toString() || "0"}
       icon={<MerchandiseIcon item="Doubloons" />}
-      disabled={medicineIsDisabled}
+      disabled={isDisabled}
       body={
         <>
           <p>
@@ -64,8 +64,8 @@ const GiveDoubloons = () => {
           </p>
 
           <p>
-            Your crew will have a mood of{" "}
-            <strong>{medicineEffectiveness}%</strong> with the current amount.
+            Your crew will have a mood of <strong>{effectiveness}%</strong> with
+            the current amount.
           </p>
         </>
       }
@@ -101,8 +101,8 @@ const GiveDoubloons = () => {
 
           <button
             className="btn btn-primary btn-sm"
-            disabled={medicineIsDisabled}
-            onClick={handleGiveMedicine}
+            disabled={isDisabled}
+            onClick={handleSubmit}
           >
             Give doubloons
           </button>

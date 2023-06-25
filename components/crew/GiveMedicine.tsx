@@ -32,7 +32,7 @@ const GiveMedicine = () => {
     }
   }
 
-  const medicineEffectiveness = useMemo(
+  const effectiveness = useMemo(
     () =>
       getMedicineEffectiveness(
         player?.crewMembers.count || 0,
@@ -42,12 +42,12 @@ const GiveMedicine = () => {
     [player?.crewMembers, quantity]
   )
 
-  const medicineIsDisabled = useMemo(
+  const isDisabled = useMemo(
     () => (player?.inventory.medicine || 0) < quantity || quantity < 1,
     [player?.inventory.medicine, quantity]
   )
 
-  const handleGiveMedicine = () => {
+  const handleSubmit = () => {
     giveMedicine({ playerId: player?.id || "", medicine: quantity })
   }
 
@@ -56,13 +56,13 @@ const GiveMedicine = () => {
       title="Give medicine"
       indicator={player?.inventory.medicine?.toString() || "0"}
       icon={<MerchandiseIcon item="Medicine" />}
-      disabled={medicineIsDisabled}
+      disabled={isDisabled}
       body={
         <>
           <p>{MERCHANDISE.medicine.description}</p>
           <p>
-            Your crew will have a health of{" "}
-            <strong>{medicineEffectiveness}%</strong> with the current amount.
+            Your crew will have a health of <strong>{effectiveness}%</strong>{" "}
+            with the current amount.
           </p>
         </>
       }
@@ -98,8 +98,8 @@ const GiveMedicine = () => {
 
           <button
             className="btn btn-primary btn-sm"
-            disabled={medicineIsDisabled}
-            onClick={handleGiveMedicine}
+            disabled={isDisabled}
+            onClick={handleSubmit}
           >
             Give medicine
           </button>
