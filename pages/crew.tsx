@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { BsHeartPulseFill } from "react-icons/bs"
 import { FaUsers } from "react-icons/fa"
 import { TbMoodSmileBeam } from "react-icons/tb"
@@ -9,16 +9,19 @@ import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import TextField from "@/components/ui/TextField"
 import { MERCHANDISE } from "@/constants/merchandise"
+import { useCrew } from "@/hooks/queries/useCrew"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { getMedicineEffectiveness } from "@/utils/crew"
 import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSideProps"
 
 type Item = "medicine" | "doubloons"
 
 const Crew = () => {
   const { data: player } = useGetPlayer()
+  const { giveMedicine } = useCrew()
 
-  const [medicineQuantity, setMedicineQuantity] = useState(0)
-  const [doubloonsQuantity, setDoubloonsQuantity] = useState(0)
+  const [medicineQuantity, setMedicineQuantity] = useState(1)
+  const [doubloonsQuantity, setDoubloonsQuantity] = useState(1)
 
   const changeQuantity = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -48,6 +51,27 @@ const Crew = () => {
     if (quantity > 1) {
       setQuantity((prev) => prev - 1)
     }
+  }
+
+  const medicineEffectiveness = useMemo(
+    () =>
+      getMedicineEffectiveness(
+        player?.crewMembers.count || 0,
+        player?.crewMembers.health || 0,
+        medicineQuantity
+      ),
+    [player?.crewMembers, medicineQuantity]
+  )
+
+  const medicineIsDisabled = useMemo(
+    () =>
+      (player?.inventory.medicine || 0) < medicineQuantity ||
+      medicineQuantity < 1,
+    [player?.inventory.medicine, medicineQuantity]
+  )
+
+  const handleGiveMedicine = () => {
+    giveMedicine({ playerId: player?.id || "", medicine: medicineQuantity })
   }
 
   return (
@@ -91,12 +115,14 @@ const Crew = () => {
             title="Give medicine"
             indicator={player?.inventory.medicine?.toString() || "0"}
             icon={<MerchandiseIcon item="Medicine" />}
+            disabled={medicineIsDisabled}
             body={
               <>
                 <p>{MERCHANDISE.medicine.description}</p>
                 <p>
-                  1 box of medicine will heal one crew member, so the more men
-                  you have the more medicine you need.
+                  Your crew will have a health of{" "}
+                  <strong>{medicineEffectiveness}%</strong> with the current
+                  amount.
                 </p>
               </>
             }
@@ -130,7 +156,11 @@ const Crew = () => {
                   </button>
                 </div>
 
-                <button className="btn btn-primary btn-sm">
+                <button
+                  className="btn btn-primary btn-sm"
+                  disabled={medicineIsDisabled}
+                  onClick={handleGiveMedicine}
+                >
                   Give medicine
                 </button>
               </>

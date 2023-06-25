@@ -37,8 +37,8 @@ export const MERCHANDISE: Record<
     description: "A great trading asset. Not used for anything specific.",
   },
   medicine: {
-    buy: 40,
-    sell: 25,
+    buy: 15,
+    sell: 10,
     singleUnit: "box",
     unit: "boxes",
     description:
