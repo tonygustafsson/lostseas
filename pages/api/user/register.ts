@@ -35,7 +35,7 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
       age,
       town: startingTown,
       location: LOCATIONS.harbor,
-      doubloons: 300,
+      gold: 300,
       week: 0,
     },
     inventory: {

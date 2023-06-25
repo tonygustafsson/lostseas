@@ -26,7 +26,7 @@ const shipyardSell = async (req: NextApiRequest, res: NextApiResponse) => {
     ...player,
     character: {
       ...player.character,
-      doubloons: player.character.doubloons + totalPrice,
+      gold: player.character.gold + totalPrice,
     },
   }
 

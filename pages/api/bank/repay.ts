@@ -24,7 +24,7 @@ const bankRepay = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const characterResult = {
     ...existingCharacter,
-    doubloons: existingCharacter.doubloons - amount,
+    gold: existingCharacter.gold - amount,
     loan:
       existingCharacter.loan - amount === 0
         ? null
@@ -40,7 +40,7 @@ const bankRepay = async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(200).json({
     success: true,
     amount,
-    doubloons: characterResult.doubloons,
+    gold: characterResult.gold,
     loan: characterResult.loan,
   })
 }

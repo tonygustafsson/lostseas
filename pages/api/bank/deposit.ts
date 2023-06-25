@@ -22,14 +22,14 @@ const bankDeposit = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  if (existingCharacter.doubloons < amount) {
-    res.status(400).json({ error: "Not enough doubloons" })
+  if (existingCharacter.gold < amount) {
+    res.status(400).json({ error: "Not enough gold" })
     return
   }
 
   const characterResult = {
     ...existingCharacter,
-    doubloons: existingCharacter.doubloons - amount,
+    gold: existingCharacter.gold - amount,
     account: existingCharacter.account
       ? existingCharacter.account + amount
       : amount,
@@ -44,7 +44,7 @@ const bankDeposit = async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(200).json({
     success: true,
     amount,
-    doubloons: characterResult.doubloons,
+    gold: characterResult.gold,
   })
 }
 

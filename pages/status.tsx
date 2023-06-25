@@ -88,10 +88,8 @@ const Status = () => {
               <div className="stat-figure text-secondary">
                 <GiCoins className="h-8 w-8" />
               </div>
-              <div className="stat-title">Doubloons</div>
-              <div className="stat-value text-xl">
-                {player?.character.doubloons}
-              </div>
+              <div className="stat-title">Gold</div>
+              <div className="stat-value text-xl">{player?.character.gold}</div>
             </div>
 
             {player?.character.account && (

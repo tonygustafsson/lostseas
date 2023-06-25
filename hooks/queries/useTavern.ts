@@ -29,7 +29,7 @@ export const useTavern = () => {
 
         setToast({
           title: `You bought ${item} for you and your crew`,
-          message: `It cost you ${totalPrice} dbl and your crew now have the health ${newHealth} and mood ${newMood}`,
+          message: `It cost you ${totalPrice} gold and your crew now have the health ${newHealth} and mood ${newMood}`,
           variant: "success",
         })
       },
@@ -85,7 +85,7 @@ export const useTavern = () => {
         if (success) {
           setToast({
             title: `You fought ${numberOfSailors} sailors sailors and won!`,
-            message: `You got ${loot} dbl. Your crew lost ${healthLoss}% health.`,
+            message: `You got ${loot} gold. Your crew lost ${healthLoss}% health.`,
             variant: "success",
           })
         } else {
@@ -131,7 +131,7 @@ export const useTavern = () => {
     (data: { playerId: Player["id"]; betPercentage: number }) =>
       apiRequest("/api/tavern/dice", data, "POST"),
     {
-      onSuccess: ({ error, bet, doubloons, diceResults }) => {
+      onSuccess: ({ error, bet, gold, diceResults }) => {
         if (error) {
           setToast({
             title: `Could not place bet`,
@@ -147,16 +147,16 @@ export const useTavern = () => {
         let title = ""
 
         if (diceResults === "won") {
-          title = `You played made a bet of ${bet} dbl and won!`
+          title = `You played made a bet of ${bet} gold and won!`
         } else if (diceResults === "jackpot") {
-          title = `You played made a bet of ${bet} dbl and won the jackpot!`
+          title = `You played made a bet of ${bet} gold and won the jackpot!`
         } else {
-          title = `You played made a bet of ${bet} dbl and lost`
+          title = `You played made a bet of ${bet} gold and lost`
         }
 
         setToast({
           title,
-          message: `You now have ${doubloons} dbl in total.`,
+          message: `You now have ${gold} gold in total.`,
           variant:
             diceResults === "won" || diceResults === "jackpot"
               ? "success"

@@ -16,7 +16,7 @@ const BankAccount = () => {
     amount: z
       .number()
       .min(1)
-      .max(player?.character.loan ? 0 : player?.character.doubloons || 0),
+      .max(player?.character.loan ? 0 : player?.character.gold || 0),
   })
 
   type AccountValidationSchema = z.infer<typeof accountValidationSchema>
@@ -74,8 +74,7 @@ const BankAccount = () => {
         </h2>
 
         <p>
-          When doubloons are stored at the bank you will not risk loosing it at
-          sea.
+          When gold are stored at the bank you will not risk loosing it at sea.
         </p>
 
         {player?.character.loan && (
@@ -113,7 +112,7 @@ const BankAccount = () => {
           Make withdrawal
         </h2>
 
-        <p>Take out your doubloons in order to spend it.</p>
+        <p>Take out your gold in order to spend it.</p>
 
         <TextField
           type="hidden"

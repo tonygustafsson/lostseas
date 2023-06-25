@@ -5,11 +5,11 @@ import MerchandiseIcon from "@/components/MerchandiseIcon"
 import TextField from "@/components/ui/TextField"
 import { useCrew } from "@/hooks/queries/useCrew"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-import { getDoubloonsEffectiveness } from "@/utils/crew"
+import { getGoldEffectiveness } from "@/utils/crew"
 
-const GiveDoubloons = () => {
+const GiveGold = () => {
   const { data: player } = useGetPlayer()
-  const { giveDoubloons } = useCrew()
+  const { giveGold } = useCrew()
 
   const [quantity, setQuantity] = useState(1)
 
@@ -33,7 +33,7 @@ const GiveDoubloons = () => {
 
   const effectiveness = useMemo(
     () =>
-      getDoubloonsEffectiveness(
+      getGoldEffectiveness(
         player?.crewMembers.count || 0,
         player?.crewMembers.mood || 0,
         quantity
@@ -42,26 +42,26 @@ const GiveDoubloons = () => {
   )
 
   const isDisabled = useMemo(
-    () => (player?.character.doubloons || 0) < quantity || quantity < 1,
-    [player?.character.doubloons, quantity]
+    () => (player?.character.gold || 0) < quantity || quantity < 1,
+    [player?.character.gold, quantity]
   )
 
   const handleSubmit = () => {
-    giveDoubloons({ playerId: player?.id || "", doubloons: quantity })
+    giveGold({ playerId: player?.id || "", gold: quantity })
   }
 
   return (
     <MerchandiseCard
-      title="Give Doubloons"
-      indicator={player?.character.doubloons?.toString() || "0"}
-      icon={<MerchandiseIcon item="Doubloons" />}
+      title="Give gold"
+      indicator={player?.character.gold?.toString() || "0"}
+      icon={<MerchandiseIcon item="Gold" />}
       disabled={isDisabled}
       fullWidth
       body={
         <>
           <p>
-            Give some doubloons to your crew members to improve their mood. More
-            crew members means more doubloons needed.
+            Give some gold to your crew members to improve their mood. More crew
+            members means more gold needed.
           </p>
 
           <p>
@@ -105,7 +105,7 @@ const GiveDoubloons = () => {
             disabled={isDisabled}
             onClick={handleSubmit}
           >
-            Give doubloons
+            Give gold
           </button>
         </>
       }
@@ -113,4 +113,4 @@ const GiveDoubloons = () => {
   )
 }
 
-export default GiveDoubloons
+export default GiveGold

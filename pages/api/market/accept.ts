@@ -33,8 +33,8 @@ const marketBuy = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const totalPrice = stateItem?.price * stateItem.quantity
 
-  if (player?.character.doubloons < totalPrice) {
-    res.status(400).json({ error: "Not enough doubloons", item })
+  if (player?.character.gold < totalPrice) {
+    res.status(400).json({ error: "Not enough gold", item })
     return
   }
 
@@ -42,7 +42,7 @@ const marketBuy = async (req: NextApiRequest, res: NextApiResponse) => {
     ...player,
     character: {
       ...player.character,
-      doubloons: player.character.doubloons - totalPrice,
+      gold: player.character.gold - totalPrice,
     },
     inventory: {
       ...player.inventory,

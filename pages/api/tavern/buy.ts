@@ -19,8 +19,8 @@ const tavernBuy = async (req: NextApiRequest, res: NextApiResponse) => {
   const tavernItem = item as keyof typeof TAVERN_ITEMS
   const totalPrice = TAVERN_ITEMS[tavernItem].price * player.crewMembers.count
 
-  if (player.character.doubloons < totalPrice) {
-    res.status(400).json({ error: "Not enough doubloons" })
+  if (player.character.gold < totalPrice) {
+    res.status(400).json({ error: "Not enough gold" })
     return
   }
 
@@ -39,7 +39,7 @@ const tavernBuy = async (req: NextApiRequest, res: NextApiResponse) => {
     ...player,
     character: {
       ...player.character,
-      doubloons: player.character.doubloons - totalPrice,
+      gold: player.character.gold - totalPrice,
     },
     crewMembers: {
       ...player.crewMembers,

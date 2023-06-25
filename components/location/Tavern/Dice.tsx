@@ -21,12 +21,12 @@ const TavernDice = () => {
     DICE_PERCENTAGE_DEFAULT_VALUE
   )
 
-  const bet = getBet(betPercentage, player?.character.doubloons || 0)
+  const bet = getBet(betPercentage, player?.character.gold || 0)
   const profitMin = Math.floor(bet * DICE_WON_MULTIPLIER_MIN)
   const profitMax = Math.floor(bet * DICE_WON_MULTIPLIER_MAX)
   const profitJackpot = Math.floor(bet * DICE_JACKPOT_MULTIPLIER)
 
-  const disabled = bet > (player?.character.doubloons || 0)
+  const disabled = bet > (player?.character.gold || 0)
 
   const handlePlayDice = () => {
     playDice({ playerId: player?.id || "", betPercentage })
@@ -58,11 +58,11 @@ const TavernDice = () => {
         </div>
       </div>
 
-      <p className="text-lg font-serif">You will bet {bet} doubloons</p>
+      <p className="text-lg font-serif">You will bet {bet} gold</p>
 
       <p className="text-sm mt-2">
-        You have 1/6 change of winning between {profitMin} and {profitMax}{" "}
-        doubloons. If you hit jackpot you would get {profitJackpot} doubloons.
+        You have 1/6 change of winning between {profitMin} and {profitMax} gold.
+        If you hit jackpot you would get {profitJackpot} gold.
       </p>
     </div>
   )

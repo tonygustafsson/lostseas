@@ -11,10 +11,10 @@ const tavernDice = async (req: NextApiRequest, res: NextApiResponse) => {
   const characterRef = await get(child(dbRef, `${playerId}/character`))
   const character = characterRef.val() as Character
 
-  const bet = getBet(betPercentage, character.doubloons || 0)
+  const bet = getBet(betPercentage, character.gold || 0)
 
-  if (character.doubloons < bet) {
-    res.status(400).json({ error: "Not enough doubloons" })
+  if (character.gold < bet) {
+    res.status(400).json({ error: "Not enough gold" })
     return
   }
 
@@ -22,11 +22,11 @@ const tavernDice = async (req: NextApiRequest, res: NextApiResponse) => {
   const diceReturns = getDiceReturns(diceResults, bet)
 
   console.log({ bet, diceResults, diceReturns })
-  const doubloonsResult = character.doubloons + diceReturns
+  const goldResult = character.gold + diceReturns
 
   const result: Character = {
     ...character,
-    doubloons: doubloonsResult,
+    gold: goldResult,
   }
 
   await set(ref(db, `${playerId}/character`), result).catch((error) => {
@@ -38,7 +38,7 @@ const tavernDice = async (req: NextApiRequest, res: NextApiResponse) => {
     bet,
     diceResults,
     diceReturns,
-    doubloons: doubloonsResult,
+    gold: goldResult,
   })
 }
 

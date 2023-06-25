@@ -3,7 +3,7 @@ import { BsHeartPulseFill } from "react-icons/bs"
 import { FaUsers } from "react-icons/fa"
 import { TbMoodSmileBeam } from "react-icons/tb"
 
-import GiveDoubloons from "@/components/crew/GiveDoubloons"
+import GiveGold from "@/components/crew/GiveGold"
 import GiveMedicine from "@/components/crew/GiveMedicine"
 import DefaultLayout from "@/components/layouts/default"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -51,7 +51,7 @@ const Crew = () => {
 
         <div className="flex gap-4 pt-8">
           <GiveMedicine />
-          <GiveDoubloons />
+          <GiveGold />
         </div>
       </>
     </DefaultLayout>

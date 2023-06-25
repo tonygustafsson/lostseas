@@ -39,7 +39,7 @@ const shopSell = async (req: NextApiRequest, res: NextApiResponse) => {
   const existingCharacter = existingCharacterRef.val()
   const characterResult = {
     ...existingCharacter,
-    doubloons: existingCharacter.doubloons + totalPrice,
+    gold: existingCharacter.gold + totalPrice,
   }
 
   await set(ref(db, `${playerId}/character`), characterResult).catch(

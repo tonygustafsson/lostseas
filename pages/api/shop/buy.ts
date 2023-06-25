@@ -19,14 +19,14 @@ const shopBuy = async (req: NextApiRequest, res: NextApiResponse) => {
   const existingCharacterRef = await get(child(dbRef, `${playerId}/character`))
   const existingCharacter = existingCharacterRef.val()
 
-  if (existingCharacter.doubloons < totalPrice) {
-    res.status(400).json({ error: "Not enough doubloons" })
+  if (existingCharacter.gold < totalPrice) {
+    res.status(400).json({ error: "Not enough gold" })
     return
   }
 
   const characterResult = {
     ...existingCharacter,
-    doubloons: existingCharacter.doubloons - totalPrice,
+    gold: existingCharacter.gold - totalPrice,
   }
 
   await set(ref(db, `${playerId}/character`), characterResult).catch(

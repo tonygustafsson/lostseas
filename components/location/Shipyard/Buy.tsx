@@ -25,7 +25,7 @@ const ShipyardBuy = () => {
               <p>{description}</p>
 
               <div className="flex gap-2">
-                <div className="badge badge-secondary">Price: {buy} dbl</div>
+                <div className="badge badge-secondary">Price: {buy} gold</div>
               </div>
             </>
           }

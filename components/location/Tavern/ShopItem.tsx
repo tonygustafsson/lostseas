@@ -16,7 +16,7 @@ const ShopItem = ({ player, item }: Props) => {
 
   const merchandise = TAVERN_ITEMS[item]
   const price = merchandise.price * (player?.crewMembers.count || 0)
-  const buyingDisabled = price > (player?.character.doubloons || Infinity)
+  const buyingDisabled = price > (player?.character.gold || Infinity)
 
   const handlePurchase = () => {
     buy({
@@ -36,7 +36,7 @@ const ShopItem = ({ player, item }: Props) => {
           <p>{TAVERN_ITEMS[item].description}</p>
 
           <div className="flex gap-2 mt-2">
-            <div className="badge badge-secondary">Price: {price} dbl</div>
+            <div className="badge badge-secondary">Price: {price} gold</div>
           </div>
         </>
       }

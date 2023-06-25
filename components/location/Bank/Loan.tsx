@@ -27,7 +27,7 @@ const BankLoan = () => {
     amount: z
       .number()
       .min(1)
-      .max(player?.character.loan || player?.character.doubloons || 0),
+      .max(player?.character.loan || player?.character.gold || 0),
   })
 
   type RepayValidationSchema = z.infer<typeof repayValidationSchema>
@@ -71,8 +71,8 @@ const BankLoan = () => {
           </h2>
 
           <p>
-            You can loan up to {LOAN_LIMIT} doubloons. If you have a loan you
-            cannot add funds to your account though until it has been repaid.
+            You can loan up to {LOAN_LIMIT} gold. If you have a loan you cannot
+            add funds to your account though until it has been repaid.
           </p>
 
           <TextField

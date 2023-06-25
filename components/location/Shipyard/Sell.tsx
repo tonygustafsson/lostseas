@@ -31,7 +31,7 @@ const ShipyardSell = () => {
 
                 <div className="flex gap-2">
                   <div className="badge badge-secondary">
-                    Price: {shipInfo.sell} dbl
+                    Price: {shipInfo.sell} gold
                   </div>
                 </div>
               </>

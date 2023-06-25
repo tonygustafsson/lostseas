@@ -37,7 +37,7 @@ export const useMarket = () => {
 
           setToast({
             title: `You bought ${quantity} ${unit} of ${item}`,
-            message: `It cost you ${totalPrice} dbl and your now have ${totalQuantity} ${unit} of ${item}`,
+            message: `It cost you ${totalPrice} gold and your now have ${totalQuantity} ${unit} of ${item}`,
             variant: "success",
           })
         },

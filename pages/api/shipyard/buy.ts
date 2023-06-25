@@ -22,8 +22,8 @@ const shipyardBuy = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerRef = await get(child(dbRef, playerId))
   const player = playerRef.val()
 
-  if (player.character.doubloons < totalPrice) {
-    res.status(400).json({ error: "Not enough doubloons" })
+  if (player.character.gold < totalPrice) {
+    res.status(400).json({ error: "Not enough gold" })
     return
   }
 
@@ -33,7 +33,7 @@ const shipyardBuy = async (req: NextApiRequest, res: NextApiResponse) => {
     ...player,
     character: {
       ...player.character,
-      doubloons: player.character.doubloons - totalPrice,
+      gold: player.character.gold - totalPrice,
     },
     ships: {
       ...player.ships,

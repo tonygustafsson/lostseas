@@ -18,14 +18,14 @@ const bankLoan = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if ((existingCharacter.loan || 0) + amount > LOAN_LIMIT) {
     res.status(400).json({
-      error: `You cannot loan more than a total of ${LOAN_LIMIT} dbl.`,
+      error: `You cannot loan more than a total of ${LOAN_LIMIT} gold.`,
     })
     return
   }
 
   const characterResult = {
     ...existingCharacter,
-    doubloons: existingCharacter.doubloons + amount,
+    gold: existingCharacter.gold + amount,
     loan: existingCharacter.loan ? existingCharacter.loan + amount : amount,
   }
 
@@ -38,7 +38,7 @@ const bankLoan = async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(200).json({
     success: true,
     amount,
-    doubloons: characterResult.doubloons,
+    gold: characterResult.gold,
     loan: characterResult.loan,
   })
 }

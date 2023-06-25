@@ -29,7 +29,7 @@ export const useShipyard = () => {
 
         setToast({
           title: `You bought a ${item}`,
-          message: `It cost you ${totalPrice} dbl.`,
+          message: `It cost you ${totalPrice} gold.`,
           variant: "success",
         })
       },
@@ -56,7 +56,7 @@ export const useShipyard = () => {
 
         setToast({
           title: `You sold your ${ship.type} ${ship.name}`,
-          message: `It received ${totalPrice} dbl.`,
+          message: `It received ${totalPrice} gold.`,
           variant: "success",
         })
       },

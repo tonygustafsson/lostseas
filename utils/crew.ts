@@ -12,12 +12,12 @@ export const getMedicineEffectiveness = (
   return Math.floor(crewHealth + effectiveness)
 }
 
-export const getDoubloonsEffectiveness = (
+export const getGoldEffectiveness = (
   noOfCrewMemers: number,
   crewMood: number,
-  doubloons: number
+  gold: number
 ) => {
-  const effectiveness = doubloons / noOfCrewMemers
+  const effectiveness = gold / noOfCrewMemers
 
   if (crewMood + effectiveness > 100) {
     return 100

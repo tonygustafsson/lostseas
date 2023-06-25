@@ -16,9 +16,9 @@ export const useCrew = () => {
     }
   )
 
-  const { mutate: giveDoubloons, isLoading: isGivingDoubloons } = useMutation(
-    (data: { playerId: Player["id"]; doubloons: Character["doubloons"] }) =>
-      apiRequest("/api/crew/giveDoubloons", data, "POST"),
+  const { mutate: giveGold, isLoading: isGivingGold } = useMutation(
+    (data: { playerId: Player["id"]; gold: Character["gold"] }) =>
+      apiRequest("/api/crew/giveGold", data, "POST"),
     {
       onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),
       onError: (error) => console.error(error),
@@ -28,7 +28,7 @@ export const useCrew = () => {
   return {
     giveMedicine,
     isGivingMedicine,
-    giveDoubloons,
-    isGivingDoubloons,
+    giveGold,
+    isGivingGold,
   }
 }

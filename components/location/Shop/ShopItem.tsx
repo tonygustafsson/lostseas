@@ -22,7 +22,7 @@ const ShopItem = ({ player, item, type }: Props) => {
 
   const merchandise = MERCHANDISE[item]
   const buyingDisabled =
-    quantity * merchandise.buy > (player?.character.doubloons || Infinity)
+    quantity * merchandise.buy > (player?.character.gold || Infinity)
   const sellingDisabled = quantity > (player?.inventory[item] || 0)
 
   const changeQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,13 +76,13 @@ const ShopItem = ({ player, item, type }: Props) => {
           <div className="flex gap-2 mt-2">
             {type === "Buy" && (
               <div className="badge badge-secondary">
-                Price: {MERCHANDISE[item].buy} dbl
+                Price: {MERCHANDISE[item].buy} gold
               </div>
             )}
 
             {type === "Sell" && (
               <div className="badge badge-secondary">
-                Worth: {MERCHANDISE[item].sell} dbl
+                Worth: {MERCHANDISE[item].sell} gold
               </div>
             )}
           </div>

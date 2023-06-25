@@ -37,8 +37,8 @@ export const getDiceReturns = (result: DiceResult, bet: number) => {
   }
 }
 
-export const getBet = (percentage: number, doubloons: number) => {
-  if (percentage === 100) return doubloons
+export const getBet = (percentage: number, gold: number) => {
+  if (percentage === 100) return gold
 
-  return Math.floor((percentage / 100) * doubloons)
+  return Math.floor((percentage / 100) * gold)
 }

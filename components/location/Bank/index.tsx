@@ -26,22 +26,20 @@ const Bank = () => {
       />
 
       <div className="flex flex-wrap gap-6 w-full justify-center">
-        <div className="stats bg-transparent gap-2 mt-4">
+        <div className="stats bg-transparent gap-1 mt-4">
           <div className="stat bg-gray-700">
             <div className="stat-figure text-secondary">
               <GiCoins className="h-8 w-8" />
             </div>
-            <div className="stat-title">Doubloons</div>
-            <div className="stat-value text-2xl">
-              {player?.character.doubloons}
-            </div>
+            <div className="stat-title">Gold</div>
+            <div className="stat-value text-2xl">{player?.character.gold}</div>
           </div>
 
           <div className="stat bg-gray-700">
             <div className="stat-figure text-secondary">
               <GiCoins className="h-8 w-8" />
             </div>
-            <div className="stat-title">Bank account</div>
+            <div className="stat-title">Account</div>
             <div className="stat-value text-2xl">
               {player?.character.account || 0}
             </div>
@@ -51,7 +49,7 @@ const Bank = () => {
             <div className="stat-figure text-secondary">
               <GiCoins className="h-8 w-8" />
             </div>
-            <div className="stat-title">Bank loan</div>
+            <div className="stat-title">Loan</div>
             <div className="stat-value text-2xl">
               {player?.character.loan || 0}
             </div>

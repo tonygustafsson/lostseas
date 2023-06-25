@@ -31,7 +31,7 @@ const tavernFightSailors = async (
       ...player,
       character: {
         ...player.character,
-        doubloons: player.character.doubloons + loot,
+        gold: player.character.gold + loot,
       },
       crewMembers: {
         ...player.crewMembers,

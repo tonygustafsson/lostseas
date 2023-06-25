@@ -5,7 +5,7 @@ type Character = {
   nationality: Nation
   town: Town | undefined
   location: TownLocation | SeaLocation
-  doubloons: number
+  gold: number
   account?: number
   loan?: number
   week: number

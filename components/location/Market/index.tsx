@@ -36,14 +36,14 @@ const Market = () => {
                   {quantity === 1
                     ? MERCHANDISE[inventoryItem].singleUnit
                     : MERCHANDISE[inventoryItem].unit}{" "}
-                  of {item} for <strong>{price} doubloons</strong>.
+                  of {item} for <strong>{price} gold</strong>.
                 </p>
 
                 <p>{MERCHANDISE[inventoryItem].description}</p>
 
                 <div className="flex gap-2 mt-2">
                   <div className="badge badge-secondary">
-                    Price: {price * quantity} dbl
+                    Price: {price * quantity} gold
                   </div>
                 </div>
               </>
