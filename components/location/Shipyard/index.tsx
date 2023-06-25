@@ -3,6 +3,7 @@ import { useState } from "react"
 import LocationTabs from "@/components/LocationTabs"
 
 import ShipyardBuy from "./Buy"
+import ShipyardRepair from "./Repair"
 import ShipyardSell from "./Sell"
 
 export type ShipyardTab = "buy" | "sell" | "repair"
@@ -24,7 +25,7 @@ const Shipyard = () => {
 
       {tab === "buy" && <ShipyardBuy />}
       {tab === "sell" && <ShipyardSell />}
-      {tab === "repair" && <p>Not implemented yet.</p>}
+      {tab === "repair" && <ShipyardRepair />}
     </>
   )
 }

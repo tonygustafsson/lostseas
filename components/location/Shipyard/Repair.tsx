@@ -1,22 +1,24 @@
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
-import { SHIP_TYPES } from "@/constants/ship"
+import { SHIP_REPAIR_COST, SHIP_TYPES } from "@/constants/ship"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShipyard } from "@/hooks/queries/useShipyard"
 
-const ShipyardSell = () => {
+const ShipyardRepair = () => {
   const { data: player } = useGetPlayer()
-  const { sell } = useShipyard()
+  const { repair } = useShipyard()
 
-  const handleSell = (id: Ship["id"]) => {
-    sell({ playerId: player?.id || "", id })
+  const handleRepair = (id: Ship["id"]) => {
+    repair({ playerId: player?.id || "", id })
   }
 
   return (
     <div className="flex flex-wrap gap-6 mt-8">
-      {Object.entries(player?.ships || []).map(
-        ([id, { name, type, health }]) => {
+      {Object.entries(player?.ships || [])
+        .filter(([_, { health }]) => health < 100)
+        .map(([id, { name, type, health }]) => {
           const shipInfo = SHIP_TYPES[type as keyof typeof SHIP_TYPES]
+          const repairCost = (100 - health) * SHIP_REPAIR_COST
 
           if (!shipInfo) return null
 
@@ -30,12 +32,15 @@ const ShipyardSell = () => {
                   <p>{shipInfo.description}</p>
 
                   <div className="flex gap-2">
-                    <div className="badge badge-secondary">
+                    <div
+                      className={`badge badge-secondary ${
+                        health < 75 ? "badge-warning" : ""
+                      } ${health <= 30 ? "badge-error" : ""}`}
+                    >
                       Health: {health}%
                     </div>
-
                     <div className="badge badge-secondary">
-                      Worth: {shipInfo.sell} gold
+                      Price: {repairCost} gold
                     </div>
                   </div>
                 </>
@@ -43,17 +48,16 @@ const ShipyardSell = () => {
               actions={
                 <button
                   className="btn btn-primary btn-sm"
-                  onClick={() => handleSell(id)}
+                  onClick={() => handleRepair(id)}
                 >
-                  Sell {type}
+                  Repair
                 </button>
               }
             />
           )
-        }
-      )}
+        })}
     </div>
   )
 }
 
-export default ShipyardSell
+export default ShipyardRepair

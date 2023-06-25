@@ -23,7 +23,7 @@ const shipyardBuy = async (req: NextApiRequest, res: NextApiResponse) => {
   const player = playerRef.val()
 
   if (player.character.gold < totalPrice) {
-    res.status(400).json({ error: "Not enough gold" })
+    res.status(400).json({ error: "Not enough gold", item })
     return
   }
 

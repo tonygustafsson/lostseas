@@ -64,10 +64,39 @@ export const useShipyard = () => {
     }
   )
 
+  const { mutate: repair, isLoading: isRepairing } = useMutation(
+    (data: { playerId: Player["id"]; id: Ship["id"] }) =>
+      apiRequest("/api/shipyard/repair", data, "POST"),
+    {
+      onSuccess: ({ error, ship, totalPrice }) => {
+        if (error) {
+          setToast({
+            title: `Could not repair your ship`,
+            message: error,
+            variant: "error",
+          })
+
+          return
+        }
+
+        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+
+        setToast({
+          title: `You repaired your ${ship.type} ${ship.name}`,
+          message: `It costed you ${totalPrice} gold.`,
+          variant: "success",
+        })
+      },
+      onError: (error) => console.error(error),
+    }
+  )
+
   return {
     buy,
     isBuying,
     sell,
     isSelling,
+    repair,
+    isRepairing,
   }
 }
