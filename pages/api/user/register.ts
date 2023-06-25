@@ -24,7 +24,7 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
   const createdDate = new Date().getTime()
   const startingTown = getRandomTown(nationality)
 
-  const ship = createNewShip("Brig")
+  const ship = createNewShip("Brig", 0)
   const crewMembersCount = 4
 
   const requestJson: CreatePlayerServerRequest = {

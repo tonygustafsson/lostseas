@@ -6,6 +6,7 @@ import MerchandiseIcon from "@/components/MerchandiseIcon"
 import { SHIP_TYPES } from "@/constants/ship"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShips } from "@/hooks/queries/useShips"
+import { getCurrentDate } from "@/utils/date"
 import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSideProps"
 
 const Ships = () => {
@@ -26,6 +27,7 @@ const Ships = () => {
         <div className="flex flex-wrap gap-4">
           {Object.values(player?.ships || []).map((ship) => {
             const shipInfo = SHIP_TYPES[ship.type]
+            const createdDate = getCurrentDate(ship.createdWeek)
 
             if (!shipInfo) return null
 
@@ -39,9 +41,11 @@ const Ships = () => {
                     <p>{shipInfo.description}</p>
 
                     <p>
-                      <strong>Created:</strong>{" "}
-                      {new Date(ship.createdDate).toLocaleDateString()}{" "}
-                      {new Date(ship.createdDate).toLocaleTimeString()}
+                      <strong>Health:</strong> {ship.health}%
+                    </p>
+
+                    <p>
+                      <strong>Created:</strong> {createdDate}
                     </p>
                   </>
                 }
