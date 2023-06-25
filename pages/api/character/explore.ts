@@ -9,13 +9,21 @@ const explore = async (req: NextApiRequest, res: NextApiResponse) => {
   const town = null
   const location: SeaLocation = "Sea"
 
-  const existingCharacterRef = await get(child(dbRef, `${playerId}/character`))
-  const existingCharacter = existingCharacterRef.val()
+  const characterRef = await get(child(dbRef, `${playerId}/character`))
+  const character = characterRef.val()
+
+  if (character.location !== "Harbor" && character.location !== "Sea") {
+    res.status(400).json({
+      error: `You cannot explore from ${character.location}.`,
+    })
+    return
+  }
+
   const result = {
-    ...existingCharacter,
+    ...character,
     town,
     location,
-    week: existingCharacter.week + 1,
+    week: character.week + 1,
   }
 
   await set(ref(db, `${playerId}/character`), result).catch((error) => {

@@ -11,6 +11,28 @@ const move = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const existingCharacterRef = await get(child(dbRef, `${playerId}/character`))
   const character = existingCharacterRef.val()
+
+  const currentLocation = character.location as SeaLocation | TownLocation
+
+  if (currentLocation === destination) {
+    return
+  }
+
+  if (currentLocation === "Sea") {
+    // Use travel function instead
+    res.status(400).json({
+      error: `You cannot move from ${currentLocation} to ${destination}.`,
+    })
+    return
+  }
+
+  if (destination === "Docks" && currentLocation !== "Harbor") {
+    res.status(400).json({
+      error: `You cannot move from ${currentLocation} to ${destination}.`,
+    })
+    return
+  }
+
   const result = { ...character, location: destination }
 
   await set(ref(db, `${playerId}/character`), result).catch((error) => {
