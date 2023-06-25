@@ -30,7 +30,11 @@ const ShipyardSell = () => {
                   <p>{shipInfo.description}</p>
 
                   <div className="flex gap-2">
-                    <div className="badge badge-secondary">
+                    <div
+                      className={`badge badge-secondary badge-success ${
+                        health < 75 ? "badge-warning" : ""
+                      } ${health <= 30 ? "badge-error" : ""}`}
+                    >
                       Health: {health}%
                     </div>
 
