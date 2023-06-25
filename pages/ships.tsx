@@ -40,13 +40,18 @@ const Ships = () => {
                   <>
                     <p>{shipInfo.description}</p>
 
-                    <p>
-                      <strong>Health:</strong> {ship.health}%
-                    </p>
-
-                    <p>
-                      <strong>Created:</strong> {createdDate}
-                    </p>
+                    <div className="flex flex-col gap-2">
+                      <div
+                        className={`badge badge-secondary badge-success ${
+                          ship.health < 75 ? "badge-warning" : ""
+                        } ${ship.health <= 30 ? "badge-error" : ""}`}
+                      >
+                        Health: {ship.health}%
+                      </div>
+                      <div className="badge badge-secondary">
+                        Created: {createdDate}
+                      </div>
+                    </div>
                   </>
                 }
                 actions={
