@@ -5,6 +5,7 @@ type Props = {
   body: React.ReactNode
   actions?: React.ReactNode
   disabled?: boolean
+  fullWidth?: boolean
 }
 
 const MerchandiseCard = ({
@@ -14,9 +15,10 @@ const MerchandiseCard = ({
   body,
   actions,
   disabled,
+  fullWidth,
 }: Props) => (
   <div
-    className={`card w-80 bg-base-100 shadow-xl ${
+    className={`card ${fullWidth ? "w-full" : "w-80"} bg-base-100 shadow-xl ${
       disabled ? "opacity-50 cursor-not-allowed" : ""
     }`}
   >

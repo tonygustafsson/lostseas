@@ -57,6 +57,7 @@ const GiveMedicine = () => {
       indicator={player?.inventory.medicine?.toString() || "0"}
       icon={<MerchandiseIcon item="Medicine" />}
       disabled={isDisabled}
+      fullWidth
       body={
         <>
           <p>{MERCHANDISE.medicine.description}</p>

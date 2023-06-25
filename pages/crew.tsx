@@ -16,6 +16,7 @@ const Crew = () => {
     <DefaultLayout>
       <>
         <h1 className="text-3xl font-serif text mb-8">Crew members</h1>
+
         <div className="stats bg-transparent gap-2 mt-4">
           <div className="stat bg-gray-700">
             <div className="stat-figure text-secondary">
@@ -48,7 +49,7 @@ const Crew = () => {
           </div>
         </div>
 
-        <div className="flex gap-4 pt-8 justify-center">
+        <div className="flex gap-4 pt-8">
           <GiveMedicine />
           <GiveDoubloons />
         </div>

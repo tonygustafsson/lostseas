@@ -56,6 +56,7 @@ const GiveDoubloons = () => {
       indicator={player?.character.doubloons?.toString() || "0"}
       icon={<MerchandiseIcon item="Doubloons" />}
       disabled={isDisabled}
+      fullWidth
       body={
         <>
           <p>
