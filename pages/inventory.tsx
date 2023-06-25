@@ -10,6 +10,10 @@ import { capitalize } from "@/utils/string"
 const Inventory = () => {
   const { data: player } = useGetPlayer()
 
+  if (!player) {
+    return <p>Access denied</p>
+  }
+
   const rows = Object.entries(player?.inventory || []) as [
     keyof Inventory,
     number

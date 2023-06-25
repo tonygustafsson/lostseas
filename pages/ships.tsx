@@ -19,6 +19,10 @@ const Ships = () => {
     remove({ shipId: id, playerId: player?.id || "" })
   }
 
+  if (!player) {
+    return <p>Access denied</p>
+  }
+
   return (
     <DefaultLayout>
       <h1 className="text-3xl font-serif text mb-8">Ships</h1>

@@ -12,6 +12,10 @@ import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSidePr
 const Crew = () => {
   const { data: player } = useGetPlayer()
 
+  if (!player) {
+    return <p>Access denied</p>
+  }
+
   return (
     <DefaultLayout>
       <>
