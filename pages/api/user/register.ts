@@ -41,6 +41,7 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
     inventory: {
       food: 20,
       water: 40,
+      cannons: 2,
     },
     ships: {
       [ship.id]: ship,

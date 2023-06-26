@@ -2,6 +2,7 @@ import {
   GiBrandyBottle,
   GiCargoShip,
   GiMeat,
+  GiPirateCannon,
   GiPorcelainVase,
   GiPowder,
   GiShoonerSailboat,
@@ -59,6 +60,8 @@ const MerchandiseIcon = ({ item, size = "md", className = "" }: Props) => {
       return <GiMeat className={iconClass} />
     case "wine":
       return <GiWineBottle className={iconClass} />
+    case "cannons":
+      return <GiPirateCannon className={iconClass} />
     case "Brig":
       return <TbSailboat className={iconClass} />
     case "Merchantman":
