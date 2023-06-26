@@ -12,10 +12,7 @@ const Market = () => {
   const items = player?.locationStates?.market?.items
 
   const handleAccept = (item: keyof LocationStateMarketItems) => {
-    acceptMarketBargain({
-      playerId: player?.id || "",
-      item,
-    })
+    acceptMarketBargain({ item })
   }
 
   return (

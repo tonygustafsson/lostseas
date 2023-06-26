@@ -12,10 +12,8 @@ export const useMarket = () => {
 
   const { mutate: acceptMarketBargain, isLoading: isAcceptingMarketBargain } =
     useMutation(
-      (data: {
-        playerId: Player["id"]
-        item: keyof LocationStateMarketItems
-      }) => apiRequest("/api/market/accept", data, "POST"),
+      (data: { item: keyof LocationStateMarketItems }) =>
+        apiRequest("/api/market/accept", data, "POST"),
       {
         onSuccess: ({ error, quantity, item, totalPrice, totalQuantity }) => {
           if (error) {
