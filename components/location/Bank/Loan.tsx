@@ -64,7 +64,7 @@ const BankLoan = () => {
 
   return (
     <div className="flex flex-wrap gap-6 w-full justify-center">
-      <div className="w-full flex gap-8">
+      <div className="w-full flex flex-col lg:flex-row lg:gap-8">
         <form className="w-full mt-4" onSubmit={loanHandleSubmit(handleLoan)}>
           <h2 className="text-2xl font-serif font-semibold mt-8 mb-4">
             Take a loan

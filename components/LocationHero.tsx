@@ -69,20 +69,23 @@ const LocationHero = () => {
         <div className="hero-overlay bg-opacity-20"></div>
         <div className="hero-content text-center text-neutral-content py-8 lg:py-24">
           <div className="max-w-full lg:max-w-2xl lg:min-w-[600px] bg-base-300 bg-opacity-60 p-8 rounded-lg">
-            <h1 className="font-serif mb-4 text-5xl">
+            <h1 className="font-serif mb-4 text-3xl lg:text-5xl">
               {player?.character.location === "Sea"
                 ? "Open Seas"
                 : `${player?.character.town}s ${player?.character.location}`}
             </h1>
 
             {player?.character.location !== "Sea" && (
-              <h2 className="font-serif mb-5 text-2xl flex gap-3 justify-center items-center">
-                <Flag nation={nation} className="opacity-[0.8]" />
+              <h2 className="font-serif mb-3 lg:mb-5 text-lg lg:text-2xl flex gap-3 justify-center items-center">
+                <Flag
+                  nation={nation}
+                  className="w-5 h-5 lg:w-7 lg:h-7 opacity-[0.8]"
+                />
                 {nation}
               </h2>
             )}
 
-            <p className="mb-5 text-sm">
+            <p className="lg:mb-5 text-sm">
               {LOCATION_DESCRIPTION[player?.character.location]}
             </p>
           </div>

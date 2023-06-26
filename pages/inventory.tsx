@@ -26,7 +26,7 @@ const Inventory = () => {
       <div className="flex flex-wrap gap-4">
         {rows.map(([item, possession]) => (
           <div
-            className="stat shadow-md hover:shadow-lg w-52 bg-gray-800 rounded-lg"
+            className="stat shadow-md hover:shadow-lg lg:w-52 bg-gray-800 rounded-lg"
             key={`inventory-${item}`}
           >
             <div className="stat-figure text-secondary">

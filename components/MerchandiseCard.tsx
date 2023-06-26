@@ -18,9 +18,9 @@ const MerchandiseCard = ({
   fullWidth,
 }: Props) => (
   <div
-    className={`card ${fullWidth ? "w-full" : "w-80"} bg-base-100 shadow-xl ${
-      disabled ? "opacity-50 cursor-not-allowed" : ""
-    }`}
+    className={`card ${
+      fullWidth ? "w-full" : "w-full lg:w-80"
+    } bg-base-100 shadow-xl ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
   >
     <figure className="gap-3 bg-gray-800 py-3 mb-2 px-6">
       {icon}

@@ -64,7 +64,7 @@ const BankAccount = () => {
   }
 
   return (
-    <div className="w-full flex gap-8">
+    <div className="w-full flex flex-col lg:flex-row lg:gap-8">
       <form
         className="w-full mt-4"
         onSubmit={accountHandleSubmit(handleDeposit)}

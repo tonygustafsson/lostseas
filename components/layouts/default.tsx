@@ -17,7 +17,7 @@ export default function DefaultLayout({
         <Menu />
 
         <main
-          className={`${almendra.variable} ${actor.variable} flex flex-col w-full py-8 px-2 lg:px-12 bg-base-200`}
+          className={`${almendra.variable} ${actor.variable} min-h-screen pb-32 flex flex-col w-full lg:py-8 px-2 lg:px-12 bg-base-200`}
         >
           {children}
         </main>
