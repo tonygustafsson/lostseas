@@ -58,4 +58,12 @@ export const MERCHANDISE: Record<
     unit: "barrels",
     description: "A great trading asset and can also make your crew happy.",
   },
+  cannons: {
+    buy: 300,
+    sell: 200,
+    singleUnit: "cannon",
+    unit: "cannons",
+    description:
+      "You need cannons to fight other ships. You need 2 crew members per cannon in order to make it functional.",
+  },
 }
