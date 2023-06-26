@@ -9,8 +9,6 @@ type Props = {
   item: keyof typeof TAVERN_ITEMS
 }
 
-// TODO: Make use of zod for validation, not sure how with buying and selling are two different actions
-
 const ShopItem = ({ player, item }: Props) => {
   const { buy } = useTavern()
 

@@ -14,8 +14,6 @@ type Props = {
   type: "Buy" | "Sell"
 }
 
-// TODO: Make use of zod for validation, not sure how with buying and selling are two different actions
-
 const ShopItem = ({ player, item, type }: Props) => {
   const { buy, sell } = useShop()
   const [quantity, setQuantity] = useState(1)
