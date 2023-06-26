@@ -1,12 +1,21 @@
+import { getCookie } from "cookies-next"
 import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { LOAN_LIMIT } from "@/constants/bank"
+import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import db from "@/firebase/db"
 
 const bankLoan = async (req: NextApiRequest, res: NextApiResponse) => {
+  const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })
+
+  if (!playerId) {
+    res.status(400).json({ error: "Unauthorized" })
+    return
+  }
+
   const dbRef = ref(db)
-  const { playerId, amount } = req.body
+  const { amount } = req.body
 
   if (amount < 1) {
     res.status(400).json({ error: "You cannot repay less than 1 doubloon." })

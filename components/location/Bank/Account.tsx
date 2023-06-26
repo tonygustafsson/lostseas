@@ -5,14 +5,12 @@ import { z } from "zod"
 import TextField from "@/components/ui/TextField"
 import { useBank } from "@/hooks/queries/useBank"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-import validationRules from "@/utils/validation"
 
 const BankAccount = () => {
   const { data: player } = useGetPlayer()
   const { deposit, withdraw } = useBank()
 
   const accountValidationSchema = z.object({
-    playerId: validationRules.playerId,
     amount: z
       .number()
       .min(1)
@@ -22,7 +20,6 @@ const BankAccount = () => {
   type AccountValidationSchema = z.infer<typeof accountValidationSchema>
 
   const withdrawalValidationSchema = z.object({
-    playerId: validationRules.playerId,
     amount: z
       .number()
       .min(1)
@@ -84,11 +81,6 @@ const BankAccount = () => {
         )}
 
         <TextField
-          type="hidden"
-          {...accountRegister("playerId", { value: player?.id || "" })}
-        />
-
-        <TextField
           label="Amount"
           type="number"
           {...accountRegister("amount", { valueAsNumber: true })}
@@ -113,11 +105,6 @@ const BankAccount = () => {
         </h2>
 
         <p>Take out your gold in order to spend it.</p>
-
-        <TextField
-          type="hidden"
-          {...withdrawalRegister("playerId", { value: player?.id || "" })}
-        />
 
         <TextField
           label="Amount"

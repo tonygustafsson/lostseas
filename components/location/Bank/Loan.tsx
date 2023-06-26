@@ -6,14 +6,12 @@ import TextField from "@/components/ui/TextField"
 import { LOAN_LIMIT } from "@/constants/bank"
 import { useBank } from "@/hooks/queries/useBank"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-import validationRules from "@/utils/validation"
 
 const BankLoan = () => {
   const { data: player } = useGetPlayer()
   const { loan, repay } = useBank()
 
   const loanValidationSchema = z.object({
-    playerId: validationRules.playerId,
     amount: z
       .number()
       .min(1)
@@ -23,7 +21,6 @@ const BankLoan = () => {
   type LoanValidationSchema = z.infer<typeof loanValidationSchema>
 
   const repayValidationSchema = z.object({
-    playerId: validationRules.playerId,
     amount: z
       .number()
       .min(1)
@@ -76,11 +73,6 @@ const BankLoan = () => {
           </p>
 
           <TextField
-            type="hidden"
-            {...loanRegister("playerId", { value: player?.id || "" })}
-          />
-
-          <TextField
             label="Amount"
             type="number"
             {...loanRegister("amount", { valueAsNumber: true })}
@@ -102,11 +94,6 @@ const BankLoan = () => {
           </h2>
 
           <p>Repay your loan to be able to take more loans down the road.</p>
-
-          <TextField
-            type="hidden"
-            {...repayRegister("playerId", { value: player?.id || "" })}
-          />
 
           <TextField
             label="Amount"
