@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app"
-import { getDatabase, ref } from "firebase/database"
+import { child, get, getDatabase, ref, set } from "firebase/database"
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -15,5 +15,16 @@ const app = initializeApp(firebaseConfig)
 const db = getDatabase(app)
 
 export const dbRef = ref(db)
+
+export const getCharacter = async (playerId: string) => {
+  const ref = await get(child(dbRef, `${playerId}/character`))
+  const character = ref.val() as Character
+
+  return character
+}
+
+export const saveCharacter = async (playerId: string, character: Character) => {
+  await set(ref(db, `${playerId}/character`), character).catch((error) => error)
+}
 
 export default db

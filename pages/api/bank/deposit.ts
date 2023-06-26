@@ -1,12 +1,11 @@
 import { getCookie } from "cookies-next"
-import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db, { dbRef } from "@/firebase/db"
+import { getCharacter, saveCharacter } from "@/firebase/db"
 
 const bankDeposit = async (req: NextApiRequest, res: NextApiResponse) => {
-  const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })
+  const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
 
   if (!playerId) {
     res.status(400).json({ error: "Unauthorized" })
@@ -20,34 +19,30 @@ const bankDeposit = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const existingCharacterRef = await get(child(dbRef, `${playerId}/character`))
-  const existingCharacter = existingCharacterRef.val()
+  const character = await getCharacter(playerId)
 
-  if (existingCharacter.loan) {
+  if (character.loan) {
     res
       .status(400)
       .json({ error: "You cannot add funds until your loan is fully repaid." })
     return
   }
 
-  if (existingCharacter.gold < amount) {
+  if (character.gold < amount) {
     res.status(400).json({ error: "Not enough gold" })
     return
   }
 
   const characterResult = {
-    ...existingCharacter,
-    gold: existingCharacter.gold - amount,
-    account: existingCharacter.account
-      ? existingCharacter.account + amount
-      : amount,
+    ...character,
+    gold: character.gold - amount,
+    account: character.account ? character.account + amount : amount,
   }
 
-  await set(ref(db, `${playerId}/character`), characterResult).catch(
-    (error) => {
-      res.status(500).json({ error, amount })
-    }
-  )
+  await saveCharacter(playerId, characterResult).catch((error) => {
+    res.status(500).json({ error, amount })
+    return
+  })
 
   res.status(200).json({
     success: true,
