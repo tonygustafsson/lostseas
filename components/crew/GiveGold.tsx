@@ -47,7 +47,7 @@ const GiveGold = () => {
   )
 
   const handleSubmit = () => {
-    giveGold({ playerId: player?.id || "", gold: quantity })
+    giveGold({ gold: quantity })
   }
 
   return (

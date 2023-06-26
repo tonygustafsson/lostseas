@@ -8,7 +8,7 @@ export const useCrew = () => {
   const queryClient = useQueryClient()
 
   const { mutate: giveMedicine, isLoading: isGivingMedicine } = useMutation(
-    (data: { playerId: Player["id"]; medicine: Inventory["medicine"] }) =>
+    (data: { medicine: Inventory["medicine"] }) =>
       apiRequest("/api/crew/giveMedicine", data, "POST"),
     {
       onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),
@@ -17,7 +17,7 @@ export const useCrew = () => {
   )
 
   const { mutate: giveGold, isLoading: isGivingGold } = useMutation(
-    (data: { playerId: Player["id"]; gold: Character["gold"] }) =>
+    (data: { gold: Character["gold"] }) =>
       apiRequest("/api/crew/giveGold", data, "POST"),
     {
       onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),

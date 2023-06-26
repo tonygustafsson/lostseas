@@ -48,7 +48,7 @@ const GiveMedicine = () => {
   )
 
   const handleSubmit = () => {
-    giveMedicine({ playerId: player?.id || "", medicine: quantity })
+    giveMedicine({ medicine: quantity })
   }
 
   return (
