@@ -3,6 +3,8 @@ import { GetServerSideProps } from "next"
 import DefaultLayout from "@/components/layouts/default"
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
+import RenameShipForm from "@/components/RenameShipForm"
+import { useModal } from "@/components/ui/Modal/context"
 import { SHIP_TYPES } from "@/constants/ship"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShips } from "@/hooks/queries/useShips"
@@ -11,9 +13,18 @@ import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSidePr
 
 const Ships = () => {
   const { data: player } = useGetPlayer()
-  const { remove, removingIsLoading } = useShips()
+  const { remove, isRemoving } = useShips()
+  const { setModal } = useModal()
 
-  const handleRemoveShip = async (id: string) => {
+  const openRenameModal = (id: Ship["id"], name: Ship["name"]) => {
+    setModal({
+      id: "renameship",
+      title: "Rename ship",
+      content: <RenameShipForm id={id} name={name} />,
+    })
+  }
+
+  const handleRemoveShip = async (id: Ship["id"]) => {
     if (!id) return
 
     remove({ shipId: id })
@@ -63,12 +74,17 @@ const Ships = () => {
                     <button
                       className="btn btn-secondary btn-xs"
                       onClick={() => handleRemoveShip(ship.id)}
-                      disabled={removingIsLoading}
+                      disabled={isRemoving}
                     >
                       Remove
                     </button>
 
-                    <button className="btn btn-secondary btn-xs">Rename</button>
+                    <button
+                      className="btn btn-secondary btn-xs"
+                      onClick={() => openRenameModal(ship.id, ship.name)}
+                    >
+                      Rename
+                    </button>
                   </div>
                 }
               />

@@ -10,6 +10,10 @@ const validationRules = {
     gender: z.enum(["Male", "Female"]),
     age: z.number().min(15).max(80),
   },
+  ship: {
+    id: z.string().uuid(),
+    name: z.string().min(2).max(30),
+  },
 }
 
 const registrationValidationSchema = z.object({
@@ -29,10 +33,16 @@ const changeCharacterValidationSchema = z.object({
   age: validationRules.character.age,
 })
 
+const renameShipValidationSchema = z.object({
+  id: validationRules.ship.id,
+  name: validationRules.ship.name,
+})
+
 export {
   changeCharacterValidationSchema,
   loginValidationSchema,
   registrationValidationSchema,
+  renameShipValidationSchema,
 }
 
 export default validationRules

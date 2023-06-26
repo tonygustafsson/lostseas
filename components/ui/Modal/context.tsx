@@ -6,7 +6,12 @@ import {
   useReducer,
 } from "react"
 
-export type ModalId = "move" | "travel" | "qrscanner" | "editcharacter"
+export type ModalId =
+  | "move"
+  | "travel"
+  | "qrscanner"
+  | "editcharacter"
+  | "renameship"
 
 export type ModalProps = {
   id: ModalId
@@ -194,7 +199,7 @@ export const useModal = () => {
 
   return context as State & {
     setModal: (modal: ModalProps) => void
-    removeModal: (id: string) => void
+    removeModal: (id: ModalId) => void
     removeAllModals: () => void
   }
 }

@@ -85,11 +85,7 @@ const Register = ({ randomCharacter }: Props) => {
         <button
           type="submit"
           className="btn btn-primary mt-4"
-          disabled={
-            (!isValid && isDirty) ||
-            registrationIsLoading ||
-            registrationIsLoading
-          }
+          disabled={(!isValid && isDirty) || registrationIsLoading}
         >
           Register
         </button>
