@@ -16,7 +16,7 @@ const Ships = () => {
   const handleRemoveShip = async (id: string) => {
     if (!id) return
 
-    remove({ shipId: id, playerId: player?.id || "" })
+    remove({ shipId: id })
   }
 
   if (!player) {

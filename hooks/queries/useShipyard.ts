@@ -11,7 +11,7 @@ export const useShipyard = () => {
   const { setToast } = useToast()
 
   const { mutate: buy, isLoading: isBuying } = useMutation(
-    (data: { playerId: Player["id"]; item: keyof typeof SHIP_TYPES }) =>
+    (data: { item: keyof typeof SHIP_TYPES }) =>
       apiRequest("/api/shipyard/buy", data, "POST"),
     {
       onSuccess: ({ error, item, totalPrice }) => {
@@ -38,7 +38,7 @@ export const useShipyard = () => {
   )
 
   const { mutate: sell, isLoading: isSelling } = useMutation(
-    (data: { playerId: Player["id"]; id: Ship["id"] }) =>
+    (data: { id: Ship["id"] }) =>
       apiRequest("/api/shipyard/sell", data, "POST"),
     {
       onSuccess: ({ error, ship, totalPrice }) => {
@@ -65,7 +65,7 @@ export const useShipyard = () => {
   )
 
   const { mutate: repair, isLoading: isRepairing } = useMutation(
-    (data: { playerId: Player["id"]; id: Ship["id"] }) =>
+    (data: { id: Ship["id"] }) =>
       apiRequest("/api/shipyard/repair", data, "POST"),
     {
       onSuccess: ({ error, ship, totalPrice }) => {

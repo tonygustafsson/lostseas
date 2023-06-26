@@ -1,12 +1,21 @@
+import { getCookie } from "cookies-next"
 import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
+import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import db from "@/firebase/db"
 import { getBet, getDiceReturns, getRandomDiceResults } from "@/utils/dice"
 
 const tavernDice = async (req: NextApiRequest, res: NextApiResponse) => {
+  const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
+
+  if (!playerId) {
+    res.status(400).json({ error: "Unauthorized" })
+    return
+  }
+
   const dbRef = ref(db)
-  const { playerId, betPercentage } = req.body
+  const { betPercentage } = req.body
 
   const characterRef = await get(child(dbRef, `${playerId}/character`))
   const character = characterRef.val() as Character

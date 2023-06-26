@@ -1,13 +1,22 @@
+import { getCookie } from "cookies-next"
 import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { SHIP_TYPES } from "@/constants/ship"
+import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import db from "@/firebase/db"
 import createNewShip from "@/utils/createNewShip"
 
 const shipyardBuy = async (req: NextApiRequest, res: NextApiResponse) => {
+  const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
+
+  if (!playerId) {
+    res.status(400).json({ error: "Unauthorized" })
+    return
+  }
+
   const dbRef = ref(db)
-  const { playerId, item } = req.body
+  const { item } = req.body
 
   if (!item || !Object.keys(SHIP_TYPES).includes(item || "")) {
     res.status(400).json({ error: "Not a valid item" })

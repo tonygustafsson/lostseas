@@ -1,12 +1,21 @@
+import { getCookie } from "cookies-next"
 import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { MERCHANDISE } from "@/constants/merchandise"
+import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import db from "@/firebase/db"
 
 const shopSell = async (req: NextApiRequest, res: NextApiResponse) => {
+  const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
+
+  if (!playerId) {
+    res.status(400).json({ error: "Unauthorized" })
+    return
+  }
+
   const dbRef = ref(db)
-  const { playerId, item, quantity } = req.body
+  const { item, quantity } = req.body
 
   if (!item || !Object.keys(MERCHANDISE).includes(item || "")) {
     res.status(400).json({ error: "Not a valid item", item })

@@ -11,7 +11,7 @@ export const useTavern = () => {
   const { setToast } = useToast()
 
   const { mutate: buy, isLoading: isBuying } = useMutation(
-    (data: { playerId: Player["id"]; item: keyof typeof TAVERN_ITEMS }) =>
+    (data: { item: keyof typeof TAVERN_ITEMS }) =>
       apiRequest("/api/tavern/buy", data, "POST"),
     {
       onSuccess: ({ error, newMood, newHealth, item, totalPrice }) => {
@@ -39,8 +39,7 @@ export const useTavern = () => {
 
   const { mutate: acceptNewCrewMembers, isLoading: isAcceptingNewCrewMembers } =
     useMutation(
-      (data: { playerId: Player["id"] }) =>
-        apiRequest("/api/tavern/acceptNewCrewMembers", data, "POST"),
+      () => apiRequest("/api/tavern/acceptNewCrewMembers", null, "POST"),
       {
         onSuccess: ({ error, numberOfSailors }) => {
           if (error) {
@@ -66,8 +65,7 @@ export const useTavern = () => {
     )
 
   const { mutate: fightSailors, isLoading: isFightingSailors } = useMutation(
-    (data: { playerId: Player["id"] }) =>
-      apiRequest("/api/tavern/fightSailors", data, "POST"),
+    () => apiRequest("/api/tavern/fightSailors", null, "POST"),
     {
       onSuccess: ({ error, numberOfSailors, success, loot, healthLoss }) => {
         if (error) {
@@ -101,8 +99,7 @@ export const useTavern = () => {
   )
 
   const { mutate: ignoreSailors, isLoading: isIgnoringSailors } = useMutation(
-    (data: { playerId: Player["id"] }) =>
-      apiRequest("/api/tavern/ignoreSailors", data, "POST"),
+    () => apiRequest("/api/tavern/ignoreSailors", null, "POST"),
     {
       onSuccess: ({ error, numberOfSailors }) => {
         if (error) {
@@ -128,7 +125,7 @@ export const useTavern = () => {
   )
 
   const { mutate: playDice, isLoading: isPlayingDice } = useMutation(
-    (data: { playerId: Player["id"]; betPercentage: number }) =>
+    (data: { betPercentage: number }) =>
       apiRequest("/api/tavern/dice", data, "POST"),
     {
       onSuccess: ({ error, bet, gold, diceResults }) => {

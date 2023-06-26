@@ -13,7 +13,7 @@ export const useGetPlayer = () =>
     [PLAYER_QUERY_KEY],
     async () => {
       try {
-        const res = await fetch(`/api/user/get/${playerId}`)
+        const res = await fetch("/api/user/get")
 
         if (res.status !== 200) {
           deleteCookie(PLAYER_ID_COOKIE_NAME)

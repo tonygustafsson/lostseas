@@ -29,7 +29,7 @@ const TavernDice = () => {
   const disabled = bet > (player?.character.gold || 0)
 
   const handlePlayDice = () => {
-    playDice({ playerId: player?.id || "", betPercentage })
+    playDice({ betPercentage })
   }
 
   return (

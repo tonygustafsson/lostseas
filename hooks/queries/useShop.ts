@@ -11,11 +11,8 @@ export const useShop = () => {
   const { setToast } = useToast()
 
   const { mutate: buy, isLoading: isBuying } = useMutation(
-    (data: {
-      playerId: Player["id"]
-      item: keyof Inventory
-      quantity: number
-    }) => apiRequest("/api/shop/buy", data, "POST"),
+    (data: { item: keyof Inventory; quantity: number }) =>
+      apiRequest("/api/shop/buy", data, "POST"),
     {
       onSuccess: ({ error, quantity, item, totalPrice, totalQuantity }) => {
         if (error) {
@@ -46,11 +43,8 @@ export const useShop = () => {
   )
 
   const { mutate: sell, isLoading: isSelling } = useMutation(
-    (data: {
-      playerId: Player["id"]
-      item: keyof Inventory
-      quantity: number
-    }) => apiRequest("/api/shop/sell", data, "POST"),
+    (data: { item: keyof Inventory; quantity: number }) =>
+      apiRequest("/api/shop/sell", data, "POST"),
     {
       onSuccess: ({ error, quantity, item, totalPrice, totalQuantity }) => {
         if (error) {

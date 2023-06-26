@@ -9,7 +9,7 @@ const ShipyardRepair = () => {
   const { repair } = useShipyard()
 
   const handleRepair = (id: Ship["id"]) => {
-    repair({ playerId: player?.id || "", id })
+    repair({ id })
   }
 
   return (

@@ -9,7 +9,7 @@ const ShipyardSell = () => {
   const { sell } = useShipyard()
 
   const handleSell = (id: Ship["id"]) => {
-    sell({ playerId: player?.id || "", id })
+    sell({ id })
   }
 
   return (

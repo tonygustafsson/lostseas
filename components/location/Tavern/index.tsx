@@ -18,15 +18,15 @@ const Tavern = () => {
   const [tab, setTab] = useState<TavernTab>("buy")
 
   const handleAcceptNewCrewMembers = () => {
-    acceptNewCrewMembers({ playerId: player?.id || "" })
+    acceptNewCrewMembers()
   }
 
   const handleFightSailors = () => {
-    fightSailors({ playerId: player?.id || "" })
+    fightSailors()
   }
 
   const handleIgnoreSailors = () => {
-    ignoreSailors({ playerId: player?.id || "" })
+    ignoreSailors()
   }
 
   return (

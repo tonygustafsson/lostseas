@@ -17,10 +17,7 @@ const ShopItem = ({ player, item }: Props) => {
   const buyingDisabled = price > (player?.character.gold || Infinity)
 
   const handlePurchase = () => {
-    buy({
-      playerId: player?.id || "",
-      item,
-    })
+    buy({ item })
   }
 
   return (
