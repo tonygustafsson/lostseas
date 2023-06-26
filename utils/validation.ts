@@ -24,7 +24,6 @@ const loginValidationSchema = z.object({
 })
 
 const changeCharacterValidationSchema = z.object({
-  playerId: validationRules.playerId,
   name: validationRules.character.name,
   gender: validationRules.character.gender,
   age: validationRules.character.age,

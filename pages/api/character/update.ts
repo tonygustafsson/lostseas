@@ -1,6 +1,8 @@
+import { getCookie } from "cookies-next"
 import { child, get, ref, update } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
+import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import db from "@/firebase/db"
 import { changeCharacterValidationSchema } from "@/utils/validation"
 
@@ -12,8 +14,15 @@ const updateCharacter = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
+  const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })
+
+  if (!playerId) {
+    res.status(400).json({ error: "Unauthorized" })
+    return
+  }
+
   const dbRef = ref(db)
-  const { playerId, name, gender, age } = req.body
+  const { name, gender, age } = req.body
 
   const existingCharacter = await get(child(dbRef, `${playerId}/character`))
   const characterUpdate = {

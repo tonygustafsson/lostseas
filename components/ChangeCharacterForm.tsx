@@ -36,11 +36,6 @@ const ChangeCharacterForm = () => {
       className="w-full flex flex-col gap-4"
     >
       <TextField
-        type="hidden"
-        {...register("playerId", { value: player?.id || "" })}
-      />
-
-      <TextField
         label="Name"
         {...register("name", { value: player?.character.name || "" })}
         error={errors.name?.message}

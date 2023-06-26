@@ -1,8 +1,8 @@
+import { Fragment } from "react"
 import { renderToString } from "react-dom/server"
 
 import Flag from "@/components/icons/Flag"
 import { useCharacter } from "@/hooks/queries/useCharacter"
-import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 const mapWidth = 850
 const mapHeight = 540
@@ -102,10 +102,9 @@ const towns: TownLocations = {
 
 const Sea = () => {
   const { travel } = useCharacter()
-  const { data: player } = useGetPlayer()
 
   const handleTravel = (town: Town) => {
-    travel({ playerId: player?.id || "", town })
+    travel({ town })
   }
 
   const onMouseOverTown = (e: React.MouseEvent<SVGImageElement>) => {
@@ -155,7 +154,7 @@ const Sea = () => {
         >
           <defs>
             <filter x="0" y="0" width="1" height="1" id="solid">
-              <feFlood flood-color="black" result="bg" />
+              <feFlood floodColor="black" result="bg" />
               <feMerge>
                 <feMergeNode in="bg" />
                 <feMergeNode in="SourceGraphic" />
@@ -171,7 +170,7 @@ const Sea = () => {
 
           {Object.entries(towns).map(
             ([town, { x, y, textAlign = "bottom" }]) => (
-              <>
+              <Fragment key={`sea-map-${town}`}>
                 <image
                   key={`sea-map-town-${town}`}
                   width="20"
@@ -199,7 +198,7 @@ const Sea = () => {
                 >
                   {town}
                 </text>
-              </>
+              </Fragment>
             )
           )}
         </svg>

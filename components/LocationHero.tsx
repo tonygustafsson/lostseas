@@ -26,12 +26,10 @@ const LocationHero = () => {
     player?.character.location === "Harbor"
 
   const handleMove = (location: SeaLocation | TownLocation) => {
-    move({ playerId: player?.id || "", location })
+    move({ location })
   }
 
-  const handleExplore = () => {
-    explore({ playerId: player?.id || "" })
-  }
+  const handleExplore = () => explore()
 
   const TownMoveMap = {
     Shop: {
