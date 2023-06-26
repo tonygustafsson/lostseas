@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { MERCHANDISE } from "@/constants/merchandise"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db from "@/firebase/db"
+import db, { dbRef } from "@/firebase/db"
 
 const shopSell = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
@@ -14,7 +14,6 @@ const shopSell = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const dbRef = ref(db)
   const { item, quantity } = req.body
 
   if (!item || !Object.keys(MERCHANDISE).includes(item || "")) {

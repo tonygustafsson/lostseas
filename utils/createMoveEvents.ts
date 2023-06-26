@@ -2,7 +2,7 @@ import { child, get, ref, set } from "firebase/database"
 
 import { MARKET_AVAILABLE_ITEMS } from "@/constants/market"
 import { MERCHANDISE } from "@/constants/merchandise"
-import db from "@/firebase/db"
+import db, { dbRef } from "@/firebase/db"
 
 import { getRandomInt } from "./random"
 
@@ -13,8 +13,6 @@ type Props = {
 
 export const createMoveEvents = async ({ playerId, destination }: Props) => {
   if (destination === "Market") {
-    const dbRef = ref(db)
-
     const existingEvent = await get(
       child(dbRef, `${playerId}/locationStates/market`)
     )
@@ -52,8 +50,6 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
   }
 
   if (destination === "Tavern") {
-    const dbRef = ref(db)
-
     const existingEvent = await get(
       child(dbRef, `${playerId}/locationStates/tavern`)
     )

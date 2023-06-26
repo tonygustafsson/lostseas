@@ -4,7 +4,7 @@ import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db from "@/firebase/db"
+import db, { dbRef } from "@/firebase/db"
 
 const tavernFightSailors = async (
   req: NextApiRequest,
@@ -16,8 +16,6 @@ const tavernFightSailors = async (
     res.status(400).json({ error: "Unauthorized" })
     return
   }
-
-  const dbRef = ref(db)
 
   const playerRef = await get(child(dbRef, playerId))
   const player = playerRef.val() as Player

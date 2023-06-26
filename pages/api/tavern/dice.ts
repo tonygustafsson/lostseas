@@ -3,7 +3,7 @@ import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db from "@/firebase/db"
+import db, { dbRef } from "@/firebase/db"
 import { getBet, getDiceReturns, getRandomDiceResults } from "@/utils/dice"
 
 const tavernDice = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -14,7 +14,6 @@ const tavernDice = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const dbRef = ref(db)
   const { betPercentage } = req.body
 
   const characterRef = await get(child(dbRef, `${playerId}/character`))

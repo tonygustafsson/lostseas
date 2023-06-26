@@ -1,6 +1,6 @@
-import { child, get, ref } from "firebase/database"
+import { child, get } from "firebase/database"
 
-import db from "@/firebase/db"
+import { dbRef } from "@/firebase/db"
 
 import { sortShipsByDate } from "../sort"
 
@@ -9,7 +9,6 @@ export const getPlayer = async (playerId: Player["id"] | undefined) => {
     return null
   }
 
-  const dbRef = ref(db)
   const data = await get(child(dbRef, playerId))
 
   if (!data.exists()) {

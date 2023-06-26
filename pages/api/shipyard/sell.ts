@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { SHIP_TYPES } from "@/constants/ship"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db from "@/firebase/db"
+import db, { dbRef } from "@/firebase/db"
 
 const shipyardSell = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
@@ -13,8 +13,6 @@ const shipyardSell = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).json({ error: "Unauthorized" })
     return
   }
-
-  const dbRef = ref(db)
 
   const { id }: { id: Ship["id"] } = req.body
 

@@ -3,7 +3,7 @@ import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db from "@/firebase/db"
+import db, { dbRef } from "@/firebase/db"
 import { createMoveEvents } from "@/utils/createMoveEvents"
 import { validateHarbor } from "@/utils/validateHarbor"
 
@@ -15,7 +15,6 @@ const move = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const dbRef = ref(db)
   const destination = req.body.location as Character["location"]
 
   let destinationOverride: Character["location"] | undefined

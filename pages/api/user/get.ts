@@ -19,6 +19,7 @@ const getUser = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
+  res.setHeader("Cache-Control", "no-cache")
   res.status(200).json(player)
 }
 

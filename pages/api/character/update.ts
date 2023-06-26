@@ -3,7 +3,7 @@ import { child, get, ref, update } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db from "@/firebase/db"
+import db, { dbRef } from "@/firebase/db"
 import { changeCharacterValidationSchema } from "@/utils/validation"
 
 const updateCharacter = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -21,7 +21,6 @@ const updateCharacter = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const dbRef = ref(db)
   const { name, gender, age } = req.body
 
   const existingCharacter = await get(child(dbRef, `${playerId}/character`))

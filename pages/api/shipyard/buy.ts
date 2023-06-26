@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { SHIP_TYPES } from "@/constants/ship"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db from "@/firebase/db"
+import db, { dbRef } from "@/firebase/db"
 import createNewShip from "@/utils/createNewShip"
 
 const shipyardBuy = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -15,7 +15,6 @@ const shipyardBuy = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const dbRef = ref(db)
   const { item } = req.body
 
   if (!item || !Object.keys(SHIP_TYPES).includes(item || "")) {
