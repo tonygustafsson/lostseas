@@ -20,11 +20,6 @@ export const getLoggedInServerSideProps: GetServerSideProps = async (
   if (playerId) {
     await queryClient.prefetchQuery([PLAYER_QUERY_KEY], async () => {
       const player = await getPlayer(playerId)
-
-      if (!player) {
-        return null
-      }
-
       return player
     })
   }

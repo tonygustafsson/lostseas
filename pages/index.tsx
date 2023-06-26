@@ -35,6 +35,6 @@ const Home = () => {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) =>
-  getLoggedInServerSideProps(context)
+  await getLoggedInServerSideProps(context)
 
 export default Home

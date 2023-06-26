@@ -21,7 +21,7 @@ const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
         defaultOptions: {
           queries: {
             refetchOnWindowFocus: false,
-            retry: false,
+            retry: true,
             staleTime: 60000,
           },
         },
