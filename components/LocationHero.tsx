@@ -52,6 +52,20 @@ const LocationHero = () => {
     },
   }
 
+  const getBackgroundImage = (
+    town: Character["town"],
+    location: Character["location"]
+  ) => {
+    if (location === "Shop") {
+      const nation = getTownsNationality(town)
+      return `url("img/place/${location.toLowerCase()}/${nation?.toLowerCase()}.webp")`
+    }
+
+    return `url("img/place/${player?.character.location
+      .replace(" ", "-")
+      .toLowerCase()}.webp")`
+  }
+
   if (!player) return null
 
   return (
@@ -59,9 +73,10 @@ const LocationHero = () => {
       <div
         className="hero rounded-lg rounded-b-none"
         style={{
-          backgroundImage: `url("img/place/${player?.character.location
-            .replace(" ", "-")
-            .toLowerCase()}.webp")`,
+          backgroundImage: getBackgroundImage(
+            player?.character.town,
+            player?.character.location
+          ),
         }}
       >
         <div className="hero-overlay bg-opacity-20"></div>
