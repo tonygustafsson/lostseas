@@ -1,10 +1,10 @@
 import { getCookie } from "cookies-next"
 import { randomInt } from "crypto"
-import { child, get, ref, set } from "firebase/database"
+import { ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db, { dbRef } from "@/firebase/db"
+import db, { getPlayer, savePlayer } from "@/firebase/db"
 
 const tavernFightSailors = async (
   req: NextApiRequest,
@@ -17,8 +17,7 @@ const tavernFightSailors = async (
     return
   }
 
-  const playerRef = await get(child(dbRef, playerId))
-  const player = playerRef.val() as Player
+  const player = await getPlayer(playerId)
 
   const numberOfSailors = player?.locationStates?.tavern?.noOfSailors || 0
 
@@ -33,7 +32,7 @@ const tavernFightSailors = async (
     const loot = Math.round(randomInt(10, 100))
     const healthLoss = Math.round(randomInt(1, 10))
 
-    const result = {
+    const playerResult = {
       ...player,
       character: {
         ...player.character,
@@ -55,7 +54,7 @@ const tavernFightSailors = async (
       },
     } as Player
 
-    await set(ref(db, playerId), result).catch((error) => {
+    await savePlayer(playerId, playerResult).catch((error) => {
       res.status(500).json({ error, numberOfSailors, loot, healthLoss })
     })
 

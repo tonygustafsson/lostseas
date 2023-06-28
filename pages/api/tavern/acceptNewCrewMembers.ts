@@ -1,9 +1,8 @@
 import { getCookie } from "cookies-next"
-import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db, { dbRef } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
 
 const tavernAcceptNewCrewMembers = async (
   req: NextApiRequest,
@@ -16,8 +15,7 @@ const tavernAcceptNewCrewMembers = async (
     return
   }
 
-  const playerRef = await get(child(dbRef, playerId))
-  const player = playerRef.val() as Player
+  const player = await getPlayer(playerId)
 
   const numberOfSailors = player?.locationStates?.tavern?.noOfSailors || 0
   const isHostile = player?.locationStates?.tavern?.isHostile || false
@@ -27,7 +25,7 @@ const tavernAcceptNewCrewMembers = async (
     return
   }
 
-  const result = {
+  const playerResult = {
     ...player,
     crewMembers: {
       ...player.crewMembers,
@@ -42,7 +40,7 @@ const tavernAcceptNewCrewMembers = async (
     },
   } as Player
 
-  await set(ref(db, playerId), result).catch((error) => {
+  await savePlayer(playerId, playerResult).catch((error) => {
     res.status(500).json({ error, numberOfSailors, isHostile })
   })
 

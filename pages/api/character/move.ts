@@ -1,9 +1,8 @@
 import { getCookie } from "cookies-next"
-import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db, { dbRef } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
 import { createMoveEvents } from "@/utils/createMoveEvents"
 import { validateHarbor } from "@/utils/validateHarbor"
 
@@ -20,8 +19,7 @@ const move = async (req: NextApiRequest, res: NextApiResponse) => {
   let destinationOverride: Character["location"] | undefined
   let locationState: LocationState | undefined
 
-  const playerRef = await get(child(dbRef, playerId))
-  const player = playerRef.val() as Player
+  const player = await getPlayer(playerId)
 
   const currentLocation = player.character.location as
     | SeaLocation
@@ -67,7 +65,7 @@ const move = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
 
-  const result: Player = {
+  const playerResult: Player = {
     ...player,
     character: {
       ...player.character,
@@ -79,7 +77,7 @@ const move = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   }
 
-  await set(ref(db, playerId), result).catch((error) => {
+  await savePlayer(playerId, playerResult).catch((error) => {
     res.status(500).json({ error })
   })
 

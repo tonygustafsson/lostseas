@@ -1,10 +1,9 @@
 import { getCookie } from "cookies-next"
-import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { TAVERN_ITEMS } from "@/constants/tavern"
-import db, { dbRef } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
 
 const tavernBuy = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
@@ -21,8 +20,7 @@ const tavernBuy = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const playerRef = await get(child(dbRef, playerId))
-  const player = playerRef.val() as Player
+  const player = await getPlayer(playerId)
 
   const tavernItem = item as keyof typeof TAVERN_ITEMS
   const totalPrice = TAVERN_ITEMS[tavernItem].price * player.crewMembers.count
@@ -43,7 +41,7 @@ const tavernBuy = async (req: NextApiRequest, res: NextApiResponse) => {
       ? 100
       : player.crewMembers.health + healthIncrease
 
-  const result = {
+  const playerResult = {
     ...player,
     character: {
       ...player.character,
@@ -56,7 +54,7 @@ const tavernBuy = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   } as Player
 
-  await set(ref(db, playerId), result).catch((error) => {
+  await savePlayer(playerId, playerResult).catch((error) => {
     res.status(500).json({ error, item })
   })
 

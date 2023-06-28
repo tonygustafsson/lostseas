@@ -1,9 +1,8 @@
 import { getCookie } from "cookies-next"
-import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db, { dbRef } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
 import { getGoldEffectiveness } from "@/utils/crew"
 
 const giveGold = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -16,38 +15,37 @@ const giveGold = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const gold = parseInt(req.body.gold)
 
-  const existingPlayerRef = await get(child(dbRef, playerId))
-  const existingPlayer = existingPlayerRef.val() as Player
+  const player = await getPlayer(playerId)
 
   if (gold < 1) {
     res.status(500).json({ error: "You need to give at least 1 doubloon" })
     return
   }
 
-  if ((existingPlayer.character.gold || 0) < gold) {
+  if ((player.character.gold || 0) < gold) {
     res.status(500).json({ error: "Not enough gold" })
     return
   }
 
   const newMood = getGoldEffectiveness(
-    existingPlayer.crewMembers.count,
-    existingPlayer.crewMembers.mood,
+    player.crewMembers.count,
+    player.crewMembers.mood,
     gold
   )
 
-  const result: Player = {
-    ...existingPlayer,
+  const playerResult: Player = {
+    ...player,
     character: {
-      ...existingPlayer.character,
-      gold: (existingPlayer.character.gold || 0) - gold,
+      ...player.character,
+      gold: (player.character.gold || 0) - gold,
     },
     crewMembers: {
-      ...existingPlayer.crewMembers,
+      ...player.crewMembers,
       mood: newMood,
     },
   }
 
-  await set(ref(db, playerId), result).catch((error) => {
+  await savePlayer(playerId, playerResult).catch((error) => {
     res.status(500).json({ error, gold, newMood })
   })
 

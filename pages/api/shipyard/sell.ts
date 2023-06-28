@@ -1,10 +1,10 @@
 import { getCookie } from "cookies-next"
-import { child, get, ref, remove, set } from "firebase/database"
+import { ref, remove } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { SHIP_TYPES } from "@/constants/ship"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db, { dbRef } from "@/firebase/db"
+import db, { getPlayer, savePlayer } from "@/firebase/db"
 
 const shipyardSell = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
@@ -16,8 +16,7 @@ const shipyardSell = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const { id }: { id: Ship["id"] } = req.body
 
-  const playerRef = await get(child(dbRef, playerId))
-  const player = playerRef.val() as Player
+  const player = await getPlayer(playerId)
 
   const ship = (player.ships || {})[id]
 
@@ -29,7 +28,7 @@ const shipyardSell = async (req: NextApiRequest, res: NextApiResponse) => {
   const shipInfo = SHIP_TYPES[ship.type as keyof typeof SHIP_TYPES]
   const totalPrice = shipInfo.sell
 
-  const result: Player = {
+  const playerResult: Player = {
     ...player,
     character: {
       ...player.character,
@@ -37,7 +36,7 @@ const shipyardSell = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   }
 
-  await set(ref(db, playerId), result).catch((error) => {
+  await savePlayer(playerId, playerResult).catch((error) => {
     res.status(500).json({ error, ship })
   })
 

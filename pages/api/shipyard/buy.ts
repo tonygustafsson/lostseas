@@ -1,10 +1,9 @@
 import { getCookie } from "cookies-next"
-import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { SHIP_TYPES } from "@/constants/ship"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db, { dbRef } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
 import createNewShip from "@/utils/createNewShip"
 
 const shipyardBuy = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -27,8 +26,7 @@ const shipyardBuy = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const totalPrice = ship.buy
 
-  const playerRef = await get(child(dbRef, playerId))
-  const player = playerRef.val()
+  const player = await getPlayer(playerId)
 
   if (player.character.gold < totalPrice) {
     res.status(400).json({ error: "Not enough gold", item })
@@ -37,7 +35,7 @@ const shipyardBuy = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const newShip = createNewShip(shipItem as Ship["type"], player.character.week)
 
-  const result: Player = {
+  const playerResult: Player = {
     ...player,
     character: {
       ...player.character,
@@ -49,7 +47,7 @@ const shipyardBuy = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   }
 
-  await set(ref(db, playerId), result).catch((error) => {
+  await savePlayer(playerId, playerResult).catch((error) => {
     res.status(500).json({ error, item })
   })
 
