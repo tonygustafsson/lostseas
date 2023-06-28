@@ -1,10 +1,9 @@
 import { getCookie } from "cookies-next"
-import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { MERCHANDISE } from "@/constants/merchandise"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db, { dbRef, getCharacter, saveCharacter } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
 
 const shopSell = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
@@ -24,33 +23,27 @@ const shopSell = async (req: NextApiRequest, res: NextApiResponse) => {
   const totalPrice =
     MERCHANDISE[item as keyof typeof MERCHANDISE].sell * quantity
 
-  const existingInventoryRef = await get(child(dbRef, `${playerId}/inventory`))
-  const existingInventory = existingInventoryRef.val()
+  const player = await getPlayer(playerId)
+  const itemQuantity = player.inventory[item as keyof Inventory] || 0
 
-  if (existingInventory[item] < quantity) {
+  if (itemQuantity < quantity) {
     res.status(400).json({ error: `Not enough ${item}.`, item })
     return
   }
 
-  const inventoryResult = {
-    ...existingInventory,
-    [item]: existingInventory[item] - quantity,
-  }
+  const playerResult = {
+    ...player,
+    inventory: {
+      ...player.inventory,
+      [item]: itemQuantity - quantity,
+    },
+    character: {
+      ...player.character,
+      gold: player.character.gold + totalPrice,
+    },
+  } as Player
 
-  await set(ref(db, `${playerId}/inventory`), inventoryResult).catch(
-    (error) => {
-      res.status(500).json({ error })
-    }
-  )
-
-  const character = await getCharacter(playerId)
-
-  const characterResult = {
-    ...character,
-    gold: character.gold + totalPrice,
-  }
-
-  await saveCharacter(playerId, characterResult).catch((error) => {
+  await savePlayer(playerId, playerResult).catch((error) => {
     res.status(500).json({ error, item })
     return
   })
@@ -59,7 +52,7 @@ const shopSell = async (req: NextApiRequest, res: NextApiResponse) => {
     success: true,
     item,
     quantity,
-    totalQuantity: inventoryResult[item],
+    totalQuantity: itemQuantity - quantity,
     totalPrice,
   })
 }

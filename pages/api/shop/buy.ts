@@ -1,10 +1,9 @@
 import { getCookie } from "cookies-next"
-import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { MERCHANDISE } from "@/constants/merchandise"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db, { dbRef, getCharacter, saveCharacter } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
 
 const shopBuy = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
@@ -24,44 +23,37 @@ const shopBuy = async (req: NextApiRequest, res: NextApiResponse) => {
   const totalPrice =
     MERCHANDISE[item as keyof typeof MERCHANDISE].buy * quantity
 
-  const character = await getCharacter(playerId)
+  const player = await getPlayer(playerId)
 
-  if (character.gold < totalPrice) {
+  if (player.character.gold < totalPrice) {
     res.status(400).json({ error: "Not enough gold" })
     return
   }
 
-  const characterResult = {
-    ...character,
-    gold: character.gold - totalPrice,
-  }
+  const itemQuantity = player.inventory[item as keyof Inventory]
 
-  await saveCharacter(playerId, characterResult).catch((error) => {
+  const playerResult = {
+    ...player,
+    character: {
+      ...player.character,
+      gold: player.character.gold - totalPrice,
+    },
+    inventory: {
+      ...player.inventory,
+      [item]: itemQuantity ? itemQuantity + quantity : quantity,
+    },
+  } as Player
+
+  await savePlayer(playerId, playerResult).catch((error) => {
     res.status(500).json({ error, item })
     return
   })
-
-  const existingInventoryRef = await get(child(dbRef, `${playerId}/inventory`))
-  const existingInventory = existingInventoryRef.val()
-
-  const inventoryResult = {
-    ...existingInventory,
-    [item]: existingInventory[item]
-      ? existingInventory[item] + quantity
-      : quantity,
-  }
-
-  await set(ref(db, `${playerId}/inventory`), inventoryResult).catch(
-    (error) => {
-      res.status(500).json({ error, item })
-    }
-  )
 
   res.status(200).json({
     success: true,
     item,
     quantity,
-    totalQuantity: inventoryResult[item],
+    totalQuantity: itemQuantity ? itemQuantity + quantity : quantity,
     totalPrice,
   })
 }

@@ -1,10 +1,9 @@
 import { getCookie } from "cookies-next"
-import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { SHIP_REPAIR_COST } from "@/constants/ship"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db, { dbRef } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
 
 const shipyardRepair = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
@@ -16,8 +15,7 @@ const shipyardRepair = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const { id }: { id: Ship["id"] } = req.body
 
-  const playerRef = await get(child(dbRef, playerId))
-  const player = playerRef.val() as Player
+  const player = await getPlayer(playerId)
 
   const ship = (player.ships || {})[id]
 
@@ -33,7 +31,7 @@ const shipyardRepair = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const result: Player = {
+  const playerResult: Player = {
     ...player,
     character: {
       ...player.character,
@@ -48,7 +46,7 @@ const shipyardRepair = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   }
 
-  await set(ref(db, playerId), result).catch((error) => {
+  await savePlayer(playerId, playerResult).catch((error) => {
     res.status(500).json({ error, ship, totalPrice })
   })
 

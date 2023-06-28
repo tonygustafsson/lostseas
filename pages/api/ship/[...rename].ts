@@ -43,8 +43,6 @@ const renameShip = async (req: NextApiRequest, res: NextApiResponse) => {
     name,
   }
 
-  console.log({ ship, result })
-
   await set(ref(db, `${playerId}/ships/${shipId}`), result).catch((error) => {
     res.status(500).json({ error, ship, name })
   })
