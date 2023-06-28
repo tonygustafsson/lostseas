@@ -19,10 +19,6 @@ export const dbRef = ref(db)
 export const getPlayer = async (playerId: string) => {
   const ref = await get(child(dbRef, playerId))
 
-  if (!ref.exists()) {
-    return null
-  }
-
   const player = ref.val() as Player
 
   return player
@@ -34,10 +30,6 @@ export const savePlayer = async (playerId: string, player: Player) => {
 
 export const getCharacter = async (playerId: string) => {
   const ref = await get(child(dbRef, `${playerId}/character`))
-
-  if (!ref.exists()) {
-    return null
-  }
 
   const character = ref.val() as Character
 
