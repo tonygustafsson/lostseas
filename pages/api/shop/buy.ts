@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { MERCHANDISE } from "@/constants/merchandise"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db, { dbRef } from "@/firebase/db"
+import db, { dbRef, getCharacter, saveCharacter } from "@/firebase/db"
 
 const shopBuy = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
@@ -24,24 +24,22 @@ const shopBuy = async (req: NextApiRequest, res: NextApiResponse) => {
   const totalPrice =
     MERCHANDISE[item as keyof typeof MERCHANDISE].buy * quantity
 
-  const existingCharacterRef = await get(child(dbRef, `${playerId}/character`))
-  const existingCharacter = existingCharacterRef.val()
+  const character = await getCharacter(playerId)
 
-  if (existingCharacter.gold < totalPrice) {
+  if (character.gold < totalPrice) {
     res.status(400).json({ error: "Not enough gold" })
     return
   }
 
   const characterResult = {
-    ...existingCharacter,
-    gold: existingCharacter.gold - totalPrice,
+    ...character,
+    gold: character.gold - totalPrice,
   }
 
-  await set(ref(db, `${playerId}/character`), characterResult).catch(
-    (error) => {
-      res.status(500).json({ error, item })
-    }
-  )
+  await saveCharacter(playerId, characterResult).catch((error) => {
+    res.status(500).json({ error, item })
+    return
+  })
 
   const existingInventoryRef = await get(child(dbRef, `${playerId}/inventory`))
   const existingInventory = existingInventoryRef.val()

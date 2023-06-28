@@ -1,12 +1,11 @@
 import { getCookie } from "cookies-next"
-import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db, { dbRef } from "@/firebase/db"
+import { getCharacter, saveCharacter } from "@/firebase/db"
 
 const travel = async (req: NextApiRequest, res: NextApiResponse) => {
-  const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })
+  const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
 
   if (!playerId) {
     res.status(400).json({ error: "Unauthorized" })
@@ -16,8 +15,7 @@ const travel = async (req: NextApiRequest, res: NextApiResponse) => {
   const town: Town = req.body.town
   const location: SeaLocation = "Harbor"
 
-  const characterRef = await get(child(dbRef, `${playerId}/character`))
-  const character = characterRef.val()
+  const character = await getCharacter(playerId)
 
   if (character.location !== "Sea") {
     res.status(400).json({
@@ -26,15 +24,16 @@ const travel = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const result = {
+  const characterResult = {
     ...character,
     town,
     location,
     week: character.week + 1,
   }
 
-  await set(ref(db, `${playerId}/character`), result).catch((error) => {
+  await saveCharacter(playerId, characterResult).catch((error) => {
     res.status(500).json({ error })
+    return
   })
 
   res.status(200).json({ success: true })

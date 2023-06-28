@@ -1,9 +1,8 @@
 import { getCookie } from "cookies-next"
-import { child, get, ref, update } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db, { dbRef } from "@/firebase/db"
+import { getCharacter, saveCharacter } from "@/firebase/db"
 import { changeCharacterValidationSchema } from "@/utils/validation"
 
 const updateCharacter = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -14,7 +13,7 @@ const updateCharacter = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })
+  const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
 
   if (!playerId) {
     res.status(400).json({ error: "Unauthorized" })
@@ -23,19 +22,19 @@ const updateCharacter = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const { name, gender, age } = req.body
 
-  const existingCharacter = await get(child(dbRef, `${playerId}/character`))
-  const characterUpdate = {
-    ...existingCharacter.val(),
+  const character = await getCharacter(playerId)
+
+  const characterResult = {
+    ...character,
     name,
     gender,
     age,
   }
 
-  await update(ref(db, `${playerId}/character`), characterUpdate).catch(
-    (error) => {
-      res.status(500).json({ error })
-    }
-  )
+  await saveCharacter(playerId, characterResult).catch((error) => {
+    res.status(500).json({ error })
+    return
+  })
 
   res.status(200).json({ success: true })
 }

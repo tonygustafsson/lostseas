@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { MERCHANDISE } from "@/constants/merchandise"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db, { dbRef } from "@/firebase/db"
+import db, { dbRef, getCharacter, saveCharacter } from "@/firebase/db"
 
 const shopSell = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
@@ -43,18 +43,17 @@ const shopSell = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   )
 
-  const existingCharacterRef = await get(child(dbRef, `${playerId}/character`))
-  const existingCharacter = existingCharacterRef.val()
+  const character = await getCharacter(playerId)
+
   const characterResult = {
-    ...existingCharacter,
-    gold: existingCharacter.gold + totalPrice,
+    ...character,
+    gold: character.gold + totalPrice,
   }
 
-  await set(ref(db, `${playerId}/character`), characterResult).catch(
-    (error) => {
-      res.status(500).json({ error })
-    }
-  )
+  await saveCharacter(playerId, characterResult).catch((error) => {
+    res.status(500).json({ error, item })
+    return
+  })
 
   res.status(200).json({
     success: true,

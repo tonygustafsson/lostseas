@@ -1,9 +1,8 @@
 import { getCookie } from "cookies-next"
-import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db, { dbRef } from "@/firebase/db"
+import { getCharacter, saveCharacter } from "@/firebase/db"
 import { getBet, getDiceReturns, getRandomDiceResults } from "@/utils/dice"
 
 const tavernDice = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -16,8 +15,7 @@ const tavernDice = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const { betPercentage } = req.body
 
-  const characterRef = await get(child(dbRef, `${playerId}/character`))
-  const character = characterRef.val() as Character
+  const character = await getCharacter(playerId)
 
   const bet = getBet(betPercentage, character.gold || 0)
 
@@ -29,16 +27,16 @@ const tavernDice = async (req: NextApiRequest, res: NextApiResponse) => {
   const diceResults = getRandomDiceResults()
   const diceReturns = getDiceReturns(diceResults, bet)
 
-  console.log({ bet, diceResults, diceReturns })
   const goldResult = character.gold + diceReturns
 
-  const result: Character = {
+  const characterResult: Character = {
     ...character,
     gold: goldResult,
   }
 
-  await set(ref(db, `${playerId}/character`), result).catch((error) => {
+  await saveCharacter(playerId, characterResult).catch((error) => {
     res.status(500).json({ error, bet, diceResults, diceReturns })
+    return
   })
 
   res.status(200).json({

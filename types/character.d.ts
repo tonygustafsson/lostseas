@@ -3,11 +3,11 @@ type Character = {
   name: string
   gender: "Male" | "Female"
   nationality: Nation
-  town: Town | undefined
+  town: Town | undefined | null
   location: TownLocation | SeaLocation
   gold: number
-  account?: number
-  loan?: number
+  account?: number | null
+  loan?: number | null
   week: number
 }
 
