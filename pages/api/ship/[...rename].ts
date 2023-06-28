@@ -1,9 +1,8 @@
 import { getCookie } from "cookies-next"
-import { child, get, ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db, { dbRef } from "@/firebase/db"
+import { getShip, saveShip } from "@/firebase/db"
 import { renameShipValidationSchema } from "@/utils/validation"
 
 const renameShip = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -30,20 +29,19 @@ const renameShip = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const shipRef = await get(child(dbRef, `${playerId}/ships/${shipId}`))
-  const ship = shipRef.val() as Ship
+  const ship = await getShip(playerId, shipId)
 
   if (!ship) {
     res.status(500).json({ error: "Ship not found" })
     return
   }
 
-  const result: Ship = {
+  const shipResult: Ship = {
     ...ship,
     name,
   }
 
-  await set(ref(db, `${playerId}/ships/${shipId}`), result).catch((error) => {
+  await saveShip(playerId, shipResult).catch((error) => {
     res.status(500).json({ error, ship, name })
   })
 

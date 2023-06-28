@@ -16,7 +16,7 @@ const db = getDatabase(app)
 
 export const dbRef = ref(db)
 
-export const getPlayer = async (playerId: string) => {
+export const getPlayer = async (playerId: Player["id"]) => {
   const ref = await get(child(dbRef, playerId))
 
   const player = ref.val() as Player
@@ -24,11 +24,11 @@ export const getPlayer = async (playerId: string) => {
   return player
 }
 
-export const savePlayer = async (playerId: string, player: Player) => {
+export const savePlayer = async (playerId: Player["id"], player: Player) => {
   await set(ref(db, playerId), player).catch((error) => error)
 }
 
-export const getCharacter = async (playerId: string) => {
+export const getCharacter = async (playerId: Player["id"]) => {
   const ref = await get(child(dbRef, `${playerId}/character`))
 
   const character = ref.val() as Character
@@ -36,8 +36,42 @@ export const getCharacter = async (playerId: string) => {
   return character
 }
 
-export const saveCharacter = async (playerId: string, character: Character) => {
+export const saveCharacter = async (
+  playerId: Player["id"],
+  character: Character
+) => {
   await set(ref(db, `${playerId}/character`), character).catch((error) => error)
+}
+
+export const getCrewMembers = async (playerId: Player["id"]) => {
+  const ref = await get(child(dbRef, `${playerId}/crewMembers`))
+
+  const crewMembers = ref.val() as CrewMembers
+
+  return crewMembers
+}
+
+export const saveCrewMembers = async (
+  playerId: Player["id"],
+  crewMembers: CrewMembers
+) => {
+  await set(ref(db, `${playerId}/crewMembers`), crewMembers).catch(
+    (error) => error
+  )
+}
+
+export const getShip = async (playerId: Player["id"], shipId: Ship["id"]) => {
+  const ref = await get(child(dbRef, `${playerId}/ships/${shipId}`))
+
+  const ship = ref.val() as Ship
+
+  return ship
+}
+
+export const saveShip = async (playerId: Player["id"], ship: Ship) => {
+  await set(ref(db, `${playerId}/ships/${ship["id"]}`), ship).catch(
+    (error) => error
+  )
 }
 
 export default db

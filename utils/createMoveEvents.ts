@@ -2,7 +2,7 @@ import { child, get, ref, set } from "firebase/database"
 
 import { MARKET_AVAILABLE_ITEMS } from "@/constants/market"
 import { MERCHANDISE } from "@/constants/merchandise"
-import db, { dbRef } from "@/firebase/db"
+import db, { dbRef, getCrewMembers } from "@/firebase/db"
 
 import { getRandomInt } from "./random"
 
@@ -78,19 +78,18 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
       return
     }
 
-    const crewMembersRef = await get(child(dbRef, `${playerId}/crewMembers`))
-    const crewMembers = crewMembersRef.val()?.count || 0
+    const crewMembers = await getCrewMembers(playerId)
 
     let noOfSailors = 0
 
-    if (crewMembers === 0) {
+    if (crewMembers.count === 0) {
       noOfSailors = 1
-    } else if (crewMembers <= 10) {
-      noOfSailors = Math.round(crewMembers * (getRandomInt(10, 25) / 100))
-    } else if (crewMembers <= 20) {
-      noOfSailors = Math.round(crewMembers * (getRandomInt(8, 15) / 100))
-    } else if (crewMembers > 20) {
-      noOfSailors = Math.round(crewMembers * (getRandomInt(4, 10) / 100))
+    } else if (crewMembers.count <= 10) {
+      noOfSailors = Math.round(crewMembers.count * (getRandomInt(10, 25) / 100))
+    } else if (crewMembers.count <= 20) {
+      noOfSailors = Math.round(crewMembers.count * (getRandomInt(8, 15) / 100))
+    } else if (crewMembers.count > 20) {
+      noOfSailors = Math.round(crewMembers.count * (getRandomInt(4, 10) / 100))
     }
 
     const isHostile = Math.random() < 0.3
