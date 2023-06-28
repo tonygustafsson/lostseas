@@ -1,8 +1,10 @@
-import { child, get, ref, set } from "firebase/database"
-
 import { MARKET_AVAILABLE_ITEMS } from "@/constants/market"
 import { MERCHANDISE } from "@/constants/merchandise"
-import db, { dbRef, getCrewMembers } from "@/firebase/db"
+import {
+  getCrewMembers,
+  getLocationState,
+  saveLocationState,
+} from "@/firebase/db"
 
 import { getRandomInt } from "./random"
 
@@ -13,11 +15,12 @@ type Props = {
 
 export const createMoveEvents = async ({ playerId, destination }: Props) => {
   if (destination === "Market") {
-    const existingEvent = await get(
-      child(dbRef, `${playerId}/locationStates/market`)
+    const locationState = await getLocationState<LocationState["market"]>(
+      playerId,
+      "market"
     )
 
-    if (existingEvent.exists()) {
+    if (locationState) {
       return
     }
 
@@ -40,21 +43,20 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
       items,
     }
 
-    const eventResult = { ...existingEvent.val(), ...newEvent }
-
-    await set(ref(db, `${playerId}/locationStates/market`), eventResult).catch(
-      (error) => {
-        throw new Error(error)
-      }
+    await saveLocationState<LocationState["market"]>(
+      playerId,
+      "market",
+      newEvent
     )
   }
 
   if (destination === "Tavern") {
-    const existingEvent = await get(
-      child(dbRef, `${playerId}/locationStates/tavern`)
+    const locationState = await getLocationState<LocationState["tavern"]>(
+      playerId,
+      "tavern"
     )
 
-    if (existingEvent.exists()) {
+    if (locationState) {
       return
     }
 
@@ -66,14 +68,11 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
         isHostile: false,
       }
 
-      const eventResult = { ...existingEvent.val(), ...ignoreEvent }
-
-      await set(
-        ref(db, `${playerId}/locationStates/tavern`),
-        eventResult
-      ).catch((error) => {
-        throw new Error(error)
-      })
+      await saveLocationState<LocationState["tavern"]>(
+        playerId,
+        "tavern",
+        ignoreEvent
+      )
 
       return
     }
@@ -100,12 +99,10 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
       isHostile,
     }
 
-    const eventResult = { ...existingEvent.val(), ...newEvent }
-
-    await set(ref(db, `${playerId}/locationStates/tavern`), eventResult).catch(
-      (error) => {
-        throw new Error(error)
-      }
+    await saveLocationState<LocationState["tavern"]>(
+      playerId,
+      "tavern",
+      newEvent
     )
   }
 }

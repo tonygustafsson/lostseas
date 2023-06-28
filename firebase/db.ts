@@ -13,8 +13,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 const db = getDatabase(app)
-
-export const dbRef = ref(db)
+const dbRef = ref(db)
 
 export const getPlayer = async (playerId: Player["id"]) => {
   const ref = await get(child(dbRef, playerId))
@@ -72,6 +71,28 @@ export const saveShip = async (playerId: Player["id"], ship: Ship) => {
   await set(ref(db, `${playerId}/ships/${ship["id"]}`), ship).catch(
     (error) => error
   )
+}
+
+export const getLocationState = async <State>(
+  playerId: Player["id"],
+  stateKey: string
+) => {
+  const ref = await get(child(dbRef, `${playerId}/locationStates/${stateKey}`))
+
+  const locationState = ref.val() as State
+
+  return locationState
+}
+
+export const saveLocationState = async <State>(
+  playerId: Player["id"],
+  locationStateKey: string,
+  locationState: State
+) => {
+  await set(
+    ref(db, `${playerId}/locationStates/${locationStateKey}`),
+    locationState
+  ).catch((error) => error)
 }
 
 export default db
