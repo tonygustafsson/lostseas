@@ -1,15 +1,14 @@
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
+import MerchandiseShopItem from "@/components/MerchandiseShopItem"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_TYPES } from "@/constants/ship"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShipyard } from "@/hooks/queries/useShipyard"
 
-import ShopItem from "./ShopItem"
-
 const ShipyardSell = () => {
   const { data: player } = useGetPlayer()
-  const { sellShip } = useShipyard()
+  const { sellShip, buyFittings, sellFittings } = useShipyard()
 
   const handleSellShip = (id: Ship["id"]) => {
     sellShip({ id })
@@ -67,11 +66,13 @@ const ShipyardSell = () => {
       {Object.entries(MERCHANDISE)
         .filter(([_, item]) => item.availableAt === "shipyard")
         .map(([itemKey]) => (
-          <ShopItem
+          <MerchandiseShopItem
             key={`shop-item-${itemKey}`}
             item={itemKey as keyof typeof MERCHANDISE}
             type="Sell"
             player={player}
+            onBuy={buyFittings}
+            onSell={sellFittings}
           />
         ))}
     </div>
