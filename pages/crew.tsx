@@ -1,10 +1,10 @@
 import { GetServerSideProps } from "next"
-import { BsHeartPulseFill } from "react-icons/bs"
 import { FaUsers } from "react-icons/fa"
 import { TbMoodSmileBeam } from "react-icons/tb"
 
 import GiveGold from "@/components/crew/GiveGold"
 import GiveMedicine from "@/components/crew/GiveMedicine"
+import HeartIcon from "@/components/HeartIcon"
 import DefaultLayout from "@/components/layouts/default"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSideProps"
@@ -34,11 +34,11 @@ const Crew = () => {
 
           <div className="stat bg-gray-700">
             <div className="stat-figure text-secondary">
-              <BsHeartPulseFill className="h-8 w-8" />
+              <HeartIcon health={player?.crewMembers.health} />
             </div>
             <div className="stat-title">Health</div>
             <div className="stat-value text-2xl">
-              {player?.crewMembers.health}
+              {player?.crewMembers.health}%
             </div>
           </div>
 
