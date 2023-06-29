@@ -29,7 +29,7 @@ const MerchandiseCard = ({
         <div className="indicator">
           <h2 className="card-title font-serif text-xl mr-8">{title}</h2>
 
-          <span className="indicator-item indicator-middle badge badge-primary">
+          <span className="indicator-item indicator-middle badge badge-primary text-xs">
             {indicator}
           </span>
         </div>

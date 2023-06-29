@@ -6,6 +6,7 @@ export const MERCHANDISE: Record<
     singleUnit: string
     unit: string
     description: string
+    availableAt: "shop" | "shipyard"
   }
 > = {
   food: {
@@ -14,6 +15,7 @@ export const MERCHANDISE: Record<
     singleUnit: "crate",
     unit: "crates",
     description: "You need food to travel the open seas.",
+    availableAt: "shop",
   },
   water: {
     buy: 12,
@@ -21,6 +23,7 @@ export const MERCHANDISE: Record<
     singleUnit: "barrel",
     unit: "barrels",
     description: "You need water to travel the open seas.",
+    availableAt: "shop",
   },
   porcelain: {
     buy: 35,
@@ -28,6 +31,7 @@ export const MERCHANDISE: Record<
     singleUnit: "crate",
     unit: "crates",
     description: "A great trading asset. Not used for anything specific.",
+    availableAt: "shop",
   },
   spices: {
     buy: 20,
@@ -35,6 +39,7 @@ export const MERCHANDISE: Record<
     singleUnit: "crate",
     unit: "crates",
     description: "A great trading asset. Not used for anything specific.",
+    availableAt: "shop",
   },
   medicine: {
     buy: 15,
@@ -43,6 +48,7 @@ export const MERCHANDISE: Record<
     unit: "boxes",
     description:
       "You can heal your crew with this mix of willow bark and herbs.",
+    availableAt: "shop",
   },
   tobacco: {
     buy: 75,
@@ -50,6 +56,7 @@ export const MERCHANDISE: Record<
     singleUnit: "crate",
     unit: "crates",
     description: "A great trading asset and can also make your crew happy.",
+    availableAt: "shop",
   },
   rum: {
     buy: 150,
@@ -57,6 +64,7 @@ export const MERCHANDISE: Record<
     singleUnit: "barrel",
     unit: "barrels",
     description: "A great trading asset and can also make your crew happy.",
+    availableAt: "shop",
   },
   cannons: {
     buy: 300,
@@ -65,5 +73,6 @@ export const MERCHANDISE: Record<
     unit: "cannons",
     description:
       "You need cannons to fight other ships. You need 2 crew members per cannon in order to make it functional.",
+    availableAt: "shipyard",
   },
 }

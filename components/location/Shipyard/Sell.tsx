@@ -1,15 +1,17 @@
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
+import MerchandiseShopItem from "@/components/MerchandiseShopItem"
+import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_TYPES } from "@/constants/ship"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShipyard } from "@/hooks/queries/useShipyard"
 
 const ShipyardSell = () => {
   const { data: player } = useGetPlayer()
-  const { sell } = useShipyard()
+  const { sellShip, buyFittings, sellFittings } = useShipyard()
 
-  const handleSell = (id: Ship["id"]) => {
-    sell({ id })
+  const handleSellShip = (id: Ship["id"]) => {
+    sellShip({ id })
   }
 
   return (
@@ -47,7 +49,7 @@ const ShipyardSell = () => {
               actions={
                 <button
                   className="btn btn-primary btn-sm"
-                  onClick={() => handleSell(id)}
+                  onClick={() => handleSellShip(id)}
                 >
                   Sell {type}
                 </button>
@@ -60,6 +62,19 @@ const ShipyardSell = () => {
       {!Object.keys(player?.ships || {}).length && (
         <p>You do not own any ships currently.</p>
       )}
+
+      {Object.entries(MERCHANDISE)
+        .filter(([_, item]) => item.availableAt === "shipyard")
+        .map(([itemKey]) => (
+          <MerchandiseShopItem
+            key={`shop-item-${itemKey}`}
+            item={itemKey as keyof typeof MERCHANDISE}
+            type="Sell"
+            player={player}
+            onBuy={buyFittings}
+            onSell={sellFittings}
+          />
+        ))}
     </div>
   )
 }

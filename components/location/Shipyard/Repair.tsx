@@ -6,10 +6,10 @@ import { useShipyard } from "@/hooks/queries/useShipyard"
 
 const ShipyardRepair = () => {
   const { data: player } = useGetPlayer()
-  const { repair } = useShipyard()
+  const { repairShip } = useShipyard()
 
-  const handleRepair = (id: Ship["id"]) => {
-    repair({ id })
+  const handleRepairShip = (id: Ship["id"]) => {
+    repairShip({ id })
   }
 
   return (
@@ -48,7 +48,7 @@ const ShipyardRepair = () => {
               actions={
                 <button
                   className="btn btn-primary btn-sm"
-                  onClick={() => handleRepair(id)}
+                  onClick={() => handleRepairShip(id)}
                 >
                   Repair
                 </button>

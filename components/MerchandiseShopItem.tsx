@@ -3,19 +3,19 @@ import { useState } from "react"
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import { MERCHANDISE } from "@/constants/merchandise"
-import { useShop } from "@/hooks/queries/useShop"
 import { capitalize } from "@/utils/string"
 
-import TextField from "../../ui/TextField"
+import TextField from "./ui/TextField"
 
 type Props = {
   player?: Player
   item: keyof Inventory
   type: "Buy" | "Sell"
+  onBuy: (props: { item: keyof Inventory; quantity: number }) => void
+  onSell: (props: { item: keyof Inventory; quantity: number }) => void
 }
 
-const ShopItem = ({ player, item, type }: Props) => {
-  const { buy, sell } = useShop()
+const MerchandiseShopItem = ({ player, item, type, onBuy, onSell }: Props) => {
   const [quantity, setQuantity] = useState(1)
 
   const merchandise = MERCHANDISE[item]
@@ -42,14 +42,14 @@ const ShopItem = ({ player, item, type }: Props) => {
   }
 
   const handleBuy = () => {
-    buy({
+    onBuy({
       item,
       quantity,
     })
   }
 
   const handleSell = () => {
-    sell({
+    onSell({
       item,
       quantity,
     })
@@ -139,4 +139,4 @@ const ShopItem = ({ player, item, type }: Props) => {
   )
 }
 
-export default ShopItem
+export default MerchandiseShopItem

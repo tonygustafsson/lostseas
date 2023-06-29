@@ -5,7 +5,10 @@ import { MERCHANDISE } from "@/constants/merchandise"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
 
-const shopBuy = async (req: NextApiRequest, res: NextApiResponse) => {
+const shipyardSellFittings = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
 
   if (!playerId) {
@@ -18,33 +21,32 @@ const shopBuy = async (req: NextApiRequest, res: NextApiResponse) => {
   if (
     !item ||
     Object.entries(MERCHANDISE).find(([itemKey]) => itemKey === item)?.[1]
-      .availableAt !== "shop"
+      .availableAt !== "shipyard"
   ) {
-    res.status(400).json({ error: "Not a valid item" })
+    res.status(400).json({ error: "Not a valid item", item })
     return
   }
 
   const totalPrice =
-    MERCHANDISE[item as keyof typeof MERCHANDISE].buy * quantity
+    MERCHANDISE[item as keyof typeof MERCHANDISE].sell * quantity
 
   const player = await getPlayer(playerId)
+  const itemQuantity = player.inventory[item as keyof Inventory] || 0
 
-  if (player.character.gold < totalPrice) {
-    res.status(400).json({ error: "Not enough gold" })
+  if (itemQuantity < quantity) {
+    res.status(400).json({ error: `Not enough ${item}.`, item })
     return
   }
 
-  const itemQuantity = player.inventory[item as keyof Inventory]
-
   const playerResult = {
     ...player,
-    character: {
-      ...player.character,
-      gold: player.character.gold - totalPrice,
-    },
     inventory: {
       ...player.inventory,
-      [item]: itemQuantity ? itemQuantity + quantity : quantity,
+      [item]: itemQuantity - quantity,
+    },
+    character: {
+      ...player.character,
+      gold: player.character.gold + totalPrice,
     },
   } as Player
 
@@ -57,9 +59,9 @@ const shopBuy = async (req: NextApiRequest, res: NextApiResponse) => {
     success: true,
     item,
     quantity,
-    totalQuantity: itemQuantity ? itemQuantity + quantity : quantity,
+    totalQuantity: itemQuantity - quantity,
     totalPrice,
   })
 }
 
-export default shopBuy
+export default shipyardSellFittings

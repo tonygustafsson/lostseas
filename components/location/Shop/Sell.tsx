@@ -1,21 +1,26 @@
+import MerchandiseShopItem from "@/components/MerchandiseShopItem"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-
-import ShopItem from "./ShopItem"
+import { useShop } from "@/hooks/queries/useShop"
 
 const ShopSell = () => {
   const { data: player } = useGetPlayer()
+  const { buy, sell } = useShop()
 
   return (
     <div className="flex flex-wrap gap-6">
-      {Object.keys(MERCHANDISE).map((item) => (
-        <ShopItem
-          key={`shop-item-${item}`}
-          type="Sell"
-          item={item as keyof Inventory}
-          player={player}
-        />
-      ))}
+      {Object.entries(MERCHANDISE)
+        .filter(([_, item]) => item.availableAt === "shop")
+        .map(([itemKey]) => (
+          <MerchandiseShopItem
+            key={`shop-item-${itemKey}`}
+            type="Sell"
+            item={itemKey as keyof Inventory}
+            player={player}
+            onBuy={buy}
+            onSell={sell}
+          />
+        ))}
     </div>
   )
 }

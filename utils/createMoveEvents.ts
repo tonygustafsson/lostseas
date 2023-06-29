@@ -15,12 +15,12 @@ type Props = {
 
 export const createMoveEvents = async ({ playerId, destination }: Props) => {
   if (destination === "Market") {
-    const locationState = await getLocationState<LocationState["market"]>(
+    const marketEvent = await getLocationState<LocationState["market"]>(
       playerId,
       "market"
     )
 
-    if (locationState) {
+    if (marketEvent) {
       return
     }
 
@@ -29,7 +29,9 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
 
     Array.from({ length: noOfItems }).forEach(() => {
       const item =
-        MARKET_AVAILABLE_ITEMS[getRandomInt(0, MARKET_AVAILABLE_ITEMS.length)]
+        MARKET_AVAILABLE_ITEMS[
+          getRandomInt(0, MARKET_AVAILABLE_ITEMS.length - 1)
+        ]
       const quantity = getRandomInt(1, 50)
       const price = Math.floor(
         MERCHANDISE[item].buy * (getRandomInt(50, 100) / 100)
@@ -38,7 +40,7 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
       items[item] = { quantity, price }
     })
 
-    const newEvent: LocationState["market"] = {
+    const eventResult: LocationState["market"] = {
       visited: true,
       items,
     }
@@ -46,23 +48,23 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
     await saveLocationState<LocationState["market"]>(
       playerId,
       "market",
-      newEvent
+      eventResult
     )
   }
 
   if (destination === "Tavern") {
-    const locationState = await getLocationState<LocationState["tavern"]>(
+    const tavernEvent = await getLocationState<LocationState["tavern"]>(
       playerId,
       "tavern"
     )
 
-    if (locationState) {
+    if (tavernEvent) {
       return
     }
 
     if (Math.random() < 0.5) {
       // 50% chance of no event
-      const ignoreEvent: LocationState["tavern"] = {
+      const eventResult: LocationState["tavern"] = {
         visited: true,
         noOfSailors: 0,
         isHostile: false,
@@ -71,8 +73,10 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
       await saveLocationState<LocationState["tavern"]>(
         playerId,
         "tavern",
-        ignoreEvent
-      )
+        eventResult
+      ).catch((error) => {
+        throw new Error(error)
+      })
 
       return
     }
@@ -93,7 +97,7 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
 
     const isHostile = Math.random() < 0.3
 
-    const newEvent: LocationState["tavern"] = {
+    const eventResult: LocationState["tavern"] = {
       visited: true,
       noOfSailors,
       isHostile,
@@ -102,7 +106,9 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
     await saveLocationState<LocationState["tavern"]>(
       playerId,
       "tavern",
-      newEvent
-    )
+      eventResult
+    ).catch((error) => {
+      throw new Error(error)
+    })
   }
 }

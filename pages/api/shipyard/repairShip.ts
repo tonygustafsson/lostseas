@@ -1,12 +1,14 @@
 import { getCookie } from "cookies-next"
-import { ref, remove } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
-import { SHIP_TYPES } from "@/constants/ship"
+import { SHIP_REPAIR_COST } from "@/constants/ship"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import db, { getPlayer, savePlayer } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
 
-const shipyardSell = async (req: NextApiRequest, res: NextApiResponse) => {
+const shipyardRepairShip = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
 
   if (!playerId) {
@@ -25,24 +27,30 @@ const shipyardSell = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const shipInfo = SHIP_TYPES[ship.type as keyof typeof SHIP_TYPES]
-  const totalPrice = shipInfo.sell
+  const totalPrice = (100 - ship.health) * SHIP_REPAIR_COST
+
+  if (player.character.gold < totalPrice) {
+    res.status(400).json({ error: "Not enough gold." })
+    return
+  }
 
   const playerResult: Player = {
     ...player,
     character: {
       ...player.character,
-      gold: player.character.gold + totalPrice,
+      gold: player.character.gold - totalPrice,
+    },
+    ships: {
+      ...player.ships,
+      [id]: {
+        ...ship,
+        health: 100,
+      },
     },
   }
 
   await savePlayer(playerId, playerResult).catch((error) => {
-    res.status(500).json({ error, ship })
-  })
-
-  await remove(ref(db, `${playerId}/ships/${id}`)).catch((error) => {
-    res.status(500).json({ error, ship })
-    return
+    res.status(500).json({ error, ship, totalPrice })
   })
 
   res.status(200).json({
@@ -52,4 +60,4 @@ const shipyardSell = async (req: NextApiRequest, res: NextApiResponse) => {
   })
 }
 
-export default shipyardSell
+export default shipyardRepairShip

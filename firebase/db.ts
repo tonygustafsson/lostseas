@@ -37,7 +37,7 @@ export const getCharacter = async (playerId: Player["id"]) => {
 
 export const saveCharacter = async (
   playerId: Player["id"],
-  character: Character
+  character: Nullable<Character>
 ) => {
   await set(ref(db, `${playerId}/character`), character).catch((error) => error)
 }
@@ -73,26 +73,25 @@ export const saveShip = async (playerId: Player["id"], ship: Ship) => {
   )
 }
 
-export const getLocationState = async <State>(
+export const getLocationState = async <T>(
   playerId: Player["id"],
-  stateKey: string
+  state: keyof LocationState
 ) => {
-  const ref = await get(child(dbRef, `${playerId}/locationStates/${stateKey}`))
+  const ref = await get(child(dbRef, `${playerId}/locationStates/${state}`))
 
-  const locationState = ref.val() as State
+  const locationState = ref.val() as T
 
   return locationState
 }
 
-export const saveLocationState = async <State>(
+export const saveLocationState = async <T>(
   playerId: Player["id"],
-  locationStateKey: string,
-  locationState: State
+  stateKey: keyof LocationState,
+  state: T
 ) => {
-  await set(
-    ref(db, `${playerId}/locationStates/${locationStateKey}`),
-    locationState
-  ).catch((error) => error)
+  await set(ref(db, `${playerId}/locationStates/${stateKey}`), state).catch(
+    (error) => error
+  )
 }
 
 export default db

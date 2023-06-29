@@ -64,7 +64,7 @@ const Menu = () => {
                   {player?.character.name}
                 </h2>
 
-                <p>
+                <p className="text-sm">
                   You are a {player?.character.age} year old{" "}
                   {player?.character.gender.toLowerCase()} from{" "}
                   {player?.character.nationality}.
@@ -95,7 +95,7 @@ const Menu = () => {
             <div className="card w-full bg-gray-800 shadow-lg mt-4 rounded-md">
               <div className="card-body px-6 py-4">
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-base">{currentDate}</span>
+                  <span className="font-bold text-sm">{currentDate}</span>
                   <WeatherIcon className="h-8 w-8 text-secondary" />
                 </div>
               </div>

@@ -1,9 +1,9 @@
 import { Head, Html, Main, NextScript } from "next/document"
 
-import { actor, almendra } from "@/fonts"
+import { almendra, andika } from "@/fonts"
 
 const Document = () => (
-  <Html lang="en" className={`${almendra.variable} ${actor.variable}`}>
+  <Html lang="en" className={`${almendra.variable} ${andika.variable}`}>
     <Head />
 
     <body>

@@ -1,4 +1,4 @@
-import { Actor, Almendra } from "next/font/google"
+import { Almendra, Andika } from "next/font/google"
 
 export const almendra = Almendra({
   weight: "400",
@@ -6,8 +6,8 @@ export const almendra = Almendra({
   variable: "--font-almendra",
 })
 
-export const actor = Actor({
+export const andika = Andika({
   weight: "400",
   subsets: ["latin"],
-  variable: "--font-actor",
+  variable: "--font-andika",
 })

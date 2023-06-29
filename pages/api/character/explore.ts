@@ -25,7 +25,7 @@ const explore = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const characterResult = {
+  const characterResult: Nullable<Character> = {
     ...character,
     town,
     location,

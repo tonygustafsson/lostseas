@@ -32,7 +32,7 @@ const Bank = () => {
               <GiCoins className="h-8 w-8" />
             </div>
             <div className="stat-title">Gold</div>
-            <div className="stat-value text-2xl">{player?.character.gold}</div>
+            <div className="stat-value text-xl">{player?.character.gold}</div>
           </div>
 
           <div className="stat bg-gray-700">
@@ -40,7 +40,7 @@ const Bank = () => {
               <GiCoins className="h-8 w-8" />
             </div>
             <div className="stat-title">Account</div>
-            <div className="stat-value text-2xl">
+            <div className="stat-value text-xl">
               {player?.character.account || 0}
             </div>
           </div>
@@ -50,7 +50,7 @@ const Bank = () => {
               <GiCoins className="h-8 w-8" />
             </div>
             <div className="stat-title">Loan</div>
-            <div className="stat-value text-2xl">
+            <div className="stat-value text-xl">
               {player?.character.loan || 0}
             </div>
           </div>

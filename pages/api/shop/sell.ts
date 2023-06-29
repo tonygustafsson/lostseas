@@ -15,7 +15,11 @@ const shopSell = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const { item, quantity } = req.body
 
-  if (!item || !Object.keys(MERCHANDISE).includes(item || "")) {
+  if (
+    !item ||
+    Object.entries(MERCHANDISE).find(([itemKey]) => itemKey === item)?.[1]
+      .availableAt !== "shop"
+  ) {
     res.status(400).json({ error: "Not a valid item", item })
     return
   }
