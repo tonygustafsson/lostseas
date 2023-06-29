@@ -70,12 +70,12 @@ const BankAccount = () => {
           Make deposit
         </h2>
 
-        <p>
+        <p className="text-sm">
           When gold are stored at the bank you will not risk loosing it at sea.
         </p>
 
         {player?.character.loan && (
-          <strong className="mt-4 block">
+          <strong className="mt-4 block text-sm">
             You cannot deposit any money until your loan has been fully repaid.
           </strong>
         )}
@@ -104,7 +104,7 @@ const BankAccount = () => {
           Make withdrawal
         </h2>
 
-        <p>Take out your gold in order to spend it.</p>
+        <p className="text-sm">Take out your gold in order to spend it.</p>
 
         <TextField
           label="Amount"

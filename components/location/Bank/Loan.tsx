@@ -67,7 +67,7 @@ const BankLoan = () => {
             Take a loan
           </h2>
 
-          <p>
+          <p className="text-sm">
             You can loan up to {LOAN_LIMIT} gold. If you have a loan you cannot
             add funds to your account though until it has been repaid.
           </p>
@@ -93,7 +93,9 @@ const BankLoan = () => {
             Repay loan
           </h2>
 
-          <p>Repay your loan to be able to take more loans down the road.</p>
+          <p className="text-sm">
+            Repay your loan to be able to take more loans down the road.
+          </p>
 
           <TextField
             label="Amount"

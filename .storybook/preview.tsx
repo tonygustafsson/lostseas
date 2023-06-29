@@ -5,7 +5,7 @@ import { ModalProvider } from "../components/ui/Modal/context"
 import Toast from "../components/ui/Toast"
 import { ToastProvider } from "../components/ui/Toast/context"
 import "../styles/globals.css"
-import { actor, almendra } from "../fonts"
+import { andika, almendra } from "../fonts"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,7 +20,7 @@ const queryClient = new QueryClient({
 const decorators: Decorator[] = [
   (Story) => (
     <QueryClientProvider client={queryClient}>
-      <div className={`${almendra.variable} ${actor.variable}`}>
+      <div className={`${almendra.variable} ${andika.variable}`}>
         <ToastProvider>
           <ModalProvider>
             <Story />
