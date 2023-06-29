@@ -38,7 +38,7 @@ export const getCharacter = async (playerId: Player["id"]) => {
 
 export const saveCharacter = async (
   playerId: Player["id"],
-  character: Character
+  character: Nullable<Character>
 ) => {
   await set(ref(db, `${playerId}/character`), character).catch((error) => error)
 }

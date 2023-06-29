@@ -11,6 +11,8 @@ type Props = {
   destination: Character["location"]
 }
 
+// TODO: Create getLocationState in DB
+
 export const createMoveEvents = async ({ playerId, destination }: Props) => {
   if (destination === "Market") {
     const existingEvent = await get(
