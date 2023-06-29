@@ -1,13 +1,18 @@
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
+import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_TYPES } from "@/constants/ship"
+import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShipyard } from "@/hooks/queries/useShipyard"
 
-const ShipyardBuy = () => {
-  const { buy } = useShipyard()
+import ShopItem from "./ShopItem"
 
-  const handleBuy = (item: keyof typeof SHIP_TYPES) => {
-    buy({ item })
+const ShipyardBuy = () => {
+  const { data: player } = useGetPlayer()
+  const { buyShip } = useShipyard()
+
+  const handleBuyShip = (item: keyof typeof SHIP_TYPES) => {
+    buyShip({ item })
   }
 
   return (
@@ -29,13 +34,24 @@ const ShipyardBuy = () => {
           actions={
             <button
               className="btn btn-primary btn-sm"
-              onClick={() => handleBuy(shipType as keyof typeof SHIP_TYPES)}
+              onClick={() => handleBuyShip(shipType as keyof typeof SHIP_TYPES)}
             >
               Buy
             </button>
           }
         />
       ))}
+
+      {Object.entries(MERCHANDISE)
+        .filter(([_, item]) => item.availableAt === "shipyard")
+        .map(([itemKey]) => (
+          <ShopItem
+            key={`shop-item-${itemKey}`}
+            item={itemKey as keyof typeof MERCHANDISE}
+            type="Buy"
+            player={player}
+          />
+        ))}
     </div>
   )
 }

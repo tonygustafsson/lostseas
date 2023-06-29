@@ -8,14 +8,16 @@ const ShopBuy = () => {
 
   return (
     <div className="flex flex-wrap gap-6">
-      {Object.keys(MERCHANDISE).map((item) => (
-        <ShopItem
-          key={`shop-item-${item}`}
-          type="Buy"
-          item={item as keyof Inventory}
-          player={player}
-        />
-      ))}
+      {Object.entries(MERCHANDISE)
+        .filter(([_, item]) => item.availableAt === "shop")
+        .map(([itemKey]) => (
+          <ShopItem
+            key={`shop-item-${itemKey}`}
+            type="Buy"
+            item={itemKey as keyof Inventory}
+            player={player}
+          />
+        ))}
     </div>
   )
 }
