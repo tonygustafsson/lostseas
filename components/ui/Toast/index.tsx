@@ -33,10 +33,10 @@ const Toast = () => {
               <div className="alert flex-col flex items-start gap-1 lg:gap-2">
                 <div className="flex gap-2 items-center">
                   {toast.variant === "success" && (
-                    <FiCheckCircle size={32} className="text-success" />
+                    <FiCheckCircle size={28} className="text-success" />
                   )}
                   {toast.variant === "error" && (
-                    <FiXCircle size={32} className="text-error" />
+                    <FiXCircle size={28} className="text-error" />
                   )}
                   <span className="title mr-8">{toast.title}</span>
                 </div>
