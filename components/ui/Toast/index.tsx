@@ -18,6 +18,15 @@ const Toast = () => {
               initial={{ opacity: 0, translateX: "100%" }}
               animate={{ opacity: 1, translateX: 0 }}
               exit={{ opacity: 0, translateX: "100%" }}
+              drag="x"
+              dragElastic={false}
+              dragConstraints={{ left: -100, right: 0 }}
+              whileDrag={{ opacity: 0.85, transition: { duration: 0.1 } }}
+              onDrag={(_, info) => {
+                if (info.offset.x > 100) {
+                  removeToast(toast.id || "")
+                }
+              }}
               className={`toast toast-end`}
               style={{ top: `${idx * 140}px` }}
             >
