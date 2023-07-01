@@ -19,7 +19,7 @@ export default function DefaultLayout({
         <DesktopMenu className="hidden lg:block" />
 
         <main
-          className={`${almendra.variable} ${andika.variable} min-h-screen pb-32 flex flex-col w-full lg:py-8 px-2 lg:px-12 bg-base-200`}
+          className={`${almendra.variable} ${andika.variable} min-h-screen pb-32 flex flex-col w-full py-4 lg:py-8 px-2 lg:px-12 bg-base-200`}
         >
           {children}
         </main>
