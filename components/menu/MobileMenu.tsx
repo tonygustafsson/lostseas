@@ -29,35 +29,45 @@ const MobileMenu = ({ className }: Props) => {
 
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div
-            initial={{ translateX: "-100%", opacity: 0 }}
-            animate={{
-              translateX: 0,
-              opacity: 1,
-              transition: {
-                translateX: { type: "spring", duration: 0.25 },
-                opacity: { duration: 0.2 },
-              },
-            }}
-            exit={{ translateX: "-100%", opacity: 0 }}
-            className="fixed top-0 left-0 shadow-2xl overflow-y-auto z-10 w-72 h-full py-8 px-4 bg-gray-900"
-          >
-            <button
-              className="absolute right-2 top-2 text-info"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          <>
+            <motion.div
+              initial={{ translateX: "-100%", opacity: 0 }}
+              animate={{
+                translateX: 0,
+                opacity: 1,
+                transition: {
+                  translateX: { type: "spring", duration: 0.25 },
+                  opacity: { duration: 0.2 },
+                },
+              }}
+              exit={{ translateX: "-100%", opacity: 0 }}
+              className="fixed top-0 left-0 shadow-2xl overflow-y-auto z-20 w-72 h-full py-8 px-4 bg-gray-900"
             >
-              <AiOutlineCloseCircle className="h-6 w-6" />
-            </button>
+              <button
+                className="absolute right-2 top-2 text-info"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              >
+                <AiOutlineCloseCircle className="h-6 w-6" />
+              </button>
 
-            <MainMenu />
+              <MainMenu />
 
-            {player && (
-              <>
-                <CharacterCard character={player.character} />
-                <WeatherCard week={player.character.week} />
-              </>
-            )}
-          </motion.div>
+              {player && (
+                <>
+                  <CharacterCard character={player.character} />
+                  <WeatherCard week={player.character.week} />
+                </>
+              )}
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5, transition: { duration: 0.15 } }}
+              exit={{ opacity: 0 }}
+              className="fixed top-0 left-0 w-screen h-screen z-10 bg-black"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+          </>
         )}
       </AnimatePresence>
     </div>
