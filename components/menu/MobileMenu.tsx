@@ -1,4 +1,3 @@
-import Link from "next/link"
 import { useState } from "react"
 import { AiOutlineCloseCircle } from "react-icons/ai"
 import { GiPirateFlag } from "react-icons/gi"
@@ -10,14 +9,18 @@ import MainMenu from "./MainMenu"
 import MobileBottomNav from "./MobileBottomNav"
 import WeatherCard from "./WeatherCard"
 
-const Menu = () => {
+type Props = {
+  className?: string
+}
+
+const MobileMenu = ({ className }: Props) => {
   const { data: player } = useGetPlayer()
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <>
-      <h1 className="lg:hidden font-serif text-2xl text-center p-2 flex justify-center items-center gap-2 bg-gray-900">
+    <div className={className}>
+      <h1 className="font-serif text-2xl text-center p-2 flex justify-center items-center gap-2 bg-gray-900">
         <GiPirateFlag className="h-6 w-6" /> Lost Seas
       </h1>
 
@@ -25,18 +28,11 @@ const Menu = () => {
 
       <div
         className={`${
-          !mobileMenuOpen ? "-translate-x-full lg:translate-x-0" : ""
-        } transition-transform fixed lg:static overflow-y-auto z-10 w-72 h-full lg:h-auto py-8 px-4 bg-gray-900`}
+          !mobileMenuOpen ? "-translate-x-full" : ""
+        } transition-transform fixed top-0 left-0 shadow-2xl overflow-y-auto z-10 w-72 h-full py-8 px-4 bg-gray-900`}
       >
-        <Link
-          href="/"
-          className="hidden lg:flex font-serif text-3xl gap-3 items-center mb-4 mx-2"
-        >
-          <GiPirateFlag className="h-8 w-8" /> Lost Seas
-        </Link>
-
         <button
-          className="lg:hidden absolute right-2 top-2 text-info"
+          className="absolute right-2 top-2 text-info"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           <AiOutlineCloseCircle className="h-6 w-6" />
@@ -51,8 +47,8 @@ const Menu = () => {
           </>
         )}
       </div>
-    </>
+    </div>
   )
 }
 
-export default Menu
+export default MobileMenu

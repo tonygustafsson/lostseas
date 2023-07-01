@@ -11,7 +11,7 @@ const MobileBottomNav = ({ setMobileMenuOpen }: Props) => {
   const { pathname } = useRouter()
 
   return (
-    <div className="btm-nav lg:hidden z-10">
+    <div className="btm-nav z-10">
       <Link href="/" className={`${pathname === "/" ? "active" : ""}`}>
         <GiPirateHat className="h-5 w-5" />
         Play
