@@ -9,6 +9,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import type { AppProps } from "next/app"
 import { useState } from "react"
 
+import MotionProvider from "@/components/MotionProvider"
 import Modal from "@/components/ui/Modal"
 import { ModalProvider } from "@/components/ui/Modal/context"
 import Toast from "@/components/ui/Toast"
@@ -31,14 +32,16 @@ const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
-        <ToastProvider>
-          <ModalProvider>
-            <Component {...pageProps} />
+        <MotionProvider>
+          <ToastProvider>
+            <ModalProvider>
+              <Component {...pageProps} />
 
-            <Toast />
-            <Modal />
-          </ModalProvider>
-        </ToastProvider>
+              <Toast />
+              <Modal />
+            </ModalProvider>
+          </ToastProvider>
+        </MotionProvider>
 
         <ReactQueryDevtools initialIsOpen={false} />
       </Hydrate>
