@@ -1,5 +1,7 @@
 import { GetServerSideProps } from "next"
 import { useQRCode } from "next-qrcode"
+import { useState } from "react"
+import { BsClipboardCheck } from "react-icons/bs"
 
 import DefaultLayout from "@/components/layouts/default"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -8,6 +10,17 @@ import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSidePr
 const Settings = () => {
   const { data: player } = useGetPlayer()
   const { SVG } = useQRCode()
+
+  const [copiedToClipboard, setCopiedToClipboard] = useState(false)
+
+  const copyIdToClipboard = () => {
+    navigator.clipboard.writeText(player?.id || "")
+    setCopiedToClipboard(true)
+
+    setTimeout(() => {
+      setCopiedToClipboard(false)
+    }, 2000)
+  }
 
   if (!player) {
     return <p>Access denied</p>
@@ -32,9 +45,18 @@ const Settings = () => {
           can login using it.
         </p>
 
-        <h3 className="text-xl font-serif">Your User ID</h3>
+        <h3 className="text-xl font-serif">Your ID</h3>
 
-        <div className="alert alert-info">{player?.id}</div>
+        <div className="alert alert-info flex justify-between">
+          {player?.id}
+          <button onClick={copyIdToClipboard} title="Copy User ID to clipboard">
+            {copiedToClipboard ? (
+              <span className="text-sm">Copied!</span>
+            ) : (
+              <BsClipboardCheck className="w-6 h-6" />
+            )}
+          </button>
+        </div>
 
         <h3 className="text-xl font-serif">QR code</h3>
 
