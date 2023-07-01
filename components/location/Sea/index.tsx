@@ -1,3 +1,4 @@
+import { m as motion } from "framer-motion"
 import { Fragment } from "react"
 import { renderToString } from "react-dom/server"
 
@@ -144,13 +145,14 @@ const Sea = () => {
 
   return (
     <>
-      <div className="max-w-7xl mx-auto opacity-80">
+      <div className="lg:max-w-7xl overflow-x-auto mx-auto opacity-80">
         <svg
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
           xmlnsXlink="http://www.w3.org/1999/xlink"
           viewBox={`0 0 ${mapWidth} ${mapHeight}`}
           preserveAspectRatio="xMinYMin meet"
+          className="w-[850px] lg:w-full lg:max-w-7xl"
         >
           <defs>
             <filter x="0" y="0" width="1" height="1" id="solid">
@@ -171,14 +173,17 @@ const Sea = () => {
           {Object.entries(towns).map(
             ([town, { x, y, textAlign = "bottom" }]) => (
               <Fragment key={`sea-map-${town}`}>
-                <image
+                <motion.image
                   key={`sea-map-town-${town}`}
+                  whileHover={{
+                    scale: 1.1,
+                  }}
                   width="20"
                   height="20"
                   x={x}
                   y={y}
                   xlinkHref="img/map/town.svg"
-                  className="cursor-pointer w-5 h-5 hover:h-6 hover:w-6 hover:-translate-x-[2px] hover:-translate-y-[2px] "
+                  className="cursor-pointer w-5 h-5"
                   onClick={() => handleTravel(town as Town)}
                   data-town={town}
                   onMouseOver={onMouseOverTown}
@@ -192,12 +197,11 @@ const Sea = () => {
                   fontFamily="monospace"
                   className="bg-white"
                   fill="white"
-                  opacity={0.6}
+                  opacity={0.8}
                   filter="url(#solid)"
                   style={{ userSelect: "none" }}
-                >
-                  {town}
-                </text>
+                  dangerouslySetInnerHTML={{ __html: `&nbsp;${town}&nbsp;` }}
+                />
               </Fragment>
             )
           )}
