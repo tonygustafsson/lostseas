@@ -1,3 +1,4 @@
+import { m as motion } from "framer-motion"
 import { AiOutlineShop } from "react-icons/ai"
 import { BsTools } from "react-icons/bs"
 import {
@@ -70,8 +71,14 @@ const LocationHero = () => {
 
   return (
     <>
-      <div
-        className="hero rounded-lg rounded-b-none"
+      <motion.div
+        key={`${player?.character.town}s ${player?.character.location}`}
+        initial={{ opacity: 0.25 }}
+        animate={{
+          opacity: 1,
+          transition: { duration: 0.5 },
+        }}
+        className="hero rounded-lg rounded-b-none lg:max-h-[500px]"
         style={{
           backgroundImage: getBackgroundImage(
             player?.character.town,
@@ -80,6 +87,7 @@ const LocationHero = () => {
         }}
       >
         <div className="hero-overlay bg-opacity-20"></div>
+
         <div className="hero-content text-center text-neutral-content py-8 lg:py-24">
           <div className="max-w-full lg:max-w-2xl lg:min-w-[600px] bg-base-300 bg-opacity-60 p-8 rounded-lg">
             <h1 className="font-serif mb-4 text-3xl lg:text-5xl">
@@ -103,7 +111,7 @@ const LocationHero = () => {
             </p>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <div className="bg-gray-900 rounded-b-lg p-4 flex items-center flex-col pb-8">
         {!isOnSeas && (
