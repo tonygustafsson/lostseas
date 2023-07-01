@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import { AiOutlineCloseCircle } from "react-icons/ai"
 
 import { useModal } from "./context"
 
@@ -29,7 +30,7 @@ const Modal = () => {
           className={`modal ${modal.open ? "modal-open" : ""}`}
         >
           <div className="modal-box pt-4">
-            <h3 className="font-bold text-xl mb-6 text-center">
+            <h3 className="font-bold font-serif text-xl mb-6 text-center">
               {modal.title}
             </h3>
 
@@ -37,10 +38,10 @@ const Modal = () => {
 
             <div className="modal-action">
               <button
-                className="btn btn-sm btn-circle absolute right-2 top-2 close"
+                className="btn btn-sm bg-transparent border-none hover:bg-gray-800 absolute right-1 top-3 close"
                 onClick={() => removeModal(modal.id || "")}
               >
-                ✕
+                <AiOutlineCloseCircle className="h-7 w-7" />
               </button>
             </div>
           </div>

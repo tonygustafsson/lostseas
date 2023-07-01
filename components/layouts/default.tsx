@@ -2,7 +2,8 @@ import { useIsFetching } from "@tanstack/react-query"
 
 import { almendra, andika } from "@/fonts"
 
-import Menu from "../menu"
+import DesktopMenu from "../menu/DesktopMenu"
+import MobileMenu from "../menu/MobileMenu"
 
 export default function DefaultLayout({
   children,
@@ -14,10 +15,11 @@ export default function DefaultLayout({
   return (
     <>
       <div className="flex flex-col lg:flex-row min-h-screen">
-        <Menu />
+        <MobileMenu className="lg:hidden" />
+        <DesktopMenu className="hidden lg:block" />
 
         <main
-          className={`${almendra.variable} ${andika.variable} min-h-screen pb-32 flex flex-col w-full lg:py-8 px-2 lg:px-12 bg-base-200`}
+          className={`${almendra.variable} ${andika.variable} min-h-screen pb-32 flex flex-col w-full py-4 lg:py-8 px-2 lg:px-12 bg-base-200`}
         >
           {children}
         </main>

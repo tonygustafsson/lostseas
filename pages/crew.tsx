@@ -53,7 +53,7 @@ const Crew = () => {
           </div>
         </div>
 
-        <div className="flex gap-4 pt-8">
+        <div className="flex flex-col lg:flex-row gap-4 pt-8">
           <GiveMedicine />
           <GiveGold />
         </div>
