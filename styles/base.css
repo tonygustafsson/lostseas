@@ -55,11 +55,7 @@ input.hide-number-arrows[type=number] {
 }
 
 .toast {
-    @apply transition-transform duration-300 ease-in-out z-50 transform translate-x-full;
-}
-
-.toast.open {
-    @apply translate-x-0;
+    @apply z-50;
 }
 
 .toast .alert {
@@ -75,7 +71,7 @@ input.hide-number-arrows[type=number] {
 }
 
 .toast .close {
-    @apply btn  btn-sm absolute right-6 top-6;
+    @apply btn btn-sm bg-transparent border-none hover:bg-gray-800 absolute right-6 top-6;
 }
 
 .modal-box {
