@@ -55,11 +55,11 @@ input.hide-number-arrows[type=number] {
 }
 
 .toast {
-    @apply z-50;
+    @apply z-50 whitespace-break-spaces bottom-auto !important;
 }
 
 .toast .alert {
-    @apply shadow-2xl drop-shadow-2xl border-[3px] rounded-lg bg-slate-800 p-6 pt-4 min-w-[400px];
+    @apply text-left shadow-2xl drop-shadow-2xl border-[3px] rounded-lg bg-slate-800 p-4 lg:p-6 pt-4 lg:min-w-[400px];
 }
 
 .toast .alert.alert-success {
@@ -67,11 +67,11 @@ input.hide-number-arrows[type=number] {
 }
 
 .toast .alert .title {
-    @apply text-xl font-bold;
+    @apply text-lg lg:text-xl font-bold;
 }
 
 .toast .close {
-    @apply btn btn-sm bg-transparent border-none hover:bg-gray-800 absolute right-6 top-6;
+    @apply btn btn-sm bg-transparent border-none hover:bg-gray-800 absolute right-4 top-6;
 }
 
 .modal-box {
