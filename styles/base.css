@@ -79,7 +79,7 @@ input.hide-number-arrows[type=number] {
 }
 
 .modal-box {
-    @apply text-white;
+    @apply border border-gray-600 text-white;
 }
 
 button[disabled] svg {
