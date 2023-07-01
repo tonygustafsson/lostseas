@@ -1,3 +1,4 @@
+import { m as motion } from "framer-motion"
 import Link from "next/link"
 import { GiCoins, GiPirateHat } from "react-icons/gi"
 
@@ -33,8 +34,19 @@ const CharacterCard = ({ character }: Props) => (
           <div className="stat-figure text-secondary">
             <GiCoins className="h-8 w-8" />
           </div>
-          <div className="stat-title">Gold</div>
-          <div className="stat-value text-xl">{character.gold}</div>
+          <p className="stat-title">Gold</p>
+          <motion.p
+            key={`character-gold-${character.gold}`}
+            initial={{ scale: 1, color: "#fff" }}
+            animate={{
+              scale: [null, 1.3, 1],
+              color: [null, "#fbbf24", "#fff"],
+              transition: { duration: 0.5 },
+            }}
+            className="stat-value text-xl w-fit"
+          >
+            {character.gold}
+          </motion.p>
         </div>
       </div>
 
