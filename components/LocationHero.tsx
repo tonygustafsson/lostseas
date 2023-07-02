@@ -73,10 +73,20 @@ const LocationHero = () => {
     <>
       <motion.div
         key={`${player?.character.town}s ${player?.character.location}`}
-        initial={{ opacity: 0.25 }}
+        initial={{
+          filter: "blur(8px)",
+          backgroundSize: "125%",
+          backgroundPosition: "50% 55%",
+        }}
         animate={{
-          opacity: 1,
-          transition: { duration: 0.5 },
+          filter: "blur(0px)",
+          backgroundSize: ["125%", "100%"],
+          backgroundPosition: ["50% 55%", "50% 50%"],
+          transition: {
+            filter: { duration: 0.35 },
+            backgroundSize: { duration: 1, type: "spring", stiffness: 20 },
+            backgroundPosition: { duration: 1, type: "spring", stiffness: 20 },
+          },
         }}
         className="hero rounded-lg rounded-b-none lg:max-h-[500px]"
         style={{
