@@ -1,5 +1,5 @@
 import { m as motion } from "framer-motion"
-import { Fragment } from "react"
+import { Fragment, useEffect } from "react"
 import { renderToString } from "react-dom/server"
 
 import Flag from "@/components/icons/Flag"
@@ -142,6 +142,8 @@ const Sea = () => {
       document.body.removeChild(tooltip)
     }
   }
+
+  useEffect(() => () => onMouseOutTown(), [])
 
   return (
     <>
