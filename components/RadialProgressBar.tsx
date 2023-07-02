@@ -1,3 +1,6 @@
+import { animate, m as motion } from "framer-motion"
+import { useEffect, useRef } from "react"
+
 type Props = {
   percentage: number
   strokeWidth?: number
@@ -28,8 +31,24 @@ const RadialProgressBar = ({
   strokeWidth = 12,
   className,
 }: Props) => {
+  const circleRef = useRef<SVGCircleElement>(null)
+
   const strokeDashoffset = CIRCUMFERENCE - (percentage / 100) * CIRCUMFERENCE
   const strokeColor = getStrokeColor(percentage)
+
+  useEffect(() => {
+    const circle = circleRef.current
+    if (!circle) return
+
+    const controls = animate(0, strokeDashoffset, {
+      duration: 1,
+      onUpdate(value) {
+        circle.setAttribute("stroke-dashoffset", value.toString())
+      },
+    })
+
+    return () => controls.stop()
+  }, [percentage, strokeDashoffset, circleRef])
 
   return (
     <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className={className}>
@@ -43,10 +62,10 @@ const RadialProgressBar = ({
         cy={CY}
       />
 
-      <circle
+      <motion.circle
+        animate={{ opacity: [0, 1], transition: { duration: 1 } }}
         strokeWidth={strokeWidth}
         strokeDasharray={CIRCUMFERENCE}
-        strokeDashoffset={strokeDashoffset}
         strokeLinecap="round"
         stroke="currentColor"
         fill="transparent"
@@ -55,6 +74,7 @@ const RadialProgressBar = ({
         cy={CY}
         className={strokeColor}
         style={{ rotate: "-85deg", transformOrigin: "50% 50%" }}
+        ref={circleRef}
       />
     </svg>
   )
