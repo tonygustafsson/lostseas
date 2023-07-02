@@ -1,11 +1,10 @@
 import { GetServerSideProps } from "next"
 import { FaUsers } from "react-icons/fa"
-import { TbMoodSmileBeam } from "react-icons/tb"
 
 import GiveGold from "@/components/crew/GiveGold"
 import GiveMedicine from "@/components/crew/GiveMedicine"
-import HeartIcon from "@/components/HeartIcon"
 import DefaultLayout from "@/components/layouts/default"
+import RadialProgressBar from "@/components/RadialProgressBar"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSideProps"
 
@@ -24,7 +23,7 @@ const Crew = () => {
         <div className="stats bg-transparent gap-2 mt-4">
           <div className="stat bg-gray-700">
             <div className="stat-figure text-secondary">
-              <FaUsers className="h-8 w-8" />
+              <FaUsers className="h-10 w-10" />
             </div>
             <div className="stat-title">Count</div>
             <div className="stat-value text-2xl">
@@ -34,7 +33,10 @@ const Crew = () => {
 
           <div className="stat bg-gray-700">
             <div className="stat-figure text-secondary">
-              <HeartIcon health={player?.crewMembers.health} />
+              <RadialProgressBar
+                percentage={player?.crewMembers.health}
+                className="w-12 h-12"
+              />
             </div>
             <div className="stat-title">Health</div>
             <div className="stat-value text-2xl">
@@ -44,7 +46,10 @@ const Crew = () => {
 
           <div className="stat bg-gray-700">
             <div className="stat-figure text-secondary">
-              <TbMoodSmileBeam className="h-8 w-8" />
+              <RadialProgressBar
+                percentage={player?.crewMembers.mood}
+                className="w-12 h-12"
+              />
             </div>
             <div className="stat-title">Mood</div>
             <div className="stat-value text-2xl">
