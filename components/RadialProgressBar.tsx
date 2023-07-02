@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react"
 type Props = {
   percentage: number
   strokeWidth?: number
+  showLabel?: boolean
   className?: string
 }
 
@@ -26,15 +27,29 @@ const getStrokeColor = (percentage: number) => {
   return "text-error"
 }
 
+const getFontPosition = (percentage: number) => {
+  if (percentage.toString().length === 1) {
+    return { x: CX - 8, y: CY + 5 }
+  }
+
+  if (percentage.toString().length === 3) {
+    return { x: CX - 19, y: CY + 5 }
+  }
+
+  return { x: CX - 14, y: CY + 5 }
+}
+
 const RadialProgressBar = ({
   percentage,
   strokeWidth = 12,
+  showLabel = true,
   className,
 }: Props) => {
   const circleRef = useRef<SVGCircleElement>(null)
 
   const strokeDashoffset = CIRCUMFERENCE - (percentage / 100) * CIRCUMFERENCE
   const strokeColor = getStrokeColor(percentage)
+  const fontPosition = getFontPosition(percentage)
 
   useEffect(() => {
     const circle = circleRef.current
@@ -76,6 +91,12 @@ const RadialProgressBar = ({
         style={{ rotate: "-85deg", transformOrigin: "50% 50%" }}
         ref={circleRef}
       />
+
+      {showLabel && (
+        <text x={fontPosition.x} y={fontPosition.y} fontSize={15} fill="white">
+          {percentage}%
+        </text>
+      )}
     </svg>
   )
 }

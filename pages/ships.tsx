@@ -3,6 +3,7 @@ import { GetServerSideProps } from "next"
 import DefaultLayout from "@/components/layouts/default"
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
+import RadialProgressBar from "@/components/RadialProgressBar"
 import RenameShipForm from "@/components/RenameShipForm"
 import { useModal } from "@/components/ui/Modal/context"
 import { SHIP_TYPES } from "@/constants/ship"
@@ -55,14 +56,16 @@ const Ships = () => {
                   <>
                     <p>{shipInfo.description}</p>
 
-                    <div className="flex flex-col gap-2">
-                      <div
-                        className={`badge badge-secondary badge-success ${
-                          ship.health < 75 ? "badge-warning" : ""
-                        } ${ship.health <= 30 ? "badge-error" : ""}`}
-                      >
-                        Health: {ship.health}%
+                    <div className="flex flex-col gap-4 mt-2">
+                      <div className="flex flex-col w-fit items-center gap-1">
+                        <p className="text-xs font-bold">Health</p>
+
+                        <RadialProgressBar
+                          percentage={ship.health}
+                          className="w-14 h-14"
+                        />
                       </div>
+
                       <div className="badge badge-secondary">
                         Created: {createdDate}
                       </div>

@@ -53,7 +53,7 @@ const Crew = () => {
             </div>
             <div className="stat-title">Mood</div>
             <div className="stat-value text-2xl">
-              {player?.crewMembers.mood}
+              {player?.crewMembers.mood}%
             </div>
           </div>
         </div>
