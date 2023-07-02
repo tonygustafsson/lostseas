@@ -82,6 +82,10 @@ button[disabled] svg {
     @apply text-gray-600;
 }
 
+.stats {
+    @apply flex flex-col lg:flex-row !important;
+}
+
 .stats .stat {
     @apply py-3;
 }
