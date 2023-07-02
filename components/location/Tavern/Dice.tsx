@@ -34,12 +34,12 @@ const TavernDice = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex flex-row join mb-8">
-        <div className="flex items-center">
+      <div className="flex flex-row lg:join mb-8">
+        <div className="flex flex-wrap items-center lg:gap-0">
           {DICE_PERCENTAGE_VALUES.map((value) => (
             <button
               key={`tavern-dice-bet-${value}`}
-              className={`btn join-item ${
+              className={`btn join-item w-1/2 lg:w-auto ${
                 betPercentage === value ? "btn-primary" : "bg-gray-800"
               }`}
               onClick={() => setBetPercentage(value)}
@@ -49,7 +49,7 @@ const TavernDice = () => {
           ))}
 
           <button
-            className="btn btn-lg btn-primary ml-4"
+            className="btn btn-primary mt-4 lg:mt-0 lg:ml-4 w-full lg:w-fit"
             disabled={disabled}
             onClick={handlePlayDice}
           >
