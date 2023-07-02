@@ -46,10 +46,10 @@ const RadialProgressBar = ({
   className,
 }: Props) => {
   const circleRef = useRef<SVGCircleElement>(null)
+  const textRef = useRef<SVGTextElement>(null)
 
   const strokeDashoffset = CIRCUMFERENCE - (percentage / 100) * CIRCUMFERENCE
   const strokeColor = getStrokeColor(percentage)
-  const fontPosition = getFontPosition(percentage)
 
   useEffect(() => {
     const circle = circleRef.current
@@ -59,6 +59,24 @@ const RadialProgressBar = ({
       duration: 1,
       onUpdate(value) {
         circle.setAttribute("stroke-dashoffset", value.toString())
+      },
+    })
+
+    return () => controls.stop()
+  }, [percentage, strokeDashoffset, circleRef])
+
+  useEffect(() => {
+    const text = textRef.current
+    if (!text) return
+
+    const controls = animate(0, percentage, {
+      duration: 0.5,
+      onUpdate(value) {
+        const fontPosition = getFontPosition(value)
+
+        text.textContent = `${Math.round(value).toString()}%`
+        text.setAttribute("x", fontPosition.x.toString())
+        text.setAttribute("y", fontPosition.y.toString())
       },
     })
 
@@ -92,11 +110,7 @@ const RadialProgressBar = ({
         ref={circleRef}
       />
 
-      {showLabel && (
-        <text x={fontPosition.x} y={fontPosition.y} fontSize={15} fill="white">
-          {percentage}%
-        </text>
-      )}
+      {showLabel && <motion.text ref={textRef} fontSize={15} fill="white" />}
     </svg>
   )
 }
