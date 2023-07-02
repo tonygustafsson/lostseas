@@ -25,7 +25,15 @@ html {
 }
 
 .sidebar-menu > li.active {
-    @apply bg-gray-800;
+    @apply bg-gray-800 text-primary;
+}
+
+.sidebar-menu svg {
+    transition: color 0.2s ease-in-out;
+}
+
+.sidebar-menu > li:hover svg {
+    @apply text-primary;
 }
 
 .sidebar-menu li:hover {
