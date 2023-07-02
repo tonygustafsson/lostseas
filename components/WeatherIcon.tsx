@@ -14,17 +14,17 @@ type Props = {
 const WeatherIcon = ({ className }: Props) => {
   const { data: player } = useGetPlayer()
 
-  const week = player?.character.week || 0
+  const day = player?.character.day || 0
 
-  if (week % 5 === 2) {
+  if (day % 5 === 2) {
     return <IoRainyOutline className={className} />
   }
 
-  if (week % 4 === 0 || week % 3 === 0) {
+  if (day % 4 === 0 || day % 3 === 0) {
     return <IoPartlySunnyOutline className={className} />
   }
 
-  if (week % 3 === 1) {
+  if (day % 3 === 1) {
     return <IoCloudyOutline className={className} />
   }
 

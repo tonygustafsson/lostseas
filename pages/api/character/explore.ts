@@ -1,4 +1,5 @@
 import { getCookie } from "cookies-next"
+import { randomInt } from "crypto"
 import { ref, remove } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
@@ -29,7 +30,7 @@ const explore = async (req: NextApiRequest, res: NextApiResponse) => {
     ...character,
     town,
     location,
-    week: character.week + 1,
+    day: character.day + randomInt(3, 9),
   }
 
   await saveCharacter(playerId, characterResult).catch((error) => {

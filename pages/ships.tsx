@@ -43,7 +43,7 @@ const Ships = () => {
         <div className="flex flex-wrap gap-4">
           {Object.values(player?.ships || []).map((ship) => {
             const shipInfo = SHIP_TYPES[ship.type]
-            const createdDate = getCurrentDate(ship.createdWeek)
+            const createdDate = getCurrentDate(ship.createdDay)
 
             if (!shipInfo) return null
 

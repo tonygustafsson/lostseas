@@ -9,7 +9,7 @@ export const sortShipsByDate = <T extends Ship>(items?: Record<string, T>) => {
   }
 
   const result = itemsArray
-    .sort((a, b) => a.createdWeek - b.createdWeek)
+    .sort((a, b) => a.createdDay - b.createdDay)
     .reduce(
       (acc, curr) => ((acc[curr.id] = curr), acc),
       {} as Record<string, T>

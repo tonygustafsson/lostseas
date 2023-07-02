@@ -8,7 +8,7 @@ type Character = {
   gold: number
   account?: number
   loan?: number
-  week: number
+  day: number
 }
 
 type CharacterCreation = Pick<

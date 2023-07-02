@@ -28,7 +28,7 @@ const DesktopMenu = ({ className }: Props) => {
       {player && (
         <>
           <CharacterCard character={player.character} />
-          <WeatherCard week={player.character.week} />
+          <WeatherCard day={player.character.day} />
         </>
       )}
     </div>

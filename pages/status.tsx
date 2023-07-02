@@ -16,7 +16,7 @@ const Status = () => {
   const { data: player } = useGetPlayer()
   const { setModal } = useModal()
 
-  const currentDate = getCurrentDate(player?.character.week || 0)
+  const currentDate = getCurrentDate(player?.character.day || 0)
 
   const openCharacterEditModal = () => {
     setModal({
@@ -119,7 +119,7 @@ const Status = () => {
                 <AiOutlineCalendar className="h-8 w-8" />
               </div>
               <div className="stat-title">Has been playing for</div>
-              <div className="stat-value">{player?.character.week} weeks</div>
+              <div className="stat-value">{player?.character.day} days</div>
             </div>
 
             <div className="stat bg-gray-700">

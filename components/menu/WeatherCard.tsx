@@ -3,11 +3,11 @@ import { getCurrentDate } from "@/utils/date"
 import WeatherIcon from "../WeatherIcon"
 
 type Props = {
-  week: Character["week"]
+  day: Character["day"]
 }
 
-const WeatherCard = ({ week }: Props) => {
-  const currentDate = getCurrentDate(week)
+const WeatherCard = ({ day }: Props) => {
+  const currentDate = getCurrentDate(day)
 
   return (
     <div className="card w-full bg-gray-800 shadow-lg mt-4 rounded-md">

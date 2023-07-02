@@ -2,7 +2,7 @@ import crypto from "crypto"
 
 import getShipName from "./names/getShipName"
 
-const createNewShip = (type: Ship["type"], playerWeek: Character["week"]) => {
+const createNewShip = (type: Ship["type"], playerDay: Character["day"]) => {
   const name = getShipName()
   const id = crypto.randomUUID()
 
@@ -11,7 +11,7 @@ const createNewShip = (type: Ship["type"], playerWeek: Character["week"]) => {
     name,
     type,
     health: 100,
-    createdWeek: playerWeek,
+    createdDay: playerDay,
   }
 
   return ship

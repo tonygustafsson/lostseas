@@ -3,7 +3,7 @@ type Ship = {
   name: string
   type: "Brig" | "Merchantman" | "Galleon" | "Frigate"
   health: number
-  createdWeek: Character["week"]
+  createdDay: Character["day"]
 }
 
 type CreateShipClientRequest = Omit<
