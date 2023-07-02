@@ -29,6 +29,11 @@ export const useGetPlayer = () =>
     },
     {
       enabled: !!playerId,
+      onSuccess: () => {
+        requestAnimationFrame(() =>
+          window.scrollTo({ top: 0, behavior: "smooth" })
+        )
+      },
     }
   )
 
