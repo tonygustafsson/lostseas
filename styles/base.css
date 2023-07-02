@@ -89,3 +89,7 @@ button[disabled] svg {
 .stats .stat {
     @apply py-3;
 }
+
+.stats .stat-value {
+    @apply text-lg lg:text-xl;
+}

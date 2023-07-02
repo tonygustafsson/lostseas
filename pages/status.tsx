@@ -50,9 +50,7 @@ const Status = () => {
                 />
               </div>
               <div className="stat-title">Nationality</div>
-              <div className="stat-value text-xl">
-                {player?.character.nationality}
-              </div>
+              <div className="stat-value">{player?.character.nationality}</div>
             </div>
 
             <div className="stat bg-gray-700">
@@ -60,7 +58,7 @@ const Status = () => {
                 <BiTime className="h-8 w-8" />
               </div>
               <div className="stat-title">Age</div>
-              <div className="stat-value text-xl">{player?.character.age}</div>
+              <div className="stat-value">{player?.character.age}</div>
             </div>
 
             <div className="stat bg-gray-700">
@@ -72,9 +70,7 @@ const Status = () => {
                 )}
               </div>
               <div className="stat-title">Gender</div>
-              <div className="stat-value text-xl">
-                {player?.character.gender}
-              </div>
+              <div className="stat-value">{player?.character.gender}</div>
             </div>
           </div>
 
@@ -93,7 +89,7 @@ const Status = () => {
                 <GiCoins className="h-8 w-8" />
               </div>
               <div className="stat-title">Gold</div>
-              <div className="stat-value text-xl">{player?.character.gold}</div>
+              <div className="stat-value">{player?.character.gold}</div>
             </div>
 
             {player?.character.account && (
@@ -102,9 +98,7 @@ const Status = () => {
                   <GiCoins className="h-8 w-8" />
                 </div>
                 <div className="stat-title">Bank account</div>
-                <div className="stat-value text-xl">
-                  {player?.character.account}
-                </div>
+                <div className="stat-value">{player?.character.account}</div>
               </div>
             )}
 
@@ -114,9 +108,7 @@ const Status = () => {
                   <GiCoins className="h-8 w-8" />
                 </div>
                 <div className="stat-title">Bank loan</div>
-                <div className="stat-value text-xl">
-                  {player?.character.loan}
-                </div>
+                <div className="stat-value">{player?.character.loan}</div>
               </div>
             )}
           </div>
@@ -127,9 +119,7 @@ const Status = () => {
                 <AiOutlineCalendar className="h-8 w-8" />
               </div>
               <div className="stat-title">Has been playing for</div>
-              <div className="stat-value text-xl">
-                {player?.character.week} weeks
-              </div>
+              <div className="stat-value">{player?.character.week} weeks</div>
             </div>
 
             <div className="stat bg-gray-700">
@@ -137,7 +127,7 @@ const Status = () => {
                 <AiOutlineCalendar className="h-8 w-8" />
               </div>
               <div className="stat-title">Current date</div>
-              <div className="stat-value text-xl">{currentDate}</div>
+              <div className="stat-value">{currentDate}</div>
             </div>
           </div>
 

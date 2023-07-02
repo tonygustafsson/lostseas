@@ -43,7 +43,7 @@ const CharacterCard = ({ character }: Props) => (
               color: [null, "#fbbf24", "#fff"],
               transition: { duration: 0.5 },
             }}
-            className="stat-value text-xl w-fit"
+            className="stat-value w-fit"
           >
             {character.gold}
           </motion.p>
