@@ -27,6 +27,9 @@ const SeaContent = ({ location, journey, day }: Props) => {
 
             <div className="flex justify-center items-center gap-3 mb-4">
               <RadialProgressBar
+                startPercentage={
+                  ((journey?.day - 1) / journey?.totalDays) * 100
+                }
                 percentage={(journey?.day / journey?.totalDays) * 100}
                 showLabel={false}
                 autoStrokeColor={false}

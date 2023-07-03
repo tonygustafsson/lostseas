@@ -6,6 +6,7 @@ type Props = {
   strokeWidth?: number
   autoStrokeColor?: boolean
   showLabel?: boolean
+  startPercentage?: number
   className?: string
 }
 
@@ -47,12 +48,18 @@ const RadialProgressBar = ({
   strokeWidth = 8,
   showLabel = true,
   autoStrokeColor = true,
+  startPercentage,
   className,
 }: Props) => {
   const circleRef = useRef<SVGCircleElement>(null)
   const textRef = useRef<SVGTextElement>(null)
 
-  const strokeDashoffset = CIRCUMFERENCE - (percentage / 100) * CIRCUMFERENCE
+  console.log({ percentage, startPercentage })
+
+  const strokeStartDashoffset = startPercentage
+    ? CIRCUMFERENCE - (startPercentage / 100) * CIRCUMFERENCE
+    : CIRCUMFERENCE
+  const strokeEndDashoffset = CIRCUMFERENCE - (percentage / 100) * CIRCUMFERENCE
   const strokeColor = autoStrokeColor
     ? getStrokeColor(percentage)
     : "currentColor"
@@ -62,7 +69,7 @@ const RadialProgressBar = ({
 
     if (!circle) return
 
-    const controls = animate(CIRCUMFERENCE, strokeDashoffset, {
+    const controls = animate(strokeStartDashoffset, strokeEndDashoffset, {
       duration: CIRCLE_ANIMATION_TIME,
       onUpdate(value) {
         circle.setAttribute("stroke-dashoffset", value.toString())
@@ -70,7 +77,7 @@ const RadialProgressBar = ({
     })
 
     return () => controls.stop()
-  }, [percentage, strokeDashoffset, circleRef])
+  }, [percentage, strokeEndDashoffset, circleRef, strokeStartDashoffset])
 
   useEffect(() => {
     const text = textRef.current
@@ -88,7 +95,7 @@ const RadialProgressBar = ({
     })
 
     return () => controls.stop()
-  }, [percentage, strokeDashoffset, circleRef])
+  }, [percentage, strokeEndDashoffset, circleRef])
 
   return (
     <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className={className}>
@@ -105,7 +112,7 @@ const RadialProgressBar = ({
       <motion.circle
         strokeWidth={strokeWidth}
         strokeDasharray={CIRCUMFERENCE}
-        strokeDashoffset={CIRCUMFERENCE}
+        strokeDashoffset={strokeStartDashoffset}
         strokeLinecap="round"
         stroke="currentColor"
         fill="transparent"
