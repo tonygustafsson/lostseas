@@ -54,8 +54,6 @@ const RadialProgressBar = ({
   const circleRef = useRef<SVGCircleElement>(null)
   const textRef = useRef<SVGTextElement>(null)
 
-  console.log({ percentage, startPercentage })
-
   const strokeStartDashoffset = startPercentage
     ? CIRCUMFERENCE - (startPercentage / 100) * CIRCUMFERENCE
     : CIRCUMFERENCE
