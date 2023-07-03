@@ -10,7 +10,16 @@ export default function DefaultLayout({
 }: {
   children: React.ReactNode
 }) {
-  const isFetching = useIsFetching()
+  const isFetching = useIsFetching({
+    predicate: (query) => {
+      if ((query.state.data as Player)?.character?.journey) {
+        // Prevent loading screen while on journey
+        return false
+      }
+
+      return true
+    },
+  })
 
   return (
     <>
