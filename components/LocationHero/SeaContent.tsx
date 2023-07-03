@@ -30,7 +30,6 @@ const SeaContent = ({ location, journey, day }: Props) => {
                 percentage={(journey?.day / journey?.totalDays) * 100}
                 showLabel={false}
                 autoStrokeColor={false}
-                strokeWidth={8}
                 className="w-16 h-16 text-info"
               />
               <div className="card">

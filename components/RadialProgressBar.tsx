@@ -15,6 +15,8 @@ const RADIAL = 30
 const CX = WIDTH / 2
 const CY = HEIGHT / 2
 const CIRCUMFERENCE = RADIAL * 2 * Math.PI
+const CIRCLE_ANIMATION_TIME = 1
+const TEXT_ANIMATION_TIME = 0.5
 
 const getStrokeColor = (percentage: number) => {
   if (percentage > 65) {
@@ -42,7 +44,7 @@ const getFontPosition = (percentage: number) => {
 
 const RadialProgressBar = ({
   percentage,
-  strokeWidth = 12,
+  strokeWidth = 8,
   showLabel = true,
   autoStrokeColor = true,
   className,
@@ -57,10 +59,11 @@ const RadialProgressBar = ({
 
   useEffect(() => {
     const circle = circleRef.current
+
     if (!circle) return
 
-    const controls = animate(0, strokeDashoffset, {
-      duration: 1,
+    const controls = animate(CIRCUMFERENCE, strokeDashoffset, {
+      duration: CIRCLE_ANIMATION_TIME,
       onUpdate(value) {
         circle.setAttribute("stroke-dashoffset", value.toString())
       },
@@ -74,7 +77,7 @@ const RadialProgressBar = ({
     if (!text) return
 
     const controls = animate(0, percentage, {
-      duration: 0.5,
+      duration: TEXT_ANIMATION_TIME,
       onUpdate(value) {
         const fontPosition = getFontPosition(value)
 
@@ -100,9 +103,9 @@ const RadialProgressBar = ({
       />
 
       <motion.circle
-        animate={{ opacity: [0, 1], transition: { duration: 1 } }}
         strokeWidth={strokeWidth}
         strokeDasharray={CIRCUMFERENCE}
+        strokeDashoffset={CIRCUMFERENCE}
         strokeLinecap="round"
         stroke="currentColor"
         fill="transparent"
