@@ -12,6 +12,7 @@ import {
 import { LOCATION_DESCRIPTION } from "@/constants/text"
 import { useCharacter } from "@/hooks/queries/useCharacter"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { getCurrentDate } from "@/utils/date"
 import { getTownsNationality } from "@/utils/townNation"
 
 import Flag from "./icons/Flag"
@@ -117,7 +118,20 @@ const LocationHero = () => {
             )}
 
             <p className="lg:mb-5 text-sm">
-              {LOCATION_DESCRIPTION[player?.character.location]}
+              {player?.character.location === "Sea" &&
+              player?.character.journey?.destination ? (
+                <>
+                  <p>
+                    Traveling to {player?.character.journey?.destination}, day{" "}
+                    {player?.character.journey?.day} of{" "}
+                    {player?.character.journey?.totalDays}
+                  </p>
+
+                  <p>{getCurrentDate(player.character.day)}</p>
+                </>
+              ) : (
+                LOCATION_DESCRIPTION[player?.character.location]
+              )}
             </p>
           </div>
         </div>

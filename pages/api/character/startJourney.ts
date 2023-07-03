@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getCharacter, saveCharacter } from "@/firebase/db"
 
-const travel = async (req: NextApiRequest, res: NextApiResponse) => {
+const startJourney = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
 
   if (!playerId) {
@@ -14,8 +14,6 @@ const travel = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const town: Town = req.body.town
-  const location: SeaLocation = "Harbor"
-
   const character = await getCharacter(playerId)
 
   if (character.location !== "Sea") {
@@ -25,11 +23,13 @@ const travel = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const characterResult = {
+  const characterResult: Character = {
     ...character,
-    town,
-    location,
-    day: character.day + randomInt(3, 9),
+    journey: {
+      destination: town,
+      day: 1,
+      totalDays: randomInt(3, 9),
+    },
   }
 
   await saveCharacter(playerId, characterResult).catch((error) => {
@@ -40,4 +40,4 @@ const travel = async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(200).json({ success: true })
 }
 
-export default travel
+export default startJourney

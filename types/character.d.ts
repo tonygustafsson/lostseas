@@ -5,6 +5,11 @@ type Character = {
   nationality: Nation
   town: Town | undefined
   location: TownLocation | SeaLocation
+  journey?: {
+    destination: Town
+    day: number
+    totalDays: number
+  }
   gold: number
   account?: number
   loan?: number

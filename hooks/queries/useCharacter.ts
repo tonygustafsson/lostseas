@@ -7,13 +7,38 @@ import { PLAYER_QUERY_KEY } from "./usePlayer"
 export const useCharacter = () => {
   const queryClient = useQueryClient()
 
-  const { mutate: travel, isLoading: isTraveling } = useMutation(
-    (data: { town: Town }) => apiRequest("/api/character/travel", data, "POST"),
+  const { mutate: startJourney, isLoading: isStartingJourney } = useMutation(
+    (data: { town: Town }) =>
+      apiRequest("/api/character/startJourney", data, "POST"),
     {
-      onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),
+      onSuccess: () => {
+        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+
+        setTimeout(() => continueJourney(), 2000)
+      },
       onError: (error) => console.error(error),
     }
   )
+
+  const { mutate: continueJourney, isLoading: isContinueingJourney } =
+    useMutation(
+      () => apiRequest("/api/character/continueJourney", null, "POST"),
+      {
+        onSuccess: ({
+          destinationReached,
+        }: Character["journey"] & {
+          success: boolean
+          destinationReached: boolean
+        }) => {
+          queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+
+          if (!destinationReached) {
+            setTimeout(() => continueJourney(), 2000)
+          }
+        },
+        onError: (error) => console.error(error),
+      }
+    )
 
   const { mutate: explore, isLoading: isExploring } = useMutation(
     () => apiRequest("/api/character/explore", null, "POST"),
@@ -44,8 +69,10 @@ export const useCharacter = () => {
   )
 
   return {
-    travel,
-    isTraveling,
+    startJourney,
+    isStartingJourney,
+    continueJourney,
+    isContinueingJourney,
     explore,
     isExploring,
     move,

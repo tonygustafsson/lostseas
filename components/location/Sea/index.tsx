@@ -4,6 +4,7 @@ import { renderToString } from "react-dom/server"
 
 import Flag from "@/components/icons/Flag"
 import { useCharacter } from "@/hooks/queries/useCharacter"
+import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 const mapWidth = 850
 const mapHeight = 540
@@ -102,10 +103,11 @@ const towns: TownLocations = {
 }
 
 const Sea = () => {
-  const { travel } = useCharacter()
+  const { data: player } = useGetPlayer()
+  const { startJourney } = useCharacter()
 
-  const handleTravel = (town: Town) => {
-    travel({ town })
+  const handleStartJourney = (town: Town) => {
+    startJourney({ town })
   }
 
   const onMouseOverTown = (e: React.MouseEvent<SVGImageElement>) => {
@@ -144,6 +146,10 @@ const Sea = () => {
   }
 
   useEffect(() => () => onMouseOutTown(), [])
+
+  if (player?.character.journey?.destination) {
+    return null
+  }
 
   return (
     <>
@@ -186,7 +192,7 @@ const Sea = () => {
                   y={y}
                   xlinkHref="img/map/town.svg"
                   className="cursor-pointer w-5 h-5"
-                  onClick={() => handleTravel(town as Town)}
+                  onClick={() => handleStartJourney(town as Town)}
                   data-town={town}
                   onMouseOver={onMouseOverTown}
                   onMouseOut={onMouseOutTown}
