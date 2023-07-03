@@ -85,7 +85,9 @@ const LocationHero = () => {
 
         {player.character.location === "Harbor" && <HarborActions />}
 
-        {player.character.location === "Sea" && <SeaActions />}
+        {player.character.location === "Sea" && (
+          <SeaActions journey={player?.character.journey} />
+        )}
       </div>
     </>
   )

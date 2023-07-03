@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react"
 type Props = {
   percentage: number
   strokeWidth?: number
+  autoStrokeColor?: boolean
   showLabel?: boolean
   className?: string
 }
@@ -43,13 +44,16 @@ const RadialProgressBar = ({
   percentage,
   strokeWidth = 12,
   showLabel = true,
+  autoStrokeColor = true,
   className,
 }: Props) => {
   const circleRef = useRef<SVGCircleElement>(null)
   const textRef = useRef<SVGTextElement>(null)
 
   const strokeDashoffset = CIRCUMFERENCE - (percentage / 100) * CIRCUMFERENCE
-  const strokeColor = getStrokeColor(percentage)
+  const strokeColor = autoStrokeColor
+    ? getStrokeColor(percentage)
+    : "currentColor"
 
   useEffect(() => {
     const circle = circleRef.current
