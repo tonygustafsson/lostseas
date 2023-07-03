@@ -4,6 +4,8 @@ import apiRequest from "@/utils/apiRequest"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
 
+const SEA_TRAVEL_SPEED = 3000 // Milliseconds per step
+
 export const useCharacter = () => {
   const queryClient = useQueryClient()
 
@@ -14,7 +16,7 @@ export const useCharacter = () => {
       onSuccess: () => {
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
 
-        setTimeout(() => continueJourney(), 2000)
+        setTimeout(() => continueJourney(), SEA_TRAVEL_SPEED)
       },
       onError: (error) => console.error(error),
     }
@@ -33,7 +35,7 @@ export const useCharacter = () => {
           queryClient.invalidateQueries([PLAYER_QUERY_KEY])
 
           if (!destinationReached) {
-            setTimeout(() => continueJourney(), 2000)
+            setTimeout(() => continueJourney(), SEA_TRAVEL_SPEED)
           }
         },
         onError: (error) => console.error(error),
