@@ -35,7 +35,8 @@ const SeaContent = ({ location, journey, day }: Props) => {
                 autoStrokeColor={false}
                 className="w-16 h-16 text-info"
               />
-              <div className="card">
+
+              <div className="card w-1/2">
                 <div className="card-body px-6 py-4">
                   <div className="flex items-center justify-between gap-3">
                     <span className="font-bold text-xl font-serif">
