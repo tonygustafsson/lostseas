@@ -28,13 +28,15 @@ export const useCharacter = () => {
       {
         onSuccess: ({
           destinationReached,
+          error,
         }: Character["journey"] & {
           success: boolean
           destinationReached: boolean
+          error?: string
         }) => {
           queryClient.invalidateQueries([PLAYER_QUERY_KEY])
 
-          if (!destinationReached) {
+          if (!error && !destinationReached) {
             setTimeout(() => continueJourney(), SEA_TRAVEL_SPEED)
           }
         },

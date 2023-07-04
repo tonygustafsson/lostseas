@@ -1,4 +1,7 @@
+import { useEffect } from "react"
+
 import { LOCATION_DESCRIPTION } from "@/constants/text"
+import { useCharacter } from "@/hooks/queries/useCharacter"
 import { getCurrentDate } from "@/utils/date"
 
 import RadialProgressBar from "../RadialProgressBar"
@@ -11,7 +14,14 @@ type Props = {
 }
 
 const SeaContent = ({ location, journey, day }: Props) => {
+  const { continueJourney } = useCharacter()
   const currentDate = getCurrentDate(day)
+
+  useEffect(() => {
+    if (journey?.ongoingJourney) {
+      continueJourney()
+    }
+  }, [continueJourney, journey?.ongoingJourney])
 
   return (
     <>

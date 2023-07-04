@@ -9,6 +9,7 @@ type Character = {
     destination: Town
     day: number
     totalDays: number
+    ongoingJourney?: true
   }
   gold: number
   account?: number
