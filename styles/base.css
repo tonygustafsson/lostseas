@@ -82,6 +82,10 @@ input.hide-number-arrows[type=number] {
     @apply btn btn-sm bg-transparent border-none hover:bg-gray-800 absolute right-4 top-6;
 }
 
+.modal {
+    @apply z-40 !important;
+}
+
 .modal-box {
     @apply border border-gray-600 text-white;
 }

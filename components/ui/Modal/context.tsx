@@ -6,13 +6,19 @@ import {
   useReducer,
 } from "react"
 
-export type ModalId = "move" | "qrscanner" | "editcharacter" | "renameship"
+export type ModalId =
+  | "map"
+  | "move"
+  | "qrscanner"
+  | "editcharacter"
+  | "renameship"
 
 export type ModalProps = {
   id: ModalId
   title: string
   content: React.ReactNode
   open?: boolean
+  fullWidth?: boolean
   onClose?: () => void
 }
 

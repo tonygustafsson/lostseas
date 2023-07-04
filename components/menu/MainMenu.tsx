@@ -8,16 +8,30 @@ import {
   GiPirateHat,
   GiShoonerSailboat,
 } from "react-icons/gi"
+import { RiTreasureMapLine } from "react-icons/ri"
 
 import { useGetPlayer, usePlayer } from "@/hooks/queries/usePlayer"
+
+import Map from "../Map"
+import { useModal } from "../ui/Modal/context"
 
 const MainMenu = () => {
   const { data: player } = useGetPlayer()
   const { pathname } = useRouter()
   const { logout } = usePlayer()
+  const { setModal } = useModal()
 
   const numberOfShips = Object.values(player?.ships ?? {}).length
   const numberOfInventoryItems = Object.values(player?.inventory ?? {}).length
+
+  const showMap = () => {
+    setModal({
+      id: "map",
+      title: "Pick your destination",
+      fullWidth: true,
+      content: <Map />,
+    })
+  }
 
   return (
     <ul className="sidebar-menu">
@@ -28,6 +42,13 @@ const MainMenu = () => {
               <GiPirateHat className="h-5 w-5" />
               Play
             </Link>
+          </li>
+
+          <li>
+            <button onClick={showMap}>
+              <RiTreasureMapLine className="h-5 w-5" />
+              Map
+            </button>
           </li>
 
           <li className="sidebar-menu-separator" aria-hidden></li>

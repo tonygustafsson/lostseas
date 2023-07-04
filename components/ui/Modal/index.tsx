@@ -27,9 +27,15 @@ const Modal = () => {
       {Object.values(modals).map((modal) => (
         <dialog
           key={`modal-${modal.id}`}
-          className={`modal ${modal.open ? "modal-open" : ""}`}
+          className={`modal ${modal.fullWidth ? "px-8" : ""} ${
+            modal.open ? "modal-open" : ""
+          }`}
         >
-          <div className="modal-box pt-4">
+          <div
+            className={`modal-box ${
+              modal.fullWidth ? "w-full max-w-none" : ""
+            } pt-4`}
+          >
             <h3 className="font-bold font-serif text-xl mb-6 text-center">
               {modal.title}
             </h3>

@@ -16,15 +16,10 @@ const startJourney = async (req: NextApiRequest, res: NextApiResponse) => {
   const town: Town = req.body.town
   const character = await getCharacter(playerId)
 
-  if (character.location !== "Sea") {
-    res.status(400).json({
-      error: `You cannot travel from ${character.location} to ${town}.`,
-    })
-    return
-  }
-
-  const characterResult: Character = {
+  const characterResult: Nullable<Character> = {
     ...character,
+    town: null,
+    location: "Sea",
     journey: {
       destination: town,
       day: 1,
