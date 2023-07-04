@@ -1,6 +1,7 @@
 import { m as motion } from "framer-motion"
 
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { getRandomInt } from "@/utils/random"
 import { getTownsNationality } from "@/utils/townNation"
 
 import HarborActions from "./HarborActions"
@@ -21,6 +22,11 @@ const LocationHero = () => {
       return `url("img/place/${location.toLowerCase()}/${nation?.toLowerCase()}.webp")`
     }
 
+    if (location === "Sea") {
+      const randomImageNumber = getRandomInt(1, 7)
+      return `url("img/place/sea${randomImageNumber}.webp")`
+    }
+
     return `url("img/place/${player?.character.location
       .replace(" ", "-")
       .toLowerCase()}.webp")`
@@ -31,7 +37,11 @@ const LocationHero = () => {
   return (
     <>
       <motion.div
-        key={`${player?.character.town}s ${player?.character.location}`}
+        key={
+          player?.character.location === "Sea"
+            ? `sea-${Math.random()}`
+            : `${player?.character.town}-${player?.character.location}`
+        }
         initial={{
           filter: "sepia(1)",
           backgroundPositionY: "55%",
