@@ -1,11 +1,6 @@
 import { AiOutlineShop } from "react-icons/ai"
 import { BsTools } from "react-icons/bs"
-import {
-  GiBank,
-  GiFarmer,
-  GiSmallFishingSailboat,
-  GiTavernSign,
-} from "react-icons/gi"
+import { GiBank, GiFarmer, GiTavernSign } from "react-icons/gi"
 
 import { useCharacter } from "@/hooks/queries/useCharacter"
 
@@ -36,9 +31,6 @@ const TownActions = ({ location }: Props) => {
     Shipyard: {
       icon: <BsTools className="text-cyan-600 w-5 h-5" />,
     },
-    Harbor: {
-      icon: <GiSmallFishingSailboat className="text-white w-6 h-6" />,
-    },
   }
 
   return (
@@ -58,7 +50,7 @@ const TownActions = ({ location }: Props) => {
             disabled={location === currentLocation}
           >
             {icon}
-            {currentLocation === "Harbor" ? "Set Sails" : currentLocation}
+            {currentLocation}
           </button>
         ))}
       </div>

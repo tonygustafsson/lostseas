@@ -4,8 +4,6 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getRandomInt } from "@/utils/random"
 import { getTownsNationality } from "@/utils/townNation"
 
-import HarborActions from "./HarborActions"
-import SeaActions from "./SeaActions"
 import SeaContent from "./SeaContent"
 import TownActions from "./TownActions"
 import TownContent from "./TownContent"
@@ -88,15 +86,8 @@ const LocationHero = () => {
       </motion.div>
 
       <div className="bg-gray-900 rounded-b-lg p-4 flex items-center flex-col pb-8">
-        {player?.character.location !== "Sea" &&
-          player?.character.location !== "Harbor" && (
-            <TownActions location={player?.character.location} />
-          )}
-
-        {player.character.location === "Harbor" && <HarborActions />}
-
-        {player.character.location === "Sea" && (
-          <SeaActions journey={player?.character.journey} />
+        {player?.character.location !== "Sea" && (
+          <TownActions location={player?.character.location} />
         )}
       </div>
     </>

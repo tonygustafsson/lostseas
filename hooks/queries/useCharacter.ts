@@ -44,14 +44,6 @@ export const useCharacter = () => {
       }
     )
 
-  const { mutate: explore, isLoading: isExploring } = useMutation(
-    () => apiRequest("/api/character/explore", null, "POST"),
-    {
-      onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),
-      onError: (error) => console.error(error),
-    }
-  )
-
   const { mutate: move, isLoading: isMoving } = useMutation(
     (data: { location: TownLocation | SeaLocation }) =>
       apiRequest("/api/character/move", data, "POST"),
@@ -77,8 +69,6 @@ export const useCharacter = () => {
     isStartingJourney,
     continueJourney,
     isContinueingJourney,
-    explore,
-    isExploring,
     move,
     isMoving,
     update,
