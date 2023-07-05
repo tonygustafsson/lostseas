@@ -29,7 +29,7 @@ const MainMenu = () => {
       id: "map",
       title: "Pick your destination",
       fullWidth: true,
-      content: <Map />,
+      content: <Map currentTown={player?.character.town} />,
     })
   }
 

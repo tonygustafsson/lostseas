@@ -15,7 +15,7 @@ type TownLocations = Record<
   { nation: Nation; x: number; y: number; textAlign?: "bottom" | "right" }
 >
 
-const towns: TownLocations = {
+const TOWNS: TownLocations = {
   "Charles Towne": {
     nation: "England",
     x: 388,
@@ -103,7 +103,11 @@ const towns: TownLocations = {
   },
 }
 
-const Map = () => {
+type Props = {
+  currentTown?: Town
+}
+
+const Map = ({ currentTown }: Props) => {
   const { startJourney } = useCharacter()
   const { removeModal } = useModal()
 
@@ -116,7 +120,7 @@ const Map = () => {
     // Create tooltip with town name
     const element = e.target as SVGImageElement
     const townName = element.getAttribute("data-town") as Town
-    const townInfo = towns[townName]
+    const townInfo = TOWNS[townName]
     const mouse = { x: e.pageX, y: e.pageY }
 
     const tooltip = document.createElement("div")
@@ -161,8 +165,16 @@ const Map = () => {
         className="w-[850px] lg:w-full lg:max-w-7xl"
       >
         <defs>
-          <filter x="0" y="0" width="1" height="1" id="solid">
+          <filter x="0" y="0" width="1" height="1" id="black">
             <feFlood floodColor="black" result="bg" />
+            <feMerge>
+              <feMergeNode in="bg" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+
+          <filter x="0" y="0" width="1" height="1" id="blue">
+            <feFlood floodColor="#003e91" result="bg" />
             <feMerge>
               <feMergeNode in="bg" />
               <feMergeNode in="SourceGraphic" />
@@ -176,39 +188,56 @@ const Map = () => {
           xlinkHref="img/map/spanish-main.jpg"
         />
 
-        {Object.entries(towns).map(([town, { x, y, textAlign = "bottom" }]) => (
-          <Fragment key={`sea-map-${town}`}>
-            <motion.image
-              key={`sea-map-town-${town}`}
-              whileHover={{
-                scale: 1.1,
-              }}
-              width="20"
-              height="20"
-              x={x}
-              y={y}
-              xlinkHref="img/map/town.svg"
-              className="cursor-pointer w-5 h-5"
-              onClick={() => handleStartJourney(town as Town)}
-              data-town={town}
-              onMouseOver={onMouseOverTown}
-              onMouseOut={onMouseOutTown}
-            />
+        {Object.entries(TOWNS).map(([town, { x, y, textAlign = "bottom" }]) => {
+          const isCurrentTown = town === currentTown
 
-            <text
-              x={textAlign === "bottom" ? x - town.length * 2 : x + 26}
-              y={textAlign === "bottom" ? y + 34 : y + 15}
-              fontSize="10px"
-              fontFamily="monospace"
-              className="bg-white"
-              fill="white"
-              opacity={0.8}
-              filter="url(#solid)"
-              style={{ userSelect: "none" }}
-              dangerouslySetInnerHTML={{ __html: `&nbsp;${town}&nbsp;` }}
-            />
-          </Fragment>
-        ))}
+          return (
+            <Fragment key={`sea-map-${town}`}>
+              <motion.image
+                key={`sea-map-town-${town}`}
+                whileHover={{
+                  scale: !isCurrentTown ? 1.1 : 1,
+                }}
+                width="20"
+                height="20"
+                x={x}
+                y={y}
+                xlinkHref="img/map/town.svg"
+                className={`w-5 h-5 ${!isCurrentTown ? "cursor-pointer" : ""}`}
+                onClick={() =>
+                  !isCurrentTown && handleStartJourney(town as Town)
+                }
+                data-town={town}
+                onMouseOver={!isCurrentTown ? onMouseOverTown : undefined}
+                onMouseOut={onMouseOutTown}
+              />
+
+              <text
+                x={textAlign === "bottom" ? x - town.length * 2 : x + 26}
+                y={textAlign === "bottom" ? y + 34 : y + 15}
+                fontSize="10px"
+                fontFamily="monospace"
+                className="bg-white"
+                fill="white"
+                opacity={0.8}
+                filter={town === currentTown ? "url(#blue)" : "url(#black)"}
+                style={{ userSelect: "none" }}
+                dangerouslySetInnerHTML={{ __html: `&nbsp;${town}&nbsp;` }}
+              />
+            </Fragment>
+          )
+        })}
+
+        {currentTown && (
+          <image
+            width="20"
+            height="20"
+            filter="url(#blue)"
+            x={TOWNS[currentTown].x - 23}
+            y={TOWNS[currentTown].y + 1}
+            xlinkHref="img/map/ship.svg"
+          />
+        )}
       </svg>
     </div>
   )
