@@ -45,7 +45,7 @@ const MainMenu = () => {
           </li>
 
           <li>
-            <button onClick={showMap}>
+            <button onClick={showMap} disabled={!!player.character.journey}>
               <RiTreasureMapLine className="h-5 w-5" />
               Map
             </button>

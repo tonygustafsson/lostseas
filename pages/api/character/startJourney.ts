@@ -16,6 +16,11 @@ const startJourney = async (req: NextApiRequest, res: NextApiResponse) => {
   const town: Town = req.body.town
   const character = await getCharacter(playerId)
 
+  if (character.journey) {
+    res.status(500).json({ error: "Character is already on a journey" })
+    return
+  }
+
   const characterResult: Nullable<Character> = {
     ...character,
     town: null,

@@ -32,7 +32,11 @@ html {
     transition: color 0.2s ease-in-out;
 }
 
-.sidebar-menu > li:hover svg {
+.sidebar-menu > li button[disabled] {
+    @apply text-gray-500 cursor-not-allowed;
+}
+
+.sidebar-menu > li:hover button:not([disabled]) svg {
     @apply text-primary;
 }
 
