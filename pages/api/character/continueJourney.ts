@@ -2,7 +2,7 @@ import { getCookie } from "cookies-next"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { getCharacter, saveCharacter } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
 
 const continueJourney = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
@@ -12,23 +12,23 @@ const continueJourney = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const character = await getCharacter(playerId)
+  const player = await getPlayer(playerId)
 
-  if (character.location !== "Sea") {
+  if (player.character.location !== "Sea") {
     res.status(500).json({
-      error: `You cannot journey from ${character.location}.`,
+      error: `You cannot journey from ${player.character.location}.`,
     })
     return
   }
 
-  if (!character.journey?.destination) {
+  if (!player.character.journey?.destination) {
     res.status(500).json({
       error: "Not a valid journey destination.",
     })
     return
   }
 
-  if (character.journey?.day > character.journey?.totalDays) {
+  if (player.character.journey?.day > player.character.journey?.totalDays) {
     res.status(500).json({
       error: "Your journey is already finished.",
     })
@@ -36,34 +36,46 @@ const continueJourney = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const destinationReached =
-    character.journey.day + 1 === character.journey.totalDays
+    player.character.journey.day + 1 === player.character.journey.totalDays
+
+  const shipMeeting = Math.random() > 0.25
+  /*   const mannedCannons = Math.floor()
+  const shipMeetingState = shipMeeting
+    ? createMeetingShip(player.ship.cannons)
+    : null */
 
   if (destinationReached) {
     // Finish journey
-    const characterResult: Nullable<Character> = {
-      ...character,
-      town: character.journey.destination,
-      location: "Harbor",
-      day: character.day + 1,
-      journey: null,
+    const playerResult: Player = {
+      ...player,
+      character: {
+        ...player.character,
+        town: player.character.journey.destination,
+        location: "Harbor",
+        day: player.character.day + 1,
+        journey: null,
+      },
     }
 
-    await saveCharacter(playerId, characterResult).catch((error) => {
+    await savePlayer(playerId, playerResult).catch((error) => {
       res.status(500).json({ error })
       return
     })
   } else {
     // Continue Journey
-    const characterResult: Character = {
-      ...character,
-      day: character.day + 1,
-      journey: {
-        ...character.journey,
-        day: character.journey.day + 1,
+    const playerResult: Player = {
+      ...player,
+      character: {
+        ...player.character,
+        day: player.character.day + 1,
+        journey: {
+          ...player.character.journey,
+          day: player.character.journey.day + 1,
+        },
       },
     }
 
-    await saveCharacter(playerId, characterResult).catch((error) => {
+    await savePlayer(playerId, playerResult).catch((error) => {
       res.status(500).json({ error })
       return
     })
@@ -71,9 +83,9 @@ const continueJourney = async (req: NextApiRequest, res: NextApiResponse) => {
 
   res.status(200).json({
     success: true,
-    day: character.journey.day + 1,
-    totalDays: character.journey.totalDays,
-    destination: character.journey.destination,
+    day: player.character.journey.day + 1,
+    totalDays: player.character.journey.totalDays,
+    destination: player.character.journey.destination,
     destinationReached,
   })
 }

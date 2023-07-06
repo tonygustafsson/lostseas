@@ -1,7 +1,9 @@
+type ShipType = "Brig" | "Merchantman" | "Galleon" | "Frigate"
+
 type Ship = {
   id: string
   name: string
-  type: "Brig" | "Merchantman" | "Galleon" | "Frigate"
+  type: ShipType
   health: number
   createdDay: Character["day"]
 }
