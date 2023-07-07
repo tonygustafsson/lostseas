@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { createMeetingShip } from "@/utils/shipMeeting"
 
 const continueJourney = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
@@ -38,11 +39,11 @@ const continueJourney = async (req: NextApiRequest, res: NextApiResponse) => {
   const destinationReached =
     player.character.journey.day + 1 === player.character.journey.totalDays
 
-  const shipMeeting = Math.random() > 0.25
-  /*   const mannedCannons = Math.floor()
-  const shipMeetingState = shipMeeting
-    ? createMeetingShip(player.ship.cannons)
-    : null */
+  const shipMeeting = Math.random() < 0.33
+  const mannedCannons = Math.floor(
+    player.crewMembers.count / player.inventory.cannons
+  )
+  const shipMeetingState = shipMeeting ? createMeetingShip(mannedCannons) : null
 
   if (destinationReached) {
     // Finish journey
@@ -54,7 +55,7 @@ const continueJourney = async (req: NextApiRequest, res: NextApiResponse) => {
         location: "Harbor",
         day: player.character.day + 1,
         journey: null,
-      },
+      } as Omit<Character, "journey">,
     }
 
     await savePlayer(playerId, playerResult).catch((error) => {
@@ -73,6 +74,12 @@ const continueJourney = async (req: NextApiRequest, res: NextApiResponse) => {
           day: player.character.journey.day + 1,
         },
       },
+      locationStates: {
+        ...player.locationStates,
+        ...(shipMeetingState && {
+          sea: { shipMeeting: shipMeetingState },
+        }),
+      },
     }
 
     await savePlayer(playerId, playerResult).catch((error) => {
@@ -87,6 +94,7 @@ const continueJourney = async (req: NextApiRequest, res: NextApiResponse) => {
     totalDays: player.character.journey.totalDays,
     destination: player.character.journey.destination,
     destinationReached,
+    shipMeetingState,
   })
 }
 

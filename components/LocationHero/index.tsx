@@ -5,6 +5,8 @@ import { getRandomInt } from "@/utils/random"
 import { getTownsNationality } from "@/utils/townNation"
 
 import SeaContent from "./SeaContent"
+import ShipMeetingActions from "./ShipMeetingActions"
+import ShipMeetingContent from "./ShipMeetingContent"
 import TownActions from "./TownActions"
 import TownContent from "./TownContent"
 
@@ -13,16 +15,22 @@ const LocationHero = () => {
 
   const getBackgroundImage = (
     town: Character["town"],
-    location: Character["location"]
+    location: Character["location"],
+    shipMeeting?: ShipMeetingState
   ) => {
     if (location === "Shop") {
       const nation = getTownsNationality(town)
       return `url("img/place/${location.toLowerCase()}/${nation?.toLowerCase()}.webp")`
     }
 
+    if (location === "Sea" && shipMeeting) {
+      const randomImageNumber = getRandomInt(1, 6)
+      return `url("img/place/ship-meeting/ship-meeting${randomImageNumber}.webp")`
+    }
+
     if (location === "Sea") {
       const randomImageNumber = getRandomInt(1, 7)
-      return `url("img/place/sea${randomImageNumber}.webp")`
+      return `url("img/place/sea/sea${randomImageNumber}.webp")`
     }
 
     return `url("img/place/${player?.character.location
@@ -59,7 +67,8 @@ const LocationHero = () => {
         style={{
           backgroundImage: getBackgroundImage(
             player?.character.town,
-            player?.character.location
+            player?.character.location,
+            player?.locationStates?.sea?.shipMeeting
           ),
         }}
       >
@@ -74,13 +83,21 @@ const LocationHero = () => {
               />
             )}
 
-            {player?.character.location === "Sea" && (
-              <SeaContent
-                location={player?.character.location}
-                journey={player?.character.journey}
-                day={player?.character.day}
-              />
-            )}
+            {player?.character.location === "Sea" &&
+              !player?.locationStates?.sea?.shipMeeting && (
+                <SeaContent
+                  location={player?.character.location}
+                  journey={player?.character.journey}
+                  day={player?.character.day}
+                />
+              )}
+
+            {player?.character.location === "Sea" &&
+              player?.locationStates?.sea?.shipMeeting && (
+                <ShipMeetingContent
+                  shipMeeting={player?.locationStates?.sea?.shipMeeting}
+                />
+              )}
           </div>
         </div>
       </motion.div>
@@ -89,6 +106,9 @@ const LocationHero = () => {
         {player?.character.location !== "Sea" && (
           <TownActions location={player?.character.location} />
         )}
+
+        {player?.character.location === "Sea" &&
+          player?.locationStates?.sea?.shipMeeting && <ShipMeetingActions />}
       </div>
     </>
   )
