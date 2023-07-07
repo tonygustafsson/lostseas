@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getCharacter, saveCharacter } from "@/firebase/db"
 
-const startJourney = async (req: NextApiRequest, res: NextApiResponse) => {
+const seaStartJourney = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
 
   if (!playerId) {
@@ -40,4 +40,4 @@ const startJourney = async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(200).json({ success: true })
 }
 
-export default startJourney
+export default seaStartJourney

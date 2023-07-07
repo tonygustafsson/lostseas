@@ -3,7 +3,7 @@ import { Fragment, useEffect } from "react"
 import { renderToString } from "react-dom/server"
 
 import Flag from "@/components/icons/Flag"
-import { useCharacter } from "@/hooks/queries/useCharacter"
+import { useSea } from "@/hooks/queries/useSea"
 
 import { useModal } from "./ui/Modal/context"
 
@@ -108,7 +108,7 @@ type Props = {
 }
 
 const Map = ({ currentTown }: Props) => {
-  const { startJourney } = useCharacter()
+  const { startJourney } = useSea()
   const { removeModal } = useModal()
 
   const handleStartJourney = (town: Town) => {

@@ -5,7 +5,10 @@ import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
 import { createMeetingShip } from "@/utils/shipMeeting"
 
-const continueJourney = async (req: NextApiRequest, res: NextApiResponse) => {
+const seaContinueJourney = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
 
   if (!playerId) {
@@ -98,4 +101,4 @@ const continueJourney = async (req: NextApiRequest, res: NextApiResponse) => {
   })
 }
 
-export default continueJourney
+export default seaContinueJourney
