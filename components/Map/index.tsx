@@ -30,6 +30,15 @@ const Map = ({ currentTown }: Props) => {
     startJourney({ town })
   }
 
+  const onCurrentTownLoad = (townImage: SVGImageElement) =>
+    setTimeout(() => {
+      townImage?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "center",
+      })
+    }, 100)
+
   const onMouseOverTown = (
     e: React.MouseEvent<SVGImageElement>,
     townName: Town
@@ -57,7 +66,7 @@ const Map = ({ currentTown }: Props) => {
         xmlnsXlink="http://www.w3.org/1999/xlink"
         viewBox={`0 0 ${mapWidth} ${mapHeight}`}
         preserveAspectRatio="xMinYMin meet"
-        className="w-[850px] lg:w-full lg:max-w-7xl"
+        className="w-[1000px] lg:w-full lg:max-w-7xl"
       >
         <defs>
           <filter x="0" y="0" width="1" height="1" id="black">
@@ -102,6 +111,11 @@ const Map = ({ currentTown }: Props) => {
                   className={`w-5 h-5 ${
                     !isCurrentTown ? "cursor-pointer" : ""
                   }`}
+                  onLoad={(e) => {
+                    if (isCurrentTown) {
+                      onCurrentTownLoad(e.currentTarget)
+                    }
+                  }}
                   onClick={() =>
                     !isCurrentTown && handleStartJourney(townName as Town)
                   }

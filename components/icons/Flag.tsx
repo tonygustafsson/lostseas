@@ -53,22 +53,22 @@ const Flag = ({ nation, size = 32, className }: Props) => {
         <>
           <path d="M0 0h640v480H0z" />
           <path
-            fill-rule="evenodd"
+            fillRule="evenodd"
             stroke="#000"
-            stroke-width="1.3"
+            strokeWidth="1.3"
             d="M449 320a57 57 0 0 0-26 49c0 13 5 21 9 21 4-1 9-5 17-14"
           />
           <path
-            fill-rule="evenodd"
+            fillRule="evenodd"
             stroke="#000"
-            stroke-linejoin="bevel"
-            stroke-width="1.3"
+            strokeLinejoin="bevel"
+            strokeWidth="1.3"
             d="M191 321a57 57 0 0 1 26 49c0 13-5 21-9 21-4-1-9-5-17-14"
           />
           <path
-            fill-rule="evenodd"
+            fillRule="evenodd"
             stroke="#000"
-            stroke-width="1.3"
+            strokeWidth="1.3"
             d="M366 264c13-3 26-4 40-6 17-4 26 16 21 31-6 13-14 25-24 37-8 8-17 10-25 7-7-2-14-7-21-17l-9-23c-3-10 1-25 18-29Zm-92 0c-13-3-26-4-40-6-17-4-26 16-21 31 6 13 14 25 24 37 8 8 17 10 25 7 7-2 14-7 21-17l9-23c3-10-1-25-18-29Zm0 0"
           />
           <path
