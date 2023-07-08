@@ -44,7 +44,7 @@ const Map = ({ currentTown }: Props) => {
         block: "center",
         inline: "center",
       })
-    }, 100)
+    }, 250)
 
   const onMouseOverTown = (
     e: React.MouseEvent<SVGImageElement>,

@@ -35,7 +35,7 @@ const SeaContent = ({ location, journey, day }: Props) => {
               {journey?.totalDays}
             </p>
 
-            <div className="flex justify-center items-center gap-3 mb-4">
+            <div className="flex justify-center items-center gap-6 mb-4">
               <RadialProgressBar
                 startPercentage={
                   ((journey?.day - 1) / journey?.totalDays) * 100
@@ -46,16 +46,11 @@ const SeaContent = ({ location, journey, day }: Props) => {
                 className="w-16 h-16 text-info"
               />
 
-              <div className="card w-1/2">
-                <div className="card-body px-6 py-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="font-bold text-xl font-serif">
-                      {currentDate}
-                    </span>
-                    <WeatherIcon className="h-8 w-8 text-info" />
-                  </div>
-                </div>
-              </div>
+              <span className="font-bold text-base lg:text-xl font-serif">
+                {currentDate}
+              </span>
+
+              <WeatherIcon className="h-10 w-10 text-info" />
             </div>
           </>
         ) : (

@@ -41,10 +41,10 @@ const MobileBottomNav = ({ setMobileMenuOpen }: Props) => {
         Menu
       </button>
 
-      <Link href="/inventory" onClick={showMap}>
+      <button onClick={showMap} disabled={!!player?.character.journey}>
         <RiTreasureMapLine className="h-5 w-5" />
         Map
-      </Link>
+      </button>
     </div>
   )
 }
