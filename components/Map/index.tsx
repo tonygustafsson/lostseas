@@ -105,7 +105,7 @@ const Map = ({ currentTown }: Props) => {
                   onClick={() =>
                     !isCurrentTown && handleStartJourney(townName as Town)
                   }
-                  onMouseOver={
+                  onMouseMove={
                     !isCurrentTown
                       ? (e) => onMouseOverTown(e, townName as Town)
                       : undefined
