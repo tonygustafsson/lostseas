@@ -11,6 +11,16 @@ type LocationState = {
   docks?: {
     leaveErrors: true | undefined | null
   }
+  sea?: {
+    shipMeeting: ShipMeetingState
+  }
+}
+
+type ShipMeetingState = {
+  nation: Nation | "Pirate"
+  shipType: ShipType
+  crewMembers: number
+  cannons: number
 }
 
 type LocationStateMarketItems = Record<

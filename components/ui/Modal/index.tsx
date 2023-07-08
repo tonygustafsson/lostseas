@@ -27,12 +27,12 @@ const Modal = () => {
       {Object.values(modals).map((modal) => (
         <dialog
           key={`modal-${modal.id}`}
-          className={`modal ${modal.fullWidth ? "px-8" : ""} ${
+          className={`modal ${modal.fullWidth ? "px-2 lg:px-8" : ""} ${
             modal.open ? "modal-open" : ""
           }`}
         >
           <div
-            className={`modal-box ${
+            className={`modal-box px-2 lg:px-6 ${
               modal.fullWidth ? "w-full max-w-none" : ""
             } pt-4`}
           >
