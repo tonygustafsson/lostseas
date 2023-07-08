@@ -30,15 +30,15 @@ const Tooltip = ({
 
   return createPortal(
     <div
-      className={`fixed z-50 bg-slate-800 text-white py-1 px-4 flex flex-col items-start ${className}`}
+      className={`fixed z-50 rounded opacity-90 bg-slate-800 text-white py-1 px-4 flex flex-col items-start ${className}`}
       style={{
         top,
         left,
       }}
     >
       <div className="flex items-center gap-2">
-        <Flag nation={destinationInfo.nation} className="w-5 h-5" />
-        <p>Visit {destination}</p>
+        <Flag nation={destinationInfo.nation} className="w-6 h-6" />
+        <p className="font-bold">{destination}</p>
       </div>
 
       <p className="text-sm">Nation: {destinationInfo.nation}</p>

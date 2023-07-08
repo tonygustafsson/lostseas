@@ -69,7 +69,7 @@ const Map = ({ currentTown }: Props) => {
           </filter>
 
           <filter x="0" y="0" width="1" height="1" id="blue">
-            <feFlood floodColor="#003e91" result="bg" />
+            <feFlood floodColor="#00435c" result="bg" />
             <feMerge>
               <feMergeNode in="bg" />
               <feMergeNode in="SourceGraphic" />
@@ -120,10 +120,8 @@ const Map = ({ currentTown }: Props) => {
                   fontFamily="monospace"
                   className="bg-white"
                   fill="white"
-                  opacity={0.8}
-                  filter={
-                    townName === currentTown ? "url(#blue)" : "url(#black)"
-                  }
+                  opacity={isCurrentTown ? 0.9 : 0.8}
+                  filter={isCurrentTown ? "url(#blue)" : "url(#black)"}
                   style={{ userSelect: "none" }}
                   dangerouslySetInnerHTML={{
                     __html: `&nbsp;${townName}&nbsp;`,
