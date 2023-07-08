@@ -19,7 +19,7 @@ export const LOCATIONS = {
   sea: "Sea",
 } as Record<string, TownLocation | SeaLocation>
 
-type TownLocations = Record<
+export type TownLocations = Record<
   Town,
   {
     nation: Nation

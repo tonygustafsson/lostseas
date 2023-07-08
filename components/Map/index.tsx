@@ -1,6 +1,5 @@
 import { m as motion } from "framer-motion"
-import { Fragment, useEffect } from "react"
-import { renderToString } from "react-dom/server"
+import { Fragment, useState } from "react"
 
 import { TOWN_INFO } from "@/constants/locations"
 import { useSea } from "@/hooks/queries/useSea"
@@ -19,6 +18,13 @@ const Map = ({ currentTown }: Props) => {
   const { startJourney } = useSea()
   const { removeModal } = useModal()
 
+  const [tooltipInfo, setTooltipInfo] = useState<{
+    show: boolean
+    top?: number
+    left?: number
+    destination?: Town
+  }>({ show: false })
+
   const handleStartJourney = (town: Town) => {
     removeModal("map")
     startJourney({ town })
@@ -26,36 +32,22 @@ const Map = ({ currentTown }: Props) => {
 
   const onMouseOverTown = (
     e: React.MouseEvent<SVGImageElement>,
-    currentTown: Props["currentTown"]
+    townName: Town
   ) => {
-    // Create tooltip with town name
-    const element = e.target as SVGImageElement
-    const townName = element.getAttribute("data-town") as Town
-    const locationInfo = currentTown ? TOWN_INFO[currentTown] : undefined
-    const distance = currentTown ? locationInfo?.distanceTo?.[townName] : 0
-    const mouse = { x: e.pageX, y: e.pageY }
+    const mouse = { x: e.clientX, y: e.clientY }
 
-    const tooltip = document.createElement("div")
-    tooltip.classList.add("tooltip")
-    tooltip.style.position = "absolute"
-    tooltip.style.top = `${mouse.y + 20}px`
-    tooltip.style.left = `${mouse.x + 20}px`
-
-    const tooltipContent = <Tooltip townName={townName} distance={distance} />
-    tooltip.innerHTML = renderToString(tooltipContent)
-
-    document.body.appendChild(tooltip)
+    setTooltipInfo({
+      ...tooltipInfo,
+      show: true,
+      top: mouse.y + 20,
+      left: mouse.x + 20,
+      destination: townName,
+    })
   }
 
   const onMouseOutTown = () => {
-    // Remove tooltip
-    const tooltip = document.querySelector(".tooltip")
-    if (tooltip) {
-      document.body.removeChild(tooltip)
-    }
+    setTooltipInfo({ show: false })
   }
-
-  useEffect(() => () => onMouseOutTown(), [])
 
   return (
     <div className="lg:max-w-7xl overflow-x-auto mx-auto opacity-80">
@@ -92,13 +84,13 @@ const Map = ({ currentTown }: Props) => {
         />
 
         {Object.entries(TOWN_INFO).map(
-          ([town, { x, y, textAlign = "bottom" }]) => {
-            const isCurrentTown = town === currentTown
+          ([townName, { x, y, textAlign = "bottom" }]) => {
+            const isCurrentTown = townName === currentTown
 
             return (
-              <Fragment key={`sea-map-${town}`}>
+              <Fragment key={`sea-map-${townName}`}>
                 <motion.image
-                  key={`sea-map-town-${town}`}
+                  key={`sea-map-town-${townName}`}
                   whileHover={{
                     scale: !isCurrentTown ? 1.1 : 1,
                   }}
@@ -111,28 +103,31 @@ const Map = ({ currentTown }: Props) => {
                     !isCurrentTown ? "cursor-pointer" : ""
                   }`}
                   onClick={() =>
-                    !isCurrentTown && handleStartJourney(town as Town)
+                    !isCurrentTown && handleStartJourney(townName as Town)
                   }
-                  data-town={town}
                   onMouseOver={
                     !isCurrentTown
-                      ? (e) => onMouseOverTown(e, currentTown)
+                      ? (e) => onMouseOverTown(e, townName as Town)
                       : undefined
                   }
                   onMouseOut={onMouseOutTown}
                 />
 
                 <text
-                  x={textAlign === "bottom" ? x - town.length * 2 : x + 26}
+                  x={textAlign === "bottom" ? x - townName.length * 2 : x + 26}
                   y={textAlign === "bottom" ? y + 34 : y + 15}
                   fontSize="10px"
                   fontFamily="monospace"
                   className="bg-white"
                   fill="white"
                   opacity={0.8}
-                  filter={town === currentTown ? "url(#blue)" : "url(#black)"}
+                  filter={
+                    townName === currentTown ? "url(#blue)" : "url(#black)"
+                  }
                   style={{ userSelect: "none" }}
-                  dangerouslySetInnerHTML={{ __html: `&nbsp;${town}&nbsp;` }}
+                  dangerouslySetInnerHTML={{
+                    __html: `&nbsp;${townName}&nbsp;`,
+                  }}
                 />
               </Fragment>
             )
@@ -150,6 +145,16 @@ const Map = ({ currentTown }: Props) => {
           />
         )}
       </svg>
+
+      {tooltipInfo && (
+        <Tooltip
+          show={tooltipInfo.show}
+          currentTown={currentTown}
+          destination={tooltipInfo.destination}
+          top={tooltipInfo.top}
+          left={tooltipInfo.left}
+        />
+      )}
     </div>
   )
 }
