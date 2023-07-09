@@ -29,7 +29,13 @@ export const getGoldEffectiveness = (
 export const getMannedCannons = (
   crewMembers: CrewMembers["count"],
   cannons: Inventory["cannons"]
-) => Math.floor(crewMembers / cannons)
+) => {
+  if (Math.floor(crewMembers / 2) > cannons) {
+    return cannons
+  }
+
+  return Math.floor(crewMembers / 2)
+}
 
 export const decreaseCrewHealth = (
   currentHealth: CrewMembers["health"],
