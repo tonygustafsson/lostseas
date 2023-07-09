@@ -4,6 +4,9 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getRandomInt } from "@/utils/random"
 import { getTownsNationality } from "@/utils/townNation"
 
+import AttackFailureContent from "./AttackFailureContent"
+import AttackSuccessContent from "./AttackSuccessContent"
+import PostAttackActions from "./PostAttackActions"
 import SeaContent from "./SeaContent"
 import ShipMeetingActions from "./ShipMeetingActions"
 import ShipMeetingContent from "./ShipMeetingContent"
@@ -84,7 +87,8 @@ const LocationHero = () => {
             )}
 
             {player?.character.location === "Sea" &&
-              !player?.locationStates?.sea?.shipMeeting && (
+              !player?.locationStates?.sea?.shipMeeting &&
+              !player?.locationStates?.sea?.attackResults && (
                 <SeaContent
                   location={player?.character.location}
                   journey={player?.character.journey}
@@ -98,6 +102,17 @@ const LocationHero = () => {
                   shipMeeting={player?.locationStates?.sea?.shipMeeting}
                 />
               )}
+
+            {player?.character.location === "Sea" &&
+              player?.locationStates?.sea?.attackResults?.won && (
+                <AttackSuccessContent />
+              )}
+
+            {player?.character.location === "Sea" &&
+              player?.locationStates?.sea?.attackResults &&
+              !player?.locationStates?.sea?.attackResults?.won && (
+                <AttackFailureContent />
+              )}
           </div>
         </div>
       </motion.div>
@@ -109,6 +124,9 @@ const LocationHero = () => {
 
         {player?.character.location === "Sea" &&
           player?.locationStates?.sea?.shipMeeting && <ShipMeetingActions />}
+
+        {player?.character.location === "Sea" &&
+          player?.locationStates?.sea?.attackResults && <PostAttackActions />}
       </div>
     </>
   )

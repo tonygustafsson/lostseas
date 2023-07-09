@@ -34,7 +34,7 @@ const shopBuy = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const itemQuantity = player.inventory[item as keyof Inventory]
+  const itemQuantity = player.inventory?.[item as keyof Inventory]
 
   const playerResult = {
     ...player,

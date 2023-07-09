@@ -24,7 +24,7 @@ const Market = () => {
           <MerchandiseCard
             key={`market-${item}`}
             title={capitalize(item)}
-            indicator={player?.inventory[inventoryItem]?.toString() || "0"}
+            indicator={player?.inventory?.[inventoryItem]?.toString() || "0"}
             icon={<MerchandiseIcon item={inventoryItem} />}
             body={
               <>

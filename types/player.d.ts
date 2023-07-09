@@ -4,7 +4,7 @@ type Player = {
   character: Character
   ships: Record<string, Ship>
   crewMembers: CrewMembers
-  inventory: Inventory
+  inventory?: Inventory
   locationStates?: LocationState
 }
 

@@ -19,8 +19,8 @@ export const validateHarbor = (player?: Player) => {
   const crewIsAngry = player.crewMembers.mood < 10
   const neededFood = player.crewMembers.count * 0.5
   const neededWater = player.crewMembers.count
-  const playerHasFood = player.inventory.food >= neededFood
-  const playerHasWater = player.inventory.water >= neededWater
+  const playerHasFood = (player.inventory?.food || 0) >= neededFood
+  const playerHasWater = (player.inventory?.water || 0) >= neededWater
 
   if (!playerHasShips) {
     errors.push("NO_SHIPS")

@@ -27,7 +27,7 @@ export const createMeetingShip = (mannedCannons: number) => {
 export const calculateAttackSuccess = (
   crewMembers: CrewMembers["count"],
   cannons: Inventory["cannons"],
-  opponentCannons: Inventory["cannons"]
+  opponentCannons: number
 ) => {
   const mannedCannons = getMannedCannons(crewMembers, cannons)
 

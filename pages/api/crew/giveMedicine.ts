@@ -24,7 +24,7 @@ const giveMedicine = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  if ((player.inventory.medicine || 0) < medicine) {
+  if ((player.inventory?.medicine || 0) < medicine) {
     res.status(500).json({ error: "Not enough medicine" })
     return
   }
@@ -39,7 +39,7 @@ const giveMedicine = async (req: NextApiRequest, res: NextApiResponse) => {
     ...player,
     inventory: {
       ...player.inventory,
-      medicine: (player.inventory.medicine || 0) - medicine,
+      medicine: (player.inventory?.medicine || 0) - medicine,
     },
     crewMembers: {
       ...player.crewMembers,

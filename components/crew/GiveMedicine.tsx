@@ -43,8 +43,8 @@ const GiveMedicine = () => {
   )
 
   const isDisabled = useMemo(
-    () => (player?.inventory.medicine || 0) < quantity || quantity < 1,
-    [player?.inventory.medicine, quantity]
+    () => (player?.inventory?.medicine || 0) < quantity || quantity < 1,
+    [player?.inventory?.medicine, quantity]
   )
 
   const handleSubmit = () => {
@@ -54,7 +54,7 @@ const GiveMedicine = () => {
   return (
     <MerchandiseCard
       title="Give medicine"
-      indicator={player?.inventory.medicine?.toString() || "0"}
+      indicator={player?.inventory?.medicine?.toString() || "0"}
       icon={<MerchandiseIcon item="Medicine" />}
       disabled={isDisabled}
       fullWidth

@@ -35,16 +35,21 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const wonBattle = calculateAttackSuccess(
     player.crewMembers.count,
-    player.inventory.cannons,
+    player.inventory?.cannons,
     opponentCannons
   )
 
   if (wonBattle) {
+    const crewHealthLoss = getRandomInt(1, 10)
     const newCrewHealth = decreaseCrewHealth(
       player.crewMembers.health,
-      getRandomInt(1, 10)
+      crewHealthLoss
     )
-    const newCrewMood = increaseCrewMood(player.crewMembers.mood, 20)
+    const crewMoodIncrease = 20
+    const newCrewMood = increaseCrewMood(
+      player.crewMembers.mood,
+      crewMoodIncrease
+    )
     const crewMemberRecruits = getNumberOfRecruits(opponentCrewMembers)
 
     const lootedGold = Math.floor(opponentCrewMembers * getRandomInt(10, 100))
@@ -53,6 +58,18 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const shipHealthLoss = getRandomInt(1, 10)
     const newShips = reduceShipsHealth(player.ships, shipHealthLoss)
+
+    const report: AttackSuccessReport = {
+      won: true,
+      crewMoodIncrease,
+      newCrewMood,
+      crewHealthLoss,
+      newCrewHealth,
+      crewMemberRecruits,
+      lootedGold,
+      lootedMerchandise,
+      shipHealthLoss,
+    }
 
     const playerResults: Player = {
       ...player,
@@ -73,6 +90,7 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
         sea: {
           ...player.locationStates.sea,
           shipMeeting: null,
+          attackResults: report,
         },
       },
     }
@@ -84,17 +102,19 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.status(200).json({
       success: true,
-      player,
-      playerResults,
+      ...report,
     })
   } else {
     // Lost battle
     const numberOfShips = Object.keys(player.ships).length
 
+    const crewHealthLoss = getRandomInt(10, 30)
     const newCrewHealth = decreaseCrewHealth(
       player.crewMembers.health,
-      getRandomInt(10, 30)
+      crewHealthLoss
     )
+
+    const newGold = 0
 
     const inventoryPercentageLoss = (1 / numberOfShips) * 100
     const newInventory = removeFromAllInventoryItems(
@@ -107,18 +127,32 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
       getRandomInt(0, numberOfShips - 1)
     ]
 
+    const shipHealthLoss = getRandomInt(10, 20)
+    const newShips = reduceShipsHealth(player.ships, shipHealthLoss)
+
+    const report: AttackFailureReport = {
+      won: false,
+      crewHealthLoss,
+      newCrewHealth,
+      sinkShip,
+      randomShipId,
+      newGold,
+      inventoryPercentageLoss,
+      shipHealthLoss,
+    }
+
     const playerResults: Player = {
       ...player,
       character: {
         ...player.character,
-        gold: 0,
+        gold: newGold,
       },
       crewMembers: {
         ...player.crewMembers,
         health: newCrewHealth,
       },
       ships: {
-        ...player.ships,
+        ...newShips,
         ...(sinkShip && {
           [randomShipId]: null!,
         }),
@@ -129,6 +163,7 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
         sea: {
           ...player.locationStates.sea,
           shipMeeting: null,
+          attackResults: report,
         },
       },
     }
@@ -140,8 +175,7 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.status(200).json({
       success: false,
-      player,
-      playerResults,
+      ...report,
     })
   }
 }

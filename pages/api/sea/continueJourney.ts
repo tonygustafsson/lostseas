@@ -46,7 +46,7 @@ const seaContinueJourney = async (
   const shipMeeting = Math.random() < 0.33
   const mannedCannons = getMannedCannons(
     player.crewMembers.count,
-    player.inventory.cannons
+    player.inventory?.cannons
   )
   const shipMeetingState = shipMeeting ? createMeetingShip(mannedCannons) : null
 
@@ -81,9 +81,11 @@ const seaContinueJourney = async (
       },
       locationStates: {
         ...player.locationStates,
-        ...(shipMeetingState && {
-          sea: { shipMeeting: shipMeetingState },
-        }),
+        sea: {
+          ...player.locationStates?.sea,
+          attackResults: null!,
+          shipMeeting: shipMeetingState,
+        },
       },
     }
 

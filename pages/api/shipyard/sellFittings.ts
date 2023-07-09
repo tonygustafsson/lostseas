@@ -31,7 +31,7 @@ const shipyardSellFittings = async (
     MERCHANDISE[item as keyof typeof MERCHANDISE].sell * quantity
 
   const player = await getPlayer(playerId)
-  const itemQuantity = player.inventory[item as keyof Inventory] || 0
+  const itemQuantity = player.inventory?.[item as keyof Inventory] || 0
 
   if (itemQuantity < quantity) {
     res.status(400).json({ error: `Not enough ${item}.`, item })

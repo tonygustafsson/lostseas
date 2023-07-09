@@ -13,6 +13,7 @@ type LocationState = {
   }
   sea?: {
     shipMeeting: ShipMeetingState | undefined | null
+    attackResults?: AttackSuccessReport | AttackFailureReport
   }
 }
 

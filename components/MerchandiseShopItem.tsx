@@ -21,7 +21,7 @@ const MerchandiseShopItem = ({ player, item, type, onBuy, onSell }: Props) => {
   const merchandise = MERCHANDISE[item]
   const buyingDisabled =
     quantity * merchandise.buy > (player?.character.gold || Infinity)
-  const sellingDisabled = quantity > (player?.inventory[item] || 0)
+  const sellingDisabled = quantity > (player?.inventory?.[item] || 0)
 
   const changeQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === "") {
@@ -55,14 +55,14 @@ const MerchandiseShopItem = ({ player, item, type, onBuy, onSell }: Props) => {
     })
   }
 
-  if (type === "Sell" && !player?.inventory[item]) {
+  if (type === "Sell" && !player?.inventory?.[item]) {
     return null
   }
 
   return (
     <MerchandiseCard
       title={capitalize(item)}
-      indicator={player?.inventory[item]?.toString() || "0"}
+      indicator={player?.inventory?.[item]?.toString() || "0"}
       icon={<MerchandiseIcon item={item} />}
       disabled={type === "Buy" ? buyingDisabled : sellingDisabled}
       body={

@@ -30,8 +30,8 @@ export const getMannedCannons = (
   crewMembers: CrewMembers["count"],
   cannons: Inventory["cannons"]
 ) => {
-  if (Math.floor(crewMembers / 2) > cannons) {
-    return cannons
+  if (Math.floor(crewMembers / 2) > (cannons || 0)) {
+    return cannons || 0
   }
 
   return Math.floor(crewMembers / 2)

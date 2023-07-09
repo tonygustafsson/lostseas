@@ -49,7 +49,7 @@ const marketBuy = async (req: NextApiRequest, res: NextApiResponse) => {
     },
     inventory: {
       ...player.inventory,
-      [item]: player.inventory[item]
+      [item]: player.inventory?.[item]
         ? (player.inventory[item] || 0) + stateItem.quantity
         : stateItem.quantity,
     },
@@ -73,7 +73,7 @@ const marketBuy = async (req: NextApiRequest, res: NextApiResponse) => {
     success: true,
     item,
     quantity: stateItem.quantity,
-    totalQuantity: playerResult.inventory[item],
+    totalQuantity: playerResult.inventory?.[item] || 0,
     totalPrice,
   })
 }

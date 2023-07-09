@@ -37,7 +37,7 @@ const shipyardBuyFittings = async (
     return
   }
 
-  const itemQuantity = player.inventory[item as keyof Inventory]
+  const itemQuantity = player.inventory?.[item as keyof Inventory]
 
   const playerResult = {
     ...player,

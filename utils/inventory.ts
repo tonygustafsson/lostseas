@@ -1,10 +1,16 @@
 import { MERCHANDISE } from "@/constants/merchandise"
 
 export const addToInventory = (
-  inventory: Inventory,
+  inventory: Inventory | undefined,
   newSupplies: Partial<Inventory>
 ) =>
   Object.keys(MERCHANDISE).reduce((acc, merchandise) => {
+    if (!inventory) {
+      acc[merchandise as keyof Inventory] =
+        newSupplies[merchandise as keyof Inventory] || 0
+      return acc
+    }
+
     if (
       !inventory[merchandise as keyof Inventory] &&
       !newSupplies[merchandise as keyof Inventory]
@@ -21,12 +27,17 @@ export const addToInventory = (
   }, {} as Record<keyof Inventory, number>)
 
 export const removeFromAllInventoryItems = (
-  inventory: Inventory,
+  inventory: Inventory | undefined,
   percentage: number
-) =>
-  Object.keys(inventory).reduce((acc, merchandise) => {
+) => {
+  if (!inventory) {
+    return {}
+  }
+
+  return Object.keys(inventory).reduce((acc, merchandise) => {
     acc[merchandise as keyof Inventory] =
       (inventory[merchandise as keyof Inventory] || 0) * (1 - percentage / 100)
 
     return acc
   }, {} as Record<keyof Inventory, number>)
+}
