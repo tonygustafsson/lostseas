@@ -30,3 +30,25 @@ export const getMannedCannons = (
   crewMembers: CrewMembers["count"],
   cannons: Inventory["cannons"]
 ) => Math.floor(crewMembers / cannons)
+
+export const decreaseCrewHealth = (
+  currentHealth: CrewMembers["health"],
+  amount: number
+) => {
+  if (currentHealth - amount < 0) {
+    return 0
+  }
+
+  return currentHealth - amount
+}
+
+export const increaseCrewMood = (
+  currentMood: CrewMembers["mood"],
+  amount: number
+) => {
+  if (currentMood + amount > 100) {
+    return 100
+  }
+
+  return currentMood + amount
+}

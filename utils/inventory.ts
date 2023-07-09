@@ -19,3 +19,14 @@ export const addToInventory = (
 
     return acc
   }, {} as Record<keyof Inventory, number>)
+
+export const removeFromAllInventoryItems = (
+  inventory: Inventory,
+  percentage: number
+) =>
+  Object.keys(inventory).reduce((acc, merchandise) => {
+    acc[merchandise as keyof Inventory] =
+      (inventory[merchandise as keyof Inventory] || 0) * (1 - percentage / 100)
+
+    return acc
+  }, {} as Record<keyof Inventory, number>)

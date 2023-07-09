@@ -3,7 +3,8 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { addToInventory } from "@/utils/inventory"
+import { decreaseCrewHealth, increaseCrewMood } from "@/utils/crew"
+import { addToInventory, removeFromAllInventoryItems } from "@/utils/inventory"
 import { getRandomInt } from "@/utils/random"
 import { reduceShipsHealth } from "@/utils/ship"
 import {
@@ -39,8 +40,11 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
   )
 
   if (wonBattle) {
-    const crewMoodIncrease = 20
-    const crewHealthLoss = getRandomInt(1, 10)
+    const newCrewHealth = decreaseCrewHealth(
+      player.crewMembers.health,
+      getRandomInt(1, 10)
+    )
+    const newCrewMood = increaseCrewMood(player.crewMembers.mood, 20)
     const crewMemberRecruits = getNumberOfRecruits(opponentCrewMembers)
 
     const lootedGold = Math.floor(opponentCrewMembers * getRandomInt(10, 100))
@@ -59,14 +63,8 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
       crewMembers: {
         ...player.crewMembers,
         count: player.crewMembers.count + crewMemberRecruits,
-        health:
-          player.crewMembers.health - crewHealthLoss > 0
-            ? player.crewMembers.health - crewHealthLoss
-            : 0,
-        mood:
-          player.crewMembers.mood + crewMoodIncrease <= 100
-            ? player.crewMembers.mood + crewMoodIncrease
-            : 100,
+        health: newCrewHealth,
+        mood: newCrewMood,
       },
       ships: newShips,
       inventory: newInventory,
@@ -91,9 +89,59 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
     })
   } else {
     // Lost battle
+    const numberOfShips = Object.keys(player.ships).length
+
+    const newCrewHealth = decreaseCrewHealth(
+      player.crewMembers.health,
+      getRandomInt(10, 30)
+    )
+
+    const inventoryPercentageLoss = (1 / numberOfShips) * 100
+    const newInventory = removeFromAllInventoryItems(
+      player.inventory,
+      inventoryPercentageLoss
+    )
+
+    const sinkShip = numberOfShips > 1 ? getRandomInt(1, 3) === 1 : false
+    const randomShipId = Object.keys(player.ships)[
+      getRandomInt(0, numberOfShips - 1)
+    ]
+
+    const playerResults: Player = {
+      ...player,
+      character: {
+        ...player.character,
+        gold: 0,
+      },
+      crewMembers: {
+        ...player.crewMembers,
+        health: newCrewHealth,
+      },
+      ships: {
+        ...player.ships,
+        ...(sinkShip && {
+          [randomShipId]: null!,
+        }),
+      },
+      inventory: newInventory,
+      locationStates: {
+        ...player.locationStates,
+        sea: {
+          ...player.locationStates.sea,
+          shipMeeting: null,
+        },
+      },
+    }
+
+    await savePlayer(playerId, playerResults).catch((error) => {
+      res.status(500).json({ error })
+      return
+    })
 
     res.status(200).json({
-      success: true,
+      success: false,
+      player,
+      playerResults,
     })
   }
 }
