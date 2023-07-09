@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { getMannedCannons } from "@/utils/crew"
 import { createMeetingShip } from "@/utils/shipMeeting"
 
 const seaContinueJourney = async (
@@ -43,8 +44,9 @@ const seaContinueJourney = async (
     player.character.journey.day + 1 === player.character.journey.totalDays
 
   const shipMeeting = Math.random() < 0.33
-  const mannedCannons = Math.floor(
-    player.crewMembers.count / player.inventory.cannons
+  const mannedCannons = getMannedCannons(
+    player.crewMembers.count,
+    player.inventory.cannons
   )
   const shipMeetingState = shipMeeting ? createMeetingShip(mannedCannons) : null
 

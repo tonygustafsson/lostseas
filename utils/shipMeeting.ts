@@ -1,5 +1,7 @@
 import { NATIONS } from "@/constants/locations"
+import { MERCHANDISE } from "@/constants/merchandise"
 
+import { getMannedCannons } from "./crew"
 import { getRandomInt } from "./random"
 
 export const createMeetingShip = (mannedCannons: number) => {
@@ -20,4 +22,54 @@ export const createMeetingShip = (mannedCannons: number) => {
     crewMembers,
     cannons,
   } as ShipMeetingState
+}
+
+export const calculateAttackSuccess = (
+  crewMembers: CrewMembers["count"],
+  cannons: Inventory["cannons"],
+  opponentCannons: Inventory["cannons"]
+) => {
+  const mannedCannons = getMannedCannons(crewMembers, cannons)
+
+  let chanceVariation = 0.1
+
+  if (mannedCannons < 12) {
+    chanceVariation = 0.2
+  } else if (mannedCannons < 6) {
+    chanceVariation = 0.4
+  }
+
+  const playerScore =
+    mannedCannons + getRandomInt(0, mannedCannons * chanceVariation)
+  const opponentScore =
+    opponentCannons + getRandomInt(0, opponentCannons * chanceVariation)
+
+  return playerScore >= opponentScore
+}
+
+export const getNumberOfRecruits = (opponentCrewMembers: number) => {
+  if (opponentCrewMembers <= 10) {
+    return Math.floor(opponentCrewMembers * (getRandomInt(10, 40) / 100))
+  }
+
+  if (opponentCrewMembers > 11) {
+    return Math.floor(opponentCrewMembers * (getRandomInt(3, 10) / 100))
+  }
+
+  return Math.floor(opponentCrewMembers * (getRandomInt(2, 6) / 100))
+}
+
+export const getLootedMerchandise = () => {
+  const lootedMerchandise: Partial<Record<keyof Inventory, number>> = {}
+
+  Object.keys(MERCHANDISE).forEach((merchandise) => {
+    if (getRandomInt(0, 2) === 0) {
+      lootedMerchandise[merchandise as keyof Inventory] =
+        merchandise === "food" || merchandise === "water"
+          ? getRandomInt(1, 10)
+          : getRandomInt(1, 5)
+    }
+  })
+
+  return lootedMerchandise
 }

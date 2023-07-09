@@ -25,3 +25,8 @@ export const getGoldEffectiveness = (
 
   return Math.floor(crewMood + effectiveness)
 }
+
+export const getMannedCannons = (
+  crewMembers: CrewMembers["count"],
+  cannons: Inventory["cannons"]
+) => Math.floor(crewMembers / cannons)
