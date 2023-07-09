@@ -12,7 +12,7 @@ type LocationState = {
     leaveErrors: true | undefined | null
   }
   sea?: {
-    shipMeeting: ShipMeetingState
+    shipMeeting: ShipMeetingState | undefined | null
   }
 }
 

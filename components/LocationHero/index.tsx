@@ -16,7 +16,7 @@ const LocationHero = () => {
   const getBackgroundImage = (
     town: Character["town"],
     location: Character["location"],
-    shipMeeting?: ShipMeetingState
+    shipMeeting?: ShipMeetingState | null
   ) => {
     if (location === "Shop") {
       const nation = getTownsNationality(town)

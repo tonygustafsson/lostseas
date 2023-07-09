@@ -42,6 +42,16 @@ export const useSea = () => {
       onError: (error) => console.error(error),
     })
 
+  const { mutate: attackShip, isLoading: isAttackingShip } = useMutation(
+    () => apiRequest("/api/sea/attackShip", null, "POST"),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+      },
+      onError: (error) => console.error(error),
+    }
+  )
+
   const { mutate: ignoreShip, isLoading: isIgnoringShip } = useMutation(
     () => apiRequest("/api/sea/ignoreShip", null, "POST"),
     {
@@ -59,6 +69,8 @@ export const useSea = () => {
     isStartingJourney,
     continueJourney,
     isContinueingJourney,
+    attackShip,
+    isAttackingShip,
     ignoreShip,
     isIgnoringShip,
   }

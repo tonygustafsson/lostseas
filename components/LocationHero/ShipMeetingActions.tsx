@@ -1,7 +1,11 @@
 import { useSea } from "@/hooks/queries/useSea"
 
 const ShipMeetingActions = () => {
-  const { ignoreShip } = useSea()
+  const { attackShip, ignoreShip } = useSea()
+
+  const handleAttack = () => {
+    attackShip()
+  }
 
   const handleIgnore = () => {
     ignoreShip()
@@ -12,7 +16,10 @@ const ShipMeetingActions = () => {
       <span className="text-xl font-serif">What do you want to do?</span>
 
       <div className="flex flex-wrap mt-4 justify-center gap-2 lg:gap-0 lg:join">
-        <button className={`btn btn-primary text-base join-item`}>
+        <button
+          className={`btn btn-primary text-base join-item`}
+          onClick={handleAttack}
+        >
           Attack
         </button>
 
