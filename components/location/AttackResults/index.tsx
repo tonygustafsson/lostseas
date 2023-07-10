@@ -12,10 +12,27 @@ const ShopBuy = () => {
 
       {successReport && (
         <ul className="list-disc list-inside">
+          {successReport.lootedGold && (
+            <li className="list-item">
+              Your looted {successReport.lootedGold} gold.
+            </li>
+          )}
+          {successReport.crewMoodIncrease && (
+            <li className="list-item">
+              Your crews mood went up with {successReport.crewMoodIncrease}% and
+              is now at {successReport.newCrewMood}%.
+            </li>
+          )}
           {successReport.crewHealthLoss && (
             <li className="list-item">
               Your crew lost {successReport.crewHealthLoss}% health, and now has
-              a health of {successReport.newCrewHealth}%
+              a health of {successReport.newCrewHealth}%.
+            </li>
+          )}
+          {successReport.shipHealthLoss && (
+            <li className="list-item">
+              Your ships lost {successReport.shipHealthLoss}% health, and now
+              has a health of WHAT%.
             </li>
           )}
         </ul>
@@ -26,7 +43,7 @@ const ShopBuy = () => {
           {failureReport.crewHealthLoss && (
             <li className="list-item">
               Your crew lost {failureReport.crewHealthLoss}% health, and now has
-              a health of {failureReport.newCrewHealth}%
+              a health of {failureReport.newCrewHealth}%.
             </li>
           )}
         </ul>
