@@ -12,14 +12,9 @@ export const createMeetingShip = (mannedCannons: number) => {
   const shipTypes: ShipType[] = ["Brig", "Merchantman", "Galleon", "Frigate"]
   const shipType = shipTypes[getRandomInt(0, shipTypes.length - 1)]
 
-  if (mannedCannons < 1) {
-    // Avoid meeting a ship with 0 crew members and cannons, doesn't make sense
-    mannedCannons = 1
-  }
-
-  const minCannons = mannedCannons * 0.8
-  const maxCannons = mannedCannons * 1.1
-  const cannons = Math.floor(getRandomInt(minCannons, maxCannons))
+  const minCannons = mannedCannons < 1 ? 1 : Math.floor(mannedCannons * 0.8)
+  const maxCannons = mannedCannons < 1 ? 2 : Math.floor(mannedCannons * 1.1)
+  const cannons = getRandomInt(minCannons, maxCannons)
   const crewMembers = cannons * 2
 
   return {
