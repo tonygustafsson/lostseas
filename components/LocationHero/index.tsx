@@ -100,6 +100,8 @@ const LocationHero = () => {
               player?.locationStates?.sea?.shipMeeting && (
                 <ShipMeetingContent
                   shipMeeting={player?.locationStates?.sea?.shipMeeting}
+                  crewMembers={player?.crewMembers.count}
+                  cannons={player?.inventory?.cannons}
                 />
               )}
 
