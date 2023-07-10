@@ -61,9 +61,7 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const report: AttackSuccessReport = {
       crewMoodIncrease,
-      newCrewMood,
       crewHealthLoss,
-      newCrewHealth,
       crewMemberRecruits,
       lootedGold,
       lootedMerchandise,
@@ -113,8 +111,6 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
       crewHealthLoss
     )
 
-    const newGold = 0
-
     const inventoryPercentageLoss = (1 / numberOfShips) * 100
     const newInventory = removeFromAllInventoryItems(
       player.inventory,
@@ -131,10 +127,8 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const report: AttackFailureReport = {
       crewHealthLoss,
-      newCrewHealth,
       sinkShip,
       randomShipId,
-      newGold,
       inventoryPercentageLoss,
       shipHealthLoss,
     }
@@ -143,7 +137,7 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
       ...player,
       character: {
         ...player.character,
-        gold: newGold,
+        gold: 0,
       },
       crewMembers: {
         ...player.crewMembers,
