@@ -1,5 +1,4 @@
 type AttackReport = {
-  won: boolean
   crewHealthLoss: number
   newCrewHealth: number
   shipHealthLoss: number

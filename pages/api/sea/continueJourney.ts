@@ -83,7 +83,8 @@ const seaContinueJourney = async (
         ...player.locationStates,
         sea: {
           ...player.locationStates?.sea,
-          attackResults: null!,
+          attackSuccessReport: null!,
+          attackFailureReport: null!,
           shipMeeting: shipMeetingState,
         },
       },

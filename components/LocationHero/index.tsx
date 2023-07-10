@@ -88,7 +88,8 @@ const LocationHero = () => {
 
             {player?.character.location === "Sea" &&
               !player?.locationStates?.sea?.shipMeeting &&
-              !player?.locationStates?.sea?.attackResults && (
+              !player?.locationStates?.sea?.attackSuccessReport &&
+              !player?.locationStates?.sea?.attackFailureReport && (
                 <SeaContent
                   location={player?.character.location}
                   journey={player?.character.journey}
@@ -106,13 +107,12 @@ const LocationHero = () => {
               )}
 
             {player?.character.location === "Sea" &&
-              player?.locationStates?.sea?.attackResults?.won && (
+              player?.locationStates?.sea?.attackSuccessReport && (
                 <AttackSuccessContent />
               )}
 
             {player?.character.location === "Sea" &&
-              player?.locationStates?.sea?.attackResults &&
-              !player?.locationStates?.sea?.attackResults?.won && (
+              player?.locationStates?.sea?.attackFailureReport && (
                 <AttackFailureContent />
               )}
           </div>
@@ -128,7 +128,10 @@ const LocationHero = () => {
           player?.locationStates?.sea?.shipMeeting && <ShipMeetingActions />}
 
         {player?.character.location === "Sea" &&
-          player?.locationStates?.sea?.attackResults && <PostAttackActions />}
+          (player?.locationStates?.sea?.attackSuccessReport ||
+            player?.locationStates?.sea?.attackFailureReport) && (
+            <PostAttackActions />
+          )}
       </div>
     </>
   )

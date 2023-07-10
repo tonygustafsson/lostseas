@@ -60,7 +60,6 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
     const newShips = reduceShipsHealth(player.ships, shipHealthLoss)
 
     const report: AttackSuccessReport = {
-      won: true,
       crewMoodIncrease,
       newCrewMood,
       crewHealthLoss,
@@ -90,7 +89,7 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
         sea: {
           ...player.locationStates.sea,
           shipMeeting: null,
-          attackResults: report,
+          attackSuccessReport: report,
         },
       },
     }
@@ -131,7 +130,6 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
     const newShips = reduceShipsHealth(player.ships, shipHealthLoss)
 
     const report: AttackFailureReport = {
-      won: false,
       crewHealthLoss,
       newCrewHealth,
       sinkShip,
@@ -163,7 +161,7 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
         sea: {
           ...player.locationStates.sea,
           shipMeeting: null,
-          attackResults: report,
+          attackFailureReport: report,
         },
       },
     }

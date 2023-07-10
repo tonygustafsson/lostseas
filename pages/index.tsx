@@ -28,8 +28,12 @@ const Home = () => {
         {player?.character.location === "Tavern" && <Tavern />}
         {player?.character.location === "Shipyard" && <Shipyard />}
         {player?.character.location === "Docks" && <Docks />}
+
         {player?.character.location === "Sea" &&
-          player.locationStates?.sea?.attackResults && <AttackResults />}
+          (player.locationStates?.sea?.attackSuccessReport ||
+            player.locationStates?.sea?.attackFailureReport) && (
+            <AttackResults />
+          )}
       </div>
     </DefaultLayout>
   )
