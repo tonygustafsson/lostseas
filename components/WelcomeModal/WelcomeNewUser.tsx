@@ -6,7 +6,7 @@ type Props = {
 const WelcomeNewUser = ({ player, onClose }: Props) => (
   <>
     <p>
-      Nice to see you again. You are located at {player.character.town}s{" "}
+      Nice to see you. You are located at {player.character.town}s{" "}
       {player.character.location}. You can either check out the town, or head
       out to the open seas.
     </p>

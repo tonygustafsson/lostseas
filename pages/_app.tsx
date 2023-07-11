@@ -10,10 +10,12 @@ import type { AppProps } from "next/app"
 import { useState } from "react"
 
 import MotionProvider from "@/components/MotionProvider"
+import Music from "@/components/Music"
 import Modal from "@/components/ui/Modal"
 import { ModalProvider } from "@/components/ui/Modal/context"
 import Toast from "@/components/ui/Toast"
 import { ToastProvider } from "@/components/ui/Toast/context"
+import WelcomeModal from "@/components/WelcomeModal"
 
 const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
   const [queryClient] = useState(
@@ -39,6 +41,8 @@ const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
 
               <Toast />
               <Modal />
+              <WelcomeModal />
+              <Music />
             </ModalProvider>
           </ToastProvider>
         </MotionProvider>

@@ -1,7 +1,5 @@
-import { getCookie } from "cookies-next"
 import { useEffect } from "react"
 
-import { MUSIC_STATE_COOKIE_NAME } from "@/constants/system"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import { useModal } from "../ui/Modal/context"
@@ -12,10 +10,8 @@ const WelcomeModal = () => {
   const { data: player } = useGetPlayer()
   const { setModal, removeModal } = useModal()
 
-  const musicCookieValue = getCookie(MUSIC_STATE_COOKIE_NAME)
-
   useEffect(() => {
-    if (!player || typeof musicCookieValue !== "undefined") {
+    if (!player) {
       return
     }
 
@@ -37,6 +33,7 @@ const WelcomeModal = () => {
         />
       ),
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return null
