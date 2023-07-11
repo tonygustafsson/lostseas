@@ -127,8 +127,7 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const report: AttackFailureReport = {
       crewHealthLoss,
-      sinkShip,
-      randomShipId,
+      sunkShip: sinkShip ? player.ships[randomShipId].name : false,
       inventoryPercentageLoss,
       shipHealthLoss,
     }

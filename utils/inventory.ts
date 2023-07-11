@@ -35,6 +35,13 @@ export const removeFromAllInventoryItems = (
   }
 
   return Object.keys(inventory).reduce((acc, merchandise) => {
+    if (merchandise === "cannons") {
+      // Cannons are not affected by this
+      acc[merchandise as keyof Inventory] =
+        inventory[merchandise as keyof Inventory] || 0
+      return acc
+    }
+
     acc[merchandise as keyof Inventory] =
       (inventory[merchandise as keyof Inventory] || 0) * (1 - percentage / 100)
 

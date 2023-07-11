@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next"
 
 import DefaultLayout from "@/components/layouts/default"
-import AttackResults from "@/components/location/AttackResults"
+import AttackReport from "@/components/location/AttackReport"
 import Bank from "@/components/location/Bank"
 import Docks from "@/components/location/Docks"
 import Market from "@/components/location/Market"
@@ -32,7 +32,7 @@ const Home = () => {
         {player?.character.location === "Sea" &&
           (player.locationStates?.sea?.attackSuccessReport ||
             player.locationStates?.sea?.attackFailureReport) && (
-            <AttackResults />
+            <AttackReport />
           )}
       </div>
     </DefaultLayout>

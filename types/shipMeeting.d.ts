@@ -11,7 +11,6 @@ type AttackSuccessReport = AttackReport & {
 }
 
 type AttackFailureReport = AttackReport & {
-  sinkShip: boolean
-  randomShipId: Ship["id"]
+  sunkShip: string | false
   inventoryPercentageLoss: number
 }
