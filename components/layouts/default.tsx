@@ -4,6 +4,7 @@ import { almendra, andika } from "@/fonts"
 
 import DesktopMenu from "../menu/DesktopMenu"
 import MobileMenu from "../menu/MobileMenu"
+import Music from "../Music"
 
 export default function DefaultLayout({
   children,
@@ -39,6 +40,8 @@ export default function DefaultLayout({
           <div className="spinner"></div>
         </div>
       )}
+
+      <Music />
     </>
   )
 }
