@@ -12,6 +12,7 @@ export type ModalId =
   | "qrscanner"
   | "editcharacter"
   | "renameship"
+  | "welcome"
 
 export type ModalProps = {
   id: ModalId
