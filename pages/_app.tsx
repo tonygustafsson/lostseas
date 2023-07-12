@@ -10,7 +10,8 @@ import type { AppProps } from "next/app"
 import { useState } from "react"
 
 import MotionProvider from "@/components/MotionProvider"
-import Music from "@/components/Music"
+import Sound from "@/components/Sound"
+import { SoundProvider } from "@/components/Sound/context"
 import Modal from "@/components/ui/Modal"
 import { ModalProvider } from "@/components/ui/Modal/context"
 import Toast from "@/components/ui/Toast"
@@ -37,12 +38,14 @@ const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
         <MotionProvider>
           <ToastProvider>
             <ModalProvider>
-              <Component {...pageProps} />
+              <SoundProvider>
+                <Component {...pageProps} />
 
-              <Toast />
-              <Modal />
-              <WelcomeModal />
-              <Music />
+                <Toast />
+                <Modal />
+                <WelcomeModal />
+                <Sound />
+              </SoundProvider>
             </ModalProvider>
           </ToastProvider>
         </MotionProvider>

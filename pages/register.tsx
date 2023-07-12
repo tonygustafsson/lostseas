@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -18,6 +19,9 @@ type Props = {
 
 const Register = ({ randomCharacter }: Props) => {
   const { register: playerRegister, registrationIsLoading } = usePlayer()
+
+  const [musicOn, setMusicOn] = useState(true)
+  const [soundEffectsOn, setSoundEffectsOn] = useState(true)
 
   const {
     register,
@@ -52,7 +56,7 @@ const Register = ({ randomCharacter }: Props) => {
         onSubmit={handleSubmit(onSubmit)}
         className="w-full flex flex-col gap-4 max-w-md"
       >
-        <h2 className="font-serif text-2xl mt-8">Character</h2>
+        <h2 className="font-serif text-2xl">Character</h2>
 
         <TextField
           label="Name"
@@ -81,6 +85,32 @@ const Register = ({ randomCharacter }: Props) => {
           })}
           error={errors.age?.message}
         />
+
+        <h2 className="font-serif text-2xl mt-4">Settings</h2>
+
+        <div className="flex flex-col gap-4 py-4">
+          <div className="flex items-center gap-4">
+            <input
+              id="toggleMusic"
+              type="checkbox"
+              className="toggle toggle-sm toggle-info"
+              checked={musicOn}
+              onChange={() => setMusicOn(!musicOn)}
+            />
+            <label htmlFor="toggleMusic">Music</label>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <input
+              id="soundEffects"
+              type="checkbox"
+              className="toggle toggle-sm toggle-info"
+              checked={soundEffectsOn}
+              onChange={() => setSoundEffectsOn(!soundEffectsOn)}
+            />
+            <label htmlFor="soundEffects">Sound effects</label>
+          </div>
+        </div>
 
         <button
           type="submit"

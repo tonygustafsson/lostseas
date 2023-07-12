@@ -6,21 +6,18 @@ import {
   SOUND_EFFECTS_STATE_COOKIE_NAME,
 } from "@/constants/system"
 
+import { useSound } from "../Sound/context"
+
 type Props = {
   player: Player
   onClose: () => void
 }
 
 const WelcomeExistingUser = ({ player, onClose }: Props) => {
+  const { setMusic, setSoundEffects } = useSound()
+
   const musicCookieValue = getCookie(MUSIC_STATE_COOKIE_NAME)
   const soundEffectsCookieValue = getCookie(SOUND_EFFECTS_STATE_COOKIE_NAME)
-
-  console.log({
-    musicCookieValue,
-    boolmusicCookieValue: Boolean(musicCookieValue),
-    soundEffectsCookieValue,
-    boolsoundEffectsCookieValue: Boolean(soundEffectsCookieValue),
-  })
 
   const [musicOn, setMusicOn] = useState<boolean>(
     typeof musicCookieValue !== "undefined" ? Boolean(musicCookieValue) : true
@@ -34,6 +31,9 @@ const WelcomeExistingUser = ({ player, onClose }: Props) => {
   const continueGame = () => {
     setCookie(MUSIC_STATE_COOKIE_NAME, musicOn)
     setCookie(SOUND_EFFECTS_STATE_COOKIE_NAME, soundEffectsOn)
+
+    setMusic(musicOn)
+    setSoundEffects(soundEffectsOn)
 
     onClose()
   }
