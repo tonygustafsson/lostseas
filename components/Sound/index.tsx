@@ -15,7 +15,9 @@ const Sound = () => {
   const playRandomSong = useCallback(() => {
     if (!musicPlayer) return
 
-    const randomSong = songs[Math.floor(Math.random() * songs.length)]
+    const otherSongs = songs.filter((song) => song !== musicPlayer.src)
+    const randomSong = otherSongs[Math.floor(Math.random() * otherSongs.length)]
+
     musicPlayer.src = randomSong
     musicPlayer.play()
   }, [musicPlayer])
