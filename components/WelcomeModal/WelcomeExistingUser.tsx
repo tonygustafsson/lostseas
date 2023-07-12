@@ -1,4 +1,4 @@
-import { getCookie, setCookie } from "cookies-next"
+import { getCookie } from "cookies-next"
 import { useState } from "react"
 
 import {
@@ -29,9 +29,6 @@ const WelcomeExistingUser = ({ player, onClose }: Props) => {
   )
 
   const continueGame = () => {
-    setCookie(MUSIC_STATE_COOKIE_NAME, musicOn)
-    setCookie(SOUND_EFFECTS_STATE_COOKIE_NAME, soundEffectsOn)
-
     setMusic(musicOn)
     setSoundEffects(soundEffectsOn)
 

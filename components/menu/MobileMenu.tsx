@@ -5,6 +5,7 @@ import { GiPirateFlag } from "react-icons/gi"
 
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
+import SoundControls from "../Sound/Controls"
 import CharacterCard from "./CharacterCard"
 import MainMenu from "./MainMenu"
 import MobileBottomNav from "./MobileBottomNav"
@@ -62,6 +63,7 @@ const MobileMenu = ({ className }: Props) => {
               </button>
 
               <MainMenu />
+              <SoundControls />
 
               {player && (
                 <>

@@ -9,7 +9,7 @@ type Props = {
 }
 
 const CharacterCard = ({ character }: Props) => (
-  <div className="card w-full bg-gray-800 shadow-lg mt-2 lg:mt-8 rounded-md">
+  <div className="card w-full bg-gray-800 shadow-lg mt-2 rounded-md">
     <figure className="mt-4">
       <GiPirateHat className="hidden lg:block h-14 w-14" />
     </figure>

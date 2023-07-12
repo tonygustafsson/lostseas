@@ -1,3 +1,4 @@
+import { setCookie } from "cookies-next"
 import {
   createContext,
   useCallback,
@@ -5,6 +6,11 @@ import {
   useMemo,
   useReducer,
 } from "react"
+
+import {
+  MUSIC_STATE_COOKIE_NAME,
+  SOUND_EFFECTS_STATE_COOKIE_NAME,
+} from "@/constants/system"
 
 export interface State {
   musicOn: boolean
@@ -56,6 +62,8 @@ export const SoundProvider = (props: { children: React.ReactNode }) => {
         type: "SET_MUSIC",
         musicOn,
       })
+
+      setCookie(MUSIC_STATE_COOKIE_NAME, musicOn)
     },
     [dispatch]
   )
@@ -66,6 +74,8 @@ export const SoundProvider = (props: { children: React.ReactNode }) => {
         type: "SET_SOUND_EFFECTS",
         soundEffectsOn,
       })
+
+      setCookie(SOUND_EFFECTS_STATE_COOKIE_NAME, soundEffectsOn)
     },
     [dispatch]
   )
