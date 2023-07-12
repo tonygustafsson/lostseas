@@ -12,9 +12,12 @@ import {
   SOUND_EFFECTS_STATE_COOKIE_NAME,
 } from "@/constants/system"
 
+export type SoundEffect = "coins" | "cheers" | "hurt" | "frustration"
+
 export interface State {
   musicOn: boolean
   soundEffectsOn: boolean
+  soundEffect?: SoundEffect
 }
 
 type Action =
@@ -25,6 +28,13 @@ type Action =
   | {
       type: "SET_SOUND_EFFECTS"
       soundEffectsOn: State["soundEffectsOn"]
+    }
+  | {
+      type: "PLAY_SOUND_EFFECT"
+      soundEffect: State["soundEffect"]
+    }
+  | {
+      type: "RESET_SOUND_EFFECT"
     }
 
 const initialState: State = {
@@ -44,10 +54,25 @@ const soundReducer = (state: State, action: Action) => {
         musicOn: action.musicOn,
       }
     }
+
     case "SET_SOUND_EFFECTS": {
       return {
         ...state,
         soundEffectsOn: action.soundEffectsOn,
+      }
+    }
+
+    case "PLAY_SOUND_EFFECT": {
+      return {
+        ...state,
+        soundEffect: action.soundEffect,
+      }
+    }
+
+    case "RESET_SOUND_EFFECT": {
+      return {
+        ...state,
+        soundEffect: undefined,
       }
     }
   }
@@ -80,11 +105,29 @@ export const SoundProvider = (props: { children: React.ReactNode }) => {
     [dispatch]
   )
 
+  const playSoundEffect = useCallback(
+    (soundEffect: State["soundEffect"]) => {
+      dispatch({
+        type: "PLAY_SOUND_EFFECT",
+        soundEffect,
+      })
+    },
+    [dispatch]
+  )
+
+  const resetSoundEffect = useCallback(() => {
+    dispatch({
+      type: "RESET_SOUND_EFFECT",
+    })
+  }, [dispatch])
+
   const value = useMemo(
     () => ({
       ...state,
       setMusic,
       setSoundEffects,
+      playSoundEffect,
+      resetSoundEffect,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state]
@@ -103,6 +146,8 @@ export const useSound = () => {
   return context as State & {
     setMusic: (setMusicOn: State["musicOn"]) => void
     setSoundEffects: (soundEffectsOn: State["soundEffectsOn"]) => void
+    playSoundEffect: (soundEffect: State["soundEffect"]) => void
+    resetSoundEffect: () => void
   }
 }
 
