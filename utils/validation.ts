@@ -21,6 +21,8 @@ const registrationValidationSchema = z.object({
   nationality: validationRules.character.nationality,
   gender: validationRules.character.gender,
   age: validationRules.character.age,
+  musicOn: z.boolean(),
+  soundEffectsOn: z.boolean(),
 })
 
 const loginValidationSchema = z.object({

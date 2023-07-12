@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -19,9 +18,6 @@ type Props = {
 
 const Register = ({ randomCharacter }: Props) => {
   const { register: playerRegister, registrationIsLoading } = usePlayer()
-
-  const [musicOn, setMusicOn] = useState(true)
-  const [soundEffectsOn, setSoundEffectsOn] = useState(true)
 
   const {
     register,
@@ -88,14 +84,13 @@ const Register = ({ randomCharacter }: Props) => {
 
         <h2 className="font-serif text-2xl mt-4">Settings</h2>
 
-        <div className="flex flex-col gap-4 py-4">
+        <div className="flex flex-col gap-4 pb-4">
           <div className="flex items-center gap-4">
             <input
               id="toggleMusic"
               type="checkbox"
               className="toggle toggle-sm toggle-info"
-              checked={musicOn}
-              onChange={() => setMusicOn(!musicOn)}
+              {...register("musicOn", { value: true })}
             />
             <label htmlFor="toggleMusic">Music</label>
           </div>
@@ -105,8 +100,7 @@ const Register = ({ randomCharacter }: Props) => {
               id="soundEffects"
               type="checkbox"
               className="toggle toggle-sm toggle-info"
-              checked={soundEffectsOn}
-              onChange={() => setSoundEffectsOn(!soundEffectsOn)}
+              {...register("soundEffectsOn", { value: true })}
             />
             <label htmlFor="soundEffects">Sound effects</label>
           </div>

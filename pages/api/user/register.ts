@@ -4,7 +4,11 @@ import { ref, set } from "firebase/database"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { LOCATIONS } from "@/constants/locations"
-import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
+import {
+  MUSIC_STATE_COOKIE_NAME,
+  PLAYER_ID_COOKIE_NAME,
+  SOUND_EFFECTS_STATE_COOKIE_NAME,
+} from "@/constants/system"
 import db from "@/firebase/db"
 import createNewShip from "@/utils/createNewShip"
 import { getRandomTown } from "@/utils/townNation"
@@ -19,6 +23,7 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const { name, nationality, gender, age }: Character = req.body
+  const { musicOn, soundEffectsOn } = req.body
 
   const playerId = crypto.randomUUID()
   const createdDate = new Date().getTime()
@@ -59,6 +64,11 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
   })
 
   setCookie(PLAYER_ID_COOKIE_NAME, playerId, { req, res })
+  setCookie(MUSIC_STATE_COOKIE_NAME, Boolean(musicOn), { req, res })
+  setCookie(SOUND_EFFECTS_STATE_COOKIE_NAME, Boolean(soundEffectsOn), {
+    req,
+    res,
+  })
 
   res.status(200).json(playerId)
 }
