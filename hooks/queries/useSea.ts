@@ -57,6 +57,7 @@ export const useSea = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+        playSoundEffect("cannons")
       },
       onError: (error) => console.error(error),
     }

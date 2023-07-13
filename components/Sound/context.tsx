@@ -22,6 +22,7 @@ export type SoundEffect =
   | "journey"
   | "sailho"
   | "landho"
+  | "cannons"
 
 export interface State {
   musicOn: boolean
