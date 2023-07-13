@@ -37,7 +37,13 @@ export const useSea = () => {
         error?: string
       }) => {
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-        playSoundEffect("waves")
+        if (shipMeetingState) {
+          playSoundEffect("sailho")
+        } else if (destinationReached) {
+          playSoundEffect("landho")
+        } else {
+          playSoundEffect("waves")
+        }
 
         if (!error && !destinationReached && !shipMeetingState) {
           setTimeout(() => continueJourney(), SEA_TRAVEL_SPEED)

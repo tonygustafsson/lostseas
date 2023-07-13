@@ -20,6 +20,8 @@ export type SoundEffect =
   | "drink"
   | "tools"
   | "waves"
+  | "sailho"
+  | "landho"
 
 export interface State {
   musicOn: boolean

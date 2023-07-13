@@ -43,7 +43,7 @@ const seaContinueJourney = async (
   const destinationReached =
     player.character.journey.day + 1 === player.character.journey.totalDays
 
-  const shipMeeting = Math.random() < 0.33
+  const shipMeeting = !destinationReached ? Math.random() < 0.33 : false
   const mannedCannons = getMannedCannons(
     player.crewMembers.count,
     player.inventory?.cannons
