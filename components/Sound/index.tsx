@@ -4,7 +4,7 @@ import { getRandomInt } from "@/utils/random"
 
 import { useSound } from "./context"
 
-const songs = Array.from({ length: 4 }, (_, i) => `music/song${i + 1}.opus`)
+const songs = Array.from({ length: 9 }, (_, i) => `music/song${i + 1}.opus`)
 
 const Sound = () => {
   const { musicOn, soundEffectsOn, soundEffect } = useSound()
