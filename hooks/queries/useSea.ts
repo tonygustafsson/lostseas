@@ -16,7 +16,7 @@ export const useSea = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-        playSoundEffect("waves")
+        playSoundEffect("journey")
 
         setTimeout(() => continueJourney(), SEA_TRAVEL_SPEED)
       },
@@ -42,7 +42,7 @@ export const useSea = () => {
         } else if (destinationReached) {
           playSoundEffect("landho")
         } else {
-          playSoundEffect("waves")
+          playSoundEffect("journey")
         }
 
         if (!error && !destinationReached && !shipMeetingState) {

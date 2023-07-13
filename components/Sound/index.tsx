@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo } from "react"
 
+import { getRandomInt } from "@/utils/random"
+
 import { useSound } from "./context"
 
 const songs = Array.from({ length: 4 }, (_, i) => `music/song${i + 1}.opus`)
 
 const Sound = () => {
-  const { musicOn, soundEffectsOn, soundEffect, resetSoundEffect } = useSound()
+  const { musicOn, soundEffectsOn, soundEffect } = useSound()
 
   const musicPlayer = useMemo(
     () => typeof Audio !== "undefined" && new Audio(),
@@ -39,16 +41,37 @@ const Sound = () => {
   }, [musicOn, musicPlayer, playRandomSong])
 
   useEffect(() => {
-    if (!soundEffectsOn) return
+    if (!soundEffectsOn || !soundEffect) return
 
-    if (soundEffect) {
-      const audioFile = `soundfx/${soundEffect}.opus`
-      const soundEffectPlayer = new Audio(audioFile)
-      soundEffectPlayer.play()
+    let audioFile: string
 
-      soundEffectPlayer.addEventListener("ended", resetSoundEffect)
+    if (soundEffect === "journey") {
+      const wavesSoundEffects = ["soundfx/waves1.opus", "soundfx/waves2.opus"]
+
+      audioFile =
+        wavesSoundEffects[Math.floor(Math.random() * wavesSoundEffects.length)]
+
+      if (getRandomInt(1, 2) === 1) {
+        const journeyAdditionalSoundEffects = [
+          "soundfx/creak.opus",
+          "soundfx/seagulls.opus",
+        ]
+
+        const additionalAudioFile =
+          journeyAdditionalSoundEffects[
+            Math.floor(Math.random() * journeyAdditionalSoundEffects.length)
+          ]
+
+        const soundEffectPlayer = new Audio(additionalAudioFile)
+        soundEffectPlayer.play()
+      }
+    } else {
+      audioFile = `soundfx/${soundEffect}.opus`
     }
-  }, [resetSoundEffect, soundEffect, soundEffectsOn])
+
+    const soundEffectPlayer = new Audio(audioFile)
+    soundEffectPlayer.play()
+  }, [soundEffect, soundEffectsOn])
 
   return null
 }

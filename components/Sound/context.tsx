@@ -19,7 +19,7 @@ export type SoundEffect =
   | "frustration"
   | "drink"
   | "tools"
-  | "waves"
+  | "journey"
   | "sailho"
   | "landho"
 
@@ -120,15 +120,13 @@ export const SoundProvider = (props: { children: React.ReactNode }) => {
         type: "PLAY_SOUND_EFFECT",
         soundEffect,
       })
+
+      // We just need to trigger the Audio, then we can safely remove the state again
+      // to allow for two or more sounds to be played in quick succession
+      setTimeout(() => dispatch({ type: "RESET_SOUND_EFFECT" }), 100)
     },
     [dispatch]
   )
-
-  const resetSoundEffect = useCallback(() => {
-    dispatch({
-      type: "RESET_SOUND_EFFECT",
-    })
-  }, [dispatch])
 
   const value = useMemo(
     () => ({
@@ -136,7 +134,6 @@ export const SoundProvider = (props: { children: React.ReactNode }) => {
       setMusic,
       setSoundEffects,
       playSoundEffect,
-      resetSoundEffect,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state]
@@ -156,7 +153,6 @@ export const useSound = () => {
     setMusic: (setMusicOn: State["musicOn"]) => void
     setSoundEffects: (soundEffectsOn: State["soundEffectsOn"]) => void
     playSoundEffect: (soundEffect: State["soundEffect"]) => void
-    resetSoundEffect: () => void
   }
 }
 
