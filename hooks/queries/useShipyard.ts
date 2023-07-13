@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
+import { useSound } from "@/components/Sound/context"
 import { useToast } from "@/components/ui/Toast/context"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_TYPES } from "@/constants/ship"
@@ -10,6 +11,7 @@ import { PLAYER_QUERY_KEY } from "./usePlayer"
 export const useShipyard = () => {
   const queryClient = useQueryClient()
   const { setToast } = useToast()
+  const { playSoundEffect } = useSound()
 
   const { mutate: buyShip, isLoading: isBuyingShip } = useMutation(
     (data: { item: keyof typeof SHIP_TYPES }) =>
@@ -33,6 +35,8 @@ export const useShipyard = () => {
           message: `It cost you ${totalPrice} gold.`,
           variant: "success",
         })
+
+        playSoundEffect("tools")
       },
       onError: (error) => console.error(error),
     }
@@ -60,6 +64,8 @@ export const useShipyard = () => {
           message: `It received ${totalPrice} gold.`,
           variant: "success",
         })
+
+        playSoundEffect("coins")
       },
       onError: (error) => console.error(error),
     }
@@ -92,6 +98,8 @@ export const useShipyard = () => {
           message: `It cost you ${totalPrice} gold and your now have ${totalQuantity} ${unit} of ${item}`,
           variant: "success",
         })
+
+        playSoundEffect("coins")
       },
       onError: (error) => console.error(error),
     }

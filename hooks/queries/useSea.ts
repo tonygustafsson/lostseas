@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
+import { useSound } from "@/components/Sound/context"
 import apiRequest from "@/utils/apiRequest"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
@@ -8,12 +9,14 @@ const SEA_TRAVEL_SPEED = 3000 // Milliseconds per step
 
 export const useSea = () => {
   const queryClient = useQueryClient()
+  const { playSoundEffect } = useSound()
 
   const { mutate: startJourney, isLoading: isStartingJourney } = useMutation(
     (data: { town: Town }) => apiRequest("/api/sea/startJourney", data, "POST"),
     {
       onSuccess: () => {
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+        playSoundEffect("waves")
 
         setTimeout(() => continueJourney(), SEA_TRAVEL_SPEED)
       },
@@ -34,6 +37,7 @@ export const useSea = () => {
         error?: string
       }) => {
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+        playSoundEffect("waves")
 
         if (!error && !destinationReached && !shipMeetingState) {
           setTimeout(() => continueJourney(), SEA_TRAVEL_SPEED)

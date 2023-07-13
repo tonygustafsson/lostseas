@@ -12,7 +12,14 @@ import {
   SOUND_EFFECTS_STATE_COOKIE_NAME,
 } from "@/constants/system"
 
-export type SoundEffect = "coins" | "cheers" | "hurt" | "frustration"
+export type SoundEffect =
+  | "coins"
+  | "cheers"
+  | "hurt"
+  | "frustration"
+  | "drink"
+  | "tools"
+  | "waves"
 
 export interface State {
   musicOn: boolean
