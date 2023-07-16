@@ -30,6 +30,7 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
+  const opponentNation = player?.locationStates.sea.shipMeeting.nation
   const opponentCannons = player?.locationStates.sea.shipMeeting.cannons
   const opponentCrewMembers = player?.locationStates.sea.shipMeeting.crewMembers
 
@@ -73,6 +74,13 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
       character: {
         ...player.character,
         gold: player.character.gold + lootedGold,
+        battles: {
+          ...(player.character.battles || {}),
+          [opponentNation]: {
+            ...player.character.battles?.[opponentNation],
+            won: (player.character.battles?.[opponentNation]?.won || 0) + 1,
+          },
+        } as Character["battles"],
       },
       crewMembers: {
         ...player.crewMembers,
@@ -137,6 +145,13 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
       character: {
         ...player.character,
         gold: 0,
+        battles: {
+          ...(player.character.battles || {}),
+          [opponentNation]: {
+            ...player.character.battles?.[opponentNation],
+            lost: (player.character.battles?.[opponentNation]?.lost || 0) + 1,
+          },
+        } as Character["battles"],
       },
       crewMembers: {
         ...player.crewMembers,

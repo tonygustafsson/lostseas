@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next"
 import Link from "next/link"
 import { AiOutlineCalendar } from "react-icons/ai"
 import { BiFemaleSign, BiMaleSign, BiTime } from "react-icons/bi"
-import { GiCoins } from "react-icons/gi"
+import { GiCoins, GiPirateCoat } from "react-icons/gi"
 
 import ChangeCharacterForm from "@/components/ChangeCharacterForm"
 import Flag from "@/components/icons/Flag"
@@ -51,6 +51,14 @@ const Status = () => {
               </div>
               <div className="stat-title">Nationality</div>
               <div className="stat-value">{player?.character.nationality}</div>
+            </div>
+
+            <div className="stat bg-gray-700">
+              <div className="stat-figure text-secondary">
+                <GiPirateCoat className="h-8 w-8" />
+              </div>
+              <div className="stat-title">Title</div>
+              <div className="stat-value">{player?.character.title}</div>
             </div>
 
             <div className="stat bg-gray-700">

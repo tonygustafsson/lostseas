@@ -25,7 +25,8 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
   const { name, nationality, gender, age }: Character = req.body
   const { musicOn, soundEffectsOn } = req.body
 
-  const playerId = crypto.randomUUID()
+  const playerId: Player["id"] = crypto.randomUUID()
+  const title: Title = "Pirate"
   const createdDate = new Date().getTime()
   const startingTown = getRandomTown(nationality)
 
@@ -36,6 +37,7 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
     character: {
       name,
       nationality,
+      title,
       gender,
       age,
       town: startingTown,

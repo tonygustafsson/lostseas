@@ -25,7 +25,7 @@ const CharacterCard = ({ character }: Props) => (
       </h2>
 
       <p className="text-sm">
-        You are a {character.age} year old {character.gender.toLowerCase()} from{" "}
+        You are a {character.age} year old {character.title} from{" "}
         {character.nationality}.
       </p>
 
