@@ -1,6 +1,7 @@
 import { getCookie } from "cookies-next"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
+import { LOCATIONS } from "@/constants/locations"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
 import { createMoveEvents } from "@/utils/createMoveEvents"
@@ -18,6 +19,11 @@ const move = async (req: NextApiRequest, res: NextApiResponse) => {
 
   let destinationOverride: Character["location"] | undefined
   let locationState: LocationState | undefined
+
+  if (!Object.values(LOCATIONS).includes(destination)) {
+    res.status(400).json({ error: "Invalid location" })
+    return
+  }
 
   const player = await getPlayer(playerId)
 

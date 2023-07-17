@@ -8,12 +8,11 @@ export const TOWNS = {
 export const NATIONS = ["England", "France", "Spain", "Holland"] as Nation[]
 
 export const LOCATIONS = {
-  bank: "Bank",
-  tavern: "Tavern",
-  market: "Market",
   shop: "Shop",
+  tavern: "Tavern",
+  bank: "Bank",
+  market: "Market",
   shipyard: "Shipyard",
-  cityhall: "City hall",
   docks: "Docks",
   harbor: "Harbor",
   sea: "Sea",
