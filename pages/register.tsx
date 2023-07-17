@@ -62,7 +62,7 @@ const Register = ({ randomCharacter }: Props) => {
 
         <Select
           label="Nationality"
-          options={NATIONS}
+          options={Object.keys(NATIONS)}
           {...register("nationality", { value: randomCharacter.nationality })}
         />
 

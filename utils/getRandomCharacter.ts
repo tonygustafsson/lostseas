@@ -42,7 +42,7 @@ export const getRandomCharacter = () => {
   const gender: Character["gender"] = Math.random() > 0.25 ? "Male" : "Female"
   const age = getRandomInt(14, 70)
   const nationalityIndex = getRandomInt(0, 3)
-  const nationality = NATIONS[nationalityIndex]
+  const nationality = Object.keys(NATIONS)[nationalityIndex] as Nation
   const name = getRandomName(nationality, gender)
 
   return {

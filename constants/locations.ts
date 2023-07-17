@@ -1,4 +1,21 @@
-export const NATIONS = ["England", "France", "Spain", "Holland"] as Nation[]
+export const NATIONS: Record<Nation, { name: Nation; warWith: Nation }> = {
+  England: {
+    name: "England",
+    warWith: "France",
+  },
+  France: {
+    name: "France",
+    warWith: "England",
+  },
+  Spain: {
+    name: "Spain",
+    warWith: "Holland",
+  },
+  Holland: {
+    name: "Holland",
+    warWith: "Spain",
+  },
+}
 
 export const LOCATIONS = {
   shop: "Shop",

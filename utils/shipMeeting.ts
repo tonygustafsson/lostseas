@@ -5,7 +5,7 @@ import { getMannedCannons } from "./crew"
 import { getRandomInt } from "./random"
 
 export const createMeetingShip = (mannedCannons: number) => {
-  const nations = [...NATIONS, "Pirate"]
+  const nations = [...Object.keys(NATIONS), "Pirate"]
   const nation = nations[getRandomInt(0, nations.length - 1)] as
     | Nation
     | "Pirate"
