@@ -2,7 +2,7 @@ import { m as motion } from "framer-motion"
 import { useRouter } from "next/router"
 import { Fragment, useState } from "react"
 
-import { TOWN_INFO } from "@/constants/locations"
+import { TOWNS } from "@/constants/locations"
 import { useSea } from "@/hooks/queries/useSea"
 
 import { useModal } from "../ui/Modal/context"
@@ -99,67 +99,71 @@ const Map = ({ currentTown }: Props) => {
           xlinkHref="img/map/spanish-main.jpg"
         />
 
-        {Object.entries(TOWN_INFO).map(
-          ([townName, { x, y, textAlign = "bottom" }]) => {
-            const isCurrentTown = townName === currentTown
+        {Object.entries(TOWNS).map(([townName, town]) => {
+          const isCurrentTown = townName === currentTown
 
-            return (
-              <Fragment key={`sea-map-${townName}`}>
-                <motion.image
-                  key={`sea-map-town-${townName}`}
-                  whileHover={{
-                    scale: !isCurrentTown ? 1.1 : 1,
-                  }}
-                  width="20"
-                  height="20"
-                  x={x}
-                  y={y}
-                  xlinkHref="img/map/town.svg"
-                  className={`w-5 h-5 ${
-                    !isCurrentTown ? "cursor-pointer" : ""
-                  }`}
-                  onLoad={(e) => {
-                    if (isCurrentTown) {
-                      onCurrentTownLoad(e.currentTarget)
-                    }
-                  }}
-                  onClick={() =>
-                    !isCurrentTown && handleStartJourney(townName as Town)
+          return (
+            <Fragment key={`sea-map-${townName}`}>
+              <motion.image
+                key={`sea-map-town-${townName}`}
+                whileHover={{
+                  scale: !isCurrentTown ? 1.1 : 1,
+                }}
+                width="20"
+                height="20"
+                x={town.map.x}
+                y={town.map.y}
+                xlinkHref="img/map/town.svg"
+                className={`w-5 h-5 ${!isCurrentTown ? "cursor-pointer" : ""}`}
+                onLoad={(e) => {
+                  if (isCurrentTown) {
+                    onCurrentTownLoad(e.currentTarget)
                   }
-                  onMouseMove={
-                    !isCurrentTown
-                      ? (e) => onMouseOverTown(e, townName as Town)
-                      : undefined
-                  }
-                  onMouseOut={onMouseOutTown}
-                />
+                }}
+                onClick={() =>
+                  !isCurrentTown && handleStartJourney(townName as Town)
+                }
+                onMouseMove={
+                  !isCurrentTown
+                    ? (e) => onMouseOverTown(e, townName as Town)
+                    : undefined
+                }
+                onMouseOut={onMouseOutTown}
+              />
 
-                <text
-                  x={textAlign === "bottom" ? x - townName.length * 2 : x + 26}
-                  y={textAlign === "bottom" ? y + 34 : y + 15}
-                  fontSize="10px"
-                  fontFamily="monospace"
-                  className="bg-white"
-                  fill="white"
-                  opacity={isCurrentTown ? 0.9 : 0.8}
-                  filter={isCurrentTown ? "url(#blue)" : "url(#black)"}
-                  style={{ userSelect: "none" }}
-                  dangerouslySetInnerHTML={{
-                    __html: `&nbsp;${townName}&nbsp;`,
-                  }}
-                />
-              </Fragment>
-            )
-          }
-        )}
+              <text
+                x={
+                  town.map.textAlign === "right"
+                    ? town.map.x + 26
+                    : town.map.x - townName.length * 2
+                }
+                y={
+                  town.map.textAlign === "right"
+                    ? town.map.y + 15
+                    : town.map.y + 34
+                }
+                fontSize="10px"
+                fontFamily="monospace"
+                className="bg-white"
+                fill="white"
+                opacity={isCurrentTown ? 0.9 : 0.8}
+                filter={isCurrentTown ? "url(#blue)" : "url(#black)"}
+                style={{ userSelect: "none" }}
+                dangerouslySetInnerHTML={{
+                  __html: `&nbsp;${townName}&nbsp;`,
+                }}
+              />
+            </Fragment>
+          )
+        })}
 
         {currentTown && (
           <image
             width="20"
             height="20"
             filter="url(#blue)"
-            x={TOWN_INFO[currentTown].x - 23}
-            y={TOWN_INFO[currentTown].y + 1}
+            x={TOWNS[currentTown].map.x - 23}
+            y={TOWNS[currentTown].map.y + 1}
             xlinkHref="img/map/ship.svg"
           />
         )}

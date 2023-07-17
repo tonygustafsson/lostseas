@@ -1,7 +1,7 @@
 import { createPortal } from "react-dom"
 import React from "react-dom/server"
 
-import { TOWN_INFO } from "@/constants/locations"
+import { TOWNS } from "@/constants/locations"
 
 import Flag from "../icons/Flag"
 
@@ -24,9 +24,9 @@ const Tooltip = ({
 }: Props) => {
   if (!show || !currentTown || !destination) return null
 
-  const currentTownInfo = TOWN_INFO[currentTown]
-  const destinationInfo = TOWN_INFO[destination]
-  const distance = currentTownInfo.distanceTo?.[destination] || 0
+  const currentTownInfo = TOWNS[currentTown]
+  const destinationInfo = TOWNS[destination]
+  const distance = currentTownInfo.map.distanceTo[destination] || 0
 
   return createPortal(
     <div
