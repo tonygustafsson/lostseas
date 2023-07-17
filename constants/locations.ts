@@ -23,6 +23,7 @@ export const LOCATIONS = {
   bank: "Bank",
   market: "Market",
   shipyard: "Shipyard",
+  cityhall: "City hall",
   docks: "Docks",
   harbor: "Harbor",
   sea: "Sea",

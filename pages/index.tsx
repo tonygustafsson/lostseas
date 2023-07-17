@@ -3,6 +3,7 @@ import { GetServerSideProps } from "next"
 import DefaultLayout from "@/components/layouts/default"
 import AttackReport from "@/components/location/AttackReport"
 import Bank from "@/components/location/Bank"
+import Cityhall from "@/components/location/Cityhall"
 import Docks from "@/components/location/Docks"
 import Market from "@/components/location/Market"
 import Shipyard from "@/components/location/Shipyard"
@@ -26,6 +27,7 @@ const Home = () => {
         {player?.character.location === "Bank" && <Bank />}
         {player?.character.location === "Market" && <Market />}
         {player?.character.location === "Tavern" && <Tavern />}
+        {player?.character.location === "City hall" && <Cityhall />}
         {player?.character.location === "Shipyard" && <Shipyard />}
         {player?.character.location === "Docks" && <Docks />}
 

@@ -1,5 +1,5 @@
 import { AiOutlineShop } from "react-icons/ai"
-import { BsTools } from "react-icons/bs"
+import { BsBank2, BsTools } from "react-icons/bs"
 import { GiBank, GiFarmer, GiTavernSign } from "react-icons/gi"
 
 import { LOCATIONS } from "@/constants/locations"
@@ -9,50 +9,67 @@ type Props = {
   location: Character["location"]
 }
 
-const getLocationData = (location: string) => {
+const getLocationData = (location: TownLocation) => {
   switch (location) {
-    case "shop":
+    case "Shop":
       return {
         key: location,
         title: "Shop",
         icon: <AiOutlineShop className="text-cyan-600 w-6 h-6" />,
+        order: 1,
       }
-    case "tavern":
+    case "Tavern":
       return {
         key: location,
         title: "Tavern",
         icon: <GiTavernSign className="text-cyan-600 w-6 h-6" />,
+        order: 2,
       }
-    case "bank":
+    case "Bank":
       return {
         key: location,
         title: "Bank",
         icon: <GiBank className="text-cyan-600 w-6 h-6" />,
+        order: 3,
       }
-    case "market":
+    case "City hall":
+      return {
+        key: location,
+        title: "City hall",
+        icon: <BsBank2 className="text-cyan-600 w-5 h-5" />,
+        order: 4,
+      }
+    case "Market":
       return {
         key: location,
         title: "Market",
         icon: <GiFarmer className="text-cyan-600 w-6 h-6" />,
+        order: 5,
       }
-    case "shipyard":
+    case "Shipyard":
       return {
         key: location,
         title: "Shipyard",
         icon: <BsTools className="text-cyan-600 w-5 h-5" />,
+        order: 6,
       }
     default:
       return {
         key: location,
-        title: "Shipyard",
-        icon: <BsTools className="text-cyan-600 w-5 h-5" />,
+        title: "Unknown",
+        icon: null,
+        order: 7,
       }
   }
 }
 
-const locations = Object.keys(LOCATIONS)
-  .filter((location) => !["sea", "harbor", "docks"].includes(location))
+const locations = (
+  Object.values(LOCATIONS).filter(
+    (location) => !["Sea", "Harbor", "Docks"].includes(location)
+  ) as TownLocation[]
+)
   .map(getLocationData)
+  .sort((a, b) => a.order - b.order)
 
 const TownActions = ({ location }: Props) => {
   const { move } = useCharacter()
