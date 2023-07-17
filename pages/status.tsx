@@ -8,6 +8,7 @@ import ChangeCharacterForm from "@/components/ChangeCharacterForm"
 import Flag from "@/components/icons/Flag"
 import DefaultLayout from "@/components/layouts/default"
 import { useModal } from "@/components/ui/Modal/context"
+import { NATIONS } from "@/constants/locations"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getCurrentDate } from "@/utils/date"
 import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSideProps"
@@ -41,18 +42,6 @@ const Status = () => {
           </h2>
 
           <div className="stats gap-2 mt-4">
-            <div className="stat bg-gray-700">
-              <div className="stat-figure text-secondary">
-                <Flag
-                  nation={player?.character.nationality}
-                  size={32}
-                  className="opacity-[0.8]"
-                />
-              </div>
-              <div className="stat-title">Nationality</div>
-              <div className="stat-value">{player?.character.nationality}</div>
-            </div>
-
             <div className="stat bg-gray-700">
               <div className="stat-figure text-secondary">
                 <GiPirateCoat className="h-8 w-8" />
@@ -89,6 +78,34 @@ const Status = () => {
             >
               Change
             </button>
+          </div>
+
+          <div className="stats gap-2 mt-4">
+            <div className="stat bg-gray-700">
+              <div className="stat-figure text-secondary">
+                <Flag
+                  nation={player?.character.nationality}
+                  size={32}
+                  className="opacity-[0.8]"
+                />
+              </div>
+              <div className="stat-title">Nationality</div>
+              <div className="stat-value">{player?.character.nationality}</div>
+            </div>
+
+            <div className="stat bg-gray-700">
+              <div className="stat-figure text-secondary">
+                <Flag
+                  nation={NATIONS[player?.character.nationality].warWith}
+                  size={32}
+                  className="opacity-[0.8]"
+                />
+              </div>
+              <div className="stat-title">War with</div>
+              <div className="stat-value">
+                {NATIONS[player?.character.nationality].warWith}
+              </div>
+            </div>
           </div>
 
           <div className="stats gap-2 mt-4">
