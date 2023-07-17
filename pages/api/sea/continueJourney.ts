@@ -41,14 +41,20 @@ const seaContinueJourney = async (
   }
 
   const destinationReached =
-    player.character.journey.day + 1 === player.character.journey.totalDays
+    player.character.journey.day === player.character.journey.totalDays
 
   const shipMeeting = !destinationReached ? Math.random() < 0.33 : false
   const mannedCannons = getMannedCannons(
     player.crewMembers.count,
     player.inventory?.cannons
   )
-  const shipMeetingState = shipMeeting ? createMeetingShip(mannedCannons) : null
+  const previouslyHadAShipMeeting =
+    player.locationStates?.sea?.attackSuccessReport ||
+    player.locationStates?.sea?.attackFailureReport
+  const shipMeetingState =
+    shipMeeting && !previouslyHadAShipMeeting
+      ? createMeetingShip(mannedCannons)
+      : null
 
   if (destinationReached) {
     // Finish journey
@@ -73,11 +79,13 @@ const seaContinueJourney = async (
       ...player,
       character: {
         ...player.character,
-        day: player.character.day + 1,
-        journey: {
-          ...player.character.journey,
-          day: player.character.journey.day + 1,
-        },
+        ...(!previouslyHadAShipMeeting && {
+          day: player.character.day + 1,
+          journey: {
+            ...player.character.journey,
+            day: player.character.journey.day + 1,
+          },
+        }),
       },
       locationStates: {
         ...player.locationStates,
