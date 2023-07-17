@@ -40,7 +40,7 @@ const Status = () => {
             {player?.character.name}
           </h2>
 
-          <div className="stats gap-4 mt-4">
+          <div className="stats gap-2 mt-4">
             <div className="stat bg-gray-700">
               <div className="stat-figure text-secondary">
                 <Flag
@@ -91,7 +91,7 @@ const Status = () => {
             </button>
           </div>
 
-          <div className="stats gap-4 mt-4">
+          <div className="stats gap-2 mt-4">
             <div className="stat bg-gray-700">
               <div className="stat-figure text-secondary">
                 <GiCoins className="h-8 w-8" />
@@ -121,7 +121,7 @@ const Status = () => {
             )}
           </div>
 
-          <div className="stats gap-4 mt-4">
+          <div className="stats gap-2 mt-4">
             <div className="stat bg-gray-700">
               <div className="stat-figure text-secondary">
                 <AiOutlineCalendar className="h-8 w-8" />
@@ -144,6 +144,30 @@ const Status = () => {
               <button className="btn btn-primary btn-sm">Inventory</button>
             </Link>
           </div>
+
+          {player.character.battles && (
+            <>
+              <h3 className="font-serif text-2xl mt-4">Battles</h3>
+
+              <div className="stats gap-2 mt-2">
+                {Object.entries(player.character.battles).map(
+                  ([nation, { won, lost }]) => (
+                    <div key={`battles-${nation}`} className="stat bg-gray-700">
+                      <div className="stat-figure text-secondary">
+                        <Flag nation={nation as Nation} />
+                      </div>
+                      <div className="stat-title">
+                        {nation === "Pirate" ? "Pirates" : nation}
+                      </div>
+                      <div className="stat-value">
+                        {won || 0} won, {lost || 0} lost
+                      </div>
+                    </div>
+                  )
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </DefaultLayout>

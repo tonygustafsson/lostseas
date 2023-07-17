@@ -99,7 +99,7 @@ button[disabled] svg {
 }
 
 .stats {
-    @apply flex flex-col lg:flex-row !important;
+    @apply flex flex-col lg:flex-row bg-transparent !important;
 }
 
 .stats .stat {
