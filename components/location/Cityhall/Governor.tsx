@@ -2,15 +2,8 @@ import { GiBowTieRibbon } from "react-icons/gi"
 
 import ActionCard from "@/components/ActionCard"
 import { NATIONS, TOWNS } from "@/constants/locations"
+import { getTitleInfoByScore } from "@/constants/title"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-
-const getNewTitle = (score = 0) => {
-  if (score > 10) {
-    return ""
-  }
-
-  return ""
-}
 
 const getGreeting = (
   isHomeNation: boolean,
@@ -23,7 +16,7 @@ const getGreeting = (
   }
 
   const score = enemyWins - friendlyAttacks
-  const newTitle = getNewTitle(score)
+  const titleInfo = getTitleInfoByScore(score)
 
   if (isHomeNation && enemyWins > 0) {
     return (
@@ -32,12 +25,26 @@ const getGreeting = (
           We are at war with {townWarWith}. Thank you for {enemyWins} victories
           over our common enemy.
         </p>
-        <p>New title: {newTitle}</p>
+        <p>New title: {titleInfo.title}</p>
       </>
     )
   }
 
-  return "Go away please."
+  if (isHomeNation) {
+    return (
+      <p>
+        We are at war with {townWarWith}. I&apos;m looking forward for your wins
+        against our common enemy. You will be rewarded by doing so.
+      </p>
+    )
+  }
+
+  return (
+    <p>
+      We are at war with {townWarWith}. Even though you are not my citizen, I
+      will reward you for your victories against our common enemy.
+    </p>
+  )
 }
 
 const Governor = () => {
