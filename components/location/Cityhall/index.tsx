@@ -14,7 +14,7 @@ const Cityhall = () => {
     <>
       <LocationTabs<CityHallTab>
         items={[
-          { id: "governor", label: "Guvernor" },
+          { id: "governor", label: "Governor" },
           { id: "handover", label: "Hand over" },
         ]}
         currentTab={tab}

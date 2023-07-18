@@ -1,6 +1,6 @@
 type Props = {
   title?: string
-  message: string
+  message: string | React.ReactNode
   actions?: React.ReactNode
   icon?: React.ReactNode
 }
