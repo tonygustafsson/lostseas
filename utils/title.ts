@@ -64,8 +64,16 @@ export const getNewTitle = (character: Character | undefined) => {
   const score = enemyWins - friendlyAttacks
 
   const isHomeNation = character.nationality === townNation
-  const titleInfo = getTitleInfoByScore(score)
-  const promotionAvailable = character.title !== titleInfo.title
+  const currentTitleInfo = TITLE_INFO[character.title]
+  const newTitleInfo = getTitleInfoByScore(score)
+  const promotionAvailable =
+    character.title !== newTitleInfo.title &&
+    newTitleInfo.higherThan.includes(currentTitleInfo.title) // Avoid demoting
 
-  return { isHomeNation, townWarWith, titleInfo, promotionAvailable }
+  return {
+    isHomeNation,
+    townWarWith,
+    titleInfo: newTitleInfo,
+    promotionAvailable,
+  }
 }
