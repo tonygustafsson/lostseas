@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import Head from "next/head"
 import { useRouter } from "next/router"
 import QrScanner from "qr-scanner"
 import { useEffect, useRef, useState } from "react"
@@ -72,40 +73,46 @@ const Login = () => {
   }
 
   return (
-    <DefaultLayout>
-      <h1 className="font-serif text-4xl mb-8">Sign in</h1>
+    <>
+      <Head>
+        <title>Sign in - Lost Seas</title>
+      </Head>
 
-      <form
-        method="post"
-        action="/api/user/login"
-        onSubmit={handleSubmit(onSubmit)}
-        className="w-full flex flex-col gap-2 max-w-md"
-      >
-        <TextField
-          label="User ID"
-          autoFocus
-          {...register("playerId")}
-          error={errors.playerId?.message}
-        />
+      <DefaultLayout>
+        <h1 className="font-serif text-4xl mb-8">Sign in</h1>
 
-        {error && <p className="text-red-500">{error}</p>}
+        <form
+          method="post"
+          action="/api/user/login"
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full flex flex-col gap-2 max-w-md"
+        >
+          <TextField
+            label="User ID"
+            autoFocus
+            {...register("playerId")}
+            error={errors.playerId?.message}
+          />
+
+          {error && <p className="text-red-500">{error}</p>}
+
+          <button
+            type="submit"
+            className="btn btn-primary btn-large mt-4"
+            disabled={!isValid && isDirty}
+          >
+            Sign in
+          </button>
+        </form>
 
         <button
-          type="submit"
-          className="btn btn-primary btn-large mt-4"
-          disabled={!isValid && isDirty}
+          onClick={openQrScannerModal}
+          className="btn btn-secondary mt-8 w-full max-w-md"
         >
-          Sign in
+          Sign in using QR code
         </button>
-      </form>
-
-      <button
-        onClick={openQrScannerModal}
-        className="btn btn-secondary mt-8 w-full max-w-md"
-      >
-        Sign in using QR code
-      </button>
-    </DefaultLayout>
+      </DefaultLayout>
+    </>
   )
 }
 

@@ -1,4 +1,5 @@
 import { GetServerSideProps } from "next"
+import Head from "next/head"
 
 import DefaultLayout from "@/components/layouts/default"
 import MerchandiseCard from "@/components/MerchandiseCard"
@@ -36,70 +37,76 @@ const Ships = () => {
   }
 
   return (
-    <DefaultLayout>
-      <h1 className="text-3xl font-serif text mb-8">Ships</h1>
+    <>
+      <Head>
+        <title>Ships - Lost Seas</title>
+      </Head>
 
-      {!!Object.values(player?.ships || [])?.length && (
-        <div className="flex flex-wrap gap-4">
-          {Object.values(player?.ships || []).map((ship) => {
-            const shipInfo = SHIP_TYPES[ship.type]
-            const createdDate = getCurrentDate(ship.createdDay)
+      <DefaultLayout>
+        <h1 className="text-3xl font-serif text mb-8">Ships</h1>
 
-            if (!shipInfo) return null
+        {!!Object.values(player?.ships || [])?.length && (
+          <div className="flex flex-wrap gap-4">
+            {Object.values(player?.ships || []).map((ship) => {
+              const shipInfo = SHIP_TYPES[ship.type]
+              const createdDate = getCurrentDate(ship.createdDay)
 
-            return (
-              <MerchandiseCard
-                key={`ships-${ship.name}`}
-                title={`${ship.name} (${ship.type})`}
-                icon={<MerchandiseIcon item={ship.type} />}
-                body={
-                  <>
-                    <p>{shipInfo.description}</p>
+              if (!shipInfo) return null
 
-                    <div className="flex flex-col gap-4 mt-2">
-                      <div className="flex flex-col w-fit items-center gap-1">
-                        <p className="text-xs font-bold">Health</p>
+              return (
+                <MerchandiseCard
+                  key={`ships-${ship.name}`}
+                  title={`${ship.name} (${ship.type})`}
+                  icon={<MerchandiseIcon item={ship.type} />}
+                  body={
+                    <>
+                      <p>{shipInfo.description}</p>
 
-                        <RadialProgressBar
-                          percentage={ship.health}
-                          className="w-14 h-14"
-                        />
+                      <div className="flex flex-col gap-4 mt-2">
+                        <div className="flex flex-col w-fit items-center gap-1">
+                          <p className="text-xs font-bold">Health</p>
+
+                          <RadialProgressBar
+                            percentage={ship.health}
+                            className="w-14 h-14"
+                          />
+                        </div>
+
+                        <div className="badge badge-secondary">
+                          Created: {createdDate}
+                        </div>
                       </div>
+                    </>
+                  }
+                  actions={
+                    <div className="flex gap-2">
+                      <button
+                        className="btn btn-secondary btn-xs"
+                        onClick={() => handleRemoveShip(ship.id)}
+                        disabled={isRemoving}
+                      >
+                        Remove
+                      </button>
 
-                      <div className="badge badge-secondary">
-                        Created: {createdDate}
-                      </div>
+                      <button
+                        className="btn btn-secondary btn-xs"
+                        onClick={() => openRenameModal(ship.id, ship.name)}
+                      >
+                        Rename
+                      </button>
                     </div>
-                  </>
-                }
-                actions={
-                  <div className="flex gap-2">
-                    <button
-                      className="btn btn-secondary btn-xs"
-                      onClick={() => handleRemoveShip(ship.id)}
-                      disabled={isRemoving}
-                    >
-                      Remove
-                    </button>
+                  }
+                />
+              )
+            })}
+          </div>
+        )}
 
-                    <button
-                      className="btn btn-secondary btn-xs"
-                      onClick={() => openRenameModal(ship.id, ship.name)}
-                    >
-                      Rename
-                    </button>
-                  </div>
-                }
-              />
-            )
-          })}
-        </div>
-      )}
-
-      {!Object.values(player?.ships || [])?.length && (
-        <p>You do not have any ships currently.</p>
-      )}
-    </DefaultLayout>
+        {!Object.values(player?.ships || [])?.length && (
+          <p>You do not have any ships currently.</p>
+        )}
+      </DefaultLayout>
+    </>
   )
 }
 

@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import type { AppProps } from "next/app"
+import Head from "next/head"
 import { useState } from "react"
 
 import MotionProvider from "@/components/MotionProvider"
@@ -33,26 +34,54 @@ const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
   )
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Hydrate state={pageProps.dehydratedState}>
-        <MotionProvider>
-          <ToastProvider>
-            <ModalProvider>
-              <SoundProvider>
-                <Component {...pageProps} />
+    <>
+      <Head>
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+        <meta name="msapplication-TileColor" content="#2d89ef" />
+        <meta name="theme-color" content="#ffffff" />
 
-                <Toast />
-                <Modal />
-                <WelcomeModal />
-                <Sound />
-              </SoundProvider>
-            </ModalProvider>
-          </ToastProvider>
-        </MotionProvider>
+        <title>Lost Seas</title>
+      </Head>
 
-        <ReactQueryDevtools initialIsOpen={false} />
-      </Hydrate>
-    </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <MotionProvider>
+            <ToastProvider>
+              <ModalProvider>
+                <SoundProvider>
+                  <Component {...pageProps} />
+
+                  <Toast />
+                  <Modal />
+                  <WelcomeModal />
+                  <Sound />
+                </SoundProvider>
+              </ModalProvider>
+            </ToastProvider>
+          </MotionProvider>
+
+          <ReactQueryDevtools initialIsOpen={false} />
+        </Hydrate>
+      </QueryClientProvider>
+    </>
   )
 }
 

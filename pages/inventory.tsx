@@ -1,4 +1,5 @@
 import { GetServerSideProps } from "next"
+import Head from "next/head"
 
 import DefaultLayout from "@/components/layouts/default"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
@@ -16,35 +17,41 @@ const Inventory = () => {
 
   const rows = Object.entries(player?.inventory || []) as [
     keyof Inventory,
-    number
+    number,
   ][]
 
   return (
-    <DefaultLayout>
-      <h1 className="text-3xl font-serif text mb-8">Inventory</h1>
+    <>
+      <Head>
+        <title>Inventory - Lost Seas</title>
+      </Head>
 
-      <div className="flex flex-wrap gap-4">
-        {rows.map(([item, possession]) => (
-          <div
-            className="stat shadow-md hover:shadow-lg lg:w-52 bg-gray-800 rounded-lg"
-            key={`inventory-${item}`}
-          >
-            <div className="stat-figure text-secondary">
-              <MerchandiseIcon size="lg" item={item as keyof Inventory} />
+      <DefaultLayout>
+        <h1 className="text-3xl font-serif text mb-8">Inventory</h1>
+
+        <div className="flex flex-wrap gap-4">
+          {rows.map(([item, possession]) => (
+            <div
+              className="stat shadow-md hover:shadow-lg lg:w-52 bg-gray-800 rounded-lg"
+              key={`inventory-${item}`}
+            >
+              <div className="stat-figure text-secondary">
+                <MerchandiseIcon size="lg" item={item as keyof Inventory} />
+              </div>
+              <div className="stat-title">{capitalize(item)}</div>
+              <div className="stat-value">
+                {possession}{" "}
+                <span className="text-sm">
+                  {possession === 1
+                    ? MERCHANDISE[item].singleUnit
+                    : MERCHANDISE[item].unit}
+                </span>
+              </div>
             </div>
-            <div className="stat-title">{capitalize(item)}</div>
-            <div className="stat-value">
-              {possession}{" "}
-              <span className="text-sm">
-                {possession === 1
-                  ? MERCHANDISE[item].singleUnit
-                  : MERCHANDISE[item].unit}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
-    </DefaultLayout>
+          ))}
+        </div>
+      </DefaultLayout>
+    </>
   )
 }
 
