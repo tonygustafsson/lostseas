@@ -1,7 +1,6 @@
-export const TITLE_INFO: Record<
-  Title,
-  { title: Title; reward: number; maxShips: number }
-> = {
+export type TitleInfo = { title: Title; reward: number; maxShips: number }
+
+export const TITLE_INFO: Record<Title, TitleInfo> = {
   Pirate: {
     title: "Pirate",
     reward: 0,

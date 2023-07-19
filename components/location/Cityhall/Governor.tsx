@@ -2,21 +2,19 @@ import { GiBowTieRibbon } from "react-icons/gi"
 
 import ActionCard from "@/components/ActionCard"
 import { NATIONS, TOWNS } from "@/constants/locations"
-import { getTitleInfoByScore } from "@/constants/title"
+import { getTitleInfoByScore, TitleInfo } from "@/constants/title"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 const getGreeting = (
   isHomeNation: boolean,
   townWarWith: Nation | null,
-  enemyWins = 0,
-  friendlyAttacks = 0
+  currentTitle: Title | undefined,
+  titleInfo: TitleInfo,
+  enemyWins = 0
 ) => {
   if (!townWarWith) {
     return ""
   }
-
-  const score = enemyWins - friendlyAttacks
-  const titleInfo = getTitleInfoByScore(score)
 
   if (isHomeNation && enemyWins > 0) {
     return (
@@ -25,7 +23,14 @@ const getGreeting = (
           We are at war with {townWarWith}. Thank you for {enemyWins} victories
           over our common enemy.
         </p>
-        <p>New title: {titleInfo.title}</p>
+
+        {currentTitle !== titleInfo.title && (
+          <p className="mt-2">
+            I would like to share my appreciation by giving you the title{" "}
+            <strong>{titleInfo.title}</strong>. You will also get a reward of{" "}
+            {titleInfo.reward} gold.
+          </p>
+        )}
       </>
     )
   }
@@ -41,8 +46,8 @@ const getGreeting = (
 
   return (
     <p>
-      We are at war with {townWarWith}. Even though you are not my citizen, I
-      will reward you for your victories against our common enemy.
+      We are at war with {townWarWith}. I might consider making you a citizen if
+      you destroy enemy ships.
     </p>
   )
 }
@@ -62,12 +67,15 @@ const Governor = () => {
   const enemyWins = townWarWith
     ? player?.character.battles?.[townWarWith]?.won || 0
     : 0
+  const score = enemyWins - friendlyAttacks
+  const titleInfo = getTitleInfoByScore(score)
 
   const greeting = getGreeting(
     isHomeNation,
     townWarWith,
-    enemyWins,
-    friendlyAttacks
+    player?.character.title,
+    titleInfo,
+    enemyWins
   )
 
   return (
@@ -77,11 +85,9 @@ const Governor = () => {
       }`}
       message={greeting}
       icon={<GiBowTieRibbon className="w-20 h-20 text-secondary" />}
-      actions={
-        <>
-          <button className="btn btn-primary">Accept</button>
-        </>
-      }
+      {...(player?.character.title !== titleInfo.title && {
+        actions: <button className="btn btn-primary">Accept new title</button>,
+      })}
     />
   )
 }
