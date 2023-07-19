@@ -19,6 +19,7 @@ const Market = () => {
     <div className="flex flex-wrap gap-6">
       {Object.entries(items || {}).map(([item, { price, quantity }]) => {
         const inventoryItem = item as keyof LocationStateMarketItems
+        const canAffortIt = price * quantity <= (player?.character.gold || 0)
 
         return (
           <MerchandiseCard
@@ -26,6 +27,7 @@ const Market = () => {
             title={capitalize(item)}
             indicator={player?.inventory?.[inventoryItem]?.toString() || "0"}
             icon={<MerchandiseIcon item={inventoryItem} />}
+            disabled={!canAffortIt}
             body={
               <>
                 <p>
@@ -49,6 +51,7 @@ const Market = () => {
               <button
                 className="btn btn-primary btn-sm"
                 onClick={() => handleAccept(inventoryItem)}
+                disabled={!canAffortIt}
               >
                 Buy
               </button>

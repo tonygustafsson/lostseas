@@ -53,5 +53,5 @@ button[disabled] svg {
 }
 
 .stats .stat-value {
-  @apply text-lg lg:text-xl;
+  @apply text-lg;
 }
