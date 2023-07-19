@@ -3,6 +3,7 @@ import { GiBowTieRibbon } from "react-icons/gi"
 import ActionCard from "@/components/ActionCard"
 import { NATIONS, TOWNS } from "@/constants/locations"
 import { getTitleInfoByScore, TitleInfo } from "@/constants/title"
+import { useCityhall } from "@/hooks/queries/useCityhall"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 const getGreeting = (
@@ -54,6 +55,7 @@ const getGreeting = (
 
 const Governor = () => {
   const { data: player } = useGetPlayer()
+  const { acceptNewTitle } = useCityhall()
 
   const townNation = player?.character.town
     ? TOWNS[player?.character.town]?.nation
@@ -78,6 +80,10 @@ const Governor = () => {
     enemyWins
   )
 
+  const handleAcceptNewTitle = () => {
+    acceptNewTitle()
+  }
+
   return (
     <ActionCard
       title={`Welcome ${player?.character.title.toLowerCase()} ${
@@ -86,7 +92,11 @@ const Governor = () => {
       message={greeting}
       icon={<GiBowTieRibbon className="w-20 h-20 text-secondary" />}
       {...(player?.character.title !== titleInfo.title && {
-        actions: <button className="btn btn-primary">Accept new title</button>,
+        actions: (
+          <button className="btn btn-primary" onClick={handleAcceptNewTitle}>
+            Accept new title
+          </button>
+        ),
       })}
     />
   )
