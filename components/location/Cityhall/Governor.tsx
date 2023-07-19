@@ -1,4 +1,4 @@
-import { GiBowTieRibbon } from "react-icons/gi"
+import { GiQuillInk } from "react-icons/gi"
 
 import ActionCard from "@/components/ActionCard"
 import { TitleInfo } from "@/constants/title"
@@ -82,7 +82,7 @@ const Governor = () => {
         player?.character.name
       }`}
       message={greeting}
-      icon={<GiBowTieRibbon className="w-20 h-20 text-secondary" />}
+      icon={<GiQuillInk className="w-20 h-20 text-secondary" />}
       {...(promotionAvailable && {
         actions: (
           <button className="btn btn-primary" onClick={handleAcceptNewTitle}>
