@@ -1,0 +1,31 @@
+.main-menu {
+  @apply menu text-base px-0 text-base-content;
+}
+
+.main-menu li {
+  @apply font-serif my-0.5;
+}
+
+.main-menu > li.active {
+  @apply bg-gray-800 text-primary;
+}
+
+.main-menu svg {
+  transition: color 0.2s ease-in-out;
+}
+
+.main-menu > li button[disabled] {
+  @apply text-gray-500 cursor-not-allowed;
+}
+
+.main-menu > li:hover button:not([disabled]) svg {
+  @apply text-primary;
+}
+
+.main-menu li:hover {
+  @apply bg-gray-800;
+}
+
+li.main-menu-separator {
+  @apply my-4 h-[1px] border-b border-gray-800;
+}

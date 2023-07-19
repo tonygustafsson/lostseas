@@ -34,7 +34,7 @@ const MainMenu = () => {
   }
 
   return (
-    <ul className="sidebar-menu">
+    <ul className="main-menu">
       {player ? (
         <>
           <li className={`${pathname === "/" ? "active" : ""}`}>
@@ -51,7 +51,7 @@ const MainMenu = () => {
             </button>
           </li>
 
-          <li className="sidebar-menu-separator" aria-hidden></li>
+          <li className="main-menu-separator" aria-hidden></li>
 
           <li className={`${pathname === "/status" ? "active" : ""}`}>
             <Link href="/status">
@@ -90,7 +90,7 @@ const MainMenu = () => {
             </Link>
           </li>
 
-          <li className="sidebar-menu-separator" aria-hidden></li>
+          <li className="main-menu-separator" aria-hidden></li>
 
           <li className={`${pathname === "/settings" ? "active" : ""}`}>
             <Link href="/settings">
