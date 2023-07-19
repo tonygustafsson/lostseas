@@ -9,7 +9,7 @@ html {
 }
 
 .btn-lg {
-    @apply min-h-12 h-12
+    @apply min-h-12 h-12;
 }
 
 .table-zebra thead tr {
