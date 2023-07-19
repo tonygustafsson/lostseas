@@ -1,7 +1,7 @@
 import { FaUsers } from "react-icons/fa"
 import {
+  GiBandana,
   GiCoins,
-  GiHoodedFigure,
   GiOpenedFoodCan,
   GiShoonerSailboat,
 } from "react-icons/gi"
@@ -32,7 +32,7 @@ const AttackReport = () => {
 
           {successReport.crewMoodIncrease && (
             <li className="flex align-middle gap-2 text-lg">
-              <GiHoodedFigure className="h-7 w-7 text-primary" />
+              <GiBandana className="h-7 w-7 text-primary" />
               Your crews mood went up with {successReport.crewMoodIncrease}% and
               is now at {player.crewMembers.mood}%.
             </li>
@@ -40,7 +40,7 @@ const AttackReport = () => {
 
           {successReport.crewHealthLoss && (
             <li className="flex align-middle gap-2 text-lg">
-              <GiHoodedFigure className="h-7 w-7 text-primary" />
+              <GiBandana className="h-7 w-7 text-primary" />
               Your crew lost {successReport.crewHealthLoss}% health, and now has
               a health of {player?.crewMembers.health}%.
             </li>
@@ -115,7 +115,7 @@ const AttackReport = () => {
 
           {failureReport.crewHealthLoss && (
             <li className="flex align-middle gap-2 text-lg">
-              <GiHoodedFigure className="h-7 w-7 text-primary" />
+              <GiBandana className="h-7 w-7 text-primary" />
               Your crew lost {failureReport.crewHealthLoss}% health, and now has
               a health of {player.crewMembers.health}%.
             </li>

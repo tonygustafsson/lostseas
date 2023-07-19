@@ -2,7 +2,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { FiLogIn, FiLogOut, FiSettings, FiUserPlus } from "react-icons/fi"
 import {
-  GiHoodedFigure,
+  GiBandana,
   GiOpenedFoodCan,
   GiPirateCoat,
   GiPirateHat,
@@ -72,7 +72,7 @@ const MainMenu = () => {
 
           <li className={`${pathname === "/crew" ? "active" : ""}`}>
             <Link href="/crew">
-              <GiHoodedFigure className="h-5 w-5" />
+              <GiBandana className="h-5 w-5" />
               Crew members
               <span className="badge badge-sm badge-primary">
                 {player?.crewMembers.count}
