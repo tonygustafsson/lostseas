@@ -1,16 +1,16 @@
 import { GiBowTieRibbon } from "react-icons/gi"
 
 import ActionCard from "@/components/ActionCard"
-import { NATIONS, TOWNS } from "@/constants/locations"
-import { getTitleInfoByScore, TitleInfo } from "@/constants/title"
+import { TitleInfo } from "@/constants/title"
 import { useCityhall } from "@/hooks/queries/useCityhall"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { getNewTitle } from "@/utils/title"
 
 const getGreeting = (
   isHomeNation: boolean,
   townWarWith: Nation | null,
-  currentTitle: Title | undefined,
-  titleInfo: TitleInfo,
+  promotionAvailable: boolean,
+  titleInfo: TitleInfo | null,
   enemyWins = 0
 ) => {
   if (!townWarWith) {
@@ -25,7 +25,7 @@ const getGreeting = (
           over our common enemy.
         </p>
 
-        {currentTitle !== titleInfo.title && (
+        {promotionAvailable && titleInfo && (
           <p className="mt-2">
             I would like to share my appreciation by giving you the title{" "}
             <strong>{titleInfo.title}</strong>. You will also get a reward of{" "}
@@ -57,25 +57,17 @@ const Governor = () => {
   const { data: player } = useGetPlayer()
   const { acceptNewTitle } = useCityhall()
 
-  const townNation = player?.character.town
-    ? TOWNS[player?.character.town]?.nation
-    : null
-  const townWarWith = townNation ? NATIONS[townNation].warWith : null
-  const isHomeNation = player?.character.nationality === townNation
-  const friendlyAttacks = townNation
-    ? (player?.character.battles?.[townNation]?.won || 0) +
-      (player?.character.battles?.[townNation]?.lost || 0)
-    : 0
+  const { isHomeNation, townWarWith, titleInfo, promotionAvailable } =
+    getNewTitle(player?.character)
+
   const enemyWins = townWarWith
     ? player?.character.battles?.[townWarWith]?.won || 0
     : 0
-  const score = enemyWins - friendlyAttacks
-  const titleInfo = getTitleInfoByScore(score)
 
   const greeting = getGreeting(
     isHomeNation,
     townWarWith,
-    player?.character.title,
+    promotionAvailable,
     titleInfo,
     enemyWins
   )
@@ -91,7 +83,7 @@ const Governor = () => {
       }`}
       message={greeting}
       icon={<GiBowTieRibbon className="w-20 h-20 text-secondary" />}
-      {...(player?.character.title !== titleInfo.title && {
+      {...(promotionAvailable && {
         actions: (
           <button className="btn btn-primary" onClick={handleAcceptNewTitle}>
             Accept new title

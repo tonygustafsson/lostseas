@@ -1,10 +1,9 @@
 import { getCookie } from "cookies-next"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
-import { NATIONS, TOWNS } from "@/constants/locations"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { getTitleInfoByScore } from "@/constants/title"
 import { getCharacter, saveCharacter } from "@/firebase/db"
+import { getNewTitle } from "@/utils/title"
 
 const cityhallAcceptNewTitle = async (
   req: NextApiRequest,
@@ -19,37 +18,25 @@ const cityhallAcceptNewTitle = async (
 
   const character = await getCharacter(playerId)
 
-  const townNation = character.town ? TOWNS[character.town]?.nation : null
-  const townWarWith = townNation ? NATIONS[townNation].warWith : null
-  const isHomeNation = character.nationality === townNation
+  const { isHomeNation, titleInfo, promotionAvailable } = getNewTitle(character)
 
   if (!isHomeNation) {
-    res.status(500).json({ error: `${townNation} is not your home nation.` })
+    res.status(500).json({ error: "Not your home nation." })
     return
   }
 
-  const friendlyAttacks = townNation
-    ? (character.battles?.[townNation]?.won || 0) +
-      (character.battles?.[townNation]?.lost || 0)
-    : 0
-  const enemyWins = townWarWith ? character.battles?.[townWarWith]?.won || 0 : 0
-  const score = enemyWins - friendlyAttacks
-  const titleInfo = getTitleInfoByScore(score)
-
-  if (character.title === titleInfo.title) {
-    res
-      .status(500)
-      .json({
-        error: `You already have the title ${titleInfo.title}.`,
-        titleInfo,
-        title: character.title,
-      })
+  if (!promotionAvailable) {
+    res.status(500).json({
+      error: `You already have the title ${titleInfo?.title}.`,
+      titleInfo,
+      title: character.title,
+    })
     return
   }
 
   const characterResult: Character = {
     ...character,
-    title: titleInfo.title,
+    title: titleInfo?.title,
     gold: character.gold + titleInfo.reward,
   }
 
