@@ -27,7 +27,7 @@ export const useCityhall = () => {
           }
 
           queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-          playSoundEffect("journey") // TODO: Change sound effect
+          playSoundEffect("fanfare")
 
           setToast({
             title: `You are now a ${titleInfo.title}`,
@@ -57,7 +57,7 @@ export const useCityhall = () => {
           }
 
           queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-          playSoundEffect("journey") // TODO: Change sound effect
+          playSoundEffect("fanfare")
 
           setToast({
             title: `You are now a ${titleInfo.title} from ${newNationality}`,
