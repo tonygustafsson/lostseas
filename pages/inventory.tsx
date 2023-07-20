@@ -32,14 +32,14 @@ const Inventory = () => {
         <div className="flex flex-wrap gap-4">
           {rows.map(([item, possession]) => (
             <div
-              className="stat shadow-md hover:shadow-lg lg:w-52 bg-gray-800 rounded-lg"
+              className="stat shadow-md hover:shadow-lg lg:w-52 bg-gray-800 rounded-lg pr-4"
               key={`inventory-${item}`}
             >
               <div className="stat-figure text-secondary">
                 <MerchandiseIcon size="lg" item={item as keyof Inventory} />
               </div>
               <div className="stat-title">{capitalize(item)}</div>
-              <div className="stat-value">
+              <div className="stat-value text-2xl">
                 {possession}{" "}
                 <span className="text-sm">
                   {possession === 1
