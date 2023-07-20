@@ -63,7 +63,7 @@ const BankAccount = () => {
   return (
     <div className="w-full flex flex-col lg:flex-row lg:gap-8">
       <form
-        className="w-full mt-4"
+        className="w-full mt-4 min-h-[350px]"
         onSubmit={accountHandleSubmit(handleDeposit)}
       >
         <h2 className="text-2xl font-serif font-semibold mt-8 mb-4">
@@ -97,7 +97,7 @@ const BankAccount = () => {
       </form>
 
       <form
-        className="w-full mt-4"
+        className="flex flex-col justify-between items-start w-full mt-4 min-h-[350px]"
         onSubmit={withdrawalHandleSubmit(handleWithdrawal)}
       >
         <h2 className="text-2xl font-serif font-semibold mt-8 mb-4">
