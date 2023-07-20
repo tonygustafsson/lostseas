@@ -1,18 +1,29 @@
 import { GiQuillInk } from "react-icons/gi"
 
 import ActionCard from "@/components/ActionCard"
+import { TOWNS } from "@/constants/locations"
 import { TitleInfo } from "@/constants/title"
 import { useCityhall } from "@/hooks/queries/useCityhall"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getNewTitle } from "@/utils/title"
 
-const getGreeting = (
-  isHomeNation: boolean,
-  townWarWith: Nation | null,
-  promotionAvailable: boolean,
-  titleInfo: TitleInfo | null,
-  enemyWins = 0
-) => {
+const getGreeting = ({
+  isHomeNation,
+  currentNation,
+  townWarWith,
+  promotionAvailable,
+  citizenshipChangeAvailable,
+  titleInfo,
+  enemyWins = 0,
+}: {
+  isHomeNation: boolean
+  currentNation: Nation | undefined
+  townWarWith: Nation | null
+  promotionAvailable: boolean
+  citizenshipChangeAvailable: boolean
+  titleInfo: TitleInfo | null
+  enemyWins: number
+}) => {
   if (!townWarWith) {
     return ""
   }
@@ -45,6 +56,26 @@ const getGreeting = (
     )
   }
 
+  if (citizenshipChangeAvailable && titleInfo) {
+    return (
+      <>
+        <p>
+          We are at war with {townWarWith}. Thank you for {enemyWins} victories
+          over our enemy.
+        </p>
+
+        <p className="mt-2">
+          I would like to share my appreciation by giving you the chance to be a
+          citizen of {currentNation} with the title{" "}
+          <strong>{titleInfo.title}</strong>.
+          {titleInfo.reward > 0 && (
+            <span>You will also get a reward of {titleInfo.reward} gold.</span>
+          )}
+        </p>
+      </>
+    )
+  }
+
   return (
     <p>
       We are at war with {townWarWith}. I might consider making you a citizen if
@@ -55,38 +86,57 @@ const getGreeting = (
 
 const Governor = () => {
   const { data: player } = useGetPlayer()
-  const { acceptNewTitle } = useCityhall()
+  const { acceptNewTitle, changeCitizenship } = useCityhall()
 
-  const { isHomeNation, townWarWith, titleInfo, promotionAvailable } =
-    getNewTitle(player?.character)
+  const {
+    isHomeNation,
+    townWarWith,
+    titleInfo,
+    promotionAvailable,
+    citizenshipChangeAvailable,
+  } = getNewTitle(player?.character)
 
   const enemyWins = townWarWith
     ? player?.character.battles?.[townWarWith]?.won || 0
     : 0
 
-  const greeting = getGreeting(
+  const greeting = getGreeting({
     isHomeNation,
+    currentNation: player?.character.town
+      ? TOWNS[player?.character.town].nation
+      : undefined,
     townWarWith,
     promotionAvailable,
+    citizenshipChangeAvailable,
     titleInfo,
-    enemyWins
-  )
+    enemyWins,
+  })
 
   const handleAcceptNewTitle = () => {
     acceptNewTitle()
   }
 
+  const handleChangeCitizenship = () => {
+    changeCitizenship()
+  }
+
   return (
     <ActionCard
-      title={`Welcome ${player?.character.title.toLowerCase()} ${
-        player?.character.name
-      }`}
+      title={`Welcome ${player?.character.title.toLowerCase()} ${player
+        ?.character.name}`}
       message={greeting}
       icon={<GiQuillInk className="w-20 h-20 text-secondary" />}
       {...(promotionAvailable && {
         actions: (
           <button className="btn btn-primary" onClick={handleAcceptNewTitle}>
             Accept new title
+          </button>
+        ),
+      })}
+      {...(citizenshipChangeAvailable && {
+        actions: (
+          <button className="btn btn-primary" onClick={handleChangeCitizenship}>
+            Change citizenship
           </button>
         ),
       })}

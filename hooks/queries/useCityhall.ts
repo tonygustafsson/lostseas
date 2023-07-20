@@ -27,7 +27,7 @@ export const useCityhall = () => {
           }
 
           queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-          playSoundEffect("journey")
+          playSoundEffect("journey") // TODO: Change sound effect
 
           setToast({
             title: `You are now a ${titleInfo.title}`,
@@ -41,8 +41,40 @@ export const useCityhall = () => {
       }
     )
 
+  const { mutate: changeCitizenship, isLoading: isChangingCitizenship } =
+    useMutation(
+      () => apiRequest("/api/cityhall/changeCitizenship", null, "POST"),
+      {
+        onSuccess: ({ error, titleInfo, newNationality }) => {
+          if (error) {
+            setToast({
+              title: `Could not change citizenship to ${newNationality}`,
+              message: error,
+              variant: "error",
+            })
+
+            return
+          }
+
+          queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+          playSoundEffect("journey") // TODO: Change sound effect
+
+          setToast({
+            title: `You are now a ${titleInfo.title} from ${newNationality}`,
+            message: `You also got a reward of ${titleInfo.reward} gold.`,
+            variant: "success",
+          })
+        },
+        onError: (error) => {
+          console.error(error)
+        },
+      }
+    )
+
   return {
     acceptNewTitle,
     isAcceptingNewTitle,
+    changeCitizenship,
+    isChangingCitizenship,
   }
 }

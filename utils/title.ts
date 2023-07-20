@@ -51,6 +51,7 @@ export const getNewTitle = (character: Character | undefined) => {
       townWarWith: null,
       titleInfo: TITLE_INFO.Pirate,
       promotionAvailable: false,
+      citizenshipChangeAvailable: false,
     }
   }
 
@@ -67,13 +68,17 @@ export const getNewTitle = (character: Character | undefined) => {
   const currentTitleInfo = TITLE_INFO[character.title]
   const newTitleInfo = getTitleInfoByScore(score)
   const promotionAvailable =
+    isHomeNation &&
     character.title !== newTitleInfo.title &&
     newTitleInfo.higherThan.includes(currentTitleInfo.title) // Avoid demoting
+  const citizenshipChangeAvailable =
+    !isHomeNation && !!newTitleInfo && score > 0
 
   return {
     isHomeNation,
     townWarWith,
     titleInfo: newTitleInfo,
     promotionAvailable,
+    citizenshipChangeAvailable,
   }
 }
