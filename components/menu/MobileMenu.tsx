@@ -1,7 +1,7 @@
 import { AnimatePresence, m as motion, PanInfo } from "framer-motion"
+import Image from "next/image"
 import { useState } from "react"
 import { AiOutlineCloseCircle } from "react-icons/ai"
-import { GiPirateFlag } from "react-icons/gi"
 
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
@@ -28,8 +28,14 @@ const MobileMenu = ({ className }: Props) => {
 
   return (
     <div className={className}>
-      <h1 className="font-serif text-2xl text-center p-2 flex justify-center items-center gap-2 bg-gray-900">
-        <GiPirateFlag className="h-6 w-6" /> Lost Seas
+      <h1 className="flex items-baseline font-serif text-2xl text-center p-2 justify-center gap-2 bg-gray-900">
+        <Image
+          src="/img/logo.svg"
+          alt="Lost Seas logotype"
+          width={30}
+          height={28}
+        />
+        Lost Seas
       </h1>
 
       <MobileBottomNav setMobileMenuOpen={setMobileMenuOpen} />

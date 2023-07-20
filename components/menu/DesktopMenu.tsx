@@ -1,5 +1,5 @@
+import Image from "next/image"
 import Link from "next/link"
-import { GiPirateFlag } from "react-icons/gi"
 
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
@@ -19,9 +19,15 @@ const DesktopMenu = ({ className }: Props) => {
     <div className={`w-72 py-8 px-4 bg-gray-900 ${className}`}>
       <Link
         href="/"
-        className="flex font-serif text-3xl gap-3 items-center mb-4 mx-2"
+        className="flex font-serif text-3xl gap-3 items-baseline mb-2 mx-3"
       >
-        <GiPirateFlag className="h-8 w-8" /> Lost Seas
+        <Image
+          src="/img/logo.svg"
+          alt="Lost Seas logotype"
+          width={42}
+          height={34}
+        />
+        Lost Seas
       </Link>
 
       <MainMenu />
