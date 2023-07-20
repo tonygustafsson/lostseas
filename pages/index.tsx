@@ -1,4 +1,5 @@
 import { GetServerSideProps } from "next"
+import Head from "next/head"
 
 import DefaultLayout from "@/components/layouts/default"
 import AttackReport from "@/components/location/AttackReport"
@@ -19,6 +20,18 @@ const Home = () => {
 
   return (
     <DefaultLayout>
+      <Head>
+        {player?.character.location !== "Sea" && (
+          <title>
+            The {player?.character.location} - {player?.character.town} - Lost
+            Seas
+          </title>
+        )}
+        {player?.character.location === "Sea" && (
+          <title>Open Seas - Lost Seas</title>
+        )}
+      </Head>
+
       <LocationHero />
       <LoggedOutHero />
 
