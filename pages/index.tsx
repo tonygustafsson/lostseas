@@ -23,8 +23,8 @@ const Home = () => {
       <Head>
         {player?.character.location !== "Sea" && (
           <title>
-            The {player?.character.location} - {player?.character.town} - Lost
-            Seas
+            {`The ${player?.character.location} - ${player?.character.town} - Lost
+            Seas`}
           </title>
         )}
         {player?.character.location === "Sea" && (
