@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next"
 import Head from "next/head"
-import { FaUsers } from "react-icons/fa"
+import { MdGroups } from "react-icons/md"
 
 import GiveGold from "@/components/crew/GiveGold"
 import GiveMedicine from "@/components/crew/GiveMedicine"
@@ -29,9 +29,9 @@ const Crew = () => {
           <div className="stats bg-transparent gap-2 mt-4">
             <div className="stat bg-gray-700">
               <div className="stat-figure text-secondary">
-                <FaUsers className="h-10 w-10" />
+                <MdGroups className="h-11 w-11" />
               </div>
-              <div className="stat-title">Count</div>
+              <div className="stat-title">Crew members</div>
               <div className="stat-value text-2xl">
                 {player?.crewMembers.count}
               </div>
