@@ -11,6 +11,12 @@ import Tooltip from "./Tooltip"
 const mapWidth = 850
 const mapHeight = 540
 
+const colors = {
+  lightBlue: "#3e9cbe",
+  darkBlue: "#00435c",
+  black: "#000",
+}
+
 type Props = {
   currentTown: Town | undefined
 }
@@ -77,7 +83,7 @@ const Map = ({ currentTown }: Props) => {
       >
         <defs>
           <filter x="0" y="0" width="1" height="1" id="black">
-            <feFlood floodColor="black" result="bg" />
+            <feFlood floodColor={colors.black} result="bg" />
             <feMerge>
               <feMergeNode in="bg" />
               <feMergeNode in="SourceGraphic" />
@@ -85,7 +91,7 @@ const Map = ({ currentTown }: Props) => {
           </filter>
 
           <filter x="0" y="0" width="1" height="1" id="blue">
-            <feFlood floodColor="#00435c" result="bg" />
+            <feFlood floodColor={colors.darkBlue} result="bg" />
             <feMerge>
               <feMergeNode in="bg" />
               <feMergeNode in="SourceGraphic" />
@@ -159,22 +165,26 @@ const Map = ({ currentTown }: Props) => {
 
         {currentTown && (
           <>
-            <image
-              width={20}
-              height={20}
-              filter="url(#blue)"
-              x={TOWNS[currentTown].map.x - 23}
-              y={TOWNS[currentTown].map.y + 1}
-              xlinkHref="img/logo.svg"
-            />
             <rect
-              fill="transparent"
-              stroke="white"
+              fill={colors.lightBlue}
+              stroke={colors.black}
               strokeWidth={0.75}
               width={22}
               height={22}
               x={TOWNS[currentTown].map.x - 24}
               y={TOWNS[currentTown].map.y}
+            />
+            <motion.image
+              animate={{
+                rotate: [0, 3, 0, -3, 0],
+                translateY: [0, -0.5, 0, 0.5, 0],
+                transition: { duration: 1.5, repeat: Infinity },
+              }}
+              width={20}
+              height={20}
+              x={TOWNS[currentTown].map.x - 23}
+              y={TOWNS[currentTown].map.y + 1}
+              xlinkHref="img/logo.svg"
             />
           </>
         )}
