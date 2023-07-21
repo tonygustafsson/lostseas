@@ -96,6 +96,10 @@ const seaContinueJourney = async (
           shipMeeting: shipMeetingState,
         },
       },
+      crewMembers: {
+        ...player.crewMembers,
+        mood: player.crewMembers.mood - 1,
+      },
     }
 
     await savePlayer(playerId, playerResult).catch((error) => {
