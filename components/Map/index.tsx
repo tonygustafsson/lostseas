@@ -158,14 +158,25 @@ const Map = ({ currentTown }: Props) => {
         })}
 
         {currentTown && (
-          <image
-            width="20"
-            height="20"
-            filter="url(#blue)"
-            x={TOWNS[currentTown].map.x - 23}
-            y={TOWNS[currentTown].map.y + 1}
-            xlinkHref="img/map/ship.svg"
-          />
+          <>
+            <image
+              width={20}
+              height={20}
+              filter="url(#blue)"
+              x={TOWNS[currentTown].map.x - 23}
+              y={TOWNS[currentTown].map.y + 1}
+              xlinkHref="img/logo.svg"
+            />
+            <rect
+              fill="transparent"
+              stroke="white"
+              strokeWidth={0.75}
+              width={22}
+              height={22}
+              x={TOWNS[currentTown].map.x - 24}
+              y={TOWNS[currentTown].map.y}
+            />
+          </>
         )}
       </svg>
 
