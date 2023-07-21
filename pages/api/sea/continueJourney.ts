@@ -56,6 +56,18 @@ const seaContinueJourney = async (
       ? createMeetingShip(mannedCannons)
       : null
 
+  const foodConsumption = player.crewMembers.count * 0.1
+  let newFood = Math.round((player.inventory?.food || 0) - foodConsumption)
+  if (newFood < 0) {
+    newFood = 0
+  }
+
+  const waterConsumption = player.crewMembers.count * 0.2
+  let newWater = Math.round((player.inventory?.water || 0) - waterConsumption)
+  if (newWater < 0) {
+    newWater = 0
+  }
+
   if (destinationReached) {
     // Finish journey
     const playerResult: Player = {
@@ -67,6 +79,11 @@ const seaContinueJourney = async (
         day: player.character.day + 1,
         journey: null,
       } as Omit<Character, "journey">,
+      inventory: {
+        ...player.inventory,
+        food: newFood,
+        water: newWater,
+      },
     }
 
     await savePlayer(playerId, playerResult).catch((error) => {
@@ -95,6 +112,11 @@ const seaContinueJourney = async (
           attackFailureReport: null!,
           shipMeeting: shipMeetingState,
         },
+      },
+      inventory: {
+        ...player.inventory,
+        food: newFood,
+        water: newWater,
       },
       crewMembers: {
         ...player.crewMembers,
