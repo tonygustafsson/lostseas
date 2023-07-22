@@ -65,7 +65,7 @@ const getLocationData = (location: TownLocation) => {
 
 const locations = (
   Object.values(LOCATIONS).filter(
-    (location) => !["Sea", "Harbor", "Docks"].includes(location)
+    (location) => !["Sea", "Harbor"].includes(location)
   ) as TownLocation[]
 )
   .map(getLocationData)

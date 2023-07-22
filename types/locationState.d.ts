@@ -8,7 +8,7 @@ type LocationState = {
     noOfSailors: number
     isHostile: boolean
   }
-  docks?: {
+  harbor?: {
     leaveErrors: true | undefined | null
   }
   sea?: {

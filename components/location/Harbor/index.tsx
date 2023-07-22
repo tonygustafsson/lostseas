@@ -1,12 +1,12 @@
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-import { validateHarbor } from "@/utils/validateHarbor"
+import { validateJourney } from "@/utils/validateJourney"
 
-const Docks = () => {
+const Harbor = () => {
   const { data: player } = useGetPlayer()
 
-  const leaveErrors = player?.locationStates?.docks?.leaveErrors || false
-  const harborValidation = leaveErrors
-    ? validateHarbor(player)
+  const leaveErrors = player?.locationStates?.harbor?.leaveErrors || false
+  const journeyValidation = leaveErrors
+    ? validateJourney(player)
     : { success: true, errors: [], neededFood: 0, neededWater: 0 }
 
   if (leaveErrors) {
@@ -17,15 +17,15 @@ const Docks = () => {
         </h2>
 
         <ul className="list-disc">
-          {harborValidation.errors.includes("NO_SHIPS") && (
+          {journeyValidation.errors.includes("NO_SHIPS") && (
             <li className="list-item">You do not own any ships.</li>
           )}
 
-          {harborValidation.errors.includes("NO_CREW") && (
+          {journeyValidation.errors.includes("NO_CREW") && (
             <li className="list-item">You do not have any crew members.</li>
           )}
 
-          {harborValidation.errors.includes("ANGRY_CREW") && (
+          {journeyValidation.errors.includes("ANGRY_CREW") && (
             <li className="list-item">
               Your crew is an angry bunch, they do not want to travel with you
               any more. Make them happy by giving them gold or taking them to
@@ -33,17 +33,17 @@ const Docks = () => {
             </li>
           )}
 
-          {harborValidation.errors.includes("NO_FOOD") && (
+          {journeyValidation.errors.includes("NO_FOOD") && (
             <li className="list-item">
               You do not have enough food for the journey. You need at least{" "}
-              {harborValidation.neededFood} crates of food.
+              {journeyValidation.neededFood} crates of food.
             </li>
           )}
 
-          {harborValidation.errors.includes("NO_WATER") && (
+          {journeyValidation.errors.includes("NO_WATER") && (
             <li className="list-item">
               You do not have enough water for the journey. You need at least{" "}
-              {harborValidation.neededWater} barrels of water.
+              {journeyValidation.neededWater} barrels of water.
             </li>
           )}
         </ul>
@@ -54,4 +54,4 @@ const Docks = () => {
   return null
 }
 
-export default Docks
+export default Harbor

@@ -12,6 +12,4 @@ export const LOCATION_DESCRIPTION = {
   "City hall":
     "The city hall stands as a grand and imposing structure, adorned with tattered flags and weather-worn banners. Within its walls, pirate lords convene, plotting their territorial disputes and forging alliances amidst an atmosphere of intrigue and whispered schemes.",
   Shop: "The shop is a treasure trove of exotic and illicit wares, its shelves laden with gleaming cutlasses, intricate navigational instruments, and maps marked with hidden routes. The air is heavy with the scent of gunpowder and the whispers of whispered tales, as pirates browse the wares, seeking tools of their trade and the key to their next adventure.",
-  Docks:
-    "The docks of the town emanate an aura of rugged allure, where weathered planks bear the weight of countless voyages and the salty sea breeze carries tales of daring escapades. Amidst a vibrant mix of characters, weather-beaten pirates with faces etched in hardship converse in hushed tones, while the clanging of metal and distant shouts of captains create an atmosphere of organized chaos.",
 } as Record<SeaLocation | TownLocation, string>

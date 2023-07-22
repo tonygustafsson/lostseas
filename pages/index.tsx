@@ -5,7 +5,7 @@ import DefaultLayout from "@/components/layouts/default"
 import AttackReport from "@/components/location/AttackReport"
 import Bank from "@/components/location/Bank"
 import Cityhall from "@/components/location/Cityhall"
-import Docks from "@/components/location/Docks"
+import Harbor from "@/components/location/Harbor"
 import Market from "@/components/location/Market"
 import Shipyard from "@/components/location/Shipyard"
 import Shop from "@/components/location/Shop"
@@ -42,7 +42,7 @@ const Home = () => {
         {player?.character.location === "Tavern" && <Tavern />}
         {player?.character.location === "City hall" && <Cityhall />}
         {player?.character.location === "Shipyard" && <Shipyard />}
-        {player?.character.location === "Docks" && <Docks />}
+        {player?.character.location === "Harbor" && <Harbor />}
 
         {player?.character.location === "Sea" &&
           (player.locationStates?.sea?.attackSuccessReport ||

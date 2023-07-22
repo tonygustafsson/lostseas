@@ -1,4 +1,4 @@
-export type HarborValidationError =
+export type JourneyValidationError =
   | "NO_PLAYER"
   | "NO_SHIPS"
   | "NO_CREW"
@@ -6,8 +6,8 @@ export type HarborValidationError =
   | "NO_FOOD"
   | "NO_WATER"
 
-export const validateHarbor = (player?: Player) => {
-  const errors: HarborValidationError[] = []
+export const validateJourney = (player?: Player) => {
+  const errors: JourneyValidationError[] = []
 
   if (!player) {
     errors.push("NO_PLAYER")

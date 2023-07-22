@@ -14,11 +14,13 @@ export const useSea = () => {
   const { mutate: startJourney, isLoading: isStartingJourney } = useMutation(
     (data: { town: Town }) => apiRequest("/api/sea/startJourney", data, "POST"),
     {
-      onSuccess: () => {
+      onSuccess: ({ success }) => {
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-        playSoundEffect("journey")
 
-        setTimeout(() => continueJourney(), SEA_TRAVEL_SPEED)
+        if (success) {
+          playSoundEffect("journey")
+          setTimeout(() => continueJourney(), SEA_TRAVEL_SPEED)
+        }
       },
       onError: (error) => console.error(error),
     }

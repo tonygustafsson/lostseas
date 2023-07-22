@@ -23,7 +23,6 @@ type TownLocation =
   | "Shop"
   | "Shipyard"
   | "City hall"
-  | "Docks"
 
 type Nation = "England" | "France" | "Spain" | "Holland"
 

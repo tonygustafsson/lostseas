@@ -24,7 +24,6 @@ export const LOCATIONS = {
   market: "Market",
   shipyard: "Shipyard",
   cityhall: "City hall",
-  docks: "Docks",
   harbor: "Harbor",
   sea: "Sea",
 } as Record<string, TownLocation | SeaLocation>
