@@ -20,7 +20,6 @@ export const validateJourney = (player?: Player, journeyLength = 0) => {
   const neededFood = Math.round(
     journeyLength * (player.crewMembers.count * 0.1)
   )
-  console.log({ journeyLength, neededFood, crew: player.crewMembers.count })
   const neededWater = Math.round(
     journeyLength * (player.crewMembers.count * 0.2)
   )
