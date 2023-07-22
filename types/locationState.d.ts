@@ -10,6 +10,7 @@ type LocationState = {
   }
   harbor?: {
     leaveErrors: true | undefined | null
+    intendedDistance?: number
   }
   sea?: {
     shipMeeting: ShipMeetingState | undefined | null

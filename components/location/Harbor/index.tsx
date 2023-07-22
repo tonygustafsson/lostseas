@@ -5,8 +5,10 @@ const Harbor = () => {
   const { data: player } = useGetPlayer()
 
   const leaveErrors = player?.locationStates?.harbor?.leaveErrors || false
+  const intendedDistance = player?.locationStates?.harbor?.intendedDistance || 0
+
   const journeyValidation = leaveErrors
-    ? validateJourney(player)
+    ? validateJourney(player, intendedDistance)
     : { success: true, errors: [], neededFood: 0, neededWater: 0 }
 
   if (leaveErrors) {

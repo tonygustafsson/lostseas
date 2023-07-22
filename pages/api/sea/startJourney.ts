@@ -34,7 +34,7 @@ const seaStartJourney = async (req: NextApiRequest, res: NextApiResponse) => {
     ? currentTownInfo.map.distanceTo[town]
     : randomInt(3, 9)
 
-  const journeyValidation = validateJourney(player)
+  const journeyValidation = validateJourney(player, distance)
 
   if (!journeyValidation.success) {
     // Cannot leave town just yet
@@ -48,6 +48,7 @@ const seaStartJourney = async (req: NextApiRequest, res: NextApiResponse) => {
         ...player.locationStates,
         harbor: {
           leaveErrors: true,
+          intendedDistance: distance,
         },
       },
     }

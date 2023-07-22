@@ -6,7 +6,7 @@ export type JourneyValidationError =
   | "NO_FOOD"
   | "NO_WATER"
 
-export const validateJourney = (player?: Player) => {
+export const validateJourney = (player?: Player, journeyLength = 0) => {
   const errors: JourneyValidationError[] = []
 
   if (!player) {
@@ -16,9 +16,14 @@ export const validateJourney = (player?: Player) => {
 
   const playerHasShips = Object.keys(player.ships || {}).length
   const playerHasCrew = player.crewMembers.count > 0
-  const crewIsAngry = player.crewMembers.mood < 10
-  const neededFood = player.crewMembers.count * 0.5
-  const neededWater = player.crewMembers.count
+  const crewIsAngry = player.crewMembers.mood <= 0
+  const neededFood = Math.round(
+    journeyLength * (player.crewMembers.count * 0.1)
+  )
+  console.log({ journeyLength, neededFood, crew: player.crewMembers.count })
+  const neededWater = Math.round(
+    journeyLength * (player.crewMembers.count * 0.2)
+  )
   const playerHasFood = (player.inventory?.food || 0) >= neededFood
   const playerHasWater = (player.inventory?.water || 0) >= neededWater
 
