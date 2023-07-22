@@ -84,6 +84,15 @@ const seaContinueJourney = async (
         food: newFood,
         water: newWater,
       },
+      locationStates: {
+        ...player.locationStates,
+        sea: {
+          ...player.locationStates?.sea,
+          attackSuccessReport: null!,
+          attackFailureReport: null!,
+          shipMeeting: shipMeetingState,
+        },
+      },
     }
 
     await savePlayer(playerId, playerResult).catch((error) => {
