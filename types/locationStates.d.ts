@@ -10,7 +10,6 @@ type LocationStates = {
   }
   harbor?: {
     journeyValidation?: JourneyValidation
-    intendedDistance?: number
   }
   sea?: {
     shipMeeting: ShipMeetingState | undefined | null

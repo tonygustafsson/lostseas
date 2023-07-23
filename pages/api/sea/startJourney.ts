@@ -48,7 +48,6 @@ const seaStartJourney = async (req: NextApiRequest, res: NextApiResponse) => {
         ...player.locationStates,
         harbor: {
           journeyValidation,
-          intendedDistance: distance,
         },
       },
     }
