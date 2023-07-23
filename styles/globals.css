@@ -9,3 +9,7 @@
 :root {
   --btn-text-case: none;
 }
+
+html {
+  font-size: 18px;
+}
