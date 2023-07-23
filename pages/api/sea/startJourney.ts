@@ -70,12 +70,7 @@ const seaStartJourney = async (req: NextApiRequest, res: NextApiResponse) => {
           totalDays: distance,
         },
       },
-      locationStates: {
-        ...player.locationStates,
-        harbor: {
-          leaveErrors: null,
-        },
-      },
+      locationStates: null!,
     }
 
     await savePlayer(playerId, playerResult).catch((error) => {
