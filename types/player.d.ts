@@ -5,7 +5,7 @@ type Player = {
   ships: Record<string, Ship>
   crewMembers: CrewMembers
   inventory?: Inventory
-  locationStates?: LocationState
+  locationStates?: LocationStates
 }
 
 type CreatePlayerServerRequest = Omit<Player, "id">

@@ -21,7 +21,7 @@ const seaIgnoreShip = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const locationStateResult: Nullable<LocationState["sea"]> = {
+  const locationStateResult: Nullable<LocationStates["sea"]> = {
     ...player.locationStates.sea,
     shipMeeting: null,
   }

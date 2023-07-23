@@ -1,17 +1,9 @@
-export type JourneyValidationError =
-  | "NO_PLAYER"
-  | "NO_SHIPS"
-  | "NO_CREW"
-  | "ANGRY_CREW"
-  | "NO_FOOD"
-  | "NO_WATER"
-
 export const validateJourney = (player?: Player, journeyLength = 0) => {
   const errors: JourneyValidationError[] = []
 
   if (!player) {
     errors.push("NO_PLAYER")
-    return { success: false, errors }
+    return { success: false, errors, neededFood: 0, neededWater: 0 }
   }
 
   const playerHasShips = Object.keys(player.ships || {}).length
@@ -46,5 +38,10 @@ export const validateJourney = (player?: Player, journeyLength = 0) => {
     errors.push("NO_WATER")
   }
 
-  return { success: !errors.length, errors, neededFood, neededWater }
+  return {
+    success: !errors.length,
+    errors,
+    neededFood,
+    neededWater,
+  } as JourneyValidation
 }

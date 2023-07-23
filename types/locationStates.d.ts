@@ -1,4 +1,4 @@
-type LocationState = {
+type LocationStates = {
   market?: {
     visited: true | undefined | null
     items: LocationStateMarketItems
@@ -9,7 +9,7 @@ type LocationState = {
     isHostile: boolean
   }
   harbor?: {
-    leaveErrors: true | undefined | null
+    journeyValidation?: JourneyValidation
     intendedDistance?: number
   }
   sea?: {
@@ -18,6 +18,21 @@ type LocationState = {
     attackFailureReport?: AttackFailureReport
   }
 }
+
+type JourneyValidation = {
+  success: boolean
+  errors: JourneyValidationError[]
+  neededFood: number
+  neededWater: number
+}
+
+type JourneyValidationError =
+  | "NO_PLAYER"
+  | "NO_SHIPS"
+  | "NO_CREW"
+  | "ANGRY_CREW"
+  | "NO_FOOD"
+  | "NO_WATER"
 
 type ShipMeetingState = {
   nation: Nation | "Pirate"

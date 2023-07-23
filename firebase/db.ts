@@ -75,7 +75,7 @@ export const saveShip = async (playerId: Player["id"], ship: Ship) => {
 
 export const getLocationState = async <T>(
   playerId: Player["id"],
-  state: keyof LocationState
+  state: keyof LocationStates
 ) => {
   const ref = await get(child(dbRef, `${playerId}/locationStates/${state}`))
 
@@ -86,7 +86,7 @@ export const getLocationState = async <T>(
 
 export const saveLocationState = async <T>(
   playerId: Player["id"],
-  stateKey: keyof LocationState,
+  stateKey: keyof LocationStates,
   state: T
 ) => {
   await set(ref(db, `${playerId}/locationStates/${stateKey}`), state).catch(

@@ -15,7 +15,7 @@ type Props = {
 
 export const createMoveEvents = async ({ playerId, destination }: Props) => {
   if (destination === "Market") {
-    const marketEvent = await getLocationState<LocationState["market"]>(
+    const marketEvent = await getLocationState<LocationStates["market"]>(
       playerId,
       "market"
     )
@@ -40,12 +40,12 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
       items[item] = { quantity, price }
     })
 
-    const eventResult: LocationState["market"] = {
+    const eventResult: LocationStates["market"] = {
       visited: true,
       items,
     }
 
-    await saveLocationState<LocationState["market"]>(
+    await saveLocationState<LocationStates["market"]>(
       playerId,
       "market",
       eventResult
@@ -53,7 +53,7 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
   }
 
   if (destination === "Tavern") {
-    const tavernEvent = await getLocationState<LocationState["tavern"]>(
+    const tavernEvent = await getLocationState<LocationStates["tavern"]>(
       playerId,
       "tavern"
     )
@@ -64,13 +64,13 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
 
     if (Math.random() < 0.5) {
       // 50% chance of no event
-      const eventResult: LocationState["tavern"] = {
+      const eventResult: LocationStates["tavern"] = {
         visited: true,
         noOfSailors: 0,
         isHostile: false,
       }
 
-      await saveLocationState<LocationState["tavern"]>(
+      await saveLocationState<LocationStates["tavern"]>(
         playerId,
         "tavern",
         eventResult
@@ -97,13 +97,13 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
 
     const isHostile = Math.random() < 0.3
 
-    const eventResult: LocationState["tavern"] = {
+    const eventResult: LocationStates["tavern"] = {
       visited: true,
       noOfSailors,
       isHostile,
     }
 
-    await saveLocationState<LocationState["tavern"]>(
+    await saveLocationState<LocationStates["tavern"]>(
       playerId,
       "tavern",
       eventResult
