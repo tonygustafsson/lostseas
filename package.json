@@ -21,7 +21,7 @@
     "daisyui": "^3.2.1",
     "firebase": "^10.0.0",
     "framer-motion": "^10.13.0",
-    "next": "^13.4.8",
+    "next": "^13.4.12",
     "next-qrcode": "^2.5.0",
     "qr-scanner": "^1.4.2",
     "react": "18.2.0",
