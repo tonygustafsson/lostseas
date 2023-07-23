@@ -7,9 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint:fix": "next lint --fix",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "lint:fix": "next lint --fix"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.1",
@@ -33,13 +31,6 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^7.1.0",
-    "@storybook/addon-interactions": "^7.1.0",
-    "@storybook/addon-links": "^7.1.0",
-    "@storybook/blocks": "^7.1.0",
-    "@storybook/nextjs": "^7.1.0",
-    "@storybook/react": "^7.1.0",
-    "@storybook/testing-library": "^0.2.0",
     "@types/bcrypt": "^5.0.0",
     "@types/node": "^20.4.4",
     "@types/react": "^18.2.15",
@@ -49,10 +40,8 @@
     "eslint": "^8.45.0",
     "eslint-config-next": "^13.4.12",
     "eslint-plugin-simple-import-sort": "^10.0.0",
-    "eslint-plugin-storybook": "^0.6.13",
     "eslint-plugin-unused-imports": "^3.0.0",
     "postcss": "^8.4.27",
-    "prettier": "^3.0.0",
-    "storybook": "^7.1.0"
+    "prettier": "^3.0.0"
   }
 }
