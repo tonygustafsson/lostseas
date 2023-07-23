@@ -10,6 +10,7 @@ type LocationStates = {
   }
   harbor?: {
     journeyValidation?: JourneyValidation
+    landingTips?: LandingTip[]
   }
   sea?: {
     shipMeeting: ShipMeetingState | undefined | null
@@ -17,6 +18,15 @@ type LocationStates = {
     attackFailureReport?: AttackFailureReport
   }
 }
+
+type LandingTip =
+  | "TOO_MUCH_GOLD"
+  | "NEED_MORE_FOOD"
+  | "NEED_MORE_WATER"
+  | "CREW_IS_ILL"
+  | "DAMAGED_SHIPS"
+  | "NO_CREW"
+  | "ANGRY_CREW"
 
 type JourneyValidation = {
   success: boolean

@@ -4,6 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
 import { getMannedCannons } from "@/utils/crew"
+import { getLandingTips } from "@/utils/getLandingTips"
 import { createMeetingShip } from "@/utils/shipMeeting"
 
 const seaContinueJourney = async (
@@ -70,6 +71,8 @@ const seaContinueJourney = async (
 
   if (destinationReached) {
     // Finish journey
+    const landingTips = getLandingTips(player)
+
     const playerResult: Player = {
       ...player,
       character: {
@@ -86,6 +89,12 @@ const seaContinueJourney = async (
       },
       locationStates: {
         ...player.locationStates,
+        ...(landingTips && {
+          harbor: {
+            ...player.locationStates?.harbor,
+            landingTips,
+          },
+        }),
         sea: {
           ...player.locationStates?.sea,
           attackSuccessReport: null!,
