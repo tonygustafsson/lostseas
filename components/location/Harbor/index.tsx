@@ -23,6 +23,14 @@ const Harbor = () => {
             </li>
           )}
 
+          {journeyValidation.errors.includes("DAMAGED_SHIPS") && (
+            <li className="flex align-middle gap-2 text-lg">
+              <GiShoonerSailboat className="h-7 w-7 text-primary" />
+              Some of your ships are too damaged to continue traveling. Fix them
+              in the shipyard.
+            </li>
+          )}
+
           {journeyValidation.errors.includes("NO_CREW") && (
             <li className="flex align-middle gap-2 text-lg">
               <GiBandana className="h-7 w-7 text-primary" />
@@ -36,6 +44,14 @@ const Harbor = () => {
               Your crew is an angry bunch, they do not want to travel with you
               any more. Make them happy by giving them gold or taking them to
               the tavern.
+            </li>
+          )}
+
+          {journeyValidation.errors.includes("CREW_IS_ILL") && (
+            <li className="flex align-middle gap-2 text-lg">
+              <GiBandana className="h-7 w-7 text-primary" />
+              Your crew health is too low, they are too ill to travel. Give them
+              medicine.
             </li>
           )}
 

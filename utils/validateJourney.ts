@@ -9,6 +9,10 @@ export const validateJourney = (player?: Player, journeyLength = 0) => {
   const playerHasShips = Object.keys(player.ships || {}).length
   const playerHasCrew = player.crewMembers.count > 0
   const crewIsAngry = player.crewMembers.mood <= 0
+  const crewIsIll = player.crewMembers.health <= 0
+  const shipsAreDamaged = Object.values(player.ships || {}).some(
+    (ship) => ship.health <= 0
+  )
   const neededFood = Math.round(
     journeyLength * (player.crewMembers.count * 0.1)
   )
@@ -22,12 +26,20 @@ export const validateJourney = (player?: Player, journeyLength = 0) => {
     errors.push("NO_SHIPS")
   }
 
+  if (shipsAreDamaged) {
+    errors.push("DAMAGED_SHIPS")
+  }
+
   if (!playerHasCrew) {
     errors.push("NO_CREW")
   }
 
   if (crewIsAngry) {
     errors.push("ANGRY_CREW")
+  }
+
+  if (crewIsIll) {
+    errors.push("CREW_IS_ILL")
   }
 
   if (!playerHasFood) {

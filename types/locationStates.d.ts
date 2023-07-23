@@ -28,7 +28,9 @@ type JourneyValidation = {
 type JourneyValidationError =
   | "NO_PLAYER"
   | "NO_SHIPS"
+  | "DAMAGED_SHIPS"
   | "NO_CREW"
+  | "CREW_IS_ILL"
   | "ANGRY_CREW"
   | "NO_FOOD"
   | "NO_WATER"
