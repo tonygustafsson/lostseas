@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import { playSoundEffect } from "@/components/Sound/context"
+import { playSoundEffect } from "@/components/Sound/state"
 import { useToast } from "@/components/ui/Toast/context"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_TYPES } from "@/constants/ship"

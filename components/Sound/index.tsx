@@ -4,7 +4,7 @@ import { useCallback } from "react"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getRandomInt } from "@/utils/random"
 
-import { soundState$ } from "./context"
+import { sound$ } from "./state"
 
 const musicPlayer = typeof Audio !== "undefined" && new Audio()
 const songs = Array.from({ length: 9 }, (_, i) => `music/song${i + 1}.opus`)
@@ -25,23 +25,22 @@ const Sound = observer(() => {
 
   if (!musicPlayer || !player) return
 
-  if (soundState$.musicPlay.get() && !musicPlayer.src) {
+  if (sound$.musicPlay.get() && !musicPlayer.src) {
     playRandomSong()
 
     musicPlayer.addEventListener("ended", playRandomSong)
-  } else if (soundState$.musicPlay.get() && musicPlayer.src) {
+  } else if (sound$.musicPlay.get() && musicPlayer.src) {
     musicPlayer.play()
   } else if (musicPlayer.src && !musicPlayer.paused) {
     musicPlayer.pause()
     musicPlayer.removeEventListener("ended", playRandomSong)
   }
 
-  if (!soundState$.soundEffectsOn.get() || !soundState$.soundEffect.get())
-    return
+  if (!sound$.soundEffectsOn.get() || !sound$.soundEffect.get()) return
 
   let audioFile: string
 
-  if (soundState$.soundEffect.get() === "journey") {
+  if (sound$.soundEffect.get() === "journey") {
     const wavesSoundEffects = ["soundfx/waves1.opus", "soundfx/waves2.opus"]
 
     audioFile =
@@ -62,7 +61,7 @@ const Sound = observer(() => {
       soundEffectPlayer.play()
     }
   } else {
-    audioFile = `soundfx/${soundState$.soundEffect.get()}.opus`
+    audioFile = `soundfx/${sound$.soundEffect.get()}.opus`
   }
 
   const soundEffectPlayer = new Audio(audioFile)

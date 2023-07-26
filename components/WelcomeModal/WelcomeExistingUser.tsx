@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { soundState$ } from "../Sound/context"
+import { sound$ } from "../Sound/state"
 
 type Props = {
   player: Player
@@ -8,14 +8,14 @@ type Props = {
 }
 
 const WelcomeExistingUser = ({ player, onClose }: Props) => {
-  const [musicPlay, setMusicPlay] = useState<boolean>(soundState$.musicOn.get())
+  const [musicPlay, setMusicPlay] = useState<boolean>(sound$.musicOn.get())
   const [soundEffectsOn, setSoundEffectsOn] = useState<boolean>(
-    soundState$.soundEffectsOn.get()
+    sound$.soundEffectsOn.get()
   )
 
   const continueGame = () => {
-    soundState$.musicPlay.set(musicPlay)
-    soundState$.soundEffectsOn.set(soundEffectsOn)
+    sound$.musicPlay.set(musicPlay)
+    sound$.soundEffectsOn.set(soundEffectsOn)
 
     onClose()
   }

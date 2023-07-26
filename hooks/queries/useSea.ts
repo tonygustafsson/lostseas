@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import { playSoundEffect } from "@/components/Sound/context"
+import { playSoundEffect } from "@/components/Sound/state"
 import apiRequest from "@/utils/apiRequest"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"

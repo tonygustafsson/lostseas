@@ -1,6 +1,6 @@
 import { observer } from "@legendapp/state/react"
 
-import { soundState$, toggleMusic, toggleSoundEffects } from "./context"
+import { sound$, toggleMusic, toggleSoundEffects } from "./state"
 
 const SoundControls = observer(() => (
   <div className="flex gap-4 mt-2 mb-8 mx-4">
@@ -9,7 +9,7 @@ const SoundControls = observer(() => (
         id="toggleMusic"
         type="checkbox"
         className="toggle toggle-xs toggle-info"
-        checked={soundState$.musicPlay.get()}
+        checked={sound$.musicPlay.get()}
         onChange={toggleMusic}
       />
       <label htmlFor="toggleMusic" className="text-xs">
@@ -22,7 +22,7 @@ const SoundControls = observer(() => (
         id="soundEffects"
         type="checkbox"
         className="toggle toggle-xs toggle-info"
-        checked={soundState$.soundEffectsOn.get()}
+        checked={sound$.soundEffectsOn.get()}
         onChange={toggleSoundEffects}
       />
       <label htmlFor="soundEffects" className="text-xs">

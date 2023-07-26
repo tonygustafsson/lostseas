@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-import { soundState$ } from "../Sound/context"
+import { sound$ } from "../Sound/state"
 
 type Props = {
   player: Player
@@ -9,8 +9,8 @@ type Props = {
 
 const WelcomeNewUser = ({ player, onClose }: Props) => {
   const startExploring = () => {
-    if (soundState$.musicOn.get()) {
-      soundState$.musicPlay.set(true)
+    if (sound$.musicOn.get()) {
+      sound$.musicPlay.set(true)
     }
 
     onClose()

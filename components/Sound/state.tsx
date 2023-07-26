@@ -31,9 +31,9 @@ const initialState: State = {
   soundEffectsOn: false,
 }
 
-export const soundState$ = observable(initialState)
+export const sound$ = observable(initialState)
 
-soundState$.onChange((state) => {
+sound$.onChange((state) => {
   console.log(state)
 })
 
@@ -41,29 +41,29 @@ configureObservablePersistence({
   persistLocal: ObservablePersistLocalStorage,
 })
 
-persistObservable(soundState$.musicOn, {
+persistObservable(sound$.musicOn, {
   local: "music",
 })
 
-persistObservable(soundState$.soundEffectsOn, {
+persistObservable(sound$.soundEffectsOn, {
   local: "soundEffects",
 })
 
 export const playSoundEffect = (soundEffect: SoundEffect) => {
-  soundState$.soundEffect.set(soundEffect)
+  sound$.soundEffect.set(soundEffect)
 
   setTimeout(() => {
-    soundState$.soundEffect.set(undefined)
+    sound$.soundEffect.set(undefined)
   }, 100)
 }
 
 export const toggleMusic = () => {
-  const newValue = !soundState$.musicPlay.get()
+  const newValue = !sound$.musicPlay.get()
 
-  soundState$.musicPlay.set(newValue)
-  soundState$.musicOn.set(newValue)
+  sound$.musicPlay.set(newValue)
+  sound$.musicOn.set(newValue)
 }
 
 export const toggleSoundEffects = () => {
-  soundState$.soundEffectsOn.set(!soundState$.soundEffectsOn.get())
+  sound$.soundEffectsOn.set(!sound$.soundEffectsOn.get())
 }

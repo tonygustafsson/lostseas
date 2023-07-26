@@ -6,7 +6,7 @@ import { z } from "zod"
 
 import DefaultLayout from "@/components/layouts/default"
 import RegistrationSoundSettings from "@/components/RegistrationSoundSettings"
-import { soundState$ } from "@/components/Sound/context"
+import { sound$ } from "@/components/Sound/state"
 import Select from "@/components/ui/Select"
 import TextField from "@/components/ui/TextField"
 import { NATIONS } from "@/constants/locations"
@@ -37,8 +37,8 @@ const Register = ({ randomCharacter }: Props) => {
   })
 
   const onSubmit: SubmitHandler<ValidationSchema> = async (data) => {
-    soundState$.musicOn.set(localMusicOn)
-    soundState$.soundEffectsOn.set(localSoundEffectsOn)
+    sound$.musicOn.set(localMusicOn)
+    sound$.soundEffectsOn.set(localSoundEffectsOn)
 
     playerRegister(data)
   }
