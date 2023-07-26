@@ -6,3 +6,19 @@ export const getCurrentDate = (day: Character["day"]) => {
 
   return new Date(currentTime).toDateString()
 }
+
+export const convertDaysToTimeSpan = (numberOfDays: number) => {
+  const years = Math.floor(numberOfDays / 365)
+  const months = Math.floor((numberOfDays % 365) / 30)
+  const days = Math.floor((numberOfDays % 365) % 30)
+
+  if (years) {
+    return `${years} years, ${months} months, ${days} days`
+  }
+
+  if (months) {
+    return `${months} months, ${days} days`
+  }
+
+  return `${days} days`
+}
