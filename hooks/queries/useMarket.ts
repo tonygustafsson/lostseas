@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import { useSound } from "@/components/Sound/context"
+import { playSoundEffect } from "@/components/Sound/context"
 import { useToast } from "@/components/ui/Toast/context"
 import { MERCHANDISE } from "@/constants/merchandise"
 import apiRequest from "@/utils/apiRequest"
@@ -10,7 +10,6 @@ import { PLAYER_QUERY_KEY } from "./usePlayer"
 export const useMarket = () => {
   const queryClient = useQueryClient()
   const { setToast } = useToast()
-  const { playSoundEffect } = useSound()
 
   const { mutate: acceptMarketBargain, isLoading: isAcceptingMarketBargain } =
     useMutation(

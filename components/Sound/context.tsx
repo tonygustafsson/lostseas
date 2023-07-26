@@ -1,16 +1,9 @@
-import { setCookie } from "cookies-next"
+import { observable } from "@legendapp/state"
 import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useReducer,
-} from "react"
-
-import {
-  MUSIC_STATE_COOKIE_NAME,
-  SOUND_EFFECTS_STATE_COOKIE_NAME,
-} from "@/constants/system"
+  configureObservablePersistence,
+  persistObservable,
+} from "@legendapp/state/persist"
+import { ObservablePersistLocalStorage } from "@legendapp/state/persist-plugins/local-storage"
 
 export type SoundEffect =
   | "coins"
@@ -25,141 +18,52 @@ export type SoundEffect =
   | "cannons"
   | "fanfare"
 
-export interface State {
+export type State = {
+  musicPlay: boolean
   musicOn: boolean
   soundEffectsOn: boolean
   soundEffect?: SoundEffect
 }
 
-type Action =
-  | {
-      type: "SET_MUSIC"
-      musicOn: State["musicOn"]
-    }
-  | {
-      type: "SET_SOUND_EFFECTS"
-      soundEffectsOn: State["soundEffectsOn"]
-    }
-  | {
-      type: "PLAY_SOUND_EFFECT"
-      soundEffect: State["soundEffect"]
-    }
-  | {
-      type: "RESET_SOUND_EFFECT"
-    }
-
 const initialState: State = {
-  musicOn: false,
+  musicPlay: false, // Actually playing, playing needs user interaction
+  musicOn: false, // Turned on, but not necessarily playing
   soundEffectsOn: false,
 }
 
-export const SoundContext = createContext<State | any>(initialState)
+export const soundState$ = observable(initialState)
 
-SoundContext.displayName = "SoundContext"
+soundState$.onChange((state) => {
+  console.log(state)
+})
 
-const soundReducer = (state: State, action: Action) => {
-  switch (action.type) {
-    case "SET_MUSIC": {
-      return {
-        ...state,
-        musicOn: action.musicOn,
-      }
-    }
+configureObservablePersistence({
+  persistLocal: ObservablePersistLocalStorage,
+})
 
-    case "SET_SOUND_EFFECTS": {
-      return {
-        ...state,
-        soundEffectsOn: action.soundEffectsOn,
-      }
-    }
+persistObservable(soundState$.musicOn, {
+  local: "music",
+})
 
-    case "PLAY_SOUND_EFFECT": {
-      return {
-        ...state,
-        soundEffect: action.soundEffect,
-      }
-    }
+persistObservable(soundState$.soundEffectsOn, {
+  local: "soundEffects",
+})
 
-    case "RESET_SOUND_EFFECT": {
-      return {
-        ...state,
-        soundEffect: undefined,
-      }
-    }
-  }
+export const playSoundEffect = (soundEffect: SoundEffect) => {
+  soundState$.soundEffect.set(soundEffect)
+
+  setTimeout(() => {
+    soundState$.soundEffect.set(undefined)
+  }, 100)
 }
 
-export const SoundProvider = (props: { children: React.ReactNode }) => {
-  const [state, dispatch] = useReducer(soundReducer, initialState)
+export const toggleMusic = () => {
+  const newValue = !soundState$.musicPlay.get()
 
-  const setMusic = useCallback(
-    (musicOn: State["musicOn"]) => {
-      dispatch({
-        type: "SET_MUSIC",
-        musicOn,
-      })
-
-      setCookie(MUSIC_STATE_COOKIE_NAME, musicOn)
-    },
-    [dispatch]
-  )
-
-  const setSoundEffects = useCallback(
-    (soundEffectsOn: State["soundEffectsOn"]) => {
-      dispatch({
-        type: "SET_SOUND_EFFECTS",
-        soundEffectsOn,
-      })
-
-      setCookie(SOUND_EFFECTS_STATE_COOKIE_NAME, soundEffectsOn)
-    },
-    [dispatch]
-  )
-
-  const playSoundEffect = useCallback(
-    (soundEffect: State["soundEffect"]) => {
-      dispatch({
-        type: "PLAY_SOUND_EFFECT",
-        soundEffect,
-      })
-
-      // We just need to trigger the Audio, then we can safely remove the state again
-      // to allow for two or more sounds to be played in quick succession
-      setTimeout(() => dispatch({ type: "RESET_SOUND_EFFECT" }), 100)
-    },
-    [dispatch]
-  )
-
-  const value = useMemo(
-    () => ({
-      ...state,
-      setMusic,
-      setSoundEffects,
-      playSoundEffect,
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [state]
-  )
-
-  return <SoundContext.Provider value={value} {...props} />
+  soundState$.musicPlay.set(newValue)
+  soundState$.musicOn.set(newValue)
 }
 
-export const useSound = () => {
-  const context = useContext(SoundContext)
-
-  if (context === undefined) {
-    throw new Error(`useSound must be used within a SoundProvider`)
-  }
-
-  return context as State & {
-    setMusic: (setMusicOn: State["musicOn"]) => void
-    setSoundEffects: (soundEffectsOn: State["soundEffectsOn"]) => void
-    playSoundEffect: (soundEffect: State["soundEffect"]) => void
-  }
+export const toggleSoundEffects = () => {
+  soundState$.soundEffectsOn.set(!soundState$.soundEffectsOn.get())
 }
-
-export const ManagedSoundContext = ({
-  children,
-}: {
-  children: React.ReactNode
-}) => <SoundProvider>{children}</SoundProvider>

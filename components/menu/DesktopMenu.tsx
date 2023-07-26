@@ -31,10 +31,10 @@ const DesktopMenu = ({ className }: Props) => {
       </Link>
 
       <MainMenu />
-      <SoundControls />
 
       {player && (
         <>
+          <SoundControls />
           <CharacterCard character={player.character} />
           <WeatherCard day={player.character.day} />
         </>

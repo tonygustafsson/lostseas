@@ -1,21 +1,19 @@
-import { useCallback, useEffect, useMemo } from "react"
+import { observer } from "@legendapp/state/react"
+import { useCallback } from "react"
 
+import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getRandomInt } from "@/utils/random"
 
-import { useSound } from "./context"
+import { soundState$ } from "./context"
 
+const musicPlayer = typeof Audio !== "undefined" && new Audio()
 const songs = Array.from({ length: 9 }, (_, i) => `music/song${i + 1}.opus`)
 
-const Sound = () => {
-  const { musicOn, soundEffectsOn, soundEffect } = useSound()
-
-  const musicPlayer = useMemo(
-    () => typeof Audio !== "undefined" && new Audio(),
-    []
-  )
+const Sound = observer(() => {
+  const { data: player } = useGetPlayer()
 
   const playRandomSong = useCallback(() => {
-    if (!musicPlayer) return
+    if (!player || !musicPlayer || !musicPlayer.paused) return
 
     const otherSongs = songs.filter((song) => song !== musicPlayer.src)
     const randomSong = otherSongs[Math.floor(Math.random() * otherSongs.length)]
@@ -23,57 +21,54 @@ const Sound = () => {
     musicPlayer.src = randomSong
     musicPlayer.volume = 0.8
     musicPlayer.play()
-  }, [musicPlayer])
+  }, [player])
 
-  useEffect(() => {
-    if (!musicPlayer) return
+  if (!musicPlayer || !player) return
 
-    if (musicOn && !musicPlayer.src) {
-      playRandomSong()
+  if (soundState$.musicPlay.get() && !musicPlayer.src) {
+    playRandomSong()
 
-      musicPlayer.addEventListener("ended", playRandomSong)
-    } else if (musicOn && musicPlayer.src) {
-      musicPlayer.play()
-    } else {
-      musicPlayer.pause()
-      musicPlayer.removeEventListener("ended", playRandomSong)
-    }
-  }, [musicOn, musicPlayer, playRandomSong])
+    musicPlayer.addEventListener("ended", playRandomSong)
+  } else if (soundState$.musicPlay.get() && musicPlayer.src) {
+    musicPlayer.play()
+  } else if (musicPlayer.src && !musicPlayer.paused) {
+    musicPlayer.pause()
+    musicPlayer.removeEventListener("ended", playRandomSong)
+  }
 
-  useEffect(() => {
-    if (!soundEffectsOn || !soundEffect) return
+  if (!soundState$.soundEffectsOn.get() || !soundState$.soundEffect.get())
+    return
 
-    let audioFile: string
+  let audioFile: string
 
-    if (soundEffect === "journey") {
-      const wavesSoundEffects = ["soundfx/waves1.opus", "soundfx/waves2.opus"]
+  if (soundState$.soundEffect.get() === "journey") {
+    const wavesSoundEffects = ["soundfx/waves1.opus", "soundfx/waves2.opus"]
 
-      audioFile =
-        wavesSoundEffects[Math.floor(Math.random() * wavesSoundEffects.length)]
+    audioFile =
+      wavesSoundEffects[Math.floor(Math.random() * wavesSoundEffects.length)]
 
-      if (getRandomInt(1, 2) === 1) {
-        const journeyAdditionalSoundEffects = [
-          "soundfx/creak.opus",
-          "soundfx/seagulls.opus",
+    if (getRandomInt(1, 2) === 1) {
+      const journeyAdditionalSoundEffects = [
+        "soundfx/creak.opus",
+        "soundfx/seagulls.opus",
+      ]
+
+      const additionalAudioFile =
+        journeyAdditionalSoundEffects[
+          Math.floor(Math.random() * journeyAdditionalSoundEffects.length)
         ]
 
-        const additionalAudioFile =
-          journeyAdditionalSoundEffects[
-            Math.floor(Math.random() * journeyAdditionalSoundEffects.length)
-          ]
-
-        const soundEffectPlayer = new Audio(additionalAudioFile)
-        soundEffectPlayer.play()
-      }
-    } else {
-      audioFile = `soundfx/${soundEffect}.opus`
+      const soundEffectPlayer = new Audio(additionalAudioFile)
+      soundEffectPlayer.play()
     }
+  } else {
+    audioFile = `soundfx/${soundState$.soundEffect.get()}.opus`
+  }
 
-    const soundEffectPlayer = new Audio(audioFile)
-    soundEffectPlayer.play()
-  }, [soundEffect, soundEffectsOn])
+  const soundEffectPlayer = new Audio(audioFile)
+  soundEffectPlayer.play()
 
   return null
-}
+})
 
 export default Sound

@@ -12,7 +12,6 @@ import { useState } from "react"
 
 import MotionProvider from "@/components/MotionProvider"
 import Sound from "@/components/Sound"
-import { SoundProvider } from "@/components/Sound/context"
 import Modal from "@/components/ui/Modal"
 import { ModalProvider } from "@/components/ui/Modal/context"
 import Toast from "@/components/ui/Toast"
@@ -66,14 +65,12 @@ const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
           <MotionProvider>
             <ToastProvider>
               <ModalProvider>
-                <SoundProvider>
-                  <Component {...pageProps} />
+                <Component {...pageProps} />
 
-                  <Toast />
-                  <Modal />
-                  <WelcomeModal />
-                  <Sound />
-                </SoundProvider>
+                <Toast />
+                <Modal />
+                <WelcomeModal />
+                <Sound />
               </ModalProvider>
             </ToastProvider>
           </MotionProvider>

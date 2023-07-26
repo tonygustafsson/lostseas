@@ -1,9 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import Head from "next/head"
+import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
 import DefaultLayout from "@/components/layouts/default"
+import RegistrationSoundSettings from "@/components/RegistrationSoundSettings"
+import { soundState$ } from "@/components/Sound/context"
 import Select from "@/components/ui/Select"
 import TextField from "@/components/ui/TextField"
 import { NATIONS } from "@/constants/locations"
@@ -20,6 +23,9 @@ type Props = {
 const Register = ({ randomCharacter }: Props) => {
   const { register: playerRegister, registrationIsLoading } = usePlayer()
 
+  const [localMusicOn, setLocalMusicOn] = useState(true)
+  const [localSoundEffectsOn, setLocalSoundEffectsOn] = useState(true)
+
   const {
     register,
     handleSubmit,
@@ -31,6 +37,9 @@ const Register = ({ randomCharacter }: Props) => {
   })
 
   const onSubmit: SubmitHandler<ValidationSchema> = async (data) => {
+    soundState$.musicOn.set(localMusicOn)
+    soundState$.soundEffectsOn.set(localSoundEffectsOn)
+
     playerRegister(data)
   }
 
@@ -90,27 +99,12 @@ const Register = ({ randomCharacter }: Props) => {
 
           <h2 className="font-serif text-2xl mt-4">Settings</h2>
 
-          <div className="flex flex-col gap-4 pb-4">
-            <div className="flex items-center gap-4">
-              <input
-                id="toggleMusic"
-                type="checkbox"
-                className="toggle toggle-sm toggle-info"
-                {...register("musicOn", { value: true })}
-              />
-              <label htmlFor="toggleMusic">Music</label>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <input
-                id="soundEffects"
-                type="checkbox"
-                className="toggle toggle-sm toggle-info"
-                {...register("soundEffectsOn", { value: true })}
-              />
-              <label htmlFor="soundEffects">Sound effects</label>
-            </div>
-          </div>
+          <RegistrationSoundSettings
+            musicOn={localMusicOn}
+            setMusicOn={setLocalMusicOn}
+            soundEffectsOn={localSoundEffectsOn}
+            setSoundEffectsOn={setLocalSoundEffectsOn}
+          />
 
           <button
             type="submit"

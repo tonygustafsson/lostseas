@@ -1,12 +1,6 @@
-import { getCookie } from "cookies-next"
 import Link from "next/link"
 
-import {
-  MUSIC_STATE_COOKIE_NAME,
-  SOUND_EFFECTS_STATE_COOKIE_NAME,
-} from "@/constants/system"
-
-import { useSound } from "../Sound/context"
+import { soundState$ } from "../Sound/context"
 
 type Props = {
   player: Player
@@ -14,14 +8,10 @@ type Props = {
 }
 
 const WelcomeNewUser = ({ player, onClose }: Props) => {
-  const { setMusic, setSoundEffects } = useSound()
-
   const startExploring = () => {
-    const musicOn = Boolean(getCookie(MUSIC_STATE_COOKIE_NAME))
-    const soundEffectsOn = Boolean(getCookie(SOUND_EFFECTS_STATE_COOKIE_NAME))
-
-    setMusic(musicOn)
-    setSoundEffects(soundEffectsOn)
+    if (soundState$.musicOn.get()) {
+      soundState$.musicPlay.set(true)
+    }
 
     onClose()
   }

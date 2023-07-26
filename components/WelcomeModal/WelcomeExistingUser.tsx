@@ -1,12 +1,6 @@
-import { getCookie } from "cookies-next"
 import { useState } from "react"
 
-import {
-  MUSIC_STATE_COOKIE_NAME,
-  SOUND_EFFECTS_STATE_COOKIE_NAME,
-} from "@/constants/system"
-
-import { useSound } from "../Sound/context"
+import { soundState$ } from "../Sound/context"
 
 type Props = {
   player: Player
@@ -14,23 +8,14 @@ type Props = {
 }
 
 const WelcomeExistingUser = ({ player, onClose }: Props) => {
-  const { setMusic, setSoundEffects } = useSound()
-
-  const musicCookieValue = getCookie(MUSIC_STATE_COOKIE_NAME)
-  const soundEffectsCookieValue = getCookie(SOUND_EFFECTS_STATE_COOKIE_NAME)
-
-  const [musicOn, setMusicOn] = useState<boolean>(
-    typeof musicCookieValue !== "undefined" ? Boolean(musicCookieValue) : true
-  )
+  const [musicPlay, setMusicPlay] = useState<boolean>(soundState$.musicOn.get())
   const [soundEffectsOn, setSoundEffectsOn] = useState<boolean>(
-    typeof soundEffectsCookieValue !== "undefined"
-      ? Boolean(soundEffectsCookieValue)
-      : true
+    soundState$.soundEffectsOn.get()
   )
 
   const continueGame = () => {
-    setMusic(musicOn)
-    setSoundEffects(soundEffectsOn)
+    soundState$.musicPlay.set(musicPlay)
+    soundState$.soundEffectsOn.set(soundEffectsOn)
 
     onClose()
   }
@@ -48,8 +33,8 @@ const WelcomeExistingUser = ({ player, onClose }: Props) => {
             id="toggleMusic"
             type="checkbox"
             className="toggle toggle-sm toggle-info"
-            checked={musicOn}
-            onChange={() => setMusicOn(!musicOn)}
+            checked={musicPlay}
+            onChange={() => setMusicPlay(!musicPlay)}
           />
           <label htmlFor="toggleMusic">Music</label>
         </div>

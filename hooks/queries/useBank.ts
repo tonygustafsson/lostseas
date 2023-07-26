@@ -1,13 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import { useSound } from "@/components/Sound/context"
+import { playSoundEffect } from "@/components/Sound/context"
 import apiRequest from "@/utils/apiRequest"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
 
 export const useBank = () => {
   const queryClient = useQueryClient()
-  const { playSoundEffect } = useSound()
 
   const { mutate: deposit, isLoading: isDepositing } = useMutation(
     (data: { amount: number }) => apiRequest("/api/bank/deposit", data, "POST"),
