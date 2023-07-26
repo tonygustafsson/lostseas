@@ -7,6 +7,7 @@ import {
 } from "react-icons/gi"
 
 import MerchandiseIcon from "@/components/MerchandiseIcon"
+import ParrotBox from "@/components/ParrotBox"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
@@ -17,11 +18,9 @@ const AttackReport = () => {
   const failureReport = player?.locationStates?.sea?.attackFailureReport
 
   return (
-    <div className="flex flex-col items-center">
-      <h2 className="text-3xl font-serif mb-4">Report</h2>
-
+    <ParrotBox title={successReport ? "Success, Captain!" : "Yarr, we failed!"}>
       {successReport && (
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col gap-3">
           {successReport.lootedGold && (
             <li className="flex align-middle gap-2 text-lg">
               <GiCoins className="h-7 w-7 text-primary" />
@@ -98,7 +97,7 @@ const AttackReport = () => {
       )}
 
       {failureReport && (
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col gap-3">
           <li className="flex align-middle gap-2 text-lg">
             <GiCoins className="h-7 w-7 text-primary" />
             You lost all your gold. (Funds in bank are still safe)
@@ -149,7 +148,7 @@ const AttackReport = () => {
           )}
         </ul>
       )}
-    </div>
+    </ParrotBox>
   )
 }
 
