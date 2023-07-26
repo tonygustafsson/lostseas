@@ -7,6 +7,7 @@ import MerchandiseIcon from "@/components/MerchandiseIcon"
 import RadialProgressBar from "@/components/RadialProgressBar"
 import RenameShipForm from "@/components/RenameShipForm"
 import { useModal } from "@/components/ui/Modal/context"
+import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_TYPES } from "@/constants/ship"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShips } from "@/hooks/queries/useShips"
@@ -105,6 +106,23 @@ const Ships = () => {
         {!Object.values(player?.ships || [])?.length && (
           <p>You do not have any ships currently.</p>
         )}
+
+        <h2 className="text-2xl font-serif mt-8 mb-4">Ship fittings</h2>
+
+        <div className="stat shadow-md hover:shadow-lg lg:w-52 bg-gray-800 rounded-lg pr-4">
+          <div className="stat-figure text-secondary">
+            <MerchandiseIcon size="lg" item="cannons" />
+          </div>
+          <div className="stat-title">Cannons</div>
+          <div className="stat-value text-2xl">
+            {player?.inventory?.cannons}{" "}
+            <span className="text-sm">
+              {player?.inventory?.cannons === 1
+                ? MERCHANDISE["cannons"].singleUnit
+                : MERCHANDISE["cannons"].unit}
+            </span>
+          </div>
+        </div>
       </DefaultLayout>
     </>
   )
