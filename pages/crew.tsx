@@ -26,7 +26,7 @@ const Crew = () => {
         <>
           <h1 className="text-3xl font-serif text mb-8">Crew members</h1>
 
-          <div className="stats bg-transparent gap-2 mt-4">
+          <div className="stats py-3bg-transparent gap-2 mt-4">
             <div className="stat bg-gray-700">
               <div className="stat-figure text-secondary">
                 <MdGroups className="h-11 w-11" />

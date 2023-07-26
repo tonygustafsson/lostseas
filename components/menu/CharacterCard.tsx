@@ -1,14 +1,17 @@
 import { m as motion } from "framer-motion"
 import Link from "next/link"
-import { GiCoins, GiPirateHat } from "react-icons/gi"
+import { FaCoins } from "react-icons/fa"
+import { GiPirateHat, GiProgression } from "react-icons/gi"
+
+import { getScore } from "@/utils/score"
 
 import Flag from "../icons/Flag"
 
 type Props = {
-  character: Character
+  player: Player
 }
 
-const CharacterCard = ({ character }: Props) => (
+const CharacterCard = ({ player }: Props) => (
   <div className="card w-full bg-gray-800 shadow-lg mt-2 rounded-md">
     <figure className="mt-4">
       <GiPirateHat className="hidden lg:block h-14 w-14" />
@@ -17,26 +20,36 @@ const CharacterCard = ({ character }: Props) => (
     <div className="card-body py-6 px-4 pt-2">
       <h2 className="card-title font-serif gap-2">
         <Flag
-          nation={character.nationality}
+          nation={player.character.nationality}
           size={28}
           className="opacity-[0.8]"
         />
-        {character.name}
+        {player.character.name}
       </h2>
 
       <p className="text-sm">
-        You are a {character.age} year old {character.title} from{" "}
-        {character.nationality}.
+        You are a {player.character.age} year old {player.character.title} from{" "}
+        {player.character.nationality}.
       </p>
 
-      <div className="stats bg-gray-800">
-        <div className="stat px-0 py-2">
+      <div className="stats py-1 bg-gray-800">
+        <div className="stat px-0 py-0">
           <div className="stat-figure text-secondary">
-            <GiCoins className="h-8 w-8" />
+            <GiProgression className="h-8 w-8" />
+          </div>
+          <p className="stat-title">Score</p>
+          <p className="stat-value w-fit">{getScore(player)}</p>
+        </div>
+      </div>
+
+      <div className="stats py-1 bg-gray-800">
+        <div className="stat px-0 py-0">
+          <div className="stat-figure text-secondary">
+            <FaCoins className="h-8 w-8" />
           </div>
           <p className="stat-title">Gold</p>
           <motion.p
-            key={`character-gold-${character.gold}`}
+            key={`character-gold-${player.character.gold}`}
             initial={{ scale: 1, color: "#fff" }}
             animate={{
               scale: [null, 1.3, 1],
@@ -45,7 +58,7 @@ const CharacterCard = ({ character }: Props) => (
             }}
             className="stat-value w-fit"
           >
-            {character.gold}
+            {player.character.gold}
           </motion.p>
         </div>
       </div>

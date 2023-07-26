@@ -73,7 +73,7 @@ const MobileMenu = ({ className }: Props) => {
 
               {player && (
                 <>
-                  <CharacterCard character={player.character} />
+                  <CharacterCard player={player} />
                   <WeatherCard day={player.character.day} />
                 </>
               )}

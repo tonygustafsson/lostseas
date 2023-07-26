@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { GiCoins } from "react-icons/gi"
+import { FaCoins } from "react-icons/fa"
 
 import LocationTabs from "@/components/LocationTabs"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -26,10 +26,10 @@ const Bank = () => {
       />
 
       <div className="flex flex-wrap gap-6 w-full justify-center">
-        <div className="stats bg-transparent gap-1 mt-4">
+        <div className="stats py-3 bg-transparent gap-1 mt-4">
           <div className="stat bg-gray-700">
             <div className="stat-figure text-secondary">
-              <GiCoins className="h-8 w-8" />
+              <FaCoins className="h-7 w-7" />
             </div>
             <div className="stat-title">Gold</div>
             <div className="stat-value">{player?.character.gold}</div>
@@ -37,7 +37,7 @@ const Bank = () => {
 
           <div className="stat bg-gray-700">
             <div className="stat-figure text-secondary">
-              <GiCoins className="h-8 w-8" />
+              <FaCoins className="h-7 w-7" />
             </div>
             <div className="stat-title">Account</div>
             <div className="stat-value">{player?.character.account || 0}</div>
@@ -45,7 +45,7 @@ const Bank = () => {
 
           <div className="stat bg-gray-700">
             <div className="stat-figure text-secondary">
-              <GiCoins className="h-8 w-8" />
+              <FaCoins className="h-7 w-7" />
             </div>
             <div className="stat-title">Loan</div>
             <div className="stat-value">{player?.character.loan || 0}</div>

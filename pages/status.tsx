@@ -2,7 +2,8 @@ import { GetServerSideProps } from "next"
 import Head from "next/head"
 import { AiOutlineCalendar } from "react-icons/ai"
 import { BiFemaleSign, BiMaleSign, BiTime } from "react-icons/bi"
-import { GiCoins, GiPirateCoat } from "react-icons/gi"
+import { FaCoins } from "react-icons/fa"
+import { GiPirateCoat, GiProgression } from "react-icons/gi"
 
 import ChangeCharacterForm from "@/components/ChangeCharacterForm"
 import Flag from "@/components/icons/Flag"
@@ -12,6 +13,7 @@ import { NATIONS } from "@/constants/locations"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { convertDaysToTimeSpan, getCurrentDate } from "@/utils/date"
 import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSideProps"
+import { getScore } from "@/utils/score"
 
 const Status = () => {
   const { data: player } = useGetPlayer()
@@ -46,13 +48,21 @@ const Status = () => {
               {player?.character.name}
             </h2>
 
-            <div className="stats gap-2 mt-4">
+            <div className="stats py-3 gap-2 mt-4">
               <div className="stat bg-gray-700">
                 <div className="stat-figure text-secondary">
                   <GiPirateCoat className="h-8 w-8" />
                 </div>
                 <div className="stat-title">Title</div>
                 <div className="stat-value">{player?.character.title}</div>
+              </div>
+
+              <div className="stat bg-gray-700">
+                <div className="stat-figure text-secondary">
+                  <GiProgression className="h-8 w-8" />
+                </div>
+                <div className="stat-title">Score</div>
+                <div className="stat-value">{getScore(player)}</div>
               </div>
 
               <div className="stat bg-gray-700">
@@ -85,7 +95,7 @@ const Status = () => {
               </button>
             </div>
 
-            <div className="stats gap-2 mt-4">
+            <div className="stats py-3 gap-2 mt-4">
               <div className="stat bg-gray-700">
                 <div className="stat-figure text-secondary">
                   <Flag
@@ -115,10 +125,10 @@ const Status = () => {
               </div>
             </div>
 
-            <div className="stats gap-2 mt-4">
+            <div className="stats py-3 gap-2 mt-4">
               <div className="stat bg-gray-700">
                 <div className="stat-figure text-secondary">
-                  <GiCoins className="h-8 w-8" />
+                  <FaCoins className="h-8 w-8" />
                 </div>
                 <div className="stat-title">Gold</div>
                 <div className="stat-value">{player?.character.gold}</div>
@@ -127,7 +137,7 @@ const Status = () => {
               {player?.character.account && (
                 <div className="stat bg-gray-700">
                   <div className="stat-figure text-secondary">
-                    <GiCoins className="h-8 w-8" />
+                    <FaCoins className="h-8 w-8" />
                   </div>
                   <div className="stat-title">Bank account</div>
                   <div className="stat-value">{player?.character.account}</div>
@@ -137,7 +147,7 @@ const Status = () => {
               {player?.character.loan && (
                 <div className="stat bg-gray-700">
                   <div className="stat-figure text-secondary">
-                    <GiCoins className="h-8 w-8" />
+                    <FaCoins className="h-8 w-8" />
                   </div>
                   <div className="stat-title">Bank loan</div>
                   <div className="stat-value">{player?.character.loan}</div>
@@ -145,7 +155,7 @@ const Status = () => {
               )}
             </div>
 
-            <div className="stats gap-2 mt-4">
+            <div className="stats py-3 gap-2 mt-4">
               <div className="stat bg-gray-700">
                 <div className="stat-figure text-secondary">
                   <AiOutlineCalendar className="h-8 w-8" />
@@ -169,7 +179,7 @@ const Status = () => {
               <>
                 <h3 className="font-serif text-2xl mt-4">Battles</h3>
 
-                <div className="stats gap-2 mt-2">
+                <div className="stats py-3 gap-2 mt-2">
                   {Object.entries(player.character.battles).map(
                     ([nation, { won, lost }]) => (
                       <div
