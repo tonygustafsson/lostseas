@@ -14,7 +14,7 @@ const CharacterCard = ({ character }: Props) => (
       <GiPirateHat className="hidden lg:block h-14 w-14" />
     </figure>
 
-    <div className="card-body p-6 pt-2">
+    <div className="card-body py-6 px-4 pt-2">
       <h2 className="card-title font-serif gap-2">
         <Flag
           nation={character.nationality}

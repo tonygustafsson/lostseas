@@ -11,7 +11,7 @@ const WeatherCard = ({ day }: Props) => {
 
   return (
     <div className="card w-full bg-gray-800 shadow-lg mt-4 rounded-md">
-      <div className="card-body px-6 py-4">
+      <div className="card-body p-4">
         <div className="flex items-center justify-between">
           <span className="font-bold text-sm">{currentDate}</span>
           <WeatherIcon className="h-8 w-8 text-secondary" />
