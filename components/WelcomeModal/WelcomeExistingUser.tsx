@@ -14,6 +14,7 @@ const WelcomeExistingUser = ({ player, onClose }: Props) => {
   )
 
   const continueGame = () => {
+    sound$.musicOn.set(musicPlay)
     sound$.musicPlay.set(musicPlay)
     sound$.soundEffectsOn.set(soundEffectsOn)
 
