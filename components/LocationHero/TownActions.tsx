@@ -79,7 +79,7 @@ const TownActions = ({ location }: Props) => {
   }
 
   return (
-    <div className="bg-gray-900 rounded-b-lg p-4 flex items-center flex-col">
+    <div className="bg-gray-900 rounded-b-lg p-4 pb-8 flex items-center flex-col">
       <span className="text-xl font-serif">Change location</span>
 
       <div className="flex flex-wrap mt-4 justify-center gap-2 lg:gap-0 lg:join">

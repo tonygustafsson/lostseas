@@ -8,7 +8,7 @@ const PostAttackActions = () => {
   }
 
   return (
-    <div className="bg-gray-900 rounded-b-lg pt-4 flex items-center flex-col">
+    <div className="bg-gray-900 rounded-b-lg pt-4 pb-8 flex items-center flex-col">
       <div className="flex flex-wrap mt-4 justify-center gap-2 lg:gap-0 lg:join">
         <button
           className={`btn btn-primary text-base join-item`}

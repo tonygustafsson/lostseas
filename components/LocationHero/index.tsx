@@ -119,7 +119,7 @@ const LocationHero = () => {
         </div>
       </motion.div>
 
-      <div className="bg-gray-900 rounded-b-lg flex items-center flex-col pb-8">
+      <div className="bg-gray-900 rounded-b-lg flex items-center flex-col">
         {player?.character.location !== "Sea" && (
           <TownActions location={player?.character.location} />
         )}
