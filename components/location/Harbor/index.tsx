@@ -1,4 +1,5 @@
-import { GiBandana, GiCoins, GiShoonerSailboat } from "react-icons/gi"
+import { FaCoins } from "react-icons/fa"
+import { GiBandana, GiShoonerSailboat } from "react-icons/gi"
 
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import ParrotBox from "@/components/ParrotBox"
@@ -79,7 +80,7 @@ const Harbor = () => {
         <ul className="flex flex-col gap-3">
           {landingTips.includes("TOO_MUCH_GOLD") && (
             <li className="flex align-middle gap-2 text-lg">
-              <GiCoins className="h-7 w-7 text-primary" />
+              <FaCoins className="h-7 w-7 text-primary" />
               You are carrying {player.character.gold} gold, it would be wise to
               spend it on something useful or save it in the bank so you
               won&apos;t loose it if you are defeated at sea.

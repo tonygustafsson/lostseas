@@ -1,10 +1,5 @@
-import { FaUsers } from "react-icons/fa"
-import {
-  GiBandana,
-  GiCoins,
-  GiOpenedFoodCan,
-  GiShoonerSailboat,
-} from "react-icons/gi"
+import { FaCoins, FaUsers } from "react-icons/fa"
+import { GiBandana, GiOpenedFoodCan, GiShoonerSailboat } from "react-icons/gi"
 
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import ParrotBox from "@/components/ParrotBox"
@@ -23,7 +18,7 @@ const AttackReport = () => {
         <ul className="flex flex-col gap-3">
           {successReport.lootedGold && (
             <li className="flex align-middle gap-2 text-lg">
-              <GiCoins className="h-7 w-7 text-primary" />
+              <FaCoins className="h-7 w-7 text-primary" />
               Your looted {successReport.lootedGold} gold and now have a total
               of {player.character.gold} gold.
             </li>
@@ -99,7 +94,7 @@ const AttackReport = () => {
       {failureReport && (
         <ul className="flex flex-col gap-3">
           <li className="flex align-middle gap-2 text-lg">
-            <GiCoins className="h-7 w-7 text-primary" />
+            <FaCoins className="h-7 w-7 text-primary" />
             You lost all your gold. (Funds in bank are still safe)
           </li>
 

@@ -2,6 +2,7 @@ import { GetServerSideProps } from "next"
 import Head from "next/head"
 import { MdGroups } from "react-icons/md"
 
+import DismissCrewMembers from "@/components/crew/DismissCrewMembers"
 import GiveGold from "@/components/crew/GiveGold"
 import GiveMedicine from "@/components/crew/GiveMedicine"
 import DefaultLayout from "@/components/layouts/default"
@@ -67,6 +68,7 @@ const Crew = () => {
           <div className="flex flex-col lg:flex-row gap-4 pt-8">
             <GiveMedicine />
             <GiveGold />
+            <DismissCrewMembers />
           </div>
         </>
       </DefaultLayout>

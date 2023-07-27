@@ -1,15 +1,14 @@
 import { useMemo, useState } from "react"
-import { FaCoins } from "react-icons/fa"
+import { GiBandana } from "react-icons/gi"
 
 import MerchandiseCard from "@/components/MerchandiseCard"
 import TextField from "@/components/ui/TextField"
 import { useCrew } from "@/hooks/queries/useCrew"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-import { getGoldEffectiveness } from "@/utils/crew"
 
-const GiveGold = () => {
+const DismissCrewMembers = () => {
   const { data: player } = useGetPlayer()
-  const { giveGold } = useCrew()
+  const { dismiss } = useCrew()
 
   const [quantity, setQuantity] = useState(1)
 
@@ -31,44 +30,27 @@ const GiveGold = () => {
     }
   }
 
-  const effectiveness = useMemo(
-    () =>
-      getGoldEffectiveness(
-        player?.crewMembers.count || 0,
-        player?.crewMembers.mood || 0,
-        quantity
-      ),
+  const isDisabled = useMemo(
+    () => (player?.crewMembers.count || 0) < quantity || quantity < 1,
     [player?.crewMembers, quantity]
   )
 
-  const isDisabled = useMemo(
-    () => (player?.character.gold || 0) < quantity || quantity < 1,
-    [player?.character.gold, quantity]
-  )
-
   const handleSubmit = () => {
-    giveGold({ gold: quantity })
+    dismiss({ count: quantity })
   }
 
   return (
     <MerchandiseCard
-      title="Give gold"
-      indicator={player?.character.gold?.toString() || "0"}
-      icon={<FaCoins className="w-7 h-7 text-primary" />}
+      title="Dismiss crew members"
+      indicator={player?.crewMembers.count.toString() || "0"}
+      icon={<GiBandana className="h-7 w-7 text-primary" />}
       disabled={isDisabled}
       fullWidth
       body={
-        <>
-          <p>
-            Give some gold to your crew members to improve their mood. More crew
-            members means more gold needed.
-          </p>
-
-          <p>
-            Your crew will have a mood of <strong>{effectiveness}%</strong> with
-            the current amount.
-          </p>
-        </>
+        <p>
+          Crew members cost resources when travling, sometimes it can be useful
+          to let them go.
+        </p>
       }
       actions={
         <>
@@ -105,7 +87,7 @@ const GiveGold = () => {
             disabled={isDisabled}
             onClick={handleSubmit}
           >
-            Give gold
+            Dismiss
           </button>
         </>
       }
@@ -113,4 +95,4 @@ const GiveGold = () => {
   )
 }
 
-export default GiveGold
+export default DismissCrewMembers

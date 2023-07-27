@@ -33,10 +33,24 @@ export const useCrew = () => {
     }
   )
 
+  const { mutate: dismiss, isLoading: isDismissing } = useMutation(
+    (data: { count: CrewMembers["count"] }) =>
+      apiRequest("/api/crew/dismiss", data, "POST"),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+        playSoundEffect("frustration")
+      },
+      onError: (error) => console.error(error),
+    }
+  )
+
   return {
     giveMedicine,
     isGivingMedicine,
     giveGold,
     isGivingGold,
+    dismiss,
+    isDismissing,
   }
 }
