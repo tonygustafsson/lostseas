@@ -5,23 +5,38 @@ import { useShop } from "@/hooks/queries/useShop"
 
 const ShopSell = () => {
   const { data: player } = useGetPlayer()
-  const { buy, sell } = useShop()
+  const { buy, sell, sellBarterGoods } = useShop()
+
+  const handleSellBarterGoods = () => {
+    sellBarterGoods()
+  }
 
   return (
-    <div className="flex flex-wrap gap-6">
-      {Object.entries(MERCHANDISE)
-        .filter(([_, item]) => item.availableAt === "shop")
-        .map(([itemKey]) => (
-          <MerchandiseShopItem
-            key={`shop-item-${itemKey}`}
-            type="Sell"
-            item={itemKey as keyof Inventory}
-            player={player}
-            onBuy={buy}
-            onSell={sell}
-          />
-        ))}
-    </div>
+    <>
+      <div className="flex mb-6">
+        <button
+          className="btn btn-secondary btn-sm"
+          onClick={handleSellBarterGoods}
+        >
+          Sell all barter goods
+        </button>
+      </div>
+
+      <div className="flex flex-wrap gap-6">
+        {Object.entries(MERCHANDISE)
+          .filter(([_, item]) => item.availableAt === "shop")
+          .map(([itemKey]) => (
+            <MerchandiseShopItem
+              key={`shop-item-${itemKey}`}
+              type="Sell"
+              item={itemKey as keyof Inventory}
+              player={player}
+              onBuy={buy}
+              onSell={sell}
+            />
+          ))}
+      </div>
+    </>
   )
 }
 

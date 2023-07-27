@@ -80,10 +80,38 @@ export const useShop = () => {
     }
   )
 
+  const { mutate: sellBarterGoods, isLoading: isSellingBarterGoods } =
+    useMutation(() => apiRequest("/api/shop/sellBarterGoods", null, "POST"), {
+      onSuccess: ({ error, moneyBack }) => {
+        if (error) {
+          setToast({
+            title: `Could not sell barter goods`,
+            message: error,
+            variant: "error",
+          })
+
+          return
+        }
+
+        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+
+        setToast({
+          title: `You sold all barter goods`,
+          message: `You received ${moneyBack} gold.`,
+          variant: "success",
+        })
+
+        playSoundEffect("coins")
+      },
+      onError: (error) => console.error(error),
+    })
+
   return {
     buy,
     isBuying,
     sell,
     isSelling,
+    sellBarterGoods,
+    isSellingBarterGoods,
   }
 }
