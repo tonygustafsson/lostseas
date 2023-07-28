@@ -25,10 +25,12 @@ const shopBuyNecessities = async (
 
   const player = await getPlayer(playerId)
 
-  const { cost, foodConsumption, waterConsumption } = getNecessitiesInfo(
-    player?.crewMembers.count || 0,
-    days
-  )
+  const { cost, foodNeeded, waterNeeded } = getNecessitiesInfo({
+    crewMembers: player?.crewMembers.count || 0,
+    currentFood: player?.inventory?.food || 0,
+    currentWater: player?.inventory?.water || 0,
+    days,
+  })
 
   if (player.character.gold < cost) {
     res.status(500).json({ error: "Not enough gold" })
@@ -39,8 +41,8 @@ const shopBuyNecessities = async (
     ...player,
     inventory: {
       ...player.inventory,
-      food: (player.inventory?.food || 0) + foodConsumption,
-      water: (player.inventory?.water || 0) + waterConsumption,
+      food: (player.inventory?.food || 0) + foodNeeded,
+      water: (player.inventory?.water || 0) + waterNeeded,
     },
     character: {
       ...player.character,
@@ -49,15 +51,15 @@ const shopBuyNecessities = async (
   } as Player
 
   await savePlayer(playerId, playerResult).catch((error) => {
-    res.status(500).json({ error, cost, foodConsumption, waterConsumption })
+    res.status(500).json({ error, cost, foodNeeded, waterNeeded })
     return
   })
 
   res.status(200).json({
     success: true,
     cost,
-    foodConsumption,
-    waterConsumption,
+    foodNeeded,
+    waterNeeded,
   })
 }
 

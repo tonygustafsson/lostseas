@@ -85,7 +85,7 @@ export const useShop = () => {
       (days: number) =>
         apiRequest("/api/shop/buyNecessities", { days }, "POST"),
       {
-        onSuccess: ({ error, foodConsumption, waterConsumption, cost }) => {
+        onSuccess: ({ error, foodNeeded, waterNeeded, cost }) => {
           if (error) {
             setToast({
               title: `Could not buy necessities`,
@@ -98,9 +98,18 @@ export const useShop = () => {
 
           queryClient.invalidateQueries([PLAYER_QUERY_KEY])
 
+          const foodUnit =
+            foodNeeded === 1
+              ? MERCHANDISE["food"].singleUnit
+              : MERCHANDISE["food"].unit
+          const waterUnit =
+            waterNeeded === 1
+              ? MERCHANDISE["water"].singleUnit
+              : MERCHANDISE["water"].unit
+
           setToast({
             title: `You bought necessities for ${cost} gold`,
-            message: `You got ${foodConsumption} food and ${waterConsumption} water.`,
+            message: `You got ${foodNeeded} ${foodUnit} food and ${waterNeeded} ${waterUnit} water.`,
             variant: "success",
           })
 
