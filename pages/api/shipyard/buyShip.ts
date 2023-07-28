@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { SHIP_TYPES } from "@/constants/ship"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
+import { TITLE_INFO } from "@/constants/title"
 import { getPlayer, savePlayer } from "@/firebase/db"
 import createNewShip from "@/utils/createNewShip"
 
@@ -29,7 +30,14 @@ const shipyardBuyShip = async (req: NextApiRequest, res: NextApiResponse) => {
   const player = await getPlayer(playerId)
 
   if (player.character.gold < totalPrice) {
-    res.status(400).json({ error: "Not enough gold", item })
+    res.status(500).json({ error: "Not enough gold", item })
+    return
+  }
+
+  const titleInfo = TITLE_INFO[player.character.title]
+
+  if (Object.keys(player.ships).length + 1 > titleInfo.maxShips) {
+    res.status(500).json({ error: "Max ships reached due to title", item })
     return
   }
 
