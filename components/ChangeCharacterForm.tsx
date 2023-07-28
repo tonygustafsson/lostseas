@@ -27,7 +27,7 @@ const ChangeCharacterForm = () => {
 
   const onSubmit: SubmitHandler<ValidationSchema> = async (data) => {
     update(data)
-    removeModal("editcharacter")
+    removeModal("editCharacter")
   }
 
   return (

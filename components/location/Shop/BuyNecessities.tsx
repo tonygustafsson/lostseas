@@ -18,7 +18,7 @@ const BuyNecessities = ({ player }: Props) => {
 
   const handleBuyNecessities = (days: number) => {
     buyNecessities(days)
-    removeModal("buynecesseties")
+    removeModal("buyNecesseties")
   }
 
   return (

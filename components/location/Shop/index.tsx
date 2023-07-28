@@ -22,7 +22,7 @@ const Shop = () => {
 
   const showBuyNecessities = () => {
     setModal({
-      id: "buynecesseties",
+      id: "buyNecesseties",
       title: "Buy necessities",
       content: <BuyNecessities player={player} />,
     })
@@ -30,7 +30,7 @@ const Shop = () => {
 
   const showSellBarterGoods = () => {
     setModal({
-      id: "sellbartergoods",
+      id: "sellBarterGoods",
       title: "Are you sure?",
       content: (
         <div className="flex flex-col gap-4">
@@ -44,7 +44,7 @@ const Shop = () => {
               Go ahead
             </button>
             <button
-              onClick={() => removeModal("sellbartergoods")}
+              onClick={() => removeModal("sellBarterGoods")}
               className="btn btn-secondary"
             >
               No thanks
@@ -57,7 +57,7 @@ const Shop = () => {
 
   const handleSellBarterGoods = () => {
     sellBarterGoods()
-    removeModal("sellbartergoods")
+    removeModal("sellBarterGoods")
   }
 
   return (

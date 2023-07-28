@@ -47,7 +47,7 @@ const Login = () => {
         login(playerId)
 
         qrScanner.stop()
-        removeModal("qrscanner")
+        removeModal("qrScanner")
       },
       {}
     )
@@ -59,7 +59,7 @@ const Login = () => {
 
   const openQrScannerModal = () => {
     setModal({
-      id: "qrscanner",
+      id: "qrScanner",
       title: "Scan QR code",
       onClose: () => qrScanner?.stop(),
       content: (

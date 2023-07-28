@@ -21,7 +21,7 @@ const Ships = () => {
 
   const openRenameModal = (id: Ship["id"], name: Ship["name"]) => {
     setModal({
-      id: "renameship",
+      id: "renameShip",
       title: "Rename ship",
       content: <RenameShipForm id={id} name={name} />,
     })

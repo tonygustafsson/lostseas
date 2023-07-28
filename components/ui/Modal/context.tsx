@@ -9,12 +9,12 @@ import {
 export type ModalId =
   | "map"
   | "move"
-  | "qrscanner"
-  | "editcharacter"
-  | "renameship"
+  | "qrScanner"
+  | "editCharacter"
+  | "renameShip"
   | "welcome"
-  | "sellbartergoods"
-  | "buynecesseties"
+  | "sellBarterGoods"
+  | "buyNecesseties"
 
 export type ModalProps = {
   id: ModalId

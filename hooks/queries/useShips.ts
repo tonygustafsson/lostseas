@@ -18,7 +18,7 @@ export const useShips = () => {
       onSuccess: ({ name, ship }) => {
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
 
-        removeModal("renameship")
+        removeModal("renameShip")
 
         setToast({
           title: `You renamed the ship to ${name}`,

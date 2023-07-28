@@ -23,7 +23,7 @@ const Status = () => {
 
   const openCharacterEditModal = () => {
     setModal({
-      id: "editcharacter",
+      id: "editCharacter",
       title: "Change your character",
       content: <ChangeCharacterForm />,
     })
