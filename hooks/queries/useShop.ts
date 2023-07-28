@@ -80,6 +80,36 @@ export const useShop = () => {
     }
   )
 
+  const { mutate: buyNecessities, isLoading: isBuyingNecessities } =
+    useMutation(
+      (days: number) =>
+        apiRequest("/api/shop/buyNecessities", { days }, "POST"),
+      {
+        onSuccess: ({ error, foodConsumption, waterConsumption, cost }) => {
+          if (error) {
+            setToast({
+              title: `Could not buy necessities`,
+              message: error,
+              variant: "error",
+            })
+
+            return
+          }
+
+          queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+
+          setToast({
+            title: `You bought necessities for ${cost} gold`,
+            message: `You got ${foodConsumption} food and ${waterConsumption} water.`,
+            variant: "success",
+          })
+
+          playSoundEffect("coins")
+        },
+        onError: (error) => console.error(error),
+      }
+    )
+
   const { mutate: sellBarterGoods, isLoading: isSellingBarterGoods } =
     useMutation(() => apiRequest("/api/shop/sellBarterGoods", null, "POST"), {
       onSuccess: ({ error, value }) => {
@@ -111,6 +141,8 @@ export const useShop = () => {
     isBuying,
     sell,
     isSelling,
+    buyNecessities,
+    isBuyingNecessities,
     sellBarterGoods,
     isSellingBarterGoods,
   }

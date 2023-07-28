@@ -14,6 +14,7 @@ export type ModalId =
   | "renameship"
   | "welcome"
   | "sellbartergoods"
+  | "buynecesseties"
 
 export type ModalProps = {
   id: ModalId
