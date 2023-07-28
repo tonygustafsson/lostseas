@@ -17,7 +17,7 @@ import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSidePr
 const Ships = () => {
   const { data: player } = useGetPlayer()
   const { remove, isRemoving } = useShips()
-  const { setModal } = useModal()
+  const { setModal, removeModal } = useModal()
 
   const openRenameModal = (id: Ship["id"], name: Ship["name"]) => {
     setModal({
@@ -27,10 +27,43 @@ const Ships = () => {
     })
   }
 
+  const openRemoveShipModal = (id: Ship["id"]) => {
+    setModal({
+      id: "removeShip",
+      title: `Are you sure?`,
+      content: (
+        <div className="flex flex-col gap-4">
+          <p>
+            Do you really want to remove your{" "}
+            {player?.ships[id].type.toLowerCase()} {player?.ships[id].name}?
+          </p>
+
+          <div className="flex gap-2">
+            <button
+              className="btn btn-primary btn-sm"
+              onClick={() => handleRemoveShip(id)}
+              disabled={isRemoving}
+            >
+              Yes, remove ship
+            </button>
+
+            <button
+              className="btn btn-secondary btn-sm"
+              onClick={() => removeModal("removeShip")}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+    })
+  }
+
   const handleRemoveShip = async (id: Ship["id"]) => {
     if (!id) return
 
     remove({ shipId: id })
+    removeModal("removeShip")
   }
 
   if (!player) {
@@ -83,7 +116,7 @@ const Ships = () => {
                     <div className="flex gap-2">
                       <button
                         className="btn btn-secondary btn-xs"
-                        onClick={() => handleRemoveShip(ship.id)}
+                        onClick={() => openRemoveShipModal(ship.id)}
                         disabled={isRemoving}
                       >
                         Remove
