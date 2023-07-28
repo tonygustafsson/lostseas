@@ -55,6 +55,13 @@ const MerchandiseShopItem = ({ player, item, type, onBuy, onSell }: Props) => {
     })
   }
 
+  const handleSellAll = () => {
+    onSell({
+      item,
+      quantity: player?.inventory?.[item] || 0,
+    })
+  }
+
   if (type === "Sell" && !player?.inventory?.[item]) {
     return null
   }
@@ -125,13 +132,19 @@ const MerchandiseShopItem = ({ player, item, type, onBuy, onSell }: Props) => {
           )}
 
           {type === "Sell" && (
-            <button
-              className="btn btn-sm"
-              onClick={handleSell}
-              disabled={sellingDisabled}
-            >
-              Sell
-            </button>
+            <div className="flex gap-1">
+              <button className="btn btn-sm" onClick={handleSellAll}>
+                All
+              </button>
+
+              <button
+                className="btn btn-sm"
+                onClick={handleSell}
+                disabled={sellingDisabled}
+              >
+                Sell
+              </button>
+            </div>
           )}
         </>
       }
