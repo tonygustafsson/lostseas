@@ -13,6 +13,7 @@ export type ModalId =
   | "editcharacter"
   | "renameship"
   | "welcome"
+  | "sellbartergoods"
 
 export type ModalProps = {
   id: ModalId
@@ -106,10 +107,13 @@ const modalReducer = (state: State, action: Action) => {
     case "HIDE_ALL_MODALS": {
       return {
         ...state,
-        modals: (Object.keys(state.modals) as ModalId[]).reduce((acc, id) => {
-          acc[id] = { ...state.modals[id], open: false }
-          return acc
-        }, {} as Record<string, ModalProps>),
+        modals: (Object.keys(state.modals) as ModalId[]).reduce(
+          (acc, id) => {
+            acc[id] = { ...state.modals[id], open: false }
+            return acc
+          },
+          {} as Record<string, ModalProps>
+        ),
       }
     }
     case "REMOVE_ALL_MODALS": {
