@@ -82,7 +82,7 @@ export const useShop = () => {
 
   const { mutate: sellBarterGoods, isLoading: isSellingBarterGoods } =
     useMutation(() => apiRequest("/api/shop/sellBarterGoods", null, "POST"), {
-      onSuccess: ({ error, moneyBack }) => {
+      onSuccess: ({ error, value }) => {
         if (error) {
           setToast({
             title: `Could not sell barter goods`,
@@ -97,7 +97,7 @@ export const useShop = () => {
 
         setToast({
           title: `You sold all barter goods`,
-          message: `You received ${moneyBack} gold.`,
+          message: `You received ${value} gold.`,
           variant: "success",
         })
 

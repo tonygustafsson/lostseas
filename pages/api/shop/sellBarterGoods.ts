@@ -1,9 +1,9 @@
 import { getCookie } from "cookies-next"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
-import { MERCHANDISE } from "@/constants/merchandise"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { getBarterGoodsValue } from "@/utils/shop"
 
 const shopSellBarterGoods = async (
   req: NextApiRequest,
@@ -18,17 +18,7 @@ const shopSellBarterGoods = async (
 
   const player = await getPlayer(playerId)
 
-  let moneyBack = 0
-
-  const barterGoods = ["porcelain", "spices", "tobacco", "rum"]
-
-  Object.entries(player.inventory || {}).forEach(([item, quantity]) => {
-    if (barterGoods.includes(item)) {
-      return
-    }
-
-    moneyBack += MERCHANDISE[item as keyof typeof MERCHANDISE].sell * quantity
-  })
+  const value = getBarterGoodsValue(player.inventory)
 
   const playerResult = {
     ...player,
@@ -41,18 +31,18 @@ const shopSellBarterGoods = async (
     },
     character: {
       ...player.character,
-      gold: player.character.gold + moneyBack,
+      gold: player.character.gold + value,
     },
   } as Player
 
   await savePlayer(playerId, playerResult).catch((error) => {
-    res.status(500).json({ error, moneyBack })
+    res.status(500).json({ error, value })
     return
   })
 
   res.status(200).json({
     success: true,
-    moneyBack,
+    value,
   })
 }
 
