@@ -6,9 +6,12 @@ import TextField from "@/components/ui/TextField"
 import { useCrew } from "@/hooks/queries/useCrew"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
+import { useModal } from "../ui/Modal/context"
+
 const DismissCrewMembers = () => {
   const { data: player } = useGetPlayer()
   const { dismiss } = useCrew()
+  const { setModal, removeModal } = useModal()
 
   const [quantity, setQuantity] = useState(1)
 
@@ -35,8 +38,36 @@ const DismissCrewMembers = () => {
     [player?.crewMembers, quantity]
   )
 
+  const openDismissModal = () => {
+    setModal({
+      id: "dismissCrewMembers",
+      title: "Are you sure?",
+      content: (
+        <div className="flex flex-col gap-4">
+          <p>
+            Are you sure you want to dismiss {quantity} crew members? They can
+            be hard to get back.
+          </p>
+          <div className="flex gap-2">
+            <button className="btn btn-primary btn-sm" onClick={handleSubmit}>
+              Yes, dismiss them
+            </button>
+
+            <button
+              className="btn btn-secondary btn-sm"
+              onClick={() => removeModal("dismissCrewMembers")}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+    })
+  }
+
   const handleSubmit = () => {
     dismiss({ count: quantity })
+    removeModal("dismissCrewMembers")
   }
 
   return (
@@ -85,7 +116,7 @@ const DismissCrewMembers = () => {
           <button
             className="btn btn-primary btn-sm"
             disabled={isDisabled}
-            onClick={handleSubmit}
+            onClick={openDismissModal}
           >
             Dismiss
           </button>
