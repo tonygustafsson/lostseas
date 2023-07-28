@@ -61,10 +61,10 @@ const Shop = () => {
   }
 
   return (
-    <>
-      <div className="flex mb-6 gap-2">
+    <div className="flex flex-col">
+      <div className="join self-center gap-1 mb-6">
         <button
-          className="btn btn-secondary btn-sm"
+          className="join-item btn btn-primary btn-sm"
           onClick={showBuyNecessities}
         >
           Buy necessities
@@ -72,7 +72,7 @@ const Shop = () => {
 
         {barterGoodsValue > 0 && (
           <button
-            className="btn btn-secondary btn-sm"
+            className="join-item btn btn-primary btn-sm"
             onClick={showSellBarterGoods}
           >
             Sell all barter goods
@@ -91,7 +91,7 @@ const Shop = () => {
 
       {tab === "buy" && <ShopBuy />}
       {tab === "sell" && <ShopSell />}
-    </>
+    </div>
   )
 }
 
