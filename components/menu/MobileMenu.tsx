@@ -26,6 +26,8 @@ const MobileMenu = ({ className }: Props) => {
     }
   }
 
+  if (!player) return null
+
   return (
     <div className={className}>
       <h1 className="flex items-baseline font-serif text-2xl text-center p-2 justify-center gap-2 bg-gray-900">
@@ -71,13 +73,8 @@ const MobileMenu = ({ className }: Props) => {
 
               <MainMenu />
               <SoundControls />
-
-              {player && (
-                <>
-                  <CharacterCard player={player} />
-                  <WeatherCard day={player.character.day} />
-                </>
-              )}
+              <CharacterCard player={player} />
+              <WeatherCard day={player.character.day} />
             </motion.div>
 
             <motion.div

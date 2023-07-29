@@ -15,6 +15,8 @@ type Props = {
 const DesktopMenu = ({ className }: Props) => {
   const { data: player } = useGetPlayer()
 
+  if (!player) return null
+
   return (
     <div className={`w-72 py-8 px-4 bg-gray-900 ${className}`}>
       <Link
@@ -33,13 +35,8 @@ const DesktopMenu = ({ className }: Props) => {
 
       <MainMenu />
       <SoundControls />
-
-      {player && (
-        <>
-          <CharacterCard player={player} />
-          <WeatherCard day={player.character.day} />
-        </>
-      )}
+      <CharacterCard player={player} />
+      <WeatherCard day={player.character.day} />
     </div>
   )
 }
