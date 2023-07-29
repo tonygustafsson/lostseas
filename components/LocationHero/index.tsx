@@ -76,10 +76,10 @@ const LocationHero = () => {
             )}
             fill
             draggable={false}
-            placeholder="blur"
+            //placeholder="blur"
             alt="Background image"
             className="object-cover select-none"
-            style={{ objectPosition: "50% 40%", filter: "sepia(1)" }}
+            style={{ objectPosition: "50% 55%", filter: "sepia(1)" }}
           />
         </div>
 
