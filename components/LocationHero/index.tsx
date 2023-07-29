@@ -1,4 +1,6 @@
-import { m as motion } from "framer-motion"
+import { useAnimate } from "framer-motion"
+import Image from "next/image"
+import { useEffect } from "react"
 
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getRandomInt } from "@/utils/random"
@@ -15,6 +17,7 @@ import TownContent from "./TownContent"
 
 const LocationHero = () => {
   const { data: player } = useGetPlayer()
+  const [scope, animate] = useAnimate()
 
   const getBackgroundImage = (
     town: Character["town"],
@@ -23,61 +26,64 @@ const LocationHero = () => {
   ) => {
     if (location === "Shop") {
       const nation = getTownsNationality(town)
-      return `url("img/place/${location.toLowerCase()}/${nation?.toLowerCase()}.webp")`
+      return `/img/place/${location.toLowerCase()}/${nation?.toLowerCase()}.webp`
     }
 
     if (location === "Sea" && shipMeeting) {
       const randomImageNumber = getRandomInt(1, 6)
-      return `url("img/place/ship-meeting/ship-meeting${randomImageNumber}.webp")`
+      return `/img/place/ship-meeting/ship-meeting${randomImageNumber}.webp`
     }
 
     if (location === "Sea") {
       const randomImageNumber = getRandomInt(1, 7)
-      return `url("img/place/sea/sea${randomImageNumber}.webp")`
+      return `/img/place/sea/sea${randomImageNumber}.webp`
     }
 
-    return `url("img/place/${player?.character.location
+    return `/img/place/${player?.character.location
       .replace(" ", "-")
-      .toLowerCase()}.webp")`
+      .toLowerCase()}.webp`
   }
+
+  useEffect(() => {
+    animate(
+      "img",
+      { objectPosition: "50% 50%", filter: "sepia(0)" },
+      { objectPosition: { duration: 1 }, filter: { duration: 2 } }
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [player?.character.location])
 
   if (!player) return null
 
   return (
     <>
-      <motion.div
+      <div
         key={
           player?.character.location === "Sea"
             ? `sea-${Math.random()}`
             : `${player?.character.town}-${player?.character.location}`
         }
-        initial={{
-          filter: "sepia(1)",
-          backgroundPositionY: "55%",
-        }}
-        animate={{
-          filter: "sepia(0)",
-          backgroundPositionY: "50%",
-          transition: {
-            filter: { duration: 1 },
-            backgroundPositionY: {
-              duration: 1,
-              type: "tween",
-            },
-          },
-        }}
-        className="hero rounded-lg rounded-b-none lg:max-h-[500px]"
-        style={{
-          backgroundImage: getBackgroundImage(
-            player?.character.town,
-            player?.character.location,
-            player?.locationStates?.sea?.shipMeeting
-          ),
-        }}
+        className="hero relative rounded-lg rounded-b-none lg:max-h-[500px] overflow-hidden"
       >
         <div className="hero-overlay bg-opacity-20"></div>
 
-        <div className="hero-content text-center text-neutral-content py-8 lg:py-24">
+        <div className="absolute top-0 left-0 z-10 w-full h-full" ref={scope}>
+          <Image
+            src={getBackgroundImage(
+              player?.character.town,
+              player?.character.location,
+              player?.locationStates?.sea?.shipMeeting
+            )}
+            fill
+            draggable={false}
+            placeholder="blur"
+            alt="Background image"
+            className="object-cover select-none"
+            style={{ objectPosition: "50% 40%", filter: "sepia(1)" }}
+          />
+        </div>
+
+        <div className="hero-content z-20 text-center text-neutral-content py-8 lg:py-24">
           <div className="max-w-full lg:max-w-2xl lg:min-w-[600px] bg-base-300 bg-opacity-60 p-8 rounded-lg">
             {player?.character.location !== "Sea" && (
               <TownContent
@@ -117,7 +123,7 @@ const LocationHero = () => {
               )}
           </div>
         </div>
-      </motion.div>
+      </div>
 
       <div className="bg-gray-900 rounded-b-lg flex items-center flex-col">
         {player?.character.location !== "Sea" && (
