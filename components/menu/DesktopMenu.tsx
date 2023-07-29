@@ -25,7 +25,8 @@ const DesktopMenu = ({ className }: Props) => {
           src="/img/logo.svg"
           alt="Lost Seas logotype"
           width={42}
-          height={34}
+          height={32}
+          style={{ height: 32 }}
         />
         Lost Seas
       </Link>

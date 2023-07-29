@@ -33,7 +33,8 @@ const MobileMenu = ({ className }: Props) => {
           src="/img/logo.svg"
           alt="Lost Seas logotype"
           width={30}
-          height={28}
+          height={24}
+          style={{ height: 24 }}
         />
         Lost Seas
       </h1>
