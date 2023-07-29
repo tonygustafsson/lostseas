@@ -85,7 +85,7 @@ const LocationHero = () => {
             draggable={false}
             onLoadingComplete={onImageLoad}
             alt="Background image"
-            className="object-cover select-none"
+            className="object-cover select-none opacity-70"
             style={{ objectPosition: "50% 55%", filter: "sepia(1)" }}
           />
         </div>
