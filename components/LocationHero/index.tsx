@@ -1,6 +1,5 @@
 import { useAnimate } from "framer-motion"
 import Image from "next/image"
-import { useEffect } from "react"
 
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getRandomInt } from "@/utils/random"
@@ -44,14 +43,13 @@ const LocationHero = () => {
       .toLowerCase()}.webp`
   }
 
-  useEffect(() => {
+  const onImageLoad = () => {
     animate(
       "img",
       { objectPosition: "50% 50%", filter: "sepia(0)" },
       { objectPosition: { duration: 1 }, filter: { duration: 2 } }
     )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [player?.character.location])
+  }
 
   if (!player) return null
 
@@ -67,7 +65,14 @@ const LocationHero = () => {
       >
         <div className="hero-overlay bg-opacity-20"></div>
 
-        <div className="absolute top-0 left-0 z-10 w-full h-full" ref={scope}>
+        <div
+          className="absolute top-0 left-0 z-10 w-full h-full"
+          ref={scope}
+          style={{
+            background:
+              "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(34,38,56,1) 35%, rgba(20,21,40,1) 100%)",
+          }}
+        >
           <Image
             src={getBackgroundImage(
               player?.character.town,
@@ -75,8 +80,10 @@ const LocationHero = () => {
               player?.locationStates?.sea?.shipMeeting
             )}
             fill
+            priority
+            loading="eager"
             draggable={false}
-            //placeholder="blur"
+            onLoadingComplete={onImageLoad}
             alt="Background image"
             className="object-cover select-none"
             style={{ objectPosition: "50% 55%", filter: "sepia(1)" }}
