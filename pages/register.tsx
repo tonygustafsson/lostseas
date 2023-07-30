@@ -56,7 +56,7 @@ const Register = ({ randomCharacter }: Props) => {
       <FullscreenLayout>
         <div className="hero min-h-screen justify-items-stretch rounded-lg relative">
           <Image
-            src="/img/place/tavern.webp"
+            src="/img/location/tavern.webp"
             layout="fill"
             objectFit="cover"
             alt="Lost Seas background"

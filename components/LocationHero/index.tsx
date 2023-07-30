@@ -25,20 +25,20 @@ const LocationHero = () => {
   ) => {
     if (location === "Shop") {
       const nation = getTownsNationality(town)
-      return `/img/place/${location.toLowerCase()}/${nation?.toLowerCase()}.webp`
+      return `/img/location/${location.toLowerCase()}/${nation?.toLowerCase()}.webp`
     }
 
     if (location === "Sea" && shipMeeting) {
       const randomImageNumber = getRandomInt(1, 6)
-      return `/img/place/ship-meeting/ship-meeting${randomImageNumber}.webp`
+      return `/img/location/ship-meeting/ship-meeting${randomImageNumber}.webp`
     }
 
     if (location === "Sea") {
       const randomImageNumber = getRandomInt(1, 7)
-      return `/img/place/sea/sea${randomImageNumber}.webp`
+      return `/img/location/sea/sea${randomImageNumber}.webp`
     }
 
-    return `/img/place/${player?.character.location
+    return `/img/location/${player?.character.location
       .replace(" ", "-")
       .toLowerCase()}.webp`
   }
