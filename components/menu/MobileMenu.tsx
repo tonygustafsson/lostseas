@@ -62,7 +62,7 @@ const MobileMenu = ({ className }: Props) => {
               dragConstraints={{ left: -50, right: 0 }}
               whileDrag={{ opacity: 0.85, transition: { duration: 0.1 } }}
               onDrag={(_, info) => handleDrag(info)}
-              className="fixed top-0 left-0 shadow-2xl overflow-y-auto z-20 w-72 h-full py-8 px-4 bg-gray-900"
+              className="fixed top-0 left-0 shadow-2xl overflow-y-auto z-30 w-72 h-full py-8 px-4 bg-gray-900"
             >
               <button
                 className="absolute right-2 top-2 text-info"

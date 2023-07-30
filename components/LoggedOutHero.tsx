@@ -88,7 +88,7 @@ const LoggedOutHero = () => {
 
       <div className="hero-overlay bg-opacity-50"></div>
 
-      <div className="hero-content justify-self-center w-[600px] max-w-full text-neutral-content py-24 z-20">
+      <div className="hero-content justify-self-center md:w-[600px] max-w-full text-neutral-content py-24 z-20">
         <div className="w-full bg-base-300 bg-opacity-60 p-8 rounded-lg">
           <h1 className="font-serif mb-5 text-5xl text-center">Lost Seas</h1>
 
