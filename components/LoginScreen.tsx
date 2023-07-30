@@ -15,7 +15,7 @@ import TextField from "./ui/TextField"
 
 type ValidationSchema = z.infer<typeof loginValidationSchema>
 
-const LoggedOutHero = () => {
+const LoginScreen = () => {
   const { data: player } = useGetPlayer()
   const router = useRouter()
   const { setModal, removeModal } = useModal()
@@ -77,19 +77,17 @@ const LoggedOutHero = () => {
   if (player) return null
 
   return (
-    <div className="hero justify-items-stretch rounded-lg relative">
+    <div className="hero min-h-screen justify-items-stretch rounded-lg relative">
       <Image
         src="/img/place/tavern.webp"
         layout="fill"
         objectFit="cover"
         alt="Lost Seas background"
-        className="absolute top-0 left-0 opacity-50 z-10"
+        className="absolute top-0 left-0 opacity-40 z-10"
       />
 
-      <div className="hero-overlay bg-opacity-50"></div>
-
-      <div className="hero-content justify-self-center md:w-[600px] max-w-full text-neutral-content py-24 z-20">
-        <div className="w-full bg-base-300 bg-opacity-60 p-8 rounded-lg">
+      <div className="hero-content justify-self-center max-w-[600px] text-neutral-content py-8 md:py-24 z-20">
+        <div className="w-full bg-base-300 bg-opacity-70 p-8 rounded-lg">
           <h1 className="font-serif mb-5 text-5xl text-center">Lost Seas</h1>
 
           <div className="flex flex-col gap-4 mt-4">
@@ -147,4 +145,4 @@ const LoggedOutHero = () => {
   )
 }
 
-export default LoggedOutHero
+export default LoginScreen
