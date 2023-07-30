@@ -108,10 +108,10 @@ const LoginScreen = () => {
 
               {error && <p className="text-red-500">{error}</p>}
 
-              <div className="flex flex-col gap-2 mt-3">
+              <div className="flex gap-2 mt-3">
                 <button
                   type="submit"
-                  className="btn btn-primary w-full"
+                  className="btn btn-primary flex-1"
                   disabled={!isValid && isDirty}
                 >
                   Sign in
@@ -119,7 +119,7 @@ const LoginScreen = () => {
 
                 <button
                   onClick={openQrScannerModal}
-                  className="btn btn-secondary w-full"
+                  className="btn btn-secondary flex-1"
                 >
                   Scan QR Code
                 </button>

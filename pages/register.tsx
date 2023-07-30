@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import Head from "next/head"
 import Image from "next/image"
+import Link from "next/link"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -64,13 +65,28 @@ const Register = ({ randomCharacter }: Props) => {
 
           <div className="hero-content justify-self-center md:w-1/2 max-w-[600px] text-neutral-content py-8 md:py-24 z-20">
             <div className="w-full bg-base-300 bg-opacity-70 p-8 rounded-lg">
-              <h1 className="font-serif text-4xl mb-8">Register</h1>
+              <h1 className="font-serif text-4xl mb-4">Register</h1>
+
+              <p className="mb-6">
+                Already have an account?{" "}
+                <Link href="/" className="underline">
+                  Log in
+                </Link>
+              </p>
 
               <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="w-full flex flex-col gap-4 max-w-md"
               >
                 <h2 className="font-serif text-2xl">Character</h2>
+
+                <button
+                  onClick={fetchNewRandomCharacter}
+                  type="button"
+                  className="btn btn-secondary"
+                >
+                  Randomize
+                </button>
 
                 <TextField
                   label="Name"
@@ -128,18 +144,10 @@ const Register = ({ randomCharacter }: Props) => {
 
                 <button
                   type="submit"
-                  className="btn btn-primary mt-4"
+                  className="btn btn-primary w-full"
                   disabled={(!isValid && isDirty) || registrationIsLoading}
                 >
                   Register
-                </button>
-
-                <button
-                  onClick={fetchNewRandomCharacter}
-                  type="button"
-                  className="btn btn-secondary mt-4"
-                >
-                  Randomize character
                 </button>
               </form>
             </div>
