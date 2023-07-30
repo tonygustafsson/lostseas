@@ -1,3 +1,4 @@
+import { TOWNS } from "@/constants/locations"
 import { LOCATION_DESCRIPTION } from "@/constants/text"
 import { getTownsNationality } from "@/utils/townNation"
 
@@ -10,6 +11,9 @@ type Props = {
 
 const TownContent = ({ town, location }: Props) => {
   const nation = getTownsNationality(town)
+  const description =
+    (town && TOWNS[town].descriptions?.[location]) ||
+    LOCATION_DESCRIPTION[location]
 
   return (
     <>
@@ -20,7 +24,7 @@ const TownContent = ({ town, location }: Props) => {
         {town}, {nation}
       </h2>
 
-      <p className="lg:mb-5 text-sm">{LOCATION_DESCRIPTION[location]}</p>
+      <p className="lg:mb-5 text-sm">{description}</p>
     </>
   )
 }

@@ -32,6 +32,7 @@ export type TownLocations = Record<
   Town,
   {
     nation: Nation
+    descriptions?: Partial<Record<TownLocation | SeaLocation, string>>
     map: {
       x: number
       y: number
@@ -44,6 +45,9 @@ export type TownLocations = Record<
 export const TOWNS: TownLocations = {
   "Charles Towne": {
     nation: "England",
+    descriptions: {
+      Shop: "Amidst the lively town square, The Maritime Emporium allures passersby with its diverse wares, offering nourishing provisions, canteens of pure water, medicinal remedies, fine tobacco, aged rum, delicate porcelain, and an exotic assortment of aromatic spices, evoking the spirit of maritime adventure and worldly trade.",
+    },
     map: {
       x: 388,
       y: 47,
@@ -70,6 +74,9 @@ export const TOWNS: TownLocations = {
   },
   Barbados: {
     nation: "England",
+    descriptions: {
+      Shop: "Within the bustling market square, The Captain's Cove Emporium beckons with a rich assortment of provisions, leather-bound water bottles, healing tonics, aromatic tobacco, aged rum, delicate porcelain, and a tantalizing array of spices, evoking the essence of maritime exploration and exotic trade.",
+    },
     map: {
       x: 779,
       y: 387,
@@ -95,6 +102,9 @@ export const TOWNS: TownLocations = {
   },
   "Port Royale": {
     nation: "England",
+    descriptions: {
+      Shop: "Nestled along the lively quayside, The Seafarer's Emporium entices with its treasure trove of sustenance, leather-clad water flasks, healing elixirs, aromatic tobacco, aged rum, delicate porcelain, and an exotic array of spices, embodying the spirit of maritime adventure and alluring trade.",
+    },
     map: {
       x: 452,
       y: 306,
@@ -120,6 +130,9 @@ export const TOWNS: TownLocations = {
   },
   Belize: {
     nation: "England",
+    descriptions: {
+      Shop: "Amidst the cobblestone streets, The Adventurer's Emporium beckons with its diverse offerings, from nourishing victuals and leather-bound water bottles to medicinal tinctures, aromatic tobacco, aged rum, delicate porcelain, and an exotic assortment of spices, all evoking the allure of daring expeditions and global trade.",
+    },
     map: {
       x: 207,
       y: 303,
@@ -146,6 +159,9 @@ export const TOWNS: TownLocations = {
   },
   Tortuga: {
     nation: "France",
+    descriptions: {
+      Shop: "Within the old town's bustling center, The Maritime Emporium lures in passersby with its eclectic range of goods, from nourishing provisions and leather-clad water bottles to medicinal remedies, aromatic tobacco, aged rum, delicate porcelain, and a captivating variety of spices, invoking a sense of seafaring adventure and worldly intrigue.",
+    },
     map: {
       x: 598,
       y: 262,
@@ -171,6 +187,9 @@ export const TOWNS: TownLocations = {
   },
   Leogane: {
     nation: "France",
+    descriptions: {
+      Shop: "In the heart of the old town, The Seafarer's Emporium entices with its diverse selection, from nourishing provisions and leather-clad water bottles to healing elixirs, aromatic tobacco, aged rum, delicate porcelain, and an enchanting array of spices, evoking the charm of maritime exploration and international trade.",
+    },
     map: {
       x: 537,
       y: 300,
@@ -196,6 +215,9 @@ export const TOWNS: TownLocations = {
   },
   Martinique: {
     nation: "France",
+    descriptions: {
+      Shop: "Amidst the bustling market square, The Adventurer's Emporium calls out with its captivating offerings, encompassing nourishing victuals and leather-bound water bottles, medicinal tinctures, aromatic tobacco, aged rum, delicate porcelain, and an exotic assortment of spices, all conjuring visions of daring expeditions and global commerce.",
+    },
     map: {
       x: 752,
       y: 353,
@@ -222,6 +244,9 @@ export const TOWNS: TownLocations = {
   },
   Biloxi: {
     nation: "France",
+    descriptions: {
+      Shop: "Nestled along the cobblestone streets, The Maritime Emporium allures with its treasure trove, housing nourishing victuals and leather-clad water bottles, medicinal remedies, aromatic tobacco, aged rum, delicate porcelain, and a captivating variety of spices, embodying the spirit of seafaring adventures and exotic trade.",
+    },
     map: {
       x: 259,
       y: 68,
@@ -247,6 +272,9 @@ export const TOWNS: TownLocations = {
   },
   Panama: {
     nation: "Spain",
+    descriptions: {
+      Shop: "Nestled along the cobblestone streets, The Maritime Emporium allures with its treasure trove, housing nourishing victuals and leather-clad water bottles, medicinal remedies, aromatic tobacco, aged rum, delicate porcelain, and a captivating variety of spices, embodying the spirit of seafaring adventures and exotic trade.",
+    },
     map: {
       x: 382,
       y: 459,
@@ -272,6 +300,9 @@ export const TOWNS: TownLocations = {
   },
   Havana: {
     nation: "Spain",
+    descriptions: {
+      Shop: "Within the town's lively center, The Wandering Merchant beckons with its diverse stock, ranging from nourishing victuals and leather-bound water bottles to healing tonics, fragrant tobacco, aged rum, delicate porcelain, and a tantalizing array of spices, invoking the essence of adventurous journeys and cultural exchange.",
+    },
     map: {
       x: 351,
       y: 204,
@@ -297,6 +328,9 @@ export const TOWNS: TownLocations = {
   },
   "Villa Hermosa": {
     nation: "Spain",
+    descriptions: {
+      Shop: "In the heart of the quaint town square, The Trader's Emporium enchants patrons with its alluring assortment, featuring nourishing provisions and leather-clad water bottles, medicinal elixirs, aromatic tobacco, aged rum, delicate porcelain, and an exotic blend of spices, evoking the spirit of exploration and intercontinental trade.",
+    },
     map: {
       x: 133,
       y: 303,
@@ -322,6 +356,9 @@ export const TOWNS: TownLocations = {
   },
   "San Juan": {
     nation: "Spain",
+    descriptions: {
+      Shop: "Amidst the bustling streets, The Globe-Trotter's Emporium entices with its rich collection, including nourishing victuals and leather-bound water bottles, medicinal concoctions, fragrant tobacco, aged rum, delicate porcelain, and an enticing array of spices, evoking a sense of adventurous voyages and cosmopolitan commerce.",
+    },
     map: {
       x: 661,
       y: 283,
@@ -347,6 +384,9 @@ export const TOWNS: TownLocations = {
   },
   Bonaire: {
     nation: "Holland",
+    descriptions: {
+      Shop: "Nestled along the historic quayside, The Traveler's Bazaar enthralls visitors with its diverse treasure trove, encompassing nourishing provisions and leather-clad water bottles, medicinal tonics, aromatic tobacco, aged rum, delicate porcelain, and a captivating mix of spices, embodying the allure of maritime adventures and international markets.",
+    },
     map: {
       x: 610,
       y: 429,
@@ -372,6 +412,9 @@ export const TOWNS: TownLocations = {
   },
   Curacao: {
     nation: "Holland",
+    descriptions: {
+      Shop: "Within the town's vibrant center, The Globetrotter's Market charms passersby with its diverse offerings, from nourishing victuals and leather-bound water bottles to healing elixirs, fragrant tobacco, aged rum, delicate porcelain, and an enchanting variety of spices, all evoking the spirit of exploratory journeys and worldly trade.",
+    },
     map: {
       x: 558,
       y: 405,
@@ -397,6 +440,9 @@ export const TOWNS: TownLocations = {
   },
   "St. Martin": {
     nation: "Holland",
+    descriptions: {
+      Shop: "In the heart of the bustling market, The Merchant's Oasis allures with its eclectic array, housing nourishing provisions and leather-clad water bottles, medicinal remedies, aromatic tobacco, aged rum, delicate porcelain, and a captivating blend of spices, capturing the essence of adventurous expeditions and cross-cultural exchange.",
+    },
     map: {
       x: 720,
       y: 301,
@@ -423,6 +469,9 @@ export const TOWNS: TownLocations = {
   },
   "St. Eustatius": {
     nation: "Holland",
+    descriptions: {
+      Shop: "Amidst the cobblestone alleys, The Voyager's Trove calls out with its diverse assortment, offering nourishing victuals and leather-bound water bottles, medicinal tinctures, fragrant tobacco, aged rum, delicate porcelain, and an alluring medley of spices, evoking a sense of maritime discoveries and global commerce.",
+    },
     map: {
       x: 741,
       y: 327,
