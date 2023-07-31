@@ -24,7 +24,7 @@ const TownContent = ({ town, location }: Props) => {
         {town}, {nation}
       </h2>
 
-      <p className="lg:mb-5 text-sm">{description}</p>
+      <p className="lg:mb-5 text-left text-sm">{description}</p>
     </>
   )
 }
