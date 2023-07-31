@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { createTreasure } from "@/utils/createTreasure"
 import { decreaseCrewHealth, increaseCrewMood } from "@/utils/crew"
 import { addToInventory, removeFromAllInventoryItems } from "@/utils/inventory"
 import { getRandomInt } from "@/utils/random"
@@ -60,6 +61,9 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
     const shipHealthLoss = getRandomInt(1, 10)
     const newShips = reduceShipsHealth(player.ships, shipHealthLoss)
 
+    const foundTreasure =
+      getRandomInt(1, 2) === 1 ? createTreasure() : undefined
+
     const report: AttackSuccessReport = {
       crewMoodIncrease,
       crewHealthLoss,
@@ -67,6 +71,7 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
       lootedGold,
       lootedMerchandise,
       shipHealthLoss,
+      foundTreasure,
     }
 
     const playerResults: Player = {
@@ -90,6 +95,9 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       ships: newShips,
       inventory: newInventory,
+      ...(foundTreasure && {
+        treasures: [...(player.treasures || []), ...[foundTreasure]],
+      }),
       locationStates: {
         ...player.locationStates,
         sea: {

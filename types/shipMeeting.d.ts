@@ -8,6 +8,7 @@ type AttackSuccessReport = AttackReport & {
   crewMemberRecruits: number
   lootedGold: number
   lootedMerchandise: Record<InventoryItem, number>
+  foundTreasure?: Treasure
 }
 
 type AttackFailureReport = AttackReport & {
