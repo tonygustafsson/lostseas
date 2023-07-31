@@ -23,7 +23,7 @@ const LocationHero = () => {
     location: Character["location"],
     shipMeeting?: ShipMeetingState | null
   ) => {
-    if (["Shop", "Tavern"].includes(location)) {
+    if (["Shop", "Tavern", "Bank"].includes(location)) {
       const nation = getTownsNationality(town)
       return `/img/location/${location.toLowerCase()}/${nation?.toLowerCase()}.webp`
     }
