@@ -47,6 +47,8 @@ export const TOWNS: TownLocations = {
     nation: "England",
     descriptions: {
       Shop: "Amidst the lively town square, The Maritime Emporium allures passersby with its diverse wares, offering nourishing provisions, canteens of pure water, medicinal remedies, fine tobacco, aged rum, delicate porcelain, and an exotic assortment of aromatic spices, evoking the spirit of maritime adventure and worldly trade.",
+      Tavern:
+        "Amidst the cobbled streets, The Salty Seadog Tavern exudes a rustic charm, where wine, tobacco, and rum flow freely, and the lively chatter of talkative pirates fills the air with tales of daring escapades.",
     },
     map: {
       x: 388,
@@ -76,6 +78,8 @@ export const TOWNS: TownLocations = {
     nation: "England",
     descriptions: {
       Shop: "Within the bustling market square, The Captain's Cove Emporium beckons with a rich assortment of provisions, leather-bound water bottles, healing tonics, aromatic tobacco, aged rum, delicate porcelain, and a tantalizing array of spices, evoking the essence of maritime exploration and exotic trade.",
+      Tavern:
+        "Nestled in the heart of the town, The Captain's Quarters Inn entices patrons with its rich libations of wine, tobacco, and rum, while talkative pirates spin riveting yarns that whisk listeners away to the high seas.",
     },
     map: {
       x: 779,
@@ -104,6 +108,8 @@ export const TOWNS: TownLocations = {
     nation: "England",
     descriptions: {
       Shop: "Nestled along the lively quayside, The Seafarer's Emporium entices with its treasure trove of sustenance, leather-clad water flasks, healing elixirs, aromatic tobacco, aged rum, delicate porcelain, and an exotic array of spices, embodying the spirit of maritime adventure and alluring trade.",
+      Tavern:
+        "Within the lively tavern known as The Buccaneer's Cove, the air is thick with the aroma of wine, tobacco, and rum, as talkative pirates gather to swap stories of their adventurous exploits.",
     },
     map: {
       x: 452,
@@ -132,6 +138,8 @@ export const TOWNS: TownLocations = {
     nation: "England",
     descriptions: {
       Shop: "Amidst the cobblestone streets, The Adventurer's Emporium beckons with its diverse offerings, from nourishing victuals and leather-bound water bottles to medicinal tinctures, aromatic tobacco, aged rum, delicate porcelain, and an exotic assortment of spices, all evoking the allure of daring expeditions and global trade.",
+      Tavern:
+        "Amidst the bustling town square, The Shipwrecked Sailor Alehouse beckons with its offerings of wine, tobacco, and rum, as talkative pirates recount their daring escapades over merry glasses.",
     },
     map: {
       x: 207,
@@ -161,6 +169,8 @@ export const TOWNS: TownLocations = {
     nation: "France",
     descriptions: {
       Shop: "Within the old town's bustling center, The Maritime Emporium lures in passersby with its eclectic range of goods, from nourishing provisions and leather-clad water bottles to medicinal remedies, aromatic tobacco, aged rum, delicate porcelain, and a captivating variety of spices, invoking a sense of seafaring adventure and worldly intrigue.",
+      Tavern:
+        "The Jolly Roger Inn stands tall, a cozy tavern where wine, tobacco, and rum flow freely, and talkative pirates share their legendary tales with eager ears.",
     },
     map: {
       x: 598,
@@ -189,6 +199,8 @@ export const TOWNS: TownLocations = {
     nation: "France",
     descriptions: {
       Shop: "In the heart of the old town, The Seafarer's Emporium entices with its diverse selection, from nourishing provisions and leather-clad water bottles to healing elixirs, aromatic tobacco, aged rum, delicate porcelain, and an enchanting array of spices, evoking the charm of maritime exploration and international trade.",
+      Tavern:
+        "Tucked away in the narrow alleys, The Sea Serpent's Hideaway lures with its enticing wines, tobacco, and rum, and the laughter of talkative pirates fills the air.",
     },
     map: {
       x: 537,
@@ -217,6 +229,8 @@ export const TOWNS: TownLocations = {
     nation: "France",
     descriptions: {
       Shop: "Amidst the bustling market square, The Adventurer's Emporium calls out with its captivating offerings, encompassing nourishing victuals and leather-bound water bottles, medicinal tinctures, aromatic tobacco, aged rum, delicate porcelain, and an exotic assortment of spices, all conjuring visions of daring expeditions and global commerce.",
+      Tavern:
+        "Along the waterfront, The Smuggler's Den Tavern serves up wine, tobacco, and rum to a boisterous crowd of talkative pirates, swapping tales that captivate everyone present.",
     },
     map: {
       x: 752,
@@ -246,6 +260,8 @@ export const TOWNS: TownLocations = {
     nation: "France",
     descriptions: {
       Shop: "Nestled along the cobblestone streets, The Maritime Emporium allures with its treasure trove, housing nourishing victuals and leather-clad water bottles, medicinal remedies, aromatic tobacco, aged rum, delicate porcelain, and a captivating variety of spices, embodying the spirit of seafaring adventures and exotic trade.",
+      Tavern:
+        "In the heart of the town's nightlife, The Blackbeard's Lair entices with its selection of wine, tobacco, and rum, while talkative pirates regale one another with thrilling stories.",
     },
     map: {
       x: 259,
@@ -274,6 +290,8 @@ export const TOWNS: TownLocations = {
     nation: "Spain",
     descriptions: {
       Shop: "Nestled along the cobblestone streets, The Maritime Emporium allures with its treasure trove, housing nourishing victuals and leather-clad water bottles, medicinal remedies, aromatic tobacco, aged rum, delicate porcelain, and a captivating variety of spices, embodying the spirit of seafaring adventures and exotic trade.",
+      Tavern:
+        "The Pirate's Cove Tavern exudes a seafaring charm, where wine, tobacco, and rum are readily available, and talkative pirates entertain with tales of daring adventures on the high seas.",
     },
     map: {
       x: 382,
@@ -302,6 +320,8 @@ export const TOWNS: TownLocations = {
     nation: "Spain",
     descriptions: {
       Shop: "Within the town's lively center, The Wandering Merchant beckons with its diverse stock, ranging from nourishing victuals and leather-bound water bottles to healing tonics, fragrant tobacco, aged rum, delicate porcelain, and a tantalizing array of spices, invoking the essence of adventurous journeys and cultural exchange.",
+      Tavern:
+        "Nestled within the old town's narrow lanes, The Mariner's Retreat beckons with its offerings of wine, tobacco, and rum, as talkative pirates share their escapades, weaving an atmosphere of excitement and merriment.",
     },
     map: {
       x: 351,
@@ -330,6 +350,8 @@ export const TOWNS: TownLocations = {
     nation: "Spain",
     descriptions: {
       Shop: "In the heart of the quaint town square, The Trader's Emporium enchants patrons with its alluring assortment, featuring nourishing provisions and leather-clad water bottles, medicinal elixirs, aromatic tobacco, aged rum, delicate porcelain, and an exotic blend of spices, evoking the spirit of exploration and intercontinental trade.",
+      Tavern:
+        "The Swashbuckler's Hideout entices patrons with its choice wines, tobacco, and rum, where talkative pirates fill the air with captivating tales of their high-sea exploits.",
     },
     map: {
       x: 133,
@@ -358,6 +380,8 @@ export const TOWNS: TownLocations = {
     nation: "Spain",
     descriptions: {
       Shop: "Amidst the bustling streets, The Globe-Trotter's Emporium entices with its rich collection, including nourishing victuals and leather-bound water bottles, medicinal concoctions, fragrant tobacco, aged rum, delicate porcelain, and an enticing array of spices, evoking a sense of adventurous voyages and cosmopolitan commerce.",
+      Tavern:
+        "Within the cozy tavern known as The Rumrunner's Haven, wine, tobacco, and rum flow aplenty, while talkative pirates regale eager listeners with stories of their daring adventures.",
     },
     map: {
       x: 661,
@@ -386,6 +410,8 @@ export const TOWNS: TownLocations = {
     nation: "Holland",
     descriptions: {
       Shop: "Nestled along the historic quayside, The Traveler's Bazaar enthralls visitors with its diverse treasure trove, encompassing nourishing provisions and leather-clad water bottles, medicinal tonics, aromatic tobacco, aged rum, delicate porcelain, and a captivating mix of spices, embodying the allure of maritime adventures and international markets.",
+      Tavern:
+        "Nestled amidst the town's bustling streets, The Tipsy Buccaneer Inn invites with its selection of wine, tobacco, and rum, where talkative pirates gather to share their enthralling escapades.",
     },
     map: {
       x: 610,
@@ -414,6 +440,8 @@ export const TOWNS: TownLocations = {
     nation: "Holland",
     descriptions: {
       Shop: "Within the town's vibrant center, The Globetrotter's Market charms passersby with its diverse offerings, from nourishing victuals and leather-bound water bottles to healing elixirs, fragrant tobacco, aged rum, delicate porcelain, and an enchanting variety of spices, all evoking the spirit of exploratory journeys and worldly trade.",
+      Tavern:
+        "Along the waterfront, The Groggy Sailor Alehouse beckons with its enticing wines, tobacco, and rum, while talkative pirates recount their swashbuckling tales in a lively atmosphere.",
     },
     map: {
       x: 558,
@@ -442,6 +470,8 @@ export const TOWNS: TownLocations = {
     nation: "Holland",
     descriptions: {
       Shop: "In the heart of the bustling market, The Merchant's Oasis allures with its eclectic array, housing nourishing provisions and leather-clad water bottles, medicinal remedies, aromatic tobacco, aged rum, delicate porcelain, and a captivating blend of spices, capturing the essence of adventurous expeditions and cross-cultural exchange.",
+      Tavern:
+        "The Black Pearl Tavern stands tall, offering a variety of wine, tobacco, and rum, where talkative pirates fill the air with animated stories of their daring exploits.",
     },
     map: {
       x: 720,
@@ -471,6 +501,8 @@ export const TOWNS: TownLocations = {
     nation: "Holland",
     descriptions: {
       Shop: "Amidst the cobblestone alleys, The Voyager's Trove calls out with its diverse assortment, offering nourishing victuals and leather-bound water bottles, medicinal tinctures, fragrant tobacco, aged rum, delicate porcelain, and an alluring medley of spices, evoking a sense of maritime discoveries and global commerce.",
+      Tavern:
+        "Tucked away in the old town's hidden corner, The Merry Marauder Tavern serves up wine, tobacco, and rum, while talkative pirates regale each other and curious visitors with thrilling accounts of their adventures.",
     },
     map: {
       x: 741,
