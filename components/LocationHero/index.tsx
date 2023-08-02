@@ -23,17 +23,6 @@ const LocationHero = () => {
     location: Character["location"],
     shipMeeting?: ShipMeetingState | null
   ) => {
-    if (
-      ["Shop", "Tavern", "Bank", "City hall", "Market", "Shipyard"].includes(
-        location
-      )
-    ) {
-      const nation = getTownsNationality(town)
-      return `/img/location/${location
-        .replace(" ", "-")
-        .toLowerCase()}/${nation?.toLowerCase()}.webp`
-    }
-
     if (location === "Sea" && shipMeeting) {
       const randomImageNumber = getRandomInt(1, 6)
       return `/img/location/ship-meeting/ship-meeting${randomImageNumber}.webp`
@@ -44,9 +33,11 @@ const LocationHero = () => {
       return `/img/location/sea/sea${randomImageNumber}.webp`
     }
 
-    return `/img/location/${player?.character.location
+    const nation = getTownsNationality(town)
+
+    return `/img/location/${location
       .replace(" ", "-")
-      .toLowerCase()}.webp`
+      .toLowerCase()}/${nation?.toLowerCase()}.webp`
   }
 
   const onImageLoad = () => {
