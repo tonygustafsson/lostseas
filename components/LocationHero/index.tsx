@@ -23,9 +23,11 @@ const LocationHero = () => {
     location: Character["location"],
     shipMeeting?: ShipMeetingState | null
   ) => {
-    if (["Shop", "Tavern", "Bank"].includes(location)) {
+    if (["Shop", "Tavern", "Bank", "City hall"].includes(location)) {
       const nation = getTownsNationality(town)
-      return `/img/location/${location.toLowerCase()}/${nation?.toLowerCase()}.webp`
+      return `/img/location/${location
+        .replace(" ", "-")
+        .toLowerCase()}/${nation?.toLowerCase()}.webp`
     }
 
     if (location === "Sea" && shipMeeting) {
