@@ -45,7 +45,7 @@ export const TREASURES: Omit<Treasure, "rewarder">[] = [
     name: "Legendary dagger",
     value: 8000,
     description:
-      "a shimmering, ancient blade rumored to have been forged by the gods, possessing the ability to absorb the life force of its enemies and transfer it to its wielder, granting unparalleled strength and resilience in battle.",
+      "As shimmering, ancient blade rumored to have been forged by the gods, possessing the ability to absorb the life force of its enemies and transfer it to its wielder, granting unparalleled strength and resilience in battle.",
   },
   {
     name: "Cursed star",
