@@ -61,8 +61,7 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
     const shipHealthLoss = getRandomInt(1, 10)
     const newShips = reduceShipsHealth(player.ships, shipHealthLoss)
 
-    const foundTreasure =
-      getRandomInt(1, 2) === 1 ? createTreasure() : undefined
+    const foundTreasure = getRandomInt(1, 20) === 1 ? createTreasure() : false
 
     const report: AttackSuccessReport = {
       crewMoodIncrease,
