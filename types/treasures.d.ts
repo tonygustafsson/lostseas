@@ -15,5 +15,3 @@ type Treasure = {
   rewarder: Town
   description: string
 }
-
-type Treasures = Treasure[]
