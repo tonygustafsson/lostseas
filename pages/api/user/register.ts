@@ -10,7 +10,7 @@ import {
   SOUND_EFFECTS_STATE_COOKIE_NAME,
 } from "@/constants/system"
 import db from "@/firebase/db"
-import createNewShip from "@/utils/createNewShip"
+import { createNewShip } from "@/utils/ship"
 import { getRandomTown } from "@/utils/townNation"
 import { registrationValidationSchema } from "@/utils/validation"
 
