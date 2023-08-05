@@ -95,7 +95,10 @@ const seaAttackShip = async (req: NextApiRequest, res: NextApiResponse) => {
       ships: newShips,
       inventory: newInventory,
       ...(foundTreasure && {
-        treasures: [...(player.treasures || []), ...[foundTreasure]],
+        treasures: {
+          ...(player.treasures || {}),
+          [foundTreasure.id]: foundTreasure,
+        },
       }),
       locationStates: {
         ...player.locationStates,

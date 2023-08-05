@@ -5,7 +5,7 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 const Handover = () => {
   const { data: player } = useGetPlayer()
 
-  const treasursOfInterest = player?.treasures?.filter(
+  const treasursOfInterest = Object.values(player?.treasures || [])?.filter(
     (treasure) => treasure.rewarder === player?.character.town
   )
 

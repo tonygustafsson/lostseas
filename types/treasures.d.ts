@@ -10,8 +10,7 @@ type TreasureName =
   | "Golden hen"
 
 type Treasure = {
+  id: string
   name: TreasureName
-  value: number
   rewarder: Town
-  description: string
 }

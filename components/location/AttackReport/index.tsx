@@ -24,11 +24,12 @@ const AttackReport = () => {
                 item={successReport.foundTreasure.name}
                 className="h-7 w-7 text-success"
               />
-              You found a special item - the {successReport.foundTreasure.name}.
+              You found a treasure - the {successReport.foundTreasure.name}.
               Rumors say it&apos;s worth{" "}
               {
                 TREASURES.find(
                   (treasure) =>
+                    successReport.foundTreasure &&
                     treasure.name === successReport.foundTreasure?.name
                 )?.value
               }{" "}

@@ -1,4 +1,4 @@
-export const TREASURES: Omit<Treasure, "rewarder">[] = [
+export const TREASURES = [
   {
     name: "Inca mask",
     value: 1000,

@@ -86,12 +86,12 @@ const Inventory = () => {
           </>
         )}
 
-        {!!player.treasures?.length && (
+        {!!Object.keys(player.treasures || {}).length && (
           <>
             <h2 className="text-xl font-serif mt-8 mb-4">Treasures</h2>
 
             <div className="flex flex-wrap gap-4">
-              {(player.treasures || []).map((item) => {
+              {Object.values(player.treasures || {}).map((item) => {
                 const treasureInfo = TREASURES.find(
                   (treasure) => treasure.name === item.name
                 )
