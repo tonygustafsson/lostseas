@@ -71,10 +71,42 @@ export const useCityhall = () => {
       }
     )
 
+  const { mutate: handOver, isLoading: isHandingOver } = useMutation(
+    (id: Treasure["id"]) =>
+      apiRequest("/api/cityhall/handover", { id }, "POST"),
+    {
+      onSuccess: ({ error, treasure, treasureInfo }) => {
+        if (error) {
+          setToast({
+            title: `Could not handover treasure ${treasure.name}`,
+            message: error,
+            variant: "error",
+          })
+
+          return
+        }
+
+        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+        playSoundEffect("coins")
+
+        setToast({
+          title: `You handed over the ${treasure.name} to the cityhall`,
+          message: `You got a reward of ${treasureInfo.value} gold.`,
+          variant: "success",
+        })
+      },
+      onError: (error) => {
+        console.error(error)
+      },
+    }
+  )
+
   return {
     acceptNewTitle,
     isAcceptingNewTitle,
     changeCitizenship,
     isChangingCitizenship,
+    handOver,
+    isHandingOver,
   }
 }

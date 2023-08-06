@@ -2,8 +2,8 @@ import { getCookie } from "cookies-next"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { getCharacter, saveCharacter } from "@/firebase/db"
-import { getNewTitle } from "@/utils/title"
+import { TREASURES } from "@/constants/treasures"
+import { getPlayer, savePlayer } from "@/firebase/db"
 
 const cityhallHandover = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
@@ -13,39 +13,47 @@ const cityhallHandover = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const character = await getCharacter(playerId)
+  const { id } = req.body
 
-  const { isHomeNation, titleInfo, promotionAvailable } = getNewTitle(character)
+  const player = await getPlayer(playerId)
 
-  if (!isHomeNation) {
-    res.status(500).json({ error: "Not your home nation." })
-    return
-  }
+  const currentTown = player.character.town
+  const treasures = Object.values(player.treasures || {}).filter(
+    (treasure) => treasure.rewarder === currentTown
+  )
+  const matchingTreasure = treasures.find((treasure) => treasure.id === id)
+  const treasureInfo = TREASURES.find(
+    (treasure) => treasure.name === matchingTreasure?.name
+  )
 
-  if (!promotionAvailable) {
+  if (!matchingTreasure) {
     res.status(500).json({
-      error: `You already have the title ${titleInfo?.title}.`,
-      titleInfo,
-      title: character.title,
+      error: "You don't have this treasure",
     })
     return
   }
 
-  const characterResult: Character = {
-    ...character,
-    title: titleInfo?.title,
-    gold: character.gold + titleInfo.reward,
+  const playerResult: Player = {
+    ...player,
+    character: {
+      ...player.character,
+      gold: player.character.gold + (treasureInfo?.value || 0),
+    },
+    treasures: {
+      ...player.treasures,
+      [id]: null,
+    },
   }
 
-  await saveCharacter(playerId, characterResult).catch((error) => {
-    res.status(500).json({ error, titleInfo, title: character.title })
+  await savePlayer(playerId, playerResult).catch((error) => {
+    res.status(500).json({ error, treasure: matchingTreasure, treasureInfo })
     return
   })
 
   res.status(200).json({
     success: true,
-    titleInfo,
-    title: character.title,
+    treasure: matchingTreasure,
+    treasureInfo,
   })
 }
 

@@ -1,13 +1,19 @@
 import TreasureIcon from "@/components/TreasureIcon"
 import { TREASURES } from "@/constants/treasures"
+import { useCityhall } from "@/hooks/queries/useCityhall"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
-const Handover = () => {
+const HandOver = () => {
   const { data: player } = useGetPlayer()
+  const { handOver } = useCityhall()
 
   const treasursOfInterest = Object.values(player?.treasures || [])?.filter(
     (treasure) => treasure.rewarder === player?.character.town
   )
+
+  const handleHandover = (id: Treasure["id"]) => {
+    handOver(id)
+  }
 
   if (!treasursOfInterest?.length) {
     return <p>You have nothing to hand over.</p>
@@ -17,7 +23,7 @@ const Handover = () => {
     <div className="flex flex-wrap gap-4">
       {treasursOfInterest.map((treasure, idx) => {
         const treasureInfo = TREASURES.find(
-          (treasure) => treasure.name === treasure.name
+          (treasureItem) => treasureItem.name === treasure.name
         )
 
         return (
@@ -36,7 +42,12 @@ const Handover = () => {
               Value: {treasureInfo?.value} gold
             </div>
 
-            <button className="btn btn-primary btn-sm">Hand over</button>
+            <button
+              className="btn btn-primary btn-sm"
+              onClick={() => handleHandover(treasure.id)}
+            >
+              Hand over
+            </button>
           </div>
         )
       })}
@@ -44,4 +55,4 @@ const Handover = () => {
   )
 }
 
-export default Handover
+export default HandOver

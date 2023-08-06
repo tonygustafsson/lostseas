@@ -99,7 +99,7 @@ const Inventory = () => {
                 return (
                   <div
                     className="stat shadow-md hover:shadow-lg lg:w-1/3 bg-gray-800 rounded-lg pr-4"
-                    key={`inventory-${item}`}
+                    key={`inventory-${item.id}`}
                   >
                     <div className="stat-figure text-secondary">
                       <TreasureIcon size="lg" item={item.name} />

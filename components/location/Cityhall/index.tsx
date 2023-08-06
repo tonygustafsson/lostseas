@@ -3,7 +3,7 @@ import { useState } from "react"
 import LocationTabs from "@/components/LocationTabs"
 
 import Governor from "./Governor"
-import Handover from "./Handover"
+import HandOver from "./HandOver"
 
 export type CityHallTab = "governor" | "handover"
 
@@ -22,7 +22,7 @@ const Cityhall = () => {
       />
 
       {tab === "governor" && <Governor />}
-      {tab === "handover" && <Handover />}
+      {tab === "handover" && <HandOver />}
     </>
   )
 }
