@@ -568,7 +568,7 @@ const Guide = () => (
 
     <button
       onClick={goToTop}
-      className="!fixed bottom-5 right-5 rounded-full bg-blue-800 bg-opacity-50 p-3 text-xs font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-800 hover:shadow-lg focus:bg-blue-800 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg"
+      className="fixed bottom-5 right-5 rounded-full bg-blue-800 bg-opacity-50 p-3 text-xs font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-800 hover:shadow-lg focus:bg-blue-800 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg"
     >
       <BiArrowToTop className="w-7 h-7" />
     </button>
