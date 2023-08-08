@@ -1,5 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
+import { FiLogOut, FiSettings } from "react-icons/fi"
+import { PiBookOpenTextBold } from "react-icons/pi"
 
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
@@ -34,6 +36,27 @@ const DesktopMenu = ({ className }: Props) => {
       </Link>
 
       <MainMenu />
+
+      <ul className="menu menu-horizontal rounded-box flex justify-center mb-6">
+        <li>
+          <Link href="/settings" className="tooltip" data-tip="Settings">
+            <FiSettings className="h-5 w-5" />
+          </Link>
+        </li>
+
+        <li>
+          <Link href="/guide" className="tooltip" data-tip="Player guide">
+            <PiBookOpenTextBold className="h-5 w-5" />
+          </Link>
+        </li>
+
+        <li>
+          <a className="tooltip" data-tip="Sign out">
+            <FiLogOut className="h-5 w-5" />
+          </a>
+        </li>
+      </ul>
+
       <SoundControls />
       <CharacterCard player={player} />
       <WeatherCard day={player.character.day} />
