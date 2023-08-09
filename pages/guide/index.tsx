@@ -19,7 +19,7 @@ const Guide = () => (
     <h1 className="text-4xl font-serif">Player guide</h1>
 
     <nav>
-      <ul className="flex gap-4 my-8 justify-center">
+      <ul className="flex flex-wrap gap-4 my-8 justify-center">
         <li>
           <button
             className="btn btn-primary"

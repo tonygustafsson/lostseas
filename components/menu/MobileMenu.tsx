@@ -9,6 +9,7 @@ import SoundControls from "../Sound/Controls"
 import CharacterCard from "./CharacterCard"
 import MainMenu from "./MainMenu"
 import MobileBottomNav from "./MobileBottomNav"
+import QuickButtonMenu from "./QuickButtonMenu"
 import WeatherCard from "./WeatherCard"
 
 type Props = {
@@ -72,6 +73,8 @@ const MobileMenu = ({ className }: Props) => {
               </button>
 
               <MainMenu />
+
+              <QuickButtonMenu />
               <SoundControls />
               <CharacterCard player={player} />
               <WeatherCard day={player.character.day} />

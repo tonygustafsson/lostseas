@@ -22,7 +22,8 @@
   @apply text-gray-500 cursor-not-allowed;
 }
 
-.main-menu > li:hover button:not([disabled]) svg {
+.main-menu > li:hover button:not([disabled]) svg,
+.main-menu > li:hover a:not([disabled]) svg {
   @apply text-primary;
 }
 
@@ -32,4 +33,8 @@
 
 li.main-menu-separator {
   @apply my-4 h-[1px] border-b border-gray-800;
+}
+
+.quick-icon-menu a:hover svg {
+  @apply text-primary;
 }

@@ -1,6 +1,5 @@
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { FiLogOut, FiSettings } from "react-icons/fi"
 import {
   GiBandana,
   GiOpenedFoodCan,
@@ -10,7 +9,7 @@ import {
 } from "react-icons/gi"
 import { RiTreasureMapLine } from "react-icons/ri"
 
-import { useGetPlayer, usePlayer } from "@/hooks/queries/usePlayer"
+import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Map from "../Map"
 import { useModal } from "../ui/Modal/context"
@@ -18,7 +17,6 @@ import { useModal } from "../ui/Modal/context"
 const MainMenu = () => {
   const { data: player } = useGetPlayer()
   const { pathname } = useRouter()
-  const { logout } = usePlayer()
   const { setModal } = useModal()
 
   const numberOfShips = Object.values(player?.ships ?? {}).length
@@ -86,21 +84,7 @@ const MainMenu = () => {
         </Link>
       </li>
 
-      <li className="main-menu-separator" aria-hidden></li>
-
-      <li className={`${pathname === "/settings" ? "active" : ""}`}>
-        <Link href="/settings">
-          <FiSettings className="h-5 w-5" />
-          Settings
-        </Link>
-      </li>
-
-      <li>
-        <a onClick={() => logout()}>
-          <FiLogOut className="h-5 w-5" />
-          Sign out
-        </a>
-      </li>
+      <li className="main-menu-separator !mb-0" aria-hidden></li>
     </ul>
   )
 }
