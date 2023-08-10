@@ -1,4 +1,4 @@
-export const START_DATE = new Date(1721, 0, 1)
+export const START_DATE = new Date(1640, 0, 1)
 
 export const getCurrentDate = (day: Character["day"]) => {
   const startTime = START_DATE.getTime()
