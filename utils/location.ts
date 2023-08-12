@@ -1,4 +1,4 @@
-import { TOWNS } from "@/constants/locations"
+import { LOCATIONS, TOWNS } from "@/constants/locations"
 import { getRandomInt } from "@/utils/random"
 
 export const getTownsNationality = (
@@ -37,4 +37,22 @@ export const getLocationBackground = (
   return `/img/location/${nation?.toLowerCase()}/${location
     .replace(" ", "-")
     .toLowerCase()}.webp`
+}
+
+export const getAllTownLocationBackgrounds = (town: Character["town"]) => {
+  const nation = getTownsNationality(town)
+
+  // TODO: Fix City halls image
+
+  const images = Object.keys(LOCATIONS)
+    .filter((location) => location !== "sea")
+    .map(
+      (location) =>
+        `/img/location/${nation?.toLowerCase()}/${location.replace(
+          " ",
+          "-"
+        )}.webp`
+    )
+
+  return images
 }

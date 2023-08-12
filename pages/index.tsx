@@ -14,10 +14,16 @@ import Tavern from "@/components/location/Tavern"
 import LocationHero from "@/components/LocationHero"
 import LoginScreen from "@/components/LoginScreen"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { getAllTownLocationBackgrounds } from "@/utils/location"
 import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSideProps"
 
 const Home = () => {
   const { data: player } = useGetPlayer()
+
+  const allTownBackgrounds =
+    player?.character.location === "Harbor"
+      ? getAllTownLocationBackgrounds(player?.character.town)
+      : []
 
   if (!player) {
     return (
@@ -45,7 +51,9 @@ const Home = () => {
           <title>Open Seas - Lost Seas</title>
         )}
 
-        {player?.character.location === "Harbor" && <title>Leharbuuuuur</title>}
+        {allTownBackgrounds.map((bg) => (
+          <link key={`bg-${bg}`} rel="preload" as="image" href={bg} />
+        ))}
       </Head>
 
       <LocationHero />
