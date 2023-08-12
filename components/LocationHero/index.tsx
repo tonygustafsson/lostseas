@@ -35,9 +35,9 @@ const LocationHero = () => {
 
     const nation = getTownsNationality(town)
 
-    return `/img/location/${location
+    return `/img/location/${nation?.toLowerCase()}/${location
       .replace(" ", "-")
-      .toLowerCase()}/${nation?.toLowerCase()}.webp`
+      .toLowerCase()}.webp`
   }
 
   const onImageLoad = () => {
@@ -76,6 +76,7 @@ const LocationHero = () => {
               player?.character.location,
               player?.locationStates?.sea?.shipMeeting
             )}
+            unoptimized
             fill
             priority
             loading="eager"
