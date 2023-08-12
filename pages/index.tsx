@@ -44,6 +44,8 @@ const Home = () => {
         {player?.character.location === "Sea" && (
           <title>Open Seas - Lost Seas</title>
         )}
+
+        {player?.character.location === "Harbor" && <title>Leharbuuuuur</title>}
       </Head>
 
       <LocationHero />

@@ -2,8 +2,7 @@ import { useAnimate } from "framer-motion"
 import Image from "next/image"
 
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-import { getRandomInt } from "@/utils/random"
-import { getTownsNationality } from "@/utils/townNation"
+import { getLocationBackground } from "@/utils/location"
 
 import AttackFailureContent from "./AttackFailureContent"
 import AttackSuccessContent from "./AttackSuccessContent"
@@ -17,28 +16,6 @@ import TownContent from "./TownContent"
 const LocationHero = () => {
   const { data: player } = useGetPlayer()
   const [scope, animate] = useAnimate()
-
-  const getBackgroundImage = (
-    town: Character["town"],
-    location: Character["location"],
-    shipMeeting?: ShipMeetingState | null
-  ) => {
-    if (location === "Sea" && shipMeeting) {
-      const randomImageNumber = getRandomInt(1, 6)
-      return `/img/location/ship-meeting/ship-meeting${randomImageNumber}.webp`
-    }
-
-    if (location === "Sea") {
-      const randomImageNumber = getRandomInt(1, 7)
-      return `/img/location/sea/sea${randomImageNumber}.webp`
-    }
-
-    const nation = getTownsNationality(town)
-
-    return `/img/location/${nation?.toLowerCase()}/${location
-      .replace(" ", "-")
-      .toLowerCase()}.webp`
-  }
 
   const onImageLoad = () => {
     animate(
@@ -71,7 +48,7 @@ const LocationHero = () => {
           }}
         >
           <Image
-            src={getBackgroundImage(
+            src={getLocationBackground(
               player?.character.town,
               player?.character.location,
               player?.locationStates?.sea?.shipMeeting

@@ -1,6 +1,6 @@
 import { TOWNS } from "@/constants/locations"
 import { LOCATION_DESCRIPTION } from "@/constants/text"
-import { getTownsNationality } from "@/utils/townNation"
+import { getTownsNationality } from "@/utils/location"
 
 import Flag from "../icons/Flag"
 
