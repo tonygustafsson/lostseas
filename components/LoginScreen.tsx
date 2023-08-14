@@ -5,6 +5,7 @@ import { useRouter } from "next/router"
 import QrScanner from "qr-scanner"
 import { useEffect, useRef, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
+import { FiCheckCircle } from "react-icons/fi"
 import { z } from "zod"
 
 import { useGetPlayer, usePlayer } from "@/hooks/queries/usePlayer"
@@ -87,7 +88,50 @@ const LoginScreen = () => {
       />
 
       <div className="flex flex-col lg:flex-row gap-4 lg:gap-8 min-h-screen justify-items-stretch w-full relative z-20">
-        <div className="flex flex-col gap-4 lg:max-w-sm bg-base-300 bg-opacity-70 rounded-lg p-6 lg:p-8">
+        <div className="bg-base-300 bg-opacity-70 w-full rounded-lg p-6 lg:p-8 order-last lg:order-first">
+          <div className="max-w-3xl mx-auto text-lg">
+            <h1 className="font-serif mb-5 text-5xl text-center">Lost Seas</h1>
+
+            <p className="mb-4">
+              Welcome to Lost Seas. You are placed in year 1640 and will begin
+              as a simple pirate. You will work your way up to get nicer titles,
+              more ships, crew members and wealth.
+            </p>
+
+            <p className="mb-4">
+              There are four nations: England, France, Spain and Holland. Each
+              having 4 towns. There are things to explore, and while traveling
+              the open seas you will meet ships that you could attack.
+            </p>
+
+            <p className="mb-4">
+              This is an old time game, so there is no fancy graphics. Just
+              beautiful images, animations and descriptions created by AI. But
+              do not expect any 3D graphics. It will work in your phone or
+              tablet just as well as on your computer though.
+            </p>
+
+            <ul className="flex flex-col gap-4 mt-8">
+              <li className="flex gap-4">
+                <FiCheckCircle size={28} className="text-success" />
+                It&apos;s free. Nothing to buy. No ads. Promise.
+              </li>
+              <li className="flex gap-4">
+                <FiCheckCircle size={28} className="text-success" />
+                We don&apos;t want to know anything about you. Not your email
+                adress, your name or your credit card.
+              </li>
+              <li className="flex gap-4">
+                <FiCheckCircle size={28} className="text-success" />
+                You can play from whatever device you like. You can register on
+                desktop, photo a QR code and sign in using that on your phone
+                later on.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4 lg:max-w-2xl bg-base-300 bg-opacity-70 rounded-lg p-6 lg:p-8">
           <h1 className="font-serif mb-5 text-5xl text-center lg:hidden">
             Lost Seas
           </h1>
@@ -105,7 +149,7 @@ const LoginScreen = () => {
               autoFocus
               {...register("playerId")}
               error={errors.playerId?.message}
-              className="bg-gray-400 text-black"
+              className="bg-gray-300 text-black"
             />
 
             {error && <p className="text-red-500">{error}</p>}
@@ -140,56 +184,6 @@ const LoginScreen = () => {
               Register
             </button>
           </Link>
-        </div>
-
-        <div className="bg-base-300 bg-opacity-70 w-full rounded-lg p-6 lg:p-8">
-          <h1 className="font-serif mb-5 text-5xl text-center">Lost Seas</h1>
-
-          <p className="mb-4">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Pellentesque pellentesque ipsum id lorem pellentesque faucibus.
-            Praesent elementum ex vel tortor viverra, vitae viverra diam
-            porttitor. Pellentesque volutpat nisl diam, sit amet finibus orci
-            lobortis sed. Aenean eu dapibus sapien, at sodales ante. Praesent
-            ullamcorper est eu ultrices volutpat. In venenatis leo rhoncus,
-            rhoncus ipsum et, tincidunt lorem. Vivamus condimentum, magna vitae
-            dignissim mollis, mauris neque convallis quam, lacinia molestie leo
-            nunc eu justo. Nam sed risus euismod, suscipit nisl quis, varius
-            tortor. Integer finibus, justo commodo vehicula suscipit, quam mi
-            pharetra odio, eget tristique odio dolor eu erat. Nulla nec faucibus
-            neque.
-          </p>
-          <p className="mb-4">
-            Aliquam odio quam, ultrices placerat nisi a, tempus consequat ipsum.
-            Curabitur venenatis dapibus efficitur. Maecenas sodales porttitor
-            ligula sit amet suscipit. Nam ante nulla, pharetra et dolor id,
-            vestibulum euismod leo. Quisque malesuada finibus porttitor. Integer
-            et ultrices nibh. Mauris pharetra posuere urna, vel pretium turpis
-            mollis pulvinar.
-          </p>
-          <p className="mb-4">
-            Donec auctor libero non metus fermentum, et accumsan neque pulvinar.
-            Nulla porta elit eu rhoncus auctor. Aliquam sit amet elementum
-            sapien. Mauris lacinia metus consequat aliquam pellentesque.
-            Suspendisse volutpat felis eu ex blandit, in ornare dui ultricies.
-            Pellentesque maximus porta diam, non condimentum ligula sollicitudin
-            ut. Vestibulum massa ante, venenatis maximus urna eget, luctus
-            varius urna. Cras eu orci nunc. Nullam gravida magna ac ultrices
-            imperdiet. Vestibulum aliquet augue id turpis fringilla feugiat.
-            Aliquam erat volutpat. Nunc auctor elementum magna luctus efficitur.
-          </p>
-          <p className="mb-4">
-            Cras sodales laoreet varius. Nunc ultricies nibh non fringilla
-            commodo. Duis pretium tempus tellus ac ullamcorper. Quisque ex
-            magna, tincidunt nec nibh pharetra, commodo porttitor magna. Nunc
-            accumsan, lectus ut posuere pulvinar, dolor magna bibendum tellus,
-            non vehicula purus est sed est. Proin rhoncus massa et purus rhoncus
-            dictum. Etiam mi libero, sollicitudin at finibus quis, tempor non
-            enim. Aliquam erat volutpat. Morbi porta interdum rutrum. Donec ac
-            eleifend velit. Proin rhoncus enim nec gravida facilisis. Aenean
-            ultrices ullamcorper orci ut consequat. Maecenas malesuada finibus
-            erat, nec ornare odio.
-          </p>
         </div>
       </div>
     </div>

@@ -56,14 +56,14 @@ const Register = ({ randomCharacter }: Props) => {
       <FullscreenLayout>
         <div className="hero min-h-screen justify-items-stretch rounded-lg relative">
           <Image
-            src="/img/location/tavern.webp"
+            src="/img/startpage-bg.webp"
             layout="fill"
             objectFit="cover"
             alt="Lost Seas background"
-            className="absolute top-0 left-0 opacity-40 z-10"
+            className="absolute top-0 left-0 opacity-50 z-10"
           />
 
-          <div className="hero-content justify-self-center md:w-1/2 max-w-[600px] text-neutral-content py-8 md:py-24 z-20">
+          <div className="hero-content justify-self-center md:w-1/2 max-w-2xl text-neutral-content py-8 md:py-16 z-20">
             <div className="w-full bg-base-300 bg-opacity-70 p-8 rounded-lg">
               <h1 className="font-serif text-4xl mb-4">Register</h1>
 
@@ -76,7 +76,7 @@ const Register = ({ randomCharacter }: Props) => {
 
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="w-full flex flex-col gap-4 max-w-md"
+                className="w-full flex flex-col gap-4"
               >
                 <h2 className="font-serif text-2xl">Character</h2>
 
