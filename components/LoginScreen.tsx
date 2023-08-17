@@ -1,7 +1,10 @@
 import Image from "next/image"
+import Link from "next/link"
 import { useState } from "react"
 import { AiOutlineArrowLeft } from "react-icons/ai"
 import { FiCheckCircle } from "react-icons/fi"
+import { GiArchiveRegister } from "react-icons/gi"
+import { PiBookOpenTextBold } from "react-icons/pi"
 
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
@@ -28,12 +31,14 @@ const LoginScreen = () => {
       <div className="flex flex-col lg:flex-row gap-4 lg:gap-8 min-h-screen justify-items-stretch w-full relative z-20">
         <div className="bg-base-300 bg-opacity-70 w-full rounded-lg p-6 lg:p-8 order-last lg:order-first">
           <div className="max-w-3xl mx-auto text-lg">
-            <h1 className="font-serif mb-5 text-5xl text-center">Lost Seas</h1>
+            <h1 className="font-serif mb-5 text-5xl lg:text-6xl text-center">
+              Lost Seas
+            </h1>
 
             <p className="mb-4">
-              Welcome to Lost Seas. You are placed in year 1640 and will begin
-              as a simple pirate. You will work your way up to get nicer titles,
-              more ships, crew members and wealth.
+              Welcome to the Lost Seas. You are placed in year 1640 and will
+              begin as a simple pirate. You will work your way up to get nicer
+              titles, more ships, crew members and wealth.
             </p>
 
             <p className="mb-4">
@@ -51,21 +56,32 @@ const LoginScreen = () => {
 
             <ul className="flex flex-col gap-4 mt-8">
               <li className="flex gap-4">
-                <FiCheckCircle size={28} className="text-success" />
-                It&apos;s free. Nothing to buy. No ads. Promise.
+                <FiCheckCircle size={28} className="text-success mt-1" />
+                <span className="flex-1">
+                  It&apos;s free. Nothing to buy. No ads. Promise.
+                </span>
               </li>
               <li className="flex gap-4">
-                <FiCheckCircle size={28} className="text-success" />
-                We don&apos;t want to know anything about you. Not your email
-                adress, your name or your credit card.
+                <FiCheckCircle size={28} className="text-success mt-1" />
+                <span className="flex-1">
+                  We don&apos;t want to know anything about you. Not your email
+                  adress, your name or your credit card.
+                </span>
               </li>
               <li className="flex gap-4">
-                <FiCheckCircle size={28} className="text-success" />
-                You can play from whatever device you like. You can register on
-                desktop, photo a QR code and sign in using that on your phone
-                later on.
+                <FiCheckCircle size={28} className="text-success mt-1" />
+                <span className="flex-1">
+                  You can play from whatever device you like. You can register
+                  on desktop, photo a QR code and sign in using that on your
+                  phone later on.
+                </span>
               </li>
             </ul>
+
+            <Link href="/guide" className="btn btn-secondary mt-8">
+              <PiBookOpenTextBold size={26} />
+              Check out the Player Guide
+            </Link>
           </div>
         </div>
 
@@ -107,6 +123,7 @@ const LoginScreen = () => {
                 className="btn btn-primary w-full btn-large mt-4"
                 onClick={() => setShowRegistrationForm(true)}
               >
+                <GiArchiveRegister size={24} />
                 Register
               </button>
             </>

@@ -3,6 +3,8 @@ import { useRouter } from "next/router"
 import QrScanner from "qr-scanner"
 import { useEffect, useRef, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
+import { AiOutlineQrcode } from "react-icons/ai"
+import { FiLogIn } from "react-icons/fi"
 import { z } from "zod"
 
 import { useGetPlayer, usePlayer } from "@/hooks/queries/usePlayer"
@@ -96,6 +98,7 @@ const LoginForm = () => {
           className="btn btn-primary flex-1"
           disabled={!isValid && isDirty}
         >
+          <FiLogIn size={22} />
           Sign in
         </button>
 
@@ -103,6 +106,7 @@ const LoginForm = () => {
           onClick={openQrScannerModal}
           className="btn btn-secondary flex-1"
         >
+          <AiOutlineQrcode size={24} />
           Scan QR Code
         </button>
       </div>
