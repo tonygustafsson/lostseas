@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useMemo } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -12,9 +11,10 @@ import { registrationValidationSchema } from "@/utils/validation"
 
 type ValidationSchema = z.infer<typeof registrationValidationSchema>
 
+const randomCharacter = getRandomCharacter()
+
 const RegistrationForm = () => {
   const { register: playerRegister, registrationIsLoading } = usePlayer()
-  const randomCharacter = useMemo(() => getRandomCharacter(), [])
 
   const {
     register,
