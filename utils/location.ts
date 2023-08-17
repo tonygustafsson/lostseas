@@ -43,7 +43,7 @@ export const getAllTownLocationBackgrounds = (town: Character["town"]) => {
   const nation = getTownsNationality(town)
 
   const images = Object.values(LOCATIONS)
-    .filter((location) => location !== "sea")
+    .filter((location) => location !== "Sea")
     .map(
       (location) =>
         `/img/location/${nation?.toLowerCase()}/${location
@@ -52,4 +52,16 @@ export const getAllTownLocationBackgrounds = (town: Character["town"]) => {
     )
 
   return images
+}
+
+export const getAllSeaLocationBackgrounds = () => {
+  const seaBackgrounds = Array.from({ length: 7 }, (_, i) => i + 1).map(
+    (i) => `/img/location/sea/sea${i}.webp`
+  )
+
+  const shipMeetingBackgrounds = Array.from({ length: 6 }, (_, i) => i + 1).map(
+    (i) => `/img/location/ship-meeting/ship-meeting${i}.webp`
+  )
+
+  return [...seaBackgrounds, ...shipMeetingBackgrounds]
 }
