@@ -42,16 +42,13 @@ export const getLocationBackground = (
 export const getAllTownLocationBackgrounds = (town: Character["town"]) => {
   const nation = getTownsNationality(town)
 
-  // TODO: Fix City halls image
-
-  const images = Object.keys(LOCATIONS)
+  const images = Object.values(LOCATIONS)
     .filter((location) => location !== "sea")
     .map(
       (location) =>
-        `/img/location/${nation?.toLowerCase()}/${location.replace(
-          " ",
-          "-"
-        )}.webp`
+        `/img/location/${nation?.toLowerCase()}/${location
+          .toLowerCase()
+          .replace(" ", "-")}.webp`
     )
 
   return images
