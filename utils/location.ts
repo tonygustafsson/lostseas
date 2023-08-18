@@ -32,6 +32,12 @@ export const getLocationBackground = (
     return `/img/location/sea/sea${randomImageNumber}.webp`
   }
 
+  if (location === "Tavern") {
+    return `/img/location/${town?.toLowerCase().replace(" ", "-")}/${location
+      .toLowerCase()
+      .replace(" ", "-")}.webp`
+  }
+
   const nation = getTownsNationality(town)
 
   return `/img/location/${nation?.toLowerCase()}/${location
@@ -44,12 +50,17 @@ export const getAllTownLocationBackgrounds = (town: Character["town"]) => {
 
   const images = Object.values(LOCATIONS)
     .filter((location) => location !== "Sea")
-    .map(
-      (location) =>
-        `/img/location/${nation?.toLowerCase()}/${location
-          .toLowerCase()
-          .replace(" ", "-")}.webp`
-    )
+    .map((location) => {
+      if (location === "Tavern") {
+        return `/img/location/${town
+          ?.toLowerCase()
+          .replace(" ", "-")}/${location.toLowerCase().replace(" ", "-")}.webp`
+      }
+
+      return `/img/location/${nation?.toLowerCase()}/${location
+        .toLowerCase()
+        .replace(" ", "-")}.webp`
+    })
 
   return images
 }
