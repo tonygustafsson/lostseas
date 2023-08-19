@@ -32,7 +32,7 @@ export const getLocationBackground = (
     return `/img/location/sea/sea${randomImageNumber}.webp`
   }
 
-  if (location === "Tavern") {
+  if (["Shop", "Tavern"].includes(location)) {
     return `/img/location/${town?.toLowerCase().replace(" ", "-")}/${location
       .toLowerCase()
       .replace(" ", "-")}.webp`
