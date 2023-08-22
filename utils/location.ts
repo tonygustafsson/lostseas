@@ -32,43 +32,20 @@ export const getLocationBackground = (
     return `/img/location/sea/sea${randomImageNumber}.webp`
   }
 
-  if (
-    ["Shop", "Tavern", "Bank", "Market", "City hall", "Shipyard"].includes(
-      location
-    )
-  ) {
-    return `/img/location/${town?.toLowerCase().replace(" ", "-")}/${location
-      .toLowerCase()
-      .replace(" ", "-")}.webp`
-  }
-
-  const nation = getTownsNationality(town)
-
-  return `/img/location/${nation?.toLowerCase()}/${location
-    .replace(" ", "-")
-    .toLowerCase()}.webp`
+  return `/img/location/${town?.toLowerCase().replace(" ", "-")}/${location
+    .toLowerCase()
+    .replace(" ", "-")}.webp`
 }
 
 export const getAllTownLocationBackgrounds = (town: Character["town"]) => {
-  const nation = getTownsNationality(town)
-
   const images = Object.values(LOCATIONS)
     .filter((location) => location !== "Sea")
-    .map((location) => {
-      if (
-        ["Shop", "Tavern", "Bank", "Market", "City hall", "Shipyard"].includes(
-          location
-        )
-      ) {
-        return `/img/location/${town
-          ?.toLowerCase()
-          .replace(" ", "-")}/${location.toLowerCase().replace(" ", "-")}.webp`
-      }
-
-      return `/img/location/${nation?.toLowerCase()}/${location
-        .toLowerCase()
-        .replace(" ", "-")}.webp`
-    })
+    .map(
+      (location) =>
+        `/img/location/${town?.toLowerCase().replace(" ", "-")}/${location
+          .toLowerCase()
+          .replace(" ", "-")}.webp`
+    )
 
   return images
 }
