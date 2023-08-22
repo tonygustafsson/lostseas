@@ -23,7 +23,7 @@ export const getLocationBackground = (
   shipMeeting?: ShipMeetingState | null
 ) => {
   if (location === "Sea" && shipMeeting) {
-    const randomImageNumber = getRandomInt(1, 6)
+    const randomImageNumber = getRandomInt(1, 16)
     return `/img/location/ship-meeting/ship-meeting${randomImageNumber}.webp`
   }
 
@@ -55,9 +55,10 @@ export const getAllSeaLocationBackgrounds = () => {
     (i) => `/img/location/sea/sea${i}.webp`
   )
 
-  const shipMeetingBackgrounds = Array.from({ length: 6 }, (_, i) => i + 1).map(
-    (i) => `/img/location/ship-meeting/ship-meeting${i}.webp`
-  )
+  const shipMeetingBackgrounds = Array.from(
+    { length: 16 },
+    (_, i) => i + 1
+  ).map((i) => `/img/location/ship-meeting/ship-meeting${i}.webp`)
 
   return [...seaBackgrounds, ...shipMeetingBackgrounds]
 }
