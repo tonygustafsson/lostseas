@@ -28,7 +28,7 @@ export const getLocationBackground = (
   }
 
   if (location === "Sea") {
-    const randomImageNumber = getRandomInt(1, 7)
+    const randomImageNumber = getRandomInt(1, 21)
     return `/img/location/sea/sea${randomImageNumber}.webp`
   }
 
@@ -51,7 +51,7 @@ export const getAllTownLocationBackgrounds = (town: Character["town"]) => {
 }
 
 export const getAllSeaLocationBackgrounds = () => {
-  const seaBackgrounds = Array.from({ length: 7 }, (_, i) => i + 1).map(
+  const seaBackgrounds = Array.from({ length: 21 }, (_, i) => i + 1).map(
     (i) => `/img/location/sea/sea${i}.webp`
   )
 
