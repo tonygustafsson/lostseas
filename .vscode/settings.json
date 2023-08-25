@@ -2,6 +2,17 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "cSpell.words": ["daisyui", "lostseas", "qrcode", "tailwindcss", "tanstack"],
+  "cSpell.words": [
+    "daisyui",
+    "Eustatius",
+    "Hermosa",
+    "Leogane",
+    "lostseas",
+    "qrcode",
+    "Royale",
+    "tailwindcss",
+    "tanstack",
+    "Towne"
+  ],
   "typescript.tsdk": "node_modules/typescript/lib"
 }
