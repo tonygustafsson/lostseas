@@ -1,4 +1,5 @@
 import Head from "next/head"
+import Image from "next/image"
 import React from "react"
 
 import GuideContent from "@/components/GuideContent"
@@ -15,8 +16,28 @@ const Guide = () => {
         <Head>
           <title>Lost Seas</title>
         </Head>
-        <h1 className="text-4xl font-serif">Player guide</h1>
-        <GuideContent />
+
+        <div className="relative p-4 lg:p-8">
+          <Image
+            src="/img/startpage-bg.webp"
+            layout="fill"
+            objectFit="cover"
+            alt="Lost Seas background"
+            className="absolute top-0 left-0 opacity-50 z-10"
+          />
+
+          <div className="flex flex-col gap-4 lg:gap-8 min-h-screen justify-items-stretch w-full relative z-20">
+            <div className="bg-base-300 bg-opacity-70 w-full rounded-lg p-6 lg:p-8">
+              <div className="max-w-3xl mx-auto text-lg">
+                <h1 className="font-serif mb-5 text-5xl lg:text-6xl text-center">
+                  Player guide
+                </h1>
+
+                <GuideContent />
+              </div>
+            </div>
+          </div>
+        </div>
       </FullscreenLayout>
     )
   }
