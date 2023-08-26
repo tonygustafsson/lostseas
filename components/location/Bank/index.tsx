@@ -26,7 +26,7 @@ const Bank = () => {
       />
 
       <div className="flex flex-wrap gap-6 w-full justify-center">
-        <div className="stats py-3 bg-transparent gap-1 mt-4">
+        <div className="stats gap-1 mt-4">
           <div className="stat bg-gray-700">
             <div className="stat-figure text-secondary">
               <FaCoins className="h-7 w-7" />
