@@ -136,38 +136,40 @@ const GuideContent = () => {
 
         <h3 className="text-2xl font-serif mb-4">Different ship types</h3>
 
-        <table className="table mb-4">
-          <thead>
-            <tr>
-              <th>Type</th>
-              <th>Min crew members</th>
-              <th>Max crew members</th>
-            </tr>
-          </thead>
+        <div className="overflow-x-auto">
+          <table className="table mb-4">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Min crew members</th>
+                <th>Max crew members</th>
+              </tr>
+            </thead>
 
-          <tbody>
-            <tr>
-              <td>Brig</td>
-              <td>2</td>
-              <td>20</td>
-            </tr>
-            <tr>
-              <td>Merchantman</td>
-              <td>1</td>
-              <td>10</td>
-            </tr>
-            <tr>
-              <td>Galleon</td>
-              <td>4</td>
-              <td>50</td>
-            </tr>
-            <tr>
-              <td>Frigate</td>
-              <td>8</td>
-              <td>100</td>
-            </tr>
-          </tbody>
-        </table>
+            <tbody>
+              <tr>
+                <td>Brig</td>
+                <td>2</td>
+                <td>20</td>
+              </tr>
+              <tr>
+                <td>Merchantman</td>
+                <td>1</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td>Galleon</td>
+                <td>4</td>
+                <td>50</td>
+              </tr>
+              <tr>
+                <td>Frigate</td>
+                <td>8</td>
+                <td>100</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <h3 className="text-2xl font-serif mb-4">Cannons</h3>
 
@@ -257,88 +259,90 @@ const GuideContent = () => {
 
         <h3 className="text-2xl font-serif mb-4">The different titles</h3>
 
-        <table className="table mb-4">
-          <thead>
-            <tr>
-              <th>Level</th>
-              <th>Title</th>
-              <th>Reward</th>
-              <th>Max ships</th>
-            </tr>
-          </thead>
+        <div className="overflow-x-auto">
+          <table className="table mb-4">
+            <thead>
+              <tr>
+                <th>Level</th>
+                <th>Title</th>
+                <th>Reward</th>
+                <th>Max ships</th>
+              </tr>
+            </thead>
 
-          <tbody>
-            <tr>
-              <td>0-9</td>
-              <td>Pirate</td>
-              <td>No reward</td>
-              <td>3</td>
-            </tr>
+            <tbody>
+              <tr>
+                <td>0-9</td>
+                <td>Pirate</td>
+                <td>No reward</td>
+                <td>3</td>
+              </tr>
 
-            <tr>
-              <td>10-19</td>
-              <td>Ensign</td>
-              <td>1000 dbl</td>
-              <td>5</td>
-            </tr>
+              <tr>
+                <td>10-19</td>
+                <td>Ensign</td>
+                <td>1000 dbl</td>
+                <td>5</td>
+              </tr>
 
-            <tr>
-              <td>20-29</td>
-              <td>Captain</td>
-              <td>2500 dbl</td>
-              <td>6</td>
-            </tr>
+              <tr>
+                <td>20-29</td>
+                <td>Captain</td>
+                <td>2500 dbl</td>
+                <td>6</td>
+              </tr>
 
-            <tr>
-              <td>30-39</td>
-              <td>Major</td>
-              <td>4000 dbl</td>
-              <td>7</td>
-            </tr>
+              <tr>
+                <td>30-39</td>
+                <td>Major</td>
+                <td>4000 dbl</td>
+                <td>7</td>
+              </tr>
 
-            <tr>
-              <td>40-49</td>
-              <td>Colonel</td>
-              <td>6000 dbl</td>
-              <td>8</td>
-            </tr>
+              <tr>
+                <td>40-49</td>
+                <td>Colonel</td>
+                <td>6000 dbl</td>
+                <td>8</td>
+              </tr>
 
-            <tr>
-              <td>50-64</td>
-              <td>Admiral</td>
-              <td>8000 dbl</td>
-              <td>10</td>
-            </tr>
+              <tr>
+                <td>50-64</td>
+                <td>Admiral</td>
+                <td>8000 dbl</td>
+                <td>10</td>
+              </tr>
 
-            <tr>
-              <td>65-79</td>
-              <td>Baron</td>
-              <td>10 000 dbl</td>
-              <td>11</td>
-            </tr>
+              <tr>
+                <td>65-79</td>
+                <td>Baron</td>
+                <td>10 000 dbl</td>
+                <td>11</td>
+              </tr>
 
-            <tr>
-              <td>80-99</td>
-              <td>Count</td>
-              <td>15 000 dbl</td>
-              <td>12</td>
-            </tr>
+              <tr>
+                <td>80-99</td>
+                <td>Count</td>
+                <td>15 000 dbl</td>
+                <td>12</td>
+              </tr>
 
-            <tr>
-              <td>100-119</td>
-              <td>Marquis</td>
-              <td>20 000 dbl</td>
-              <td>13</td>
-            </tr>
+              <tr>
+                <td>100-119</td>
+                <td>Marquis</td>
+                <td>20 000 dbl</td>
+                <td>13</td>
+              </tr>
 
-            <tr>
-              <td>120+</td>
-              <td>Duke</td>
-              <td>35 000 dbl</td>
-              <td>15</td>
-            </tr>
-          </tbody>
-        </table>
+              <tr>
+                <td>120+</td>
+                <td>Duke</td>
+                <td>35 000 dbl</td>
+                <td>15</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <h3 className="text-2xl font-serif my-4">Changing nation</h3>
 
