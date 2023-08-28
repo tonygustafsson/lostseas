@@ -1,6 +1,8 @@
 import Head from "next/head"
 import Image from "next/image"
+import Link from "next/link"
 import React from "react"
+import { AiOutlineArrowLeft } from "react-icons/ai"
 
 import GuideContent from "@/components/GuideContent"
 import DefaultLayout from "@/components/layouts/default"
@@ -32,6 +34,16 @@ const Guide = () => {
                 <h1 className="font-serif mb-5 text-5xl lg:text-6xl text-center">
                   Player guide
                 </h1>
+
+                <div className="flex justify-center">
+                  <Link
+                    href="/"
+                    className="flex items-center gap-2 self-center text-xl"
+                  >
+                    <AiOutlineArrowLeft />
+                    Back to startpage
+                  </Link>
+                </div>
 
                 <GuideContent />
               </div>

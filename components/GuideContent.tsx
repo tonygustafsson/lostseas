@@ -15,10 +15,10 @@ const GuideContent = () => {
   return (
     <>
       <nav>
-        <ul className="flex flex-wrap gap-4 my-8 justify-center">
+        <ul className="flex flex-wrap gap-2 md:gap-4 my-8 justify-around md:justify-center">
           <li>
             <button
-              className="btn btn-primary"
+              className="btn btn-primary btn-sm md:btn-md"
               onClick={() => goToSection("supplies")}
             >
               Supplies
@@ -26,7 +26,7 @@ const GuideContent = () => {
           </li>
           <li>
             <button
-              className="btn btn-primary"
+              className="btn btn-primary btn-sm md:btn-md"
               onClick={() => goToSection("ships")}
             >
               Ships
@@ -34,7 +34,7 @@ const GuideContent = () => {
           </li>
           <li>
             <button
-              className="btn btn-primary"
+              className="btn btn-primary btn-sm md:btn-md"
               onClick={() => goToSection("crew-members")}
             >
               Crew members
@@ -42,7 +42,7 @@ const GuideContent = () => {
           </li>
           <li>
             <button
-              className="btn btn-primary"
+              className="btn btn-primary btn-sm md:btn-md"
               onClick={() => goToSection("social-status")}
             >
               Social status
@@ -50,7 +50,7 @@ const GuideContent = () => {
           </li>
           <li>
             <button
-              className="btn btn-primary"
+              className="btn btn-primary btn-sm md:btn-md"
               onClick={() => goToSection("economy")}
             >
               Economy
@@ -58,7 +58,7 @@ const GuideContent = () => {
           </li>
           <li>
             <button
-              className="btn btn-primary"
+              className="btn btn-primary btn-sm md:btn-md"
               onClick={() => goToSection("traveling")}
             >
               Traveling
@@ -490,7 +490,7 @@ const GuideContent = () => {
 
       <button
         onClick={goToTop}
-        className="fixed bottom-5 right-5 rounded-full bg-blue-800 bg-opacity-50 p-3 text-xs font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-800 hover:shadow-lg focus:bg-blue-800 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg"
+        className="fixed bottom-5 right-5 rounded-full bg-info bg-opacity-50 p-3 text-xs font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-500 hover:shadow-lg focus:bg-blue-500 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-500 active:shadow-lg"
       >
         <BiArrowToTop className="w-7 h-7" />
       </button>
