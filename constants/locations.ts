@@ -190,6 +190,10 @@ export const TOWNS: TownLocations = {
         "Amidst the cobbled streets and bustling stalls, vendors hawk their wares to a vibrant tapestry of patrons, the air alive with the harmonious medley of haggling voices and the tantalizing aroma of exotic spices.",
       Shipyard:
         "Amidst wooden structures and echoing with the sounds of hammering and creaking timber, skilled craftsmen shape massive vessels under the vast expanse of the open sky.",
+      "City hall":
+        "At the epicenter of urban activity, the city hall's imposing stature underscores its role as the epicenter of governance, its design reflecting the community's commitment to organization and progress.",
+      Harbor:
+        "Nestled along the coastline, the bustling harbor teems with maritime activity, its docks alive with the comings and goings of ships, merchants, and the vibrant pulse of trade.",
     },
     map: {
       x: 388,
@@ -226,6 +230,10 @@ export const TOWNS: TownLocations = {
         "In a lively bazaar of cobbled pathways and colorful awnings, traders peddle their diverse merchandise to a mosaic of eager shoppers, creating a sensory collage of bargaining banter and alluring scents.",
       Shipyard:
         "Within the maritime construction hub, the air resounds with the rhythmic cadence of hammers meeting wood, as skilled artisans fashion imposing ships beneath the expansive canopy of the heavens.",
+      "City hall":
+        "At the heart of the urban landscape, the city hall stands as an architectural emblem of civic governance, its grand façade and towering spires evoking a sense of authority and communal identity.",
+      Harbor:
+        "At the meeting point of land and sea, the harbor buzzes with a symphony of maritime engagements, where vessels, merchants, and the aroma of goods create a bustling tableau of trade.",
     },
     map: {
       x: 779,
@@ -261,6 +269,10 @@ export const TOWNS: TownLocations = {
         "Within a market square adorned with makeshift stalls and vibrant banners, a symphony of bartering voices weaves through the air, accompanied by the visual feast of goods ranging from glistening textiles to gleaming trinkets.",
       Shipyard:
         "Amid the shipbuilding precinct, the symphony of ringing tools and the scent of freshly hewn timber converge, creating a scene where master shipwrights sculpt mighty vessels against the backdrop of the boundless firmament.",
+      "City hall":
+        "Anchored in the urban center, the city hall's majestic presence embodies civic leadership, its architectural grandeur serving as a symbolic nexus for communal affairs.",
+      Harbor:
+        "Along the shore's edge, the harbor thrives as a hub of seafaring ventures, where ships dock amidst a lively scene of commerce, echoing with the sounds of rigging and negotiation.",
     },
     map: {
       x: 452,
@@ -296,6 +308,10 @@ export const TOWNS: TownLocations = {
         "Amidst the bustling marketplace, a lively dance of commerce unfolds as vendors flaunt their wares under a patchwork of sunlit canopies, while the chorus of negotiations mingles with the rustle of coins and the occasional burst of laughter.",
       Shipyard:
         "In the shipyard's bustling expanse, the harmony of chisels and saws intermingles with the salty breeze, as experienced shipbuilders shape majestic boats beneath the open expanse of the sky.",
+      "City hall":
+        "Within the bustling urban expanse, the city hall's imposing structure commands attention, a focal point where governance takes shape through intricate design and towering architecture.",
+      Harbor:
+        "Nestled within the coastal embrace, the harbor breathes life into the waterfront, a dynamic arena where ships dock and cargoes exchange hands, enveloped in the salty breeze of maritime enterprise.",
     },
     map: {
       x: 207,
@@ -332,6 +348,10 @@ export const TOWNS: TownLocations = {
         "The market scene unfolds with a kaleidoscope of colors and sounds, as traders present their treasures against a backdrop of animated conversations and the tantalizing sizzle of food stalls, creating an atmosphere of spirited exchange.",
       Shipyard:
         "Within the naval construction site, the echoes of labor resonate against the backdrop of billowing clouds, as shipwrights meticulously craft formidable seafaring vessels with a chorus of hammer strikes and timber manipulation.",
+      "City hall":
+        "Amidst the urban tapestry, the city hall's regal edifice stands as a testament to civic administration, its stately appearance mirroring the importance of local governance.",
+      Harbor:
+        "The shoreline transforms into a theater of maritime affairs at the bustling harbor, where vessels of all sizes jostle for space while merchants and traders navigate the intricate dance of business.",
     },
     map: {
       x: 598,
@@ -367,6 +387,10 @@ export const TOWNS: TownLocations = {
         "In the heart of the marketplace, a mosaic of stalls forms a labyrinth of goods and opportunities, where buyers and sellers engage in an orchestrated rhythm of interaction, accompanied by the harmonious blend of languages and dialects.",
       Shipyard:
         "Amid the sprawling shipbuilding grounds, a panorama of craftsmanship unfolds under the watchful eye of the elements, where artisans shape sturdy ships through the harmonious interplay of skilled hands and natural forces.",
+      "City hall":
+        "At the crossroads of the city, the city hall's resplendent building speaks to the core of communal management, its design and stature reflecting the city's organizational heart.",
+      Harbor:
+        "Where land meets water, the harbor unfurls as a bustling gateway to distant horizons, where ships are moored and seafarers and merchants converge to shape the ebb and flow of trade.",
     },
     map: {
       x: 537,
@@ -402,6 +426,10 @@ export const TOWNS: TownLocations = {
         "Within the vibrant market setting, the air resonates with the hum of activity, interweaving the cadence of transactions and the mesmerizing array of products, from aromatic herbs to intricately woven fabrics.",
       Shipyard:
         "The shipyard's lively atmosphere comes alive with the symphony of creation, as skilled workers ply their trade amid stacks of timber and the vast panorama of the sky, fashioning vessels that will brave the open seas.",
+      "City hall":
+        "In the midst of urban activity, the city hall's architectural magnificence underscores its role as the administrative cornerstone, its form a tangible representation of communal structure.",
+      Harbor:
+        "Embraced by the sea's expanse, the harbor emerges as a dynamic crossroads of seafaring activities, its docks a stage where cargoes are loaded and unloaded, while tales of distant shores are exchanged.",
     },
     map: {
       x: 752,
@@ -438,6 +466,10 @@ export const TOWNS: TownLocations = {
         "Amidst the open-air market's vibrant chaos, an array of vendors beckons with treasures ranging from gleaming jewels to handcrafted pottery, the ambiance enriched by the symphony of negotiations and the chatter of eager patrons.",
       Shipyard:
         "Within the maritime workshop, the resonant melody of tools against wood harmonizes with the vast azure canvas above, while dedicated shipbuilders bring forth maritime giants from raw materials.",
+      "City hall":
+        "Within the urban fabric, the city hall's dignified exterior symbolizes the city's collective identity, housing the mechanisms through which local governance finds expression.",
+      Harbor:
+        "Along the water's edge, the harbor forms a bustling canvas of maritime interactions, with ships unloading exotic goods and skilled dockworkers navigating the labyrinth of crates and barrels.",
     },
     map: {
       x: 259,
@@ -473,6 +505,10 @@ export const TOWNS: TownLocations = {
         "Stepping into the bustling market square, one is enveloped by a sensory tapestry of sights and sounds, where traders extol their goods in a chorus of languages, set against the backdrop of vivid fabrics and fragrant spices.",
       Shipyard:
         "Amid the ship construction arena, the orchestrated dance of artisans and raw materials takes center stage, as majestic vessels begin to take shape beneath the boundless expanse of the heavens.",
+      "City hall":
+        "Anchored in the urban sprawl, the city hall's impressive architecture embodies civic order, a visual embodiment of the mechanisms that guide the community's functioning.",
+      Harbor:
+        "Nestled within the coastal embrace, the harbor comes alive with the pulse of maritime connections, as sailors and traders collaborate amidst the backdrop of anchored vessels and bustling quaysides.",
     },
     map: {
       x: 382,
@@ -508,6 +544,10 @@ export const TOWNS: TownLocations = {
         "The market unfolds as a dynamic tableau of exchange, with traders and buyers engaging in a dance of offers and counteroffers amidst the backdrop of colorful stalls laden with exotic fruits, fine textiles, and ornate crafts.",
       Shipyard:
         "In the shipyard's dynamic theater of craftsmanship, the interplay of labor and the elements gives birth to maritime marvels, as immense ships emerge beneath the ever-changing tableau of the sky.",
+      "City hall":
+        "Amid the city's bustling rhythm, the city hall's commanding presence signifies governance, its design a visual embodiment of the urban body's organizational hub.",
+      Harbor:
+        "The harbor's energetic waterfront scene is a testament to maritime enterprise, where vessels find refuge and commodities change hands, painting a picture of bustling activity framed by the sea.",
     },
     map: {
       x: 351,
@@ -543,6 +583,10 @@ export const TOWNS: TownLocations = {
         "Amidst the vibrant market scene, a diverse array of merchants presents their merchandise beneath a canopy of sunlit awnings, the air alive with the music of commerce as patrons navigate the tapestry of goods and deals.",
       Shipyard:
         "Within the bustling shipbuilding domain, a convergence of human ingenuity and natural backdrop takes place, where colossal ships arise from the symphony of tools and the embrace of the open firmament.",
+      "City hall":
+        "At the heart of the urban mosaic, the city hall's monumental construction stands as an emblem of civic administration, its form reflecting the community's cooperative endeavors.",
+      Harbor:
+        "The harbor becomes a vibrant epicenter of maritime affairs, where the interplay of vessels, goods, and aspirations creates a dynamic tapestry woven with the threads of trade and exploration.",
     },
     map: {
       x: 133,
@@ -578,6 +622,10 @@ export const TOWNS: TownLocations = {
         "Within the lively market enclave, a vibrant mosaic of traders and customers converges, their interactions painting a vivid tableau of animated discussions, clinking coins, and the delightful fragrance of street food.",
       Shipyard:
         "Amidst the maritime construction hub, the resonance of tools against wood forms a backdrop for the creation of grand vessels, their emergence under the vast sky a testament to the artistry of shipwrights.",
+      "City hall":
+        "Within the urban landscape, the city hall's resolute structure conveys the essence of local governance, its design encapsulating the principles that underpin communal life.",
+      Harbor:
+        "At the juncture of land and sea, the harbor flourishes as a bustling arena of maritime interactions, where ships find haven and bustling quayside activities shape the rhythms of trade.",
     },
     map: {
       x: 661,
@@ -613,6 +661,10 @@ export const TOWNS: TownLocations = {
         "Amidst the bustling market square, a bustling ecosystem of commerce thrives, where spirited barter and the vibrant array of products create a scene reminiscent of a living, breathing tapestry.",
       Shipyard:
         "In the shipyard's energetic milieu, the steady rhythm of craftsmanship harmonizes with the expanse of the heavens, as adept shipbuilders meticulously shape seaworthy giants from raw materials.",
+      "City hall":
+        "Nestled amidst the urban fabric, the city hall's architectural opulence conveys the essence of civic management, its towering spires and intricate façade mirroring the intricacies of communal affairs.",
+      Harbor:
+        "Along the coastline, the harbor stands as a testament to maritime vitality, a place where ships berth and the air is filled with the resonant calls of seafarers and merchants.",
     },
     map: {
       x: 610,
@@ -648,6 +700,10 @@ export const TOWNS: TownLocations = {
         "Stepping into the market's bustling realm, one is immersed in a sensory panorama, where the interplay of enthusiastic haggling and the captivating display of goods forms a living portrait of trade.",
       Shipyard:
         "Within the ship construction realm, the symphony of labor and the natural world intertwines, culminating in the birth of majestic ships that will navigate the open waters under the watchful eye of the sky.",
+      "City hall":
+        "Anchored at the urban crossroads, the city hall's dignified construction embodies the spirit of governance, its presence a visual reminder of the city's administrative nucleus.",
+      Harbor:
+        "Embracing the shoreline, the harbor reverberates with the heartbeat of maritime commerce, its docks alive with the exchange of goods and stories, woven together by the threads of seafaring.",
     },
     map: {
       x: 558,
@@ -683,6 +739,10 @@ export const TOWNS: TownLocations = {
         "The market's spirited ambiance unfolds as a realm of vibrant exchanges, where the chorus of vendor calls and the symphony of patrons' responses combine with the spectacle of goods, presenting a microcosm of economic vitality.",
       Shipyard:
         "Amid the shipbuilding arena, the dance of creation unfolds beneath the overarching sky, as seasoned artisans bring to life intricate vessels through the marriage of hands-on skill and atmospheric elements.",
+      "City hall":
+        "In the heart of the cityscape, the city hall's grandeur speaks volumes about civic responsibility, its ornate structure encapsulating the collective aspirations of the community.",
+      Harbor:
+        "Where waves lap against the land, the harbor emerges as a bustling nexus of maritime engagements, where vessels dock and depart, forming a kinetic mosaic of trade and exploration.",
     },
     map: {
       x: 720,
@@ -719,6 +779,10 @@ export const TOWNS: TownLocations = {
         "In the heart of the market, a mosaic of cultural treasures is presented by traders, the air resonating with the rhythm of commerce as visitors navigate the labyrinthine alleys, engaging in a dance of transactions amidst the vivid tapestry of offerings.",
       Shipyard:
         "The shipyard's vibrant setting reverberates with the music of industry, where dedicated craftsmen sculpt imposing ships beneath the ever-changing canvas of the sky, a testament to the symbiotic relationship between human endeavor and nature.",
+      "City hall":
+        "Amidst the bustling cityscape, the city hall's commanding architecture tells the story of civic order, its formidable appearance an emblem of the collaborative efforts that shape urban life.",
+      Harbor:
+        "The coastal harbor becomes a dynamic crossroads of the sea, where ships find refuge from their voyages and the waterfront hums with the activities of mariners, merchants, and the exchange of treasures.",
     },
     map: {
       x: 741,
