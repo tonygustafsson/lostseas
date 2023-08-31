@@ -185,6 +185,11 @@ export const TOWNS: TownLocations = {
       Shop: "Amidst the lively town square, The Maritime Emporium allures passersby with its diverse wares, offering nourishing provisions, canteens of pure water, medicinal remedies, fine tobacco, aged rum, delicate porcelain, and an exotic assortment of aromatic spices, evoking the spirit of maritime adventure and worldly trade.",
       Tavern:
         "Amidst the cobbled streets, The Salty Seadog Tavern exudes a rustic charm, where wine, tobacco, and rum flow freely, and the lively chatter of talkative pirates fills the air with tales of daring escapades.",
+      Bank: "Amidst the dimly lit chamber, rows of heavy wooden desks adorned with quill pens and leather-bound ledgers stand as scribes meticulously record transactions, while the air carries the scent of ink and parchment.",
+      Market:
+        "Amidst the cobbled streets and bustling stalls, vendors hawk their wares to a vibrant tapestry of patrons, the air alive with the harmonious medley of haggling voices and the tantalizing aroma of exotic spices.",
+      Shipyard:
+        "Amidst wooden structures and echoing with the sounds of hammering and creaking timber, skilled craftsmen shape massive vessels under the vast expanse of the open sky.",
     },
     map: {
       x: 388,
@@ -216,6 +221,11 @@ export const TOWNS: TownLocations = {
       Shop: "Within the bustling market square, The Captain's Cove Emporium beckons with a rich assortment of provisions, leather-bound water bottles, healing tonics, aromatic tobacco, aged rum, delicate porcelain, and a tantalizing array of spices, evoking the essence of maritime exploration and exotic trade.",
       Tavern:
         "Nestled in the heart of the town, The Captain's Quarters Inn entices patrons with its rich libations of wine, tobacco, and rum, while talkative pirates spin riveting yarns that whisk listeners away to the high seas.",
+      Bank: "Inside the bank, clerks in ruffled collars and powdered wigs bustle about, orchestrating exchanges of coin and bills beneath the watchful gaze of ornate oil paintings and flickering candlelight.",
+      Market:
+        "In a lively bazaar of cobbled pathways and colorful awnings, traders peddle their diverse merchandise to a mosaic of eager shoppers, creating a sensory collage of bargaining banter and alluring scents.",
+      Shipyard:
+        "Within the maritime construction hub, the air resounds with the rhythmic cadence of hammers meeting wood, as skilled artisans fashion imposing ships beneath the expansive canopy of the heavens.",
     },
     map: {
       x: 779,
@@ -246,6 +256,11 @@ export const TOWNS: TownLocations = {
       Shop: "Nestled along the lively quayside, The Seafarer's Emporium entices with its treasure trove of sustenance, leather-clad water flasks, healing elixirs, aromatic tobacco, aged rum, delicate porcelain, and an exotic array of spices, embodying the spirit of maritime adventure and alluring trade.",
       Tavern:
         "Within the lively tavern known as The Buccaneer's Cove, the air is thick with the aroma of wine, tobacco, and rum, as talkative pirates gather to swap stories of their adventurous exploits.",
+      Bank: "The heart of the bank beats with the rhythmic scratching of quills on parchment, as patrons huddle in small clusters, discussing trade deals and loans amidst the grandeur of oak-panelled walls and high vaulted ceilings.",
+      Market:
+        "Within a market square adorned with makeshift stalls and vibrant banners, a symphony of bartering voices weaves through the air, accompanied by the visual feast of goods ranging from glistening textiles to gleaming trinkets.",
+      Shipyard:
+        "Amid the shipbuilding precinct, the symphony of ringing tools and the scent of freshly hewn timber converge, creating a scene where master shipwrights sculpt mighty vessels against the backdrop of the boundless firmament.",
     },
     map: {
       x: 452,
@@ -276,6 +291,11 @@ export const TOWNS: TownLocations = {
       Shop: "Amidst the cobblestone streets, The Adventurer's Emporium beckons with its diverse offerings, from nourishing victuals and leather-bound water bottles to medicinal tinctures, aromatic tobacco, aged rum, delicate porcelain, and an exotic assortment of spices, all evoking the allure of daring expeditions and global trade.",
       Tavern:
         "Amidst the bustling town square, The Shipwrecked Sailor Alehouse beckons with its offerings of wine, tobacco, and rum, as talkative pirates recount their daring escapades over merry glasses.",
+      Bank: "Within the bank's opulent interior, the hushed whispers of bankers and traders intertwine with the rustle of fine silk garments, creating an atmosphere of clandestine negotiations amidst polished mahogany desks and stacks of gold coins.",
+      Market:
+        "Amidst the bustling marketplace, a lively dance of commerce unfolds as vendors flaunt their wares under a patchwork of sunlit canopies, while the chorus of negotiations mingles with the rustle of coins and the occasional burst of laughter.",
+      Shipyard:
+        "In the shipyard's bustling expanse, the harmony of chisels and saws intermingles with the salty breeze, as experienced shipbuilders shape majestic boats beneath the open expanse of the sky.",
     },
     map: {
       x: 207,
@@ -307,6 +327,11 @@ export const TOWNS: TownLocations = {
       Shop: "Within the old town's bustling center, The Maritime Emporium lures in passersby with its eclectic range of goods, from nourishing provisions and leather-clad water bottles to medicinal remedies, aromatic tobacco, aged rum, delicate porcelain, and a captivating variety of spices, invoking a sense of seafaring adventure and worldly intrigue.",
       Tavern:
         "The Jolly Roger Inn stands tall, a cozy tavern where wine, tobacco, and rum flow freely, and talkative pirates share their legendary tales with eager ears.",
+      Bank: "Stepping into the bank feels like entering a world frozen in time, where the gentle shuffle of papers mingles with the soft chiming of pocket watches, encapsulating the elegance of an era marked by handwritten ledgers and graceful transactions.",
+      Market:
+        "The market scene unfolds with a kaleidoscope of colors and sounds, as traders present their treasures against a backdrop of animated conversations and the tantalizing sizzle of food stalls, creating an atmosphere of spirited exchange.",
+      Shipyard:
+        "Within the naval construction site, the echoes of labor resonate against the backdrop of billowing clouds, as shipwrights meticulously craft formidable seafaring vessels with a chorus of hammer strikes and timber manipulation.",
     },
     map: {
       x: 598,
@@ -337,6 +362,11 @@ export const TOWNS: TownLocations = {
       Shop: "In the heart of the old town, The Seafarer's Emporium entices with its diverse selection, from nourishing provisions and leather-clad water bottles to healing elixirs, aromatic tobacco, aged rum, delicate porcelain, and an enchanting array of spices, evoking the charm of maritime exploration and international trade.",
       Tavern:
         "Tucked away in the narrow alleys, The Sea Serpent's Hideaway lures with its enticing wines, tobacco, and rum, and the laughter of talkative pirates fills the air.",
+      Bank: "In the heart of the bank, sunlight filters through stained glass windows, casting colorful reflections upon the intricate mosaic floors, as patrons engage in animated discussions while ink-stained fingers record the ebb and flow of financial fortunes.",
+      Market:
+        "In the heart of the marketplace, a mosaic of stalls forms a labyrinth of goods and opportunities, where buyers and sellers engage in an orchestrated rhythm of interaction, accompanied by the harmonious blend of languages and dialects.",
+      Shipyard:
+        "Amid the sprawling shipbuilding grounds, a panorama of craftsmanship unfolds under the watchful eye of the elements, where artisans shape sturdy ships through the harmonious interplay of skilled hands and natural forces.",
     },
     map: {
       x: 537,
@@ -367,6 +397,11 @@ export const TOWNS: TownLocations = {
       Shop: "Amidst the bustling market square, The Adventurer's Emporium calls out with its captivating offerings, encompassing nourishing victuals and leather-bound water bottles, medicinal tinctures, aromatic tobacco, aged rum, delicate porcelain, and an exotic assortment of spices, all conjuring visions of daring expeditions and global commerce.",
       Tavern:
         "Along the waterfront, The Smuggler's Den Tavern serves up wine, tobacco, and rum to a boisterous crowd of talkative pirates, swapping tales that captivate everyone present.",
+      Bank: "Within the bank's oak-paneled walls, the air is thick with the scent of aged leather and candle wax, as clerks meticulously copy entries from worn parchment scrolls onto fresh pages, preserving the intricate tapestry of economic activities.",
+      Market:
+        "Within the vibrant market setting, the air resonates with the hum of activity, interweaving the cadence of transactions and the mesmerizing array of products, from aromatic herbs to intricately woven fabrics.",
+      Shipyard:
+        "The shipyard's lively atmosphere comes alive with the symphony of creation, as skilled workers ply their trade amid stacks of timber and the vast panorama of the sky, fashioning vessels that will brave the open seas.",
     },
     map: {
       x: 752,
@@ -398,6 +433,11 @@ export const TOWNS: TownLocations = {
       Shop: "Nestled along the cobblestone streets, The Maritime Emporium allures with its treasure trove, housing nourishing victuals and leather-clad water bottles, medicinal remedies, aromatic tobacco, aged rum, delicate porcelain, and a captivating variety of spices, embodying the spirit of seafaring adventures and exotic trade.",
       Tavern:
         "In the heart of the town's nightlife, The Blackbeard's Lair entices with its selection of wine, tobacco, and rum, while talkative pirates regale one another with thrilling stories.",
+      Bank: "Amidst the rich tapestries and velvet draperies, the bank exudes an air of sophistication and precision, with patrons consulting with bankers in quiet tones while the clink of metal coins resonates from the counting rooms nearby.",
+      Market:
+        "Amidst the open-air market's vibrant chaos, an array of vendors beckons with treasures ranging from gleaming jewels to handcrafted pottery, the ambiance enriched by the symphony of negotiations and the chatter of eager patrons.",
+      Shipyard:
+        "Within the maritime workshop, the resonant melody of tools against wood harmonizes with the vast azure canvas above, while dedicated shipbuilders bring forth maritime giants from raw materials.",
     },
     map: {
       x: 259,
@@ -428,6 +468,11 @@ export const TOWNS: TownLocations = {
       Shop: "Nestled along the cobblestone streets, The Maritime Emporium allures with its treasure trove, housing nourishing victuals and leather-clad water bottles, medicinal remedies, aromatic tobacco, aged rum, delicate porcelain, and a captivating variety of spices, embodying the spirit of seafaring adventures and exotic trade.",
       Tavern:
         "The Pirate's Cove Tavern exudes a seafaring charm, where wine, tobacco, and rum are readily available, and talkative pirates entertain with tales of daring adventures on the high seas.",
+      Bank: "The bank's interior is a tableau of ordered chaos, with clerks rushing to and fro beneath the gaze of stern portraits, ink-stained aprons contrasting against the polished grandeur of gilded mirrors and towering shelves of leather-bound ledgers.",
+      Market:
+        "Stepping into the bustling market square, one is enveloped by a sensory tapestry of sights and sounds, where traders extol their goods in a chorus of languages, set against the backdrop of vivid fabrics and fragrant spices.",
+      Shipyard:
+        "Amid the ship construction arena, the orchestrated dance of artisans and raw materials takes center stage, as majestic vessels begin to take shape beneath the boundless expanse of the heavens.",
     },
     map: {
       x: 382,
@@ -458,6 +503,11 @@ export const TOWNS: TownLocations = {
       Shop: "Within the town's lively center, The Wandering Merchant beckons with its diverse stock, ranging from nourishing victuals and leather-bound water bottles to healing tonics, fragrant tobacco, aged rum, delicate porcelain, and a tantalizing array of spices, invoking the essence of adventurous journeys and cultural exchange.",
       Tavern:
         "Nestled within the old town's narrow lanes, The Mariner's Retreat beckons with its offerings of wine, tobacco, and rum, as talkative pirates share their escapades, weaving an atmosphere of excitement and merriment.",
+      Bank: "Inside the bank, the flickering glow of candles dances across the faces of clients gathered around heavy oak tables, where transactions are recorded in flowing script, encapsulating the timeless artistry of financial record-keeping.",
+      Market:
+        "The market unfolds as a dynamic tableau of exchange, with traders and buyers engaging in a dance of offers and counteroffers amidst the backdrop of colorful stalls laden with exotic fruits, fine textiles, and ornate crafts.",
+      Shipyard:
+        "In the shipyard's dynamic theater of craftsmanship, the interplay of labor and the elements gives birth to maritime marvels, as immense ships emerge beneath the ever-changing tableau of the sky.",
     },
     map: {
       x: 351,
@@ -488,6 +538,11 @@ export const TOWNS: TownLocations = {
       Shop: "In the heart of the quaint town square, The Trader's Emporium enchants patrons with its alluring assortment, featuring nourishing provisions and leather-clad water bottles, medicinal elixirs, aromatic tobacco, aged rum, delicate porcelain, and an exotic blend of spices, evoking the spirit of exploration and intercontinental trade.",
       Tavern:
         "The Swashbuckler's Hideout entices patrons with its choice wines, tobacco, and rum, where talkative pirates fill the air with captivating tales of their high-sea exploits.",
+      Bank: "Stepping into the bank is like entering a realm of calculated elegance, where the symphony of quills and the rustle of fine parchment provide the backdrop to a stage where fortunes are measured and deals are struck with utmost solemnity.",
+      Market:
+        "Amidst the vibrant market scene, a diverse array of merchants presents their merchandise beneath a canopy of sunlit awnings, the air alive with the music of commerce as patrons navigate the tapestry of goods and deals.",
+      Shipyard:
+        "Within the bustling shipbuilding domain, a convergence of human ingenuity and natural backdrop takes place, where colossal ships arise from the symphony of tools and the embrace of the open firmament.",
     },
     map: {
       x: 133,
@@ -518,6 +573,11 @@ export const TOWNS: TownLocations = {
       Shop: "Amidst the bustling streets, The Globe-Trotter's Emporium entices with its rich collection, including nourishing victuals and leather-bound water bottles, medicinal concoctions, fragrant tobacco, aged rum, delicate porcelain, and an enticing array of spices, evoking a sense of adventurous voyages and cosmopolitan commerce.",
       Tavern:
         "Within the cozy tavern known as The Rumrunner's Haven, wine, tobacco, and rum flow aplenty, while talkative pirates regale eager listeners with stories of their daring adventures.",
+      Bank: "Within the bank, the ambiance is one of subdued grandeur, where patrons converse in hushed tones amidst the intricate carvings of wooden fixtures, and the gentle shuffle of parchment echoes the cadence of financial transactions.",
+      Market:
+        "Within the lively market enclave, a vibrant mosaic of traders and customers converges, their interactions painting a vivid tableau of animated discussions, clinking coins, and the delightful fragrance of street food.",
+      Shipyard:
+        "Amidst the maritime construction hub, the resonance of tools against wood forms a backdrop for the creation of grand vessels, their emergence under the vast sky a testament to the artistry of shipwrights.",
     },
     map: {
       x: 661,
@@ -548,6 +608,11 @@ export const TOWNS: TownLocations = {
       Shop: "Nestled along the historic quayside, The Traveler's Bazaar enthralls visitors with its diverse treasure trove, encompassing nourishing provisions and leather-clad water bottles, medicinal tonics, aromatic tobacco, aged rum, delicate porcelain, and a captivating mix of spices, embodying the allure of maritime adventures and international markets.",
       Tavern:
         "Nestled amidst the town's bustling streets, The Tipsy Buccaneer Inn invites with its selection of wine, tobacco, and rum, where talkative pirates gather to share their enthralling escapades.",
+      Bank: "Inside the bank's chamber, the walls adorned with maps of distant lands and exotic commodities, patrons gather to negotiate while clerks diligently transcribe their agreements, encapsulating the essence of a world fueled by ink and commerce.",
+      Market:
+        "Amidst the bustling market square, a bustling ecosystem of commerce thrives, where spirited barter and the vibrant array of products create a scene reminiscent of a living, breathing tapestry.",
+      Shipyard:
+        "In the shipyard's energetic milieu, the steady rhythm of craftsmanship harmonizes with the expanse of the heavens, as adept shipbuilders meticulously shape seaworthy giants from raw materials.",
     },
     map: {
       x: 610,
@@ -578,6 +643,11 @@ export const TOWNS: TownLocations = {
       Shop: "Within the town's vibrant center, The Globetrotter's Market charms passersby with its diverse offerings, from nourishing victuals and leather-bound water bottles to healing elixirs, fragrant tobacco, aged rum, delicate porcelain, and an enchanting variety of spices, all evoking the spirit of exploratory journeys and worldly trade.",
       Tavern:
         "Along the waterfront, The Groggy Sailor Alehouse beckons with its enticing wines, tobacco, and rum, while talkative pirates recount their swashbuckling tales in a lively atmosphere.",
+      Bank: "Stepping into the bank feels like entering a treasury of secrets, with the flickering glow of candles casting an enigmatic light on the faces of bankers engrossed in intricate calculations, surrounded by shelves laden with tomes of economic wisdom.",
+      Market:
+        "Stepping into the market's bustling realm, one is immersed in a sensory panorama, where the interplay of enthusiastic haggling and the captivating display of goods forms a living portrait of trade.",
+      Shipyard:
+        "Within the ship construction realm, the symphony of labor and the natural world intertwines, culminating in the birth of majestic ships that will navigate the open waters under the watchful eye of the sky.",
     },
     map: {
       x: 558,
@@ -608,6 +678,11 @@ export const TOWNS: TownLocations = {
       Shop: "In the heart of the bustling market, The Merchant's Oasis allures with its eclectic array, housing nourishing provisions and leather-clad water bottles, medicinal remedies, aromatic tobacco, aged rum, delicate porcelain, and a captivating blend of spices, capturing the essence of adventurous expeditions and cross-cultural exchange.",
       Tavern:
         "The Black Pearl Tavern stands tall, offering a variety of wine, tobacco, and rum, where talkative pirates fill the air with animated stories of their daring exploits.",
+      Bank: "The bank's interior resonates with the weight of history as patrons engage in earnest discussions, their voices mingling with the faint rustle of parchment as transactions are meticulously documented, painting a portrait of an era defined by tactile financial dealings.",
+      Market:
+        "The market's spirited ambiance unfolds as a realm of vibrant exchanges, where the chorus of vendor calls and the symphony of patrons' responses combine with the spectacle of goods, presenting a microcosm of economic vitality.",
+      Shipyard:
+        "Amid the shipbuilding arena, the dance of creation unfolds beneath the overarching sky, as seasoned artisans bring to life intricate vessels through the marriage of hands-on skill and atmospheric elements.",
     },
     map: {
       x: 720,
@@ -639,6 +714,11 @@ export const TOWNS: TownLocations = {
       Shop: "Amidst the cobblestone alleys, The Voyager's Trove calls out with its diverse assortment, offering nourishing victuals and leather-bound water bottles, medicinal tinctures, fragrant tobacco, aged rum, delicate porcelain, and an alluring medley of spices, evoking a sense of maritime discoveries and global commerce.",
       Tavern:
         "Tucked away in the old town's hidden corner, The Merry Marauder Tavern serves up wine, tobacco, and rum, while talkative pirates regale each other and curious visitors with thrilling accounts of their adventures.",
+      Bank: "Amidst the richly adorned interior of the bank, the air is charged with anticipation as patrons exchange knowing glances, while clerks in elaborate attire record each agreement with quills that scratch like a symphony, immortalizing the rhythm of commerce.",
+      Market:
+        "In the heart of the market, a mosaic of cultural treasures is presented by traders, the air resonating with the rhythm of commerce as visitors navigate the labyrinthine alleys, engaging in a dance of transactions amidst the vivid tapestry of offerings.",
+      Shipyard:
+        "The shipyard's vibrant setting reverberates with the music of industry, where dedicated craftsmen sculpt imposing ships beneath the ever-changing canvas of the sky, a testament to the symbiotic relationship between human endeavor and nature.",
     },
     map: {
       x: 741,
