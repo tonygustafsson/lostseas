@@ -33,13 +33,16 @@ type JourneyValidation = {
   errors: JourneyValidationError[]
   neededFood: number
   neededWater: number
+  minCrew: number
+  maxCrew: number
 }
 
 type JourneyValidationError =
   | "NO_PLAYER"
   | "NO_SHIPS"
   | "DAMAGED_SHIPS"
-  | "NO_CREW"
+  | "NOT_ENOUGH_CREW_MEMBERS"
+  | "TOO_MANY_CREW_MEMBERS"
   | "CREW_IS_ILL"
   | "ANGRY_CREW"
   | "NO_FOOD"

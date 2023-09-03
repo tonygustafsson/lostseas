@@ -1,13 +1,21 @@
+import { validateShipCrewRequirements } from "./validateCrew"
+
 export const validateJourney = (player?: Player, journeyLength = 0) => {
   const errors: JourneyValidationError[] = []
 
   if (!player) {
     errors.push("NO_PLAYER")
-    return { success: false, errors, neededFood: 0, neededWater: 0 }
+    return {
+      success: false,
+      errors,
+      neededFood: 0,
+      neededWater: 0,
+      minCrew: 0,
+      maxCrew: 0,
+    }
   }
 
   const playerHasShips = Object.keys(player.ships || {}).length
-  const playerHasCrew = player.crewMembers.count > 0
   const crewIsAngry = player.crewMembers.mood <= 0
   const crewIsIll = player.crewMembers.health <= 0
   const shipsAreDamaged = Object.values(player.ships || {}).some(
@@ -21,6 +29,7 @@ export const validateJourney = (player?: Player, journeyLength = 0) => {
   )
   const playerHasFood = (player.inventory?.food || 0) >= neededFood
   const playerHasWater = (player.inventory?.water || 0) >= neededWater
+  const { minCrew, maxCrew } = validateShipCrewRequirements(player.ships)
 
   if (!playerHasShips) {
     errors.push("NO_SHIPS")
@@ -30,8 +39,12 @@ export const validateJourney = (player?: Player, journeyLength = 0) => {
     errors.push("DAMAGED_SHIPS")
   }
 
-  if (!playerHasCrew) {
-    errors.push("NO_CREW")
+  if (player.crewMembers.count < minCrew) {
+    errors.push("NOT_ENOUGH_CREW_MEMBERS")
+  }
+
+  if (player.crewMembers.count > maxCrew) {
+    errors.push("TOO_MANY_CREW_MEMBERS")
   }
 
   if (crewIsAngry) {
@@ -55,5 +68,7 @@ export const validateJourney = (player?: Player, journeyLength = 0) => {
     errors,
     neededFood,
     neededWater,
+    minCrew,
+    maxCrew,
   } as JourneyValidation
 }

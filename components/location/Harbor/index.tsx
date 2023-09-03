@@ -31,10 +31,19 @@ const Harbor = () => {
               </li>
             )}
 
-            {journeyValidation.errors.includes("NO_CREW") && (
+            {journeyValidation.errors.includes("NOT_ENOUGH_CREW_MEMBERS") && (
               <li className="flex align-middle gap-2 text-lg">
                 <GiBandana className="h-7 w-7 text-primary" />
-                You do not have any crew members.
+                You need at least {journeyValidation.minCrew} crew members to
+                successfully sail your ships.
+              </li>
+            )}
+
+            {journeyValidation.errors.includes("TOO_MANY_CREW_MEMBERS") && (
+              <li className="flex align-middle gap-2 text-lg">
+                <GiBandana className="h-7 w-7 text-primary" />
+                Your ships can carry {journeyValidation.maxCrew} crew members at
+                most. Get a new ship or dismiss some crew members.
               </li>
             )}
 
