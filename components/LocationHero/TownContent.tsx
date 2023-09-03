@@ -1,5 +1,4 @@
 import { TOWNS } from "@/constants/locations"
-import { LOCATION_DESCRIPTION } from "@/constants/text"
 import { getTownsNationality } from "@/utils/location"
 
 import Flag from "../icons/Flag"
@@ -11,9 +10,7 @@ type Props = {
 
 const TownContent = ({ town, location }: Props) => {
   const nation = getTownsNationality(town)
-  const description =
-    (town && TOWNS[town].descriptions?.[location]) ||
-    LOCATION_DESCRIPTION[location]
+  const description = town && TOWNS[town].descriptions?.[location]
 
   return (
     <>

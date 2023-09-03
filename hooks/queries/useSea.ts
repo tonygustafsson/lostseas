@@ -5,7 +5,7 @@ import apiRequest from "@/utils/apiRequest"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
 
-const SEA_TRAVEL_SPEED = 3000 // Milliseconds per step
+const SEA_TRAVEL_SPEED = 5000 // Milliseconds per step
 
 export const useSea = () => {
   const queryClient = useQueryClient()

@@ -79,7 +79,6 @@ const LocationHero = () => {
               !player?.locationStates?.sea?.attackSuccessReport &&
               !player?.locationStates?.sea?.attackFailureReport && (
                 <SeaContent
-                  location={player?.character.location}
                   journey={player?.character.journey}
                   day={player?.character.day}
                 />
