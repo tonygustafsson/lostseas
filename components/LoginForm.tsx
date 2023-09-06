@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import jsQR from "jsqr"
 import { useRouter } from "next/router"
-import QrScanner from "qr-scanner"
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { AiOutlineQrcode } from "react-icons/ai"
 import { FiLogIn } from "react-icons/fi"
@@ -18,13 +18,14 @@ type ValidationSchema = z.infer<typeof loginValidationSchema>
 const LoginForm = () => {
   const { data: player } = useGetPlayer()
   const router = useRouter()
-  const { setModal, removeModal } = useModal()
+  const { setModal } = useModal()
   const { login } = usePlayer()
 
   const error = router.query.error
 
   const restoreplayerIdVideoRef = useRef<HTMLVideoElement>(null)
-  const [qrScanner, setQrScanner] = useState<QrScanner | null>(null)
+  const canvasElement = useRef<HTMLCanvasElement>(null)
+  const canvas = canvasElement.current?.getContext("2d")
 
   const {
     register,
@@ -39,36 +40,64 @@ const LoginForm = () => {
     login(data.playerId?.toString() || "")
   }
 
-  useEffect(() => {
-    if (!restoreplayerIdVideoRef.current) return
+  const tick = useCallback(() => {
+    // Draw the video frame to the canvas
+    if (!restoreplayerIdVideoRef.current || !canvasElement.current) {
+      return
+    }
 
-    const qrScanner = new QrScanner(
+    canvas?.drawImage(
       restoreplayerIdVideoRef.current,
-      (result) => {
-        const playerId = result.data
-        login(playerId)
-
-        qrScanner.stop()
-        removeModal("qrScanner")
-      },
-      {}
+      0,
+      0,
+      canvasElement.current.width,
+      canvasElement.current.height
+    )
+    const imageData = canvas?.getImageData(
+      0,
+      0,
+      canvasElement.current.width,
+      canvasElement.current.height
     )
 
-    qrScanner.start()
+    if (!imageData) return
 
-    setQrScanner(qrScanner)
-  }, [login, removeModal, restoreplayerIdVideoRef, router])
+    const code = jsQR(imageData.data, imageData.width, imageData.height, {
+      inversionAttempts: "dontInvert",
+    })
+
+    if (code) {
+      login(code.data)
+    }
+
+    requestAnimationFrame(tick)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canvasElement, canvas])
+
+  useEffect(() => {
+    window.navigator.mediaDevices
+      .getUserMedia({ video: true })
+      .then((stream) => {
+        if (!restoreplayerIdVideoRef.current) return
+
+        restoreplayerIdVideoRef.current.srcObject = stream
+        restoreplayerIdVideoRef.current.setAttribute("playsinline", "true") // required to tell iOS safari we don't want fullscreen
+        restoreplayerIdVideoRef.current.play()
+        requestAnimationFrame(tick)
+      })
+  }, [restoreplayerIdVideoRef, tick])
 
   const openQrScannerModal = () => {
     setModal({
       id: "qrScanner",
       title: "Scan QR code",
-      onClose: () => qrScanner?.stop(),
+      //onClose: () => qrScanner?.stop(),
       content: (
         <>
           <p className="mb-4">Scan the QR code to sign in</p>
 
           <video width={500} height={500} ref={restoreplayerIdVideoRef}></video>
+          <canvas className="hidden" ref={canvasElement}></canvas>
         </>
       ),
     })
