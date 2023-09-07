@@ -15,6 +15,7 @@ const QrScanner = () => {
   const canvasContext = canvasElementRef.current?.getContext("2d")
 
   const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [playerId, setPlayerId] = useState<string | null>(null)
 
   const drawCanvasAndReadImageData = () => {
     if (!videoRef.current || !canvasElementRef.current) {
@@ -53,6 +54,8 @@ const QrScanner = () => {
 
     if (playerId) {
       login(playerId.data)
+      setPlayerId(playerId.data)
+      return
     }
 
     requestAnimationFrame(verifyPlayerIdFromImageData)
@@ -70,8 +73,12 @@ const QrScanner = () => {
         <>
           <p className="mb-4">Scan the QR code to sign in</p>
 
-          <video width={500} height={500} ref={videoRef} />
-          <canvas className="hidden" ref={canvasElementRef}></canvas>
+          {!playerId && (
+            <>
+              <video width={500} height={500} ref={videoRef} />
+              <canvas className="hidden" ref={canvasElementRef}></canvas>
+            </>
+          )}
         </>
       ),
     })
