@@ -1,5 +1,5 @@
 import jsQR from "jsqr"
-import { useCallback, useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { AiOutlineQrcode } from "react-icons/ai"
 
 import { usePlayer } from "@/hooks/queries/usePlayer"
@@ -10,18 +10,20 @@ const QrScanner = () => {
   const { setModal } = useModal()
   const { login } = usePlayer()
 
-  const restoreplayerIdVideoRef = useRef<HTMLVideoElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
   const canvasElement = useRef<HTMLCanvasElement>(null)
   const canvas = canvasElement.current?.getContext("2d")
 
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+
   const tick = useCallback(() => {
     // Draw the video frame to the canvas
-    if (!restoreplayerIdVideoRef.current || !canvasElement.current) {
+    if (!videoRef.current || !canvasElement.current) {
       return
     }
 
     canvas?.drawImage(
-      restoreplayerIdVideoRef.current,
+      videoRef.current,
       0,
       0,
       canvasElement.current.width,
@@ -49,27 +51,41 @@ const QrScanner = () => {
   }, [canvasElement, canvas])
 
   useEffect(() => {
+    if (!modalIsOpen) return
+
+    const videoElement = videoRef.current
+
     window.navigator.mediaDevices
       .getUserMedia({ video: true })
       .then((stream) => {
-        if (!restoreplayerIdVideoRef.current) return
+        if (!videoElement) return
 
-        restoreplayerIdVideoRef.current.srcObject = stream
-        restoreplayerIdVideoRef.current.setAttribute("playsinline", "true") // required to tell iOS safari we don't want fullscreen
-        restoreplayerIdVideoRef.current.play()
+        videoElement.srcObject = stream
+        videoElement.setAttribute("playsinline", "true") // required to tell iOS safari we don't want fullscreen
+        videoElement.play()
+
         requestAnimationFrame(tick)
       })
-  }, [restoreplayerIdVideoRef, tick])
+
+    return () => {
+      // Stop capturing video if modal is closed
+      videoElement?.pause()
+      videoElement!.srcObject = null
+    }
+  }, [modalIsOpen, tick])
 
   const openQrScannerModal = () => {
+    setModalIsOpen(true)
+
     setModal({
       id: "qrScanner",
       title: "Scan QR code",
+      onClose: () => setModalIsOpen(false),
       content: (
         <>
           <p className="mb-4">Scan the QR code to sign in</p>
 
-          <video width={500} height={500} ref={restoreplayerIdVideoRef} />
+          <video width={500} height={500} ref={videoRef} />
           <canvas className="hidden" ref={canvasElement}></canvas>
         </>
       ),
