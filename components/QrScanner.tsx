@@ -68,7 +68,9 @@ const QrScanner = () => {
     setModal({
       id: "qrScanner",
       title: "Scan QR code",
-      onClose: () => setModalIsOpen(false),
+      onClose: async () => {
+        setModalIsOpen(false)
+      },
       content: (
         <>
           <p className="mb-4">Scan the QR code to sign in</p>
