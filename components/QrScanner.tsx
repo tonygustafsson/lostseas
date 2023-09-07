@@ -89,23 +89,28 @@ const QrScanner = () => {
 
     const videoElement = videoRef.current
 
-    // Start capturing video
-    window.navigator.mediaDevices
-      .getUserMedia({ video: true })
-      .then((stream) => {
-        if (!videoElement) return
-
-        videoElement.srcObject = stream
-        videoElement.setAttribute("playsinline", "true") // required to tell iOS safari we don't want fullscreen
-        videoElement.play()
-
-        requestAnimationFrame(verifyPlayerIdFromImageData)
+    const captureVideo = async () => {
+      const stream = await window.navigator.mediaDevices.getUserMedia({
+        video: true,
       })
+
+      if (!videoElement) return
+
+      videoElement.srcObject = stream
+      videoElement.setAttribute("playsinline", "true") // required to tell iOS safari we don't want fullscreen
+      videoElement.play()
+
+      requestAnimationFrame(verifyPlayerIdFromImageData)
+    }
+
+    captureVideo()
 
     return () => {
       // Stop capturing video if modal is closed
-      videoElement?.pause()
-      videoElement!.srcObject = null
+      if (!videoElement) return
+
+      videoElement.pause()
+      videoElement.srcObject = null
     }
   }, [modalIsOpen, verifyPlayerIdFromImageData])
 
