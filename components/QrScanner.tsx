@@ -11,68 +11,53 @@ const QrScanner = () => {
   const { login } = usePlayer()
 
   const videoRef = useRef<HTMLVideoElement>(null)
-  const canvasElement = useRef<HTMLCanvasElement>(null)
-  const canvas = canvasElement.current?.getContext("2d")
+  const canvasElementRef = useRef<HTMLCanvasElement>(null)
+  const canvasContext = canvasElementRef.current?.getContext("2d")
 
   const [modalIsOpen, setModalIsOpen] = useState(false)
 
-  const tick = useCallback(() => {
-    // Draw the video frame to the canvas
-    if (!videoRef.current || !canvasElement.current) {
+  const drawCanvasAndReadImageData = () => {
+    if (!videoRef.current || !canvasElementRef.current) {
       return
     }
 
-    canvas?.drawImage(
+    canvasContext?.drawImage(
       videoRef.current,
       0,
       0,
-      canvasElement.current.width,
-      canvasElement.current.height
+      canvasElementRef.current.width,
+      canvasElementRef.current.height
     )
-    const imageData = canvas?.getImageData(
+    const imageData = canvasContext?.getImageData(
       0,
       0,
-      canvasElement.current.width,
-      canvasElement.current.height
+      canvasElementRef.current.width,
+      canvasElementRef.current.height
     )
+
+    return imageData
+  }
+
+  const verifyPlayerIdFromImageData = useCallback(() => {
+    if (!videoRef.current || !canvasElementRef.current) {
+      return
+    }
+
+    const imageData = drawCanvasAndReadImageData()
 
     if (!imageData) return
 
-    const code = jsQR(imageData.data, imageData.width, imageData.height, {
+    const playerId = jsQR(imageData.data, imageData.width, imageData.height, {
       inversionAttempts: "dontInvert",
     })
 
-    if (code) {
-      login(code.data)
+    if (playerId) {
+      login(playerId.data)
     }
 
-    requestAnimationFrame(tick)
+    requestAnimationFrame(verifyPlayerIdFromImageData)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canvasElement, canvas])
-
-  useEffect(() => {
-    if (!modalIsOpen) return
-
-    const videoElement = videoRef.current
-
-    window.navigator.mediaDevices
-      .getUserMedia({ video: true })
-      .then((stream) => {
-        if (!videoElement) return
-
-        videoElement.srcObject = stream
-        videoElement.setAttribute("playsinline", "true") // required to tell iOS safari we don't want fullscreen
-        videoElement.play()
-
-        requestAnimationFrame(tick)
-      })
-
-    return () => {
-      // Stop capturing video if modal is closed
-      videoElement?.pause()
-      videoElement!.srcObject = null
-    }
-  }, [modalIsOpen, tick])
+  }, [canvasElementRef, canvasContext])
 
   const openQrScannerModal = () => {
     setModalIsOpen(true)
@@ -86,11 +71,36 @@ const QrScanner = () => {
           <p className="mb-4">Scan the QR code to sign in</p>
 
           <video width={500} height={500} ref={videoRef} />
-          <canvas className="hidden" ref={canvasElement}></canvas>
+          <canvas className="hidden" ref={canvasElementRef}></canvas>
         </>
       ),
     })
   }
+
+  useEffect(() => {
+    if (!modalIsOpen) return
+
+    const videoElement = videoRef.current
+
+    // Start capturing video
+    window.navigator.mediaDevices
+      .getUserMedia({ video: true })
+      .then((stream) => {
+        if (!videoElement) return
+
+        videoElement.srcObject = stream
+        videoElement.setAttribute("playsinline", "true") // required to tell iOS safari we don't want fullscreen
+        videoElement.play()
+
+        requestAnimationFrame(verifyPlayerIdFromImageData)
+      })
+
+    return () => {
+      // Stop capturing video if modal is closed
+      videoElement?.pause()
+      videoElement!.srcObject = null
+    }
+  }, [modalIsOpen, verifyPlayerIdFromImageData])
 
   return (
     <button onClick={openQrScannerModal} className="btn btn-secondary flex-1">
