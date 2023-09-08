@@ -2,13 +2,16 @@ import { NATIONS } from "@/constants/locations"
 import { MERCHANDISE } from "@/constants/merchandise"
 
 import { getMannedCannons } from "./crew"
+import { getTownsNationality } from "./location"
 import { getRandomInt } from "./random"
 
-export const createMeetingShip = (mannedCannons: number) => {
+export const createMeetingShip = (mannedCannons: number, destination: Town) => {
+  const destinationNation = getTownsNationality(destination)
   const nations = [...Object.keys(NATIONS), "Pirate"]
-  const nation = nations[getRandomInt(0, nations.length - 1)] as
-    | Nation
-    | "Pirate"
+  const nation =
+    Math.random() > 0.5
+      ? destinationNation
+      : (nations[getRandomInt(0, nations.length - 1)] as Nation | "Pirate")
   const shipTypes: ShipType[] = ["Brig", "Merchantman", "Galleon", "Frigate"]
   const shipType = shipTypes[getRandomInt(0, shipTypes.length - 1)]
 

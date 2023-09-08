@@ -54,7 +54,7 @@ const seaContinueJourney = async (
     player.locationStates?.sea?.attackFailureReport
   const shipMeetingState =
     shipMeeting && !previouslyHadAShipMeeting
-      ? createMeetingShip(mannedCannons)
+      ? createMeetingShip(mannedCannons, player.character.journey.destination)
       : null
 
   const foodConsumption = player.crewMembers.count * 0.1
