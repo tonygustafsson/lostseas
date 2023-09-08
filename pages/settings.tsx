@@ -5,11 +5,14 @@ import { useState } from "react"
 import { BsClipboardCheck } from "react-icons/bs"
 
 import DefaultLayout from "@/components/layouts/default"
-import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { useModal } from "@/components/ui/Modal/context"
+import { useGetPlayer, usePlayer } from "@/hooks/queries/usePlayer"
 import { getLoggedInServerSideProps } from "@/utils/next/getLoggedInServerSideProps"
 
 const Settings = () => {
   const { data: player } = useGetPlayer()
+  const { remove } = usePlayer()
+  const { setModal, removeModal } = useModal()
   const { SVG } = useQRCode()
 
   const [copiedToClipboard, setCopiedToClipboard] = useState(false)
@@ -21,6 +24,36 @@ const Settings = () => {
     setTimeout(() => {
       setCopiedToClipboard(false)
     }, 2000)
+  }
+
+  const handleRemoveAccount = () => {
+    setModal({
+      id: "unregister",
+      title: "Are you sure?",
+      content: (
+        <div className="flex flex-col gap-4">
+          <p>
+            Are you sure you want to unregister? Your game will be removed and
+            cannot be restored.
+          </p>
+          <div className="flex gap-2">
+            <button
+              className="btn btn-primary bg-error hover:bg-red-500"
+              onClick={() => remove()}
+            >
+              Yes, remove account
+            </button>
+
+            <button
+              className="btn btn-secondary"
+              onClick={() => removeModal("unregister")}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+    })
   }
 
   if (!player) {
@@ -36,7 +69,7 @@ const Settings = () => {
       <DefaultLayout>
         <h1 className="text-3xl font-serif text mb-6">Settings</h1>
 
-        <div className="w-full flex flex-col gap-4 max-w-xl">
+        <div className="w-full flex flex-col gap-4 max-w-xl mb-12">
           <p className="mb-4">
             Your account were created{" "}
             {new Date(player?.createdDate).toLocaleDateString()}.
@@ -67,7 +100,7 @@ const Settings = () => {
             </button>
           </div>
 
-          <h3 className="text-xl font-serif">QR code</h3>
+          <h3 className="text-xl font-serif mt-4">QR code</h3>
 
           <p>
             You can also download or photograph the QR code below and login with
@@ -85,6 +118,20 @@ const Settings = () => {
               },
             }}
           />
+
+          <h3 className="text-xl font-serif mt-4">Remove account</h3>
+
+          <p>
+            Don&apos;t want to play any more? There is nothing personal saved in
+            the database, but sure you can remove yourself if you want to.
+          </p>
+
+          <button
+            className="btn btn-primary bg-error hover:bg-red-500"
+            onClick={handleRemoveAccount}
+          >
+            Remove account
+          </button>
         </div>
       </DefaultLayout>
     </>

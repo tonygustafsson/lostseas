@@ -73,6 +73,17 @@ export const usePlayer = () => {
     }
   )
 
+  const { mutate: remove, isLoading: isRemovingSelf } = useMutation(
+    () => apiRequest("/api/user/remove", null, "DELETE"),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+        window.location.href = "/"
+      },
+      onError: (error) => console.error(error),
+    }
+  )
+
   return {
     login,
     isLoggingIn,
@@ -80,5 +91,7 @@ export const usePlayer = () => {
     isLoggingOut,
     register,
     registrationIsLoading,
+    remove,
+    isRemovingSelf,
   }
 }
