@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/router"
+import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { FiLogIn } from "react-icons/fi"
 import { z } from "zod"
@@ -17,6 +18,8 @@ const LoginForm = () => {
   const router = useRouter()
   const { login } = usePlayer()
 
+  const [apiError, setApiError] = useState<string>()
+
   const error = router.query.error
 
   const {
@@ -28,8 +31,12 @@ const LoginForm = () => {
     mode: "onChange",
   })
 
-  const onSubmit: SubmitHandler<ValidationSchema> = (data) => {
-    login(data.playerId?.toString() || "")
+  const onSubmit: SubmitHandler<ValidationSchema> = async (data) => {
+    const response = await login(data.playerId?.toString() || "")
+
+    if (response?.status !== 200) {
+      setApiError("Could not sign in. Incorrect user ID?")
+    }
   }
 
   if (player) return null
@@ -49,6 +56,7 @@ const LoginForm = () => {
       />
 
       {error && <p className="text-red-500">{error}</p>}
+      {apiError && <p className="text-red-500">{apiError}</p>}
 
       <div className="flex gap-2 mt-3">
         <button

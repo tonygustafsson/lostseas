@@ -40,7 +40,7 @@ export const useGetPlayer = () =>
 export const usePlayer = () => {
   const queryClient = useQueryClient()
 
-  const { mutate: login, isLoading: isLoggingIn } = useMutation(
+  const { mutateAsync: login, isLoading: isLoggingIn } = useMutation(
     (playerId: Player["id"]) =>
       apiRequest("/api/user/login", { playerId }, "POST"),
     {
@@ -49,6 +49,7 @@ export const usePlayer = () => {
           window.location.href = "/"
         } else {
           console.log({ response })
+          return response
         }
       },
       onError: (error) => console.error(error),
