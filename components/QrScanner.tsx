@@ -117,7 +117,11 @@ const QrScanner = () => {
   }, [modalIsOpen, verifyPlayerIdFromImageData])
 
   return (
-    <button onClick={openQrScannerModal} className="btn btn-secondary flex-1">
+    <button
+      type="button"
+      onClick={openQrScannerModal}
+      className="btn btn-secondary flex-1"
+    >
       <AiOutlineQrcode size={24} />
       Scan QR Code
     </button>
