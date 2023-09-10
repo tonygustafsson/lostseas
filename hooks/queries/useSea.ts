@@ -14,7 +14,9 @@ export const useSea = () => {
   const { mutate: startJourney, isLoading: isStartingJourney } = useMutation(
     (data: { town: Town }) => apiRequest("/api/sea/startJourney", data, "POST"),
     {
-      onSuccess: ({ success }) => {
+      onSuccess: (response) => {
+        const { success } = response?.data
+
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
 
         if (success) {
@@ -28,16 +30,18 @@ export const useSea = () => {
 
   const { mutate: continueJourney, isLoading: isContinueingJourney } =
     useMutation(() => apiRequest("/api/sea/continueJourney", null, "POST"), {
-      onSuccess: ({
-        destinationReached,
-        shipMeetingState,
-        error,
-      }: Character["journey"] & {
-        success: boolean
-        destinationReached: boolean
-        shipMeetingState: ShipMeetingState
-        error?: string
-      }) => {
+      onSuccess: (response) => {
+        const {
+          destinationReached,
+          shipMeetingState,
+          error,
+        }: Character["journey"] & {
+          success: boolean
+          destinationReached: boolean
+          shipMeetingState: ShipMeetingState
+          error?: string
+        } = response?.data
+
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
         if (shipMeetingState) {
           playSoundEffect("sailho")

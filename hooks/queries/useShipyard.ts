@@ -17,7 +17,9 @@ export const useShipyard = () => {
     (data: { item: keyof typeof SHIP_TYPES }) =>
       apiRequest("/api/shipyard/buyShip", data, "POST"),
     {
-      onSuccess: ({ error, item, totalPrice }) => {
+      onSuccess: (response) => {
+        const { error, item, totalPrice } = response?.data
+
         if (error) {
           setToast({
             title: `Could not buy ${item}`,
@@ -46,7 +48,9 @@ export const useShipyard = () => {
     (data: { id: Ship["id"] }) =>
       apiRequest("/api/shipyard/sellShip", data, "POST"),
     {
-      onSuccess: ({ error, ship, totalPrice }) => {
+      onSuccess: (response) => {
+        const { error, ship, totalPrice } = response?.data
+
         if (error) {
           setToast({
             title: `Could not sell your ship`,
@@ -75,7 +79,10 @@ export const useShipyard = () => {
     (data: { item: keyof Inventory; quantity: number }) =>
       apiRequest("/api/shipyard/buyFittings", data, "POST"),
     {
-      onSuccess: ({ error, quantity, item, totalPrice, totalQuantity }) => {
+      onSuccess: (response) => {
+        const { error, quantity, item, totalPrice, totalQuantity } =
+          response?.data
+
         if (error) {
           setToast({
             title: `Could not buy ${item}`,
@@ -109,7 +116,10 @@ export const useShipyard = () => {
     (data: { item: keyof Inventory; quantity: number }) =>
       apiRequest("/api/shipyard/sellFittings", data, "POST"),
     {
-      onSuccess: ({ error, quantity, item, totalPrice, totalQuantity }) => {
+      onSuccess: (response) => {
+        const { error, quantity, item, totalPrice, totalQuantity } =
+          response?.data
+
         if (error) {
           setToast({
             title: `Could not sell ${item}`,
@@ -141,7 +151,9 @@ export const useShipyard = () => {
     (data: { id: Ship["id"] }) =>
       apiRequest("/api/shipyard/repairShip", data, "POST"),
     {
-      onSuccess: ({ error, ship, totalPrice }) => {
+      onSuccess: (response) => {
+        const { error, ship, totalPrice } = response?.data
+
         if (error) {
           setToast({
             title: `Could not repair your ship`,

@@ -16,7 +16,9 @@ export const useTavern = () => {
     (data: { item: keyof typeof TAVERN_ITEMS }) =>
       apiRequest("/api/tavern/buy", data, "POST"),
     {
-      onSuccess: ({ error, newMood, newHealth, item, totalPrice }) => {
+      onSuccess: (response) => {
+        const { error, newMood, newHealth, item, totalPrice } = response?.data
+
         if (error) {
           setToast({
             title: `Could not buy ${item}`,
@@ -45,7 +47,9 @@ export const useTavern = () => {
     useMutation(
       () => apiRequest("/api/tavern/acceptNewCrewMembers", null, "POST"),
       {
-        onSuccess: ({ error, numberOfSailors }) => {
+        onSuccess: (response) => {
+          const { error, numberOfSailors } = response?.data
+
           if (error) {
             setToast({
               title: `Could accept new crew members`,
@@ -73,7 +77,10 @@ export const useTavern = () => {
   const { mutate: fightSailors, isLoading: isFightingSailors } = useMutation(
     () => apiRequest("/api/tavern/fightSailors", null, "POST"),
     {
-      onSuccess: ({ error, numberOfSailors, success, loot, healthLoss }) => {
+      onSuccess: (response) => {
+        const { error, numberOfSailors, success, loot, healthLoss } =
+          response?.data
+
         if (error) {
           setToast({
             title: `Could ignore sailors`,
@@ -111,7 +118,9 @@ export const useTavern = () => {
   const { mutate: ignoreSailors, isLoading: isIgnoringSailors } = useMutation(
     () => apiRequest("/api/tavern/ignoreSailors", null, "POST"),
     {
-      onSuccess: ({ error, numberOfSailors }) => {
+      onSuccess: (response) => {
+        const { error, numberOfSailors } = response?.data
+
         if (error) {
           setToast({
             title: `Could not ignore sailors`,
@@ -138,7 +147,9 @@ export const useTavern = () => {
     (data: { betPercentage: number }) =>
       apiRequest("/api/tavern/dice", data, "POST"),
     {
-      onSuccess: ({ error, bet, gold, diceResults }) => {
+      onSuccess: (response) => {
+        const { error, bet, gold, diceResults } = response?.data
+
         if (error) {
           setToast({
             title: `Could not place bet`,

@@ -15,7 +15,8 @@ export const useShips = () => {
     ({ id, name }: { id: Ship["id"]; name: Ship["name"] }) =>
       apiRequest(`/api/ship/rename/${id}`, { name }, "POST"),
     {
-      onSuccess: ({ name, ship }) => {
+      onSuccess: (response) => {
+        const { name, ship } = response?.data
         queryClient.invalidateQueries([PLAYER_QUERY_KEY])
 
         removeModal("renameShip")

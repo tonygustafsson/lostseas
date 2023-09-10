@@ -9,6 +9,10 @@ export const getPlayer = async (playerId: Player["id"] | undefined) => {
 
   const player = await getPlayerFromDatabase(playerId)
 
+  if (!player) {
+    return null
+  }
+
   player.id = playerId
   player.ships = sortShipsByDate<Ship>(player.ships) ?? {}
 

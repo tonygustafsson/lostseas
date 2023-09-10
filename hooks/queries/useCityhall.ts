@@ -15,7 +15,9 @@ export const useCityhall = () => {
     useMutation(
       () => apiRequest("/api/cityhall/acceptNewTitle", null, "POST"),
       {
-        onSuccess: ({ error, titleInfo }) => {
+        onSuccess: (response) => {
+          const { error, titleInfo } = response?.data
+
           if (error) {
             setToast({
               title: `Could not accept new title ${titleInfo.title}`,
@@ -45,7 +47,9 @@ export const useCityhall = () => {
     useMutation(
       () => apiRequest("/api/cityhall/changeCitizenship", null, "POST"),
       {
-        onSuccess: ({ error, titleInfo, newNationality }) => {
+        onSuccess: (response) => {
+          const { error, titleInfo, newNationality } = response?.data
+
           if (error) {
             setToast({
               title: `Could not change citizenship to ${newNationality}`,
@@ -75,7 +79,9 @@ export const useCityhall = () => {
     (id: Treasure["id"]) =>
       apiRequest("/api/cityhall/handover", { id }, "POST"),
     {
-      onSuccess: ({ error, treasure, treasureInfo }) => {
+      onSuccess: (response) => {
+        const { error, treasure, treasureInfo } = response?.data
+
         if (error) {
           setToast({
             title: `Could not handover treasure ${treasure.name}`,

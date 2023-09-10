@@ -16,7 +16,7 @@ const apiRequest = async (url: string, data: any, method: Method = "GET") => {
 
     const result = await response.json()
 
-    return result
+    return { data: result, status: response.status }
   } catch (error) {
     console.error(error)
   }

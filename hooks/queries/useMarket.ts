@@ -17,7 +17,10 @@ export const useMarket = () => {
       (data: { item: keyof LocationStateMarketItems }) =>
         apiRequest("/api/market/accept", data, "POST"),
       {
-        onSuccess: ({ error, quantity, item, totalPrice, totalQuantity }) => {
+        onSuccess: (response) => {
+          const { error, quantity, item, totalPrice, totalQuantity } =
+            response?.data
+
           if (error) {
             setToast({
               title: `Could not accept ${item}`,

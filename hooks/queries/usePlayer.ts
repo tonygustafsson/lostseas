@@ -44,8 +44,12 @@ export const usePlayer = () => {
     (playerId: Player["id"]) =>
       apiRequest("/api/user/login", { playerId }, "POST"),
     {
-      onSuccess: () => {
-        window.location.href = "/"
+      onSuccess: (response) => {
+        if (response?.status === 200) {
+          window.location.href = "/"
+        } else {
+          console.log({ response })
+        }
       },
       onError: (error) => console.error(error),
     }

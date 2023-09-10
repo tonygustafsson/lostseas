@@ -16,7 +16,10 @@ export const useShop = () => {
     (data: { item: keyof Inventory; quantity: number }) =>
       apiRequest("/api/shop/buy", data, "POST"),
     {
-      onSuccess: ({ error, quantity, item, totalPrice, totalQuantity }) => {
+      onSuccess: (response) => {
+        const { error, quantity, item, totalPrice, totalQuantity } =
+          response?.data
+
         if (error) {
           setToast({
             title: `Could not buy ${item}`,
@@ -50,7 +53,10 @@ export const useShop = () => {
     (data: { item: keyof Inventory; quantity: number }) =>
       apiRequest("/api/shop/sell", data, "POST"),
     {
-      onSuccess: ({ error, quantity, item, totalPrice, totalQuantity }) => {
+      onSuccess: (response) => {
+        const { error, quantity, item, totalPrice, totalQuantity } =
+          response?.data
+
         if (error) {
           setToast({
             title: `Could not sell ${item}`,
@@ -85,7 +91,9 @@ export const useShop = () => {
       (days: number) =>
         apiRequest("/api/shop/buyNecessities", { days }, "POST"),
       {
-        onSuccess: ({ error, foodNeeded, waterNeeded, cost }) => {
+        onSuccess: (response) => {
+          const { error, foodNeeded, waterNeeded, cost } = response?.data
+
           if (error) {
             setToast({
               title: `Could not buy necessities`,
@@ -121,7 +129,9 @@ export const useShop = () => {
 
   const { mutate: sellBarterGoods, isLoading: isSellingBarterGoods } =
     useMutation(() => apiRequest("/api/shop/sellBarterGoods", null, "POST"), {
-      onSuccess: ({ error, value }) => {
+      onSuccess: (response) => {
+        const { error, value } = response?.data
+
         if (error) {
           setToast({
             title: `Could not sell barter goods`,
