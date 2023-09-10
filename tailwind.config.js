@@ -29,7 +29,7 @@ module.exports = {
       {
         lostSeasTheme: {
           primary: "#0e7490",
-          secondary: "#6b7280",
+          secondary: "#1b1f27",
           accent: "#1FB2A5",
           neutral: "#191D24",
           "base-100": "#2A303C",
