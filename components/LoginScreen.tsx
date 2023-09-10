@@ -7,36 +7,15 @@ import { GiArchiveRegister } from "react-icons/gi"
 import { PiBookOpenTextBold } from "react-icons/pi"
 
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-import { capitalize } from "@/utils/string"
 
 import LoginForm from "./LoginForm"
 import RegistrationForm from "./RegistrationForm"
-import { useModal } from "./ui/Modal/context"
+import Screenshots from "./Screenshots"
 
 const LoginScreen = () => {
   const { data: player } = useGetPlayer()
-  const { setModal } = useModal()
 
   const [showRegistrationForm, setShowRegistrationForm] = useState(false)
-
-  const imageZoom = (imgId: string) => {
-    setModal({
-      id: "screenshot",
-      title: capitalize(imgId),
-      fullWidth: true,
-      content: (
-        <div className="min-h-screen overflow-auto">
-          <Image
-            src={`/img/screenshots/${imgId}.png`}
-            width={1900}
-            height={918}
-            alt={`Screenshot of ${imgId}`}
-            className="object-cover max-w-none"
-          />
-        </div>
-      ),
-    })
-  }
 
   if (player) return null
 
@@ -104,34 +83,11 @@ const LoginScreen = () => {
               Check out the Player Guide
             </Link>
 
-            <div className="flex gap-2 mt-8">
-              <button onClick={() => imageZoom("harbor")}>
-                <Image
-                  width={250}
-                  height={250}
-                  src="/img/screenshots/harbor.png"
-                  alt="Screenshot of the harbor"
-                />
-              </button>
+            <h2 className="font-serif mt-8 mb-4 text-2xl lg:text-3xl">
+              Screenshots
+            </h2>
 
-              <button onClick={() => imageZoom("map")}>
-                <Image
-                  width={250}
-                  height={250}
-                  src="/img/screenshots/map.png"
-                  alt="Screenshot of the map"
-                />
-              </button>
-
-              <button onClick={() => imageZoom("status")}>
-                <Image
-                  width={250}
-                  height={250}
-                  src="/img/screenshots/status.png"
-                  alt="Screenshot of the status"
-                />
-              </button>
-            </div>
+            <Screenshots />
           </div>
         </div>
 
