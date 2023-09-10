@@ -10,6 +10,7 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import LoginForm from "./LoginForm"
 import RegistrationForm from "./RegistrationForm"
+import Screenshots from "./Screenshots"
 
 const LoginScreen = () => {
   const { data: player } = useGetPlayer()
@@ -43,15 +44,14 @@ const LoginScreen = () => {
 
             <p className="mb-4">
               There are four nations: England, France, Spain and Holland. Each
-              having 4 towns. There are things to explore, and while traveling
-              the open seas you will meet ships that you could attack.
+              having 4 towns. There are things to explore, treasures to be found
+              and ships to attack.
             </p>
 
             <p className="mb-4">
-              This is an old time game, so there is no fancy graphics. Just
-              beautiful images, animations and descriptions created by AI. But
-              do not expect any 3D graphics. It will work in your phone or
-              tablet just as well as on your computer though.
+              Each town has it&apos;s own atmosphere and imagery. There are
+              music that adapts to what is happening, and sound effects. The
+              images are created by AI, and the music royalty free.
             </p>
 
             <ul className="flex flex-col gap-4 mt-8">
@@ -82,6 +82,12 @@ const LoginScreen = () => {
               <PiBookOpenTextBold size={26} />
               Check out the Player Guide
             </Link>
+
+            <h2 className="font-serif mt-8 mb-4 text-2xl lg:text-3xl">
+              Screenshots
+            </h2>
+
+            <Screenshots />
           </div>
         </div>
 

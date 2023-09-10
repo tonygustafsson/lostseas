@@ -17,6 +17,7 @@ export type ModalId =
   | "buyNecesseties"
   | "removeShip"
   | "dismissCrewMembers"
+  | "screenshot"
 
 export type ModalProps = {
   id: ModalId
