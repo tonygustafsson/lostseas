@@ -80,7 +80,12 @@ const AttackReport = () => {
                       item={key as keyof Inventory}
                       className="text-success"
                     />
-                    You looted {value} {unit && `${unit} of `} {key}.{" "}
+                    {unit === "cannons" && <>You looted {value} cannons.</>}
+                    {unit !== "cannons" && (
+                      <>
+                        You looted {value} {unit && `${unit} of `} {key}.
+                      </>
+                    )}
                   </li>
                 )
               }
