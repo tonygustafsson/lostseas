@@ -4,7 +4,7 @@ This is a pirate influenced web game, set in the year 1640. The main goal is to 
 
 It takes place in [the Spanish Main](https://en.wikipedia.org/wiki/Spanish_Main) and is a battle between England, France, Spain and Holland.
 
-This game has it's origins in in the early 2000s. You can still see the [old Lost Seas game](https://github.com/tonygustafsson/lostseas) if you'd like. It's built using PHP. The game is heavy influenced by [Sid Meier's Pirates!](https://en.wikipedia.org/wiki/Sid_Meier%27s_Pirates!).
+This game has it's origins in in the early 2000s. You can still see the [old Lost Seas game](https://github.com/tonygustafsson/lostseas-php) if you'd like. It's built using PHP. The game is heavy influenced by [Sid Meier's Pirates!](https://en.wikipedia.org/wiki/Sid_Meier%27s_Pirates!).
 
 ## It's free
 
