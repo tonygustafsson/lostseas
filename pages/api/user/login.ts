@@ -1,7 +1,7 @@
 import { setCookie } from "cookies-next"
 import { NextApiRequest, NextApiResponse } from "next/types"
 
-import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
+import { COOKIE_EXPIRE_TIME, PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer } from "@/utils/db/getPlayer"
 import { loginValidationSchema } from "@/utils/validation"
 
@@ -24,7 +24,7 @@ const login = async (req: NextApiRequest, res: NextApiResponse) => {
   setCookie(PLAYER_ID_COOKIE_NAME, playerId, {
     req,
     res,
-    expires: new Date(Date.now() + 60 * 60 * 24 * 365 * 1000), // A  year from now
+    expires: COOKIE_EXPIRE_TIME,
   })
 
   res.status(200).json({ success: true })

@@ -8,6 +8,7 @@ import {
 } from "react"
 
 import {
+  COOKIE_EXPIRE_TIME,
   MUSIC_STATE_COOKIE_NAME,
   SOUND_EFFECTS_STATE_COOKIE_NAME,
 } from "@/constants/system"
@@ -99,7 +100,9 @@ export const SoundProvider = (props: { children: React.ReactNode }) => {
         musicOn,
       })
 
-      setCookie(MUSIC_STATE_COOKIE_NAME, musicOn)
+      setCookie(MUSIC_STATE_COOKIE_NAME, musicOn, {
+        expires: COOKIE_EXPIRE_TIME,
+      })
     },
     [dispatch]
   )
@@ -111,7 +114,9 @@ export const SoundProvider = (props: { children: React.ReactNode }) => {
         soundEffectsOn,
       })
 
-      setCookie(SOUND_EFFECTS_STATE_COOKIE_NAME, soundEffectsOn)
+      setCookie(SOUND_EFFECTS_STATE_COOKIE_NAME, soundEffectsOn, {
+        expires: COOKIE_EXPIRE_TIME,
+      })
     },
     [dispatch]
   )

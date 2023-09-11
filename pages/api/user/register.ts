@@ -5,6 +5,7 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { LOCATIONS } from "@/constants/locations"
 import {
+  COOKIE_EXPIRE_TIME,
   MUSIC_STATE_COOKIE_NAME,
   PLAYER_ID_COOKIE_NAME,
   SOUND_EFFECTS_STATE_COOKIE_NAME,
@@ -68,12 +69,17 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
   setCookie(PLAYER_ID_COOKIE_NAME, playerId, {
     req,
     res,
-    expires: new Date(Date.now() + 60 * 60 * 24 * 365 * 1000), // A  year from now
+    expires: COOKIE_EXPIRE_TIME,
   })
-  setCookie(MUSIC_STATE_COOKIE_NAME, Boolean(musicOn), { req, res })
+  setCookie(MUSIC_STATE_COOKIE_NAME, Boolean(musicOn), {
+    req,
+    res,
+    expires: COOKIE_EXPIRE_TIME,
+  })
   setCookie(SOUND_EFFECTS_STATE_COOKIE_NAME, Boolean(soundEffectsOn), {
     req,
     res,
+    expires: COOKIE_EXPIRE_TIME,
   })
 
   res.status(200).json(playerId)
