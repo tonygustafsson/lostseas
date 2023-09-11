@@ -35,7 +35,11 @@ const LocationHero = () => {
             ? `sea-${Math.random()}`
             : `${player?.character.town}-${player?.character.location}`
         }
-        className="hero relative rounded-lg rounded-b-none lg:max-h-[500px] overflow-hidden"
+        className={`hero relative rounded-lg ${
+          player?.character.location !== "Sea"
+            ? "rounded-b-none lg:max-h-[500px]"
+            : ""
+        } overflow-hidden`}
       >
         <div className="hero-overlay bg-opacity-20"></div>
 
