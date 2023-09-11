@@ -62,7 +62,7 @@ const Sound = () => {
 
   useEffect(() => {
     // Change music track if you are going out to sea or coming in to harbor
-    if (!musicPlayer) return
+    if (!musicPlayer || !musicOn) return
 
     if (
       (player?.character?.location === "Sea" &&
