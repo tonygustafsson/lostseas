@@ -65,7 +65,11 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(500).json({ error })
   })
 
-  setCookie(PLAYER_ID_COOKIE_NAME, playerId, { req, res })
+  setCookie(PLAYER_ID_COOKIE_NAME, playerId, {
+    req,
+    res,
+    expires: new Date(Date.now() + 60 * 60 * 24 * 365 * 1000), // A  year from now
+  })
   setCookie(MUSIC_STATE_COOKIE_NAME, Boolean(musicOn), { req, res })
   setCookie(SOUND_EFFECTS_STATE_COOKIE_NAME, Boolean(soundEffectsOn), {
     req,

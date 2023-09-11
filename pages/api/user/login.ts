@@ -21,7 +21,11 @@ const login = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  setCookie(PLAYER_ID_COOKIE_NAME, playerId, { req, res })
+  setCookie(PLAYER_ID_COOKIE_NAME, playerId, {
+    req,
+    res,
+    expires: new Date(Date.now() + 60 * 60 * 24 * 365 * 1000), // A  year from now
+  })
 
   res.status(200).json({ success: true })
 }
