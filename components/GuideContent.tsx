@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { BiArrowToTop } from "react-icons/bi"
 
 import { SHIP_TYPES } from "@/constants/ship"
@@ -21,7 +22,7 @@ const GuideContent = () => {
         <ul className="flex flex-wrap gap-2 md:gap-4 my-8 justify-around md:justify-center">
           <li>
             <button
-              className="btn btn-primary btn-sm md:btn-md"
+              className="btn btn-secondary btn-sm md:btn-md"
               onClick={() => goToSection("supplies")}
             >
               Supplies
@@ -29,7 +30,7 @@ const GuideContent = () => {
           </li>
           <li>
             <button
-              className="btn btn-primary btn-sm md:btn-md"
+              className="btn btn-secondary btn-sm md:btn-md"
               onClick={() => goToSection("ships")}
             >
               Ships
@@ -37,7 +38,7 @@ const GuideContent = () => {
           </li>
           <li>
             <button
-              className="btn btn-primary btn-sm md:btn-md"
+              className="btn btn-secondary btn-sm md:btn-md"
               onClick={() => goToSection("crew-members")}
             >
               Crew members
@@ -45,7 +46,7 @@ const GuideContent = () => {
           </li>
           <li>
             <button
-              className="btn btn-primary btn-sm md:btn-md"
+              className="btn btn-secondary btn-sm md:btn-md"
               onClick={() => goToSection("social-status")}
             >
               Social status
@@ -53,7 +54,7 @@ const GuideContent = () => {
           </li>
           <li>
             <button
-              className="btn btn-primary btn-sm md:btn-md"
+              className="btn btn-secondary btn-sm md:btn-md"
               onClick={() => goToSection("economy")}
             >
               Economy
@@ -61,7 +62,7 @@ const GuideContent = () => {
           </li>
           <li>
             <button
-              className="btn btn-primary btn-sm md:btn-md"
+              className="btn btn-secondary btn-sm md:btn-md"
               onClick={() => goToSection("traveling")}
             >
               Traveling
@@ -70,14 +71,14 @@ const GuideContent = () => {
         </ul>
       </nav>
 
-      <div className="divider" />
+      <div className="divider my-8" />
 
       <div className="max-w-2xl mx-auto">
         <h2 id="supplies" className="text-3xl font-serif mb-4">
           Supplies
         </h2>
 
-        <h3 className="text-2xl font-serif mb-4">Buying and selling</h3>
+        <h3 className="text-2xl font-serif mb-2">Buying and selling</h3>
 
         <p className="mb-4">
           At the shop you can buy and sell everything your crew needs to be
@@ -87,14 +88,28 @@ const GuideContent = () => {
           health.
         </p>
 
-        <p className="mb-4">
-          The market is a bit different... here you will get an offers, that is
+        <Image
+          src="/img/location/port-royale/shop.webp"
+          width={800}
+          height={460}
+          alt="The shop"
+        />
+
+        <p className="my-4">
+          The market is a bit different - here you will get an offers, that is
           often cheaper than the shop. But you cannot control how much of it you
           want, and if you cannot afford it; too bad. It&apos;s a good idea to
           visit sometimes, buy some barter goods and sell it of at the shop.
         </p>
 
-        <h3 className="text-2xl font-serif mb-4">Food and water</h3>
+        <Image
+          src="/img/location/belize/market.webp"
+          width={800}
+          height={460}
+          alt="The market"
+        />
+
+        <h3 className="text-2xl font-serif mt-4 mb-2">Food and water</h3>
 
         <p className="mb-4">
           You and your crew will need both food and water for traveling at sea.
@@ -104,7 +119,7 @@ const GuideContent = () => {
           can buy more food and water.
         </p>
 
-        <h3 className="text-2xl font-serif mb-4">Barter goods</h3>
+        <h3 className="text-2xl font-serif mb-2">Barter goods</h3>
 
         <p className="mb-4">
           This includes tobacco, rum, porcelain, spices and silk. You don&apos;t
@@ -112,9 +127,9 @@ const GuideContent = () => {
           You can them sell them at the shop and make some gold.
         </p>
 
-        <div className="divider" />
+        <div className="divider my-8" />
 
-        <h2 id="ships" className="text-3xl font-serif mb-4">
+        <h2 id="ships" className="text-3xl font-serif mb-2">
           Ships
         </h2>
 
@@ -125,7 +140,14 @@ const GuideContent = () => {
           enemies - and <em>that</em> means more gold!
         </p>
 
-        <p className="mb-4">
+        <Image
+          src="/img/location/san-juan/shipyard.webp"
+          width={800}
+          height={460}
+          alt="The shipyard"
+        />
+
+        <p className="my-4">
           The third reason is that you will only lose part of your goods when
           loosing a battle, if you have more than one ship. If you have three
           ships, you will lose one third of your goods. They will still take all
@@ -137,10 +159,10 @@ const GuideContent = () => {
           ships. But as your rank get higher, you will be able to own 15 ships.
         </p>
 
-        <h3 className="text-2xl font-serif mb-4">Different ship types</h3>
+        <h3 className="text-2xl font-serif mb-2">Different ship types</h3>
 
         <div className="overflow-x-auto">
-          <table className="table mb-4">
+          <table className="table bg-gray-950 bg-opacity-50 my-4">
             <thead>
               <tr>
                 <th>Type</th>
@@ -179,7 +201,7 @@ const GuideContent = () => {
           </table>
         </div>
 
-        <h3 className="text-2xl font-serif mb-4">Cannons</h3>
+        <h3 className="text-2xl font-serif mb-2">Cannons</h3>
 
         <p className="mb-4">
           Cannons are needed for battles at sea. It&apos;s the amount of manned
@@ -189,13 +211,13 @@ const GuideContent = () => {
           still only be able to use 15 of them.
         </p>
 
-        <div className="divider" />
+        <div className="divider my-8" />
 
-        <h2 id="crew-members" className="text-3xl font-serif mb-4">
+        <h2 id="crew-members" className="text-3xl font-serif mb-2">
           Crew members
         </h2>
 
-        <h3 className="text-2xl font-serif mb-4">Purpose of crew members</h3>
+        <h3 className="text-2xl font-serif mb-2">Purpose of crew members</h3>
 
         <p className="mb-4">
           The only real reason to have crew members is so that they can fight
@@ -221,7 +243,16 @@ const GuideContent = () => {
           You can give them medicine after battles.
         </p>
 
-        <h3 className="text-2xl font-serif mb-4">Getting more crew members</h3>
+        <Image
+          src="/img/userguide/crew.png"
+          width={800}
+          height={460}
+          alt="Crew stats"
+        />
+
+        <h3 className="text-2xl font-serif my-4 mb-2">
+          Getting more crew members
+        </h3>
 
         <p className="mb-4">
           When you win battles at sea some of their crew will offer to join you.
@@ -229,20 +260,20 @@ const GuideContent = () => {
           there, they often want to offer their services for free.
         </p>
 
-        <div className="divider" />
+        <div className="divider my-8" />
 
-        <h2 id="social-status" className="text-3xl font-serif mb-4">
+        <h2 id="social-status" className="text-3xl font-serif mb-2">
           Social status
         </h2>
 
-        <h3 className="text-2xl font-serif mb-4">Nations</h3>
+        <h3 className="text-2xl font-serif mb-2">Nations</h3>
         <p className="mb-4">
           This game takes place at the Spanish Main, in the Caribbean Sea at the
           1600th. There are four nations, battling over the towns. English,
           French, Spanish and Dutch.
         </p>
 
-        <h3 className="text-2xl font-serif mb-4">Levels</h3>
+        <h3 className="text-2xl font-serif mb-2">Levels</h3>
 
         <p className="mb-4">
           The level system in this game is pretty simple. You belong to a
@@ -253,9 +284,16 @@ const GuideContent = () => {
           them.
         </p>
 
-        <h3 className="text-2xl font-serif mb-4">Titles</h3>
+        <h3 className="text-2xl font-serif mb-2">Titles</h3>
 
-        <p className="mb-4">
+        <Image
+          src="/img/location/port-royale/city-hall.webp"
+          width={800}
+          height={460}
+          alt="The City Hall"
+        />
+
+        <p className="my-4">
           Levels doesn&apos;t do anything by itself, but you will be judged by
           the nations governor (At the City Hall) by it. You will get promoted
           if you are doing a good job. You will then get a reward, and higher
@@ -265,10 +303,10 @@ const GuideContent = () => {
           highest title.
         </p>
 
-        <h3 className="text-2xl font-serif mb-4">The different titles</h3>
+        <h3 className="text-2xl font-serif mb-2">The different titles</h3>
 
         <div className="overflow-x-auto">
-          <table className="table mb-4">
+          <table className="table bg-gray-950 bg-opacity-50 my-4">
             <thead>
               <tr>
                 <th>Level</th>
@@ -352,7 +390,7 @@ const GuideContent = () => {
           </table>
         </div>
 
-        <h3 className="text-2xl font-serif my-4">Changing nation</h3>
+        <h3 className="text-2xl font-serif my-2">Changing nation</h3>
 
         <p className="mb-4">
           If you are not pleased by your nation you can actually change it. You
@@ -371,13 +409,13 @@ const GuideContent = () => {
           Admiral at once when you get yourself an english citizenship.
         </p>
 
-        <div className="divider" />
+        <div className="divider my-8" />
 
         <h2 id="economy" className="text-3xl font-serif mb-4">
           Economy
         </h2>
 
-        <h3 className="text-2xl font-serif mb-4">Getting some gold</h3>
+        <h3 className="text-2xl font-serif mb-2">Getting some gold</h3>
 
         <p className="mb-4">
           The currency in this game is gold, for which you can buy and sell
@@ -385,7 +423,13 @@ const GuideContent = () => {
           but you can also sell your goods, gamble for it, or fight at the bar.
         </p>
 
-        <h3 className="text-2xl font-serif mb-4">Saving money</h3>
+        <p className="mb-4">
+          Oh, there is also treasures to be found! Sometimes when you are
+          winning a battle you will find these. The value can be really high,
+          but they need to be return to the correct Governor.
+        </p>
+
+        <h3 className="text-2xl font-serif mb-2">Saving money</h3>
 
         <p className="mb-4">
           There is a banking system in this game. When you lose a battle at sea,
@@ -407,7 +451,7 @@ const GuideContent = () => {
           you can only get 95 dbl back.
         </p>
 
-        <h3 className="text-2xl font-serif mb-4">Loans</h3>
+        <h3 className="text-2xl font-serif mb-2">Loans</h3>
 
         <p className="mb-4">
           You can also take a loan if the game are tough on you. You cannot loan
@@ -415,61 +459,51 @@ const GuideContent = () => {
           add gold to your account until you have payed off your loan.
         </p>
 
-        <div className="divider" />
+        <div className="divider my-8" />
 
-        <h2 id="traveling" className="text-3xl font-serif mb-4">
+        <h2 id="traveling" className="text-3xl font-serif mb-2">
           Traveling
         </h2>
 
-        <h3 className="text-2xl font-serif mb-4">Towns and nations</h3>
+        <h3 className="text-2xl font-serif mb-2">Towns and nations</h3>
 
-        <p className="mb-4">
+        <Image
+          src="/img/userguide/map.png"
+          width={800}
+          height={460}
+          alt="The Spanish Main"
+        />
+
+        <p className="my-4">
           All existing towns actually existed in the 1600th. The towns
           nationality varied from year to year though.
         </p>
 
-        <h5 className="text-xl font-serif">English towns</h5>
+        <p>
+          <strong>English towns:</strong> Charles Towne, Barbados, Port Royale,
+          Belize.
+        </p>
 
-        <ul className="list-disc list-inside mt-2 mb-4">
-          <li>Charles Towne</li>
-          <li>Barbados</li>
-          <li>Port Royale</li>
-          <li>Belize</li>
-        </ul>
+        <p>
+          <strong>French towns: </strong> Tortuga, Leogane, Martinique, Biloxi.
+        </p>
 
-        <h5 className="text-xl font-serif">French towns</h5>
+        <p>
+          <strong>Spanish towns:</strong> Panama, Havana, Villa Hermosa, San
+          Juan.
+        </p>
 
-        <ul className="list-disc list-inside mt-2 mb-4">
-          <li>Tortuga</li>
-          <li>Leogane</li>
-          <li>Martinique</li>
-          <li>Biloxi</li>
-        </ul>
-
-        <h5 className="text-xl font-serif">Spanish towns</h5>
-
-        <ul className="list-disc list-inside mt-2 mb-4">
-          <li>Panama</li>
-          <li>Havana</li>
-          <li>Villa Hermosa</li>
-          <li>San Juan</li>
-        </ul>
-
-        <h5 className="text-xl font-serif">Dutch towns</h5>
-
-        <ul className="list-disc list-inside mt-2 mb-4">
-          <li>Bonaire</li>
-          <li>Curacao</li>
-          <li>St. Martin</li>
-          <li>St. Eustatius</li>
-        </ul>
+        <p className="mb-4">
+          <strong>Dutch towns:</strong> Bonaire, Curacao, St. Martin, St.
+          Eustatius.
+        </p>
 
         <p className="mb-4">
           You can visit which of these you want, no matter which nationality you
           belongs to.
         </p>
 
-        <h3 className="text-2xl font-serif mb-4">Time</h3>
+        <h3 className="text-2xl font-serif mb-2">Time</h3>
 
         <p className="mb-4">
           Time is measured in weeks in Lost Seas. The time won&apos;t go by
@@ -477,18 +511,33 @@ const GuideContent = () => {
           when you travel from a town to the Caribbean Sea.
         </p>
 
-        <h3 className="text-2xl font-serif mb-4">Battles at sea</h3>
+        <h3 className="text-2xl font-serif mb-2">Weather</h3>
+
+        <p className="mb-4">
+          The weather will change by each passing day at sea, however it
+          won&apos;t affect anything at the moment.
+        </p>
+
+        <h3 className="text-2xl font-serif mb-2">Battles at sea</h3>
+
+        <Image
+          src="/img/location/ship-meeting/ship-meeting5.webp"
+          width={800}
+          height={460}
+          alt="Meeting a ship"
+        />
 
         <p className="mb-4">
           You will find ships from England, France, Spain and Holland. You will
-          also find some pirates.
+          also find some pirates. If you want to attack a ship from a particular
+          nation it is suggested that you travel to a town of that nation.
         </p>
 
         <p className="mb-4">
-          I would suggest that you don&apos;t attack ships that have more manned
-          cannons than you have. The is a random factor here, so you can win if
-          the gap isn&apos;t too big. But it&apos;s really risky! It&apos;s the
-          amount of functional cannons that decides if you will lose or not.
+          Be careful when attacking ships that have more manned cannons than you
+          have. The is a random factor here, so you can win if the gap
+          isn&apos;t too big. But it&apos;s really risky! It&apos;s the amount
+          of functional cannons that decides if you will lose or not.
         </p>
 
         <p className="mb-4">
@@ -498,7 +547,7 @@ const GuideContent = () => {
 
       <button
         onClick={goToTop}
-        className="fixed bottom-5 right-5 rounded-full bg-info bg-opacity-50 p-3 text-xs font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-500 hover:shadow-lg focus:bg-blue-500 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-500 active:shadow-lg"
+        className="fixed bottom-5 right-5 rounded-full bg-info bg-opacity-50 p-3 text-xs font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-opacity-100 hover:shadow-lg focus:bg-opacity-100 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-500 active:shadow-lg"
       >
         <BiArrowToTop className="w-7 h-7" />
       </button>
