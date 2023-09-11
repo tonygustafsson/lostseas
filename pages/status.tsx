@@ -86,10 +86,10 @@ const Status = () => {
               </div>
             </div>
 
-            <div className="card-actions justify-end mt-4">
+            <div className="card-actions justify-end mb-4">
               <button
                 onClick={openCharacterEditModal}
-                className="btn btn-primary btn-sm"
+                className="btn btn-secondary"
               >
                 Change
               </button>
