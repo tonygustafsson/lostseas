@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react"
 import { Head, Html, Main, NextScript } from "next/document"
 
 import { almendra, andika } from "@/fonts"
@@ -8,7 +9,9 @@ const Document = () => (
 
     <body>
       <Main />
+
       <NextScript />
+      <Analytics />
     </body>
   </Html>
 )
