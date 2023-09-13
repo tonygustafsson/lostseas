@@ -3,9 +3,9 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getCharacter, saveCharacter } from "@/firebase/db"
-import { getBet, getDiceReturns, getRandomDiceResults } from "@/utils/dice"
+import { getBet, getCardsReturns, getRandomCardsResult } from "@/utils/cards"
 
-const tavernDice = async (req: NextApiRequest, res: NextApiResponse) => {
+const tavernCards = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
 
   if (!playerId) {
@@ -24,8 +24,8 @@ const tavernDice = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const diceResults = getRandomDiceResults()
-  const diceReturns = getDiceReturns(diceResults, bet)
+  const diceResults = getRandomCardsResult()
+  const diceReturns = getCardsReturns(diceResults, bet)
 
   const goldResult = character.gold + diceReturns
 
@@ -48,4 +48,4 @@ const tavernDice = async (req: NextApiRequest, res: NextApiResponse) => {
   })
 }
 
-export default tavernDice
+export default tavernCards

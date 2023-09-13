@@ -28,11 +28,11 @@ export const TAVERN_ITEMS = {
   },
 }
 
-export const DICE_PERCENTAGE_VALUES = [5, 10, 25, 50, 75, 100]
-export const DICE_PERCENTAGE_DEFAULT_VALUE = 10
-export const DICE_RANDOM_MIN = 1
-export const DICE_RANDOM_MAX = 40
-export const DICE_WON = 7 // 7 <= 40
-export const DICE_WON_MULTIPLIER_MIN = 2
-export const DICE_WON_MULTIPLIER_MAX = 5
-export const DICE_JACKPOT_MULTIPLIER = 40
+export const CARDS_PERCENTAGE_VALUES = [5, 10, 25, 50, 75, 100]
+export const CARDS_PERCENTAGE_DEFAULT_VALUE = 10
+export const CARDS_RANDOM_MIN = 1
+export const CARDS_RANDOM_MAX = 40
+export const CARDS_WON = 7 // 7 <= 40
+export const CARDS_WON_MULTIPLIER_MIN = 2
+export const CARDS_WON_MULTIPLIER_MAX = 5
+export const CARDS_JACKPOT_MULTIPLIER = 40

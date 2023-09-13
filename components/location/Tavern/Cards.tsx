@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react"
 import {
   GiAcorn,
   GiAnchor,
@@ -23,10 +24,17 @@ import {
   GiSuperMushroom,
 } from "react-icons/gi"
 
+import {
+  CARDS_JACKPOT_MULTIPLIER,
+  CARDS_PERCENTAGE_DEFAULT_VALUE,
+  CARDS_PERCENTAGE_VALUES,
+  CARDS_WON_MULTIPLIER_MAX,
+  CARDS_WON_MULTIPLIER_MIN,
+} from "@/constants/tavern"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { useTavern } from "@/hooks/queries/useTavern"
+import { getBet } from "@/utils/cards"
 import { getRandomInt } from "@/utils/random"
-
-const pickedCards: number[] = []
 
 const CARDS = [
   { text: "The Acorn", icon: <GiAcorn className="w-12 h-12 text-primary" /> },
@@ -95,38 +103,91 @@ const CARDS = [
   },
 ]
 
-const RandomCard = () => {
-  let randomCardIndex = getRandomInt(0, CARDS.length - 1)
+const TavernCards = () => {
+  const { data: player } = useGetPlayer()
+  const { playCards } = useTavern()
 
-  while (pickedCards.includes(randomCardIndex)) {
-    randomCardIndex = getRandomInt(0, CARDS.length - 1)
+  const [betPercentage, setBetPercentage] = useState(
+    CARDS_PERCENTAGE_DEFAULT_VALUE
+  )
+  const [pickedCard, setPickedCard] = useState<number>()
+
+  const availableCards = useMemo(() => {
+    const cards: number[] = []
+
+    for (let i = 0; i < 5; i++) {
+      let randomCardIndex = getRandomInt(0, CARDS.length - 1)
+
+      while (cards.includes(randomCardIndex)) {
+        randomCardIndex = getRandomInt(0, CARDS.length - 1)
+      }
+
+      cards.push(randomCardIndex)
+    }
+
+    return cards
+  }, [])
+
+  const bet = getBet(betPercentage, player?.character.gold || 0)
+  const profitMin = Math.floor(bet * CARDS_WON_MULTIPLIER_MIN)
+  const profitMax = Math.floor(bet * CARDS_WON_MULTIPLIER_MAX)
+  const profitJackpot = Math.floor(bet * CARDS_JACKPOT_MULTIPLIER)
+
+  const disabled = bet > (player?.character.gold || 0)
+
+  const handlePlayCards = () => {
+    playCards({ betPercentage })
   }
 
   return (
-    <div className="flex flex-col items-center gap-3">
-      {CARDS[randomCardIndex].icon}
-      <p className="text-gray-400">{CARDS[randomCardIndex].text}</p>
-    </div>
-  )
-}
+    <div className="flex items-center flex-col">
+      <div className="flex flex-row lg:join mb-8">
+        <div className="flex flex-wrap items-center lg:gap-0">
+          {CARDS_PERCENTAGE_VALUES.map((value) => (
+            <button
+              key={`tavern-cards-bet-${value}`}
+              className={`btn join-item w-1/2 lg:w-auto ${
+                betPercentage === value ? "btn-primary" : "bg-gray-800"
+              }`}
+              onClick={() => setBetPercentage(value)}
+            >
+              Bet {value === 100 ? "all" : `${value}%`}
+            </button>
+          ))}
 
-const TavernCards = () => {
-  const { data: player } = useGetPlayer()
+          <button
+            className="btn btn-primary mt-4 lg:mt-0 lg:ml-4 w-full lg:w-fit"
+            disabled={disabled}
+            onClick={handlePlayCards}
+          >
+            Play
+          </button>
+        </div>
+      </div>
 
-  return (
-    <div>
-      <p>Hej {player?.character.name}</p>
-
-      <div className="flex justify-center gap-4">
-        {Array.from({ length: 5 }).map((_, index) => (
+      <div className="flex justify-center gap-4 mt-4">
+        {availableCards.map((_, index) => (
           <button
             key={`tavern-card-${index}`}
-            className="flex items-center justify-center w-32 h-44 rounded-lg bg-slate-800 hover:bg-slate-700 focus:bg-pink-900 border border-gray-700"
+            onClick={() => setPickedCard(index)}
+            className={`flex items-center justify-center w-32 h-44 rounded-lg bg-slate-800 hover:bg-slate-700 ${
+              pickedCard === index ? "bg-pink-900" : ""
+            } focus:bg-pink-900 border border-gray-700`}
           >
-            <RandomCard />
+            <div className="flex flex-col items-center gap-3">
+              {CARDS[index].icon}
+              <p className="text-gray-400">{CARDS[index].text}</p>
+            </div>{" "}
           </button>
         ))}
       </div>
+
+      <p className="text-lg font-serif mt-8">You will bet {bet} gold</p>
+
+      <p className="text-sm mt-2">
+        You have 1/6 change of winning between {profitMin} and {profitMax} gold.
+        If you hit jackpot you would get {profitJackpot} gold.
+      </p>
     </div>
   )
 }

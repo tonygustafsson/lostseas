@@ -8,9 +8,8 @@ import { useTavern } from "@/hooks/queries/useTavern"
 
 import TavernBuy from "./Buy"
 import TavernCards from "./Cards"
-import TavernDice from "./Dice"
 
-export type TavernTab = "buy" | "dice" | "cards"
+export type TavernTab = "buy" | "cards"
 
 const Tavern = () => {
   const { data: player } = useGetPlayer()
@@ -85,7 +84,6 @@ const Tavern = () => {
       <LocationTabs<TavernTab>
         items={[
           { id: "buy", label: "Buy" },
-          { id: "dice", label: "Play dice" },
           { id: "cards", label: "Play cards" },
         ]}
         currentTab={tab}
@@ -93,7 +91,6 @@ const Tavern = () => {
       />
 
       {tab === "buy" && <TavernBuy />}
-      {tab === "dice" && <TavernDice />}
       {tab === "cards" && <TavernCards />}
     </>
   )
