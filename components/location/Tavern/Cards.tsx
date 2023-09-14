@@ -25,15 +25,12 @@ import {
 } from "react-icons/gi"
 
 import {
-  CARDS_JACKPOT_MULTIPLIER,
   CARDS_PERCENTAGE_DEFAULT_VALUE,
   CARDS_PERCENTAGE_VALUES,
-  CARDS_WON_MULTIPLIER_MAX,
-  CARDS_WON_MULTIPLIER_MIN,
 } from "@/constants/tavern"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useTavern } from "@/hooks/queries/useTavern"
-import { getBet } from "@/utils/cards"
+import { getCardsBet } from "@/pages/api/tavern/cards"
 import { getRandomInt } from "@/utils/random"
 
 const CARDS = [
@@ -110,7 +107,7 @@ const TavernCards = () => {
   const [betPercentage, setBetPercentage] = useState(
     CARDS_PERCENTAGE_DEFAULT_VALUE
   )
-  const [pickedCard, setPickedCard] = useState<number>()
+  const [selectedCard, setSelectedCard] = useState<number>()
 
   const availableCards = useMemo(() => {
     const cards: number[] = []
@@ -128,15 +125,17 @@ const TavernCards = () => {
     return cards
   }, [])
 
-  const bet = getBet(betPercentage, player?.character.gold || 0)
-  const profitMin = Math.floor(bet * CARDS_WON_MULTIPLIER_MIN)
-  const profitMax = Math.floor(bet * CARDS_WON_MULTIPLIER_MAX)
-  const profitJackpot = Math.floor(bet * CARDS_JACKPOT_MULTIPLIER)
+  const bet = getCardsBet(betPercentage, player?.character.gold || 0)
+  const potentialProfit = Math.floor(bet * 5)
 
   const disabled = bet > (player?.character.gold || 0)
 
-  const handlePlayCards = () => {
-    playCards({ betPercentage })
+  const handlePlayCards = async () => {
+    if (typeof selectedCard === "undefined") return
+
+    const response = await playCards({ betPercentage, selectedCard })
+
+    console.log({ response })
   }
 
   return (
@@ -169,9 +168,9 @@ const TavernCards = () => {
         {availableCards.map((_, index) => (
           <button
             key={`tavern-card-${index}`}
-            onClick={() => setPickedCard(index)}
+            onClick={() => setSelectedCard(index)}
             className={`flex items-center justify-center w-32 h-44 rounded-lg bg-slate-800 hover:bg-slate-700 ${
-              pickedCard === index ? "bg-pink-900" : ""
+              selectedCard === index ? "bg-pink-900" : ""
             } focus:bg-pink-900 border border-gray-700`}
           >
             <div className="flex flex-col items-center gap-3">
@@ -185,8 +184,7 @@ const TavernCards = () => {
       <p className="text-lg font-serif mt-8">You will bet {bet} gold</p>
 
       <p className="text-sm mt-2">
-        You have 1/6 change of winning between {profitMin} and {profitMax} gold.
-        If you hit jackpot you would get {profitJackpot} gold.
+        You have 1/5 change of winning {potentialProfit} gold.
       </p>
     </div>
   )

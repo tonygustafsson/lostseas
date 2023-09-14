@@ -143,8 +143,8 @@ export const useTavern = () => {
     }
   )
 
-  const { mutate: playCards, isLoading: isPlayingCard } = useMutation(
-    (data: { betPercentage: number }) =>
+  const { mutateAsync: playCards, isLoading: isPlayingCard } = useMutation(
+    (data: { betPercentage: number; selectedCard: number }) =>
       apiRequest("/api/tavern/cards", data, "POST"),
     {
       onSuccess: (response) => {
