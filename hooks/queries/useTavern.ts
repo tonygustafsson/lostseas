@@ -143,12 +143,12 @@ export const useTavern = () => {
     }
   )
 
-  const { mutate: playDice, isLoading: isPlayingDice } = useMutation(
-    (data: { betPercentage: number }) =>
-      apiRequest("/api/tavern/dice", data, "POST"),
+  const { mutateAsync: playCards, isLoading: isPlayingCard } = useMutation(
+    (data: { betPercentage: number; selectedCard: number }) =>
+      apiRequest("/api/tavern/cards", data, "POST"),
     {
       onSuccess: (response) => {
-        const { error, bet, gold, diceResults } = response?.data
+        const { error, bet, gold, cardsResults } = response?.data
 
         if (error) {
           setToast({
@@ -164,10 +164,8 @@ export const useTavern = () => {
 
         let title = ""
 
-        if (diceResults === "won") {
+        if (cardsResults === "won") {
           title = `You played made a bet of ${bet} gold and won!`
-        } else if (diceResults === "jackpot") {
-          title = `You played made a bet of ${bet} gold and won the jackpot!`
         } else {
           title = `You played made a bet of ${bet} gold and lost`
         }
@@ -175,13 +173,10 @@ export const useTavern = () => {
         setToast({
           title,
           message: `You now have ${gold} gold in total.`,
-          variant:
-            diceResults === "won" || diceResults === "jackpot"
-              ? "success"
-              : "error",
+          variant: cardsResults === "won" ? "success" : "error",
         })
 
-        if (diceResults === "won" || diceResults === "jackpot") {
+        if (cardsResults === "won") {
           playSoundEffect("cheers")
         } else {
           playSoundEffect("frustration")
@@ -200,7 +195,7 @@ export const useTavern = () => {
     isFightingSailors,
     ignoreSailors,
     isIgnoringSailors,
-    playDice,
-    isPlayingDice,
+    playCards,
+    isPlayingCard,
   }
 }

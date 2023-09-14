@@ -3,9 +3,12 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getCharacter, saveCharacter } from "@/firebase/db"
-import { getBet, getDiceReturns, getRandomDiceResults } from "@/utils/dice"
+import { getRandomInt } from "@/utils/random"
+import { getCardsBet } from "@/utils/tavern"
 
-const tavernDice = async (req: NextApiRequest, res: NextApiResponse) => {
+export type CardsResult = "won" | "lost"
+
+const tavernCards = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
 
   if (!playerId) {
@@ -13,21 +16,23 @@ const tavernDice = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const { betPercentage } = req.body
+  const { betPercentage, selectedCard } = req.body
 
   const character = await getCharacter(playerId)
 
-  const bet = getBet(betPercentage, character.gold || 0)
+  const bet = getCardsBet(betPercentage, character.gold || 0)
 
   if (character.gold < bet) {
     res.status(400).json({ error: "Not enough gold" })
     return
   }
 
-  const diceResults = getRandomDiceResults()
-  const diceReturns = getDiceReturns(diceResults, bet)
+  const correctCard = getRandomInt(0, 4)
+  const cardsResults: CardsResult =
+    selectedCard === correctCard ? "won" : "lost"
+  const cardsReturns = cardsResults === "won" ? bet * 5 : -bet
 
-  const goldResult = character.gold + diceReturns
+  const goldResult = character.gold + cardsReturns
 
   const characterResult: Character = {
     ...character,
@@ -35,17 +40,24 @@ const tavernDice = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   await saveCharacter(playerId, characterResult).catch((error) => {
-    res.status(500).json({ error, bet, diceResults, diceReturns })
+    res.status(500).json({
+      error,
+      bet,
+      cardsResults,
+      cardsReturns,
+    })
     return
   })
 
   res.status(200).json({
     success: true,
     bet,
-    diceResults,
-    diceReturns,
+    cardsResults,
+    cardsReturns,
+    selectedCard,
+    correctCard,
     gold: goldResult,
   })
 }
 
-export default tavernDice
+export default tavernCards

@@ -3,8 +3,6 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import ShopItem from "./ShopItem"
 
-export type TavernTab = "Buy" | "Dice"
-
 const TavernBuy = () => {
   const { data: player } = useGetPlayer()
 

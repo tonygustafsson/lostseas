@@ -48,7 +48,6 @@ export const usePlayer = () => {
         if (response?.status === 200) {
           window.location.href = "/"
         } else {
-          console.log({ response })
           return response
         }
       },
