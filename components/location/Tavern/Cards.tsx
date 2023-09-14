@@ -30,8 +30,8 @@ import {
 } from "@/constants/tavern"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useTavern } from "@/hooks/queries/useTavern"
-import { getCardsBet } from "@/pages/api/tavern/cards"
 import { getRandomInt } from "@/utils/random"
+import { getCardsBet } from "@/utils/tavern"
 
 const CARDS = [
   { text: "The Acorn", icon: <GiAcorn className="w-12 h-12 text-primary" /> },
@@ -108,6 +108,7 @@ const TavernCards = () => {
     CARDS_PERCENTAGE_DEFAULT_VALUE
   )
   const [selectedCard, setSelectedCard] = useState<number>()
+  const [correctCard, setCorrectCard] = useState<number>()
 
   const availableCards = useMemo(() => {
     const cards: number[] = []
@@ -128,14 +129,40 @@ const TavernCards = () => {
   const bet = getCardsBet(betPercentage, player?.character.gold || 0)
   const potentialProfit = Math.floor(bet * 5)
 
-  const disabled = bet > (player?.character.gold || 0)
+  const disabled =
+    bet > (player?.character.gold || 0) || typeof selectedCard === "undefined"
+
+  const handleSelectCard = (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    card: number
+  ) => {
+    if (selectedCard === card) {
+      setSelectedCard(undefined)
+    } else {
+      setSelectedCard(card)
+    }
+
+    const element = (e.target as HTMLElement).closest("button")
+    element?.blur()
+
+    setCorrectCard(undefined)
+  }
 
   const handlePlayCards = async () => {
     if (typeof selectedCard === "undefined") return
 
-    const response = await playCards({ betPercentage, selectedCard })
+    const cardsResult = await playCards({ betPercentage, selectedCard })
+    const correctCard = cardsResult?.data?.correctCard
 
-    console.log({ response })
+    setCorrectCard(correctCard)
+  }
+
+  const getCardClassNames = (index: number) => {
+    if (index === correctCard)
+      return "bg-green-900 hover:bg-green-800 border-green-700"
+    if (index === selectedCard)
+      return "bg-pink-900 hover:bg-pink-800 border-pink-700"
+    return "bg-slate-800 hover:bg-slate-700 border-gray-700"
   }
 
   return (
@@ -168,10 +195,10 @@ const TavernCards = () => {
         {availableCards.map((_, index) => (
           <button
             key={`tavern-card-${index}`}
-            onClick={() => setSelectedCard(index)}
-            className={`flex items-center justify-center w-32 h-44 rounded-lg bg-slate-800 hover:bg-slate-700 ${
-              selectedCard === index ? "bg-pink-900" : ""
-            } focus:bg-pink-900 border border-gray-700`}
+            onClick={(e) => handleSelectCard(e, index)}
+            className={`flex items-center justify-center w-32 h-44 rounded-lg border ${getCardClassNames(
+              index
+            )}`}
           >
             <div className="flex flex-col items-center gap-3">
               {CARDS[index].icon}

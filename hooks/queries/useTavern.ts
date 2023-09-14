@@ -148,7 +148,7 @@ export const useTavern = () => {
       apiRequest("/api/tavern/cards", data, "POST"),
     {
       onSuccess: (response) => {
-        const { error, bet, gold, cardResults } = response?.data
+        const { error, bet, gold, cardsResults } = response?.data
 
         if (error) {
           setToast({
@@ -164,10 +164,8 @@ export const useTavern = () => {
 
         let title = ""
 
-        if (cardResults === "won") {
+        if (cardsResults === "won") {
           title = `You played made a bet of ${bet} gold and won!`
-        } else if (cardResults === "jackpot") {
-          title = `You played made a bet of ${bet} gold and won the jackpot!`
         } else {
           title = `You played made a bet of ${bet} gold and lost`
         }
@@ -175,13 +173,10 @@ export const useTavern = () => {
         setToast({
           title,
           message: `You now have ${gold} gold in total.`,
-          variant:
-            cardResults === "won" || cardResults === "jackpot"
-              ? "success"
-              : "error",
+          variant: cardsResults === "won" ? "success" : "error",
         })
 
-        if (cardResults === "won" || cardResults === "jackpot") {
+        if (cardsResults === "won") {
           playSoundEffect("cheers")
         } else {
           playSoundEffect("frustration")

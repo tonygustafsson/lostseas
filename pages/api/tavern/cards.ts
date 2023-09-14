@@ -4,14 +4,9 @@ import { NextApiRequest, NextApiResponse } from "next/types"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getCharacter, saveCharacter } from "@/firebase/db"
 import { getRandomInt } from "@/utils/random"
+import { getCardsBet } from "@/utils/tavern"
 
 export type CardsResult = "won" | "lost"
-
-export const getCardsBet = (percentage: number, gold: number) => {
-  if (percentage === 100) return gold
-
-  return Math.floor((percentage / 100) * gold)
-}
 
 const tavernCards = async (req: NextApiRequest, res: NextApiResponse) => {
   const playerId = getCookie(PLAYER_ID_COOKIE_NAME, { req, res })?.toString()
