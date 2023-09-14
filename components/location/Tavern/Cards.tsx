@@ -130,7 +130,9 @@ const TavernCards = () => {
   const potentialProfit = Math.floor(bet * 5)
 
   const disabled =
-    bet > (player?.character.gold || 0) || typeof selectedCard === "undefined"
+    !bet ||
+    bet > (player?.character.gold || 0) ||
+    typeof selectedCard === "undefined"
 
   const handleSelectCard = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
