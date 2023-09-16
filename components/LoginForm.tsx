@@ -58,7 +58,7 @@ const LoginForm = () => {
       {error && <p className="text-red-500">{error}</p>}
       {apiError && <p className="text-red-500">{apiError}</p>}
 
-      <div className="flex gap-2 mt-3">
+      <div className="flex flex-col md:flex-row gap-2 mt-3">
         <button
           type="submit"
           className="btn btn-primary flex-1"

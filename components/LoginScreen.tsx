@@ -11,6 +11,7 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import LoginForm from "./LoginForm"
 import RegistrationForm from "./RegistrationForm"
 import Screenshots from "./Screenshots"
+import SocialMedia from "./SocialMedia"
 
 const LoginScreen = () => {
   const { data: player } = useGetPlayer()
@@ -78,11 +79,6 @@ const LoginScreen = () => {
               </li>
             </ul>
 
-            <Link href="/guide" className="btn btn-secondary mt-8">
-              <PiBookOpenTextBold size={26} />
-              Check out the Player Guide
-            </Link>
-
             <h2 className="font-serif mt-8 mb-4 text-2xl lg:text-3xl">
               Screenshots
             </h2>
@@ -132,6 +128,13 @@ const LoginScreen = () => {
                 <GiArchiveRegister size={24} />
                 Register
               </button>
+
+              <Link href="/guide" className="btn btn-secondary w-full mt-4">
+                <PiBookOpenTextBold size={26} />
+                Check out the Player Guide
+              </Link>
+
+              <SocialMedia />
             </>
           )}
         </div>

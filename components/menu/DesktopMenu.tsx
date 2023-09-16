@@ -3,6 +3,7 @@ import Link from "next/link"
 
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
+import SocialMedia from "../SocialMedia"
 import SoundControls from "../Sound/Controls"
 import CharacterCard from "./CharacterCard"
 import MainMenu from "./MainMenu"
@@ -40,6 +41,7 @@ const DesktopMenu = ({ className }: Props) => {
       <SoundControls />
       <CharacterCard player={player} />
       <WeatherCard day={player.character.day} />
+      <SocialMedia />
     </div>
   )
 }
