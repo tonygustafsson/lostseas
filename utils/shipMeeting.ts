@@ -17,7 +17,7 @@ export const createMeetingShip = (mannedCannons: number, destination: Town) => {
 
   const minCannons = mannedCannons < 1 ? 1 : Math.floor(mannedCannons * 0.8)
   const maxCannons = mannedCannons < 1 ? 2 : Math.floor(mannedCannons * 1.1)
-  const cannons = getRandomInt(minCannons, maxCannons)
+  const cannons = getRandomInt(minCannons, maxCannons) || 1
   const crewMembers = cannons * 2
 
   return {
