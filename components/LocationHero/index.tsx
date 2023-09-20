@@ -27,6 +27,10 @@ const LocationHero = () => {
 
   if (!player) return null
 
+  if (player?.character.location === "Tavern") {
+    return null
+  }
+
   return (
     <>
       <div

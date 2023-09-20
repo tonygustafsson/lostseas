@@ -68,7 +68,7 @@ const Home = () => {
 
       <LocationHero />
 
-      <div className="mt-8">
+      <div>
         {player?.character.location === "Shop" && <Shop />}
         {player?.character.location === "Bank" && <Bank />}
         {player?.character.location === "Market" && <Market />}

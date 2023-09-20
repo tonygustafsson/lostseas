@@ -3,6 +3,7 @@ import { GiPirateCaptain } from "react-icons/gi"
 
 import ActionCard from "@/components/ActionCard"
 import LocationTabs from "@/components/LocationTabs"
+import TownHero from "@/components/TownHero"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useTavern } from "@/hooks/queries/useTavern"
 
@@ -31,6 +32,11 @@ const Tavern = () => {
 
   return (
     <>
+      <TownHero
+        town={player?.character?.town}
+        location={player?.character?.location}
+      />
+
       {!!player?.locationStates?.tavern?.noOfSailors &&
         !player?.locationStates.tavern.isHostile && (
           <ActionCard
