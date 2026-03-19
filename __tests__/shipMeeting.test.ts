@@ -64,14 +64,17 @@ describe("shipMeeting utilities", () => {
   })
 
   it("getNumberOfRecruits uses different percentage ranges based on opponent size", () => {
-    ;(getRandomInt as any).mockReturnValue(20)
-    expect(getNumberOfRecruits(8)).toBeGreaterThanOrEqual(0)
+    // opponent <= 10: percent 10-40
+    ;(getRandomInt as any).mockReturnValue(40)
+    expect(getNumberOfRecruits(10)).toBe(4) // floor(10 * 0.4)
 
-    ;(getRandomInt as any).mockReturnValue(5)
-    expect(getNumberOfRecruits(20)).toBeGreaterThanOrEqual(0)
+    // opponent == 11: percent 2-6
+    ;(getRandomInt as any).mockReturnValue(6)
+    expect(getNumberOfRecruits(11)).toBe(0) // floor(11 * 0.06) = 0
 
-    ;(getRandomInt as any).mockReturnValue(4)
-    expect(getNumberOfRecruits(11)).toBeGreaterThanOrEqual(0)
+    // opponent > 11: percent 3-10
+    ;(getRandomInt as any).mockReturnValue(10)
+    expect(getNumberOfRecruits(20)).toBe(2) // floor(20 * 0.10)
   })
 
   it("getLootedMerchandise returns an object with possible merchandise counts", () => {
