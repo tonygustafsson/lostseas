@@ -42,7 +42,7 @@ const WelcomeNewUser = ({ player, onClose }: Props) => {
         . That way you can login again if you loose your browser settings.
       </p>
 
-      <button className="btn btn-primary w-full mt-4" onClick={startExploring}>
+      <button className="btn btn-primary mt-4 w-full" onClick={startExploring}>
         Start exploring
       </button>
     </>

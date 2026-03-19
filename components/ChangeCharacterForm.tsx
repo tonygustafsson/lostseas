@@ -33,7 +33,7 @@ const ChangeCharacterForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full flex flex-col gap-4"
+      className="flex w-full flex-col gap-4"
     >
       <TextField
         label="Name"

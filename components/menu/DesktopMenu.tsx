@@ -20,10 +20,10 @@ const DesktopMenu = ({ className }: Props) => {
   if (!player) return null
 
   return (
-    <div className={`w-72 py-8 px-4 bg-gray-900 ${className}`}>
+    <div className={`w-72 bg-gray-900 px-4 py-8 ${className}`}>
       <Link
         href="/"
-        className="flex font-serif text-3xl gap-3 items-baseline mb-2 mx-3"
+        className="mx-3 mb-2 flex items-baseline gap-3 font-serif text-3xl"
       >
         <Image
           src="/img/logo.svg"

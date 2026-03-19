@@ -122,10 +122,11 @@ const Governor = () => {
 
   return (
     <ActionCard
-      title={`Welcome ${player?.character.title.toLowerCase()} ${player
-        ?.character.name}`}
+      title={`Welcome ${player?.character.title.toLowerCase()} ${
+        player?.character.name
+      }`}
       message={greeting}
-      icon={<GiQuillInk className="w-20 h-20 text-secondary" />}
+      icon={<GiQuillInk className="h-20 w-20 text-secondary" />}
       {...(promotionAvailable && {
         actions: (
           <button className="btn btn-primary" onClick={handleAcceptNewTitle}>

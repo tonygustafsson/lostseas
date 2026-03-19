@@ -14,14 +14,14 @@ const TownContent = ({ town, location }: Props) => {
 
   return (
     <>
-      <h1 className="font-serif mb-4 text-3xl lg:text-5xl">The {location}</h1>
+      <h1 className="mb-4 font-serif text-3xl lg:text-5xl">The {location}</h1>
 
-      <h2 className="font-serif mb-3 lg:mb-5 text-lg lg:text-2xl flex gap-3 justify-center items-center">
-        <Flag nation={nation} className="w-5 h-5 lg:w-7 lg:h-7 opacity-[0.8]" />
+      <h2 className="mb-3 flex items-center justify-center gap-3 font-serif text-lg lg:mb-5 lg:text-2xl">
+        <Flag nation={nation} className="h-5 w-5 opacity-[0.8] lg:h-7 lg:w-7" />
         {town}, {nation}
       </h2>
 
-      <p className="lg:mb-5 text-left text-sm">{description}</p>
+      <p className="text-left text-sm lg:mb-5">{description}</p>
     </>
   )
 }

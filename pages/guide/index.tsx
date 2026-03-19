@@ -25,13 +25,13 @@ const Guide = () => {
             layout="fill"
             objectFit="cover"
             alt="Lost Seas background"
-            className="absolute top-0 left-0 opacity-50 z-10"
+            className="absolute left-0 top-0 z-10 opacity-50"
           />
 
-          <div className="flex flex-col gap-4 lg:gap-8 min-h-screen justify-items-stretch w-full relative z-20">
-            <div className="bg-base-300 bg-opacity-70 w-full rounded-lg p-6 lg:p-8">
-              <div className="max-w-3xl mx-auto text-lg">
-                <h1 className="font-serif mb-5 text-5xl lg:text-6xl text-center">
+          <div className="relative z-20 flex min-h-screen w-full flex-col justify-items-stretch gap-4 lg:gap-8">
+            <div className="w-full rounded-lg bg-base-300 bg-opacity-70 p-6 lg:p-8">
+              <div className="mx-auto max-w-3xl text-lg">
+                <h1 className="mb-5 text-center font-serif text-5xl lg:text-6xl">
                   Player guide
                 </h1>
 
@@ -56,7 +56,7 @@ const Guide = () => {
 
   return (
     <DefaultLayout>
-      <h1 className="text-4xl font-serif">Player guide</h1>
+      <h1 className="font-serif text-4xl">Player guide</h1>
 
       <GuideContent />
     </DefaultLayout>

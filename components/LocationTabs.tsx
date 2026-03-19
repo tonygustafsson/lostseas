@@ -14,11 +14,11 @@ const LocationTabs = <T extends string>({
   currentTab,
   setCurrentTab,
 }: Props<T>) => (
-  <div className="tabs justify-center mb-8">
+  <div className="tabs mb-8 justify-center">
     {items.map(({ label, id }) => (
       <a
         key={`location-tab-${id}`}
-        className={`tab tab-lg font-serif text-2xl tab-bordered font-bold px-8 ${
+        className={`tab tab-bordered tab-lg px-8 font-serif text-2xl font-bold ${
           currentTab === id ? "tab-active" : ""
         }`}
         onClick={() => setCurrentTab(id)}

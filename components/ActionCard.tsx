@@ -6,12 +6,12 @@ type Props = {
 }
 
 const ActionCard = ({ title, message, actions, icon }: Props) => (
-  <div className="hero mb-8 bg-gray-800 border border-gray-700 rounded-lg">
-    <div className="hero-content max-w-none w-full items-start justify-start flex-col lg:flex-row p-8 gap-8">
+  <div className="hero mb-8 rounded-lg border border-gray-700 bg-gray-800">
+    <div className="hero-content w-full max-w-none flex-col items-start justify-start gap-8 p-8 lg:flex-row">
       {icon}
 
       <div className="max-w-3xl">
-        <h1 className="text-2xl font-serif font-bold">{title}</h1>
+        <h1 className="font-serif text-2xl font-bold">{title}</h1>
 
         {typeof message === "string" ? (
           <p className="pt-2">{message}</p>

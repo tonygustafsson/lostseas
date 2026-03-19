@@ -40,7 +40,7 @@ const Market = () => {
 
                 <p>{MERCHANDISE[inventoryItem].description}</p>
 
-                <div className="flex gap-2 mt-2">
+                <div className="mt-2 flex gap-2">
                   <div className="badge badge-secondary">
                     Price: {price * quantity} gold
                   </div>

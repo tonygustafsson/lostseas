@@ -10,7 +10,8 @@ export const useCharacter = () => {
   const { mutate: move, isPending: isMoving } = useMutation({
     mutationFn: (data: { location: TownLocation | SeaLocation }) =>
       apiRequest("/api/character/move", data, "POST"),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] }),
     onError: (error) => console.error(error),
   })
 

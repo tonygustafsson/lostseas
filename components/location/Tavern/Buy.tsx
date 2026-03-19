@@ -8,7 +8,7 @@ const TavernBuy = () => {
 
   return (
     <>
-      <h2 className="text-3xl font-serif mb-8">Buy</h2>
+      <h2 className="mb-8 font-serif text-3xl">Buy</h2>
 
       <div className="flex flex-wrap gap-6">
         {Object.keys(TAVERN_ITEMS).map((item) => (

@@ -60,17 +60,17 @@ const BankLoan = () => {
   }
 
   return (
-    <div className="flex flex-wrap gap-6 w-full justify-center mt-8">
-      <div className="w-full flex flex-col lg:flex-row lg:gap-8 ">
+    <div className="mt-8 flex w-full flex-wrap justify-center gap-6">
+      <div className="flex w-full flex-col lg:flex-row lg:gap-8">
         <form
-          className="flex flex-col justify-between w-full items-start"
+          className="flex w-full flex-col items-start justify-between"
           onSubmit={loanHandleSubmit(handleLoan)}
         >
-          <h2 className="text-2xl font-serif font-semibold mb-4">
+          <h2 className="mb-4 font-serif text-2xl font-semibold">
             Take a loan
           </h2>
 
-          <p className="text-sm min-h-12">
+          <p className="min-h-12 text-sm">
             You can loan up to {LOAN_LIMIT} gold. If you have a loan you cannot
             add funds to your account though until it has been repaid.
           </p>
@@ -92,12 +92,12 @@ const BankLoan = () => {
         </form>
 
         <form
-          className="flex flex-col justify-between items-start w-full"
+          className="flex w-full flex-col items-start justify-between"
           onSubmit={repayHandleSubmit(handleRepay)}
         >
-          <h2 className="text-2xl font-serif font-semibold mb-4">Repay loan</h2>
+          <h2 className="mb-4 font-serif text-2xl font-semibold">Repay loan</h2>
 
-          <p className="text-sm min-h-12">
+          <p className="min-h-12 text-sm">
             Repay your loan to be able to take more loans down the road.
           </p>
 

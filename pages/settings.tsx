@@ -34,9 +34,9 @@ const Settings = () => {
       </Head>
 
       <DefaultLayout>
-        <h1 className="text-3xl font-serif text mb-6">Settings</h1>
+        <h1 className="text mb-6 font-serif text-3xl">Settings</h1>
 
-        <div className="w-full flex flex-col gap-4 max-w-xl">
+        <div className="flex w-full max-w-xl flex-col gap-4">
           <p className="mb-4">
             Your account were created{" "}
             {new Date(player?.createdDate).toLocaleDateString()}.
@@ -51,7 +51,7 @@ const Settings = () => {
             that you can login using it.
           </p>
 
-          <h3 className="text-xl font-serif">Your ID</h3>
+          <h3 className="font-serif text-xl">Your ID</h3>
 
           <div className="alert alert-info flex justify-between">
             {player?.id}
@@ -62,12 +62,12 @@ const Settings = () => {
               {copiedToClipboard ? (
                 <span className="text-sm">Copied!</span>
               ) : (
-                <BsClipboardCheck className="w-6 h-6" />
+                <BsClipboardCheck className="h-6 w-6" />
               )}
             </button>
           </div>
 
-          <h3 className="text-xl font-serif">QR code</h3>
+          <h3 className="font-serif text-xl">QR code</h3>
 
           <p>
             You can also download or photograph the QR code below and login with

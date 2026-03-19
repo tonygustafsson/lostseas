@@ -47,7 +47,7 @@ const LocationHero = () => {
         <div className="hero-overlay bg-opacity-20"></div>
 
         <div
-          className="absolute top-0 left-0 z-10 w-full h-full"
+          className="absolute left-0 top-0 z-10 h-full w-full"
           ref={scope}
           style={{
             background:
@@ -67,13 +67,13 @@ const LocationHero = () => {
             draggable={false}
             onLoadingComplete={onImageLoad}
             alt="Background image"
-            className="object-cover select-none opacity-70"
+            className="select-none object-cover opacity-70"
             style={{ objectPosition: "50% 55%", filter: "sepia(1)" }}
           />
         </div>
 
-        <div className="hero-content z-20 text-center text-neutral-content py-8 lg:py-24">
-          <div className="max-w-full lg:max-w-2xl lg:min-w-[600px] bg-base-300 bg-opacity-60 p-8 rounded-lg">
+        <div className="hero-content z-20 py-8 text-center text-neutral-content lg:py-24">
+          <div className="max-w-full rounded-lg bg-base-300 bg-opacity-60 p-8 lg:min-w-[600px] lg:max-w-2xl">
             {player?.character.location !== "Sea" && (
               <TownContent
                 town={player?.character.town}
@@ -113,7 +113,7 @@ const LocationHero = () => {
         </div>
       </div>
 
-      <div className="bg-gray-900 rounded-b-lg flex items-center flex-col">
+      <div className="flex flex-col items-center rounded-b-lg bg-gray-900">
         {player?.character.location !== "Sea" && (
           <TownActions location={player?.character.location} />
         )}

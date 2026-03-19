@@ -40,15 +40,15 @@ const Status = () => {
       </Head>
 
       <DefaultLayout>
-        <h1 className="text-3xl font-serif text mb-6">Status</h1>
+        <h1 className="text mb-6 font-serif text-3xl">Status</h1>
 
-        <div className="card w-full bg-gray-800 shadow-lg mt-8 rounded-md">
+        <div className="card mt-8 w-full rounded-md bg-gray-800 shadow-lg">
           <div className="card-body p-6">
-            <h2 className="card-title text-3xl font-normal font-serif">
+            <h2 className="card-title font-serif text-3xl font-normal">
               {player?.character.name}
             </h2>
 
-            <div className="stats py-3 gap-2 mt-4">
+            <div className="stats mt-4 gap-2 py-3">
               <div className="stat bg-gray-700">
                 <div className="stat-figure text-secondary">
                   <GiPirateCoat className="h-8 w-8" />
@@ -86,7 +86,7 @@ const Status = () => {
               </div>
             </div>
 
-            <div className="card-actions justify-end mb-4">
+            <div className="card-actions mb-4 justify-end">
               <button
                 onClick={openCharacterEditModal}
                 className="btn btn-secondary"
@@ -95,7 +95,7 @@ const Status = () => {
               </button>
             </div>
 
-            <div className="stats py-3 gap-2 mt-4">
+            <div className="stats mt-4 gap-2 py-3">
               <div className="stat bg-gray-700">
                 <div className="stat-figure text-secondary">
                   <Flag
@@ -125,7 +125,7 @@ const Status = () => {
               </div>
             </div>
 
-            <div className="stats py-3 gap-2 mt-4">
+            <div className="stats mt-4 gap-2 py-3">
               <div className="stat bg-gray-700">
                 <div className="stat-figure text-secondary">
                   <FaCoins className="h-8 w-8" />
@@ -155,7 +155,7 @@ const Status = () => {
               )}
             </div>
 
-            <div className="stats py-3 gap-2 mt-4">
+            <div className="stats mt-4 gap-2 py-3">
               <div className="stat bg-gray-700">
                 <div className="stat-figure text-secondary">
                   <AiOutlineCalendar className="h-8 w-8" />
@@ -177,9 +177,9 @@ const Status = () => {
 
             {player.character.battles && (
               <>
-                <h3 className="font-serif text-2xl mt-4">Battles</h3>
+                <h3 className="mt-4 font-serif text-2xl">Battles</h3>
 
-                <div className="stats py-3 gap-2 mt-2">
+                <div className="stats mt-2 gap-2 py-3">
                   {Object.entries(player.character.battles).map(
                     ([nation, { won, lost }]) => (
                       <div

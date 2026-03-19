@@ -23,17 +23,17 @@ export const getLoggedInServerSideProps = async ({
   if (playerId) {
     const player = await getPlayer(playerId)
 
-      if (player?.character.journey) {
-        // A way of telling client that the journey is not finished on page load,
-        // so that the client can continue it's journey loop to reach the location
-        // TODO: Find a better solution for this
-        player.character.journey.ongoingJourney = true
-      }
+    if (player?.character.journey) {
+      // A way of telling client that the journey is not finished on page load,
+      // so that the client can continue it's journey loop to reach the location
+      // TODO: Find a better solution for this
+      player.character.journey.ongoingJourney = true
+    }
 
-      await queryClient.prefetchQuery({
-        queryKey: [PLAYER_QUERY_KEY],
-        queryFn: async () => player,
-      })
+    await queryClient.prefetchQuery({
+      queryKey: [PLAYER_QUERY_KEY],
+      queryFn: async () => player,
+    })
   }
 
   return {

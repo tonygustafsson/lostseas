@@ -19,7 +19,7 @@ const AttackReport = () => {
       {successReport && (
         <ul className="flex flex-col gap-4">
           {successReport.foundTreasure && (
-            <li className="flex align-middle gap-4 text-lg">
+            <li className="flex gap-4 align-middle text-lg">
               <TreasureIcon
                 item={successReport.foundTreasure.name}
                 className="h-7 w-7 text-success"
@@ -41,7 +41,7 @@ const AttackReport = () => {
           )}
 
           {successReport.lootedGold && (
-            <li className="flex align-middle gap-4 text-lg">
+            <li className="flex gap-4 align-middle text-lg">
               <FaCoins className="h-7 w-7 text-success" />
               <div className="flex-1">
                 Your looted {successReport.lootedGold} gold and now have a total
@@ -51,7 +51,7 @@ const AttackReport = () => {
           )}
 
           {successReport.crewMoodIncrease && (
-            <li className="flex align-middle gap-4 text-lg">
+            <li className="flex gap-4 align-middle text-lg">
               <GiBandana className="h-7 w-7 text-success" />
               <div className="flex-1">
                 Your crews mood went up with {successReport.crewMoodIncrease}%
@@ -61,7 +61,7 @@ const AttackReport = () => {
           )}
 
           {!!successReport.crewMemberRecruits && (
-            <li className="flex align-middle gap-4 text-lg">
+            <li className="flex gap-4 align-middle text-lg">
               <FaUsers className="h-7 w-7 text-success" />
               <div className="flex-1">
                 {successReport.crewMemberRecruits} crew members of the enemy
@@ -81,7 +81,7 @@ const AttackReport = () => {
 
                 return (
                   <li
-                    className="flex align-middle gap-4 text-lg"
+                    className="flex gap-4 align-middle text-lg"
                     key={`looted-merchandise-report-${key}`}
                   >
                     <MerchandiseIcon
@@ -102,7 +102,7 @@ const AttackReport = () => {
             )}
 
           {successReport.crewHealthLoss && (
-            <li className="flex align-middle gap-4 text-lg">
+            <li className="flex gap-4 align-middle text-lg">
               <GiBandana className="h-7 w-7 text-error" />
               <div className="flex-1">
                 Your crew lost {successReport.crewHealthLoss}% health, and now
@@ -112,13 +112,13 @@ const AttackReport = () => {
           )}
 
           {successReport.shipHealthLoss && (
-            <li className="flex align-middle gap-4 text-lg">
+            <li className="flex gap-4 align-middle text-lg">
               <GiShoonerSailboat className="h-7 w-7 text-error" />
 
               <div className="flex-1">
                 Your ships lost {successReport.shipHealthLoss}% health. Your
                 ships now have the health of
-                <ul className="list-decimal list-inside">
+                <ul className="list-inside list-decimal">
                   {Object.entries(player?.ships).map(
                     ([shipId, { name, health, type }]) => (
                       <li key={shipId} className="list-item">
@@ -135,14 +135,14 @@ const AttackReport = () => {
 
       {failureReport && (
         <ul className="flex flex-col gap-4">
-          <li className="flex align-middle gap-4 text-lg">
+          <li className="flex gap-4 align-middle text-lg">
             <FaCoins className="h-7 w-7 text-error" />
             <div className="flex-1">
               You lost all your gold. (Funds in bank are still safe)
             </div>
           </li>
 
-          <li className="flex align-middle gap-4 text-lg">
+          <li className="flex gap-4 align-middle text-lg">
             <GiOpenedFoodCan className="h-7 w-7 text-error" />
             <div className="flex-1">
               You lost{" "}
@@ -154,7 +154,7 @@ const AttackReport = () => {
           </li>
 
           {failureReport.crewHealthLoss && (
-            <li className="flex align-middle gap-4 text-lg">
+            <li className="flex gap-4 align-middle text-lg">
               <GiBandana className="h-7 w-7 text-error" />
               <div className="flex-1">
                 Your crew lost {failureReport.crewHealthLoss}% health, and now
@@ -164,7 +164,7 @@ const AttackReport = () => {
           )}
 
           {failureReport.sunkShip && (
-            <li className="flex align-middle gap-4 text-lg">
+            <li className="flex gap-4 align-middle text-lg">
               <GiShoonerSailboat className="h-7 w-7 text-error" />
               <div className="flex-1">
                 They sunk your ship {failureReport.sunkShip}.
@@ -173,13 +173,13 @@ const AttackReport = () => {
           )}
 
           {failureReport.shipHealthLoss && (
-            <li className="flex align-middle gap-4 text-lg">
+            <li className="flex gap-4 align-middle text-lg">
               <GiShoonerSailboat className="h-7 w-7 text-error" />
 
               <div className="flex-1">
                 Your ships lost {failureReport.shipHealthLoss}% health. Your
                 ships now have the health of
-                <ul className="list-decimal list-inside">
+                <ul className="list-inside list-decimal">
                   {Object.entries(player?.ships).map(
                     ([shipId, { name, health, type }]) => (
                       <li key={shipId} className="list-item">

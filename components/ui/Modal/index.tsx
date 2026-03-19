@@ -36,7 +36,7 @@ const Modal = () => {
               modal.fullWidth ? "w-full max-w-none" : ""
             } pt-4`}
           >
-            <h3 className="font-bold font-serif text-xl mb-6 text-center">
+            <h3 className="mb-6 text-center font-serif text-xl font-bold">
               {modal.title}
             </h3>
 
@@ -44,7 +44,7 @@ const Modal = () => {
 
             <div className="modal-action">
               <button
-                className="btn btn-sm bg-transparent border-none hover:bg-gray-800 absolute right-1 top-3 close"
+                className="close btn btn-sm absolute right-1 top-3 border-none bg-transparent hover:bg-gray-800"
                 onClick={() => removeModal(modal.id || "")}
               >
                 <AiOutlineCloseCircle className="h-7 w-7" />

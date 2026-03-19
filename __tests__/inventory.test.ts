@@ -1,17 +1,17 @@
-import { describe, expect,it } from 'vitest'
+import { describe, expect, it } from "vitest"
 
-import { addToInventory, removeFromAllInventoryItems } from '@/utils/inventory'
+import { addToInventory, removeFromAllInventoryItems } from "@/utils/inventory"
 
-describe('inventory utils', () => {
-  it('addToInventory creates full record when inventory is undefined', () => {
+describe("inventory utils", () => {
+  it("addToInventory creates full record when inventory is undefined", () => {
     const res = addToInventory(undefined, { food: 2 })
     expect(res.food).toBe(2)
     // other merchandise keys should exist and be numbers (0)
-    expect(typeof res.water).toBe('number')
-    expect(typeof res.cannons).toBe('number')
+    expect(typeof res.water).toBe("number")
+    expect(typeof res.cannons).toBe("number")
   })
 
-  it('addToInventory merges existing inventory and ignores zero additions', () => {
+  it("addToInventory merges existing inventory and ignores zero additions", () => {
     const inventory = { food: 2, water: 3 } as any
     const res = addToInventory(inventory, { food: 1, porcelain: 0 } as any)
     expect(res.food).toBe(3)
@@ -20,7 +20,7 @@ describe('inventory utils', () => {
     expect(res.water).toBe(3)
   })
 
-  it('removeFromAllInventoryItems reduces non-cannon items by percentage and leaves cannons unchanged', () => {
+  it("removeFromAllInventoryItems reduces non-cannon items by percentage and leaves cannons unchanged", () => {
     const inventory = { food: 10, water: 10, cannons: 5, porcelain: 4 } as any
     const res = removeFromAllInventoryItems(inventory, 50) as any
 

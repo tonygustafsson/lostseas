@@ -47,7 +47,7 @@ const WelcomeExistingUser = ({ player, onClose }: Props) => {
           <input
             id="toggleMusic"
             type="checkbox"
-            className="toggle toggle-sm toggle-info"
+            className="toggle toggle-info toggle-sm"
             checked={musicOn}
             onChange={() => setMusicOn(!musicOn)}
           />
@@ -58,7 +58,7 @@ const WelcomeExistingUser = ({ player, onClose }: Props) => {
           <input
             id="soundEffects"
             type="checkbox"
-            className="toggle toggle-sm toggle-info"
+            className="toggle toggle-info toggle-sm"
             checked={soundEffectsOn}
             onChange={() => setSoundEffectsOn(!soundEffectsOn)}
           />
@@ -66,7 +66,7 @@ const WelcomeExistingUser = ({ player, onClose }: Props) => {
         </div>
       </div>
 
-      <button className="btn btn-primary w-full mt-4" onClick={continueGame}>
+      <button className="btn btn-primary mt-4 w-full" onClick={continueGame}>
         Continue game
       </button>
     </>

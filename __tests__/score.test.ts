@@ -1,16 +1,16 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from "vitest"
 
-import { getMannedCannons } from '@/utils/crew'
-import { getScore } from '@/utils/score'
+import { getMannedCannons } from "@/utils/crew"
+import { getScore } from "@/utils/score"
 
-vi.mock('@/utils/crew', () => ({ getMannedCannons: vi.fn() }))
+vi.mock("@/utils/crew", () => ({ getMannedCannons: vi.fn() }))
 
-describe('score utils', () => {
-  it('calculates score including title, gold, ships and manned cannons', () => {
+describe("score utils", () => {
+  it("calculates score including title, gold, ships and manned cannons", () => {
     ;(getMannedCannons as any).mockReturnValue(3)
 
     const player = {
-      character: { title: 'Captain', gold: 1200, account: 200, loan: 100 },
+      character: { title: "Captain", gold: 1200, account: 200, loan: 100 },
       ships: { a: {}, b: {} },
       crewMembers: { count: 6 },
       inventory: { cannons: 6 },

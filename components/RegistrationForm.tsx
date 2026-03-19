@@ -83,14 +83,14 @@ const RegistrationForm = () => {
         error={errors.age?.message}
       />
 
-      <h2 className="font-serif text-2xl mt-4">Settings</h2>
+      <h2 className="mt-4 font-serif text-2xl">Settings</h2>
 
       <div className="flex flex-col gap-4 pb-4">
         <div className="flex items-center gap-4">
           <input
             id="toggleMusic"
             type="checkbox"
-            className="toggle toggle-sm toggle-info"
+            className="toggle toggle-info toggle-sm"
             {...register("musicOn", { value: true })}
           />
           <label htmlFor="toggleMusic">Music</label>
@@ -100,7 +100,7 @@ const RegistrationForm = () => {
           <input
             id="soundEffects"
             type="checkbox"
-            className="toggle toggle-sm toggle-info"
+            className="toggle toggle-info toggle-sm"
             {...register("soundEffectsOn", { value: true })}
           />
           <label htmlFor="soundEffects">Sound effects</label>

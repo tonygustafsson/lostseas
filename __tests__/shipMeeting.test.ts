@@ -39,7 +39,9 @@ describe("shipMeeting utilities", () => {
     mathRandomSpy.mockReturnValue(0.8)
 
     // shipType index, cannons value
-    ;(getRandomInt as any).mockImplementationOnce(() => 1).mockImplementationOnce(() => 3)
+    ;(getRandomInt as any)
+      .mockImplementationOnce(() => 1)
+      .mockImplementationOnce(() => 3)
 
     const result = createMeetingShip(5, "PortRoyal" as any)
 

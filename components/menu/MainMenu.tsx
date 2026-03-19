@@ -60,7 +60,7 @@ const MainMenu = () => {
         <Link href="/ships">
           <GiShoonerSailboat className="h-5 w-5" />
           Ships
-          <span className="badge badge-sm badge-primary">{numberOfShips}</span>
+          <span className="badge badge-primary badge-sm">{numberOfShips}</span>
         </Link>
       </li>
 
@@ -68,7 +68,7 @@ const MainMenu = () => {
         <Link href="/crew">
           <GiBandana className="h-5 w-5" />
           Crew members
-          <span className="badge badge-sm badge-primary">
+          <span className="badge badge-primary badge-sm">
             {player?.crewMembers.count}
           </span>
         </Link>
@@ -78,7 +78,7 @@ const MainMenu = () => {
         <Link href="/inventory">
           <GiOpenedFoodCan className="h-5 w-5" />
           Inventory
-          <span className="badge badge-sm badge-primary">
+          <span className="badge badge-primary badge-sm">
             {numberOfInventoryItems}
           </span>
         </Link>

@@ -88,7 +88,7 @@ const DismissCrewMembers = () => {
           <div className="join">
             <button
               onClick={decrease}
-              className="btn btn-sm btn-primary join-item"
+              className="btn btn-primary join-item btn-sm"
             >
               -
             </button>
@@ -107,7 +107,7 @@ const DismissCrewMembers = () => {
 
             <button
               onClick={increase}
-              className="btn btn-sm btn-primary join-item"
+              className="btn btn-primary join-item btn-sm"
             >
               +
             </button>

@@ -76,7 +76,7 @@ const MerchandiseShopItem = ({ player, item, type, onBuy, onSell }: Props) => {
         <>
           <p>{MERCHANDISE[item].description}</p>
 
-          <div className="flex gap-2 mt-2">
+          <div className="mt-2 flex gap-2">
             {type === "Buy" && (
               <div className="badge badge-secondary">
                 Price: {MERCHANDISE[item].buy} gold
@@ -96,7 +96,7 @@ const MerchandiseShopItem = ({ player, item, type, onBuy, onSell }: Props) => {
           <div className="join">
             <button
               onClick={decrease}
-              className="btn btn-sm btn-primary join-item"
+              className="btn btn-primary join-item btn-sm"
             >
               -
             </button>
@@ -115,7 +115,7 @@ const MerchandiseShopItem = ({ player, item, type, onBuy, onSell }: Props) => {
 
             <button
               onClick={increase}
-              className="btn btn-sm btn-primary join-item"
+              className="btn btn-primary join-item btn-sm"
             >
               +
             </button>

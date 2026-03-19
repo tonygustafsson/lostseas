@@ -1,14 +1,14 @@
-import { describe, expect,it } from 'vitest'
+import { describe, expect, it } from "vitest"
 
-import { validateShipCrewRequirements } from '@/utils/validateCrew'
+import { validateShipCrewRequirements } from "@/utils/validateCrew"
 
-describe('validateShipCrewRequirements', () => {
-  it('calculates min and max crew for various ship types', () => {
+describe("validateShipCrewRequirements", () => {
+  it("calculates min and max crew for various ship types", () => {
     const ships = {
-      a: { type: 'Brig' },
-      b: { type: 'Merchantman' },
-      c: { type: 'Galleon' },
-      d: { type: 'Frigate' },
+      a: { type: "Brig" },
+      b: { type: "Merchantman" },
+      c: { type: "Galleon" },
+      d: { type: "Frigate" },
     } as any
 
     const res = validateShipCrewRequirements(ships)
@@ -18,7 +18,7 @@ describe('validateShipCrewRequirements', () => {
     expect(res.maxCrew).toBe(180)
   })
 
-  it('returns zeros for empty ships', () => {
+  it("returns zeros for empty ships", () => {
     const res = validateShipCrewRequirements({})
     expect(res.minCrew).toBe(0)
     expect(res.maxCrew).toBe(0)

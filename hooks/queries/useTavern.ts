@@ -12,7 +12,7 @@ export const useTavern = () => {
   const { setToast } = useToast()
   const { playSoundEffect } = useSound()
 
-    const { mutate: buy, isPending: isBuying } = useMutation({
+  const { mutate: buy, isPending: isBuying } = useMutation({
     mutationFn: (data: { item: keyof typeof TAVERN_ITEMS }) =>
       apiRequest("/api/tavern/buy", data, "POST"),
     onSuccess: (response) => {
@@ -43,7 +43,8 @@ export const useTavern = () => {
 
   const { mutate: acceptNewCrewMembers, isPending: isAcceptingNewCrewMembers } =
     useMutation({
-      mutationFn: () => apiRequest("/api/tavern/acceptNewCrewMembers", null, "POST"),
+      mutationFn: () =>
+        apiRequest("/api/tavern/acceptNewCrewMembers", null, "POST"),
       onSuccess: (response) => {
         const { error, numberOfSailors } = response?.data
 
@@ -109,72 +110,75 @@ export const useTavern = () => {
     onError: (error) => console.error(error),
   })
 
-    const { mutate: ignoreSailors, isPending: isIgnoringSailors } = useMutation({
-      mutationFn: () => apiRequest("/api/tavern/ignoreSailors", null, "POST") as Promise<any>,
-      onSuccess: (response: { data: { error?: string; numberOfSailors: number } }) => {
-        const { error, numberOfSailors } = response?.data
+  const { mutate: ignoreSailors, isPending: isIgnoringSailors } = useMutation({
+    mutationFn: () =>
+      apiRequest("/api/tavern/ignoreSailors", null, "POST") as Promise<any>,
+    onSuccess: (response: {
+      data: { error?: string; numberOfSailors: number }
+    }) => {
+      const { error, numberOfSailors } = response?.data
 
-        if (error) {
-          setToast({
-            title: `Could not ignore sailors`,
-            message: error,
-            variant: "error",
-          })
-
-          return
-        }
-
-        queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
-
+      if (error) {
         setToast({
-          title: `You ignored the ${numberOfSailors} sailors`,
-          message: `You said "No thank you" and just walked away`,
-          variant: "success",
-        })
-      },
-      onError: (error) => console.error(error),
-    })
-
-    const { mutateAsync: playCards, isPending: isPlayingCard } = useMutation({
-      mutationFn: (data: { betPercentage: number; selectedCard: number }) =>
-        apiRequest("/api/tavern/cards", data, "POST"),
-      onSuccess: (response) => {
-        const { error, bet, gold, cardsResults } = response?.data
-
-        if (error) {
-          setToast({
-            title: `Could not place bet`,
-            message: error,
-            variant: "error",
-          })
-
-          return
-        }
-
-        queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
-
-        let title = ""
-
-        if (cardsResults === "won") {
-          title = `You played made a bet of ${bet} gold and won!`
-        } else {
-          title = `You played made a bet of ${bet} gold and lost`
-        }
-
-        setToast({
-          title,
-          message: `You now have ${gold} gold in total.`,
-          variant: cardsResults === "won" ? "success" : "error",
+          title: `Could not ignore sailors`,
+          message: error,
+          variant: "error",
         })
 
-        if (cardsResults === "won") {
-          playSoundEffect("cheers")
-        } else {
-          playSoundEffect("frustration")
-        }
-      },
-      onError: (error) => console.error(error),
-    })
+        return
+      }
+
+      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+      setToast({
+        title: `You ignored the ${numberOfSailors} sailors`,
+        message: `You said "No thank you" and just walked away`,
+        variant: "success",
+      })
+    },
+    onError: (error) => console.error(error),
+  })
+
+  const { mutateAsync: playCards, isPending: isPlayingCard } = useMutation({
+    mutationFn: (data: { betPercentage: number; selectedCard: number }) =>
+      apiRequest("/api/tavern/cards", data, "POST"),
+    onSuccess: (response) => {
+      const { error, bet, gold, cardsResults } = response?.data
+
+      if (error) {
+        setToast({
+          title: `Could not place bet`,
+          message: error,
+          variant: "error",
+        })
+
+        return
+      }
+
+      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+      let title = ""
+
+      if (cardsResults === "won") {
+        title = `You played made a bet of ${bet} gold and won!`
+      } else {
+        title = `You played made a bet of ${bet} gold and lost`
+      }
+
+      setToast({
+        title,
+        message: `You now have ${gold} gold in total.`,
+        variant: cardsResults === "won" ? "success" : "error",
+      })
+
+      if (cardsResults === "won") {
+        playSoundEffect("cheers")
+      } else {
+        playSoundEffect("frustration")
+      }
+    },
+    onError: (error) => console.error(error),
+  })
 
   return {
     buy,

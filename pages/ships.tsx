@@ -77,7 +77,7 @@ const Ships = () => {
       </Head>
 
       <DefaultLayout>
-        <h1 className="text-3xl font-serif text mb-8">Ships</h1>
+        <h1 className="text mb-8 font-serif text-3xl">Ships</h1>
 
         {!!Object.values(player?.ships || [])?.length && (
           <div className="flex flex-wrap gap-4">
@@ -96,13 +96,13 @@ const Ships = () => {
                     <>
                       <p>{shipInfo.description}</p>
 
-                      <div className="flex flex-col gap-4 mt-2">
-                        <div className="flex flex-col w-fit items-center gap-1">
+                      <div className="mt-2 flex flex-col gap-4">
+                        <div className="flex w-fit flex-col items-center gap-1">
                           <p className="text-xs font-bold">Health</p>
 
                           <RadialProgressBar
                             percentage={ship.health}
-                            className="w-14 h-14"
+                            className="h-14 w-14"
                           />
                         </div>
 
@@ -140,9 +140,9 @@ const Ships = () => {
           <p>You do not have any ships currently.</p>
         )}
 
-        <h2 className="text-2xl font-serif mt-8 mb-4">Ship fittings</h2>
+        <h2 className="mb-4 mt-8 font-serif text-2xl">Ship fittings</h2>
 
-        <div className="stat shadow-md hover:shadow-lg lg:w-52 bg-gray-800 rounded-lg pr-4">
+        <div className="stat rounded-lg bg-gray-800 pr-4 shadow-md hover:shadow-lg lg:w-52">
           <div className="stat-figure text-secondary">
             <MerchandiseIcon size="lg" item="cannons" />
           </div>

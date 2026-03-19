@@ -19,7 +19,7 @@ const GuideContent = () => {
   return (
     <>
       <nav>
-        <ul className="flex flex-wrap gap-2 md:gap-4 my-8 justify-around md:justify-center">
+        <ul className="my-8 flex flex-wrap justify-around gap-2 md:justify-center md:gap-4">
           <li>
             <button
               className="btn btn-secondary btn-sm md:btn-md"
@@ -73,12 +73,12 @@ const GuideContent = () => {
 
       <div className="divider my-8" />
 
-      <div className="max-w-2xl mx-auto">
-        <h2 id="supplies" className="text-3xl font-serif mb-4">
+      <div className="mx-auto max-w-2xl">
+        <h2 id="supplies" className="mb-4 font-serif text-3xl">
           Supplies
         </h2>
 
-        <h3 className="text-2xl font-serif mb-2">Buying and selling</h3>
+        <h3 className="mb-2 font-serif text-2xl">Buying and selling</h3>
 
         <p className="mb-4">
           At the shop you can buy and sell everything your crew needs to be
@@ -109,7 +109,7 @@ const GuideContent = () => {
           alt="The market"
         />
 
-        <h3 className="text-2xl font-serif mt-4 mb-2">Food and water</h3>
+        <h3 className="mb-2 mt-4 font-serif text-2xl">Food and water</h3>
 
         <p className="mb-4">
           You and your crew will need both food and water for traveling at sea.
@@ -119,7 +119,7 @@ const GuideContent = () => {
           can buy more food and water.
         </p>
 
-        <h3 className="text-2xl font-serif mb-2">Barter goods</h3>
+        <h3 className="mb-2 font-serif text-2xl">Barter goods</h3>
 
         <p className="mb-4">
           This includes tobacco, rum, porcelain, spices and silk. You don&apos;t
@@ -129,7 +129,7 @@ const GuideContent = () => {
 
         <div className="divider my-8" />
 
-        <h2 id="ships" className="text-3xl font-serif mb-2">
+        <h2 id="ships" className="mb-2 font-serif text-3xl">
           Ships
         </h2>
 
@@ -159,10 +159,10 @@ const GuideContent = () => {
           ships. But as your rank get higher, you will be able to own 15 ships.
         </p>
 
-        <h3 className="text-2xl font-serif mb-2">Different ship types</h3>
+        <h3 className="mb-2 font-serif text-2xl">Different ship types</h3>
 
         <div className="overflow-x-auto">
-          <table className="table bg-gray-950 bg-opacity-50 my-4">
+          <table className="table my-4 bg-gray-950 bg-opacity-50">
             <thead>
               <tr>
                 <th>Type</th>
@@ -201,7 +201,7 @@ const GuideContent = () => {
           </table>
         </div>
 
-        <h3 className="text-2xl font-serif mb-2">Cannons</h3>
+        <h3 className="mb-2 font-serif text-2xl">Cannons</h3>
 
         <p className="mb-4">
           Cannons are needed for battles at sea. It&apos;s the amount of manned
@@ -213,11 +213,11 @@ const GuideContent = () => {
 
         <div className="divider my-8" />
 
-        <h2 id="crew-members" className="text-3xl font-serif mb-2">
+        <h2 id="crew-members" className="mb-2 font-serif text-3xl">
           Crew members
         </h2>
 
-        <h3 className="text-2xl font-serif mb-2">Purpose of crew members</h3>
+        <h3 className="mb-2 font-serif text-2xl">Purpose of crew members</h3>
 
         <p className="mb-4">
           The only real reason to have crew members is so that they can fight
@@ -250,7 +250,7 @@ const GuideContent = () => {
           alt="Crew stats"
         />
 
-        <h3 className="text-2xl font-serif my-4 mb-2">
+        <h3 className="my-4 mb-2 font-serif text-2xl">
           Getting more crew members
         </h3>
 
@@ -262,18 +262,18 @@ const GuideContent = () => {
 
         <div className="divider my-8" />
 
-        <h2 id="social-status" className="text-3xl font-serif mb-2">
+        <h2 id="social-status" className="mb-2 font-serif text-3xl">
           Social status
         </h2>
 
-        <h3 className="text-2xl font-serif mb-2">Nations</h3>
+        <h3 className="mb-2 font-serif text-2xl">Nations</h3>
         <p className="mb-4">
           This game takes place at the Spanish Main, in the Caribbean Sea at the
           1600th. There are four nations, battling over the towns. English,
           French, Spanish and Dutch.
         </p>
 
-        <h3 className="text-2xl font-serif mb-2">Levels</h3>
+        <h3 className="mb-2 font-serif text-2xl">Levels</h3>
 
         <p className="mb-4">
           The level system in this game is pretty simple. You belong to a
@@ -284,7 +284,7 @@ const GuideContent = () => {
           them.
         </p>
 
-        <h3 className="text-2xl font-serif mb-2">Titles</h3>
+        <h3 className="mb-2 font-serif text-2xl">Titles</h3>
 
         <Image
           src="/img/location/port-royale/city-hall.webp"
@@ -303,10 +303,10 @@ const GuideContent = () => {
           highest title.
         </p>
 
-        <h3 className="text-2xl font-serif mb-2">The different titles</h3>
+        <h3 className="mb-2 font-serif text-2xl">The different titles</h3>
 
         <div className="overflow-x-auto">
-          <table className="table bg-gray-950 bg-opacity-50 my-4">
+          <table className="table my-4 bg-gray-950 bg-opacity-50">
             <thead>
               <tr>
                 <th>Level</th>
@@ -390,7 +390,7 @@ const GuideContent = () => {
           </table>
         </div>
 
-        <h3 className="text-2xl font-serif my-2">Changing nation</h3>
+        <h3 className="my-2 font-serif text-2xl">Changing nation</h3>
 
         <p className="mb-4">
           If you are not pleased by your nation you can actually change it. You
@@ -411,11 +411,11 @@ const GuideContent = () => {
 
         <div className="divider my-8" />
 
-        <h2 id="economy" className="text-3xl font-serif mb-4">
+        <h2 id="economy" className="mb-4 font-serif text-3xl">
           Economy
         </h2>
 
-        <h3 className="text-2xl font-serif mb-2">Getting some gold</h3>
+        <h3 className="mb-2 font-serif text-2xl">Getting some gold</h3>
 
         <p className="mb-4">
           The currency in this game is gold, for which you can buy and sell
@@ -429,7 +429,7 @@ const GuideContent = () => {
           but they need to be return to the correct Governor.
         </p>
 
-        <h3 className="text-2xl font-serif mb-2">Saving money</h3>
+        <h3 className="mb-2 font-serif text-2xl">Saving money</h3>
 
         <p className="mb-4">
           There is a banking system in this game. When you lose a battle at sea,
@@ -451,7 +451,7 @@ const GuideContent = () => {
           you can only get 95 dbl back.
         </p>
 
-        <h3 className="text-2xl font-serif mb-2">Loans</h3>
+        <h3 className="mb-2 font-serif text-2xl">Loans</h3>
 
         <p className="mb-4">
           You can also take a loan if the game are tough on you. You cannot loan
@@ -461,11 +461,11 @@ const GuideContent = () => {
 
         <div className="divider my-8" />
 
-        <h2 id="traveling" className="text-3xl font-serif mb-2">
+        <h2 id="traveling" className="mb-2 font-serif text-3xl">
           Traveling
         </h2>
 
-        <h3 className="text-2xl font-serif mb-2">Towns and nations</h3>
+        <h3 className="mb-2 font-serif text-2xl">Towns and nations</h3>
 
         <Image
           src="/img/userguide/map.png"
@@ -503,7 +503,7 @@ const GuideContent = () => {
           belongs to.
         </p>
 
-        <h3 className="text-2xl font-serif mb-2">Time</h3>
+        <h3 className="mb-2 font-serif text-2xl">Time</h3>
 
         <p className="mb-4">
           Time is measured in weeks in Lost Seas. The time won&apos;t go by
@@ -511,14 +511,14 @@ const GuideContent = () => {
           when you travel from a town to the Caribbean Sea.
         </p>
 
-        <h3 className="text-2xl font-serif mb-2">Weather</h3>
+        <h3 className="mb-2 font-serif text-2xl">Weather</h3>
 
         <p className="mb-4">
           The weather will change by each passing day at sea, however it
           won&apos;t affect anything at the moment.
         </p>
 
-        <h3 className="text-2xl font-serif mb-2">Battles at sea</h3>
+        <h3 className="mb-2 font-serif text-2xl">Battles at sea</h3>
 
         <Image
           src="/img/location/ship-meeting/ship-meeting5.webp"
@@ -549,7 +549,7 @@ const GuideContent = () => {
         onClick={goToTop}
         className="fixed bottom-5 right-5 rounded-full bg-info bg-opacity-50 p-3 text-xs font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-opacity-100 hover:shadow-lg focus:bg-opacity-100 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-500 active:shadow-lg"
       >
-        <BiArrowToTop className="w-7 h-7" />
+        <BiArrowToTop className="h-7 w-7" />
       </button>
     </>
   )

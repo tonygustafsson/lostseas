@@ -72,7 +72,7 @@ const GiveMedicine = () => {
           <div className="join">
             <button
               onClick={decrease}
-              className="btn btn-sm btn-primary join-item"
+              className="btn btn-primary join-item btn-sm"
             >
               -
             </button>
@@ -91,7 +91,7 @@ const GiveMedicine = () => {
 
             <button
               onClick={increase}
-              className="btn btn-sm btn-primary join-item"
+              className="btn btn-primary join-item btn-sm"
             >
               +
             </button>

@@ -23,12 +23,12 @@ export default function DefaultLayout({
 
   return (
     <>
-      <div className="flex flex-col lg:flex-row min-h-screen">
+      <div className="flex min-h-screen flex-col lg:flex-row">
         <MobileMenu className="lg:hidden" />
         <DesktopMenu className="hidden lg:block" />
 
         <main
-          className={`${almendra.variable} ${andika.variable} min-h-screen pb-32 flex flex-col w-full py-4 lg:py-8 px-2 lg:px-12 bg-base-200`}
+          className={`${almendra.variable} ${andika.variable} flex min-h-screen w-full flex-col bg-base-200 px-2 py-4 pb-32 lg:px-12 lg:py-8`}
         >
           {children}
         </main>

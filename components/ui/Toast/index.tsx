@@ -30,8 +30,8 @@ const Toast = () => {
               className={`toast toast-end`}
               style={{ top: `${idx * 140}px` }}
             >
-              <div className="alert flex-col flex items-start gap-1 lg:gap-2">
-                <div className="flex gap-2 items-center">
+              <div className="alert flex flex-col items-start gap-1 lg:gap-2">
+                <div className="flex items-center gap-2">
                   {toast.variant === "success" && (
                     <FiCheckCircle size={28} className="text-success" />
                   )}

@@ -8,10 +8,10 @@ const PostAttackActions = () => {
   }
 
   return (
-    <div className="bg-gray-900 rounded-b-lg pt-4 pb-8 flex items-center flex-col">
-      <div className="flex flex-wrap mt-4 justify-center gap-2 lg:gap-0 lg:join">
+    <div className="flex flex-col items-center rounded-b-lg bg-gray-900 pb-8 pt-4">
+      <div className="mt-4 flex flex-wrap justify-center gap-2 lg:join lg:gap-0">
         <button
-          className={`btn btn-primary text-base join-item`}
+          className={`btn btn-primary join-item text-base`}
           onClick={handleContinueJourney}
         >
           Continue journey

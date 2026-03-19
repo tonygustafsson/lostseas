@@ -32,7 +32,7 @@ const MobileMenu = ({ className }: Props) => {
 
   return (
     <div className={className}>
-      <h1 className="flex items-baseline font-serif text-2xl text-center p-2 justify-center gap-2 bg-gray-900">
+      <h1 className="flex items-baseline justify-center gap-2 bg-gray-900 p-2 text-center font-serif text-2xl">
         <Image
           src="/img/logo.svg"
           alt="Lost Seas logotype"
@@ -64,7 +64,7 @@ const MobileMenu = ({ className }: Props) => {
               dragConstraints={{ left: -50, right: 0 }}
               whileDrag={{ opacity: 0.85, transition: { duration: 0.1 } }}
               onDrag={(_, info) => handleDrag(info)}
-              className="fixed top-0 left-0 shadow-2xl overflow-y-auto z-30 w-72 h-full py-8 px-4 bg-gray-900"
+              className="fixed left-0 top-0 z-30 h-full w-72 overflow-y-auto bg-gray-900 px-4 py-8 shadow-2xl"
             >
               <button
                 className="absolute right-2 top-2 text-info"
@@ -86,7 +86,7 @@ const MobileMenu = ({ className }: Props) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.5, transition: { duration: 0.15 } }}
               exit={{ opacity: 0 }}
-              className="fixed top-0 left-0 w-screen h-screen z-10 bg-black"
+              className="fixed left-0 top-0 z-10 h-screen w-screen bg-black"
               onClick={() => setMobileMenuOpen(false)}
             />
           </>

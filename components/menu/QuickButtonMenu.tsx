@@ -9,7 +9,7 @@ const QuickButtonMenu = () => {
   const { logout } = usePlayer()
 
   return (
-    <ul className="menu menu-horizontal quick-icon-menu rounded-box flex justify-center mb-6">
+    <ul className="quick-icon-menu menu rounded-box menu-horizontal mb-6 flex justify-center">
       <li>
         <Link href="/settings" className="tooltip" data-tip="Settings">
           <FiSettings className="h-5 w-5" />

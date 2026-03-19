@@ -30,19 +30,19 @@ const SeaContent = ({ journey, day }: Props) => {
 
   return (
     <>
-      <h1 className="font-serif mb-4 text-3xl lg:text-5xl">Open Seas</h1>
+      <h1 className="mb-4 font-serif text-3xl lg:text-5xl">Open Seas</h1>
 
-      <div className="lg:mb-5 text-sm">
+      <div className="text-sm lg:mb-5">
         {journey && (
           <>
-            <p className="text-2xl mb-4 font-serif">
+            <p className="mb-4 font-serif text-2xl">
               Traveling to {journey?.destination}, day {journey?.day} of{" "}
               {journey?.totalDays}
             </p>
 
             <p className="mb-4">{description}</p>
 
-            <div className="flex justify-center items-center gap-6 mb-4">
+            <div className="mb-4 flex items-center justify-center gap-6">
               <RadialProgressBar
                 startPercentage={
                   ((journey?.day - 1) / journey?.totalDays) * 100
@@ -50,10 +50,10 @@ const SeaContent = ({ journey, day }: Props) => {
                 percentage={(journey?.day / journey?.totalDays) * 100}
                 showLabel={false}
                 autoStrokeColor={false}
-                className="w-16 h-16 text-info"
+                className="h-16 w-16 text-info"
               />
 
-              <span className="font-bold text-base lg:text-xl font-serif">
+              <span className="font-serif text-base font-bold lg:text-xl">
                 {currentDate}
               </span>
 

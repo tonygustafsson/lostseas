@@ -13,7 +13,8 @@ export const useCityhall = () => {
 
   const { mutate: acceptNewTitle, isPending: isAcceptingNewTitle } =
     useMutation({
-      mutationFn: () => apiRequest("/api/cityhall/acceptNewTitle", null, "POST"),
+      mutationFn: () =>
+        apiRequest("/api/cityhall/acceptNewTitle", null, "POST"),
       onSuccess: (response) => {
         const { error, titleInfo } = response?.data
 
@@ -43,7 +44,8 @@ export const useCityhall = () => {
 
   const { mutate: changeCitizenship, isPending: isChangingCitizenship } =
     useMutation({
-      mutationFn: () => apiRequest("/api/cityhall/changeCitizenship", null, "POST"),
+      mutationFn: () =>
+        apiRequest("/api/cityhall/changeCitizenship", null, "POST"),
       onSuccess: (response) => {
         const { error, titleInfo, newNationality } = response?.data
 

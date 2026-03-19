@@ -25,8 +25,8 @@ const Bank = () => {
         setCurrentTab={setTab}
       />
 
-      <div className="flex flex-wrap gap-6 w-full justify-center">
-        <div className="stats gap-1 mt-4">
+      <div className="flex w-full flex-wrap justify-center gap-6">
+        <div className="stats mt-4 gap-1">
           <div className="stat bg-gray-700">
             <div className="stat-figure text-secondary">
               <FaCoins className="h-7 w-7" />

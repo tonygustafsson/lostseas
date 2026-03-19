@@ -4,12 +4,12 @@ const SoundControls = () => {
   const { musicOn, setMusic, soundEffectsOn, setSoundEffects } = useSound()
 
   return (
-    <div className="flex gap-4 mt-2 mb-8 mx-4">
+    <div className="mx-4 mb-8 mt-2 flex gap-4">
       <div className="flex items-center gap-2">
         <input
           id="toggleMusic"
           type="checkbox"
-          className="toggle toggle-xs toggle-info"
+          className="toggle toggle-info toggle-xs"
           checked={musicOn}
           onChange={() => setMusic(!musicOn)}
         />
@@ -22,7 +22,7 @@ const SoundControls = () => {
         <input
           id="soundEffects"
           type="checkbox"
-          className="toggle toggle-xs toggle-info"
+          className="toggle toggle-info toggle-xs"
           checked={soundEffectsOn}
           onChange={() => setSoundEffects(!soundEffectsOn)}
         />

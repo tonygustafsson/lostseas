@@ -25,9 +25,9 @@ const Crew = () => {
 
       <DefaultLayout>
         <>
-          <h1 className="text-3xl font-serif text mb-8">Crew members</h1>
+          <h1 className="text mb-8 font-serif text-3xl">Crew members</h1>
 
-          <div className="stats py-3bg-transparent gap-2 mt-4">
+          <div className="py-3bg-transparent stats mt-4 gap-2">
             <div className="stat bg-gray-700">
               <div className="stat-figure text-secondary">
                 <MdGroups className="h-11 w-11" />
@@ -42,7 +42,7 @@ const Crew = () => {
               <div className="stat-figure text-secondary">
                 <RadialProgressBar
                   percentage={player?.crewMembers.health}
-                  className="w-12 h-12"
+                  className="h-12 w-12"
                 />
               </div>
               <div className="stat-title">Health</div>
@@ -55,7 +55,7 @@ const Crew = () => {
               <div className="stat-figure text-secondary">
                 <RadialProgressBar
                   percentage={player?.crewMembers.mood}
-                  className="w-12 h-12"
+                  className="h-12 w-12"
                 />
               </div>
               <div className="stat-title">Mood</div>
@@ -65,7 +65,7 @@ const Crew = () => {
             </div>
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-4 pt-8">
+          <div className="flex flex-col gap-4 pt-8 lg:flex-row">
             <GiveMedicine />
             <GiveGold />
             <DismissCrewMembers />

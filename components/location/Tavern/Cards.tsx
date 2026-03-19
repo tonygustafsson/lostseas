@@ -34,69 +34,69 @@ import { getRandomInt } from "@/utils/random"
 import { getCardsBet } from "@/utils/tavern"
 
 const CARDS = [
-  { text: "The Acorn", icon: <GiAcorn className="w-12 h-12 text-primary" /> },
-  { text: "The Hat", icon: <GiPirateHat className="w-12 h-12 text-primary" /> },
-  { text: "The Anchor", icon: <GiAnchor className="w-12 h-12 text-primary" /> },
+  { text: "The Acorn", icon: <GiAcorn className="h-12 w-12 text-primary" /> },
+  { text: "The Hat", icon: <GiPirateHat className="h-12 w-12 text-primary" /> },
+  { text: "The Anchor", icon: <GiAnchor className="h-12 w-12 text-primary" /> },
   {
     text: "The Sword",
-    icon: <GiAncientSword className="w-12 h-12 text-primary" />,
+    icon: <GiAncientSword className="h-12 w-12 text-primary" />,
   },
   {
     text: "The Star",
-    icon: <GiBarbedStar className="w-12 h-12 text-primary" />,
+    icon: <GiBarbedStar className="h-12 w-12 text-primary" />,
   },
-  { text: "The Boar", icon: <GiBoar className="w-12 h-12 text-primary" /> },
+  { text: "The Boar", icon: <GiBoar className="h-12 w-12 text-primary" /> },
   {
     text: "The Bottle",
-    icon: <GiBrandyBottle className="w-12 h-12 text-primary" />,
+    icon: <GiBrandyBottle className="h-12 w-12 text-primary" />,
   },
-  { text: "The Cat", icon: <GiCat className="w-12 h-12 text-primary" /> },
+  { text: "The Cat", icon: <GiCat className="h-12 w-12 text-primary" /> },
   {
     text: "The Mask",
-    icon: <GiCeremonialMask className="w-12 h-12 text-primary" />,
+    icon: <GiCeremonialMask className="h-12 w-12 text-primary" />,
   },
   {
     text: "The Leaf",
-    icon: <GiChestnutLeaf className="w-12 h-12 text-primary" />,
+    icon: <GiChestnutLeaf className="h-12 w-12 text-primary" />,
   },
   {
     text: "The Chicken",
-    icon: <GiChicken className="w-12 h-12 text-primary" />,
+    icon: <GiChicken className="h-12 w-12 text-primary" />,
   },
   {
     text: "The Fish",
-    icon: <GiCirclingFish className="w-12 h-12 text-primary" />,
+    icon: <GiCirclingFish className="h-12 w-12 text-primary" />,
   },
   {
     text: "The Swords",
-    icon: <GiCrossedSwords className="w-12 h-12 text-primary" />,
+    icon: <GiCrossedSwords className="h-12 w-12 text-primary" />,
   },
   {
     text: "The Knife",
-    icon: <GiCurvyKnife className="w-12 h-12 text-primary" />,
+    icon: <GiCurvyKnife className="h-12 w-12 text-primary" />,
   },
-  { text: "The Eel", icon: <GiEel className="w-12 h-12 text-primary" /> },
+  { text: "The Eel", icon: <GiEel className="h-12 w-12 text-primary" /> },
   {
     text: "The Leaf",
-    icon: <GiFallingLeaf className="w-12 h-12 text-primary" />,
+    icon: <GiFallingLeaf className="h-12 w-12 text-primary" />,
   },
   {
     text: "The Skull",
-    icon: <GiHarryPotterSkull className="w-12 h-12 text-primary" />,
+    icon: <GiHarryPotterSkull className="h-12 w-12 text-primary" />,
   },
   {
     text: "The Bottle",
-    icon: <GiHeartBottle className="w-12 h-12 text-primary" />,
+    icon: <GiHeartBottle className="h-12 w-12 text-primary" />,
   },
-  { text: "The Bird", icon: <GiIbis className="w-12 h-12 text-primary" /> },
+  { text: "The Bird", icon: <GiIbis className="h-12 w-12 text-primary" /> },
   {
     text: "The Mushroom",
-    icon: <GiSuperMushroom className="w-12 h-12 text-primary" />,
+    icon: <GiSuperMushroom className="h-12 w-12 text-primary" />,
   },
-  { text: "The Owl", icon: <GiOwl className="w-12 h-12 text-primary" /> },
+  { text: "The Owl", icon: <GiOwl className="h-12 w-12 text-primary" /> },
   {
     text: "The Potion",
-    icon: <GiPotionBall className="w-12 h-12 text-primary" />,
+    icon: <GiPotionBall className="h-12 w-12 text-primary" />,
   },
 ]
 
@@ -168,8 +168,8 @@ const TavernCards = () => {
   }
 
   return (
-    <div className="flex items-center flex-col">
-      <div className="flex flex-row lg:join mb-8">
+    <div className="flex flex-col items-center">
+      <div className="mb-8 flex flex-row lg:join">
         <div className="flex flex-wrap items-center lg:gap-0">
           {CARDS_PERCENTAGE_VALUES.map((value) => (
             <button
@@ -184,7 +184,7 @@ const TavernCards = () => {
           ))}
 
           <button
-            className="btn btn-primary mt-4 lg:mt-0 lg:ml-4 w-full lg:w-fit"
+            className="btn btn-primary mt-4 w-full lg:ml-4 lg:mt-0 lg:w-fit"
             disabled={disabled}
             onClick={handlePlayCards}
           >
@@ -193,12 +193,12 @@ const TavernCards = () => {
         </div>
       </div>
 
-      <div className="flex justify-center gap-4 mt-4">
+      <div className="mt-4 flex justify-center gap-4">
         {availableCards.map((_, index) => (
           <button
             key={`tavern-card-${index}`}
             onClick={(e) => handleSelectCard(e, index)}
-            className={`flex items-center justify-center w-32 h-44 rounded-lg border ${getCardClassNames(
+            className={`flex h-44 w-32 items-center justify-center rounded-lg border ${getCardClassNames(
               index
             )}`}
           >
@@ -210,9 +210,9 @@ const TavernCards = () => {
         ))}
       </div>
 
-      <p className="text-lg font-serif mt-8">You will bet {bet} gold</p>
+      <p className="mt-8 font-serif text-lg">You will bet {bet} gold</p>
 
-      <p className="text-sm mt-2">
+      <p className="mt-2 text-sm">
         You have 1/5 change of winning {potentialProfit} gold.
       </p>
     </div>

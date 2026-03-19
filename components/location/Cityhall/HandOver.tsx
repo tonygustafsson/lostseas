@@ -28,7 +28,7 @@ const HandOver = () => {
 
         return (
           <div
-            className="stat shadow-md hover:shadow-lg lg:w-1/3 bg-gray-800 rounded-lg pr-4"
+            className="stat rounded-lg bg-gray-800 pr-4 shadow-md hover:shadow-lg lg:w-1/3"
             key={`${treasure.name}-${idx}`}
           >
             <div className="stat-figure text-secondary">

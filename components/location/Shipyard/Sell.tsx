@@ -15,7 +15,7 @@ const ShipyardSell = () => {
   }
 
   return (
-    <div className="flex flex-wrap gap-6 mt-8">
+    <div className="mt-8 flex flex-wrap gap-6">
       {Object.entries(player?.ships || []).map(
         ([id, { name, type, health }]) => {
           const shipInfo = SHIP_TYPES[type as keyof typeof SHIP_TYPES]

@@ -72,7 +72,7 @@ const Map = ({ currentTown }: Props) => {
   }
 
   return (
-    <div className="lg:max-w-7xl overflow-x-auto mx-auto opacity-80">
+    <div className="mx-auto overflow-x-auto opacity-80 lg:max-w-7xl">
       <svg
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
@@ -120,7 +120,7 @@ const Map = ({ currentTown }: Props) => {
                 x={town.map.x}
                 y={town.map.y}
                 xlinkHref="img/map/town.svg"
-                className={`w-5 h-5 ${!isCurrentTown ? "cursor-pointer" : ""}`}
+                className={`h-5 w-5 ${!isCurrentTown ? "cursor-pointer" : ""}`}
                 onLoad={(e) => {
                   if (isCurrentTown) {
                     onCurrentTownLoad(e.currentTarget as SVGImageElement)
@@ -131,7 +131,11 @@ const Map = ({ currentTown }: Props) => {
                 }
                 onMouseMove={
                   !isCurrentTown
-                    ? (e) => onMouseOverTown(e as React.MouseEvent<SVGImageElement>, townName as Town)
+                    ? (e) =>
+                        onMouseOverTown(
+                          e as React.MouseEvent<SVGImageElement>,
+                          townName as Town
+                        )
                     : undefined
                 }
                 onMouseOut={onMouseOutTown}

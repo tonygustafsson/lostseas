@@ -15,42 +15,42 @@ const getLocationData = (location: TownLocation) => {
       return {
         key: location,
         title: "Shop",
-        icon: <AiOutlineShop className="text-cyan-600 w-6 h-6" />,
+        icon: <AiOutlineShop className="h-6 w-6 text-cyan-600" />,
         order: 1,
       }
     case "Tavern":
       return {
         key: location,
         title: "Tavern",
-        icon: <GiTavernSign className="text-cyan-600 w-6 h-6" />,
+        icon: <GiTavernSign className="h-6 w-6 text-cyan-600" />,
         order: 2,
       }
     case "Bank":
       return {
         key: location,
         title: "Bank",
-        icon: <GiBank className="text-cyan-600 w-6 h-6" />,
+        icon: <GiBank className="h-6 w-6 text-cyan-600" />,
         order: 3,
       }
     case "City hall":
       return {
         key: location,
         title: "City hall",
-        icon: <BsBank2 className="text-cyan-600 w-5 h-5" />,
+        icon: <BsBank2 className="h-5 w-5 text-cyan-600" />,
         order: 4,
       }
     case "Market":
       return {
         key: location,
         title: "Market",
-        icon: <GiFarmer className="text-cyan-600 w-6 h-6" />,
+        icon: <GiFarmer className="h-6 w-6 text-cyan-600" />,
         order: 5,
       }
     case "Shipyard":
       return {
         key: location,
         title: "Shipyard",
-        icon: <BsTools className="text-cyan-600 w-5 h-5" />,
+        icon: <BsTools className="h-5 w-5 text-cyan-600" />,
         order: 6,
       }
     default:
@@ -79,14 +79,14 @@ const TownActions = ({ location }: Props) => {
   }
 
   return (
-    <div className="bg-gray-900 rounded-b-lg p-4 pb-8 flex items-center flex-col">
-      <span className="text-xl font-serif">Change location</span>
+    <div className="flex flex-col items-center rounded-b-lg bg-gray-900 p-4 pb-8">
+      <span className="font-serif text-xl">Change location</span>
 
-      <div className="flex flex-wrap mt-4 justify-center gap-2 lg:gap-0 lg:join">
+      <div className="mt-4 flex flex-wrap justify-center gap-2 lg:join lg:gap-0">
         {locations.map(({ key, title, icon }) => (
           <button
             key={`change-location-${key}`}
-            className="btn text-base join-item"
+            className="btn join-item text-base"
             onClick={() => handleMove(title as TownLocation)}
             disabled={location === key}
           >

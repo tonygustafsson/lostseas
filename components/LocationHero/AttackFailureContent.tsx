@@ -25,9 +25,9 @@ const randomMessage = MESSAGES[Math.floor(Math.random() * MESSAGES.length)]
 
 const AttackFailureContent = () => (
   <>
-    <h1 className="font-serif mb-4 text-3xl lg:text-5xl">Battle lost!</h1>
+    <h1 className="mb-4 font-serif text-3xl lg:text-5xl">Battle lost!</h1>
 
-    <div className="lg:mb-5 text-sm">
+    <div className="text-sm lg:mb-5">
       <p className="mb-4">{randomMessage} </p>
     </div>
   </>

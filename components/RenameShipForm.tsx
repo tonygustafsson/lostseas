@@ -33,7 +33,7 @@ const RenameShipForm = ({ id, name }: Props) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full flex flex-col gap-4 max-w-md"
+      className="flex w-full max-w-md flex-col gap-4"
     >
       <TextField type="hidden" {...register("id", { value: id })} />
 

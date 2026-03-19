@@ -27,13 +27,13 @@ const LoginScreen = () => {
         layout="fill"
         objectFit="cover"
         alt="Lost Seas background"
-        className="absolute top-0 left-0 opacity-50 z-10"
+        className="absolute left-0 top-0 z-10 opacity-50"
       />
 
-      <div className="flex flex-col lg:flex-row gap-4 lg:gap-8 min-h-screen justify-items-stretch w-full relative z-20">
-        <div className="bg-base-300 bg-opacity-70 w-full rounded-lg p-6 lg:p-8 order-last lg:order-first">
-          <div className="max-w-3xl mx-auto text-lg">
-            <h1 className="font-serif mb-5 text-5xl lg:text-6xl text-center">
+      <div className="relative z-20 flex min-h-screen w-full flex-col justify-items-stretch gap-4 lg:flex-row lg:gap-8">
+        <div className="order-last w-full rounded-lg bg-base-300 bg-opacity-70 p-6 lg:order-first lg:p-8">
+          <div className="mx-auto max-w-3xl text-lg">
+            <h1 className="mb-5 text-center font-serif text-5xl lg:text-6xl">
               Lost Seas
             </h1>
 
@@ -55,22 +55,22 @@ const LoginScreen = () => {
               images are created by AI, and the music royalty free.
             </p>
 
-            <ul className="flex flex-col gap-4 mt-8">
+            <ul className="mt-8 flex flex-col gap-4">
               <li className="flex gap-4">
-                <FiCheckCircle size={28} className="text-success mt-1" />
+                <FiCheckCircle size={28} className="mt-1 text-success" />
                 <span className="flex-1">
                   It&apos;s free. Nothing to buy. No ads. Promise.
                 </span>
               </li>
               <li className="flex gap-4">
-                <FiCheckCircle size={28} className="text-success mt-1" />
+                <FiCheckCircle size={28} className="mt-1 text-success" />
                 <span className="flex-1">
                   We don&apos;t want to know anything about you. Not your email
                   adress, your name or your credit card.
                 </span>
               </li>
               <li className="flex gap-4">
-                <FiCheckCircle size={28} className="text-success mt-1" />
+                <FiCheckCircle size={28} className="mt-1 text-success" />
                 <span className="flex-1">
                   You can play from whatever device you like. You can register
                   on desktop, photo a QR code and sign in using that on your
@@ -79,7 +79,7 @@ const LoginScreen = () => {
               </li>
             </ul>
 
-            <h2 className="font-serif mt-8 mb-4 text-2xl lg:text-3xl">
+            <h2 className="mb-4 mt-8 font-serif text-2xl lg:text-3xl">
               Screenshots
             </h2>
 
@@ -87,8 +87,8 @@ const LoginScreen = () => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 lg:w-1/3 bg-base-300 bg-opacity-70 rounded-lg p-6 lg:p-8">
-          <h1 className="font-serif mb-5 text-5xl text-center lg:hidden">
+        <div className="flex flex-col gap-4 rounded-lg bg-base-300 bg-opacity-70 p-6 lg:w-1/3 lg:p-8">
+          <h1 className="mb-5 text-center font-serif text-5xl lg:hidden">
             Lost Seas
           </h1>
 
@@ -114,7 +114,7 @@ const LoginScreen = () => {
 
               <LoginForm />
 
-              <h2 className="font-serif text-3xl text-left mt-4">Register</h2>
+              <h2 className="mt-4 text-left font-serif text-3xl">Register</h2>
 
               <p>
                 No account yet? Go ahead and register. We don&apos;t want to
@@ -122,14 +122,14 @@ const LoginScreen = () => {
               </p>
 
               <button
-                className="btn btn-primary w-full btn-large mt-4"
+                className="btn-large btn btn-primary mt-4 w-full"
                 onClick={() => setShowRegistrationForm(true)}
               >
                 <GiArchiveRegister size={24} />
                 Register
               </button>
 
-              <Link href="/guide" className="btn btn-secondary w-full mt-4">
+              <Link href="/guide" className="btn btn-secondary mt-4 w-full">
                 <PiBookOpenTextBold size={26} />
                 Check out the Player Guide
               </Link>

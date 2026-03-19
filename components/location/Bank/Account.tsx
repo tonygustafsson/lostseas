@@ -65,12 +65,12 @@ const BankAccount = () => {
   }
 
   return (
-    <div className="w-full flex flex-col lg:flex-row lg:gap-8">
+    <div className="flex w-full flex-col lg:flex-row lg:gap-8">
       <form
-        className="w-full mt-4"
+        className="mt-4 w-full"
         onSubmit={accountHandleSubmit(handleDeposit)}
       >
-        <h2 className="text-2xl font-serif font-semibold mt-8 mb-4">
+        <h2 className="mb-4 mt-8 font-serif text-2xl font-semibold">
           Make deposit
         </h2>
 
@@ -105,14 +105,14 @@ const BankAccount = () => {
       </form>
 
       <form
-        className="flex flex-col justify-between items-start w-full mt-4"
+        className="mt-4 flex w-full flex-col items-start justify-between"
         onSubmit={withdrawalHandleSubmit(handleWithdrawal)}
       >
-        <h2 className="text-2xl font-serif font-semibold mt-8 mb-4">
+        <h2 className="mb-4 mt-8 font-serif text-2xl font-semibold">
           Make withdrawal
         </h2>
 
-        <p className="text-sm min-h-16">
+        <p className="min-h-16 text-sm">
           Take out your gold in order to spend it.
         </p>
 

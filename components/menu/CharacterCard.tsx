@@ -12,13 +12,13 @@ type Props = {
 }
 
 const CharacterCard = ({ player }: Props) => (
-  <div className="card w-full bg-gray-800 shadow-lg mt-2 rounded-md">
+  <div className="card mt-2 w-full rounded-md bg-gray-800 shadow-lg">
     <figure className="mt-4">
-      <GiPirateHat className="hidden lg:block h-14 w-14" />
+      <GiPirateHat className="hidden h-14 w-14 lg:block" />
     </figure>
 
-    <div className="card-body py-6 px-4 pt-2">
-      <h2 className="card-title font-serif gap-2">
+    <div className="card-body px-4 py-6 pt-2">
+      <h2 className="card-title gap-2 font-serif">
         <Flag
           nation={player.character.nationality}
           size={28}
@@ -32,7 +32,7 @@ const CharacterCard = ({ player }: Props) => (
         {player.character.nationality}.
       </p>
 
-      <div className="stats py-1 bg-gray-800">
+      <div className="stats bg-gray-800 py-1">
         <div className="stat px-0 py-0">
           <div className="stat-figure text-secondary">
             <GiProgression className="h-8 w-8" />
@@ -42,7 +42,7 @@ const CharacterCard = ({ player }: Props) => (
         </div>
       </div>
 
-      <div className="stats py-1 bg-gray-800">
+      <div className="stats bg-gray-800 py-1">
         <div className="stat px-0 py-0">
           <div className="stat-figure text-secondary">
             <FaCoins className="h-8 w-8" />

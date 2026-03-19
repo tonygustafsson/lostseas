@@ -17,14 +17,14 @@ const Harbor = () => {
         <ParrotBox title="Yarr, not ready to leave yet">
           <ul className="flex flex-col gap-4">
             {journeyValidation.errors.includes("NO_SHIPS") && (
-              <li className="flex align-middle gap-4 text-lg">
+              <li className="flex gap-4 align-middle text-lg">
                 <GiShoonerSailboat className="h-7 w-7 text-primary" />
                 <div className="flex-1">You do not own any ships.</div>
               </li>
             )}
 
             {journeyValidation.errors.includes("DAMAGED_SHIPS") && (
-              <li className="flex align-middle gap-4 text-lg">
+              <li className="flex gap-4 align-middle text-lg">
                 <GiShoonerSailboat className="h-7 w-7 text-primary" />
                 <div className="flex-1">
                   Some of your ships are too damaged to continue traveling. Fix
@@ -34,7 +34,7 @@ const Harbor = () => {
             )}
 
             {journeyValidation.errors.includes("NOT_ENOUGH_CREW_MEMBERS") && (
-              <li className="flex align-middle gap-4 text-lg">
+              <li className="flex gap-4 align-middle text-lg">
                 <GiBandana className="h-7 w-7 text-primary" />
                 <div className="flex-1">
                   You need at least {journeyValidation.minCrew} crew members to
@@ -44,7 +44,7 @@ const Harbor = () => {
             )}
 
             {journeyValidation.errors.includes("TOO_MANY_CREW_MEMBERS") && (
-              <li className="flex align-middle gap-4 text-lg">
+              <li className="flex gap-4 align-middle text-lg">
                 <GiBandana className="h-7 w-7 text-primary" />
                 <div className="flex-1">
                   Your ships can carry {journeyValidation.maxCrew} crew members
@@ -54,7 +54,7 @@ const Harbor = () => {
             )}
 
             {journeyValidation.errors.includes("ANGRY_CREW") && (
-              <li className="flex align-middle gap-4 text-lg">
+              <li className="flex gap-4 align-middle text-lg">
                 <GiBandana className="h-7 w-7 text-primary" />
                 <div className="flex-1">
                   Your crew is an angry bunch, they do not want to travel with
@@ -65,7 +65,7 @@ const Harbor = () => {
             )}
 
             {journeyValidation.errors.includes("CREW_IS_ILL") && (
-              <li className="flex align-middle gap-4 text-lg">
+              <li className="flex gap-4 align-middle text-lg">
                 <GiBandana className="h-7 w-7 text-primary" />
                 <div className="flex-1">
                   Your crew health is too low, they are too ill to travel. Give
@@ -75,7 +75,7 @@ const Harbor = () => {
             )}
 
             {journeyValidation.errors.includes("NO_FOOD") && (
-              <li className="flex align-middle gap-4 text-lg">
+              <li className="flex gap-4 align-middle text-lg">
                 <MerchandiseIcon item="food" />
                 <div className="flex-1">
                   You do not have enough food for the journey. You need at least{" "}
@@ -85,7 +85,7 @@ const Harbor = () => {
             )}
 
             {journeyValidation.errors.includes("NO_WATER") && (
-              <li className="flex align-middle gap-4 text-lg">
+              <li className="flex gap-4 align-middle text-lg">
                 <MerchandiseIcon item="water" />
                 <div className="flex-1">
                   You do not have enough water for the journey. You need at
@@ -101,7 +101,7 @@ const Harbor = () => {
         <ParrotBox title="Heads up!">
           <ul className="flex flex-col gap-4">
             {landingTips.includes("TOO_MUCH_GOLD") && (
-              <li className="flex align-middle gap-4 text-lg">
+              <li className="flex gap-4 align-middle text-lg">
                 <FaCoins className="h-7 w-7 text-primary" />
                 <div className="flex-1">
                   You are carrying {player.character.gold} gold, it would be
@@ -112,7 +112,7 @@ const Harbor = () => {
             )}
 
             {landingTips.includes("DAMAGED_SHIPS") && (
-              <li className="flex align-middle gap-4 text-lg">
+              <li className="flex gap-4 align-middle text-lg">
                 <GiShoonerSailboat className="h-7 w-7 text-primary" />
                 <div className="flex-1">
                   Some of your ships are too damaged to continue traveling. Fix
@@ -122,14 +122,14 @@ const Harbor = () => {
             )}
 
             {landingTips.includes("NO_CREW") && (
-              <li className="flex align-middle gap-4 text-lg">
+              <li className="flex gap-4 align-middle text-lg">
                 <GiBandana className="h-7 w-7 text-primary" />
                 <div className="flex-1">You do not have any crew members.</div>
               </li>
             )}
 
             {landingTips.includes("ANGRY_CREW") && (
-              <li className="flex align-middle gap-4 text-lg">
+              <li className="flex gap-4 align-middle text-lg">
                 <GiBandana className="h-7 w-7 text-primary" />
                 <div className="flex-1">
                   Your crew is an angry bunch, they do not want to travel with
@@ -140,7 +140,7 @@ const Harbor = () => {
             )}
 
             {landingTips.includes("CREW_IS_ILL") && (
-              <li className="flex align-middle gap-4 text-lg">
+              <li className="flex gap-4 align-middle text-lg">
                 <GiBandana className="h-7 w-7 text-primary" />
                 <div className="flex-1">
                   Your crew health is too low, they are too ill to travel. Give
@@ -150,7 +150,7 @@ const Harbor = () => {
             )}
 
             {landingTips.includes("NEED_MORE_FOOD") && (
-              <li className="flex align-middle gap-4 text-lg">
+              <li className="flex gap-4 align-middle text-lg">
                 <MerchandiseIcon item="food" />
                 <div className="flex-1">
                   You will probably need more food in stock in order to make the
@@ -160,7 +160,7 @@ const Harbor = () => {
             )}
 
             {landingTips.includes("NEED_MORE_WATER") && (
-              <li className="flex align-middle gap-4 text-lg">
+              <li className="flex gap-4 align-middle text-lg">
                 <MerchandiseIcon item="water" />
                 <div className="flex-1">
                   You will probably need more water in stock in order to make

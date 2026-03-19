@@ -20,28 +20,28 @@ const MerchandiseCard = ({
   <div
     className={`card ${
       fullWidth ? "w-full" : "w-full lg:w-80"
-    } bg-base-100 shadow-xl ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+    } bg-base-100 shadow-xl ${disabled ? "cursor-not-allowed opacity-50" : ""}`}
   >
-    <figure className="gap-3 bg-gray-800 py-3 mb-2 px-6">
+    <figure className="mb-2 gap-3 bg-gray-800 px-6 py-3">
       {icon}
 
       {indicator ? (
         <div className="indicator">
-          <h2 className="card-title font-serif text-xl mr-8">{title}</h2>
+          <h2 className="card-title mr-8 font-serif text-xl">{title}</h2>
 
           <span className="indicator-item indicator-middle badge badge-primary text-xs">
             {indicator}
           </span>
         </div>
       ) : (
-        <h2 className="card-title font-serif mr-8">{title}</h2>
+        <h2 className="card-title mr-8 font-serif">{title}</h2>
       )}
     </figure>
 
-    <div className="card-body text-sm pt-2 pb-2 px-6">{body}</div>
+    <div className="card-body px-6 pb-2 pt-2 text-sm">{body}</div>
 
     {actions && (
-      <div className="card-actions mx-6 my-6 gap-2 justify-between">
+      <div className="card-actions mx-6 my-6 justify-between gap-2">
         {actions}
       </div>
     )}

@@ -19,7 +19,7 @@ const Screenshots = () => {
             width={1700}
             height={1162}
             alt={`Screenshot of ${imgId}`}
-            className="object-cover max-w-none"
+            className="max-w-none object-cover"
           />
         </div>
       ),
@@ -27,7 +27,7 @@ const Screenshots = () => {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+    <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
       <button onClick={() => imageZoom("harbor")}>
         <Image
           width={200}

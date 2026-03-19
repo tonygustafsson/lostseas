@@ -13,7 +13,7 @@ const ShipyardRepair = () => {
   }
 
   return (
-    <div className="flex flex-wrap gap-6 mt-8">
+    <div className="mt-8 flex flex-wrap gap-6">
       {Object.entries(player?.ships || [])
         .filter(([_, { health }]) => health < 100)
         .map(([id, { name, type, health }]) => {

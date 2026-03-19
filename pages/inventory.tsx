@@ -32,14 +32,14 @@ const Inventory = () => {
       </Head>
 
       <DefaultLayout>
-        <h1 className="text-3xl font-serif mb-8">Inventory</h1>
+        <h1 className="mb-8 font-serif text-3xl">Inventory</h1>
 
-        <h2 className="text-xl font-serif mb-4">Necessities</h2>
+        <h2 className="mb-4 font-serif text-xl">Necessities</h2>
 
         <div className="flex flex-wrap gap-4">
           {necessities.map(([item, possession]) => (
             <div
-              className="stat shadow-md hover:shadow-lg lg:w-52 bg-gray-800 rounded-lg pr-4"
+              className="stat rounded-lg bg-gray-800 pr-4 shadow-md hover:shadow-lg lg:w-52"
               key={`inventory-${item}`}
             >
               <div className="stat-figure text-secondary">
@@ -60,12 +60,12 @@ const Inventory = () => {
 
         {!!tradingAssets.length && (
           <>
-            <h2 className="text-xl font-serif mt-8 mb-4">Trading assets</h2>
+            <h2 className="mb-4 mt-8 font-serif text-xl">Trading assets</h2>
 
             <div className="flex flex-wrap gap-4">
               {tradingAssets.map(([item, possession]) => (
                 <div
-                  className="stat shadow-md hover:shadow-lg lg:w-52 bg-gray-800 rounded-lg pr-4"
+                  className="stat rounded-lg bg-gray-800 pr-4 shadow-md hover:shadow-lg lg:w-52"
                   key={`inventory-${item}`}
                 >
                   <div className="stat-figure text-secondary">
@@ -88,7 +88,7 @@ const Inventory = () => {
 
         {!!Object.keys(player.treasures || {}).length && (
           <>
-            <h2 className="text-xl font-serif mt-8 mb-4">Treasures</h2>
+            <h2 className="mb-4 mt-8 font-serif text-xl">Treasures</h2>
 
             <div className="flex flex-wrap gap-4">
               {Object.values(player.treasures || {}).map((item) => {
@@ -98,7 +98,7 @@ const Inventory = () => {
 
                 return (
                   <div
-                    className="stat shadow-md hover:shadow-lg lg:w-1/3 bg-gray-800 rounded-lg pr-4"
+                    className="stat rounded-lg bg-gray-800 pr-4 shadow-md hover:shadow-lg lg:w-1/3"
                     key={`inventory-${item.id}`}
                   >
                     <div className="stat-figure text-secondary">
@@ -106,7 +106,7 @@ const Inventory = () => {
                     </div>
                     <p className="text-xl">{item.name}</p>
 
-                    <p className="text-sm mt-2">{treasureInfo?.description}</p>
+                    <p className="mt-2 text-sm">{treasureInfo?.description}</p>
 
                     <p className="mt-4 font-bold">
                       Bring it to the governor of {item.rewarder} for a reward

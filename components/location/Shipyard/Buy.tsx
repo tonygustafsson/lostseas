@@ -22,7 +22,7 @@ const ShipyardBuy = () => {
   return (
     <>
       {shipBuyingDisabled && (
-        <div className="alert bg-slate-700 mb-8">
+        <div className="alert mb-8 bg-slate-700">
           <p>
             You can only have {titleInfo.maxShips} ships as long as you have the
             title {titleInfo.title}.

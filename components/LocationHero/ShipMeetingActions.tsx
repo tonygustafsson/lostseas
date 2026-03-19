@@ -12,19 +12,19 @@ const ShipMeetingActions = () => {
   }
 
   return (
-    <div className="bg-gray-900 rounded-b-lg p-4 flex items-center flex-col pb-8">
-      <span className="text-xl font-serif">What do you want to do?</span>
+    <div className="flex flex-col items-center rounded-b-lg bg-gray-900 p-4 pb-8">
+      <span className="font-serif text-xl">What do you want to do?</span>
 
-      <div className="flex flex-wrap mt-4 justify-center gap-2 lg:gap-0 lg:join">
+      <div className="mt-4 flex flex-wrap justify-center gap-2 lg:join lg:gap-0">
         <button
-          className={`btn btn-primary text-base join-item`}
+          className={`btn btn-primary join-item text-base`}
           onClick={handleAttack}
         >
           Attack
         </button>
 
         <button
-          className={`btn btn-secondary text-base join-item`}
+          className={`btn btn-secondary join-item text-base`}
           onClick={handleIgnore}
         >
           Ignore

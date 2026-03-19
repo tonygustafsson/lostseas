@@ -31,11 +31,11 @@ const ParrotBox = ({ title, children }: Props) => (
         }}
         className="chat chat-start"
       >
-        <div className="chat-bubble bg-slate-600 min-w-fit">{title}</div>
+        <div className="chat-bubble min-w-fit bg-slate-600">{title}</div>
       </motion.div>
     </div>
 
-    <div className="flex flex-col bg-gray-900 rounded-lg p-6">{children}</div>
+    <div className="flex flex-col rounded-lg bg-gray-900 p-6">{children}</div>
   </>
 )
 
