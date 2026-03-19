@@ -12,7 +12,7 @@ export type ToastProps = {
   buttonText?: string
   href?: string
   title?: string
-  message?: string | JSX.Element
+  message?: string | React.ReactNode
   variant?: "success" | "error"
 }
 

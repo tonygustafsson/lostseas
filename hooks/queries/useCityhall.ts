@@ -11,80 +11,15 @@ export const useCityhall = () => {
   const { playSoundEffect } = useSound()
   const { setToast } = useToast()
 
-  const { mutate: acceptNewTitle, isLoading: isAcceptingNewTitle } =
-    useMutation(
-      () => apiRequest("/api/cityhall/acceptNewTitle", null, "POST"),
-      {
-        onSuccess: (response) => {
-          const { error, titleInfo } = response?.data
-
-          if (error) {
-            setToast({
-              title: `Could not accept new title ${titleInfo.title}`,
-              message: error,
-              variant: "error",
-            })
-
-            return
-          }
-
-          queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-          playSoundEffect("fanfare")
-
-          setToast({
-            title: `You are now a ${titleInfo.title}`,
-            message: `You also got a reward of ${titleInfo.reward} gold.`,
-            variant: "success",
-          })
-        },
-        onError: (error) => {
-          console.error(error)
-        },
-      }
-    )
-
-  const { mutate: changeCitizenship, isLoading: isChangingCitizenship } =
-    useMutation(
-      () => apiRequest("/api/cityhall/changeCitizenship", null, "POST"),
-      {
-        onSuccess: (response) => {
-          const { error, titleInfo, newNationality } = response?.data
-
-          if (error) {
-            setToast({
-              title: `Could not change citizenship to ${newNationality}`,
-              message: error,
-              variant: "error",
-            })
-
-            return
-          }
-
-          queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-          playSoundEffect("fanfare")
-
-          setToast({
-            title: `You are now a ${titleInfo.title} from ${newNationality}`,
-            message: `You also got a reward of ${titleInfo.reward} gold.`,
-            variant: "success",
-          })
-        },
-        onError: (error) => {
-          console.error(error)
-        },
-      }
-    )
-
-  const { mutate: handOver, isLoading: isHandingOver } = useMutation(
-    (id: Treasure["id"]) =>
-      apiRequest("/api/cityhall/handover", { id }, "POST"),
-    {
+  const { mutate: acceptNewTitle, isPending: isAcceptingNewTitle } =
+    useMutation({
+      mutationFn: () => apiRequest("/api/cityhall/acceptNewTitle", null, "POST"),
       onSuccess: (response) => {
-        const { error, treasure, treasureInfo } = response?.data
+        const { error, titleInfo } = response?.data
 
         if (error) {
           setToast({
-            title: `Could not handover treasure ${treasure.name}`,
+            title: `Could not accept new title ${titleInfo.title}`,
             message: error,
             variant: "error",
           })
@@ -92,20 +27,79 @@ export const useCityhall = () => {
           return
         }
 
-        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-        playSoundEffect("coins")
+        queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+        playSoundEffect("fanfare")
 
         setToast({
-          title: `You handed over the ${treasure.name} to the cityhall`,
-          message: `You got a reward of ${treasureInfo.value} gold.`,
+          title: `You are now a ${titleInfo.title}`,
+          message: `You also got a reward of ${titleInfo.reward} gold.`,
           variant: "success",
         })
       },
       onError: (error) => {
         console.error(error)
       },
-    }
-  )
+    })
+
+  const { mutate: changeCitizenship, isPending: isChangingCitizenship } =
+    useMutation({
+      mutationFn: () => apiRequest("/api/cityhall/changeCitizenship", null, "POST"),
+      onSuccess: (response) => {
+        const { error, titleInfo, newNationality } = response?.data
+
+        if (error) {
+          setToast({
+            title: `Could not change citizenship to ${newNationality}`,
+            message: error,
+            variant: "error",
+          })
+
+          return
+        }
+
+        queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+        playSoundEffect("fanfare")
+
+        setToast({
+          title: `You are now a ${titleInfo.title} from ${newNationality}`,
+          message: `You also got a reward of ${titleInfo.reward} gold.`,
+          variant: "success",
+        })
+      },
+      onError: (error) => {
+        console.error(error)
+      },
+    })
+
+  const { mutate: handOver, isPending: isHandingOver } = useMutation({
+    mutationFn: (id: Treasure["id"]) =>
+      apiRequest("/api/cityhall/handover", { id }, "POST"),
+    onSuccess: (response) => {
+      const { error, treasure, treasureInfo } = response?.data
+
+      if (error) {
+        setToast({
+          title: `Could not handover treasure ${treasure.name}`,
+          message: error,
+          variant: "error",
+        })
+
+        return
+      }
+
+      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+      playSoundEffect("coins")
+
+      setToast({
+        title: `You handed over the ${treasure.name} to the cityhall`,
+        message: `You got a reward of ${treasureInfo.value} gold.`,
+        variant: "success",
+      })
+    },
+    onError: (error) => {
+      console.error(error)
+    },
+  })
 
   return {
     acceptNewTitle,

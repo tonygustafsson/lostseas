@@ -11,42 +11,38 @@ export const useShips = () => {
   const { removeModal } = useModal()
   const { setToast } = useToast()
 
-  const { mutate: rename, isLoading: isRenaming } = useMutation(
-    ({ id, name }: { id: Ship["id"]; name: Ship["name"] }) =>
+  const { mutate: rename, isPending: isRenaming } = useMutation({
+    mutationFn: ({ id, name }: { id: Ship["id"]; name: Ship["name"] }) =>
       apiRequest(`/api/ship/rename/${id}`, { name }, "POST"),
-    {
-      onSuccess: (response) => {
-        const { name, ship } = response?.data
-        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+    onSuccess: (response) => {
+      const { name, ship } = response?.data
+      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
-        removeModal("renameShip")
+      removeModal("renameShip")
 
-        setToast({
-          title: `You renamed the ship to ${name}`,
-          message: `You renamed your ${ship.type} to ${name}`,
-          variant: "success",
-        })
-      },
-      onError: (error) => {
-        console.error(error)
+      setToast({
+        title: `You renamed the ship to ${name}`,
+        message: `You renamed your ${ship.type} to ${name}`,
+        variant: "success",
+      })
+    },
+    onError: (error) => {
+      console.error(error)
 
-        setToast({
-          title: `Could not rename ship`,
-          message: `Something went wrong when you tried to change the name of the ship.`,
-          variant: "error",
-        })
-      },
-    }
-  )
+      setToast({
+        title: `Could not rename ship`,
+        message: `Something went wrong when you tried to change the name of the ship.`,
+        variant: "error",
+      })
+    },
+  })
 
-  const { mutate: remove, isLoading: isRemoving } = useMutation(
-    ({ shipId }: { shipId: Ship["id"] }) =>
+  const { mutate: remove, isPending: isRemoving } = useMutation({
+    mutationFn: ({ shipId }: { shipId: Ship["id"] }) =>
       apiRequest(`/api/ship/remove/${shipId}`, { shipId }, "DELETE"),
-    {
-      onSuccess: () => queryClient.invalidateQueries([PLAYER_QUERY_KEY]),
-      onError: (error) => console.error(error),
-    }
-  )
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] }),
+    onError: (error) => console.error(error),
+  })
 
   return {
     remove,

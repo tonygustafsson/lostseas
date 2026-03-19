@@ -9,41 +9,35 @@ export const useCrew = () => {
   const queryClient = useQueryClient()
   const { playSoundEffect } = useSound()
 
-  const { mutate: giveMedicine, isLoading: isGivingMedicine } = useMutation(
-    (data: { medicine: Inventory["medicine"] }) =>
+  const { mutate: giveMedicine, isPending: isGivingMedicine } = useMutation({
+    mutationFn: (data: { medicine: Inventory["medicine"] }) =>
       apiRequest("/api/crew/giveMedicine", data, "POST"),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-        playSoundEffect("drink")
-      },
-      onError: (error) => console.error(error),
-    }
-  )
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+      playSoundEffect("drink")
+    },
+    onError: (error) => console.error(error),
+  })
 
-  const { mutate: giveGold, isLoading: isGivingGold } = useMutation(
-    (data: { gold: Character["gold"] }) =>
+  const { mutate: giveGold, isPending: isGivingGold } = useMutation({
+    mutationFn: (data: { gold: Character["gold"] }) =>
       apiRequest("/api/crew/giveGold", data, "POST"),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-        playSoundEffect("cheers")
-      },
-      onError: (error) => console.error(error),
-    }
-  )
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+      playSoundEffect("cheers")
+    },
+    onError: (error) => console.error(error),
+  })
 
-  const { mutate: dismiss, isLoading: isDismissing } = useMutation(
-    (data: { count: CrewMembers["count"] }) =>
+  const { mutate: dismiss, isPending: isDismissing } = useMutation({
+    mutationFn: (data: { count: CrewMembers["count"] }) =>
       apiRequest("/api/crew/dismiss", data, "POST"),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-        playSoundEffect("frustration")
-      },
-      onError: (error) => console.error(error),
-    }
-  )
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+      playSoundEffect("frustration")
+    },
+    onError: (error) => console.error(error),
+  })
 
   return {
     giveMedicine,

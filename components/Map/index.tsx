@@ -123,7 +123,7 @@ const Map = ({ currentTown }: Props) => {
                 className={`w-5 h-5 ${!isCurrentTown ? "cursor-pointer" : ""}`}
                 onLoad={(e) => {
                   if (isCurrentTown) {
-                    onCurrentTownLoad(e.currentTarget)
+                    onCurrentTownLoad(e.currentTarget as SVGImageElement)
                   }
                 }}
                 onClick={() =>
@@ -131,7 +131,7 @@ const Map = ({ currentTown }: Props) => {
                 }
                 onMouseMove={
                   !isCurrentTown
-                    ? (e) => onMouseOverTown(e, townName as Town)
+                    ? (e) => onMouseOverTown(e as React.MouseEvent<SVGImageElement>, townName as Town)
                     : undefined
                 }
                 onMouseOut={onMouseOutTown}

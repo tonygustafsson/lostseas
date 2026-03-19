@@ -12,16 +12,44 @@ export const useTavern = () => {
   const { setToast } = useToast()
   const { playSoundEffect } = useSound()
 
-  const { mutate: buy, isLoading: isBuying } = useMutation(
-    (data: { item: keyof typeof TAVERN_ITEMS }) =>
+    const { mutate: buy, isPending: isBuying } = useMutation({
+    mutationFn: (data: { item: keyof typeof TAVERN_ITEMS }) =>
       apiRequest("/api/tavern/buy", data, "POST"),
-    {
+    onSuccess: (response) => {
+      const { error, newMood, newHealth, item, totalPrice } = response?.data
+
+      if (error) {
+        setToast({
+          title: `Could not buy ${item}`,
+          message: error,
+          variant: "error",
+        })
+
+        return
+      }
+
+      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+      setToast({
+        title: `You bought ${item} for you and your crew`,
+        message: `It cost you ${totalPrice} gold and your crew now have the health ${newHealth} and mood ${newMood}`,
+        variant: "success",
+      })
+
+      playSoundEffect("cheers")
+    },
+    onError: (error) => console.error(error),
+  })
+
+  const { mutate: acceptNewCrewMembers, isPending: isAcceptingNewCrewMembers } =
+    useMutation({
+      mutationFn: () => apiRequest("/api/tavern/acceptNewCrewMembers", null, "POST"),
       onSuccess: (response) => {
-        const { error, newMood, newHealth, item, totalPrice } = response?.data
+        const { error, numberOfSailors } = response?.data
 
         if (error) {
           setToast({
-            title: `Could not buy ${item}`,
+            title: `Could accept new crew members`,
             message: error,
             variant: "error",
           })
@@ -29,96 +57,61 @@ export const useTavern = () => {
           return
         }
 
-        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+        queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
         setToast({
-          title: `You bought ${item} for you and your crew`,
-          message: `It cost you ${totalPrice} gold and your crew now have the health ${newHealth} and mood ${newMood}`,
+          title: `You took ${numberOfSailors} in as your crew`,
+          message: `Your whole crew couldn't be happier`,
           variant: "success",
         })
 
         playSoundEffect("cheers")
       },
       onError: (error) => console.error(error),
-    }
-  )
+    })
 
-  const { mutate: acceptNewCrewMembers, isLoading: isAcceptingNewCrewMembers } =
-    useMutation(
-      () => apiRequest("/api/tavern/acceptNewCrewMembers", null, "POST"),
-      {
-        onSuccess: (response) => {
-          const { error, numberOfSailors } = response?.data
+  const { mutate: fightSailors, isPending: isFightingSailors } = useMutation({
+    mutationFn: () => apiRequest("/api/tavern/fightSailors", null, "POST"),
+    onSuccess: (response) => {
+      const { error, numberOfSailors, success, loot, healthLoss } =
+        response?.data
 
-          if (error) {
-            setToast({
-              title: `Could accept new crew members`,
-              message: error,
-              variant: "error",
-            })
+      if (error) {
+        setToast({
+          title: `Could ignore sailors`,
+          message: error,
+          variant: "error",
+        })
 
-            return
-          }
-
-          queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-
-          setToast({
-            title: `You took ${numberOfSailors} in as your crew`,
-            message: `Your whole crew couldn't be happier`,
-            variant: "success",
-          })
-
-          playSoundEffect("cheers")
-        },
-        onError: (error) => console.error(error),
+        return
       }
-    )
 
-  const { mutate: fightSailors, isLoading: isFightingSailors } = useMutation(
-    () => apiRequest("/api/tavern/fightSailors", null, "POST"),
-    {
-      onSuccess: (response) => {
-        const { error, numberOfSailors, success, loot, healthLoss } =
-          response?.data
+      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
-        if (error) {
-          setToast({
-            title: `Could ignore sailors`,
-            message: error,
-            variant: "error",
-          })
+      if (success) {
+        setToast({
+          title: `You fought ${numberOfSailors} sailors sailors and won!`,
+          message: `You got ${loot} gold. Your crew lost ${healthLoss}% health.`,
+          variant: "success",
+        })
 
-          return
-        }
+        playSoundEffect("cheers")
+      } else {
+        setToast({
+          title: `You fought ${numberOfSailors} sailors and lost`,
+          message: `Ouch! Your crew lost ${healthLoss}% health.`,
+          variant: "error",
+        })
 
-        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+        playSoundEffect("hurt")
+      }
+    },
+    onError: (error) => console.error(error),
+  })
 
-        if (success) {
-          setToast({
-            title: `You fought ${numberOfSailors} sailors sailors and won!`,
-            message: `You got ${loot} gold. Your crew lost ${healthLoss}% health.`,
-            variant: "success",
-          })
-
-          playSoundEffect("cheers")
-        } else {
-          setToast({
-            title: `You fought ${numberOfSailors} sailors and lost`,
-            message: `Ouch! Your crew lost ${healthLoss}% health.`,
-            variant: "error",
-          })
-
-          playSoundEffect("hurt")
-        }
-      },
-      onError: (error) => console.error(error),
-    }
-  )
-
-  const { mutate: ignoreSailors, isLoading: isIgnoringSailors } = useMutation(
-    () => apiRequest("/api/tavern/ignoreSailors", null, "POST"),
-    {
-      onSuccess: (response) => {
+    const { mutate: ignoreSailors, isPending: isIgnoringSailors } = useMutation({
+      mutationFn: () => apiRequest("/api/tavern/ignoreSailors", null, "POST") as Promise<any>,
+      onSuccess: (response: { data: { error?: string; numberOfSailors: number } }) => {
         const { error, numberOfSailors } = response?.data
 
         if (error) {
@@ -131,7 +124,7 @@ export const useTavern = () => {
           return
         }
 
-        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+        queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
         setToast({
           title: `You ignored the ${numberOfSailors} sailors`,
@@ -140,13 +133,11 @@ export const useTavern = () => {
         })
       },
       onError: (error) => console.error(error),
-    }
-  )
+    })
 
-  const { mutateAsync: playCards, isLoading: isPlayingCard } = useMutation(
-    (data: { betPercentage: number; selectedCard: number }) =>
-      apiRequest("/api/tavern/cards", data, "POST"),
-    {
+    const { mutateAsync: playCards, isPending: isPlayingCard } = useMutation({
+      mutationFn: (data: { betPercentage: number; selectedCard: number }) =>
+        apiRequest("/api/tavern/cards", data, "POST"),
       onSuccess: (response) => {
         const { error, bet, gold, cardsResults } = response?.data
 
@@ -160,7 +151,7 @@ export const useTavern = () => {
           return
         }
 
-        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+        queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
         let title = ""
 
@@ -183,8 +174,7 @@ export const useTavern = () => {
         }
       },
       onError: (error) => console.error(error),
-    }
-  )
+    })
 
   return {
     buy,

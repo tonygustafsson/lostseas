@@ -12,43 +12,41 @@ export const useMarket = () => {
   const { setToast } = useToast()
   const { playSoundEffect } = useSound()
 
-  const { mutate: acceptMarketBargain, isLoading: isAcceptingMarketBargain } =
-    useMutation(
-      (data: { item: keyof LocationStateMarketItems }) =>
+  const { mutate: acceptMarketBargain, isPending: isAcceptingMarketBargain } =
+    useMutation({
+      mutationFn: (data: { item: keyof LocationStateMarketItems }) =>
         apiRequest("/api/market/accept", data, "POST"),
-      {
-        onSuccess: (response) => {
-          const { error, quantity, item, totalPrice, totalQuantity } =
-            response?.data
+      onSuccess: (response) => {
+        const { error, quantity, item, totalPrice, totalQuantity } =
+          response?.data
 
-          if (error) {
-            setToast({
-              title: `Could not accept ${item}`,
-              message: error,
-              variant: "error",
-            })
-
-            return
-          }
-
-          queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-
-          const unit =
-            quantity === 1
-              ? MERCHANDISE[item as keyof Inventory].singleUnit
-              : MERCHANDISE[item as keyof Inventory].unit
-
+        if (error) {
           setToast({
-            title: `You bought ${quantity} ${unit} of ${item}`,
-            message: `It cost you ${totalPrice} gold and your now have ${totalQuantity} ${unit} of ${item}`,
-            variant: "success",
+            title: `Could not accept ${item}`,
+            message: error,
+            variant: "error",
           })
 
-          playSoundEffect("coins")
-        },
-        onError: (error) => console.error(error),
-      }
-    )
+          return
+        }
+
+        queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+        const unit =
+          quantity === 1
+            ? MERCHANDISE[item as keyof Inventory].singleUnit
+            : MERCHANDISE[item as keyof Inventory].unit
+
+        setToast({
+          title: `You bought ${quantity} ${unit} of ${item}`,
+          message: `It cost you ${totalPrice} gold and your now have ${totalQuantity} ${unit} of ${item}`,
+          variant: "success",
+        })
+
+        playSoundEffect("coins")
+      },
+      onError: (error) => console.error(error),
+    })
 
   return {
     acceptMarketBargain,

@@ -1,7 +1,7 @@
 import "@/styles/globals.css"
 
 import {
-  Hydrate,
+  HydrationBoundary,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query"
@@ -62,7 +62,7 @@ const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
       </Head>
 
       <QueryClientProvider client={queryClient}>
-        <Hydrate state={pageProps.dehydratedState}>
+        <HydrationBoundary state={pageProps.dehydratedState}>
           <MotionProvider>
             <ToastProvider>
               <ModalProvider>
@@ -79,7 +79,7 @@ const App = ({ Component, pageProps: { ...pageProps } }: AppProps) => {
           </MotionProvider>
 
           <ReactQueryDevtools initialIsOpen={false} />
-        </Hydrate>
+        </HydrationBoundary>
       </QueryClientProvider>
     </>
   )

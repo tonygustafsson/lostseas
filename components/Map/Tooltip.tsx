@@ -1,5 +1,5 @@
+import React from "react"
 import { createPortal } from "react-dom"
-import React from "react-dom/server"
 
 import { TOWNS } from "@/constants/locations"
 

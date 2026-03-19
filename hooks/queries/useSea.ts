@@ -11,25 +11,25 @@ export const useSea = () => {
   const queryClient = useQueryClient()
   const { playSoundEffect } = useSound()
 
-  const { mutate: startJourney, isLoading: isStartingJourney } = useMutation(
-    (data: { town: Town }) => apiRequest("/api/sea/startJourney", data, "POST"),
-    {
-      onSuccess: (response) => {
-        const { success } = response?.data
+  const { mutate: startJourney, isPending: isStartingJourney } = useMutation({
+    mutationFn: (data: { town: Town }) =>
+      apiRequest("/api/sea/startJourney", data, "POST"),
+    onSuccess: (response) => {
+      const { success } = response?.data
 
-        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
-        if (success) {
-          playSoundEffect("journey")
-          setTimeout(() => continueJourney(), SEA_TRAVEL_SPEED)
-        }
-      },
-      onError: (error) => console.error(error),
-    }
-  )
+      if (success) {
+        playSoundEffect("journey")
+        setTimeout(() => continueJourney(), SEA_TRAVEL_SPEED)
+      }
+    },
+    onError: (error) => console.error(error),
+  })
 
-  const { mutate: continueJourney, isLoading: isContinueingJourney } =
-    useMutation(() => apiRequest("/api/sea/continueJourney", null, "POST"), {
+  const { mutate: continueJourney, isPending: isContinueingJourney } =
+    useMutation({
+      mutationFn: () => apiRequest("/api/sea/continueJourney", null, "POST"),
       onSuccess: (response) => {
         const {
           destinationReached,
@@ -42,7 +42,7 @@ export const useSea = () => {
           error?: string
         } = response?.data
 
-        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+        queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
         if (shipMeetingState) {
           playSoundEffect("sailho")
         } else if (destinationReached) {
@@ -58,28 +58,24 @@ export const useSea = () => {
       onError: (error) => console.error(error),
     })
 
-  const { mutate: attackShip, isLoading: isAttackingShip } = useMutation(
-    () => apiRequest("/api/sea/attackShip", null, "POST"),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-        playSoundEffect("cannons")
-      },
-      onError: (error) => console.error(error),
-    }
-  )
+  const { mutate: attackShip, isPending: isAttackingShip } = useMutation({
+    mutationFn: () => apiRequest("/api/sea/attackShip", null, "POST"),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+      playSoundEffect("cannons")
+    },
+    onError: (error) => console.error(error),
+  })
 
-  const { mutate: ignoreShip, isLoading: isIgnoringShip } = useMutation(
-    () => apiRequest("/api/sea/ignoreShip", null, "POST"),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
+  const { mutate: ignoreShip, isPending: isIgnoringShip } = useMutation({
+    mutationFn: () => apiRequest("/api/sea/ignoreShip", null, "POST"),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
-        continueJourney()
-      },
-      onError: (error) => console.error(error),
-    }
-  )
+      continueJourney()
+    },
+    onError: (error) => console.error(error),
+  })
 
   return {
     startJourney,

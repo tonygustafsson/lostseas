@@ -9,50 +9,45 @@ export const useBank = () => {
   const queryClient = useQueryClient()
   const { playSoundEffect } = useSound()
 
-  const { mutate: deposit, isLoading: isDepositing } = useMutation(
-    (data: { amount: number }) => apiRequest("/api/bank/deposit", data, "POST"),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-        playSoundEffect("coins")
-      },
-      onError: (error) => console.error(error),
-    }
-  )
+  const { mutate: deposit, isPending: isDepositing } = useMutation({
+    mutationFn: (data: { amount: number }) =>
+      apiRequest("/api/bank/deposit", data, "POST"),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+      playSoundEffect("coins")
+    },
+    onError: (error) => console.error(error),
+  })
 
-  const { mutate: withdraw, isLoading: isWithdrawing } = useMutation(
-    (data: { amount: number }) =>
+  const { mutate: withdraw, isPending: isWithdrawing } = useMutation({
+    mutationFn: (data: { amount: number }) =>
       apiRequest("/api/bank/withdraw", data, "POST"),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-        playSoundEffect("coins")
-      },
-      onError: (error) => console.error(error),
-    }
-  )
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+      playSoundEffect("coins")
+    },
+    onError: (error) => console.error(error),
+  })
 
-  const { mutate: loan, isLoading: isLoaning } = useMutation(
-    (data: { amount: number }) => apiRequest("/api/bank/loan", data, "POST"),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-        playSoundEffect("coins")
-      },
-      onError: (error) => console.error(error),
-    }
-  )
+  const { mutate: loan, isPending: isLoaning } = useMutation({
+    mutationFn: (data: { amount: number }) =>
+      apiRequest("/api/bank/loan", data, "POST"),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+      playSoundEffect("coins")
+    },
+    onError: (error) => console.error(error),
+  })
 
-  const { mutate: repay, isLoading: isRepaying } = useMutation(
-    (data: { amount: number }) => apiRequest("/api/bank/repay", data, "POST"),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([PLAYER_QUERY_KEY])
-        playSoundEffect("coins")
-      },
-      onError: (error) => console.error(error),
-    }
-  )
+  const { mutate: repay, isPending: isRepaying } = useMutation({
+    mutationFn: (data: { amount: number }) =>
+      apiRequest("/api/bank/repay", data, "POST"),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+      playSoundEffect("coins")
+    },
+    onError: (error) => console.error(error),
+  })
 
   return {
     deposit,
