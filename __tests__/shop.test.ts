@@ -4,7 +4,7 @@ import {
   getBarterGoodsValue,
   getDaysWorthOfNecessities,
   getNecessitiesInfo,
-} from '../shop'
+} from '@/utils/shop'
 
 describe('shop utils', () => {
   it('getNecessitiesInfo computes needed amounts and cost', () => {

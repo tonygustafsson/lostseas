@@ -6,7 +6,7 @@ import {
   getMannedCannons,
   getMedicineEffectiveness,
   increaseCrewMood,
-} from '../crew'
+} from '@/utils/crew'
 
 describe('crew utils', () => {
   it('getMedicineEffectiveness caps at 100 and floors values', () => {

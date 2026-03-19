@@ -1,6 +1,6 @@
 import { describe, expect,it } from 'vitest'
 
-import { validateShipCrewRequirements } from '../validateCrew'
+import { validateShipCrewRequirements } from '@/utils/validateCrew'
 
 describe('validateShipCrewRequirements', () => {
   it('calculates min and max crew for various ship types', () => {

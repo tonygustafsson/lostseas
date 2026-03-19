@@ -1,11 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
 
-vi.mock('../random', () => ({ getRandomInt: vi.fn() }))
-
 import { TOWNS } from '@/constants/locations'
+import { createTreasure } from '@/utils/createTreasure'
+import { getRandomInt } from '@/utils/random'
 
-import { createTreasure } from '../createTreasure'
-import { getRandomInt } from '../random'
+vi.mock('@/utils/random', () => ({ getRandomInt: vi.fn() }))
 
 describe('createTreasure', () => {
   it('creates treasure with deterministic selection when random is mocked', () => {

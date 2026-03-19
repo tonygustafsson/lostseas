@@ -1,6 +1,6 @@
 import { describe, expect,it } from 'vitest'
 
-import { addToInventory, removeFromAllInventoryItems } from '../inventory'
+import { addToInventory, removeFromAllInventoryItems } from '@/utils/inventory'
 
 describe('inventory utils', () => {
   it('addToInventory creates full record when inventory is undefined', () => {

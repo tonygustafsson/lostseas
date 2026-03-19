@@ -1,8 +1,7 @@
 import { describe, expect,it } from 'vitest'
 
 import { TITLE_INFO } from '@/constants/title'
-
-import { getNewTitle,getTitleInfoByScore } from '../title'
+import { getNewTitle,getTitleInfoByScore } from '@/utils/title'
 
 describe('title utils', () => {
   it('getTitleInfoByScore returns expected title ranges', () => {

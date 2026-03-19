@@ -1,6 +1,6 @@
 import { describe, expect,it } from 'vitest'
 
-import { validateJourney } from '../validateJourney'
+import { validateJourney } from '@/utils/validateJourney'
 
 describe('validateJourney', () => {
   it('returns NO_PLAYER when no player provided', () => {
