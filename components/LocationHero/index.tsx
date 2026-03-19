@@ -1,5 +1,6 @@
 import { useAnimate } from "framer-motion"
 import Image from "next/image"
+import { useId } from "react"
 
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getLocationBackground } from "@/utils/location"
@@ -17,6 +18,8 @@ const LocationHero = () => {
   const { data: player } = useGetPlayer()
   const [scope, animate] = useAnimate()
 
+  const randomId = useId()
+
   const onImageLoad = () => {
     animate(
       "img",
@@ -32,7 +35,7 @@ const LocationHero = () => {
       <div
         key={
           player?.character.location === "Sea"
-            ? `sea-${Math.random()}`
+            ? `sea-${randomId}`
             : `${player?.character.town}-${player?.character.location}`
         }
         className={`hero relative rounded-lg ${
