@@ -1,17 +1,17 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 vi.mock('../random', () => ({ getRandomInt: vi.fn() }))
 
-import {
-  getTownsNationality,
-  getRandomTown,
-  getLocationBackground,
-  getAllTownLocationBackgrounds,
-  getAllSeaLocationBackgrounds,
-} from '../location'
+import {TOWNS } from '@/constants/locations'
 
+import {
+  getAllSeaLocationBackgrounds,
+  getAllTownLocationBackgrounds,
+  getLocationBackground,
+  getRandomTown,
+  getTownsNationality,
+} from '../location'
 import { getRandomInt } from '../random'
-import { TOWNS, LOCATIONS } from '@/constants/locations'
 
 describe('location utils', () => {
   it('getTownsNationality returns nation for known town and undefined for falsy', () => {

@@ -1,4 +1,5 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect,it } from 'vitest'
+
 import { addToInventory, removeFromAllInventoryItems } from '../inventory'
 
 describe('inventory utils', () => {
@@ -21,7 +22,8 @@ describe('inventory utils', () => {
 
   it('removeFromAllInventoryItems reduces non-cannon items by percentage and leaves cannons unchanged', () => {
     const inventory = { food: 10, water: 10, cannons: 5, porcelain: 4 } as any
-    const res = removeFromAllInventoryItems(inventory, 50)
+    const res = removeFromAllInventoryItems(inventory, 50) as any
+
     expect(res.food).toBe(5)
     expect(res.water).toBe(5)
     expect(res.porcelain).toBe(2)

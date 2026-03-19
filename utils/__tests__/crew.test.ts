@@ -1,9 +1,10 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect,it } from 'vitest'
+
 import {
-  getMedicineEffectiveness,
+  decreaseCrewHealth,
   getGoldEffectiveness,
   getMannedCannons,
-  decreaseCrewHealth,
+  getMedicineEffectiveness,
   increaseCrewMood,
 } from '../crew'
 

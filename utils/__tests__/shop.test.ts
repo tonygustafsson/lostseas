@@ -1,8 +1,9 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect,it } from 'vitest'
+
 import {
-  getNecessitiesInfo,
-  getDaysWorthOfNecessities,
   getBarterGoodsValue,
+  getDaysWorthOfNecessities,
+  getNecessitiesInfo,
 } from '../shop'
 
 describe('shop utils', () => {

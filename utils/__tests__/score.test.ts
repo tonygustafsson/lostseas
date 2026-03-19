@@ -1,9 +1,9 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 vi.mock('../crew', () => ({ getMannedCannons: vi.fn() }))
 
-import { getScore } from '../score'
 import { getMannedCannons } from '../crew'
+import { getScore } from '../score'
 
 describe('score utils', () => {
   it('calculates score including title, gold, ships and manned cannons', () => {
