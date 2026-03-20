@@ -6,11 +6,11 @@ import FullscreenLayout from "@/components/layouts/fullscreen"
 import LocationHero from "@/components/LocationHero"
 import LoginScreen from "@/components/LoginScreen"
 import ShowLocation from "@/components/ShowLocation"
+import { getLoggedInPlayer } from "@/utils/app/getLoggedInPlayer"
 import {
   getAllSeaLocationBackgrounds,
   getAllTownLocationBackgrounds,
 } from "@/utils/location"
-import { getLoggedInPlayer } from "@/utils/next/getLoggedInServerSidePropsApp"
 
 export async function generateMetadata(): Promise<Metadata> {
   const player = await getLoggedInPlayer()

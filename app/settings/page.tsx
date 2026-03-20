@@ -1,6 +1,6 @@
 import DefaultLayout from "@/components/layouts/default"
 import SettingsPanel from "@/components/settings/SettingsPanel"
-import { getLoggedInPlayer } from "@/utils/next/getLoggedInServerSidePropsApp"
+import { getLoggedInPlayer } from "@/utils/app/getLoggedInPlayer"
 
 export const metadata = {
   title: "Settings",

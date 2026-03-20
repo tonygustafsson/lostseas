@@ -5,7 +5,7 @@ import GiveGold from "@/components/crew/GiveGold"
 import GiveMedicine from "@/components/crew/GiveMedicine"
 import DefaultLayout from "@/components/layouts/default"
 import RadialProgressBar from "@/components/RadialProgressBar"
-import { getLoggedInPlayer } from "@/utils/next/getLoggedInServerSidePropsApp"
+import { getLoggedInPlayer } from "@/utils/app/getLoggedInPlayer"
 
 export const metadata = {
   title: "Crew",

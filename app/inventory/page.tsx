@@ -3,7 +3,7 @@ import MerchandiseIcon from "@/components/MerchandiseIcon"
 import TreasureIcon from "@/components/TreasureIcon"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { TREASURES } from "@/constants/treasures"
-import { getLoggedInPlayer } from "@/utils/next/getLoggedInServerSidePropsApp"
+import { getLoggedInPlayer } from "@/utils/app/getLoggedInPlayer"
 import { capitalize } from "@/utils/string"
 
 export const metadata = {

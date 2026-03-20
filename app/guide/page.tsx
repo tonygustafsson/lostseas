@@ -5,7 +5,7 @@ import { AiOutlineArrowLeft } from "react-icons/ai"
 import GuideContent from "@/components/GuideContent"
 import DefaultLayout from "@/components/layouts/default"
 import FullscreenLayout from "@/components/layouts/fullscreen"
-import { getLoggedInPlayer } from "@/utils/next/getLoggedInServerSidePropsApp"
+import { getLoggedInPlayer } from "@/utils/app/getLoggedInPlayer"
 
 export const metadata = {
   title: "Player Guide",

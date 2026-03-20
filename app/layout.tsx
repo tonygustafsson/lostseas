@@ -5,7 +5,7 @@ import { Metadata, Viewport } from "next"
 
 import Providers from "@/components/Providers"
 import { almendra, andika } from "@/fonts"
-import { getLoggedInServerSidePropsApp } from "@/utils/next/getLoggedInServerSidePropsApp"
+import { getDehydratedPlayerState } from "@/utils/app/getDehydratedPlayerState"
 
 export const metadata: Metadata = {
   title: {
@@ -49,7 +49,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { dehydratedState } = await getLoggedInServerSidePropsApp()
+  const dehydratedState = await getDehydratedPlayerState()
 
   return (
     <html lang="en" className={`${almendra.variable} ${andika.variable}`}>

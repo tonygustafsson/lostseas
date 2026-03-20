@@ -7,8 +7,8 @@ import Flag from "@/components/icons/Flag"
 import DefaultLayout from "@/components/layouts/default"
 import ChangeCharacterButton from "@/components/status/ChangeCharacterButton"
 import { NATIONS } from "@/constants/locations"
+import { getLoggedInPlayer } from "@/utils/app/getLoggedInPlayer"
 import { convertDaysToTimeSpan, getCurrentDate } from "@/utils/date"
-import { getLoggedInPlayer } from "@/utils/next/getLoggedInServerSidePropsApp"
 import { getScore } from "@/utils/score"
 
 export const metadata = {

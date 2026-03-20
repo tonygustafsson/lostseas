@@ -5,8 +5,8 @@ import RadialProgressBar from "@/components/RadialProgressBar"
 import ShipActions from "@/components/ships/ShipActions"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_TYPES } from "@/constants/ship"
+import { getLoggedInPlayer } from "@/utils/app/getLoggedInPlayer"
 import { getCurrentDate } from "@/utils/date"
-import { getLoggedInPlayer } from "@/utils/next/getLoggedInServerSidePropsApp"
 
 export const metadata = {
   title: "Ships",
