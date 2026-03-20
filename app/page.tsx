@@ -1,7 +1,11 @@
 import { Metadata } from "next"
 import { preload } from "react-dom"
 
-import HomeClient from "@/components/HomeClient"
+import DefaultLayout from "@/components/layouts/default"
+import FullscreenLayout from "@/components/layouts/fullscreen"
+import LocationHero from "@/components/LocationHero"
+import LoginScreen from "@/components/LoginScreen"
+import ShowLocation from "@/components/ShowLocation"
 import {
   getAllSeaLocationBackgrounds,
   getAllTownLocationBackgrounds,
@@ -45,5 +49,18 @@ export default async function Page() {
     preload(background, { as: "image" })
   }
 
-  return <HomeClient />
+  if (!player) {
+    return (
+      <FullscreenLayout>
+        <LoginScreen />
+      </FullscreenLayout>
+    )
+  }
+
+  return (
+    <DefaultLayout>
+      <LocationHero />
+      <ShowLocation />
+    </DefaultLayout>
+  )
 }
