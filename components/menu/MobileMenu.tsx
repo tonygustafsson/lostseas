@@ -1,3 +1,5 @@
+"use client"
+
 import { AnimatePresence, m as motion, PanInfo } from "framer-motion"
 import Image from "next/image"
 import { useState } from "react"

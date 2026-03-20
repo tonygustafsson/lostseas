@@ -1,97 +1,94 @@
-import { initializeApp } from "firebase/app"
-import { child, get, getDatabase, ref, set } from "firebase/database"
+import "server-only"
 
-const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  databaseURL: process.env.FIREBASE_DATABASE_URL,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID,
+const databaseUrl = process.env.FIREBASE_DATABASE_URL
+
+if (!databaseUrl) {
+  throw new Error("FIREBASE_DATABASE_URL is not configured")
 }
 
-const app = initializeApp(firebaseConfig)
-const db = getDatabase(app)
-const dbRef = ref(db)
+const buildDatabaseUrl = (path: string) => {
+  const normalizedPath = path.replace(/^\/+|\/+$/g, "")
 
-export const getPlayer = async (playerId: Player["id"]) => {
-  const ref = await get(child(dbRef, playerId))
-
-  const player = ref.val() as Player
-
-  return player
+  return `${databaseUrl.replace(/\/$/, "")}/${normalizedPath}.json`
 }
+
+const readValue = async <T>(path: string) => {
+  const response = await fetch(buildDatabaseUrl(path), {
+    cache: "no-store",
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to read Firebase path: ${path}`)
+  }
+
+  return (await response.json()) as T
+}
+
+const writeValue = async (path: string, value: unknown, method = "PUT") => {
+  const response = await fetch(buildDatabaseUrl(path), {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(value),
+    cache: "no-store",
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to write Firebase path: ${path}`)
+  }
+}
+
+export const getPlayer = async (playerId: Player["id"]) =>
+  readValue<Player>(playerId)
 
 export const savePlayer = async (playerId: Player["id"], player: Player) => {
-  await set(ref(db, playerId), player).catch((error) => error)
+  await writeValue(playerId, player)
 }
 
-export const getCharacter = async (playerId: Player["id"]) => {
-  const ref = await get(child(dbRef, `${playerId}/character`))
-
-  const character = ref.val() as Character
-
-  return character
-}
+export const getCharacter = async (playerId: Player["id"]) =>
+  readValue<Character>(`${playerId}/character`)
 
 export const saveCharacter = async (
   playerId: Player["id"],
   character: Nullable<Character>
 ) => {
-  await set(ref(db, `${playerId}/character`), character).catch((error) => error)
+  await writeValue(`${playerId}/character`, character)
 }
 
-export const getCrewMembers = async (playerId: Player["id"]) => {
-  const ref = await get(child(dbRef, `${playerId}/crewMembers`))
-
-  const crewMembers = ref.val() as CrewMembers
-
-  return crewMembers
-}
+export const getCrewMembers = async (playerId: Player["id"]) =>
+  readValue<CrewMembers>(`${playerId}/crewMembers`)
 
 export const saveCrewMembers = async (
   playerId: Player["id"],
   crewMembers: CrewMembers
 ) => {
-  await set(ref(db, `${playerId}/crewMembers`), crewMembers).catch(
-    (error) => error
-  )
+  await writeValue(`${playerId}/crewMembers`, crewMembers)
 }
 
-export const getShip = async (playerId: Player["id"], shipId: Ship["id"]) => {
-  const ref = await get(child(dbRef, `${playerId}/ships/${shipId}`))
-
-  const ship = ref.val() as Ship
-
-  return ship
-}
+export const getShip = async (playerId: Player["id"], shipId: Ship["id"]) =>
+  readValue<Ship>(`${playerId}/ships/${shipId}`)
 
 export const saveShip = async (playerId: Player["id"], ship: Ship) => {
-  await set(ref(db, `${playerId}/ships/${ship["id"]}`), ship).catch(
-    (error) => error
-  )
+  await writeValue(`${playerId}/ships/${ship["id"]}`, ship)
+}
+
+export const removeShip = async (
+  playerId: Player["id"],
+  shipId: Ship["id"]
+) => {
+  await writeValue(`${playerId}/ships/${shipId}`, null, "DELETE")
 }
 
 export const getLocationState = async <T>(
   playerId: Player["id"],
   state: keyof LocationStates
-) => {
-  const ref = await get(child(dbRef, `${playerId}/locationStates/${state}`))
-
-  const locationState = ref.val() as T
-
-  return locationState
-}
+) => readValue<T>(`${playerId}/locationStates/${state}`)
 
 export const saveLocationState = async <T>(
   playerId: Player["id"],
   stateKey: keyof LocationStates,
   state: T
 ) => {
-  await set(ref(db, `${playerId}/locationStates/${stateKey}`), state).catch(
-    (error) => error
-  )
+  await writeValue(`${playerId}/locationStates/${stateKey}`, state)
 }
-
-export default db

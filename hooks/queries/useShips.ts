@@ -39,7 +39,7 @@ export const useShips = () => {
 
   const { mutate: remove, isPending: isRemoving } = useMutation({
     mutationFn: ({ shipId }: { shipId: Ship["id"] }) =>
-      apiRequest(`/api/ship/remove/${shipId}`, { shipId }, "DELETE"),
+      apiRequest(`/api/ship/remove/${shipId}`, undefined, "DELETE"),
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] }),
     onError: (error) => console.error(error),

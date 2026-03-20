@@ -1,5 +1,7 @@
+"use client"
+
 import Link from "next/link"
-import { useRouter } from "next/router"
+import { usePathname } from "next/navigation"
 import { GiPirateHat } from "react-icons/gi"
 import { HiMenu } from "react-icons/hi"
 import { RiTreasureMapLine } from "react-icons/ri"
@@ -14,7 +16,7 @@ type Props = {
 }
 
 const MobileBottomNav = ({ setMobileMenuOpen }: Props) => {
-  const { pathname } = useRouter()
+  const pathname = usePathname()
   const { data: player } = useGetPlayer()
   const { setModal } = useModal()
 

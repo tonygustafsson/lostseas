@@ -1,5 +1,7 @@
+"use client"
+
 import Link from "next/link"
-import { useRouter } from "next/router"
+import { usePathname } from "next/navigation"
 import {
   GiBandana,
   GiOpenedFoodCan,
@@ -16,7 +18,7 @@ import { useModal } from "../ui/Modal/context"
 
 const MainMenu = () => {
   const { data: player } = useGetPlayer()
-  const { pathname } = useRouter()
+  const pathname = usePathname()
   const { setModal } = useModal()
 
   const numberOfShips = Object.values(player?.ships ?? {}).length

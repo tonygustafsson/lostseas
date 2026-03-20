@@ -1,3 +1,5 @@
+"use client"
+
 import { FaCoins } from "react-icons/fa"
 import { GiBandana, GiShoonerSailboat } from "react-icons/gi"
 

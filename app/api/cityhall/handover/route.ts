@@ -1,0 +1,63 @@
+import { cookies } from "next/headers"
+import { NextResponse } from "next/server"
+
+import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
+import { TREASURES } from "@/constants/treasures"
+import { getPlayer, savePlayer } from "@/firebase/db"
+
+export async function POST(req: Request) {
+  const cookieStore = await cookies()
+  const playerId = cookieStore.get(PLAYER_ID_COOKIE_NAME)?.value
+
+  if (!playerId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 400 })
+  }
+
+  const body = await req.json()
+  const { id } = body
+
+  const player = await getPlayer(playerId)
+
+  const currentTown = player.character.town
+  const treasures = Object.values(player.treasures || {}).filter(
+    (treasure) => treasure.rewarder === currentTown
+  )
+  const matchingTreasure = treasures.find((treasure) => treasure.id === id)
+  const treasureInfo = TREASURES.find(
+    (treasure) => treasure.name === matchingTreasure?.name
+  )
+
+  if (!matchingTreasure) {
+    return NextResponse.json(
+      { error: "You don't have this treasure" },
+      { status: 500 }
+    )
+  }
+
+  const playerResult: Player = {
+    ...player,
+    character: {
+      ...player.character,
+      gold: player.character.gold + (treasureInfo?.value || 0),
+    },
+    treasures: {
+      ...player.treasures,
+      [id]: null,
+    },
+  }
+
+  try {
+    await savePlayer(playerId, playerResult)
+  } catch (error) {
+    return NextResponse.json(
+      { error, treasure: matchingTreasure, treasureInfo },
+      { status: 500 }
+    )
+  }
+
+  return NextResponse.json({
+    success: true,
+    treasure: matchingTreasure,
+    treasureInfo,
+  })
+}
