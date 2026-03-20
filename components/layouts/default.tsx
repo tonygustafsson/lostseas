@@ -1,26 +1,14 @@
-import { useIsFetching } from "@tanstack/react-query"
-
 import { almendra, andika } from "@/fonts"
 
 import DesktopMenu from "../menu/DesktopMenu"
 import MobileMenu from "../menu/MobileMenu"
+import PageSpinner from "../PageSpinner"
 
 export default function DefaultLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const isFetching = useIsFetching({
-    predicate: (query) => {
-      if ((query.state.data as Player)?.character?.journey) {
-        // Prevent loading screen while on journey
-        return false
-      }
-
-      return true
-    },
-  })
-
   return (
     <>
       <div className="flex min-h-screen flex-col lg:flex-row">
@@ -34,11 +22,7 @@ export default function DefaultLayout({
         </main>
       </div>
 
-      {!!isFetching && (
-        <div className="global-loading-indicator">
-          <div className="spinner"></div>
-        </div>
-      )}
+      <PageSpinner />
     </>
   )
 }

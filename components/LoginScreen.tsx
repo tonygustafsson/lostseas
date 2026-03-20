@@ -26,7 +26,7 @@ const LoginScreen = () => {
     <div className="relative p-4 lg:p-8">
       <Image
         src="/img/startpage-bg.webp"
-        layout="fill"
+        fill
         objectFit="cover"
         alt="Lost Seas background"
         className="absolute left-0 top-0 z-10 opacity-50"
