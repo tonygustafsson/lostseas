@@ -1,5 +1,7 @@
+"use client"
+
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useRouter } from "next/router"
+import { useSearchParams } from "next/navigation"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { FiLogIn } from "react-icons/fi"
@@ -15,12 +17,12 @@ type ValidationSchema = z.infer<typeof loginValidationSchema>
 
 const LoginForm = () => {
   const { data: player } = useGetPlayer()
-  const router = useRouter()
+  const searchParams = useSearchParams()
   const { login } = usePlayer()
 
   const [apiError, setApiError] = useState<string>()
 
-  const error = router.query.error
+  const error = searchParams.get("error")
 
   const {
     register,

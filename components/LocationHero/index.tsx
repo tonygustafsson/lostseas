@@ -1,3 +1,5 @@
+"use client"
+
 import { useAnimate } from "framer-motion"
 import Image from "next/image"
 import { useId } from "react"
@@ -65,7 +67,7 @@ const LocationHero = () => {
             priority
             loading="eager"
             draggable={false}
-            onLoadingComplete={onImageLoad}
+            onLoad={onImageLoad}
             alt="Background image"
             className="select-none object-cover opacity-70"
             style={{ objectPosition: "50% 55%", filter: "sepia(1)" }}

@@ -1,5 +1,7 @@
+"use client"
+
 import { m as motion } from "framer-motion"
-import { useRouter } from "next/router"
+import { usePathname, useRouter } from "next/navigation"
 import { Fragment, useState } from "react"
 
 import { TOWNS } from "@/constants/locations"
@@ -25,6 +27,7 @@ const Map = ({ currentTown }: Props) => {
   const { startJourney } = useSea()
   const { removeModal } = useModal()
   const router = useRouter()
+  const pathname = usePathname()
 
   const [tooltipInfo, setTooltipInfo] = useState<{
     show: boolean
@@ -36,7 +39,7 @@ const Map = ({ currentTown }: Props) => {
   const handleStartJourney = (town: Town) => {
     removeModal("map")
 
-    if (router.pathname !== "/") {
+    if (pathname !== "/") {
       router.push("/")
     }
 
