@@ -4,7 +4,7 @@ const SoundControls = () => {
   const { musicOn, setMusic, soundEffectsOn, setSoundEffects } = useSound()
 
   return (
-    <div className="mx-4 mb-8 mt-2 flex gap-4">
+    <div className="mx-4 mt-2 mb-8 flex gap-4">
       <div className="flex items-center gap-2">
         <input
           id="toggleMusic"

@@ -24,6 +24,7 @@ import {
   GiSuperMushroom,
 } from "react-icons/gi"
 
+import { Button } from "@/components/ui/button"
 import {
   CARDS_PERCENTAGE_DEFAULT_VALUE,
   CARDS_PERCENTAGE_VALUES,
@@ -34,69 +35,69 @@ import { getRandomInt } from "@/utils/random"
 import { getCardsBet } from "@/utils/tavern"
 
 const CARDS = [
-  { text: "The Acorn", icon: <GiAcorn className="h-12 w-12 text-primary" /> },
-  { text: "The Hat", icon: <GiPirateHat className="h-12 w-12 text-primary" /> },
-  { text: "The Anchor", icon: <GiAnchor className="h-12 w-12 text-primary" /> },
+  { text: "The Acorn", icon: <GiAcorn className="text-primary h-12 w-12" /> },
+  { text: "The Hat", icon: <GiPirateHat className="text-primary h-12 w-12" /> },
+  { text: "The Anchor", icon: <GiAnchor className="text-primary h-12 w-12" /> },
   {
     text: "The Sword",
-    icon: <GiAncientSword className="h-12 w-12 text-primary" />,
+    icon: <GiAncientSword className="text-primary h-12 w-12" />,
   },
   {
     text: "The Star",
-    icon: <GiBarbedStar className="h-12 w-12 text-primary" />,
+    icon: <GiBarbedStar className="text-primary h-12 w-12" />,
   },
-  { text: "The Boar", icon: <GiBoar className="h-12 w-12 text-primary" /> },
+  { text: "The Boar", icon: <GiBoar className="text-primary h-12 w-12" /> },
   {
     text: "The Bottle",
-    icon: <GiBrandyBottle className="h-12 w-12 text-primary" />,
+    icon: <GiBrandyBottle className="text-primary h-12 w-12" />,
   },
-  { text: "The Cat", icon: <GiCat className="h-12 w-12 text-primary" /> },
+  { text: "The Cat", icon: <GiCat className="text-primary h-12 w-12" /> },
   {
     text: "The Mask",
-    icon: <GiCeremonialMask className="h-12 w-12 text-primary" />,
+    icon: <GiCeremonialMask className="text-primary h-12 w-12" />,
   },
   {
     text: "The Leaf",
-    icon: <GiChestnutLeaf className="h-12 w-12 text-primary" />,
+    icon: <GiChestnutLeaf className="text-primary h-12 w-12" />,
   },
   {
     text: "The Chicken",
-    icon: <GiChicken className="h-12 w-12 text-primary" />,
+    icon: <GiChicken className="text-primary h-12 w-12" />,
   },
   {
     text: "The Fish",
-    icon: <GiCirclingFish className="h-12 w-12 text-primary" />,
+    icon: <GiCirclingFish className="text-primary h-12 w-12" />,
   },
   {
     text: "The Swords",
-    icon: <GiCrossedSwords className="h-12 w-12 text-primary" />,
+    icon: <GiCrossedSwords className="text-primary h-12 w-12" />,
   },
   {
     text: "The Knife",
-    icon: <GiCurvyKnife className="h-12 w-12 text-primary" />,
+    icon: <GiCurvyKnife className="text-primary h-12 w-12" />,
   },
-  { text: "The Eel", icon: <GiEel className="h-12 w-12 text-primary" /> },
+  { text: "The Eel", icon: <GiEel className="text-primary h-12 w-12" /> },
   {
     text: "The Leaf",
-    icon: <GiFallingLeaf className="h-12 w-12 text-primary" />,
+    icon: <GiFallingLeaf className="text-primary h-12 w-12" />,
   },
   {
     text: "The Skull",
-    icon: <GiHarryPotterSkull className="h-12 w-12 text-primary" />,
+    icon: <GiHarryPotterSkull className="text-primary h-12 w-12" />,
   },
   {
     text: "The Bottle",
-    icon: <GiHeartBottle className="h-12 w-12 text-primary" />,
+    icon: <GiHeartBottle className="text-primary h-12 w-12" />,
   },
-  { text: "The Bird", icon: <GiIbis className="h-12 w-12 text-primary" /> },
+  { text: "The Bird", icon: <GiIbis className="text-primary h-12 w-12" /> },
   {
     text: "The Mushroom",
-    icon: <GiSuperMushroom className="h-12 w-12 text-primary" />,
+    icon: <GiSuperMushroom className="text-primary h-12 w-12" />,
   },
-  { text: "The Owl", icon: <GiOwl className="h-12 w-12 text-primary" /> },
+  { text: "The Owl", icon: <GiOwl className="text-primary h-12 w-12" /> },
   {
     text: "The Potion",
-    icon: <GiPotionBall className="h-12 w-12 text-primary" />,
+    icon: <GiPotionBall className="text-primary h-12 w-12" />,
   },
 ]
 
@@ -169,33 +170,32 @@ const TavernCards = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="mb-8 flex flex-row lg:join">
+      <div className="lg:join mb-8 flex flex-row">
         <div className="flex flex-wrap items-center lg:gap-0">
           {CARDS_PERCENTAGE_VALUES.map((value) => (
-            <button
+            <Button
               key={`tavern-cards-bet-${value}`}
-              className={`btn join-item w-1/2 lg:w-auto ${
-                betPercentage === value ? "btn-primary" : "bg-gray-800"
-              }`}
+              variant={betPercentage === value ? "default" : "secondary"}
+              className="join-item w-1/2 lg:w-auto"
               onClick={() => setBetPercentage(value)}
             >
               Bet {value === 100 ? "all" : `${value}%`}
-            </button>
+            </Button>
           ))}
 
-          <button
-            className="btn btn-primary mt-4 w-full lg:ml-4 lg:mt-0 lg:w-fit"
+          <Button
+            className="mt-4 w-full lg:mt-0 lg:ml-4 lg:w-fit"
             disabled={disabled}
             onClick={handlePlayCards}
           >
             Play
-          </button>
+          </Button>
         </div>
       </div>
 
       <div className="mt-4 flex justify-center gap-4">
         {availableCards.map((_, index) => (
-          <button
+          <Button
             key={`tavern-card-${index}`}
             onClick={(e) => handleSelectCard(e, index)}
             className={`flex h-44 w-32 items-center justify-center rounded-lg border ${getCardClassNames(
@@ -206,7 +206,7 @@ const TavernCards = () => {
               {CARDS[index].icon}
               <p className="text-gray-400">{CARDS[index].text}</p>
             </div>{" "}
-          </button>
+          </Button>
         ))}
       </div>
 

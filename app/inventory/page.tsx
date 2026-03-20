@@ -55,7 +55,7 @@ export default async function Page() {
 
       {!!tradingAssets.length && (
         <>
-          <h2 className="mb-4 mt-8 font-serif text-xl">Trading assets</h2>
+          <h2 className="mt-8 mb-4 font-serif text-xl">Trading assets</h2>
 
           <div className="flex flex-wrap gap-4">
             {tradingAssets.map(([item, possession]) => (
@@ -83,7 +83,7 @@ export default async function Page() {
 
       {!!Object.keys(player.treasures || {}).length && (
         <>
-          <h2 className="mb-4 mt-8 font-serif text-xl">Treasures</h2>
+          <h2 className="mt-8 mb-4 font-serif text-xl">Treasures</h2>
 
           <div className="flex flex-wrap gap-4">
             {Object.values(player.treasures || {}).map((item) => {

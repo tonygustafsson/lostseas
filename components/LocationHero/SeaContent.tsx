@@ -50,14 +50,14 @@ const SeaContent = ({ journey, day }: Props) => {
                 percentage={(journey?.day / journey?.totalDays) * 100}
                 showLabel={false}
                 autoStrokeColor={false}
-                className="h-16 w-16 text-info"
+                className="text-info h-16 w-16"
               />
 
               <span className="font-serif text-base font-bold lg:text-xl">
                 {currentDate}
               </span>
 
-              <WeatherIcon className="h-10 w-10 text-info" />
+              <WeatherIcon className="text-info h-10 w-10" />
             </div>
           </>
         )}

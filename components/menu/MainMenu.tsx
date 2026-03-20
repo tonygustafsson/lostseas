@@ -11,10 +11,11 @@ import {
 } from "react-icons/gi"
 import { RiTreasureMapLine } from "react-icons/ri"
 
+import { Button } from "@/components/ui/button"
+import { useModal } from "@/components/ui/Modal/context"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Map from "../Map"
-import { useModal } from "../ui/Modal/context"
 
 const MainMenu = () => {
   const { data: player } = useGetPlayer()
@@ -43,10 +44,10 @@ const MainMenu = () => {
       </li>
 
       <li>
-        <button onClick={showMap} disabled={!!player?.character.journey}>
+        <Button onClick={showMap} disabled={!!player?.character.journey}>
           <RiTreasureMapLine className="h-5 w-5" />
           Map
-        </button>
+        </Button>
       </li>
 
       <li className="main-menu-separator" aria-hidden></li>

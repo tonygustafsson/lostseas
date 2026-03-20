@@ -5,6 +5,8 @@ import { GiBank, GiFarmer, GiTavernSign } from "react-icons/gi"
 import { LOCATIONS } from "@/constants/locations"
 import { useCharacter } from "@/hooks/queries/useCharacter"
 
+import { Button } from "../ui/button"
+
 type Props = {
   location: Character["location"]
 }
@@ -82,17 +84,17 @@ const TownActions = ({ location }: Props) => {
     <div className="flex flex-col items-center rounded-b-lg bg-gray-900 p-4 pb-8">
       <span className="font-serif text-xl">Change location</span>
 
-      <div className="mt-4 flex flex-wrap justify-center gap-2 lg:join lg:gap-0">
+      <div className="lg:join mt-4 flex flex-wrap justify-center gap-2 lg:gap-0">
         {locations.map(({ key, title, icon }) => (
-          <button
+          <Button
             key={`change-location-${key}`}
-            className="btn join-item text-base"
+            className="join-item text-base"
             onClick={() => handleMove(title as TownLocation)}
             disabled={location === key}
           >
             {icon}
             {title}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

@@ -1,5 +1,8 @@
 import { forwardRef, InputHTMLAttributes } from "react"
 
+import { Input } from "./ui/input"
+import { Label } from "./ui/label"
+
 type Props = Omit<InputHTMLAttributes<HTMLInputElement>, "size"> & {
   label?: string
   size?: "xs" | "sm" | "md" | "lg"
@@ -12,14 +15,16 @@ const TextField = forwardRef<HTMLInputElement, Props>(
     { label, size, type, id, fullWidth = true, className, error, ...restProps },
     ref
   ) => (
-    <div className={`${type !== "hidden" ? "form-control w-full" : ""}`}>
+    <div
+      className={`flex flex-col gap-2 ${type !== "hidden" ? "form-control w-full" : ""}`}
+    >
       {label && (
-        <label htmlFor={id} className="label">
+        <Label htmlFor={id} className="label">
           {label}
-        </label>
+        </Label>
       )}
 
-      <input
+      <Input
         type={type}
         className={`input input-bordered ${size === "xs" && "input-xs"} ${
           size === "sm" && "input-sm"
@@ -30,7 +35,7 @@ const TextField = forwardRef<HTMLInputElement, Props>(
         {...restProps}
       />
 
-      {error && <p className="mt-3 text-sm text-error">{error}</p>}
+      {error && <p className="text-error mt-3 text-sm">{error}</p>}
     </div>
   )
 )

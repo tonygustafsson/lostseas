@@ -4,11 +4,13 @@ import { useMemo, useState } from "react"
 
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
-import TextField from "@/components/ui/TextField"
+import TextField from "@/components/TextField"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { useCrew } from "@/hooks/queries/useCrew"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getMedicineEffectiveness } from "@/utils/crew"
+
+import { Button } from "../ui/button"
 
 const GiveMedicine = () => {
   const { data: player } = useGetPlayer()
@@ -72,12 +74,9 @@ const GiveMedicine = () => {
       actions={
         <>
           <div className="join">
-            <button
-              onClick={decrease}
-              className="btn btn-primary join-item btn-sm"
-            >
+            <Button onClick={decrease} className="join-item btn-sm">
               -
-            </button>
+            </Button>
 
             <TextField
               value={quantity.toString()}
@@ -91,21 +90,14 @@ const GiveMedicine = () => {
               } ${quantity < 1000 && "w-14"} hide-number-arrows`}
             />
 
-            <button
-              onClick={increase}
-              className="btn btn-primary join-item btn-sm"
-            >
+            <Button onClick={increase} className="join-item btn-sm">
               +
-            </button>
+            </Button>
           </div>
 
-          <button
-            className="btn btn-primary btn-sm"
-            disabled={isDisabled}
-            onClick={handleSubmit}
-          >
+          <Button size="sm" disabled={isDisabled} onClick={handleSubmit}>
             Give medicine
-          </button>
+          </Button>
         </>
       }
     />

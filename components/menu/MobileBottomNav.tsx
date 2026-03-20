@@ -9,6 +9,7 @@ import { RiTreasureMapLine } from "react-icons/ri"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Map from "../Map"
+import { Button } from "../ui/button"
 import { useModal } from "../ui/Modal/context"
 
 type Props = {
@@ -36,17 +37,17 @@ const MobileBottomNav = ({ setMobileMenuOpen }: Props) => {
         Play
       </Link>
 
-      <button
+      <Button
         onClick={() => setMobileMenuOpen((mobileMenuOpen) => !mobileMenuOpen)}
       >
         <HiMenu className="h-5 w-5" />
         Menu
-      </button>
+      </Button>
 
-      <button onClick={showMap} disabled={!!player?.character.journey}>
+      <Button onClick={showMap} disabled={!!player?.character.journey}>
         <RiTreasureMapLine className="h-5 w-5" />
         Map
-      </button>
+      </Button>
     </div>
   )
 }

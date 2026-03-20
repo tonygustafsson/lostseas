@@ -4,6 +4,7 @@ import { AiOutlineQrcode } from "react-icons/ai"
 
 import { usePlayer } from "@/hooks/queries/usePlayer"
 
+import { Button } from "./ui/button"
 import { useModal } from "./ui/Modal/context"
 
 const QrScanner = () => {
@@ -117,14 +118,15 @@ const QrScanner = () => {
   }, [modalIsOpen, verifyPlayerIdFromImageData])
 
   return (
-    <button
+    <Button
       type="button"
+      variant="secondary"
       onClick={openQrScannerModal}
-      className="btn btn-secondary flex-1"
+      className="flex-1"
     >
       <AiOutlineQrcode size={24} />
       Scan QR Code
-    </button>
+    </Button>
   )
 }
 

@@ -23,24 +23,4 @@ module.exports = {
       },
     },
   },
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  plugins: [require("daisyui")],
-  daisyui: {
-    themes: [
-      {
-        lostSeasTheme: {
-          primary: "#0e7490",
-          secondary: "#1b1f27",
-          accent: "#1FB2A5",
-          neutral: "#191D24",
-          "base-100": "#2A303C",
-          info: "#3ABFF8",
-          success: "#36D399",
-          warning: "#FBBD23",
-          error: "#F87272",
-        },
-      },
-    ],
-    logs: false,
-  },
 }

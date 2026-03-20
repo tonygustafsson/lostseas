@@ -1,3 +1,4 @@
+import tailwindcss from "@tailwindcss/vite"
 import path from "path"
 import { defineConfig } from "vitest/config"
 
@@ -9,4 +10,5 @@ export default defineConfig({
     },
   },
   logLevel: "error",
+  plugins: [tailwindcss()],
 })

@@ -3,6 +3,7 @@
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import MerchandiseShopItem from "@/components/MerchandiseShopItem"
+import { Button } from "@/components/ui/button"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_TYPES } from "@/constants/ship"
 import { TITLE_INFO } from "@/constants/title"
@@ -48,15 +49,15 @@ const ShipyardBuy = () => {
               </>
             }
             actions={
-              <button
-                className="btn btn-primary btn-sm"
+              <Button
+                size="sm"
                 onClick={() =>
                   handleBuyShip(shipType as keyof typeof SHIP_TYPES)
                 }
                 disabled={shipBuyingDisabled}
               >
                 Buy
-              </button>
+              </Button>
             }
           />
         ))}

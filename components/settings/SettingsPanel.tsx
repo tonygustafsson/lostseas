@@ -4,6 +4,8 @@ import { useQRCode } from "next-qrcode"
 import { useState } from "react"
 import { BsClipboardCheck } from "react-icons/bs"
 
+import { Button } from "../ui/button"
+
 type Props = {
   playerId: Player["id"]
   createdDate: Player["createdDate"]
@@ -41,13 +43,13 @@ const SettingsPanel = ({ playerId, createdDate }: Props) => {
 
       <div className="alert alert-info flex justify-between">
         {playerId}
-        <button onClick={copyIdToClipboard} title="Copy User ID to clipboard">
+        <Button onClick={copyIdToClipboard} title="Copy User ID to clipboard">
           {copiedToClipboard ? (
             <span className="text-sm">Copied!</span>
           ) : (
             <BsClipboardCheck className="h-6 w-6" />
           )}
-        </button>
+        </Button>
       </div>
 
       <h3 className="font-serif text-xl">QR code</h3>

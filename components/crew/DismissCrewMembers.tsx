@@ -4,10 +4,11 @@ import { useMemo, useState } from "react"
 import { GiBandana } from "react-icons/gi"
 
 import MerchandiseCard from "@/components/MerchandiseCard"
-import TextField from "@/components/ui/TextField"
+import TextField from "@/components/TextField"
 import { useCrew } from "@/hooks/queries/useCrew"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
+import { Button } from "../ui/button"
 import { useModal } from "../ui/Modal/context"
 
 const DismissCrewMembers = () => {
@@ -51,16 +52,17 @@ const DismissCrewMembers = () => {
             be hard to get back.
           </p>
           <div className="flex gap-2">
-            <button className="btn btn-primary btn-sm" onClick={handleSubmit}>
+            <Button size="sm" onClick={handleSubmit}>
               Yes, dismiss them
-            </button>
+            </Button>
 
-            <button
-              className="btn btn-secondary btn-sm"
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={() => removeModal("dismissCrewMembers")}
             >
               Cancel
-            </button>
+            </Button>
           </div>
         </div>
       ),
@@ -76,7 +78,7 @@ const DismissCrewMembers = () => {
     <MerchandiseCard
       title="Dismiss crew members"
       indicator={player?.crewMembers.count.toString() || "0"}
-      icon={<GiBandana className="h-7 w-7 text-primary" />}
+      icon={<GiBandana className="text-primary h-7 w-7" />}
       disabled={isDisabled}
       fullWidth
       body={
@@ -88,12 +90,9 @@ const DismissCrewMembers = () => {
       actions={
         <>
           <div className="join">
-            <button
-              onClick={decrease}
-              className="btn btn-primary join-item btn-sm"
-            >
+            <Button onClick={decrease} className="join-item btn-sm">
               -
-            </button>
+            </Button>
 
             <TextField
               value={quantity.toString()}
@@ -107,21 +106,14 @@ const DismissCrewMembers = () => {
               } ${quantity < 1000 && "w-14"} hide-number-arrows`}
             />
 
-            <button
-              onClick={increase}
-              className="btn btn-primary join-item btn-sm"
-            >
+            <Button onClick={increase} className="join-item btn-sm">
               +
-            </button>
+            </Button>
           </div>
 
-          <button
-            className="btn btn-primary btn-sm"
-            disabled={isDisabled}
-            onClick={openDismissModal}
-          >
+          <Button size="sm" disabled={isDisabled} onClick={openDismissModal}>
             Dismiss
-          </button>
+          </Button>
         </>
       }
     />

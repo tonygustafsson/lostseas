@@ -1,6 +1,8 @@
 import { useEffect } from "react"
 import { AiOutlineCloseCircle } from "react-icons/ai"
 
+import { Button } from "@/components/ui/button"
+
 import { useModal } from "./context"
 
 const Modal = () => {
@@ -43,12 +45,13 @@ const Modal = () => {
             {modal.content}
 
             <div className="modal-action">
-              <button
-                className="close btn btn-sm absolute right-1 top-3 border-none bg-transparent hover:bg-gray-800"
+              <Button
+                size="sm"
+                className="close absolute top-3 right-1 border-none bg-transparent hover:bg-gray-800"
                 onClick={() => removeModal(modal.id || "")}
               >
                 <AiOutlineCloseCircle className="h-7 w-7" />
-              </button>
+              </Button>
             </div>
           </div>
         </dialog>

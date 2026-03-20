@@ -4,7 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
-import TextField from "@/components/ui/TextField"
+import TextField from "@/components/TextField"
+import { Button } from "@/components/ui/button"
 import { LOAN_LIMIT } from "@/constants/bank"
 import { useBank } from "@/hooks/queries/useBank"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -84,13 +85,9 @@ const BankLoan = () => {
             error={loanErrors.amount?.message}
           />
 
-          <button
-            type="submit"
-            className="btn btn-primary mt-4"
-            disabled={!loanIsValid}
-          >
+          <Button type="submit" className="mt-4" disabled={!loanIsValid}>
             Take loan
-          </button>
+          </Button>
         </form>
 
         <form
@@ -110,13 +107,9 @@ const BankLoan = () => {
             error={repayErrors.amount?.message}
           />
 
-          <button
-            type="submit"
-            className="btn btn-primary mt-4"
-            disabled={!repayIsValid}
-          >
+          <Button type="submit" className="mt-4" disabled={!repayIsValid}>
             Repay loan
-          </button>
+          </Button>
         </form>
       </div>
     </div>

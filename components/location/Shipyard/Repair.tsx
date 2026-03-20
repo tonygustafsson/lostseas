@@ -1,5 +1,6 @@
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
+import { Button } from "@/components/ui/button"
 import { SHIP_REPAIR_COST, SHIP_TYPES } from "@/constants/ship"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShipyard } from "@/hooks/queries/useShipyard"
@@ -46,12 +47,9 @@ const ShipyardRepair = () => {
                 </>
               }
               actions={
-                <button
-                  className="btn btn-primary btn-sm"
-                  onClick={() => handleRepairShip(id)}
-                >
+                <Button size="sm" onClick={() => handleRepairShip(id)}>
                   Repair
-                </button>
+                </Button>
               }
             />
           )

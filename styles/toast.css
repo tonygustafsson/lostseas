@@ -1,13 +1,13 @@
 .toast {
-  @apply z-50 whitespace-break-spaces bottom-auto !important;
+  @apply bottom-auto z-50 whitespace-break-spaces;
 }
 
 .toast .alert {
-  @apply text-left shadow-2xl drop-shadow-2xl border-[3px] rounded-lg bg-slate-800 p-4 lg:p-6 pt-4 lg:pt-4 lg:min-w-[400px];
+  @apply rounded-lg border-[3px] bg-slate-800 p-4 pt-4 text-left shadow-2xl drop-shadow-2xl lg:min-w-[400px] lg:p-6 lg:pt-4;
 }
 
 .toast .alert.alert-success {
-  @apply text-white border-success;
+  @apply border-green-600 text-white;
 }
 
 .toast .alert .title {
@@ -15,5 +15,5 @@
 }
 
 .toast .close {
-  @apply btn btn-sm bg-transparent border-none hover:bg-gray-800 absolute right-4 top-6;
+  @apply absolute top-6 right-4 rounded-md border-none bg-gray-900 bg-transparent px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-800;
 }

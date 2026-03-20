@@ -1,9 +1,9 @@
 .main-menu {
-  @apply menu text-base px-0 text-base-content;
+  @apply w-56 space-y-1 rounded-lg bg-white p-2 px-0 text-base text-gray-900 shadow;
 }
 
 .main-menu li {
-  @apply font-serif my-0.5;
+  @apply my-0.5 block rounded-md px-3 py-2 font-serif hover:bg-gray-100;
 }
 
 .main-menu li .badge {
@@ -11,7 +11,7 @@
 }
 
 .main-menu > li.active {
-  @apply bg-gray-800 text-primary;
+  @apply bg-gray-800 text-blue-600;
 }
 
 .main-menu svg {
@@ -19,12 +19,12 @@
 }
 
 .main-menu > li button[disabled] {
-  @apply text-gray-500 cursor-not-allowed;
+  @apply cursor-not-allowed text-gray-500;
 }
 
 .main-menu > li:hover button:not([disabled]) svg,
 .main-menu > li:hover a:not([disabled]) svg {
-  @apply text-primary;
+  @apply text-blue-600;
 }
 
 .main-menu li:hover {
@@ -36,5 +36,5 @@ li.main-menu-separator {
 }
 
 .quick-icon-menu a:hover svg {
-  @apply text-primary;
+  @apply text-blue-600;
 }

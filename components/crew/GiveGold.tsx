@@ -4,10 +4,12 @@ import { useMemo, useState } from "react"
 import { FaCoins } from "react-icons/fa"
 
 import MerchandiseCard from "@/components/MerchandiseCard"
-import TextField from "@/components/ui/TextField"
+import TextField from "@/components/TextField"
 import { useCrew } from "@/hooks/queries/useCrew"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getGoldEffectiveness } from "@/utils/crew"
+
+import { Button } from "../ui/button"
 
 const GiveGold = () => {
   const { data: player } = useGetPlayer()
@@ -56,7 +58,7 @@ const GiveGold = () => {
     <MerchandiseCard
       title="Give gold"
       indicator={player?.character.gold?.toString() || "0"}
-      icon={<FaCoins className="h-7 w-7 text-primary" />}
+      icon={<FaCoins className="text-primary h-7 w-7" />}
       disabled={isDisabled}
       fullWidth
       body={
@@ -75,12 +77,9 @@ const GiveGold = () => {
       actions={
         <>
           <div className="join">
-            <button
-              onClick={decrease}
-              className="btn btn-primary join-item btn-sm"
-            >
+            <Button onClick={decrease} className="join-item btn-sm">
               -
-            </button>
+            </Button>
 
             <TextField
               value={quantity.toString()}
@@ -94,21 +93,14 @@ const GiveGold = () => {
               } ${quantity < 1000 && "w-14"} hide-number-arrows`}
             />
 
-            <button
-              onClick={increase}
-              className="btn btn-primary join-item btn-sm"
-            >
+            <Button onClick={increase} className="join-item btn-sm">
               +
-            </button>
+            </Button>
           </div>
 
-          <button
-            className="btn btn-primary btn-sm"
-            disabled={isDisabled}
-            onClick={handleSubmit}
-          >
+          <Button size="sm" disabled={isDisabled} onClick={handleSubmit}>
             Give gold
-          </button>
+          </Button>
         </>
       }
     />

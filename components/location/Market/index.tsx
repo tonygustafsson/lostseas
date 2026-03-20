@@ -2,6 +2,7 @@
 
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
+import { Button } from "@/components/ui/button"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { useMarket } from "@/hooks/queries/useMarket"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -50,13 +51,13 @@ const Market = () => {
               </>
             }
             actions={
-              <button
-                className="btn btn-primary btn-sm"
+              <Button
+                size="sm"
                 onClick={() => handleAccept(inventoryItem)}
                 disabled={!canAffortIt}
               >
                 Buy
-              </button>
+              </Button>
             }
           />
         )

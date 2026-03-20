@@ -6,6 +6,7 @@ import { GiPirateHat, GiProgression } from "react-icons/gi"
 import { getScore } from "@/utils/score"
 
 import Flag from "../icons/Flag"
+import { Button } from "../ui/button"
 
 type Props = {
   player: Player
@@ -65,7 +66,9 @@ const CharacterCard = ({ player }: Props) => (
 
       <div className="card-actions justify-end">
         <Link href="/status">
-          <button className="btn btn-secondary btn-sm">More info</button>
+          <Button variant="secondary" size="sm">
+            More info
+          </Button>
         </Link>
       </div>
     </div>

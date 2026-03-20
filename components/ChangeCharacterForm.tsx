@@ -4,12 +4,14 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
+import Select from "@/components/Select"
+import TextField from "@/components/TextField"
 import { useModal } from "@/components/ui/Modal/context"
-import Select from "@/components/ui/Select"
-import TextField from "@/components/ui/TextField"
 import { useCharacter } from "@/hooks/queries/useCharacter"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { changeCharacterValidationSchema } from "@/utils/validation"
+
+import { Button } from "./ui/button"
 
 type ValidationSchema = z.infer<typeof changeCharacterValidationSchema>
 
@@ -59,13 +61,13 @@ const ChangeCharacterForm = () => {
         error={errors.age?.message}
       />
 
-      <button
+      <Button
         type="submit"
-        className="btn btn-primary mt-4"
+        className="mt-4"
         disabled={!isValid || updateIsLoading}
       >
         Save
-      </button>
+      </Button>
     </form>
   )
 }

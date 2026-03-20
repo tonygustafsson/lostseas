@@ -1,22 +1,14 @@
-.btn {
-  @apply font-serif;
-}
-
-.btn-lg {
-  @apply min-h-12 h-12;
-}
-
 .table-zebra thead tr {
   @apply border-0;
 }
 
 .global-loading-indicator {
-  @apply fixed top-0 left-0 w-screen h-screen bg-opacity-50 bg-base-100;
+  @apply fixed top-0 left-0 h-screen w-screen bg-black/50 bg-gray-50;
   content: "";
 }
 
 .global-loading-indicator > .spinner {
-  @apply loading loading-ring w-20 fixed top-1/4 left-1/2 -translate-y-1/4 -translate-x-1/2;
+  @apply fixed top-1/4 left-1/2 h-8 w-8 w-20 -translate-x-1/2 -translate-y-1/4 animate-spin rounded-full border-4 border-transparent border-t-blue-500 border-r-blue-500;
 }
 
 input.hide-number-arrows::-webkit-outer-spin-button,
@@ -29,7 +21,7 @@ input.hide-number-arrows[type="number"] {
 }
 
 .modal {
-  @apply z-40 !important;
+  @apply z-40;
 }
 
 .modal-box {
@@ -41,7 +33,7 @@ button[disabled] svg {
 }
 
 .stats {
-  @apply flex flex-col lg:flex-row bg-transparent !important;
+  @apply flex flex-col bg-transparent lg:flex-row;
 }
 
 .stats .stat-value {
