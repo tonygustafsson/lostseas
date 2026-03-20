@@ -4,7 +4,6 @@ import Image from "next/image"
 
 import { capitalize } from "@/utils/string"
 
-import { Button } from "./ui/button"
 import { useModal } from "./ui/Modal/context"
 
 const Screenshots = () => {
@@ -31,7 +30,7 @@ const Screenshots = () => {
 
   return (
     <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-      <Button onClick={() => imageZoom("harbor")}>
+      <button onClick={() => imageZoom("harbor")}>
         <Image
           width={200}
           height={137}
@@ -39,9 +38,9 @@ const Screenshots = () => {
           alt="Screenshot of the harbor"
           className="h-full"
         />
-      </Button>
+      </button>
 
-      <Button onClick={() => imageZoom("map")}>
+      <button onClick={() => imageZoom("map")}>
         <Image
           width={200}
           height={137}
@@ -49,9 +48,9 @@ const Screenshots = () => {
           alt="Screenshot of the map"
           className="h-full"
         />
-      </Button>
+      </button>
 
-      <Button onClick={() => imageZoom("status")}>
+      <button onClick={() => imageZoom("status")}>
         <Image
           width={200}
           height={137}
@@ -59,9 +58,9 @@ const Screenshots = () => {
           alt="Screenshot of the status"
           className="h-full"
         />
-      </Button>
+      </button>
 
-      <Button onClick={() => imageZoom("crew")}>
+      <button onClick={() => imageZoom("crew")}>
         <Image
           width={200}
           height={137}
@@ -69,9 +68,9 @@ const Screenshots = () => {
           alt="Screenshot of the crew members"
           className="h-full"
         />
-      </Button>
+      </button>
 
-      <Button onClick={() => imageZoom("battle")}>
+      <button onClick={() => imageZoom("battle")}>
         <Image
           width={200}
           height={137}
@@ -79,9 +78,9 @@ const Screenshots = () => {
           alt="Screenshot of the a ship meeting"
           className="h-full"
         />
-      </Button>
+      </button>
 
-      <Button onClick={() => imageZoom("battle-won")}>
+      <button onClick={() => imageZoom("battle-won")}>
         <Image
           width={200}
           height={137}
@@ -89,9 +88,9 @@ const Screenshots = () => {
           alt="Screenshot of a battle won"
           className="h-full"
         />
-      </Button>
+      </button>
 
-      <Button onClick={() => imageZoom("inventory")}>
+      <button onClick={() => imageZoom("inventory")}>
         <Image
           width={200}
           height={137}
@@ -99,9 +98,9 @@ const Screenshots = () => {
           alt="Screenshot of the inventory"
           className="h-full"
         />
-      </Button>
+      </button>
 
-      <Button onClick={() => imageZoom("shop")}>
+      <button onClick={() => imageZoom("shop")}>
         <Image
           width={200}
           height={137}
@@ -109,7 +108,7 @@ const Screenshots = () => {
           alt="Screenshot of the shop"
           className="h-full"
         />
-      </Button>
+      </button>
     </div>
   )
 }
