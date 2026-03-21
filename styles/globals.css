@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 @import "./base.css";
-@import "./mainMenu.css";
 @import "./toast.css";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";

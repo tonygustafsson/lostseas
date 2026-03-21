@@ -1,3 +1,8 @@
+"use client"
+
+import { Switch } from "@/components/ui/switch"
+
+import { Label } from "../ui/label"
 import { useSound } from "./context"
 
 const SoundControls = () => {
@@ -5,30 +10,22 @@ const SoundControls = () => {
 
   return (
     <div className="mx-4 mt-2 mb-8 flex gap-4">
-      <div className="flex items-center gap-2">
-        <input
+      <div className="flex items-center space-x-2">
+        <Switch
           id="toggleMusic"
-          type="checkbox"
-          className="toggle toggle-info toggle-xs"
           checked={musicOn}
-          onChange={() => setMusic(!musicOn)}
+          onCheckedChange={(val) => setMusic(Boolean(val))}
         />
-        <label htmlFor="toggleMusic" className="text-xs">
-          Music
-        </label>
+        <Label htmlFor="toggleMusic">Music</Label>
       </div>
 
-      <div className="flex items-center gap-2">
-        <input
+      <div className="flex items-center space-x-2">
+        <Switch
           id="soundEffects"
-          type="checkbox"
-          className="toggle toggle-info toggle-xs"
           checked={soundEffectsOn}
-          onChange={() => setSoundEffects(!soundEffectsOn)}
+          onCheckedChange={(val) => setSoundEffects(Boolean(val))}
         />
-        <label htmlFor="soundEffects" className="text-xs">
-          SoundFX
-        </label>
+        <Label htmlFor="soundEffects">SoundFX</Label>
       </div>
     </div>
   )

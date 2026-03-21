@@ -28,10 +28,6 @@ input.hide-number-arrows[type="number"] {
   @apply border border-gray-600 text-white;
 }
 
-button[disabled] svg {
-  @apply text-gray-600;
-}
-
 .stats {
   @apply flex flex-col bg-transparent lg:flex-row;
 }
