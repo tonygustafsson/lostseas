@@ -36,7 +36,7 @@ export default async function Page() {
 
           <div className="stats mt-4 gap-2 py-3">
             <div className="stat bg-gray-700">
-              <div className="stat-figure text-secondary">
+              <div className="stat-figure text-accent">
                 <GiPirateCoat className="h-8 w-8" />
               </div>
               <div className="stat-title">Title</div>
@@ -44,7 +44,7 @@ export default async function Page() {
             </div>
 
             <div className="stat bg-gray-700">
-              <div className="stat-figure text-secondary">
+              <div className="stat-figure text-accent">
                 <GiProgression className="h-8 w-8" />
               </div>
               <div className="stat-title">Score</div>
@@ -52,7 +52,7 @@ export default async function Page() {
             </div>
 
             <div className="stat bg-gray-700">
-              <div className="stat-figure text-secondary">
+              <div className="stat-figure text-accent">
                 <BiTime className="h-8 w-8" />
               </div>
               <div className="stat-title">Age</div>
@@ -60,7 +60,7 @@ export default async function Page() {
             </div>
 
             <div className="stat bg-gray-700">
-              <div className="stat-figure text-secondary">
+              <div className="stat-figure text-accent">
                 {player.character.gender === "Male" ? (
                   <BiMaleSign className="h-8 w-8" />
                 ) : (
@@ -78,7 +78,7 @@ export default async function Page() {
 
           <div className="stats mt-4 gap-2 py-3">
             <div className="stat bg-gray-700">
-              <div className="stat-figure text-secondary">
+              <div className="stat-figure text-accent">
                 <Flag
                   nation={player.character.nationality}
                   size={32}
@@ -90,7 +90,7 @@ export default async function Page() {
             </div>
 
             <div className="stat bg-gray-700">
-              <div className="stat-figure text-secondary">
+              <div className="stat-figure text-accent">
                 <Flag
                   nation={NATIONS[player.character.nationality].warWith}
                   size={32}
@@ -106,7 +106,7 @@ export default async function Page() {
 
           <div className="stats mt-4 gap-2 py-3">
             <div className="stat bg-gray-700">
-              <div className="stat-figure text-secondary">
+              <div className="stat-figure text-accent">
                 <FaCoins className="h-8 w-8" />
               </div>
               <div className="stat-title">Gold</div>
@@ -115,7 +115,7 @@ export default async function Page() {
 
             {player.character.account && (
               <div className="stat bg-gray-700">
-                <div className="stat-figure text-secondary">
+                <div className="stat-figure text-accent">
                   <FaCoins className="h-8 w-8" />
                 </div>
                 <div className="stat-title">Bank account</div>
@@ -125,7 +125,7 @@ export default async function Page() {
 
             {player.character.loan && (
               <div className="stat bg-gray-700">
-                <div className="stat-figure text-secondary">
+                <div className="stat-figure text-accent">
                   <FaCoins className="h-8 w-8" />
                 </div>
                 <div className="stat-title">Bank loan</div>
@@ -136,7 +136,7 @@ export default async function Page() {
 
           <div className="stats mt-4 gap-2 py-3">
             <div className="stat bg-gray-700">
-              <div className="stat-figure text-secondary">
+              <div className="stat-figure text-accent">
                 <AiOutlineCalendar className="h-8 w-8" />
               </div>
               <div className="stat-title">Has been playing for</div>
@@ -146,7 +146,7 @@ export default async function Page() {
             </div>
 
             <div className="stat bg-gray-700">
-              <div className="stat-figure text-secondary">
+              <div className="stat-figure text-accent">
                 <AiOutlineCalendar className="h-8 w-8" />
               </div>
               <div className="stat-title">Current date</div>
@@ -162,7 +162,7 @@ export default async function Page() {
                 {Object.entries(player.character.battles).map(
                   ([nation, { won, lost }]) => (
                     <div key={`battles-${nation}`} className="stat bg-gray-700">
-                      <div className="stat-figure text-secondary">
+                      <div className="stat-figure text-accent">
                         <Flag nation={nation as Nation} />
                       </div>
                       <div className="stat-title">

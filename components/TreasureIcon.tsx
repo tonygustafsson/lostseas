@@ -35,7 +35,7 @@ const getSizeClass = (size: string) => {
 
 const TreasureIcon = ({ item, size = "md", className = "" }: Props) => {
   const sizeClass = getSizeClass(size)
-  const iconClass = `${sizeClass} text-primary ${className}`
+  const iconClass = `${sizeClass} text-accent ${className}`
 
   switch (item) {
     case "Inca mask":

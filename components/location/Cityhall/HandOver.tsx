@@ -32,7 +32,7 @@ const HandOver = () => {
             className="stat rounded-lg bg-gray-800 pr-4 shadow-md hover:shadow-lg lg:w-1/3"
             key={`${treasure.name}-${idx}`}
           >
-            <div className="stat-figure text-secondary">
+            <div className="stat-figure text-accent">
               <TreasureIcon size="lg" item={treasure.name} />
             </div>
             <p className="text-xl">{treasure.name}</p>

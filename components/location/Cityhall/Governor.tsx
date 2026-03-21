@@ -127,7 +127,7 @@ const Governor = () => {
         player?.character.name
       }`}
       message={greeting}
-      icon={<GiQuillInk className="text-secondary h-20 w-20" />}
+      icon={<GiQuillInk className="text-accent h-20 w-20" />}
       {...(promotionAvailable && {
         actions: (
           <Button onClick={handleAcceptNewTitle}>Accept new title</Button>

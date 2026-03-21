@@ -37,7 +37,7 @@ const Tavern = () => {
           <ActionCard
             title={`${player?.locationStates?.tavern?.noOfSailors} sailors approach you`}
             message="After a couple of drinks and a few games of cards, it turns out they want to join you on your adventure."
-            icon={<GiPirateCaptain className="text-secondary h-20 w-20" />}
+            icon={<GiPirateCaptain className="text-accent h-20 w-20" />}
             actions={
               <>
                 <Button onClick={handleAcceptNewCrewMembers}>
@@ -56,7 +56,7 @@ const Tavern = () => {
           <ActionCard
             title={`${player?.locationStates?.tavern?.noOfSailors} sailors approach you`}
             message="After a couple of drinks they start to get aggressive and want to fight you."
-            icon={<GiPirateCaptain className="text-secondary h-20 w-20" />}
+            icon={<GiPirateCaptain className="text-accent h-20 w-20" />}
             actions={
               <>
                 <Button onClick={handleFightSailors}>Fight them</Button>

@@ -37,7 +37,7 @@ export default async function Page() {
             className="stat rounded-lg bg-gray-800 pr-4 shadow-md hover:shadow-lg lg:w-52"
             key={`inventory-${item}`}
           >
-            <div className="stat-figure text-secondary">
+            <div className="stat-figure text-accent">
               <MerchandiseIcon size="lg" item={item as keyof Inventory} />
             </div>
             <div className="stat-title">{capitalize(item)}</div>
@@ -63,7 +63,7 @@ export default async function Page() {
                 className="stat rounded-lg bg-gray-800 pr-4 shadow-md hover:shadow-lg lg:w-52"
                 key={`inventory-${item}`}
               >
-                <div className="stat-figure text-secondary">
+                <div className="stat-figure text-accent">
                   <MerchandiseIcon size="lg" item={item as keyof Inventory} />
                 </div>
                 <div className="stat-title">{capitalize(item)}</div>
@@ -96,7 +96,7 @@ export default async function Page() {
                   className="stat rounded-lg bg-gray-800 pr-4 shadow-md hover:shadow-lg lg:w-1/3"
                   key={`inventory-${item.id}`}
                 >
-                  <div className="stat-figure text-secondary">
+                  <div className="stat-figure text-accent">
                     <TreasureIcon size="lg" item={item.name} />
                   </div>
                   <p className="text-xl">{item.name}</p>

@@ -78,7 +78,7 @@ export default async function Page() {
       <h2 className="mt-8 mb-4 font-serif text-2xl">Ship fittings</h2>
 
       <div className="stat rounded-lg bg-gray-800 pr-4 shadow-md hover:shadow-lg lg:w-52">
-        <div className="stat-figure text-secondary">
+        <div className="stat-figure text-accent">
           <MerchandiseIcon size="lg" item="cannons" />
         </div>
         <div className="stat-title">Cannons</div>

@@ -30,7 +30,7 @@ const Bank = () => {
       <div className="flex w-full flex-wrap justify-center gap-6">
         <div className="stats mt-4 gap-1">
           <div className="stat bg-gray-700">
-            <div className="stat-figure text-secondary">
+            <div className="stat-figure text-accent">
               <FaCoins className="h-7 w-7" />
             </div>
             <div className="stat-title">Gold</div>
@@ -38,7 +38,7 @@ const Bank = () => {
           </div>
 
           <div className="stat bg-gray-700">
-            <div className="stat-figure text-secondary">
+            <div className="stat-figure text-accent">
               <FaCoins className="h-7 w-7" />
             </div>
             <div className="stat-title">Account</div>
@@ -46,7 +46,7 @@ const Bank = () => {
           </div>
 
           <div className="stat bg-gray-700">
-            <div className="stat-figure text-secondary">
+            <div className="stat-figure text-accent">
               <FaCoins className="h-7 w-7" />
             </div>
             <div className="stat-title">Loan</div>

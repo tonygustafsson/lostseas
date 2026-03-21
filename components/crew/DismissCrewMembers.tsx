@@ -78,7 +78,7 @@ const DismissCrewMembers = () => {
     <MerchandiseCard
       title="Dismiss crew members"
       indicator={player?.crewMembers.count.toString() || "0"}
-      icon={<GiBandana className="text-primary h-7 w-7" />}
+      icon={<GiBandana className="text-accent h-7 w-7" />}
       disabled={isDisabled}
       fullWidth
       body={

@@ -35,7 +35,7 @@ const CharacterCard = ({ player }: Props) => (
 
       <div className="stats bg-gray-800 py-1">
         <div className="stat px-0 py-0">
-          <div className="stat-figure text-secondary">
+          <div className="stat-figure text-accent">
             <GiProgression className="h-8 w-8" />
           </div>
           <p className="stat-title">Score</p>
@@ -45,7 +45,7 @@ const CharacterCard = ({ player }: Props) => (
 
       <div className="stats bg-gray-800 py-1">
         <div className="stat px-0 py-0">
-          <div className="stat-figure text-secondary">
+          <div className="stat-figure text-accent">
             <FaCoins className="h-8 w-8" />
           </div>
           <p className="stat-title">Gold</p>

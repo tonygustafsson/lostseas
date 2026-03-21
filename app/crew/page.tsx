@@ -25,7 +25,7 @@ export default async function Page() {
 
         <div className="py-3bg-transparent stats mt-4 gap-2">
           <div className="stat bg-gray-700">
-            <div className="stat-figure text-secondary">
+            <div className="stat-figure text-accent">
               <MdGroups className="h-11 w-11" />
             </div>
             <div className="stat-title">Crew members</div>
@@ -35,7 +35,7 @@ export default async function Page() {
           </div>
 
           <div className="stat bg-gray-700">
-            <div className="stat-figure text-secondary">
+            <div className="stat-figure text-accent">
               <RadialProgressBar
                 percentage={player?.crewMembers.health}
                 className="h-12 w-12"
@@ -48,7 +48,7 @@ export default async function Page() {
           </div>
 
           <div className="stat bg-gray-700">
-            <div className="stat-figure text-secondary">
+            <div className="stat-figure text-accent">
               <RadialProgressBar
                 percentage={player?.crewMembers.mood}
                 className="h-12 w-12"

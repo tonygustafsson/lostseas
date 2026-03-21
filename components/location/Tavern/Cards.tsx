@@ -35,69 +35,69 @@ import { getRandomInt } from "@/utils/random"
 import { getCardsBet } from "@/utils/tavern"
 
 const CARDS = [
-  { text: "The Acorn", icon: <GiAcorn className="text-primary h-12 w-12" /> },
-  { text: "The Hat", icon: <GiPirateHat className="text-primary h-12 w-12" /> },
-  { text: "The Anchor", icon: <GiAnchor className="text-primary h-12 w-12" /> },
+  { text: "The Acorn", icon: <GiAcorn className="text-accent h-12 w-12" /> },
+  { text: "The Hat", icon: <GiPirateHat className="text-accent h-12 w-12" /> },
+  { text: "The Anchor", icon: <GiAnchor className="text-accent h-12 w-12" /> },
   {
     text: "The Sword",
-    icon: <GiAncientSword className="text-primary h-12 w-12" />,
+    icon: <GiAncientSword className="text-accent h-12 w-12" />,
   },
   {
     text: "The Star",
-    icon: <GiBarbedStar className="text-primary h-12 w-12" />,
+    icon: <GiBarbedStar className="text-accent h-12 w-12" />,
   },
-  { text: "The Boar", icon: <GiBoar className="text-primary h-12 w-12" /> },
+  { text: "The Boar", icon: <GiBoar className="text-accent h-12 w-12" /> },
   {
     text: "The Bottle",
-    icon: <GiBrandyBottle className="text-primary h-12 w-12" />,
+    icon: <GiBrandyBottle className="text-accent h-12 w-12" />,
   },
-  { text: "The Cat", icon: <GiCat className="text-primary h-12 w-12" /> },
+  { text: "The Cat", icon: <GiCat className="text-accent h-12 w-12" /> },
   {
     text: "The Mask",
-    icon: <GiCeremonialMask className="text-primary h-12 w-12" />,
+    icon: <GiCeremonialMask className="text-accent h-12 w-12" />,
   },
   {
     text: "The Leaf",
-    icon: <GiChestnutLeaf className="text-primary h-12 w-12" />,
+    icon: <GiChestnutLeaf className="text-accent h-12 w-12" />,
   },
   {
     text: "The Chicken",
-    icon: <GiChicken className="text-primary h-12 w-12" />,
+    icon: <GiChicken className="text-accent h-12 w-12" />,
   },
   {
     text: "The Fish",
-    icon: <GiCirclingFish className="text-primary h-12 w-12" />,
+    icon: <GiCirclingFish className="text-accent h-12 w-12" />,
   },
   {
     text: "The Swords",
-    icon: <GiCrossedSwords className="text-primary h-12 w-12" />,
+    icon: <GiCrossedSwords className="text-accent h-12 w-12" />,
   },
   {
     text: "The Knife",
-    icon: <GiCurvyKnife className="text-primary h-12 w-12" />,
+    icon: <GiCurvyKnife className="text-accent h-12 w-12" />,
   },
-  { text: "The Eel", icon: <GiEel className="text-primary h-12 w-12" /> },
+  { text: "The Eel", icon: <GiEel className="text-accent h-12 w-12" /> },
   {
     text: "The Leaf",
-    icon: <GiFallingLeaf className="text-primary h-12 w-12" />,
+    icon: <GiFallingLeaf className="text-accent h-12 w-12" />,
   },
   {
     text: "The Skull",
-    icon: <GiHarryPotterSkull className="text-primary h-12 w-12" />,
+    icon: <GiHarryPotterSkull className="text-accent h-12 w-12" />,
   },
   {
     text: "The Bottle",
-    icon: <GiHeartBottle className="text-primary h-12 w-12" />,
+    icon: <GiHeartBottle className="text-accent h-12 w-12" />,
   },
-  { text: "The Bird", icon: <GiIbis className="text-primary h-12 w-12" /> },
+  { text: "The Bird", icon: <GiIbis className="text-accent h-12 w-12" /> },
   {
     text: "The Mushroom",
-    icon: <GiSuperMushroom className="text-primary h-12 w-12" />,
+    icon: <GiSuperMushroom className="text-accent h-12 w-12" />,
   },
-  { text: "The Owl", icon: <GiOwl className="text-primary h-12 w-12" /> },
+  { text: "The Owl", icon: <GiOwl className="text-accent h-12 w-12" /> },
   {
     text: "The Potion",
-    icon: <GiPotionBall className="text-primary h-12 w-12" />,
+    icon: <GiPotionBall className="text-accent h-12 w-12" />,
   },
 ]
 
