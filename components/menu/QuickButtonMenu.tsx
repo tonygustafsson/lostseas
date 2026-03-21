@@ -12,7 +12,7 @@ const QuickButtonMenu = () => {
   const { logout } = usePlayer()
 
   return (
-    <ul className="mb-6 flex justify-center gap-4">
+    <ul className="flex justify-center gap-4">
       <li>
         <Tooltip>
           <TooltipTrigger asChild>

@@ -1,5 +1,6 @@
 import { getCurrentDate } from "@/utils/date"
 
+import { Card, CardContent } from "../ui/card"
 import WeatherIcon from "../WeatherIcon"
 
 type Props = {
@@ -10,14 +11,14 @@ const WeatherCard = ({ day }: Props) => {
   const currentDate = getCurrentDate(day)
 
   return (
-    <div className="card mt-4 w-full rounded-md bg-gray-800 shadow-lg">
-      <div className="card-body p-4">
+    <Card size="sm">
+      <CardContent>
         <div className="flex items-center justify-between">
           <span className="text-sm font-bold">{currentDate}</span>
           <WeatherIcon className="text-accent h-8 w-8" />
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   )
 }
 

@@ -13,22 +13,18 @@ import MainMenu from "./MainMenu"
 import QuickButtonMenu from "./QuickButtonMenu"
 import WeatherCard from "./WeatherCard"
 
-type Props = {
-  className?: string
-}
-
-const DesktopMenu = ({ className }: Props) => {
+const DesktopMenu = () => {
   const { data: player } = useGetPlayer()
 
   if (!player) return null
 
   return (
-    <Sidebar className={className}>
-      <SidebarContent>
+    <Sidebar>
+      <SidebarContent className="mt-4">
         <SidebarGroup>
           <Link
             href="/"
-            className="mx-3 mb-2 flex items-baseline gap-3 font-serif text-3xl"
+            className="mx-3 flex items-baseline gap-3 font-serif text-3xl"
           >
             <Image
               src="/img/logo.svg"
@@ -45,9 +41,12 @@ const DesktopMenu = ({ className }: Props) => {
           <MainMenu />
         </SidebarGroup>
 
-        <SidebarGroup>
-          <QuickButtonMenu />
-          <SoundControls />
+        <SidebarGroup className="gap-4">
+          <div className="mb-4 flex flex-col gap-8">
+            <QuickButtonMenu />
+            <SoundControls />
+          </div>
+
           <CharacterCard player={player} />
           <WeatherCard day={player.character.day} />
           <SocialMedia />

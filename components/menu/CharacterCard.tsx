@@ -16,7 +16,7 @@ type Props = {
 const CharacterCard = ({ player }: Props) => (
   <Card>
     <CardHeader className="flex flex-col items-center gap-3 pb-0">
-      <figure className="mt-4">
+      <figure>
         <GiPirateHat className="hidden h-14 w-14 lg:block" />
       </figure>
     </CardHeader>
