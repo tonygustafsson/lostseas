@@ -8,6 +8,8 @@ import {
 } from "@/constants/system"
 
 import { useSound } from "../Sound/context"
+import { Label } from "../ui/label"
+import { Switch } from "../ui/switch"
 
 type Props = {
   player: Player
@@ -43,31 +45,27 @@ const WelcomeExistingUser = ({ player, onClose }: Props) => {
         {player.character.location}.
       </p>
 
-      <div className="flex flex-col gap-4 py-4">
-        <div className="flex items-center gap-4">
-          <input
+      <div className="my-8 flex flex-col gap-4">
+        <div className="flex items-center space-x-4">
+          <Switch
             id="toggleMusic"
-            type="checkbox"
-            className="toggle toggle-info toggle-sm"
             checked={musicOn}
-            onChange={() => setMusicOn(!musicOn)}
+            onCheckedChange={(val) => setMusicOn(Boolean(val))}
           />
-          <label htmlFor="toggleMusic">Music</label>
+          <Label htmlFor="toggleMusic">Music</Label>
         </div>
 
-        <div className="flex items-center gap-4">
-          <input
+        <div className="flex items-center space-x-4">
+          <Switch
             id="soundEffects"
-            type="checkbox"
-            className="toggle toggle-info toggle-sm"
             checked={soundEffectsOn}
-            onChange={() => setSoundEffectsOn(!soundEffectsOn)}
+            onCheckedChange={(val) => setSoundEffectsOn(Boolean(val))}
           />
-          <label htmlFor="soundEffects">Sound effects</label>
+          <Label htmlFor="soundEffects">SoundFX</Label>
         </div>
       </div>
 
-      <Button className="mt-4 w-full" onClick={continueGame}>
+      <Button size="lg" className="mt-4 w-full" onClick={continueGame}>
         Continue game
       </Button>
     </>
