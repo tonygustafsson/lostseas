@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button"
 import { useModal } from "@/components/ui/Modal/context"
 import { useShop } from "@/hooks/queries/useShop"
 import { getDaysWorthOfNecessities, getNecessitiesInfo } from "@/utils/shop"
@@ -46,14 +47,13 @@ const BuyNecessities = ({ player }: Props) => {
           }
 
           return (
-            <button
+            <Button
               key={`necessities-${days}`}
               onClick={() => handleBuyNecessities(days)}
-              className="btn btn-primary"
               disabled={(player?.character.gold || 0) < necessitiesCost}
             >
               {days} days, {necessitiesCost} gold
-            </button>
+            </Button>
           )
         })}
       </div>

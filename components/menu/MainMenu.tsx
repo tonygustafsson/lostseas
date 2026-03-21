@@ -11,10 +11,15 @@ import {
 } from "react-icons/gi"
 import { RiTreasureMapLine } from "react-icons/ri"
 
+import { useModal } from "@/components/ui/Modal/context"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Map from "../Map"
-import { useModal } from "../ui/Modal/context"
+import {
+  SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "../ui/sidebar"
 
 const MainMenu = () => {
   const { data: player } = useGetPlayer()
@@ -35,56 +40,68 @@ const MainMenu = () => {
 
   return (
     <ul className="main-menu">
-      <li className={`${pathname === "/" ? "active" : ""}`}>
-        <Link href="/">
-          <GiPirateHat className="h-5 w-5" />
-          Play
-        </Link>
-      </li>
+      <SidebarMenuItem>
+        <SidebarMenuButton asChild>
+          <Link href="/">
+            <GiPirateHat className="h-5 w-5" />
+            Play
+          </Link>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
 
-      <li>
-        <button onClick={showMap} disabled={!!player?.character.journey}>
+      <SidebarMenuItem>
+        <SidebarMenuButton
+          onClick={showMap}
+          disabled={!!player?.character.journey}
+        >
           <RiTreasureMapLine className="h-5 w-5" />
           Map
-        </button>
-      </li>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
 
       <li className="main-menu-separator" aria-hidden></li>
 
-      <li className={`${pathname === "/status" ? "active" : ""}`}>
-        <Link href="/status">
-          <GiPirateCoat className="h-5 w-5" />
-          Status
-        </Link>
-      </li>
+      <SidebarMenuItem>
+        <SidebarMenuButton isActive={pathname === "/status"} asChild>
+          <Link href="/status">
+            <GiPirateCoat className="h-5 w-5" />
+            Status
+          </Link>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
 
-      <li className={`${pathname === "/ships" ? "active" : ""}`}>
-        <Link href="/ships">
-          <GiShoonerSailboat className="h-5 w-5" />
-          Ships
-          <span className="badge badge-primary badge-sm">{numberOfShips}</span>
-        </Link>
-      </li>
+      <SidebarMenuItem>
+        <SidebarMenuButton isActive={pathname === "/ships"} asChild>
+          <Link href="/ships">
+            <GiShoonerSailboat className="h-5 w-5" />
+            Ships
+          </Link>
+        </SidebarMenuButton>
 
-      <li className={`${pathname === "/crew" ? "active" : ""}`}>
-        <Link href="/crew">
-          <GiBandana className="h-5 w-5" />
-          Crew members
-          <span className="badge badge-primary badge-sm">
-            {player?.crewMembers.count}
-          </span>
-        </Link>
-      </li>
+        <SidebarMenuBadge>{numberOfShips}</SidebarMenuBadge>
+      </SidebarMenuItem>
 
-      <li className={`${pathname === "/inventory" ? "active" : ""}`}>
-        <Link href="/inventory">
-          <GiOpenedFoodCan className="h-5 w-5" />
-          Inventory
-          <span className="badge badge-primary badge-sm">
-            {numberOfInventoryItems}
-          </span>
-        </Link>
-      </li>
+      <SidebarMenuItem>
+        <SidebarMenuButton isActive={pathname === "/crew"} asChild>
+          <Link href="/crew">
+            <GiBandana className="h-5 w-5" />
+            Crew members
+          </Link>
+        </SidebarMenuButton>
+
+        <SidebarMenuBadge>{player?.crewMembers.count}</SidebarMenuBadge>
+      </SidebarMenuItem>
+
+      <SidebarMenuItem>
+        <SidebarMenuButton isActive={pathname === "/inventory"} asChild>
+          <Link href="/inventory">
+            <GiOpenedFoodCan className="h-5 w-5" />
+            Inventory
+          </Link>
+        </SidebarMenuButton>
+
+        <SidebarMenuBadge>{numberOfInventoryItems}</SidebarMenuBadge>
+      </SidebarMenuItem>
 
       <li className="main-menu-separator !mb-0" aria-hidden></li>
     </ul>

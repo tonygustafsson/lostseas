@@ -75,7 +75,7 @@ export default async function Page() {
         <p>You do not have any ships currently.</p>
       )}
 
-      <h2 className="mb-4 mt-8 font-serif text-2xl">Ship fittings</h2>
+      <h2 className="mt-8 mb-4 font-serif text-2xl">Ship fittings</h2>
 
       <div className="stat rounded-lg bg-gray-800 pr-4 shadow-md hover:shadow-lg lg:w-52">
         <div className="stat-figure text-secondary">

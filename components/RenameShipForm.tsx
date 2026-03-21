@@ -7,7 +7,8 @@ import { z } from "zod"
 import { useShips } from "@/hooks/queries/useShips"
 import { renameShipValidationSchema } from "@/utils/validation"
 
-import TextField from "./ui/TextField"
+import TextField from "./TextField"
+import { Button } from "./ui/button"
 
 type Props = {
   id: Ship["id"]
@@ -46,13 +47,13 @@ const RenameShipForm = ({ id, name }: Props) => {
         error={errors.name?.message}
       />
 
-      <button
+      <Button
         type="submit"
-        className="btn btn-primary mt-4"
+        className="mt-4"
         disabled={(!isValid && isDirty) || isRenaming}
       >
         Change name
-      </button>
+      </Button>
     </form>
   )
 }

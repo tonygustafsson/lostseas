@@ -3,6 +3,7 @@
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import MerchandiseShopItem from "@/components/MerchandiseShopItem"
+import { Button } from "@/components/ui/button"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_TYPES } from "@/constants/ship"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -49,12 +50,9 @@ const ShipyardSell = () => {
                 </>
               }
               actions={
-                <button
-                  className="btn btn-primary btn-sm"
-                  onClick={() => handleSellShip(id)}
-                >
+                <Button size="sm" onClick={() => handleSellShip(id)}>
                   Sell {type}
-                </button>
+                </Button>
               }
             />
           )

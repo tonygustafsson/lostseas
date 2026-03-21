@@ -20,14 +20,14 @@ const Harbor = () => {
           <ul className="flex flex-col gap-4">
             {journeyValidation.errors.includes("NO_SHIPS") && (
               <li className="flex gap-4 align-middle text-lg">
-                <GiShoonerSailboat className="h-7 w-7 text-primary" />
+                <GiShoonerSailboat className="text-primary h-7 w-7" />
                 <div className="flex-1">You do not own any ships.</div>
               </li>
             )}
 
             {journeyValidation.errors.includes("DAMAGED_SHIPS") && (
               <li className="flex gap-4 align-middle text-lg">
-                <GiShoonerSailboat className="h-7 w-7 text-primary" />
+                <GiShoonerSailboat className="text-primary h-7 w-7" />
                 <div className="flex-1">
                   Some of your ships are too damaged to continue traveling. Fix
                   them in the shipyard.
@@ -37,7 +37,7 @@ const Harbor = () => {
 
             {journeyValidation.errors.includes("NOT_ENOUGH_CREW_MEMBERS") && (
               <li className="flex gap-4 align-middle text-lg">
-                <GiBandana className="h-7 w-7 text-primary" />
+                <GiBandana className="text-primary h-7 w-7" />
                 <div className="flex-1">
                   You need at least {journeyValidation.minCrew} crew members to
                   successfully sail your ships.
@@ -47,7 +47,7 @@ const Harbor = () => {
 
             {journeyValidation.errors.includes("TOO_MANY_CREW_MEMBERS") && (
               <li className="flex gap-4 align-middle text-lg">
-                <GiBandana className="h-7 w-7 text-primary" />
+                <GiBandana className="text-primary h-7 w-7" />
                 <div className="flex-1">
                   Your ships can carry {journeyValidation.maxCrew} crew members
                   at most. Get a new ship or dismiss some crew members.
@@ -57,7 +57,7 @@ const Harbor = () => {
 
             {journeyValidation.errors.includes("ANGRY_CREW") && (
               <li className="flex gap-4 align-middle text-lg">
-                <GiBandana className="h-7 w-7 text-primary" />
+                <GiBandana className="text-primary h-7 w-7" />
                 <div className="flex-1">
                   Your crew is an angry bunch, they do not want to travel with
                   you any more. Make them happy by giving them gold or taking
@@ -68,7 +68,7 @@ const Harbor = () => {
 
             {journeyValidation.errors.includes("CREW_IS_ILL") && (
               <li className="flex gap-4 align-middle text-lg">
-                <GiBandana className="h-7 w-7 text-primary" />
+                <GiBandana className="text-primary h-7 w-7" />
                 <div className="flex-1">
                   Your crew health is too low, they are too ill to travel. Give
                   them medicine.
@@ -104,7 +104,7 @@ const Harbor = () => {
           <ul className="flex flex-col gap-4">
             {landingTips.includes("TOO_MUCH_GOLD") && (
               <li className="flex gap-4 align-middle text-lg">
-                <FaCoins className="h-7 w-7 text-primary" />
+                <FaCoins className="text-primary h-7 w-7" />
                 <div className="flex-1">
                   You are carrying {player.character.gold} gold, it would be
                   wise to spend it on something useful or save it in the bank so
@@ -115,7 +115,7 @@ const Harbor = () => {
 
             {landingTips.includes("DAMAGED_SHIPS") && (
               <li className="flex gap-4 align-middle text-lg">
-                <GiShoonerSailboat className="h-7 w-7 text-primary" />
+                <GiShoonerSailboat className="text-primary h-7 w-7" />
                 <div className="flex-1">
                   Some of your ships are too damaged to continue traveling. Fix
                   them in the shipyard.
@@ -125,14 +125,14 @@ const Harbor = () => {
 
             {landingTips.includes("NO_CREW") && (
               <li className="flex gap-4 align-middle text-lg">
-                <GiBandana className="h-7 w-7 text-primary" />
+                <GiBandana className="text-primary h-7 w-7" />
                 <div className="flex-1">You do not have any crew members.</div>
               </li>
             )}
 
             {landingTips.includes("ANGRY_CREW") && (
               <li className="flex gap-4 align-middle text-lg">
-                <GiBandana className="h-7 w-7 text-primary" />
+                <GiBandana className="text-primary h-7 w-7" />
                 <div className="flex-1">
                   Your crew is an angry bunch, they do not want to travel with
                   you any more. Make them happy by giving them gold or taking
@@ -143,7 +143,7 @@ const Harbor = () => {
 
             {landingTips.includes("CREW_IS_ILL") && (
               <li className="flex gap-4 align-middle text-lg">
-                <GiBandana className="h-7 w-7 text-primary" />
+                <GiBandana className="text-primary h-7 w-7" />
                 <div className="flex-1">
                   Your crew health is too low, they are too ill to travel. Give
                   them medicine.

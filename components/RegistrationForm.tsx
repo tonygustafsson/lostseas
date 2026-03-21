@@ -2,12 +2,14 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
-import Select from "@/components/ui/Select"
-import TextField from "@/components/ui/TextField"
+import Select from "@/components/Select"
+import TextField from "@/components/TextField"
 import { NATIONS } from "@/constants/locations"
 import { usePlayer } from "@/hooks/queries/usePlayer"
 import { getRandomCharacter } from "@/utils/getRandomCharacter"
 import { registrationValidationSchema } from "@/utils/validation"
+
+import { Button } from "./ui/button"
 
 type ValidationSchema = z.infer<typeof registrationValidationSchema>
 
@@ -45,13 +47,13 @@ const RegistrationForm = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       <h2 className="font-serif text-2xl">Character</h2>
 
-      <button
+      <Button
+        variant="secondary"
         onClick={fetchNewRandomCharacter}
         type="button"
-        className="btn btn-secondary"
       >
         Randomize
-      </button>
+      </Button>
 
       <TextField
         label="Name"
@@ -107,13 +109,13 @@ const RegistrationForm = () => {
         </div>
       </div>
 
-      <button
+      <Button
         type="submit"
-        className="btn btn-primary w-full"
+        className="w-full"
         disabled={(!isValid && isDirty) || registrationIsLoading}
       >
         Register
-      </button>
+      </Button>
     </form>
   )
 }

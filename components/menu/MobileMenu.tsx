@@ -9,6 +9,7 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import SocialMedia from "../SocialMedia"
 import SoundControls from "../Sound/Controls"
+import { Button } from "../ui/button"
 import CharacterCard from "./CharacterCard"
 import MainMenu from "./MainMenu"
 import MobileBottomNav from "./MobileBottomNav"
@@ -66,14 +67,14 @@ const MobileMenu = ({ className }: Props) => {
               dragConstraints={{ left: -50, right: 0 }}
               whileDrag={{ opacity: 0.85, transition: { duration: 0.1 } }}
               onDrag={(_, info) => handleDrag(info)}
-              className="fixed left-0 top-0 z-30 h-full w-72 overflow-y-auto bg-gray-900 px-4 py-8 shadow-2xl"
+              className="fixed top-0 left-0 z-30 h-full w-72 overflow-y-auto bg-gray-900 px-4 py-8 shadow-2xl"
             >
-              <button
-                className="absolute right-2 top-2 text-info"
+              <Button
+                className="text-info absolute top-2 right-2"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
                 <AiOutlineCloseCircle className="h-6 w-6" />
-              </button>
+              </Button>
 
               <MainMenu />
 
@@ -88,7 +89,7 @@ const MobileMenu = ({ className }: Props) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.5, transition: { duration: 0.15 } }}
               exit={{ opacity: 0 }}
-              className="fixed left-0 top-0 z-10 h-screen w-screen bg-black"
+              className="fixed top-0 left-0 z-10 h-screen w-screen bg-black"
               onClick={() => setMobileMenuOpen(false)}
             />
           </>

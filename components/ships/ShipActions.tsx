@@ -4,6 +4,8 @@ import RenameShipForm from "@/components/RenameShipForm"
 import { useModal } from "@/components/ui/Modal/context"
 import { useShips } from "@/hooks/queries/useShips"
 
+import { Button } from "../ui/button"
+
 type Props = {
   shipId: Ship["id"]
   shipName: Ship["name"]
@@ -43,20 +45,17 @@ const ShipActions = ({ shipId, shipName, shipType }: Props) => {
           </p>
 
           <div className="flex gap-2">
-            <button
-              className="btn btn-primary btn-sm"
-              onClick={handleRemoveShip}
-              disabled={isRemoving}
-            >
+            <Button size="sm" onClick={handleRemoveShip} disabled={isRemoving}>
               Yes, remove ship
-            </button>
+            </Button>
 
-            <button
-              className="btn btn-secondary btn-sm"
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={() => removeModal("removeShip")}
             >
               Cancel
-            </button>
+            </Button>
           </div>
         </div>
       ),
@@ -65,17 +64,18 @@ const ShipActions = ({ shipId, shipName, shipType }: Props) => {
 
   return (
     <div className="flex gap-2">
-      <button
-        className="btn btn-secondary btn-xs"
+      <Button
+        variant="secondary"
+        size="xs"
         onClick={openRemoveShipModal}
         disabled={isRemoving}
       >
         Remove
-      </button>
+      </Button>
 
-      <button className="btn btn-secondary btn-xs" onClick={openRenameModal}>
+      <Button variant="secondary" size="xs" onClick={openRenameModal}>
         Rename
-      </button>
+      </Button>
     </div>
   )
 }

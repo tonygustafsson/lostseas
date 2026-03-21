@@ -1,6 +1,7 @@
 import { getCookie } from "cookies-next"
 import { useState } from "react"
 
+import { Button } from "@/components/ui/button"
 import {
   MUSIC_STATE_COOKIE_NAME,
   SOUND_EFFECTS_STATE_COOKIE_NAME,
@@ -66,9 +67,9 @@ const WelcomeExistingUser = ({ player, onClose }: Props) => {
         </div>
       </div>
 
-      <button className="btn btn-primary mt-4 w-full" onClick={continueGame}>
+      <Button className="mt-4 w-full" onClick={continueGame}>
         Continue game
-      </button>
+      </Button>
     </>
   )
 }

@@ -46,10 +46,10 @@ const LocationHero = () => {
             : ""
         } overflow-hidden`}
       >
-        <div className="hero-overlay bg-opacity-20"></div>
+        <div className="hero-overlay bg-black/20"></div>
 
         <div
-          className="absolute left-0 top-0 z-10 h-full w-full"
+          className="absolute top-0 left-0 z-10 h-full w-full"
           ref={scope}
           style={{
             background:
@@ -69,13 +69,13 @@ const LocationHero = () => {
             draggable={false}
             onLoad={onImageLoad}
             alt="Background image"
-            className="select-none object-cover opacity-70"
+            className="object-cover opacity-70 select-none"
             style={{ objectPosition: "50% 55%", filter: "sepia(1)" }}
           />
         </div>
 
-        <div className="hero-content z-20 py-8 text-center text-neutral-content lg:py-24">
-          <div className="max-w-full rounded-lg bg-base-300 bg-opacity-60 p-8 lg:min-w-[600px] lg:max-w-2xl">
+        <div className="hero-content text-neutral-content z-20 py-8 text-center lg:py-24">
+          <div className="max-w-full rounded-lg bg-black/60 bg-slate-300 p-8 lg:max-w-2xl lg:min-w-[600px]">
             {player?.character.location !== "Sea" && (
               <TownContent
                 town={player?.character.town}

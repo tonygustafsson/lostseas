@@ -6,6 +6,8 @@ import { BiArrowToTop } from "react-icons/bi"
 import { SHIP_TYPES } from "@/constants/ship"
 import { TITLE_INFO } from "@/constants/title"
 
+import { Button } from "./ui/button"
+
 const GuideContent = () => {
   const goToSection = (id: string) => {
     const element = document.getElementById(id)
@@ -23,52 +25,58 @@ const GuideContent = () => {
       <nav>
         <ul className="my-8 flex flex-wrap justify-around gap-2 md:justify-center md:gap-4">
           <li>
-            <button
-              className="btn btn-secondary btn-sm md:btn-md"
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={() => goToSection("supplies")}
             >
               Supplies
-            </button>
+            </Button>
           </li>
           <li>
-            <button
-              className="btn btn-secondary btn-sm md:btn-md"
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={() => goToSection("ships")}
             >
               Ships
-            </button>
+            </Button>
           </li>
           <li>
-            <button
-              className="btn btn-secondary btn-sm md:btn-md"
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={() => goToSection("crew-members")}
             >
               Crew members
-            </button>
+            </Button>
           </li>
           <li>
-            <button
-              className="btn btn-secondary btn-sm md:btn-md"
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={() => goToSection("social-status")}
             >
               Social status
-            </button>
+            </Button>
           </li>
           <li>
-            <button
-              className="btn btn-secondary btn-sm md:btn-md"
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={() => goToSection("economy")}
             >
               Economy
-            </button>
+            </Button>
           </li>
           <li>
-            <button
-              className="btn btn-secondary btn-sm md:btn-md"
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={() => goToSection("traveling")}
             >
               Traveling
-            </button>
+            </Button>
           </li>
         </ul>
       </nav>
@@ -111,7 +119,7 @@ const GuideContent = () => {
           alt="The market"
         />
 
-        <h3 className="mb-2 mt-4 font-serif text-2xl">Food and water</h3>
+        <h3 className="mt-4 mb-2 font-serif text-2xl">Food and water</h3>
 
         <p className="mb-4">
           You and your crew will need both food and water for traveling at sea.
@@ -164,7 +172,7 @@ const GuideContent = () => {
         <h3 className="mb-2 font-serif text-2xl">Different ship types</h3>
 
         <div className="overflow-x-auto">
-          <table className="table my-4 bg-gray-950 bg-opacity-50">
+          <table className="my-4 table bg-black/50 bg-gray-950">
             <thead>
               <tr>
                 <th>Type</th>
@@ -308,7 +316,7 @@ const GuideContent = () => {
         <h3 className="mb-2 font-serif text-2xl">The different titles</h3>
 
         <div className="overflow-x-auto">
-          <table className="table my-4 bg-gray-950 bg-opacity-50">
+          <table className="my-4 table bg-black/50 bg-gray-950">
             <thead>
               <tr>
                 <th>Level</th>
@@ -547,12 +555,12 @@ const GuideContent = () => {
         </p>
       </div>
 
-      <button
+      <Button
         onClick={goToTop}
-        className="fixed bottom-5 right-5 rounded-full bg-info bg-opacity-50 p-3 text-xs font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-opacity-100 hover:shadow-lg focus:bg-opacity-100 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-500 active:shadow-lg"
+        className="bg-info hover:bg-opacity-100 focus:bg-opacity-100 fixed right-5 bottom-5 rounded-full bg-black/50 p-3 text-xs leading-tight font-medium text-white uppercase shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:ring-0 focus:outline-none active:bg-blue-500 active:shadow-lg"
       >
         <BiArrowToTop className="h-7 w-7" />
-      </button>
+      </Button>
     </>
   )
 }

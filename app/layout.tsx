@@ -5,6 +5,7 @@ import { Metadata, Viewport } from "next"
 
 import Providers from "@/components/Providers"
 import { almendra, andika } from "@/fonts"
+import { cn } from "@/lib/utils"
 import { getDehydratedPlayerState } from "@/utils/app/getDehydratedPlayerState"
 
 export const metadata: Metadata = {
@@ -52,7 +53,10 @@ export default async function RootLayout({
   const dehydratedState = await getDehydratedPlayerState()
 
   return (
-    <html lang="en" className={`${almendra.variable} ${andika.variable}`}>
+    <html
+      lang="en"
+      className={cn(almendra.variable, andika.variable, "font-sans", "dark")}
+    >
       <body>
         <Providers dehydratedState={dehydratedState}>{children}</Providers>
 

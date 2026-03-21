@@ -20,7 +20,7 @@ const MerchandiseCard = ({
   <div
     className={`card ${
       fullWidth ? "w-full" : "w-full lg:w-80"
-    } bg-base-100 shadow-xl ${disabled ? "cursor-not-allowed opacity-50" : ""}`}
+    } bg-gray-50 shadow-xl ${disabled ? "cursor-not-allowed opacity-50" : ""}`}
   >
     <figure className="mb-2 gap-3 bg-gray-800 px-6 py-3">
       {icon}
@@ -38,7 +38,7 @@ const MerchandiseCard = ({
       )}
     </figure>
 
-    <div className="card-body px-6 pb-2 pt-2 text-sm">{body}</div>
+    <div className="card-body px-6 pt-2 pb-2 text-sm">{body}</div>
 
     {actions && (
       <div className="card-actions mx-6 my-6 justify-between gap-2">

@@ -1,4 +1,5 @@
 import TreasureIcon from "@/components/TreasureIcon"
+import { Button } from "@/components/ui/button"
 import { TREASURES } from "@/constants/treasures"
 import { useCityhall } from "@/hooks/queries/useCityhall"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -42,12 +43,9 @@ const HandOver = () => {
               Value: {treasureInfo?.value} gold
             </div>
 
-            <button
-              className="btn btn-primary btn-sm"
-              onClick={() => handleHandover(treasure.id)}
-            >
+            <Button size="sm" onClick={() => handleHandover(treasure.id)}>
               Hand over
-            </button>
+            </Button>
           </div>
         )
       })}

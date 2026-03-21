@@ -14,7 +14,7 @@ const WeatherCard = ({ day }: Props) => {
       <div className="card-body p-4">
         <div className="flex items-center justify-between">
           <span className="text-sm font-bold">{currentDate}</span>
-          <WeatherIcon className="h-8 w-8 text-secondary" />
+          <WeatherIcon className="text-secondary h-8 w-8" />
         </div>
       </div>
     </div>

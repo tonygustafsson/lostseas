@@ -5,7 +5,8 @@ import MerchandiseIcon from "@/components/MerchandiseIcon"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { capitalize } from "@/utils/string"
 
-import TextField from "./ui/TextField"
+import TextField from "./TextField"
+import { Button } from "./ui/button"
 
 type Props = {
   player?: Player
@@ -94,12 +95,9 @@ const MerchandiseShopItem = ({ player, item, type, onBuy, onSell }: Props) => {
       actions={
         <>
           <div className="join">
-            <button
-              onClick={decrease}
-              className="btn btn-primary join-item btn-sm"
-            >
+            <Button onClick={decrease} className="join-item btn-sm">
               -
-            </button>
+            </Button>
 
             <TextField
               value={quantity.toString()}
@@ -113,37 +111,26 @@ const MerchandiseShopItem = ({ player, item, type, onBuy, onSell }: Props) => {
               } ${quantity < 1000 && "w-14"} hide-number-arrows`}
             />
 
-            <button
-              onClick={increase}
-              className="btn btn-primary join-item btn-sm"
-            >
+            <Button onClick={increase} className="join-item btn-sm">
               +
-            </button>
+            </Button>
           </div>
 
           {type === "Buy" && (
-            <button
-              className="btn btn-primary btn-sm"
-              onClick={handleBuy}
-              disabled={buyingDisabled}
-            >
+            <Button size="sm" onClick={handleBuy} disabled={buyingDisabled}>
               Buy
-            </button>
+            </Button>
           )}
 
           {type === "Sell" && (
             <div className="flex gap-1">
-              <button className="btn btn-sm" onClick={handleSellAll}>
+              <Button size="sm" onClick={handleSellAll}>
                 All
-              </button>
+              </Button>
 
-              <button
-                className="btn btn-sm"
-                onClick={handleSell}
-                disabled={sellingDisabled}
-              >
+              <Button size="sm" onClick={handleSell} disabled={sellingDisabled}>
                 Sell
-              </button>
+              </Button>
             </div>
           )}
         </>

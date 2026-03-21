@@ -2,7 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
-import TextField from "@/components/ui/TextField"
+import TextField from "@/components/TextField"
+import { Button } from "@/components/ui/button"
 import { useBank } from "@/hooks/queries/useBank"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
@@ -70,7 +71,7 @@ const BankAccount = () => {
         className="mt-4 w-full"
         onSubmit={accountHandleSubmit(handleDeposit)}
       >
-        <h2 className="mb-4 mt-8 font-serif text-2xl font-semibold">
+        <h2 className="mt-8 mb-4 font-serif text-2xl font-semibold">
           Make deposit
         </h2>
 
@@ -95,20 +96,16 @@ const BankAccount = () => {
           error={accountErrors.amount?.message}
         />
 
-        <button
-          type="submit"
-          className="btn btn-primary mt-4"
-          disabled={!accountIsValid}
-        >
+        <Button type="submit" className="mt-4" disabled={!accountIsValid}>
           Deposit
-        </button>
+        </Button>
       </form>
 
       <form
         className="mt-4 flex w-full flex-col items-start justify-between"
         onSubmit={withdrawalHandleSubmit(handleWithdrawal)}
       >
-        <h2 className="mb-4 mt-8 font-serif text-2xl font-semibold">
+        <h2 className="mt-8 mb-4 font-serif text-2xl font-semibold">
           Make withdrawal
         </h2>
 
@@ -123,13 +120,9 @@ const BankAccount = () => {
           error={withdrawalErrors.amount?.message}
         />
 
-        <button
-          type="submit"
-          className="btn btn-primary mt-4"
-          disabled={!withdrawalIsValid}
-        >
+        <Button type="submit" className="mt-4" disabled={!withdrawalIsValid}>
           Withdrawal
-        </button>
+        </Button>
       </form>
     </div>
   )

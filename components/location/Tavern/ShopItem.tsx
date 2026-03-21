@@ -1,5 +1,6 @@
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
+import { Button } from "@/components/ui/button"
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import { useTavern } from "@/hooks/queries/useTavern"
 import { capitalize } from "@/utils/string"
@@ -36,13 +37,9 @@ const ShopItem = ({ player, item }: Props) => {
         </>
       }
       actions={
-        <button
-          className="btn btn-primary btn-sm"
-          onClick={handlePurchase}
-          disabled={buyingDisabled}
-        >
+        <Button size="sm" onClick={handlePurchase} disabled={buyingDisabled}>
           Buy
-        </button>
+        </Button>
       }
     />
   )

@@ -1,8 +1,9 @@
 import { almendra, andika } from "@/fonts"
 
 import DesktopMenu from "../menu/DesktopMenu"
-import MobileMenu from "../menu/MobileMenu"
 import PageSpinner from "../PageSpinner"
+import { SidebarProvider } from "../ui/sidebar"
+import { TooltipProvider } from "../ui/tooltip"
 
 export default function DefaultLayout({
   children,
@@ -10,19 +11,20 @@ export default function DefaultLayout({
   children: React.ReactNode
 }) {
   return (
-    <>
-      <div className="flex min-h-screen flex-col lg:flex-row">
-        <MobileMenu className="lg:hidden" />
-        <DesktopMenu className="hidden lg:block" />
+    <SidebarProvider>
+      <TooltipProvider>
+        <div className="flex w-full">
+          <DesktopMenu />
 
-        <main
-          className={`${almendra.variable} ${andika.variable} flex min-h-screen w-full flex-col bg-base-200 px-2 py-4 pb-32 lg:px-12 lg:py-8`}
-        >
-          {children}
-        </main>
-      </div>
+          <main
+            className={`${almendra.variable} ${andika.variable} flex min-h-screen w-full flex-col bg-slate-800 px-2 py-4 pb-32 lg:px-12 lg:py-8`}
+          >
+            {children}
+          </main>
 
-      <PageSpinner />
-    </>
+          <PageSpinner />
+        </div>
+      </TooltipProvider>
+    </SidebarProvider>
   )
 }

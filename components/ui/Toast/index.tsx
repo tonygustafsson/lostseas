@@ -2,6 +2,7 @@ import { AnimatePresence, m as motion } from "framer-motion"
 import { AiOutlineCloseCircle } from "react-icons/ai"
 import { FiCheckCircle, FiXCircle } from "react-icons/fi"
 
+import { Button } from "../button"
 import { useToast } from "./context"
 
 const Toast = () => {
@@ -44,12 +45,12 @@ const Toast = () => {
                 <span>{toast.message}</span>
               </div>
 
-              <button
+              <Button
                 className="close"
                 onClick={() => removeToast(toast.id || "")}
               >
                 <AiOutlineCloseCircle className="h-7 w-7" />
-              </button>
+              </Button>
             </motion.div>
           )}
         </AnimatePresence>
