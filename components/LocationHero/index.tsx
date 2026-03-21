@@ -40,16 +40,14 @@ const LocationHero = () => {
             ? `sea-${randomId}`
             : `${player?.character.town}-${player?.character.location}`
         }
-        className={`hero relative rounded-lg ${
+        className={`relative grid min-h-[22rem] place-items-center overflow-hidden rounded-3xl border border-white/10 bg-slate-950 shadow-[0_30px_80px_rgba(15,23,42,0.45)] ${
           player?.character.location !== "Sea"
             ? "rounded-b-none lg:max-h-[500px]"
             : ""
-        } overflow-hidden`}
+        }`}
       >
-        <div className="hero-overlay bg-black/20"></div>
-
         <div
-          className="absolute top-0 left-0 z-10 h-full w-full"
+          className="absolute inset-0"
           ref={scope}
           style={{
             background:
@@ -69,13 +67,13 @@ const LocationHero = () => {
             draggable={false}
             onLoad={onImageLoad}
             alt="Background image"
-            className="object-cover opacity-70 select-none"
+            className="object-cover opacity-80 select-none"
             style={{ objectPosition: "50% 55%", filter: "sepia(1)" }}
           />
         </div>
 
-        <div className="hero-content text-neutral-content z-20 py-8 text-center lg:py-24">
-          <div className="max-w-full rounded-lg bg-black/60 bg-slate-300 p-8 lg:max-w-2xl lg:min-w-[600px]">
+        <div className="z-20 flex w-full items-center justify-center px-4 py-10 text-center sm:px-6 lg:px-10 lg:py-20">
+          <div className="w-full max-w-3xl rounded-[2rem] border border-white/10 bg-black/55 px-6 py-8 text-stone-100 shadow-[0_24px_60px_rgba(0,0,0,0.45)] backdrop-blur-[2px] sm:px-8 lg:min-w-[600px] lg:px-14 lg:py-12">
             {player?.character.location !== "Sea" && (
               <TownContent
                 town={player?.character.town}
@@ -115,7 +113,7 @@ const LocationHero = () => {
         </div>
       </div>
 
-      <div className="flex flex-col items-center rounded-b-lg bg-gray-900">
+      <div className="rounded-b-3xl border border-t-0 border-white/10 bg-slate-950/95 shadow-[0_18px_48px_rgba(15,23,42,0.3)]">
         {player?.character.location !== "Sea" && (
           <TownActions location={player?.character.location} />
         )}

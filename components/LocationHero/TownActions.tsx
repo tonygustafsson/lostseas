@@ -81,14 +81,19 @@ const TownActions = ({ location }: Props) => {
   }
 
   return (
-    <div className="flex flex-col items-center rounded-b-lg bg-gray-900 p-4 pb-8">
-      <span className="font-serif text-xl">Change location</span>
+    <div className="flex flex-col items-center px-4 py-5 sm:px-6 sm:py-6">
+      <span className="font-serif text-xl text-stone-100">Change location</span>
 
-      <div className="lg:join mt-4 flex flex-wrap justify-center gap-2 lg:gap-0">
+      <div className="mt-4 flex flex-wrap justify-center gap-3">
         {locations.map(({ key, title, icon }) => (
           <Button
             key={`change-location-${key}`}
-            className="join-item text-base"
+            variant={location === key ? "secondary" : "outline"}
+            className={`min-w-[8rem] rounded-full px-4 text-base text-stone-100 ${
+              location === key
+                ? ""
+                : "border-white/15 bg-white/5 hover:bg-white/10"
+            }`}
             onClick={() => handleMove(title as TownLocation)}
             disabled={location === key}
           >

@@ -10,9 +10,12 @@ const PostAttackActions = () => {
   }
 
   return (
-    <div className="flex flex-col items-center rounded-b-lg bg-gray-900 pt-4 pb-8">
-      <div className="lg:join mt-4 flex flex-wrap justify-center gap-2 lg:gap-0">
-        <Button className="join-item text-base" onClick={handleContinueJourney}>
+    <div className="flex flex-col items-center px-4 py-5 sm:px-6 sm:py-6">
+      <div className="mt-1 flex flex-wrap justify-center gap-3">
+        <Button
+          className="min-w-[10rem] rounded-full px-5 text-base"
+          onClick={handleContinueJourney}
+        >
           Continue journey
         </Button>
       </div>
