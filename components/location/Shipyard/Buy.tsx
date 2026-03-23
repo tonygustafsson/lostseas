@@ -33,7 +33,7 @@ const ShipyardBuy = () => {
         </div>
       )}
 
-      <div className="flex flex-wrap gap-6">
+      <div className="flex flex-wrap gap-4">
         {Object.entries(SHIP_TYPES).map(([shipType, { description, buy }]) => (
           <MerchandiseCard
             key={`shipyard-buy-${shipType}`}

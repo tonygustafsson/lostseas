@@ -2,11 +2,14 @@ import { useState } from "react"
 
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
+import { Badge } from "@/components/ui/badge"
+import { ButtonGroup } from "@/components/ui/button-group"
 import { MERCHANDISE } from "@/constants/merchandise"
+import { cn } from "@/lib/utils"
 import { capitalize } from "@/utils/string"
 
-import TextField from "./TextField"
 import { Button } from "./ui/button"
+import { Input } from "./ui/input"
 
 type Props = {
   player?: Player
@@ -79,59 +82,84 @@ const MerchandiseShopItem = ({ player, item, type, onBuy, onSell }: Props) => {
 
           <div className="mt-2 flex gap-2">
             {type === "Buy" && (
-              <div className="badge badge-secondary">
+              <Badge variant="secondary">
                 Price: {MERCHANDISE[item].buy} gold
-              </div>
+              </Badge>
             )}
 
             {type === "Sell" && (
-              <div className="badge badge-secondary">
+              <Badge variant="secondary">
                 Worth: {MERCHANDISE[item].sell} gold
-              </div>
+              </Badge>
             )}
           </div>
         </>
       }
       actions={
         <>
-          <div className="join">
-            <Button onClick={decrease} className="join-item btn-sm">
+          <ButtonGroup className="w-fit">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon-sm"
+              onClick={decrease}
+            >
               -
             </Button>
 
-            <TextField
+            <Input
               value={quantity.toString()}
               onChange={changeQuantity}
               type="number"
-              name={""}
-              size="sm"
-              fullWidth={false}
-              className={`join-item ${quantity < 10 && "w-9"} ${
-                quantity < 100 && "w-11"
-              } ${quantity < 1000 && "w-14"} hide-number-arrows`}
+              className={cn(
+                "border-border bg-input/30 h-8 w-12 [appearance:textfield] rounded-none text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+                quantity < 10 && "w-10",
+                quantity < 100 && "w-12",
+                quantity < 1000 && "w-14"
+              )}
             />
 
-            <Button onClick={increase} className="join-item btn-sm">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon-sm"
+              onClick={increase}
+            >
               +
             </Button>
-          </div>
+          </ButtonGroup>
 
           {type === "Buy" && (
-            <Button size="sm" onClick={handleBuy} disabled={buyingDisabled}>
+            <Button
+              type="button"
+              size="sm"
+              onClick={handleBuy}
+              disabled={buyingDisabled}
+            >
               Buy
             </Button>
           )}
 
           {type === "Sell" && (
-            <div className="flex gap-1">
-              <Button size="sm" onClick={handleSellAll}>
+            <ButtonGroup className="w-fit">
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                onClick={handleSellAll}
+              >
                 All
               </Button>
 
-              <Button size="sm" onClick={handleSell} disabled={sellingDisabled}>
+              <Button
+                type="button"
+                size="sm"
+                onClick={handleSell}
+                disabled={sellingDisabled}
+              >
                 Sell
               </Button>
-            </div>
+            </ButtonGroup>
           )}
         </>
       }

@@ -10,7 +10,7 @@ const TavernBuy = () => {
     <>
       <h2 className="mb-8 font-serif text-3xl">Buy</h2>
 
-      <div className="flex flex-wrap gap-6">
+      <div className="flex flex-wrap gap-4">
         {Object.keys(TAVERN_ITEMS).map((item) => (
           <ShopItem
             key={`tavern-item-${item}`}
