@@ -34,7 +34,7 @@ const Toast = () => {
   }, [toasts])
 
   // Render Sonner's Toaster with default shadcn design
-  return <Toaster />
+  return <Toaster position="top-right" />
 }
 
 export default Toast
