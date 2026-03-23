@@ -1,62 +1,40 @@
-import { AnimatePresence, m as motion } from "framer-motion"
-import { AiOutlineCloseCircle } from "react-icons/ai"
-import { FiCheckCircle, FiXCircle } from "react-icons/fi"
+import { useEffect, useRef } from "react"
+import { toast as sonnerToast } from "sonner"
 
-import { Button } from "../button"
+import { Toaster } from "@/components/ui/sonner"
+
 import { useToast } from "./context"
 
 const Toast = () => {
   const { toasts, removeToast } = useToast()
+  const shown = useRef<Record<string, boolean>>({})
 
-  if (!Object.values(toasts).length) return null
+  useEffect(() => {
+    Object.values(toasts).forEach((t) => {
+      if (!t.visible) return
+      if (shown.current[t.id || ""]) return
 
-  return (
-    <>
-      {Object.values(toasts).map((toast, idx) => (
-        <AnimatePresence key={`toast-${toast.id}`}>
-          {toast.visible && (
-            <motion.div
-              initial={{ opacity: 0, translateX: "100%" }}
-              animate={{ opacity: 1, translateX: 0 }}
-              exit={{ opacity: 0, translateX: "100%" }}
-              drag="x"
-              dragElastic={false}
-              dragConstraints={{ left: -100, right: 0 }}
-              whileDrag={{ opacity: 0.85, transition: { duration: 0.1 } }}
-              onDrag={(_, info) => {
-                if (info.offset.x > 100) {
-                  removeToast(toast.id || "")
-                }
-              }}
-              className={`toast toast-end`}
-              style={{ top: `${idx * 140}px` }}
-            >
-              <div className="alert flex flex-col items-start gap-1 lg:gap-2">
-                <div className="flex items-center gap-2">
-                  {toast.variant === "success" && (
-                    <FiCheckCircle size={28} className="text-success" />
-                  )}
-                  {toast.variant === "error" && (
-                    <FiXCircle size={28} className="text-error" />
-                  )}
-                  <span className="title mr-8">{toast.title}</span>
-                </div>
+      const message = [t.title, typeof t.message === "string" ? t.message : ""]
+        .filter(Boolean)
+        .join(" — ")
 
-                <span>{toast.message}</span>
-              </div>
+      if (t.variant === "success") {
+        sonnerToast.success(message || "")
+      } else if (t.variant === "error") {
+        sonnerToast.error(message || "")
+      } else {
+        sonnerToast(message || "")
+      }
 
-              <Button
-                className="close"
-                onClick={() => removeToast(toast.id || "")}
-              >
-                <AiOutlineCloseCircle className="h-7 w-7" />
-              </Button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      ))}
-    </>
-  )
+      shown.current[t.id || ""] = true
+      // remove from our legacy context so we don't double-show
+      removeToast(t.id || "")
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [toasts])
+
+  // Render Sonner's Toaster with default shadcn design
+  return <Toaster />
 }
 
 export default Toast
