@@ -1,3 +1,5 @@
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
 type TabItem<T> = {
   label: string
   id: T
@@ -14,19 +16,23 @@ const LocationTabs = <T extends string>({
   currentTab,
   setCurrentTab,
 }: Props<T>) => (
-  <div className="tabs mb-8 justify-center">
-    {items.map(({ label, id }) => (
-      <a
-        key={`location-tab-${id}`}
-        className={`tab tab-bordered tab-lg px-8 font-serif text-2xl font-bold ${
-          currentTab === id ? "tab-active" : ""
-        }`}
-        onClick={() => setCurrentTab(id)}
-      >
-        {label}
-      </a>
-    ))}
-  </div>
+  <Tabs
+    className="mb-8 w-full items-center"
+    value={currentTab}
+    onValueChange={(value) => setCurrentTab(value as T)}
+  >
+    <TabsList className="h-14 p-1.5">
+      {items.map(({ label, id }) => (
+        <TabsTrigger
+          key={`location-tab-${id}`}
+          value={id}
+          className="h-12 px-6 font-serif text-xl font-bold"
+        >
+          {label}
+        </TabsTrigger>
+      ))}
+    </TabsList>
+  </Tabs>
 )
 
 export default LocationTabs
