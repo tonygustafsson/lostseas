@@ -11,7 +11,7 @@ import {
 } from "react-icons/gi"
 import { RiTreasureMapLine } from "react-icons/ri"
 
-import { useModal } from "@/components/ui/Modal/context"
+import { useModal } from "@/components/Modal/context"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Map from "../Map"

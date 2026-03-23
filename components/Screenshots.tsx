@@ -4,7 +4,7 @@ import Image from "next/image"
 
 import { capitalize } from "@/utils/string"
 
-import { useModal } from "./ui/Modal/context"
+import { useModal } from "./Modal/context"
 
 const Screenshots = () => {
   const { setModal } = useModal()

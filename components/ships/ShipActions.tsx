@@ -1,7 +1,7 @@
 "use client"
 
+import { useModal } from "@/components/Modal/context"
 import RenameShipForm from "@/components/RenameShipForm"
-import { useModal } from "@/components/ui/Modal/context"
 import { useShips } from "@/hooks/queries/useShips"
 
 import { Button } from "../ui/button"

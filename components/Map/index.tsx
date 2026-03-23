@@ -7,7 +7,7 @@ import { Fragment, useState } from "react"
 import { TOWNS } from "@/constants/locations"
 import { useSea } from "@/hooks/queries/useSea"
 
-import { useModal } from "../ui/Modal/context"
+import { useModal } from "../Modal/context"
 import Tooltip from "./Tooltip"
 
 const mapWidth = 850

@@ -3,8 +3,8 @@
 import { useState } from "react"
 
 import LocationTabs from "@/components/LocationTabs"
+import { useModal } from "@/components/Modal/context"
 import { Button } from "@/components/ui/button"
-import { useModal } from "@/components/ui/Modal/context"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShop } from "@/hooks/queries/useShop"
 import { getBarterGoodsValue } from "@/utils/shop"

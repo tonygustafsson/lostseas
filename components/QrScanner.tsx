@@ -4,8 +4,8 @@ import { AiOutlineQrcode } from "react-icons/ai"
 
 import { usePlayer } from "@/hooks/queries/usePlayer"
 
+import { useModal } from "./Modal/context"
 import { Button } from "./ui/button"
-import { useModal } from "./ui/Modal/context"
 
 const QrScanner = () => {
   const { setModal } = useModal()

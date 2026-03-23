@@ -8,8 +8,8 @@ import TextField from "@/components/TextField"
 import { useCrew } from "@/hooks/queries/useCrew"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
+import { useModal } from "../Modal/context"
 import { Button } from "../ui/button"
-import { useModal } from "../ui/Modal/context"
 
 const DismissCrewMembers = () => {
   const { data: player } = useGetPlayer()

@@ -9,8 +9,8 @@ import { RiTreasureMapLine } from "react-icons/ri"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Map from "../Map"
+import { useModal } from "../Modal/context"
 import { Button } from "../ui/button"
-import { useModal } from "../ui/Modal/context"
 
 type Props = {
   setMobileMenuOpen: (open: (prev: boolean) => boolean) => void

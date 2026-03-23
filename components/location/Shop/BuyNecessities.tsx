@@ -1,5 +1,5 @@
+import { useModal } from "@/components/Modal/context"
 import { Button } from "@/components/ui/button"
-import { useModal } from "@/components/ui/Modal/context"
 import { useShop } from "@/hooks/queries/useShop"
 import { getDaysWorthOfNecessities, getNecessitiesInfo } from "@/utils/shop"
 
