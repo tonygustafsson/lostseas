@@ -1,3 +1,4 @@
+import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { useEffect } from "react"
 import { AiOutlineCloseCircle } from "react-icons/ai"
 
@@ -40,56 +41,43 @@ const Modal = () => {
   return (
     <>
       {modalEntries.map((modal, index) => (
-        <div
+        <DialogPrimitive.Root
           key={`modal-${modal.id}`}
-          aria-hidden={!modal.open}
-          aria-labelledby={`modal-title-${modal.id}`}
-          aria-modal="true"
-          role="dialog"
-          className={cn(
-            "fixed inset-0 flex items-center justify-center p-2 transition-opacity duration-300 lg:p-6",
-            modal.open
-              ? "pointer-events-auto opacity-100"
-              : "pointer-events-none opacity-0"
-          )}
-          style={{ zIndex: 50 + index }}
+          open={!!modal.open}
+          onOpenChange={(open) => {
+            if (!open) removeModal(modal.id || "")
+          }}
         >
-          <div
-            className={cn(
-              "absolute inset-0 bg-black/70 transition-opacity duration-300 supports-backdrop-filter:backdrop-blur-sm",
-              modal.open ? "opacity-100" : "opacity-0"
-            )}
-            onClick={() => removeModal(modal.id || "")}
-          />
+          <DialogPrimitive.Portal>
+            <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/70 transition-opacity duration-300 supports-backdrop-filter:backdrop-blur-sm" />
 
-          <div
-            className={cn(
-              "relative z-10 max-h-[calc(100vh-1rem)] w-full overflow-y-auto rounded-[2rem] border border-white/10 bg-slate-900/95 px-2 pt-4 pb-6 text-white shadow-[0_24px_80px_rgba(0,0,0,0.45)] ring-1 ring-black/30 transition-all duration-300 lg:max-h-[calc(100vh-3rem)] lg:px-6",
-              modal.fullWidth ? "max-w-none" : "max-w-2xl",
-              modal.open
-                ? "translate-y-0 scale-100 opacity-100"
-                : "translate-y-4 scale-95 opacity-0"
-            )}
-          >
-            <h3
-              id={`modal-title-${modal.id}`}
-              className="mb-6 px-10 text-center font-serif text-xl font-bold"
+            <DialogPrimitive.Content
+              className={cn(
+                "fixed top-1/2 left-1/2 z-50 max-h-[calc(100vh-1rem)] w-full -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-[2rem] border border-white/10 bg-slate-900/95 px-2 pt-4 pb-6 text-white shadow-[0_24px_80px_rgba(0,0,0,0.45)] ring-1 ring-black/30 transition-all duration-300 lg:max-h-[calc(100vh-3rem)] lg:px-6",
+                modal.fullWidth ? "max-w-none" : "max-w-2xl",
+                modal.open ? "scale-100 opacity-100" : "scale-95 opacity-0"
+              )}
+              style={{ zIndex: 50 + index }}
             >
-              {modal.title}
-            </h3>
+              <DialogPrimitive.Title className="mb-6 px-10 text-center font-serif text-xl font-bold text-white">
+                {modal.title || "Dialog"}
+              </DialogPrimitive.Title>
 
-            {modal.content}
+              {modal.content}
 
-            <Button
-              size="icon-sm"
-              variant="ghost"
-              className="absolute top-3 right-3 rounded-full border-none bg-transparent text-white/80 hover:bg-white/10 hover:text-white"
-              onClick={() => removeModal(modal.id || "")}
-            >
-              <AiOutlineCloseCircle className="h-7 w-7" />
-            </Button>
-          </div>
-        </div>
+              <DialogPrimitive.Close asChild>
+                <Button
+                  size="icon-sm"
+                  variant="ghost"
+                  className="absolute top-3 right-3 rounded-full border-none bg-transparent text-white/80 hover:bg-white/10 hover:text-white"
+                  onClick={() => removeModal(modal.id || "")}
+                >
+                  <AiOutlineCloseCircle className="h-7 w-7" />
+                </Button>
+              </DialogPrimitive.Close>
+            </DialogPrimitive.Content>
+          </DialogPrimitive.Portal>
+        </DialogPrimitive.Root>
       ))}
     </>
   )
