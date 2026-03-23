@@ -2,15 +2,6 @@
   @apply border-0;
 }
 
-.global-loading-indicator {
-  @apply fixed top-0 left-0 h-screen w-screen bg-black/50 bg-gray-50;
-  content: "";
-}
-
-.global-loading-indicator > .spinner {
-  @apply fixed top-1/4 left-1/2 h-8 w-8 w-20 -translate-x-1/2 -translate-y-1/4 animate-spin rounded-full border-4 border-transparent border-t-blue-500 border-r-blue-500;
-}
-
 input.hide-number-arrows::-webkit-outer-spin-button,
 input.hide-number-arrows::-webkit-inner-spin-button {
   -webkit-appearance: none;
