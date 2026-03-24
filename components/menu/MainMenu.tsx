@@ -1,7 +1,5 @@
 "use client"
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
 import {
   GiBandana,
   GiOpenedFoodCan,
@@ -15,15 +13,11 @@ import { useModal } from "@/app/stores/modals"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Map from "../Map"
-import {
-  SidebarMenuBadge,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "../ui/sidebar"
+import { Separator } from "../ui/separator"
+import MainMenuItem from "./MainMenuItem"
 
 const MainMenu = () => {
   const { data: player } = useGetPlayer()
-  const pathname = usePathname()
   const { setModal } = useModal()
 
   const numberOfShips = Object.values(player?.ships ?? {}).length
@@ -39,71 +33,64 @@ const MainMenu = () => {
   }
 
   return (
-    <ul className="main-menu">
-      <SidebarMenuItem>
-        <SidebarMenuButton asChild>
-          <Link href="/">
-            <GiPirateHat className="h-5 w-5" />
-            Play
-          </Link>
-        </SidebarMenuButton>
-      </SidebarMenuItem>
+    <ul className="flex flex-col gap-1">
+      <MainMenuItem
+        href="/"
+        icon={<GiPirateHat className="group-hover/play:text-accent size-5!" />}
+        label="Play"
+        className="group/play"
+      />
 
-      <SidebarMenuItem>
-        <SidebarMenuButton
-          onClick={showMap}
-          disabled={!!player?.character.journey}
-        >
-          <RiTreasureMapLine className="h-5 w-5" />
-          Map
-        </SidebarMenuButton>
-      </SidebarMenuItem>
+      <MainMenuItem
+        onClick={showMap}
+        disabled={!!player?.character.journey}
+        icon={
+          <RiTreasureMapLine className="group-hover/map:text-accent size-5!" />
+        }
+        label="Map"
+        className="group/map"
+      />
 
-      <li className="main-menu-separator" aria-hidden></li>
+      <Separator className="my-2" />
 
-      <SidebarMenuItem>
-        <SidebarMenuButton isActive={pathname === "/status"} asChild>
-          <Link href="/status">
-            <GiPirateCoat className="h-5 w-5" />
-            Status
-          </Link>
-        </SidebarMenuButton>
-      </SidebarMenuItem>
+      <MainMenuItem
+        href="/status"
+        icon={
+          <GiPirateCoat className="group-hover/status:text-accent size-5!" />
+        }
+        label="Status"
+        className="group/status"
+      />
 
-      <SidebarMenuItem>
-        <SidebarMenuButton isActive={pathname === "/ships"} asChild>
-          <Link href="/ships">
-            <GiShoonerSailboat className="h-5 w-5" />
-            Ships
-          </Link>
-        </SidebarMenuButton>
+      <MainMenuItem
+        href="/ships"
+        icon={
+          <GiShoonerSailboat className="group-hover/ships:text-accent size-5!" />
+        }
+        label="Ships"
+        badge={numberOfShips}
+        className="group/ships"
+      />
 
-        <SidebarMenuBadge>{numberOfShips}</SidebarMenuBadge>
-      </SidebarMenuItem>
+      <MainMenuItem
+        href="/crew"
+        icon={<GiBandana className="group-hover/crew:text-accent size-5!" />}
+        label="Crew members"
+        badge={player?.crewMembers.count}
+        className="group/crew"
+      />
 
-      <SidebarMenuItem>
-        <SidebarMenuButton isActive={pathname === "/crew"} asChild>
-          <Link href="/crew">
-            <GiBandana className="h-5 w-5" />
-            Crew members
-          </Link>
-        </SidebarMenuButton>
+      <MainMenuItem
+        href="/inventory"
+        icon={
+          <GiOpenedFoodCan className="group-hover/inventory:text-accent size-5!" />
+        }
+        label="Inventory"
+        badge={numberOfInventoryItems}
+        className="group/inventory"
+      />
 
-        <SidebarMenuBadge>{player?.crewMembers.count}</SidebarMenuBadge>
-      </SidebarMenuItem>
-
-      <SidebarMenuItem>
-        <SidebarMenuButton isActive={pathname === "/inventory"} asChild>
-          <Link href="/inventory">
-            <GiOpenedFoodCan className="h-5 w-5" />
-            Inventory
-          </Link>
-        </SidebarMenuButton>
-
-        <SidebarMenuBadge>{numberOfInventoryItems}</SidebarMenuBadge>
-      </SidebarMenuItem>
-
-      <li className="main-menu-separator !mb-0" aria-hidden></li>
+      <Separator className="my-2" />
     </ul>
   )
 }

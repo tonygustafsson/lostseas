@@ -24,7 +24,7 @@ const DesktopMenu = ({ className }: Props) => {
 
   return (
     <Sidebar className={className}>
-      <SidebarContent className="mt-4">
+      <SidebarContent className="mx-2 mt-4">
         <SidebarGroup>
           <Link
             href="/"

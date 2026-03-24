@@ -14,20 +14,16 @@ type Props = {
 }
 
 const CharacterCard = ({ player }: Props) => (
-  <Card>
-    <CardHeader className="flex flex-col items-center gap-3 pb-0">
+  <Card className="gap-2 bg-gray-800">
+    <CardHeader className="flex flex-col items-center gap-2">
       <figure>
-        <GiPirateHat className="hidden h-14 w-14 lg:block" />
+        <GiPirateHat className="hidden size-14 lg:block" />
       </figure>
     </CardHeader>
 
     <CardContent className="space-y-4">
-      <h2 className="flex gap-2 font-serif text-lg">
-        <Flag
-          nation={player.character.nationality}
-          size={28}
-          className="opacity-[0.8]"
-        />
+      <h2 className="flex gap-2 font-serif text-xl">
+        <Flag nation={player.character.nationality} size={28} />
         {player.character.name}
       </h2>
 
@@ -67,7 +63,7 @@ const CharacterCard = ({ player }: Props) => (
 
       <div className="flex justify-end">
         <Link href="/status">
-          <Button variant="secondary" size="sm">
+          <Button variant="outline" size="sm" className="mt-2">
             More info
           </Button>
         </Link>
