@@ -3,18 +3,21 @@
 import { useMemo, useState } from "react"
 import { GiBandana } from "react-icons/gi"
 
+import useModal from "@/app/stores/modals"
 import MerchandiseCard from "@/components/MerchandiseCard"
-import TextField from "@/components/TextField"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { Input } from "@/components/ui/input"
 import { useCrew } from "@/hooks/queries/useCrew"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
-import { useModal } from "../Modal/context"
 import { Button } from "../ui/button"
 
 const DismissCrewMembers = () => {
   const { data: player } = useGetPlayer()
   const { dismiss } = useCrew()
-  const { setModal, removeModal } = useModal()
+
+  const setModal = useModal((s) => s.setModal)
+  const removeModal = useModal((s) => s.removeModal)
 
   const [quantity, setQuantity] = useState(1)
 
@@ -89,27 +92,34 @@ const DismissCrewMembers = () => {
       }
       actions={
         <>
-          <div className="join">
-            <Button onClick={decrease} className="join-item btn-sm">
+          <ButtonGroup className="w-fit">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon-sm"
+              onClick={decrease}
+            >
               -
             </Button>
 
-            <TextField
+            <Input
               value={quantity.toString()}
               onChange={changeQuantity}
               type="number"
-              name={""}
-              size="sm"
-              fullWidth={false}
-              className={`join-item ${quantity < 10 && "w-9"} ${
-                quantity < 100 && "w-11"
-              } ${quantity < 1000 && "w-14"} hide-number-arrows`}
+              className={`border-border bg-input/30 h-8 w-12 [appearance:textfield] rounded-none text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ${
+                quantity < 10 ? "w-10" : ""
+              } ${quantity < 100 ? "w-12" : ""} ${quantity < 1000 ? "w-14" : ""}`}
             />
 
-            <Button onClick={increase} className="join-item btn-sm">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon-sm"
+              onClick={increase}
+            >
               +
             </Button>
-          </div>
+          </ButtonGroup>
 
           <Button size="sm" disabled={isDisabled} onClick={openDismissModal}>
             Dismiss

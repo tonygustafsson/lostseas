@@ -4,7 +4,8 @@ import { useMemo, useState } from "react"
 import { FaCoins } from "react-icons/fa"
 
 import MerchandiseCard from "@/components/MerchandiseCard"
-import TextField from "@/components/TextField"
+import { Input } from "@/components/ui/input"
+import { ButtonGroup } from "@/components/ui/button-group"
 import { useCrew } from "@/hooks/queries/useCrew"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getGoldEffectiveness } from "@/utils/crew"
@@ -76,27 +77,34 @@ const GiveGold = () => {
       }
       actions={
         <>
-          <div className="join">
-            <Button onClick={decrease} className="join-item btn-sm">
+          <ButtonGroup className="w-fit">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon-sm"
+              onClick={decrease}
+            >
               -
             </Button>
 
-            <TextField
+            <Input
               value={quantity.toString()}
               onChange={changeQuantity}
               type="number"
-              name={""}
-              size="sm"
-              fullWidth={false}
-              className={`join-item ${quantity < 10 && "w-9"} ${
-                quantity < 100 && "w-11"
-              } ${quantity < 1000 && "w-14"} hide-number-arrows`}
+              className={`border-border bg-input/30 h-8 w-12 [appearance:textfield] rounded-none text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ${
+                quantity < 10 ? "w-10" : ""
+              } ${quantity < 100 ? "w-12" : ""} ${quantity < 1000 ? "w-14" : ""}`}
             />
 
-            <Button onClick={increase} className="join-item btn-sm">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon-sm"
+              onClick={increase}
+            >
               +
             </Button>
-          </div>
+          </ButtonGroup>
 
           <Button size="sm" disabled={isDisabled} onClick={handleSubmit}>
             Give gold
