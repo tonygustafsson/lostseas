@@ -77,19 +77,20 @@ export default async function Page() {
 
       <h2 className="mt-8 mb-4 font-serif text-2xl">Ship fittings</h2>
 
-      <div className="stat rounded-lg bg-gray-800 pr-4 shadow-md hover:shadow-lg lg:w-52">
-        <div className="stat-figure text-accent">
-          <MerchandiseIcon size="lg" item="cannons" />
+      <div className="flex items-center justify-between rounded-lg bg-gray-700 p-4 shadow-md hover:shadow-lg lg:w-52">
+        <div>
+          <div className="text-muted-foreground text-sm">Cannons</div>
+          <div className="mt-1 text-2xl font-semibold">
+            {player.inventory?.cannons}{" "}
+            <span className="ml-1 text-sm font-normal">
+              {player.inventory?.cannons === 1
+                ? MERCHANDISE.cannons.singleUnit
+                : MERCHANDISE.cannons.unit}
+            </span>
+          </div>
         </div>
-        <div className="stat-title">Cannons</div>
-        <div className="stat-value text-2xl">
-          {player.inventory?.cannons}{" "}
-          <span className="text-sm">
-            {player.inventory?.cannons === 1
-              ? MERCHANDISE.cannons.singleUnit
-              : MERCHANDISE.cannons.unit}
-          </span>
-        </div>
+
+        <MerchandiseIcon size="lg" item="cannons" className="text-yellow-400" />
       </div>
     </DefaultLayout>
   )
