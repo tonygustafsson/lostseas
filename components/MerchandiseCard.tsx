@@ -31,7 +31,7 @@ const MerchandiseCard = ({
 }: Props) => (
   <Card
     className={cn(
-      "w-full gap-0 overflow-hidden py-0 shadow-xl",
+      "w-full gap-0 py-0 shadow-xl",
       !fullWidth && "lg:w-80",
       disabled && "cursor-not-allowed opacity-50"
     )}
@@ -54,7 +54,7 @@ const MerchandiseCard = ({
     <CardContent className="px-6 pt-4 pb-2 text-sm">{body}</CardContent>
 
     {actions ? (
-      <CardFooter className="flex items-center justify-between gap-2 px-6 pt-4 pb-6">
+      <CardFooter className="flex items-center justify-between gap-2 px-6 pt-4 pb-4">
         {actions}
       </CardFooter>
     ) : null}
