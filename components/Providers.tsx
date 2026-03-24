@@ -12,7 +12,6 @@ import React, { useState } from "react"
 import Modal from "@/components/Modal"
 import MotionProvider from "@/components/MotionProvider"
 import Sound from "@/components/Sound"
-import { SoundProvider } from "@/components/Sound/context"
 import Toast from "@/components/Toast"
 import WelcomeModal from "@/components/WelcomeModal"
 
@@ -39,14 +38,12 @@ export default function Providers({ children, dehydratedState }: Props) {
     <QueryClientProvider client={queryClient}>
       <HydrationBoundary state={dehydratedState}>
         <MotionProvider>
-          <SoundProvider>
-            {children}
+          {children}
 
-            <Toast />
-            <Modal />
-            <WelcomeModal />
-            <Sound />
-          </SoundProvider>
+          <Toast />
+          <Modal />
+          <WelcomeModal />
+          <Sound />
         </MotionProvider>
 
         <ReactQueryDevtools initialIsOpen={false} />
