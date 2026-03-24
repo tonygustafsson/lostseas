@@ -7,6 +7,7 @@ import { SHIP_TYPES } from "@/constants/ship"
 import { TITLE_INFO } from "@/constants/title"
 
 import { Button } from "./ui/button"
+import { Separator } from "./ui/separator"
 
 const GuideContent = () => {
   const goToSection = (id: string) => {
@@ -81,7 +82,7 @@ const GuideContent = () => {
         </ul>
       </nav>
 
-      <div className="divider my-8" />
+      <Separator className="my-8" />
 
       <div className="mx-auto max-w-2xl">
         <h2 id="supplies" className="mb-4 font-serif text-3xl">
@@ -137,7 +138,7 @@ const GuideContent = () => {
           You can them sell them at the shop and make some gold.
         </p>
 
-        <div className="divider my-8" />
+        <Separator className="my-8" />
 
         <h2 id="ships" className="mb-2 font-serif text-3xl">
           Ships
@@ -221,7 +222,7 @@ const GuideContent = () => {
           still only be able to use 15 of them.
         </p>
 
-        <div className="divider my-8" />
+        <Separator className="my-8" />
 
         <h2 id="crew-members" className="mb-2 font-serif text-3xl">
           Crew members
@@ -270,7 +271,7 @@ const GuideContent = () => {
           there, they often want to offer their services for free.
         </p>
 
-        <div className="divider my-8" />
+        <Separator className="my-8" />
 
         <h2 id="social-status" className="mb-2 font-serif text-3xl">
           Social status
@@ -419,7 +420,7 @@ const GuideContent = () => {
           Admiral at once when you get yourself an english citizenship.
         </p>
 
-        <div className="divider my-8" />
+        <Separator className="my-8" />
 
         <h2 id="economy" className="mb-4 font-serif text-3xl">
           Economy
@@ -469,7 +470,7 @@ const GuideContent = () => {
           add gold to your account until you have payed off your loan.
         </p>
 
-        <div className="divider my-8" />
+        <Separator className="my-8" />
 
         <h2 id="traveling" className="mb-2 font-serif text-3xl">
           Traveling
