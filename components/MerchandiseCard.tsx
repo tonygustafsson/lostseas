@@ -40,9 +40,7 @@ const MerchandiseCard = ({
     <CardHeader className="bg-muted/70 px-6 py-2">
       <div className="flex items-center gap-3">
         <div className="flex min-w-0 flex-1 items-center justify-center gap-2">
-          <div className="bg-background ring-border flex size-10 shrink-0 items-center justify-center rounded-2xl shadow-sm ring-1">
-            {icon}
-          </div>
+          {icon}
 
           <CardTitle className="font-serif text-xl leading-tight">
             {title}

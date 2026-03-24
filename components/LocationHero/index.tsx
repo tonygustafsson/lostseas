@@ -40,9 +40,9 @@ const LocationHero = () => {
             ? `sea-${randomId}`
             : `${player?.character.town}-${player?.character.location}`
         }
-        className={`relative grid min-h-[22rem] place-items-center overflow-hidden rounded-3xl border border-white/10 bg-slate-950 shadow-[0_30px_80px_rgba(15,23,42,0.45)] ${
+        className={`relative grid min-h-88 place-items-center overflow-hidden rounded-3xl border border-white/10 bg-slate-950 shadow-[0_30px_80px_rgba(15,23,42,0.45)] ${
           player?.character.location !== "Sea"
-            ? "rounded-b-none lg:max-h-[500px]"
+            ? "rounded-b-none lg:max-h-125"
             : ""
         }`}
       >
@@ -113,7 +113,7 @@ const LocationHero = () => {
         </div>
       </div>
 
-      <div className="rounded-b-3xl border border-t-0 border-white/10 bg-slate-950/95 shadow-[0_18px_48px_rgba(15,23,42,0.3)]">
+      <div className="bg-card rounded-b-3xl border border-t-0 shadow-[0_18px_48px_rgba(15,23,42,0.3)]">
         {player?.character.location !== "Sea" && (
           <TownActions location={player?.character.location} />
         )}
