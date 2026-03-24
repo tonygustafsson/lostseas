@@ -60,20 +60,20 @@ const LoginScreen = () => {
 
             <ul className="mt-8 flex flex-col gap-4">
               <li className="flex gap-4">
-                <FiCheckCircle size={28} className="text-success mt-1" />
+                <FiCheckCircle size={28} className="mt-1 text-green-600" />
                 <span className="flex-1">
                   It&apos;s free. Nothing to buy. No ads. Promise.
                 </span>
               </li>
               <li className="flex gap-4">
-                <FiCheckCircle size={28} className="text-success mt-1" />
+                <FiCheckCircle size={28} className="mt-1 text-green-600" />
                 <span className="flex-1">
                   We don&apos;t want to know anything about you. Not your email
                   adress, your name or your credit card.
                 </span>
               </li>
               <li className="flex gap-4">
-                <FiCheckCircle size={28} className="text-success mt-1" />
+                <FiCheckCircle size={28} className="mt-1 text-green-600" />
                 <span className="flex-1">
                   You can play from whatever device you like. You can register
                   on desktop, photo a QR code and sign in using that on your

@@ -35,7 +35,7 @@ const TextField = forwardRef<HTMLInputElement, Props>(
         {...restProps}
       />
 
-      {error && <p className="text-error mt-3 text-sm">{error}</p>}
+      {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
     </div>
   )
 )
