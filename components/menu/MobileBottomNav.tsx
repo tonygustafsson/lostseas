@@ -6,10 +6,10 @@ import { GiPirateHat } from "react-icons/gi"
 import { HiMenu } from "react-icons/hi"
 import { RiTreasureMapLine } from "react-icons/ri"
 
+import { useModal } from "@/app/stores/modals"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Map from "../Map"
-import { useModal } from "../Modal/context"
 import { Button } from "../ui/button"
 
 type Props = {

@@ -2,8 +2,8 @@
 
 import { useState } from "react"
 
+import { useModal } from "@/app/stores/modals"
 import LocationTabs from "@/components/LocationTabs"
-import { useModal } from "@/components/Modal/context"
 import { Button } from "@/components/ui/button"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShop } from "@/hooks/queries/useShop"

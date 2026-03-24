@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { useModal } from "@/components/Modal/context"
+import { useModal } from "@/app/stores/modals"
 import Select from "@/components/Select"
 import TextField from "@/components/TextField"
 import { useCharacter } from "@/hooks/queries/useCharacter"

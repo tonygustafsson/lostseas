@@ -10,7 +10,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import React, { useState } from "react"
 
 import Modal from "@/components/Modal"
-import { ModalProvider } from "@/components/Modal/context"
 import MotionProvider from "@/components/MotionProvider"
 import Sound from "@/components/Sound"
 import { SoundProvider } from "@/components/Sound/context"
@@ -40,16 +39,14 @@ export default function Providers({ children, dehydratedState }: Props) {
     <QueryClientProvider client={queryClient}>
       <HydrationBoundary state={dehydratedState}>
         <MotionProvider>
-          <ModalProvider>
-            <SoundProvider>
-              {children}
+          <SoundProvider>
+            {children}
 
-              <Toast />
-              <Modal />
-              <WelcomeModal />
-              <Sound />
-            </SoundProvider>
-          </ModalProvider>
+            <Toast />
+            <Modal />
+            <WelcomeModal />
+            <Sound />
+          </SoundProvider>
         </MotionProvider>
 
         <ReactQueryDevtools initialIsOpen={false} />

@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
+import { useModal } from "@/app/stores/modals"
 import { useToasts } from "@/app/stores/toasts"
-import { useModal } from "@/components/Modal/context"
 import apiRequest from "@/utils/apiRequest"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"

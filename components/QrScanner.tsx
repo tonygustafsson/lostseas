@@ -2,9 +2,9 @@ import jsQR from "jsqr"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { AiOutlineQrcode } from "react-icons/ai"
 
+import { useModal } from "@/app/stores/modals"
 import { usePlayer } from "@/hooks/queries/usePlayer"
 
-import { useModal } from "./Modal/context"
 import { Button } from "./ui/button"
 
 const QrScanner = () => {

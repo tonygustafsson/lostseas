@@ -2,7 +2,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { useEffect } from "react"
 import { AiOutlineCloseCircle } from "react-icons/ai"
 
-import { useModal } from "@/components/Modal/context"
+import { useModal } from "@/app/stores/modals"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 

@@ -2,10 +2,9 @@ import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { useEffect } from "react"
 import { AiOutlineCloseCircle } from "react-icons/ai"
 
+import { useModal } from "@/app/stores/modals"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-
-import { useModal } from "./context"
 
 const Modal = () => {
   const { modals, removeModal, removeAllModals } = useModal()
