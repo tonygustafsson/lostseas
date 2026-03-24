@@ -13,13 +13,17 @@ import MainMenu from "./MainMenu"
 import QuickButtonMenu from "./QuickButtonMenu"
 import WeatherCard from "./WeatherCard"
 
-const DesktopMenu = () => {
+type Props = {
+  className?: string
+}
+
+const DesktopMenu = ({ className }: Props) => {
   const { data: player } = useGetPlayer()
 
   if (!player) return null
 
   return (
-    <Sidebar>
+    <Sidebar className={className}>
       <SidebarContent className="mt-4">
         <SidebarGroup>
           <Link

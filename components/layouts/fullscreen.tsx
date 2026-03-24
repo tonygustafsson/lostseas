@@ -11,10 +11,10 @@ export default function FullscreenLayout({
   return (
     <div className="flex min-h-screen flex-col lg:flex-row">
       <MobileMenu className="lg:hidden" />
-      <DesktopMenu />
+      <DesktopMenu className="hidden lg:block" />
 
       <main
-        className={`${almendra.variable} ${andika.variable} flex min-h-screen w-full flex-col bg-slate-800`}
+        className={`${almendra.variable} ${andika.variable} flex min-h-screen w-full flex-col bg-slate-800 pb-24 lg:pb-0`}
       >
         {children}
       </main>
