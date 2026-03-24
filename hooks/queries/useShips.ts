@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
+import { useToasts } from "@/app/stores/toasts"
 import { useModal } from "@/components/Modal/context"
-import { useToast } from "@/components/Toast/context"
 import apiRequest from "@/utils/apiRequest"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
@@ -9,7 +9,7 @@ import { PLAYER_QUERY_KEY } from "./usePlayer"
 export const useShips = () => {
   const queryClient = useQueryClient()
   const { removeModal } = useModal()
-  const { setToast } = useToast()
+  const setToast = useToasts((s) => s.setToast)
 
   const { mutate: rename, isPending: isRenaming } = useMutation({
     mutationFn: ({ id, name }: { id: Ship["id"]; name: Ship["name"] }) =>

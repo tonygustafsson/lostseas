@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
+import { useToasts } from "@/app/stores/toasts"
 import { useSound } from "@/components/Sound/context"
-import { useToast } from "@/components/Toast/context"
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import apiRequest from "@/utils/apiRequest"
 
@@ -9,7 +9,7 @@ import { PLAYER_QUERY_KEY } from "./usePlayer"
 
 export const useTavern = () => {
   const queryClient = useQueryClient()
-  const { setToast } = useToast()
+  const setToast = useToasts((s) => s.setToast)
   const { playSoundEffect } = useSound()
 
   const { mutate: buy, isPending: isBuying } = useMutation({

@@ -5,9 +5,7 @@ import { useToasts } from "@/app/stores/toasts"
 import { Toaster } from "@/components/ui/sonner"
 
 const Toast = () => {
-  const toasts = useToasts((s) => s.toasts)
-  const removeToast = useToasts((s) => s.removeToast)
-
+  const { toasts, removeToast } = useToasts()
   const shown = useRef<Record<string, boolean>>({})
 
   useEffect(() => {
@@ -35,7 +33,7 @@ const Toast = () => {
   }, [toasts])
 
   // Render Sonner's Toaster with default shadcn design
-  return <Toaster position="top-right" />
+  return <Toaster />
 }
 
 export default Toast

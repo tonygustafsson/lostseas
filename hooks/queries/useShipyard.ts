@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
+import { useToasts } from "@/app/stores/toasts"
 import { useSound } from "@/components/Sound/context"
-import { useToast } from "@/components/Toast/context"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_TYPES } from "@/constants/ship"
 import apiRequest from "@/utils/apiRequest"
@@ -10,7 +10,7 @@ import { PLAYER_QUERY_KEY } from "./usePlayer"
 
 export const useShipyard = () => {
   const queryClient = useQueryClient()
-  const { setToast } = useToast()
+  const setToast = useToasts((s) => s.setToast)
   const { playSoundEffect } = useSound()
 
   const { mutate: buyShip, isPending: isBuyingShip } = useMutation({

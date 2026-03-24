@@ -20,11 +20,14 @@ export default function PageSpinner() {
   return (
     <Dialog open={isFetchingCount > 0}>
       <DialogContent
-        aria-description="Loading"
         showCloseButton={false}
         className="w-auto max-w-none justify-center gap-0 overflow-hidden bg-transparent p-0 ring-0"
+        aria-describedby="page-spinner-desc"
       >
         <DialogTitle className="sr-only">Loading...</DialogTitle>
+        <p id="page-spinner-desc" className="sr-only">
+          Loading
+        </p>
         <Spinner className="size-16" />
       </DialogContent>
     </Dialog>
