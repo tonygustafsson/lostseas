@@ -91,7 +91,8 @@ const TownActions = ({ location }: Props) => {
             <Button
               key={`change-location-${key}`}
               variant={location === key ? "secondary" : "outline"}
-              className="px-4"
+              size="lg"
+              className="gap-2 px-6 font-serif text-lg"
               onClick={() => handleMove(title as TownLocation)}
               disabled={location === key}
             >
