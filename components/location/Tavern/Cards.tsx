@@ -35,69 +35,69 @@ import { getRandomInt } from "@/utils/random"
 import { getCardsBet } from "@/utils/tavern"
 
 const CARDS = [
-  { text: "The Acorn", icon: <GiAcorn className="text-accent h-12 w-12" /> },
-  { text: "The Hat", icon: <GiPirateHat className="text-accent h-12 w-12" /> },
-  { text: "The Anchor", icon: <GiAnchor className="text-accent h-12 w-12" /> },
+  { text: "The Acorn", icon: <GiAcorn className="text-accent size-12!" /> },
+  { text: "The Hat", icon: <GiPirateHat className="text-accent size-12!" /> },
+  { text: "The Anchor", icon: <GiAnchor className="text-accent size-12!" /> },
   {
     text: "The Sword",
-    icon: <GiAncientSword className="text-accent h-12 w-12" />,
+    icon: <GiAncientSword className="text-accent size-12!" />,
   },
   {
     text: "The Star",
-    icon: <GiBarbedStar className="text-accent h-12 w-12" />,
+    icon: <GiBarbedStar className="text-accent size-12!" />,
   },
-  { text: "The Boar", icon: <GiBoar className="text-accent h-12 w-12" /> },
+  { text: "The Boar", icon: <GiBoar className="text-accent size-12!" /> },
   {
     text: "The Bottle",
-    icon: <GiBrandyBottle className="text-accent h-12 w-12" />,
+    icon: <GiBrandyBottle className="text-accent size-12!" />,
   },
-  { text: "The Cat", icon: <GiCat className="text-accent h-12 w-12" /> },
+  { text: "The Cat", icon: <GiCat className="text-accent size-12!" /> },
   {
     text: "The Mask",
-    icon: <GiCeremonialMask className="text-accent h-12 w-12" />,
+    icon: <GiCeremonialMask className="text-accent size-12!" />,
   },
   {
     text: "The Leaf",
-    icon: <GiChestnutLeaf className="text-accent h-12 w-12" />,
+    icon: <GiChestnutLeaf className="text-accent size-12!" />,
   },
   {
     text: "The Chicken",
-    icon: <GiChicken className="text-accent h-12 w-12" />,
+    icon: <GiChicken className="text-accent size-12!" />,
   },
   {
     text: "The Fish",
-    icon: <GiCirclingFish className="text-accent h-12 w-12" />,
+    icon: <GiCirclingFish className="text-accent size-12!" />,
   },
   {
     text: "The Swords",
-    icon: <GiCrossedSwords className="text-accent h-12 w-12" />,
+    icon: <GiCrossedSwords className="text-accent size-12!" />,
   },
   {
     text: "The Knife",
-    icon: <GiCurvyKnife className="text-accent h-12 w-12" />,
+    icon: <GiCurvyKnife className="text-accent size-12!" />,
   },
-  { text: "The Eel", icon: <GiEel className="text-accent h-12 w-12" /> },
+  { text: "The Eel", icon: <GiEel className="text-accent size-12!" /> },
   {
     text: "The Leaf",
-    icon: <GiFallingLeaf className="text-accent h-12 w-12" />,
+    icon: <GiFallingLeaf className="text-accent size-12!" />,
   },
   {
     text: "The Skull",
-    icon: <GiHarryPotterSkull className="text-accent h-12 w-12" />,
+    icon: <GiHarryPotterSkull className="text-accent size-12!" />,
   },
   {
     text: "The Bottle",
-    icon: <GiHeartBottle className="text-accent h-12 w-12" />,
+    icon: <GiHeartBottle className="text-accent size-12!" />,
   },
-  { text: "The Bird", icon: <GiIbis className="text-accent h-12 w-12" /> },
+  { text: "The Bird", icon: <GiIbis className="text-accent size-12!" /> },
   {
     text: "The Mushroom",
-    icon: <GiSuperMushroom className="text-accent h-12 w-12" />,
+    icon: <GiSuperMushroom className="text-accent size-12!" />,
   },
-  { text: "The Owl", icon: <GiOwl className="text-accent h-12 w-12" /> },
+  { text: "The Owl", icon: <GiOwl className="text-accent size-12!" /> },
   {
     text: "The Potion",
-    icon: <GiPotionBall className="text-accent h-12 w-12" />,
+    icon: <GiPotionBall className="text-accent size-12!" />,
   },
 ]
 
@@ -111,7 +111,7 @@ const TavernCards = () => {
   const [selectedCard, setSelectedCard] = useState<number>()
   const [correctCard, setCorrectCard] = useState<number>()
 
-  const availableCards = useMemo(() => {
+  const activeCardIndexes = useMemo(() => {
     const cards: number[] = []
 
     for (let i = 0; i < 5; i++) {
@@ -137,13 +137,9 @@ const TavernCards = () => {
 
   const handleSelectCard = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
-    card: number
+    cardIndex: number
   ) => {
-    if (selectedCard === card) {
-      setSelectedCard(undefined)
-    } else {
-      setSelectedCard(card)
-    }
+    setSelectedCard(selectedCard === cardIndex ? undefined : cardIndex)
 
     const element = (e.target as HTMLElement).closest("button")
     element?.blur()
@@ -153,6 +149,8 @@ const TavernCards = () => {
 
   const handlePlayCards = async () => {
     if (typeof selectedCard === "undefined") return
+
+    console.log({ selectedCard, betPercentage })
 
     const cardsResult = await playCards({ betPercentage, selectedCard })
     const correctCard = cardsResult?.data?.correctCard
@@ -171,7 +169,7 @@ const TavernCards = () => {
   return (
     <div className="flex flex-col items-center">
       <div className="lg:join mb-8 flex flex-row">
-        <div className="flex flex-wrap items-center lg:gap-0">
+        <div className="items-cente flex flex-wrap gap-1">
           {CARDS_PERCENTAGE_VALUES.map((value) => (
             <Button
               key={`tavern-cards-bet-${value}`}
@@ -186,7 +184,7 @@ const TavernCards = () => {
           <Button
             className="mt-4 w-full lg:mt-0 lg:ml-4 lg:w-fit"
             disabled={disabled}
-            onClick={handlePlayCards}
+            onClick={() => handlePlayCards()}
           >
             Play
           </Button>
@@ -194,18 +192,19 @@ const TavernCards = () => {
       </div>
 
       <div className="mt-4 flex justify-center gap-4">
-        {availableCards.map((_, index) => (
+        {activeCardIndexes.map((activeCardIndex, index) => (
           <Button
-            key={`tavern-card-${index}`}
+            key={`tavern-card-${activeCardIndex}`}
             onClick={(e) => handleSelectCard(e, index)}
             className={`flex h-44 w-32 items-center justify-center rounded-lg border ${getCardClassNames(
               index
             )}`}
           >
             <div className="flex flex-col items-center gap-3">
-              {CARDS[index].icon}
-              <p className="text-gray-400">{CARDS[index].text}</p>
-            </div>{" "}
+              {CARDS[activeCardIndex].icon}
+
+              <p className="text-gray-400">{CARDS[activeCardIndex].text}</p>
+            </div>
           </Button>
         ))}
       </div>

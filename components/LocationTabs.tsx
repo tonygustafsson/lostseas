@@ -1,4 +1,5 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { cn } from "@/lib/utils"
 
 type TabItem<T> = {
   label: string
@@ -17,16 +18,18 @@ const LocationTabs = <T extends string>({
   setCurrentTab,
 }: Props<T>) => (
   <Tabs
-    className="mb-8 w-full items-center"
+    className="mt-4 mb-8 w-full items-center"
     value={currentTab}
     onValueChange={(value) => setCurrentTab(value as T)}
   >
-    <TabsList className="h-14 p-1.5">
+    <TabsList className="rounded-lg p-0">
       {items.map(({ label, id }) => (
         <TabsTrigger
           key={`location-tab-${id}`}
           value={id}
-          className="h-12 px-6 font-serif text-xl font-bold"
+          className={cn("px-6 font-serif text-xl font-bold", {
+            "text-accent!": id === currentTab,
+          })}
         >
           {label}
         </TabsTrigger>
