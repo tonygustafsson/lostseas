@@ -1,9 +1,11 @@
 "use client"
 
+import { AlertTriangleIcon } from "lucide-react"
 import { useQRCode } from "next-qrcode"
 import { useState } from "react"
 import { BsClipboardCheck } from "react-icons/bs"
 
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert"
 import { Button } from "../ui/button"
 
 type Props = {
@@ -41,16 +43,20 @@ const SettingsPanel = ({ playerId, createdDate }: Props) => {
 
       <h3 className="font-serif text-xl">Your ID</h3>
 
-      <div className="alert alert-info flex justify-between">
-        {playerId}
-        <Button onClick={copyIdToClipboard} title="Copy User ID to clipboard">
-          {copiedToClipboard ? (
-            <span className="text-sm">Copied!</span>
-          ) : (
-            <BsClipboardCheck className="h-6 w-6" />
-          )}
-        </Button>
-      </div>
+      <Alert className="mb-8 bg-gray-800">
+        <AlertTriangleIcon />
+        <AlertTitle>Your ID</AlertTitle>
+        <AlertDescription className="flex items-center gap-2">
+          {playerId}
+          <Button onClick={copyIdToClipboard} title="Copy User ID to clipboard">
+            {copiedToClipboard ? (
+              <span className="text-sm">Copied!</span>
+            ) : (
+              <BsClipboardCheck className="h-6 w-6" />
+            )}
+          </Button>
+        </AlertDescription>
+      </Alert>
 
       <h3 className="font-serif text-xl">QR code</h3>
 
