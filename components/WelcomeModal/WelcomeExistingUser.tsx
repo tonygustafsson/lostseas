@@ -1,13 +1,13 @@
 import { getCookie } from "cookies-next"
 import { useState } from "react"
 
+import useSound from "@/app/stores/sound"
 import { Button } from "@/components/ui/button"
 import {
   MUSIC_STATE_COOKIE_NAME,
   SOUND_EFFECTS_STATE_COOKIE_NAME,
 } from "@/constants/system"
 
-import { useSound } from "../Sound/context"
 import { Label } from "../ui/label"
 import { Switch } from "../ui/switch"
 

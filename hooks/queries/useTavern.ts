@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
+import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
-import { useSound } from "@/components/Sound/context"
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import apiRequest from "@/utils/apiRequest"
 

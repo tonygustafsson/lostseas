@@ -1,9 +1,9 @@
 "use client"
 
+import useSound from "@/app/stores/sound"
 import { Switch } from "@/components/ui/switch"
 
 import { Label } from "../ui/label"
-import { useSound } from "./context"
 
 const SoundControls = () => {
   const { musicOn, setMusic, soundEffectsOn, setSoundEffects } = useSound()

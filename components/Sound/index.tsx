@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useMemo } from "react"
 
+import useSound from "@/app/stores/sound"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getRandomInt } from "@/utils/random"
-
-import { useSound } from "./context"
 
 const townSongs = Array.from(
   { length: 6 },

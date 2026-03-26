@@ -4,7 +4,7 @@ vi.mock("cookies-next", () => ({ setCookie: vi.fn() }))
 
 import { setCookie } from "cookies-next"
 
-import useSound from "@/app/stores/useSound"
+import useSound from "@/app/stores/sound"
 import {
   COOKIE_EXPIRE_TIME,
   MUSIC_STATE_COOKIE_NAME,

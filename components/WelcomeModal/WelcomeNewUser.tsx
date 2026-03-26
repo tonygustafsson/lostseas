@@ -1,13 +1,12 @@
 import { getCookie } from "cookies-next"
 import Link from "next/link"
 
+import useSound from "@/app/stores/sound"
 import { Button } from "@/components/ui/button"
 import {
   MUSIC_STATE_COOKIE_NAME,
   SOUND_EFFECTS_STATE_COOKIE_NAME,
 } from "@/constants/system"
-
-import { useSound } from "../Sound/context"
 
 type Props = {
   player: Player
