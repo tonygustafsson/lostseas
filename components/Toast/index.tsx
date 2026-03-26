@@ -34,8 +34,18 @@ const Toast = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toasts])
 
-  // Render Sonner's Toaster with default shadcn design
-  return <Toaster position="top-right" />
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        sonnerToast.dismiss()
+      }
+    }
+
+    window.addEventListener("keydown", handleKey)
+    return () => window.removeEventListener("keydown", handleKey)
+  }, [])
+
+  return <Toaster position="top-right" closeButton />
 }
 
 export default Toast
