@@ -168,13 +168,13 @@ const TavernCards = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="lg:join mb-8 flex flex-row">
-        <div className="items-cente flex flex-wrap gap-1">
+      <div className="mb-8 flex flex-row">
+        <div className="flex flex-wrap items-center gap-1">
           {CARDS_PERCENTAGE_VALUES.map((value) => (
             <Button
               key={`tavern-cards-bet-${value}`}
               variant={betPercentage === value ? "default" : "secondary"}
-              className="join-item w-1/2 lg:w-auto"
+              className="w-1/2 lg:w-auto"
               onClick={() => setBetPercentage(value)}
             >
               Bet {value === 100 ? "all" : `${value}%`}
