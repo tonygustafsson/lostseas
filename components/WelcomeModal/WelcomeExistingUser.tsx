@@ -45,7 +45,7 @@ const WelcomeExistingUser = ({ player, onClose }: Props) => {
         {player.character.location}.
       </p>
 
-      <div className="my-8 flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
         <div className="flex items-center space-x-4">
           <Switch
             id="toggleMusic"
