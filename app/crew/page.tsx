@@ -28,7 +28,7 @@ export default async function Page() {
           <CardHeader className="px-0 py-0" />
           <CardContent>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <div className="flex items-center justify-between rounded-md bg-gray-700 p-4">
+              <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
                 <div>
                   <div className="text-muted-foreground text-sm">
                     Crew members
@@ -40,7 +40,7 @@ export default async function Page() {
                 <MdGroups className="h-11 w-11 text-yellow-400" />
               </div>
 
-              <div className="flex items-center justify-between rounded-md bg-gray-700 p-4">
+              <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
                 <div>
                   <div className="text-muted-foreground text-sm">Health</div>
                   <div className="mt-1 text-2xl font-semibold">
@@ -53,7 +53,7 @@ export default async function Page() {
                 />
               </div>
 
-              <div className="flex items-center justify-between rounded-md bg-gray-700 p-4">
+              <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
                 <div>
                   <div className="text-muted-foreground text-sm">Mood</div>
                   <div className="mt-1 text-2xl font-semibold">

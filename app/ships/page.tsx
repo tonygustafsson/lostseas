@@ -77,7 +77,7 @@ export default async function Page() {
 
       <h2 className="mt-8 mb-4 font-serif text-2xl">Ship fittings</h2>
 
-      <div className="flex items-center justify-between rounded-lg bg-gray-700 p-4 shadow-md hover:shadow-lg lg:w-52">
+      <div className="flex items-center justify-between rounded-lg bg-gray-800 p-4 shadow-md hover:shadow-lg lg:w-52">
         <div>
           <div className="text-muted-foreground text-sm">Cannons</div>
           <div className="mt-1 text-2xl font-semibold">

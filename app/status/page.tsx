@@ -47,7 +47,7 @@ export default async function Page() {
 
         <CardContent>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="flex items-center justify-between rounded-md bg-gray-700 p-4">
+            <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
               <div>
                 <div className="text-muted-foreground text-sm">Title</div>
                 <div className="mt-1 text-lg font-semibold">
@@ -57,7 +57,7 @@ export default async function Page() {
               <GiPirateCoat className="h-8 w-8 text-yellow-400" />
             </div>
 
-            <div className="flex items-center justify-between rounded-md bg-gray-700 p-4">
+            <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
               <div>
                 <div className="text-muted-foreground text-sm">Score</div>
                 <div className="mt-1 text-lg font-semibold">
@@ -67,7 +67,7 @@ export default async function Page() {
               <GiProgression className="h-8 w-8 text-yellow-400" />
             </div>
 
-            <div className="flex items-center justify-between rounded-md bg-gray-700 p-4">
+            <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
               <div>
                 <div className="text-muted-foreground text-sm">Age</div>
                 <div className="mt-1 text-lg font-semibold">
@@ -77,7 +77,7 @@ export default async function Page() {
               <BiTime className="h-8 w-8 text-yellow-400" />
             </div>
 
-            <div className="flex items-center justify-between rounded-md bg-gray-700 p-4">
+            <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
               <div>
                 <div className="text-muted-foreground text-sm">Gender</div>
                 <div className="mt-1 text-lg font-semibold">
@@ -93,7 +93,7 @@ export default async function Page() {
           </div>
 
           <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div className="flex items-center justify-between rounded-md bg-gray-700 p-4">
+            <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
               <div>
                 <div className="text-muted-foreground text-sm">Nationality</div>
                 <div className="mt-1 text-lg font-semibold">
@@ -107,7 +107,7 @@ export default async function Page() {
               />
             </div>
 
-            <div className="flex items-center justify-between rounded-md bg-gray-700 p-4">
+            <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
               <div>
                 <div className="text-muted-foreground text-sm">War with</div>
                 <div className="mt-1 text-lg font-semibold">
@@ -123,7 +123,7 @@ export default async function Page() {
           </div>
 
           <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div className="flex items-center justify-between rounded-md bg-gray-700 p-4">
+            <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
               <div>
                 <div className="text-muted-foreground text-sm">Gold</div>
                 <div className="mt-1 text-lg font-semibold">
@@ -134,7 +134,7 @@ export default async function Page() {
             </div>
 
             {player.character.account && (
-              <div className="flex items-center justify-between rounded-md bg-gray-700 p-4">
+              <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
                 <div>
                   <div className="text-muted-foreground text-sm">
                     Bank account
@@ -148,7 +148,7 @@ export default async function Page() {
             )}
 
             {player.character.loan && (
-              <div className="flex items-center justify-between rounded-md bg-gray-700 p-4">
+              <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
                 <div>
                   <div className="text-muted-foreground text-sm">Bank loan</div>
                   <div className="mt-1 text-lg font-semibold">
@@ -161,7 +161,7 @@ export default async function Page() {
           </div>
 
           <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div className="flex items-center justify-between rounded-md bg-gray-700 p-4">
+            <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
               <div>
                 <div className="text-muted-foreground text-sm">
                   Has been playing for
@@ -173,7 +173,7 @@ export default async function Page() {
               <AiOutlineCalendar className="h-8 w-8 text-yellow-400" />
             </div>
 
-            <div className="flex items-center justify-between rounded-md bg-gray-700 p-4">
+            <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
               <div>
                 <div className="text-muted-foreground text-sm">
                   Current date
@@ -193,7 +193,7 @@ export default async function Page() {
                   ([nation, { won, lost }]) => (
                     <div
                       key={`battles-${nation}`}
-                      className="flex items-center justify-between rounded-md bg-gray-700 p-4"
+                      className="flex items-center justify-between rounded-md bg-gray-800 p-4"
                     >
                       <div>
                         <div className="text-muted-foreground text-sm">

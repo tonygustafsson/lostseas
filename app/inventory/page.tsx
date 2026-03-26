@@ -34,7 +34,7 @@ export default async function Page() {
       <div className="flex flex-wrap gap-4">
         {necessities.map(([item, possession]) => (
           <div
-            className="flex items-center justify-between rounded-lg bg-gray-700 p-4 shadow-md hover:shadow-lg lg:w-52"
+            className="flex items-center justify-between rounded-lg bg-gray-800 p-4 shadow-md hover:shadow-lg lg:w-52"
             key={`inventory-${item}`}
           >
             <div>
@@ -67,7 +67,7 @@ export default async function Page() {
           <div className="flex flex-wrap gap-4">
             {tradingAssets.map(([item, possession]) => (
               <div
-                className="flex items-center justify-between rounded-lg bg-gray-700 p-4 shadow-md hover:shadow-lg lg:w-52"
+                className="flex items-center justify-between rounded-lg bg-gray-800 p-4 shadow-md hover:shadow-lg lg:w-52"
                 key={`inventory-${item}`}
               >
                 <div>
@@ -107,7 +107,7 @@ export default async function Page() {
 
               return (
                 <div
-                  className="flex w-full flex-col gap-3 rounded-lg bg-gray-700 p-4 shadow-md hover:shadow-lg lg:w-1/3"
+                  className="flex w-full flex-col gap-3 rounded-lg bg-gray-800 p-4 shadow-md hover:shadow-lg lg:w-1/3"
                   key={`inventory-${item.id}`}
                 >
                   <div className="flex items-start justify-between">
