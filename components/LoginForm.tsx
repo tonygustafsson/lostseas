@@ -62,7 +62,11 @@ const LoginForm = () => {
       {apiError && <p className="text-red-500">{apiError}</p>}
 
       <div className="mt-3 flex flex-col gap-2 md:flex-row">
-        <Button type="submit" className="flex-1" disabled={!isValid && isDirty}>
+        <Button
+          type="submit"
+          className="md:flex-1"
+          disabled={!isValid && isDirty}
+        >
           <FiLogIn size={22} />
           Sign in
         </Button>

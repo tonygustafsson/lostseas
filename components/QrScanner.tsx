@@ -122,7 +122,7 @@ const QrScanner = () => {
       type="button"
       variant="secondary"
       onClick={openQrScannerModal}
-      className="flex-1"
+      className="md:flex-1"
     >
       <AiOutlineQrcode size={24} />
       Scan QR Code

@@ -35,7 +35,7 @@ const LoginScreen = () => {
       <div className="relative z-20 flex min-h-screen w-full flex-col justify-items-stretch gap-4 lg:flex-row lg:gap-8">
         <div className="order-last w-full rounded-lg bg-black/70 p-6 lg:order-first lg:p-8">
           <div className="mx-auto max-w-3xl text-lg">
-            <h1 className="mb-5 text-center font-serif text-5xl lg:text-6xl">
+            <h1 className="mb-5 hidden text-center font-serif lg:block lg:text-6xl">
               Lost Seas
             </h1>
 
