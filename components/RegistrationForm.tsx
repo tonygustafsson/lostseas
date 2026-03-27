@@ -10,7 +10,7 @@ import { registrationValidationSchema } from "@/utils/validation"
 
 import Select from "./Select"
 import { Button } from "./ui/button"
-import { Checkbox } from "./ui/checkbox"
+import { Switch } from "./ui/switch"
 
 type ValidationSchema = z.infer<typeof registrationValidationSchema>
 
@@ -112,7 +112,7 @@ const RegistrationForm = () => {
           defaultValue={true}
           render={({ field }) => (
             <div className="flex items-center gap-4">
-              <Checkbox
+              <Switch
                 id="toggleMusic"
                 checked={field.value}
                 onCheckedChange={field.onChange}
@@ -128,7 +128,7 @@ const RegistrationForm = () => {
           defaultValue={true}
           render={({ field }) => (
             <div className="flex items-center gap-4">
-              <Checkbox
+              <Switch
                 id="soundEffects"
                 checked={field.value}
                 onCheckedChange={field.onChange}
