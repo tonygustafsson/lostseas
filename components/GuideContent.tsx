@@ -7,6 +7,7 @@ import { SHIP_TYPES } from "@/constants/ship"
 import { TITLE_INFO } from "@/constants/title"
 
 import { Button } from "./ui/button"
+import { ButtonGroup } from "./ui/button-group"
 import { Separator } from "./ui/separator"
 
 const GuideContent = () => {
@@ -23,63 +24,56 @@ const GuideContent = () => {
 
   return (
     <>
-      <nav>
-        <ul className="my-8 flex flex-wrap justify-around gap-2 md:justify-center md:gap-4">
-          <li>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => goToSection("supplies")}
-            >
-              Supplies
-            </Button>
-          </li>
-          <li>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => goToSection("ships")}
-            >
-              Ships
-            </Button>
-          </li>
-          <li>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => goToSection("crew-members")}
-            >
-              Crew members
-            </Button>
-          </li>
-          <li>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => goToSection("social-status")}
-            >
-              Social status
-            </Button>
-          </li>
-          <li>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => goToSection("economy")}
-            >
-              Economy
-            </Button>
-          </li>
-          <li>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => goToSection("traveling")}
-            >
-              Traveling
-            </Button>
-          </li>
-        </ul>
+      <nav className="my-8 flex w-full justify-center">
+        <ButtonGroup>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => goToSection("supplies")}
+          >
+            Supplies
+          </Button>
+
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => goToSection("ships")}
+          >
+            Ships
+          </Button>
+
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => goToSection("crew-members")}
+          >
+            Crew members
+          </Button>
+
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => goToSection("social-status")}
+          >
+            Social status
+          </Button>
+
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => goToSection("economy")}
+          >
+            Economy
+          </Button>
+
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => goToSection("traveling")}
+          >
+            Traveling
+          </Button>
+        </ButtonGroup>
       </nav>
 
       <Separator className="my-8" />
