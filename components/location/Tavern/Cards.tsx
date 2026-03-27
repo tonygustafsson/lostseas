@@ -25,6 +25,7 @@ import {
 } from "react-icons/gi"
 
 import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
 import {
   CARDS_PERCENTAGE_DEFAULT_VALUE,
   CARDS_PERCENTAGE_VALUES,
@@ -168,35 +169,39 @@ const TavernCards = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="mb-8 flex flex-row">
-        <div className="flex flex-wrap items-center gap-1">
-          {CARDS_PERCENTAGE_VALUES.map((value) => (
-            <Button
-              key={`tavern-cards-bet-${value}`}
-              variant={betPercentage === value ? "default" : "secondary"}
-              className="w-1/2 lg:w-auto"
-              onClick={() => setBetPercentage(value)}
-            >
-              Bet {value === 100 ? "all" : `${value}%`}
-            </Button>
-          ))}
-
+      <ButtonGroup className="mt-4 mb-8 grid grid-cols-3 flex-wrap justify-center overflow-hidden rounded-2xl xl:flex">
+        {CARDS_PERCENTAGE_VALUES.map((value, index) => (
           <Button
-            className="mt-4 w-full lg:mt-0 lg:ml-4 lg:w-fit"
-            disabled={disabled}
-            onClick={() => handlePlayCards()}
+            key={`tavern-cards-bet-${value}`}
+            variant={betPercentage === value ? "default" : "secondary"}
+            onClick={() => setBetPercentage(value)}
+            style={
+              // Hack for disabling border radius on the first and last buttons in the group to create a more connected look when there are multiple rows.
+              index === 0
+                ? ({ ["--radius"]: "0px" } as React.CSSProperties)
+                : undefined
+            }
           >
-            Play
+            Bet {value === 100 ? "all" : `${value}%`}
           </Button>
-        </div>
-      </div>
+        ))}
 
-      <div className="mt-4 flex justify-center gap-4">
+        <Button
+          disabled={disabled}
+          onClick={() => handlePlayCards()}
+          className="col-span-3 rounded-none!"
+          style={{ ["--radius"]: "0px" } as React.CSSProperties}
+        >
+          Play
+        </Button>
+      </ButtonGroup>
+
+      <div className="mt-4 flex flex-wrap justify-center gap-4">
         {activeCardIndexes.map((activeCardIndex, index) => (
           <Button
             key={`tavern-card-${activeCardIndex}`}
             onClick={(e) => handleSelectCard(e, index)}
-            className={`flex h-44 w-32 items-center justify-center rounded-lg border ${getCardClassNames(
+            className={`flex h-38 w-28 items-center justify-center rounded-lg border lg:h-44 lg:w-32 ${getCardClassNames(
               index
             )}`}
           >
