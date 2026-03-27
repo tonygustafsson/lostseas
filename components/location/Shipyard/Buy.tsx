@@ -42,7 +42,7 @@ const ShipyardBuy = () => {
         </Alert>
       )}
 
-      <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
         {Object.entries(SHIP_TYPES).map(([shipType, { description, buy }]) => (
           <MerchandiseCard
             key={`shipyard-buy-${shipType}`}
