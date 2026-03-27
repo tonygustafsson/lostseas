@@ -1,7 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { SubmitHandler, useForm } from "react-hook-form"
+import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { useModal } from "@/app/stores/modals"
@@ -21,6 +21,7 @@ const ChangeCharacterForm = () => {
   const { removeModal } = useModal()
 
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors, isValid },
@@ -45,10 +46,19 @@ const ChangeCharacterForm = () => {
         error={errors.name?.message}
       />
 
-      <Select
-        label="Gender"
-        options={["Male", "Female"]}
-        {...register("gender", { value: player?.character.gender || "Male" })}
+      <Controller
+        control={control}
+        name="gender"
+        defaultValue={player?.character.gender || "Male"}
+        render={({ field }) => (
+          <Select
+            label="Gender"
+            name={field.name}
+            value={field.value}
+            onChange={field.onChange}
+            options={["Male", "Female"]}
+          />
+        )}
       />
 
       <TextField

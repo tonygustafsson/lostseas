@@ -1,14 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { SubmitHandler, useForm } from "react-hook-form"
+import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
-import Select from "@/components/Select"
 import TextField from "@/components/TextField"
 import { NATIONS } from "@/constants/locations"
 import { usePlayer } from "@/hooks/queries/usePlayer"
 import { getRandomCharacter } from "@/utils/getRandomCharacter"
 import { registrationValidationSchema } from "@/utils/validation"
 
+import Select from "./Select"
 import { Button } from "./ui/button"
 
 type ValidationSchema = z.infer<typeof registrationValidationSchema>
@@ -19,6 +19,7 @@ const RegistrationForm = () => {
   const { register: playerRegister, registrationIsLoading } = usePlayer()
 
   const {
+    control,
     register,
     handleSubmit,
     setValue,
@@ -61,18 +62,34 @@ const RegistrationForm = () => {
         error={errors.name?.message}
       />
 
-      <Select
-        label="Nationality"
-        options={Object.keys(NATIONS)}
-        {...register("nationality", {
-          value: randomCharacter.nationality,
-        })}
+      <Controller
+        control={control}
+        name="nationality"
+        defaultValue={randomCharacter.nationality}
+        render={({ field }) => (
+          <Select
+            label="Nationality"
+            name={field.name}
+            value={field.value}
+            onChange={field.onChange}
+            options={Object.keys(NATIONS)}
+          />
+        )}
       />
 
-      <Select
-        label="Gender"
-        options={["Male", "Female"]}
-        {...register("gender", { value: randomCharacter.gender })}
+      <Controller
+        control={control}
+        name="gender"
+        defaultValue={randomCharacter.gender}
+        render={({ field }) => (
+          <Select
+            label="Gender"
+            name={field.name}
+            value={field.value}
+            onChange={field.onChange}
+            options={["Male", "Female"]}
+          />
+        )}
       />
 
       <TextField

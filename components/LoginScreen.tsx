@@ -28,9 +28,8 @@ const LoginScreen = () => {
       <Image
         src="/img/startpage-bg.webp"
         fill
-        objectFit="cover"
         alt="Lost Seas background"
-        className="absolute top-0 left-0 z-10 opacity-50"
+        className="absolute top-0 left-0 z-10 object-cover opacity-50"
       />
 
       <div className="relative z-20 flex min-h-screen w-full flex-col justify-items-stretch gap-4 lg:flex-row lg:gap-8">

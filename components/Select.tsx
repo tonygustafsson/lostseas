@@ -1,4 +1,14 @@
-import { forwardRef } from "react"
+"use client"
+
+import {
+  Select as ShadSelect,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+import { Label } from "./ui/label"
 
 type Props = {
   id?: string
@@ -6,35 +16,32 @@ type Props = {
   name: string
   value?: string
   options: string[]
-  onChange?: (value: any) => void
+  onChange?: (value: string) => void
 }
 
-const Select = forwardRef<HTMLSelectElement, Props>(
-  ({ id, label, name, value, options, onChange }, ref) => (
+function Select({ id, label, name, value, options, onChange }: Props) {
+  return (
     <div className="form-control w-full">
-      {label && (
-        <label htmlFor={id} className="label">
-          {label}
-        </label>
-      )}
+      {label && <Label className="mb-2">{label}</Label>}
 
-      <select
-        id={id}
-        name={name}
-        value={value}
-        onChange={onChange}
-        className="select select-bordered"
-        ref={ref}
-      >
-        {options.map((option) => (
-          <option key={`select-option-${option}`} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
+      <ShadSelect name={name} value={value} onValueChange={onChange}>
+        {label && (
+          <SelectTrigger className="w-full">
+            <SelectValue />
+          </SelectTrigger>
+        )}
+
+        <SelectContent id={id}>
+          {options.map((option) => (
+            <SelectItem key={`select-option-${option}`} value={option}>
+              {option}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </ShadSelect>
     </div>
   )
-)
+}
 
 Select.displayName = "Select"
 
