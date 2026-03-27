@@ -10,6 +10,7 @@ import { registrationValidationSchema } from "@/utils/validation"
 
 import Select from "./Select"
 import { Button } from "./ui/button"
+import { Checkbox } from "./ui/checkbox"
 
 type ValidationSchema = z.infer<typeof registrationValidationSchema>
 
@@ -105,25 +106,37 @@ const RegistrationForm = () => {
       <h2 className="mt-4 font-serif text-2xl">Settings</h2>
 
       <div className="flex flex-col gap-4 pb-4">
-        <div className="flex items-center gap-4">
-          <input
-            id="toggleMusic"
-            type="checkbox"
-            className="toggle toggle-info toggle-sm"
-            {...register("musicOn", { value: true })}
-          />
-          <label htmlFor="toggleMusic">Music</label>
-        </div>
+        <Controller
+          control={control}
+          name="musicOn"
+          defaultValue={true}
+          render={({ field }) => (
+            <div className="flex items-center gap-4">
+              <Checkbox
+                id="toggleMusic"
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+              <label htmlFor="toggleMusic">Music</label>
+            </div>
+          )}
+        />
 
-        <div className="flex items-center gap-4">
-          <input
-            id="soundEffects"
-            type="checkbox"
-            className="toggle toggle-info toggle-sm"
-            {...register("soundEffectsOn", { value: true })}
-          />
-          <label htmlFor="soundEffects">Sound effects</label>
-        </div>
+        <Controller
+          control={control}
+          name="soundEffectsOn"
+          defaultValue={true}
+          render={({ field }) => (
+            <div className="flex items-center gap-4">
+              <Checkbox
+                id="soundEffects"
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+              <label htmlFor="soundEffects">Sound effects</label>
+            </div>
+          )}
+        />
       </div>
 
       <Button
