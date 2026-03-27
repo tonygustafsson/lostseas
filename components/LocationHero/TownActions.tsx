@@ -85,23 +85,27 @@ const TownActions = ({ location }: Props) => {
     <div className="flex flex-col items-center px-4 py-5 sm:px-6 sm:py-6">
       <span className="font-serif text-xl text-stone-100">Change location</span>
 
-      <div className="mt-4 flex justify-center">
-        <ButtonGroup className="flex-wrap">
-          {locations.map(({ key, title, icon }) => (
-            <Button
-              key={`change-location-${key}`}
-              variant={location === key ? "secondary" : "outline"}
-              size="lg"
-              className="gap-2 px-6 font-serif text-lg"
-              onClick={() => handleMove(title as TownLocation)}
-              disabled={location === key}
-            >
-              {icon}
-              {title}
-            </Button>
-          ))}
-        </ButtonGroup>
-      </div>
+      <ButtonGroup className="mt-4 grid grid-cols-2 flex-wrap justify-center overflow-hidden rounded-2xl sm:grid-cols-3 xl:flex">
+        {locations.map(({ key, title, icon }, index) => (
+          <Button
+            key={`change-location-${key}`}
+            variant={location === key ? "secondary" : "outline"}
+            size="lg"
+            className="gap-2 px-6 font-serif text-lg"
+            onClick={() => handleMove(title as TownLocation)}
+            disabled={location === key}
+            style={
+              // Hack for disabling border radius on the first and last buttons in the group to create a more connected look when there are multiple rows.
+              index === 0 || index === locations.length - 1
+                ? ({ ["--radius"]: "0px" } as React.CSSProperties)
+                : undefined
+            }
+          >
+            {icon}
+            {title}
+          </Button>
+        ))}
+      </ButtonGroup>
     </div>
   )
 }
