@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { deleteCookie, getCookie } from "cookies-next"
+import { deleteCookie, getCookie } from "cookies-next/client"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import apiRequest from "@/utils/apiRequest"

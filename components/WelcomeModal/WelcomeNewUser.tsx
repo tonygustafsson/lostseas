@@ -1,4 +1,4 @@
-import { getCookie } from "cookies-next"
+import { getCookie } from "cookies-next/client"
 import Link from "next/link"
 
 import useSound from "@/app/stores/sound"

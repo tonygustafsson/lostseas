@@ -1,4 +1,4 @@
-import { getCookie } from "cookies-next"
+import { getCookie } from "cookies-next/client"
 import { useState } from "react"
 
 import useSound from "@/app/stores/sound"
