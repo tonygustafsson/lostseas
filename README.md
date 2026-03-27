@@ -31,7 +31,7 @@ It is built with:
 - Framer Motion
 - React Hook Form
 - Zod
-- Tailwind and DaisyUI
+- Tailwind and ShadCN
 
 The authorization is handled by Firebase and is super simple. A random GUID is created upon registration and you use this GUID to identify and logging in. You can also login using a QR code. Cool huh?
 

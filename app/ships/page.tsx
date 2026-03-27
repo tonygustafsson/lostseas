@@ -3,6 +3,7 @@ import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import RadialProgressBar from "@/components/RadialProgressBar"
 import ShipActions from "@/components/ships/ShipActions"
+import { Badge } from "@/components/ui/badge"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_TYPES } from "@/constants/ship"
 import { getLoggedInPlayer } from "@/utils/app/getLoggedInPlayer"
@@ -24,7 +25,7 @@ export default async function Page() {
       <h1 className="text mb-8 font-serif text-3xl">Ships</h1>
 
       {!!Object.values(player.ships || []).length && (
-        <div className="flex flex-wrap gap-4">
+        <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {Object.values(player.ships || []).map((ship) => {
             const shipInfo = SHIP_TYPES[ship.type]
             const createdDate = getCurrentDate(ship.createdDay)
@@ -52,9 +53,7 @@ export default async function Page() {
                         />
                       </div>
 
-                      <div className="badge badge-secondary">
-                        Created: {createdDate}
-                      </div>
+                      <Badge variant="secondary">Created: {createdDate}</Badge>
                     </div>
                   </>
                 }
@@ -75,21 +74,22 @@ export default async function Page() {
         <p>You do not have any ships currently.</p>
       )}
 
-      <h2 className="mb-4 mt-8 font-serif text-2xl">Ship fittings</h2>
+      <h2 className="mt-8 mb-4 font-serif text-2xl">Ship fittings</h2>
 
-      <div className="stat rounded-lg bg-gray-800 pr-4 shadow-md hover:shadow-lg lg:w-52">
-        <div className="stat-figure text-secondary">
-          <MerchandiseIcon size="lg" item="cannons" />
+      <div className="flex items-center justify-between rounded-lg bg-gray-800 p-4 shadow-md hover:shadow-lg lg:w-52">
+        <div>
+          <div className="text-muted-foreground text-sm">Cannons</div>
+          <div className="mt-1 text-2xl font-semibold">
+            {player.inventory?.cannons}{" "}
+            <span className="ml-1 text-sm font-normal">
+              {player.inventory?.cannons === 1
+                ? MERCHANDISE.cannons.singleUnit
+                : MERCHANDISE.cannons.unit}
+            </span>
+          </div>
         </div>
-        <div className="stat-title">Cannons</div>
-        <div className="stat-value text-2xl">
-          {player.inventory?.cannons}{" "}
-          <span className="text-sm">
-            {player.inventory?.cannons === 1
-              ? MERCHANDISE.cannons.singleUnit
-              : MERCHANDISE.cannons.unit}
-          </span>
-        </div>
+
+        <MerchandiseIcon size="lg" item="cannons" className="text-yellow-400" />
       </div>
     </DefaultLayout>
   )

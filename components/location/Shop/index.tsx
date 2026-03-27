@@ -2,8 +2,10 @@
 
 import { useState } from "react"
 
+import { useModal } from "@/app/stores/modals"
 import LocationTabs from "@/components/LocationTabs"
-import { useModal } from "@/components/ui/Modal/context"
+import { Button } from "@/components/ui/button"
+import { ButtonGroup, ButtonGroupText } from "@/components/ui/button-group"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShop } from "@/hooks/queries/useShop"
 import { getBarterGoodsValue } from "@/utils/shop"
@@ -42,15 +44,13 @@ const Shop = () => {
           </p>
 
           <div className="flex gap-2">
-            <button onClick={handleSellBarterGoods} className="btn btn-primary">
-              Go ahead
-            </button>
-            <button
+            <Button onClick={handleSellBarterGoods}>Go ahead</Button>
+            <Button
               onClick={() => removeModal("sellBarterGoods")}
-              className="btn btn-secondary"
+              variant="secondary"
             >
               No thanks
-            </button>
+            </Button>
           </div>
         </div>
       ),
@@ -64,23 +64,18 @@ const Shop = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="join mb-6 gap-1 self-center">
-        <button
-          className="btn btn-primary join-item btn-sm"
-          onClick={showBuyNecessities}
-        >
+      <ButtonGroup className="mb-6 self-center">
+        <ButtonGroupText>Quick menu</ButtonGroupText>
+        <Button variant="outline" onClick={showBuyNecessities}>
           Buy necessities
-        </button>
+        </Button>
 
         {barterGoodsValue > 0 && (
-          <button
-            className="btn btn-primary join-item btn-sm"
-            onClick={showSellBarterGoods}
-          >
+          <Button variant="outline" onClick={showSellBarterGoods}>
             Sell all barter goods
-          </button>
+          </Button>
         )}
-      </div>
+      </ButtonGroup>
 
       <LocationTabs<ShopTab>
         items={[

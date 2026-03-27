@@ -2,6 +2,8 @@
 
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { useMarket } from "@/hooks/queries/useMarket"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -18,7 +20,7 @@ const Market = () => {
   }
 
   return (
-    <div className="flex flex-wrap gap-6">
+    <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
       {Object.entries(items || {}).map(([item, { price, quantity }]) => {
         const inventoryItem = item as keyof LocationStateMarketItems
         const canAffortIt = price * quantity <= (player?.character.gold || 0)
@@ -42,21 +44,19 @@ const Market = () => {
 
                 <p>{MERCHANDISE[inventoryItem].description}</p>
 
-                <div className="mt-2 flex gap-2">
-                  <div className="badge badge-secondary">
-                    Price: {price * quantity} gold
-                  </div>
-                </div>
+                <Badge variant="secondary" className="mt-4">
+                  Price: {price * quantity} gold
+                </Badge>
               </>
             }
             actions={
-              <button
-                className="btn btn-primary btn-sm"
+              <Button
+                size="sm"
                 onClick={() => handleAccept(inventoryItem)}
                 disabled={!canAffortIt}
               >
                 Buy
-              </button>
+              </Button>
             }
           />
         )

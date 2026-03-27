@@ -1,4 +1,6 @@
 import TreasureIcon from "@/components/TreasureIcon"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { TREASURES } from "@/constants/treasures"
 import { useCityhall } from "@/hooks/queries/useCityhall"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -31,23 +33,20 @@ const HandOver = () => {
             className="stat rounded-lg bg-gray-800 pr-4 shadow-md hover:shadow-lg lg:w-1/3"
             key={`${treasure.name}-${idx}`}
           >
-            <div className="stat-figure text-secondary">
+            <div className="stat-figure text-accent">
               <TreasureIcon size="lg" item={treasure.name} />
             </div>
             <p className="text-xl">{treasure.name}</p>
 
             <p className="text-sm">{treasureInfo?.description}</p>
 
-            <div className="badge badge-secondary my-4">
+            <Badge variant="secondary" className="mt-4">
               Value: {treasureInfo?.value} gold
-            </div>
+            </Badge>
 
-            <button
-              className="btn btn-primary btn-sm"
-              onClick={() => handleHandover(treasure.id)}
-            >
+            <Button size="sm" onClick={() => handleHandover(treasure.id)}>
               Hand over
-            </button>
+            </Button>
           </div>
         )
       })}

@@ -1,13 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { SubmitHandler, useForm } from "react-hook-form"
+import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
-import Select from "@/components/ui/Select"
-import TextField from "@/components/ui/TextField"
+import TextField from "@/components/TextField"
 import { NATIONS } from "@/constants/locations"
 import { usePlayer } from "@/hooks/queries/usePlayer"
 import { getRandomCharacter } from "@/utils/getRandomCharacter"
 import { registrationValidationSchema } from "@/utils/validation"
+
+import Select from "./Select"
+import { Button } from "./ui/button"
+import { Switch } from "./ui/switch"
 
 type ValidationSchema = z.infer<typeof registrationValidationSchema>
 
@@ -17,6 +20,7 @@ const RegistrationForm = () => {
   const { register: playerRegister, registrationIsLoading } = usePlayer()
 
   const {
+    control,
     register,
     handleSubmit,
     setValue,
@@ -45,13 +49,13 @@ const RegistrationForm = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       <h2 className="font-serif text-2xl">Character</h2>
 
-      <button
+      <Button
+        variant="secondary"
         onClick={fetchNewRandomCharacter}
         type="button"
-        className="btn btn-secondary"
       >
         Randomize
-      </button>
+      </Button>
 
       <TextField
         label="Name"
@@ -59,18 +63,34 @@ const RegistrationForm = () => {
         error={errors.name?.message}
       />
 
-      <Select
-        label="Nationality"
-        options={Object.keys(NATIONS)}
-        {...register("nationality", {
-          value: randomCharacter.nationality,
-        })}
+      <Controller
+        control={control}
+        name="nationality"
+        defaultValue={randomCharacter.nationality}
+        render={({ field }) => (
+          <Select
+            label="Nationality"
+            name={field.name}
+            value={field.value}
+            onChange={field.onChange}
+            options={Object.keys(NATIONS)}
+          />
+        )}
       />
 
-      <Select
-        label="Gender"
-        options={["Male", "Female"]}
-        {...register("gender", { value: randomCharacter.gender })}
+      <Controller
+        control={control}
+        name="gender"
+        defaultValue={randomCharacter.gender}
+        render={({ field }) => (
+          <Select
+            label="Gender"
+            name={field.name}
+            value={field.value}
+            onChange={field.onChange}
+            options={["Male", "Female"]}
+          />
+        )}
       />
 
       <TextField
@@ -86,34 +106,46 @@ const RegistrationForm = () => {
       <h2 className="mt-4 font-serif text-2xl">Settings</h2>
 
       <div className="flex flex-col gap-4 pb-4">
-        <div className="flex items-center gap-4">
-          <input
-            id="toggleMusic"
-            type="checkbox"
-            className="toggle toggle-info toggle-sm"
-            {...register("musicOn", { value: true })}
-          />
-          <label htmlFor="toggleMusic">Music</label>
-        </div>
+        <Controller
+          control={control}
+          name="musicOn"
+          defaultValue={true}
+          render={({ field }) => (
+            <div className="flex items-center gap-4">
+              <Switch
+                id="toggleMusic"
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+              <label htmlFor="toggleMusic">Music</label>
+            </div>
+          )}
+        />
 
-        <div className="flex items-center gap-4">
-          <input
-            id="soundEffects"
-            type="checkbox"
-            className="toggle toggle-info toggle-sm"
-            {...register("soundEffectsOn", { value: true })}
-          />
-          <label htmlFor="soundEffects">Sound effects</label>
-        </div>
+        <Controller
+          control={control}
+          name="soundEffectsOn"
+          defaultValue={true}
+          render={({ field }) => (
+            <div className="flex items-center gap-4">
+              <Switch
+                id="soundEffects"
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+              <label htmlFor="soundEffects">Sound effects</label>
+            </div>
+          )}
+        />
       </div>
 
-      <button
+      <Button
         type="submit"
-        className="btn btn-primary w-full"
+        className="w-full"
         disabled={(!isValid && isDirty) || registrationIsLoading}
       >
         Register
-      </button>
+      </Button>
     </form>
   )
 }

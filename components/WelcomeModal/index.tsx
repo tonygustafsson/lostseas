@@ -1,8 +1,8 @@
 import { useEffect } from "react"
 
+import { useModal } from "@/app/stores/modals"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
-import { useModal } from "../ui/Modal/context"
 import WelcomeExistingUser from "./WelcomeExistingUser"
 import WelcomeNewUser from "./WelcomeNewUser"
 

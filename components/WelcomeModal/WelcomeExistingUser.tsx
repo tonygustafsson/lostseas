@@ -1,12 +1,15 @@
 import { getCookie } from "cookies-next"
 import { useState } from "react"
 
+import useSound from "@/app/stores/sound"
+import { Button } from "@/components/ui/button"
 import {
   MUSIC_STATE_COOKIE_NAME,
   SOUND_EFFECTS_STATE_COOKIE_NAME,
 } from "@/constants/system"
 
-import { useSound } from "../Sound/context"
+import { Label } from "../ui/label"
+import { Switch } from "../ui/switch"
 
 type Props = {
   player: Player
@@ -42,33 +45,29 @@ const WelcomeExistingUser = ({ player, onClose }: Props) => {
         {player.character.location}.
       </p>
 
-      <div className="flex flex-col gap-4 py-4">
-        <div className="flex items-center gap-4">
-          <input
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center space-x-4">
+          <Switch
             id="toggleMusic"
-            type="checkbox"
-            className="toggle toggle-info toggle-sm"
             checked={musicOn}
-            onChange={() => setMusicOn(!musicOn)}
+            onCheckedChange={(val) => setMusicOn(Boolean(val))}
           />
-          <label htmlFor="toggleMusic">Music</label>
+          <Label htmlFor="toggleMusic">Music</Label>
         </div>
 
-        <div className="flex items-center gap-4">
-          <input
+        <div className="flex items-center space-x-4">
+          <Switch
             id="soundEffects"
-            type="checkbox"
-            className="toggle toggle-info toggle-sm"
             checked={soundEffectsOn}
-            onChange={() => setSoundEffectsOn(!soundEffectsOn)}
+            onCheckedChange={(val) => setSoundEffectsOn(Boolean(val))}
           />
-          <label htmlFor="soundEffects">Sound effects</label>
+          <Label htmlFor="soundEffects">SoundFX</Label>
         </div>
       </div>
 
-      <button className="btn btn-primary mt-4 w-full" onClick={continueGame}>
+      <Button size="lg" className="mt-4 w-full" onClick={continueGame}>
         Continue game
-      </button>
+      </Button>
     </>
   )
 }

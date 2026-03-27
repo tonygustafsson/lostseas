@@ -2,9 +2,8 @@
 
 import Image from "next/image"
 
+import { useModal } from "@/app/stores/modals"
 import { capitalize } from "@/utils/string"
-
-import { useModal } from "./ui/Modal/context"
 
 const Screenshots = () => {
   const { setModal } = useModal()
@@ -36,7 +35,7 @@ const Screenshots = () => {
           height={137}
           src="/img/screenshots/harbor.png"
           alt="Screenshot of the harbor"
-          className="h-full"
+          className="h-full cursor-pointer"
         />
       </button>
 
@@ -46,7 +45,7 @@ const Screenshots = () => {
           height={137}
           src="/img/screenshots/map.png"
           alt="Screenshot of the map"
-          className="h-full"
+          className="h-full cursor-pointer"
         />
       </button>
 
@@ -56,7 +55,7 @@ const Screenshots = () => {
           height={137}
           src="/img/screenshots/status.png"
           alt="Screenshot of the status"
-          className="h-full"
+          className="h-full cursor-pointer"
         />
       </button>
 
@@ -66,7 +65,7 @@ const Screenshots = () => {
           height={137}
           src="/img/screenshots/crew.png"
           alt="Screenshot of the crew members"
-          className="h-full"
+          className="h-full cursor-pointer"
         />
       </button>
 
@@ -76,7 +75,7 @@ const Screenshots = () => {
           height={137}
           src="/img/screenshots/battle.png"
           alt="Screenshot of the a ship meeting"
-          className="h-full"
+          className="h-full cursor-pointer"
         />
       </button>
 
@@ -86,7 +85,7 @@ const Screenshots = () => {
           height={137}
           src="/img/screenshots/battle-won.png"
           alt="Screenshot of a battle won"
-          className="h-full"
+          className="h-full cursor-pointer"
         />
       </button>
 
@@ -96,7 +95,7 @@ const Screenshots = () => {
           height={137}
           src="/img/screenshots/inventory.png"
           alt="Screenshot of the inventory"
-          className="h-full"
+          className="h-full cursor-pointer"
         />
       </button>
 
@@ -106,7 +105,7 @@ const Screenshots = () => {
           height={137}
           src="/img/screenshots/shop.png"
           alt="Screenshot of the shop"
-          className="h-full"
+          className="h-full cursor-pointer"
         />
       </button>
     </div>

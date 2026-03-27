@@ -1,5 +1,7 @@
 import { useSea } from "@/hooks/queries/useSea"
 
+import { Button } from "../ui/button"
+
 const ShipMeetingActions = () => {
   const { attackShip, ignoreShip } = useSea()
 
@@ -12,23 +14,26 @@ const ShipMeetingActions = () => {
   }
 
   return (
-    <div className="flex flex-col items-center rounded-b-lg bg-gray-900 p-4 pb-8">
-      <span className="font-serif text-xl">What do you want to do?</span>
+    <div className="flex flex-col items-center px-4 py-5 sm:px-6 sm:py-6">
+      <span className="font-serif text-xl text-stone-100">
+        What do you want to do?
+      </span>
 
-      <div className="mt-4 flex flex-wrap justify-center gap-2 lg:join lg:gap-0">
-        <button
-          className={`btn btn-primary join-item text-base`}
+      <div className="mt-4 flex flex-wrap justify-center gap-3">
+        <Button
+          className="min-w-[8rem] rounded-full px-5 text-base"
           onClick={handleAttack}
         >
           Attack
-        </button>
+        </Button>
 
-        <button
-          className={`btn btn-secondary join-item text-base`}
+        <Button
+          variant="secondary"
+          className="min-w-[8rem] rounded-full px-5 text-base"
           onClick={handleIgnore}
         >
           Ignore
-        </button>
+        </Button>
       </div>
     </div>
   )

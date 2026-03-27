@@ -23,14 +23,14 @@ const TEXT_ANIMATION_TIME = 0.5
 
 const getStrokeColor = (percentage: number) => {
   if (percentage > 65) {
-    return "text-success"
+    return "text-green-500"
   }
 
   if (percentage > 40) {
-    return "text-warning"
+    return "text-yellow-500"
   }
 
-  return "text-error"
+  return "text-red-500"
 }
 
 const getFontPosition = (percentage: number) => {

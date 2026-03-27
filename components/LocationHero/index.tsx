@@ -5,6 +5,7 @@ import Image from "next/image"
 import { useId } from "react"
 
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { cn } from "@/lib/utils"
 import { getLocationBackground } from "@/utils/location"
 
 import AttackFailureContent from "./AttackFailureContent"
@@ -40,22 +41,14 @@ const LocationHero = () => {
             ? `sea-${randomId}`
             : `${player?.character.town}-${player?.character.location}`
         }
-        className={`hero relative rounded-lg ${
-          player?.character.location !== "Sea"
-            ? "rounded-b-none lg:max-h-[500px]"
-            : ""
-        } overflow-hidden`}
+        className={cn(
+          "relative grid min-h-88 place-items-center overflow-hidden border bg-slate-950 shadow-2xl",
+          {
+            "rounded-b-none lg:max-h-125": player?.character.location !== "Sea",
+          }
+        )}
       >
-        <div className="hero-overlay bg-opacity-20"></div>
-
-        <div
-          className="absolute left-0 top-0 z-10 h-full w-full"
-          ref={scope}
-          style={{
-            background:
-              "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(34,38,56,1) 35%, rgba(20,21,40,1) 100%)",
-          }}
-        >
+        <div className="absolute inset-0" ref={scope}>
           <Image
             src={getLocationBackground(
               player?.character.town,
@@ -69,13 +62,13 @@ const LocationHero = () => {
             draggable={false}
             onLoad={onImageLoad}
             alt="Background image"
-            className="select-none object-cover opacity-70"
+            className="object-cover opacity-80 select-none"
             style={{ objectPosition: "50% 55%", filter: "sepia(1)" }}
           />
         </div>
 
-        <div className="hero-content z-20 py-8 text-center text-neutral-content lg:py-24">
-          <div className="max-w-full rounded-lg bg-base-300 bg-opacity-60 p-8 lg:min-w-[600px] lg:max-w-2xl">
+        <div className="z-20 flex w-full items-center justify-center px-4 py-10 text-center sm:px-6 lg:px-10 lg:py-20">
+          <div className="w-full max-w-3xl rounded-[2rem] border border-white/10 bg-black/55 px-6 py-8 shadow-[0_24px_60px_rgba(0,0,0,0.45)] backdrop-blur-[2px] sm:px-8 lg:min-w-[600px] lg:px-14 lg:py-12">
             {player?.character.location !== "Sea" && (
               <TownContent
                 town={player?.character.town}
@@ -115,7 +108,7 @@ const LocationHero = () => {
         </div>
       </div>
 
-      <div className="flex flex-col items-center rounded-b-lg bg-gray-900">
+      <div className="bg-card border-t-0] rounded-b-xl border border-t-0">
         {player?.character.location !== "Sea" && (
           <TownActions location={player?.character.location} />
         )}

@@ -1,9 +1,21 @@
+import type { ReactNode } from "react"
+
+import { Badge } from "@/components/ui/badge"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { cn } from "@/lib/utils"
+
 type Props = {
   title: string
-  icon: React.ReactNode
+  icon: ReactNode
   indicator?: string
-  body: React.ReactNode
-  actions?: React.ReactNode
+  body: ReactNode
+  actions?: ReactNode
   disabled?: boolean
   fullWidth?: boolean
 }
@@ -17,35 +29,36 @@ const MerchandiseCard = ({
   disabled,
   fullWidth,
 }: Props) => (
-  <div
-    className={`card ${
-      fullWidth ? "w-full" : "w-full lg:w-80"
-    } bg-base-100 shadow-xl ${disabled ? "cursor-not-allowed opacity-50" : ""}`}
-  >
-    <figure className="mb-2 gap-3 bg-gray-800 px-6 py-3">
-      {icon}
-
-      {indicator ? (
-        <div className="indicator">
-          <h2 className="card-title mr-8 font-serif text-xl">{title}</h2>
-
-          <span className="badge indicator-item badge-primary indicator-middle text-xs">
-            {indicator}
-          </span>
-        </div>
-      ) : (
-        <h2 className="card-title mr-8 font-serif">{title}</h2>
-      )}
-    </figure>
-
-    <div className="card-body px-6 pb-2 pt-2 text-sm">{body}</div>
-
-    {actions && (
-      <div className="card-actions mx-6 my-6 justify-between gap-2">
-        {actions}
-      </div>
+  <Card
+    className={cn(
+      "w-full gap-0 py-0 shadow-xl",
+      !fullWidth && "max-w-sm",
+      disabled && "cursor-not-allowed opacity-50"
     )}
-  </div>
+    aria-disabled={disabled}
+  >
+    <CardHeader className="bg-muted/70 px-6 py-2">
+      <div className="flex items-center gap-3">
+        <div className="flex min-w-0 flex-1 items-center justify-center gap-2">
+          {icon}
+
+          <CardTitle className="font-serif text-xl leading-tight">
+            {title}
+          </CardTitle>
+
+          {indicator && <Badge className="shrink-0 text-xs">{indicator}</Badge>}
+        </div>
+      </div>
+    </CardHeader>
+
+    <CardContent className="flex-1 px-6 pt-4 pb-2 text-sm">{body}</CardContent>
+
+    {actions ? (
+      <CardFooter className="flex items-center justify-between gap-2 px-6 pt-4 pb-4">
+        {actions}
+      </CardFooter>
+    ) : null}
+  </Card>
 )
 
 export default MerchandiseCard

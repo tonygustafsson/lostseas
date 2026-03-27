@@ -11,7 +11,8 @@ import { useGetPlayer, usePlayer } from "@/hooks/queries/usePlayer"
 import { loginValidationSchema } from "@/utils/validation"
 
 import QrScanner from "./QrScanner"
-import TextField from "./ui/TextField"
+import TextField from "./TextField"
+import { Button } from "./ui/button"
 
 type ValidationSchema = z.infer<typeof loginValidationSchema>
 
@@ -61,14 +62,14 @@ const LoginForm = () => {
       {apiError && <p className="text-red-500">{apiError}</p>}
 
       <div className="mt-3 flex flex-col gap-2 md:flex-row">
-        <button
+        <Button
           type="submit"
-          className="btn btn-primary flex-1"
+          className="md:flex-1"
           disabled={!isValid && isDirty}
         >
           <FiLogIn size={22} />
           Sign in
-        </button>
+        </Button>
 
         <QrScanner />
       </div>

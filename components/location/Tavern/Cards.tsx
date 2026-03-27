@@ -24,6 +24,8 @@ import {
   GiSuperMushroom,
 } from "react-icons/gi"
 
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
 import {
   CARDS_PERCENTAGE_DEFAULT_VALUE,
   CARDS_PERCENTAGE_VALUES,
@@ -34,69 +36,69 @@ import { getRandomInt } from "@/utils/random"
 import { getCardsBet } from "@/utils/tavern"
 
 const CARDS = [
-  { text: "The Acorn", icon: <GiAcorn className="h-12 w-12 text-primary" /> },
-  { text: "The Hat", icon: <GiPirateHat className="h-12 w-12 text-primary" /> },
-  { text: "The Anchor", icon: <GiAnchor className="h-12 w-12 text-primary" /> },
+  { text: "The Acorn", icon: <GiAcorn className="text-accent size-12!" /> },
+  { text: "The Hat", icon: <GiPirateHat className="text-accent size-12!" /> },
+  { text: "The Anchor", icon: <GiAnchor className="text-accent size-12!" /> },
   {
     text: "The Sword",
-    icon: <GiAncientSword className="h-12 w-12 text-primary" />,
+    icon: <GiAncientSword className="text-accent size-12!" />,
   },
   {
     text: "The Star",
-    icon: <GiBarbedStar className="h-12 w-12 text-primary" />,
+    icon: <GiBarbedStar className="text-accent size-12!" />,
   },
-  { text: "The Boar", icon: <GiBoar className="h-12 w-12 text-primary" /> },
+  { text: "The Boar", icon: <GiBoar className="text-accent size-12!" /> },
   {
     text: "The Bottle",
-    icon: <GiBrandyBottle className="h-12 w-12 text-primary" />,
+    icon: <GiBrandyBottle className="text-accent size-12!" />,
   },
-  { text: "The Cat", icon: <GiCat className="h-12 w-12 text-primary" /> },
+  { text: "The Cat", icon: <GiCat className="text-accent size-12!" /> },
   {
     text: "The Mask",
-    icon: <GiCeremonialMask className="h-12 w-12 text-primary" />,
+    icon: <GiCeremonialMask className="text-accent size-12!" />,
   },
   {
     text: "The Leaf",
-    icon: <GiChestnutLeaf className="h-12 w-12 text-primary" />,
+    icon: <GiChestnutLeaf className="text-accent size-12!" />,
   },
   {
     text: "The Chicken",
-    icon: <GiChicken className="h-12 w-12 text-primary" />,
+    icon: <GiChicken className="text-accent size-12!" />,
   },
   {
     text: "The Fish",
-    icon: <GiCirclingFish className="h-12 w-12 text-primary" />,
+    icon: <GiCirclingFish className="text-accent size-12!" />,
   },
   {
     text: "The Swords",
-    icon: <GiCrossedSwords className="h-12 w-12 text-primary" />,
+    icon: <GiCrossedSwords className="text-accent size-12!" />,
   },
   {
     text: "The Knife",
-    icon: <GiCurvyKnife className="h-12 w-12 text-primary" />,
+    icon: <GiCurvyKnife className="text-accent size-12!" />,
   },
-  { text: "The Eel", icon: <GiEel className="h-12 w-12 text-primary" /> },
+  { text: "The Eel", icon: <GiEel className="text-accent size-12!" /> },
   {
     text: "The Leaf",
-    icon: <GiFallingLeaf className="h-12 w-12 text-primary" />,
+    icon: <GiFallingLeaf className="text-accent size-12!" />,
   },
   {
     text: "The Skull",
-    icon: <GiHarryPotterSkull className="h-12 w-12 text-primary" />,
+    icon: <GiHarryPotterSkull className="text-accent size-12!" />,
   },
   {
     text: "The Bottle",
-    icon: <GiHeartBottle className="h-12 w-12 text-primary" />,
+    icon: <GiHeartBottle className="text-accent size-12!" />,
   },
-  { text: "The Bird", icon: <GiIbis className="h-12 w-12 text-primary" /> },
+  { text: "The Bird", icon: <GiIbis className="text-accent size-12!" /> },
   {
     text: "The Mushroom",
-    icon: <GiSuperMushroom className="h-12 w-12 text-primary" />,
+    icon: <GiSuperMushroom className="text-accent size-12!" />,
   },
-  { text: "The Owl", icon: <GiOwl className="h-12 w-12 text-primary" /> },
+  { text: "The Owl", icon: <GiOwl className="text-accent size-12!" /> },
   {
     text: "The Potion",
-    icon: <GiPotionBall className="h-12 w-12 text-primary" />,
+    icon: <GiPotionBall className="text-accent size-12!" />,
   },
 ]
 
@@ -110,7 +112,7 @@ const TavernCards = () => {
   const [selectedCard, setSelectedCard] = useState<number>()
   const [correctCard, setCorrectCard] = useState<number>()
 
-  const availableCards = useMemo(() => {
+  const activeCardIndexes = useMemo(() => {
     const cards: number[] = []
 
     for (let i = 0; i < 5; i++) {
@@ -136,13 +138,9 @@ const TavernCards = () => {
 
   const handleSelectCard = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
-    card: number
+    cardIndex: number
   ) => {
-    if (selectedCard === card) {
-      setSelectedCard(undefined)
-    } else {
-      setSelectedCard(card)
-    }
+    setSelectedCard(selectedCard === cardIndex ? undefined : cardIndex)
 
     const element = (e.target as HTMLElement).closest("button")
     element?.blur()
@@ -152,6 +150,8 @@ const TavernCards = () => {
 
   const handlePlayCards = async () => {
     if (typeof selectedCard === "undefined") return
+
+    console.log({ selectedCard, betPercentage })
 
     const cardsResult = await playCards({ betPercentage, selectedCard })
     const correctCard = cardsResult?.data?.correctCard
@@ -169,44 +169,48 @@ const TavernCards = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="mb-8 flex flex-row lg:join">
-        <div className="flex flex-wrap items-center lg:gap-0">
-          {CARDS_PERCENTAGE_VALUES.map((value) => (
-            <button
-              key={`tavern-cards-bet-${value}`}
-              className={`btn join-item w-1/2 lg:w-auto ${
-                betPercentage === value ? "btn-primary" : "bg-gray-800"
-              }`}
-              onClick={() => setBetPercentage(value)}
-            >
-              Bet {value === 100 ? "all" : `${value}%`}
-            </button>
-          ))}
-
-          <button
-            className="btn btn-primary mt-4 w-full lg:ml-4 lg:mt-0 lg:w-fit"
-            disabled={disabled}
-            onClick={handlePlayCards}
+      <ButtonGroup className="mt-4 mb-8 grid grid-cols-3 flex-wrap justify-center overflow-hidden rounded-2xl xl:flex">
+        {CARDS_PERCENTAGE_VALUES.map((value, index) => (
+          <Button
+            key={`tavern-cards-bet-${value}`}
+            variant={betPercentage === value ? "default" : "secondary"}
+            onClick={() => setBetPercentage(value)}
+            style={
+              // Hack for disabling border radius on the first and last buttons in the group to create a more connected look when there are multiple rows.
+              index === 0
+                ? ({ ["--radius"]: "0px" } as React.CSSProperties)
+                : undefined
+            }
           >
-            Play
-          </button>
-        </div>
-      </div>
+            Bet {value === 100 ? "all" : `${value}%`}
+          </Button>
+        ))}
 
-      <div className="mt-4 flex justify-center gap-4">
-        {availableCards.map((_, index) => (
-          <button
-            key={`tavern-card-${index}`}
+        <Button
+          disabled={disabled}
+          onClick={() => handlePlayCards()}
+          className="col-span-3 rounded-none!"
+          style={{ ["--radius"]: "0px" } as React.CSSProperties}
+        >
+          Play
+        </Button>
+      </ButtonGroup>
+
+      <div className="mt-4 flex flex-wrap justify-center gap-4">
+        {activeCardIndexes.map((activeCardIndex, index) => (
+          <Button
+            key={`tavern-card-${activeCardIndex}`}
             onClick={(e) => handleSelectCard(e, index)}
-            className={`flex h-44 w-32 items-center justify-center rounded-lg border ${getCardClassNames(
+            className={`flex h-38 w-28 items-center justify-center rounded-lg border lg:h-44 lg:w-32 ${getCardClassNames(
               index
             )}`}
           >
             <div className="flex flex-col items-center gap-3">
-              {CARDS[index].icon}
-              <p className="text-gray-400">{CARDS[index].text}</p>
-            </div>{" "}
-          </button>
+              {CARDS[activeCardIndex].icon}
+
+              <p className="text-gray-400">{CARDS[activeCardIndex].text}</p>
+            </div>
+          </Button>
         ))}
       </div>
 

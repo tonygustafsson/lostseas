@@ -4,10 +4,10 @@ import { m as motion } from "framer-motion"
 import { usePathname, useRouter } from "next/navigation"
 import { Fragment, useState } from "react"
 
+import { useModal } from "@/app/stores/modals"
 import { TOWNS } from "@/constants/locations"
 import { useSea } from "@/hooks/queries/useSea"
 
-import { useModal } from "../ui/Modal/context"
 import Tooltip from "./Tooltip"
 
 const mapWidth = 850
@@ -75,14 +75,14 @@ const Map = ({ currentTown }: Props) => {
   }
 
   return (
-    <div className="mx-auto overflow-x-auto opacity-80 lg:max-w-7xl">
+    <div className="mx-auto w-full overflow-x-auto opacity-80 lg:max-w-7xl">
       <svg
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
         viewBox={`0 0 ${mapWidth} ${mapHeight}`}
         preserveAspectRatio="xMinYMin meet"
-        className="w-[1000px] lg:w-full lg:max-w-7xl"
+        className="w-250 lg:w-full lg:max-w-7xl"
       >
         <defs>
           <filter x="0" y="0" width="1" height="1" id="black">

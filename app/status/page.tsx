@@ -6,6 +6,13 @@ import { GiPirateCoat, GiProgression } from "react-icons/gi"
 import Flag from "@/components/icons/Flag"
 import DefaultLayout from "@/components/layouts/default"
 import ChangeCharacterButton from "@/components/status/ChangeCharacterButton"
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { NATIONS } from "@/constants/locations"
 import { getLoggedInPlayer } from "@/utils/app/getLoggedInPlayer"
 import { convertDaysToTimeSpan, getCurrentDate } from "@/utils/date"
@@ -28,157 +35,183 @@ export default async function Page() {
     <DefaultLayout>
       <h1 className="text mb-6 font-serif text-3xl">Status</h1>
 
-      <div className="card mt-8 w-full rounded-md bg-gray-800 shadow-lg">
-        <div className="card-body p-6">
-          <h2 className="card-title font-serif text-3xl font-normal">
+      <Card className="mt-8 w-full">
+        <CardHeader>
+          <CardTitle className="font-serif text-3xl font-normal">
             {player.character.name}
-          </h2>
-
-          <div className="stats mt-4 gap-2 py-3">
-            <div className="stat bg-gray-700">
-              <div className="stat-figure text-secondary">
-                <GiPirateCoat className="h-8 w-8" />
-              </div>
-              <div className="stat-title">Title</div>
-              <div className="stat-value">{player.character.title}</div>
-            </div>
-
-            <div className="stat bg-gray-700">
-              <div className="stat-figure text-secondary">
-                <GiProgression className="h-8 w-8" />
-              </div>
-              <div className="stat-title">Score</div>
-              <div className="stat-value">{getScore(player)}</div>
-            </div>
-
-            <div className="stat bg-gray-700">
-              <div className="stat-figure text-secondary">
-                <BiTime className="h-8 w-8" />
-              </div>
-              <div className="stat-title">Age</div>
-              <div className="stat-value">{player.character.age}</div>
-            </div>
-
-            <div className="stat bg-gray-700">
-              <div className="stat-figure text-secondary">
-                {player.character.gender === "Male" ? (
-                  <BiMaleSign className="h-8 w-8" />
-                ) : (
-                  <BiFemaleSign className="h-8 w-8" />
-                )}
-              </div>
-              <div className="stat-title">Gender</div>
-              <div className="stat-value">{player.character.gender}</div>
-            </div>
-          </div>
-
-          <div className="card-actions mb-4 justify-end">
+          </CardTitle>
+          <CardAction>
             <ChangeCharacterButton />
-          </div>
+          </CardAction>
+        </CardHeader>
 
-          <div className="stats mt-4 gap-2 py-3">
-            <div className="stat bg-gray-700">
-              <div className="stat-figure text-secondary">
-                <Flag
-                  nation={player.character.nationality}
-                  size={32}
-                  className="opacity-[0.8]"
-                />
+        <CardContent>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
+              <div>
+                <div className="text-muted-foreground text-sm">Title</div>
+                <div className="mt-1 text-lg font-semibold">
+                  {player.character.title}
+                </div>
               </div>
-              <div className="stat-title">Nationality</div>
-              <div className="stat-value">{player.character.nationality}</div>
+              <GiPirateCoat className="h-8 w-8 text-yellow-400" />
             </div>
 
-            <div className="stat bg-gray-700">
-              <div className="stat-figure text-secondary">
-                <Flag
-                  nation={NATIONS[player.character.nationality].warWith}
-                  size={32}
-                  className="opacity-[0.8]"
-                />
+            <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
+              <div>
+                <div className="text-muted-foreground text-sm">Score</div>
+                <div className="mt-1 text-lg font-semibold">
+                  {getScore(player)}
+                </div>
               </div>
-              <div className="stat-title">War with</div>
-              <div className="stat-value">
-                {NATIONS[player.character.nationality].warWith}
+              <GiProgression className="h-8 w-8 text-yellow-400" />
+            </div>
+
+            <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
+              <div>
+                <div className="text-muted-foreground text-sm">Age</div>
+                <div className="mt-1 text-lg font-semibold">
+                  {player.character.age}
+                </div>
               </div>
+              <BiTime className="h-8 w-8 text-yellow-400" />
+            </div>
+
+            <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
+              <div>
+                <div className="text-muted-foreground text-sm">Gender</div>
+                <div className="mt-1 text-lg font-semibold">
+                  {player.character.gender}
+                </div>
+              </div>
+              {player.character.gender === "Male" ? (
+                <BiMaleSign className="h-8 w-8 text-yellow-400" />
+              ) : (
+                <BiFemaleSign className="h-8 w-8 text-yellow-400" />
+              )}
             </div>
           </div>
 
-          <div className="stats mt-4 gap-2 py-3">
-            <div className="stat bg-gray-700">
-              <div className="stat-figure text-secondary">
-                <FaCoins className="h-8 w-8" />
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
+              <div>
+                <div className="text-muted-foreground text-sm">Nationality</div>
+                <div className="mt-1 text-lg font-semibold">
+                  {player.character.nationality}
+                </div>
               </div>
-              <div className="stat-title">Gold</div>
-              <div className="stat-value">{player.character.gold}</div>
+              <Flag
+                nation={player.character.nationality}
+                size={32}
+                className="opacity-80"
+              />
+            </div>
+
+            <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
+              <div>
+                <div className="text-muted-foreground text-sm">War with</div>
+                <div className="mt-1 text-lg font-semibold">
+                  {NATIONS[player.character.nationality].warWith}
+                </div>
+              </div>
+              <Flag
+                nation={NATIONS[player.character.nationality].warWith}
+                size={32}
+                className="opacity-80"
+              />
+            </div>
+          </div>
+
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
+              <div>
+                <div className="text-muted-foreground text-sm">Gold</div>
+                <div className="mt-1 text-lg font-semibold">
+                  {player.character.gold}
+                </div>
+              </div>
+              <FaCoins className="h-8 w-8 text-yellow-400" />
             </div>
 
             {player.character.account && (
-              <div className="stat bg-gray-700">
-                <div className="stat-figure text-secondary">
-                  <FaCoins className="h-8 w-8" />
+              <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
+                <div>
+                  <div className="text-muted-foreground text-sm">
+                    Bank account
+                  </div>
+                  <div className="mt-1 text-lg font-semibold">
+                    {player.character.account}
+                  </div>
                 </div>
-                <div className="stat-title">Bank account</div>
-                <div className="stat-value">{player.character.account}</div>
+                <FaCoins className="h-8 w-8 text-yellow-400" />
               </div>
             )}
 
             {player.character.loan && (
-              <div className="stat bg-gray-700">
-                <div className="stat-figure text-secondary">
-                  <FaCoins className="h-8 w-8" />
+              <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
+                <div>
+                  <div className="text-muted-foreground text-sm">Bank loan</div>
+                  <div className="mt-1 text-lg font-semibold">
+                    {player.character.loan}
+                  </div>
                 </div>
-                <div className="stat-title">Bank loan</div>
-                <div className="stat-value">{player.character.loan}</div>
+                <FaCoins className="h-8 w-8 text-yellow-400" />
               </div>
             )}
           </div>
 
-          <div className="stats mt-4 gap-2 py-3">
-            <div className="stat bg-gray-700">
-              <div className="stat-figure text-secondary">
-                <AiOutlineCalendar className="h-8 w-8" />
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
+              <div>
+                <div className="text-muted-foreground text-sm">
+                  Has been playing for
+                </div>
+                <div className="mt-1 text-lg font-semibold">
+                  {convertDaysToTimeSpan(player.character.day)}
+                </div>
               </div>
-              <div className="stat-title">Has been playing for</div>
-              <div className="stat-value">
-                {convertDaysToTimeSpan(player.character.day)}
-              </div>
+              <AiOutlineCalendar className="h-8 w-8 text-yellow-400" />
             </div>
 
-            <div className="stat bg-gray-700">
-              <div className="stat-figure text-secondary">
-                <AiOutlineCalendar className="h-8 w-8" />
+            <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
+              <div>
+                <div className="text-muted-foreground text-sm">
+                  Current date
+                </div>
+                <div className="mt-1 text-lg font-semibold">{currentDate}</div>
               </div>
-              <div className="stat-title">Current date</div>
-              <div className="stat-value">{currentDate}</div>
+              <AiOutlineCalendar className="h-8 w-8 text-yellow-400" />
             </div>
           </div>
 
           {player.character.battles && (
             <>
-              <h3 className="mt-4 font-serif text-2xl">Battles</h3>
+              <h3 className="mt-6 font-serif text-2xl">Battles</h3>
 
-              <div className="stats mt-2 gap-2 py-3">
+              <div className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {Object.entries(player.character.battles).map(
                   ([nation, { won, lost }]) => (
-                    <div key={`battles-${nation}`} className="stat bg-gray-700">
-                      <div className="stat-figure text-secondary">
-                        <Flag nation={nation as Nation} />
+                    <div
+                      key={`battles-${nation}`}
+                      className="flex items-center justify-between rounded-md bg-gray-800 p-4"
+                    >
+                      <div>
+                        <div className="text-muted-foreground text-sm">
+                          {nation === "Pirate" ? "Pirates" : nation}
+                        </div>
+                        <div className="mt-1 text-lg font-semibold">
+                          {won || 0} won, {lost || 0} lost
+                        </div>
                       </div>
-                      <div className="stat-title">
-                        {nation === "Pirate" ? "Pirates" : nation}
-                      </div>
-                      <div className="stat-value">
-                        {won || 0} won, {lost || 0} lost
-                      </div>
+                      <Flag nation={nation as Nation} size={32} />
                     </div>
                   )
                 )}
               </div>
             </>
           )}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </DefaultLayout>
   )
 }

@@ -3,6 +3,7 @@
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import MerchandiseShopItem from "@/components/MerchandiseShopItem"
+import { Button } from "@/components/ui/button"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_TYPES } from "@/constants/ship"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -17,7 +18,7 @@ const ShipyardSell = () => {
   }
 
   return (
-    <div className="mt-8 flex flex-wrap gap-6">
+    <div className="mt-8 grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
       {Object.entries(player?.ships || []).map(
         ([id, { name, type, health }]) => {
           const shipInfo = SHIP_TYPES[type as keyof typeof SHIP_TYPES]
@@ -49,12 +50,9 @@ const ShipyardSell = () => {
                 </>
               }
               actions={
-                <button
-                  className="btn btn-primary btn-sm"
-                  onClick={() => handleSellShip(id)}
-                >
+                <Button size="sm" onClick={() => handleSellShip(id)}>
                   Sell {type}
-                </button>
+                </Button>
               }
             />
           )

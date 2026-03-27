@@ -9,13 +9,10 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import React, { useState } from "react"
 
+import Modal from "@/components/Modal"
 import MotionProvider from "@/components/MotionProvider"
 import Sound from "@/components/Sound"
-import { SoundProvider } from "@/components/Sound/context"
-import Modal from "@/components/ui/Modal"
-import { ModalProvider } from "@/components/ui/Modal/context"
-import Toast from "@/components/ui/Toast"
-import { ToastProvider } from "@/components/ui/Toast/context"
+import Toast from "@/components/Toast"
 import WelcomeModal from "@/components/WelcomeModal"
 
 type Props = {
@@ -41,18 +38,12 @@ export default function Providers({ children, dehydratedState }: Props) {
     <QueryClientProvider client={queryClient}>
       <HydrationBoundary state={dehydratedState}>
         <MotionProvider>
-          <ToastProvider>
-            <ModalProvider>
-              <SoundProvider>
-                {children}
+          {children}
 
-                <Toast />
-                <Modal />
-                <WelcomeModal />
-                <Sound />
-              </SoundProvider>
-            </ModalProvider>
-          </ToastProvider>
+          <Toast />
+          <Modal />
+          <WelcomeModal />
+          <Sound />
         </MotionProvider>
 
         <ReactQueryDevtools initialIsOpen={false} />

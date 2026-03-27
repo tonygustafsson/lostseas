@@ -4,6 +4,7 @@ import { useState } from "react"
 import { FaCoins } from "react-icons/fa"
 
 import LocationTabs from "@/components/LocationTabs"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import BankAccount from "./Account"
@@ -16,6 +17,12 @@ const Bank = () => {
 
   const [tab, setTab] = useState<BankTab>("account")
 
+  const balances = [
+    { label: "Gold", value: player?.character.gold || 0 },
+    { label: "Account", value: player?.character.account || 0 },
+    { label: "Loan", value: player?.character.loan || 0 },
+  ]
+
   return (
     <>
       <LocationTabs<BankTab>
@@ -27,32 +34,22 @@ const Bank = () => {
         setCurrentTab={setTab}
       />
 
-      <div className="flex w-full flex-wrap justify-center gap-6">
-        <div className="stats mt-4 gap-1">
-          <div className="stat bg-gray-700">
-            <div className="stat-figure text-secondary">
-              <FaCoins className="h-7 w-7" />
-            </div>
-            <div className="stat-title">Gold</div>
-            <div className="stat-value">{player?.character.gold}</div>
-          </div>
-
-          <div className="stat bg-gray-700">
-            <div className="stat-figure text-secondary">
-              <FaCoins className="h-7 w-7" />
-            </div>
-            <div className="stat-title">Account</div>
-            <div className="stat-value">{player?.character.account || 0}</div>
-          </div>
-
-          <div className="stat bg-gray-700">
-            <div className="stat-figure text-secondary">
-              <FaCoins className="h-7 w-7" />
-            </div>
-            <div className="stat-title">Loan</div>
-            <div className="stat-value">{player?.character.loan || 0}</div>
-          </div>
-        </div>
+      <div className="mt-4 grid w-full gap-6 md:grid-cols-3">
+        {balances.map((balance) => (
+          <Card key={balance.label} className="gap-0">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-muted-foreground text-sm font-medium">
+                {balance.label}
+              </CardTitle>
+              <FaCoins className="h-5 w-5 text-amber-400" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-semibold tracking-tight">
+                {balance.value}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       {tab === "account" && <BankAccount />}

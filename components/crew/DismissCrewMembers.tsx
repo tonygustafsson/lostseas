@@ -3,17 +3,21 @@
 import { useMemo, useState } from "react"
 import { GiBandana } from "react-icons/gi"
 
+import useModal from "@/app/stores/modals"
 import MerchandiseCard from "@/components/MerchandiseCard"
-import TextField from "@/components/ui/TextField"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { Input } from "@/components/ui/input"
 import { useCrew } from "@/hooks/queries/useCrew"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
-import { useModal } from "../ui/Modal/context"
+import { Button } from "../ui/button"
 
 const DismissCrewMembers = () => {
   const { data: player } = useGetPlayer()
   const { dismiss } = useCrew()
-  const { setModal, removeModal } = useModal()
+
+  const setModal = useModal((s) => s.setModal)
+  const removeModal = useModal((s) => s.removeModal)
 
   const [quantity, setQuantity] = useState(1)
 
@@ -51,16 +55,17 @@ const DismissCrewMembers = () => {
             be hard to get back.
           </p>
           <div className="flex gap-2">
-            <button className="btn btn-primary btn-sm" onClick={handleSubmit}>
+            <Button size="sm" onClick={handleSubmit}>
               Yes, dismiss them
-            </button>
+            </Button>
 
-            <button
-              className="btn btn-secondary btn-sm"
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={() => removeModal("dismissCrewMembers")}
             >
               Cancel
-            </button>
+            </Button>
           </div>
         </div>
       ),
@@ -76,7 +81,7 @@ const DismissCrewMembers = () => {
     <MerchandiseCard
       title="Dismiss crew members"
       indicator={player?.crewMembers.count.toString() || "0"}
-      icon={<GiBandana className="h-7 w-7 text-primary" />}
+      icon={<GiBandana className="text-accent h-7 w-7" />}
       disabled={isDisabled}
       fullWidth
       body={
@@ -87,41 +92,38 @@ const DismissCrewMembers = () => {
       }
       actions={
         <>
-          <div className="join">
-            <button
+          <ButtonGroup className="w-fit">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon-sm"
               onClick={decrease}
-              className="btn btn-primary join-item btn-sm"
             >
               -
-            </button>
+            </Button>
 
-            <TextField
+            <Input
               value={quantity.toString()}
               onChange={changeQuantity}
               type="number"
-              name={""}
-              size="sm"
-              fullWidth={false}
-              className={`join-item ${quantity < 10 && "w-9"} ${
-                quantity < 100 && "w-11"
-              } ${quantity < 1000 && "w-14"} hide-number-arrows`}
+              className={`border-border bg-input/30 h-8 w-12 [appearance:textfield] rounded-none text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ${
+                quantity < 10 ? "w-10" : ""
+              } ${quantity < 100 ? "w-12" : ""} ${quantity < 1000 ? "w-14" : ""}`}
             />
 
-            <button
+            <Button
+              type="button"
+              variant="outline"
+              size="icon-sm"
               onClick={increase}
-              className="btn btn-primary join-item btn-sm"
             >
               +
-            </button>
-          </div>
+            </Button>
+          </ButtonGroup>
 
-          <button
-            className="btn btn-primary btn-sm"
-            disabled={isDisabled}
-            onClick={openDismissModal}
-          >
+          <Button size="sm" disabled={isDisabled} onClick={openDismissModal}>
             Dismiss
-          </button>
+          </Button>
         </>
       }
     />

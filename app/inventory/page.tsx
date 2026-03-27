@@ -34,47 +34,61 @@ export default async function Page() {
       <div className="flex flex-wrap gap-4">
         {necessities.map(([item, possession]) => (
           <div
-            className="stat rounded-lg bg-gray-800 pr-4 shadow-md hover:shadow-lg lg:w-52"
+            className="flex items-center justify-between rounded-lg bg-gray-800 p-4 shadow-md hover:shadow-lg lg:w-52"
             key={`inventory-${item}`}
           >
-            <div className="stat-figure text-secondary">
-              <MerchandiseIcon size="lg" item={item as keyof Inventory} />
+            <div>
+              <div className="text-muted-foreground text-sm">
+                {capitalize(item)}
+              </div>
+              <div className="mt-1 text-2xl font-bold">
+                {possession}{" "}
+                <span className="ml-1 text-sm font-normal">
+                  {possession === 1
+                    ? MERCHANDISE[item].singleUnit
+                    : MERCHANDISE[item].unit}
+                </span>
+              </div>
             </div>
-            <div className="stat-title">{capitalize(item)}</div>
-            <div className="stat-value text-2xl">
-              {possession}{" "}
-              <span className="text-sm">
-                {possession === 1
-                  ? MERCHANDISE[item].singleUnit
-                  : MERCHANDISE[item].unit}
-              </span>
-            </div>
+
+            <MerchandiseIcon
+              size="lg"
+              item={item as keyof Inventory}
+              className="text-yellow-400"
+            />
           </div>
         ))}
       </div>
 
       {!!tradingAssets.length && (
         <>
-          <h2 className="mb-4 mt-8 font-serif text-xl">Trading assets</h2>
+          <h2 className="mt-8 mb-4 font-serif text-xl">Trading assets</h2>
 
           <div className="flex flex-wrap gap-4">
             {tradingAssets.map(([item, possession]) => (
               <div
-                className="stat rounded-lg bg-gray-800 pr-4 shadow-md hover:shadow-lg lg:w-52"
+                className="flex items-center justify-between rounded-lg bg-gray-800 p-4 shadow-md hover:shadow-lg lg:w-52"
                 key={`inventory-${item}`}
               >
-                <div className="stat-figure text-secondary">
-                  <MerchandiseIcon size="lg" item={item as keyof Inventory} />
+                <div>
+                  <div className="text-muted-foreground text-sm">
+                    {capitalize(item)}
+                  </div>
+                  <div className="mt-1 text-2xl font-bold">
+                    {possession}{" "}
+                    <span className="ml-1 text-sm font-normal">
+                      {possession === 1
+                        ? MERCHANDISE[item].singleUnit
+                        : MERCHANDISE[item].unit}
+                    </span>
+                  </div>
                 </div>
-                <div className="stat-title">{capitalize(item)}</div>
-                <div className="stat-value text-2xl">
-                  {possession}{" "}
-                  <span className="text-sm">
-                    {possession === 1
-                      ? MERCHANDISE[item].singleUnit
-                      : MERCHANDISE[item].unit}
-                  </span>
-                </div>
+
+                <MerchandiseIcon
+                  size="lg"
+                  item={item as keyof Inventory}
+                  className="text-yellow-400"
+                />
               </div>
             ))}
           </div>
@@ -83,7 +97,7 @@ export default async function Page() {
 
       {!!Object.keys(player.treasures || {}).length && (
         <>
-          <h2 className="mb-4 mt-8 font-serif text-xl">Treasures</h2>
+          <h2 className="mt-8 mb-4 font-serif text-xl">Treasures</h2>
 
           <div className="flex flex-wrap gap-4">
             {Object.values(player.treasures || {}).map((item) => {
@@ -93,17 +107,25 @@ export default async function Page() {
 
               return (
                 <div
-                  className="stat rounded-lg bg-gray-800 pr-4 shadow-md hover:shadow-lg lg:w-1/3"
+                  className="flex w-full flex-col gap-3 rounded-lg bg-gray-800 p-4 shadow-md hover:shadow-lg lg:w-1/3"
                   key={`inventory-${item.id}`}
                 >
-                  <div className="stat-figure text-secondary">
-                    <TreasureIcon size="lg" item={item.name} />
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-xl font-semibold">{item.name}</p>
+                      <p className="mt-2 text-sm">
+                        {treasureInfo?.description}
+                      </p>
+                    </div>
+
+                    <TreasureIcon
+                      size="lg"
+                      item={item.name}
+                      className="text-yellow-400"
+                    />
                   </div>
-                  <p className="text-xl">{item.name}</p>
 
-                  <p className="mt-2 text-sm">{treasureInfo?.description}</p>
-
-                  <p className="mt-4 font-bold">
+                  <p className="mt-2 font-bold">
                     Bring it to the governor of {item.rewarder} for a reward of{" "}
                     {treasureInfo?.value} gold.
                   </p>

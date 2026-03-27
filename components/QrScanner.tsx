@@ -2,9 +2,10 @@ import jsQR from "jsqr"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { AiOutlineQrcode } from "react-icons/ai"
 
+import { useModal } from "@/app/stores/modals"
 import { usePlayer } from "@/hooks/queries/usePlayer"
 
-import { useModal } from "./ui/Modal/context"
+import { Button } from "./ui/button"
 
 const QrScanner = () => {
   const { setModal } = useModal()
@@ -117,14 +118,15 @@ const QrScanner = () => {
   }, [modalIsOpen, verifyPlayerIdFromImageData])
 
   return (
-    <button
+    <Button
       type="button"
+      variant="secondary"
       onClick={openQrScannerModal}
-      className="btn btn-secondary flex-1"
+      className="md:flex-1"
     >
       <AiOutlineQrcode size={24} />
       Scan QR Code
-    </button>
+    </Button>
   )
 }
 

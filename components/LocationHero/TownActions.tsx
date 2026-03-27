@@ -2,8 +2,11 @@ import { AiOutlineShop } from "react-icons/ai"
 import { BsBank2, BsTools } from "react-icons/bs"
 import { GiBank, GiFarmer, GiTavernSign } from "react-icons/gi"
 
+import { ButtonGroup } from "@/components/ui/button-group"
 import { LOCATIONS } from "@/constants/locations"
 import { useCharacter } from "@/hooks/queries/useCharacter"
+
+import { Button } from "../ui/button"
 
 type Props = {
   location: Character["location"]
@@ -79,22 +82,30 @@ const TownActions = ({ location }: Props) => {
   }
 
   return (
-    <div className="flex flex-col items-center rounded-b-lg bg-gray-900 p-4 pb-8">
-      <span className="font-serif text-xl">Change location</span>
+    <div className="flex flex-col items-center px-4 py-5 sm:px-6 sm:py-6">
+      <span className="font-serif text-xl text-stone-100">Change location</span>
 
-      <div className="mt-4 flex flex-wrap justify-center gap-2 lg:join lg:gap-0">
-        {locations.map(({ key, title, icon }) => (
-          <button
+      <ButtonGroup className="mt-4 grid grid-cols-2 flex-wrap justify-center overflow-hidden rounded-2xl sm:grid-cols-3 xl:flex">
+        {locations.map(({ key, title, icon }, index) => (
+          <Button
             key={`change-location-${key}`}
-            className="btn join-item text-base"
+            variant={location === key ? "secondary" : "outline"}
+            size="lg"
+            className="gap-2 px-6 font-serif text-lg"
             onClick={() => handleMove(title as TownLocation)}
             disabled={location === key}
+            style={
+              // Hack for disabling border radius on the first and last buttons in the group to create a more connected look when there are multiple rows.
+              index === 0 || index === locations.length - 1
+                ? ({ ["--radius"]: "0px" } as React.CSSProperties)
+                : undefined
+            }
           >
             {icon}
             {title}
-          </button>
+          </Button>
         ))}
-      </div>
+      </ButtonGroup>
     </div>
   )
 }

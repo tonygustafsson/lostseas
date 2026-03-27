@@ -4,11 +4,14 @@ import { useMemo, useState } from "react"
 
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
-import TextField from "@/components/ui/TextField"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { Input } from "@/components/ui/input"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { useCrew } from "@/hooks/queries/useCrew"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getMedicineEffectiveness } from "@/utils/crew"
+
+import { Button } from "../ui/button"
 
 const GiveMedicine = () => {
   const { data: player } = useGetPlayer()
@@ -71,41 +74,38 @@ const GiveMedicine = () => {
       }
       actions={
         <>
-          <div className="join">
-            <button
+          <ButtonGroup className="w-fit">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon-sm"
               onClick={decrease}
-              className="btn btn-primary join-item btn-sm"
             >
               -
-            </button>
+            </Button>
 
-            <TextField
+            <Input
               value={quantity.toString()}
               onChange={changeQuantity}
               type="number"
-              name={""}
-              size="sm"
-              fullWidth={false}
-              className={`join-item ${quantity < 10 && "w-9"} ${
-                quantity < 100 && "w-11"
-              } ${quantity < 1000 && "w-14"} hide-number-arrows`}
+              className={`border-border bg-input/30 h-8 w-12 [appearance:textfield] rounded-none text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ${
+                quantity < 10 ? "w-10" : ""
+              } ${quantity < 100 ? "w-12" : ""} ${quantity < 1000 ? "w-14" : ""}`}
             />
 
-            <button
+            <Button
+              type="button"
+              variant="outline"
+              size="icon-sm"
               onClick={increase}
-              className="btn btn-primary join-item btn-sm"
             >
               +
-            </button>
-          </div>
+            </Button>
+          </ButtonGroup>
 
-          <button
-            className="btn btn-primary btn-sm"
-            disabled={isDisabled}
-            onClick={handleSubmit}
-          >
+          <Button size="sm" disabled={isDisabled} onClick={handleSubmit}>
             Give medicine
-          </button>
+          </Button>
         </>
       }
     />

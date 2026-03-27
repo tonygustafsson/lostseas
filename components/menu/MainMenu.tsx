@@ -1,7 +1,5 @@
 "use client"
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
 import {
   GiBandana,
   GiOpenedFoodCan,
@@ -11,14 +9,15 @@ import {
 } from "react-icons/gi"
 import { RiTreasureMapLine } from "react-icons/ri"
 
+import { useModal } from "@/app/stores/modals"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Map from "../Map"
-import { useModal } from "../ui/Modal/context"
+import { Separator } from "../ui/separator"
+import MainMenuItem from "./MainMenuItem"
 
 const MainMenu = () => {
   const { data: player } = useGetPlayer()
-  const pathname = usePathname()
   const { setModal } = useModal()
 
   const numberOfShips = Object.values(player?.ships ?? {}).length
@@ -34,59 +33,64 @@ const MainMenu = () => {
   }
 
   return (
-    <ul className="main-menu">
-      <li className={`${pathname === "/" ? "active" : ""}`}>
-        <Link href="/">
-          <GiPirateHat className="h-5 w-5" />
-          Play
-        </Link>
-      </li>
+    <ul className="flex flex-col gap-1">
+      <MainMenuItem
+        href="/"
+        icon={<GiPirateHat className="group-hover/play:text-accent size-5!" />}
+        label="Play"
+        className="group/play"
+      />
 
-      <li>
-        <button onClick={showMap} disabled={!!player?.character.journey}>
-          <RiTreasureMapLine className="h-5 w-5" />
-          Map
-        </button>
-      </li>
+      <MainMenuItem
+        onClick={showMap}
+        disabled={!!player?.character.journey}
+        icon={
+          <RiTreasureMapLine className="group-hover/map:text-accent size-5!" />
+        }
+        label="Map"
+        className="group/map"
+      />
 
-      <li className="main-menu-separator" aria-hidden></li>
+      <Separator className="my-2" />
 
-      <li className={`${pathname === "/status" ? "active" : ""}`}>
-        <Link href="/status">
-          <GiPirateCoat className="h-5 w-5" />
-          Status
-        </Link>
-      </li>
+      <MainMenuItem
+        href="/status"
+        icon={
+          <GiPirateCoat className="group-hover/status:text-accent size-5!" />
+        }
+        label="Status"
+        className="group/status"
+      />
 
-      <li className={`${pathname === "/ships" ? "active" : ""}`}>
-        <Link href="/ships">
-          <GiShoonerSailboat className="h-5 w-5" />
-          Ships
-          <span className="badge badge-primary badge-sm">{numberOfShips}</span>
-        </Link>
-      </li>
+      <MainMenuItem
+        href="/ships"
+        icon={
+          <GiShoonerSailboat className="group-hover/ships:text-accent size-5!" />
+        }
+        label="Ships"
+        badge={numberOfShips}
+        className="group/ships"
+      />
 
-      <li className={`${pathname === "/crew" ? "active" : ""}`}>
-        <Link href="/crew">
-          <GiBandana className="h-5 w-5" />
-          Crew members
-          <span className="badge badge-primary badge-sm">
-            {player?.crewMembers.count}
-          </span>
-        </Link>
-      </li>
+      <MainMenuItem
+        href="/crew"
+        icon={<GiBandana className="group-hover/crew:text-accent size-5!" />}
+        label="Crew members"
+        badge={player?.crewMembers.count}
+        className="group/crew"
+      />
 
-      <li className={`${pathname === "/inventory" ? "active" : ""}`}>
-        <Link href="/inventory">
-          <GiOpenedFoodCan className="h-5 w-5" />
-          Inventory
-          <span className="badge badge-primary badge-sm">
-            {numberOfInventoryItems}
-          </span>
-        </Link>
-      </li>
+      <MainMenuItem
+        href="/inventory"
+        icon={
+          <GiOpenedFoodCan className="group-hover/inventory:text-accent size-5!" />
+        }
+        label="Inventory"
+        badge={numberOfInventoryItems}
+        className="group/inventory"
+      />
 
-      <li className="main-menu-separator !mb-0" aria-hidden></li>
+      <Separator className="my-2" />
     </ul>
   )
 }

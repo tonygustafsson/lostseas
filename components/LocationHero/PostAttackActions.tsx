@@ -1,5 +1,7 @@
 import { useSea } from "@/hooks/queries/useSea"
 
+import { Button } from "../ui/button"
+
 const PostAttackActions = () => {
   const { continueJourney } = useSea()
 
@@ -8,14 +10,14 @@ const PostAttackActions = () => {
   }
 
   return (
-    <div className="flex flex-col items-center rounded-b-lg bg-gray-900 pb-8 pt-4">
-      <div className="mt-4 flex flex-wrap justify-center gap-2 lg:join lg:gap-0">
-        <button
-          className={`btn btn-primary join-item text-base`}
+    <div className="flex flex-col items-center px-4 py-5 sm:px-6 sm:py-6">
+      <div className="mt-1 flex flex-wrap justify-center gap-3">
+        <Button
+          className="min-w-[10rem] rounded-full px-5 text-base"
           onClick={handleContinueJourney}
         >
           Continue journey
-        </button>
+        </Button>
       </div>
     </div>
   )

@@ -6,6 +6,18 @@ import { BiArrowToTop } from "react-icons/bi"
 import { SHIP_TYPES } from "@/constants/ship"
 import { TITLE_INFO } from "@/constants/title"
 
+import { Button } from "./ui/button"
+import { ButtonGroup } from "./ui/button-group"
+import { Separator } from "./ui/separator"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./ui/table"
+
 const GuideContent = () => {
   const goToSection = (id: string) => {
     const element = document.getElementById(id)
@@ -20,60 +32,59 @@ const GuideContent = () => {
 
   return (
     <>
-      <nav>
-        <ul className="my-8 flex flex-wrap justify-around gap-2 md:justify-center md:gap-4">
-          <li>
-            <button
-              className="btn btn-secondary btn-sm md:btn-md"
-              onClick={() => goToSection("supplies")}
-            >
-              Supplies
-            </button>
-          </li>
-          <li>
-            <button
-              className="btn btn-secondary btn-sm md:btn-md"
-              onClick={() => goToSection("ships")}
-            >
-              Ships
-            </button>
-          </li>
-          <li>
-            <button
-              className="btn btn-secondary btn-sm md:btn-md"
-              onClick={() => goToSection("crew-members")}
-            >
-              Crew members
-            </button>
-          </li>
-          <li>
-            <button
-              className="btn btn-secondary btn-sm md:btn-md"
-              onClick={() => goToSection("social-status")}
-            >
-              Social status
-            </button>
-          </li>
-          <li>
-            <button
-              className="btn btn-secondary btn-sm md:btn-md"
-              onClick={() => goToSection("economy")}
-            >
-              Economy
-            </button>
-          </li>
-          <li>
-            <button
-              className="btn btn-secondary btn-sm md:btn-md"
-              onClick={() => goToSection("traveling")}
-            >
-              Traveling
-            </button>
-          </li>
-        </ul>
+      <nav className="my-8 flex w-full justify-center">
+        <ButtonGroup className="overflow-x-auto">
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => goToSection("supplies")}
+          >
+            Supplies
+          </Button>
+
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => goToSection("ships")}
+          >
+            Ships
+          </Button>
+
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => goToSection("crew-members")}
+          >
+            Crew members
+          </Button>
+
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => goToSection("social-status")}
+          >
+            Social status
+          </Button>
+
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => goToSection("economy")}
+          >
+            Economy
+          </Button>
+
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => goToSection("traveling")}
+          >
+            Traveling
+          </Button>
+        </ButtonGroup>
       </nav>
 
-      <div className="divider my-8" />
+      <Separator className="my-8" />
 
       <div className="mx-auto max-w-2xl">
         <h2 id="supplies" className="mb-4 font-serif text-3xl">
@@ -111,7 +122,7 @@ const GuideContent = () => {
           alt="The market"
         />
 
-        <h3 className="mb-2 mt-4 font-serif text-2xl">Food and water</h3>
+        <h3 className="mt-4 mb-2 font-serif text-2xl">Food and water</h3>
 
         <p className="mb-4">
           You and your crew will need both food and water for traveling at sea.
@@ -129,7 +140,7 @@ const GuideContent = () => {
           You can them sell them at the shop and make some gold.
         </p>
 
-        <div className="divider my-8" />
+        <Separator className="my-8" />
 
         <h2 id="ships" className="mb-2 font-serif text-3xl">
           Ships
@@ -163,45 +174,43 @@ const GuideContent = () => {
 
         <h3 className="mb-2 font-serif text-2xl">Different ship types</h3>
 
-        <div className="overflow-x-auto">
-          <table className="table my-4 bg-gray-950 bg-opacity-50">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Min crew members</th>
-                <th>Max crew members</th>
-                <th>Price</th>
-              </tr>
-            </thead>
+        <Table className="mb-6 rounded-xl bg-black/60">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Type</TableHead>
+              <TableHead>Min crew members</TableHead>
+              <TableHead>Max crew members</TableHead>
+              <TableHead>Price</TableHead>
+            </TableRow>
+          </TableHeader>
 
-            <tbody>
-              <tr>
-                <td>Merchantman</td>
-                <td>{SHIP_TYPES.Merchantman.minCrewMembers}</td>
-                <td>{SHIP_TYPES.Merchantman.maxCrewMembers}</td>
-                <td>{SHIP_TYPES.Merchantman.buy}</td>
-              </tr>
-              <tr>
-                <td>Brig</td>
-                <td>{SHIP_TYPES.Brig.minCrewMembers}</td>
-                <td>{SHIP_TYPES.Brig.maxCrewMembers}</td>
-                <td>{SHIP_TYPES.Brig.buy}</td>
-              </tr>
-              <tr>
-                <td>Galleon</td>
-                <td>{SHIP_TYPES.Galleon.minCrewMembers}</td>
-                <td>{SHIP_TYPES.Galleon.maxCrewMembers}</td>
-                <td>{SHIP_TYPES.Galleon.buy}</td>
-              </tr>
-              <tr>
-                <td>Frigate</td>
-                <td>{SHIP_TYPES.Frigate.minCrewMembers}</td>
-                <td>{SHIP_TYPES.Frigate.maxCrewMembers}</td>
-                <td>{SHIP_TYPES.Frigate.buy}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+          <TableBody>
+            <TableRow>
+              <TableCell>Merchantman</TableCell>
+              <TableCell>{SHIP_TYPES.Merchantman.minCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Merchantman.maxCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Merchantman.buy}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Brig</TableCell>
+              <TableCell>{SHIP_TYPES.Brig.minCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Brig.maxCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Brig.buy}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Galleon</TableCell>
+              <TableCell>{SHIP_TYPES.Galleon.minCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Galleon.maxCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Galleon.buy}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Frigate</TableCell>
+              <TableCell>{SHIP_TYPES.Frigate.minCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Frigate.maxCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Frigate.buy}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
 
         <h3 className="mb-2 font-serif text-2xl">Cannons</h3>
 
@@ -213,7 +222,7 @@ const GuideContent = () => {
           still only be able to use 15 of them.
         </p>
 
-        <div className="divider my-8" />
+        <Separator className="my-8" />
 
         <h2 id="crew-members" className="mb-2 font-serif text-3xl">
           Crew members
@@ -262,7 +271,7 @@ const GuideContent = () => {
           there, they often want to offer their services for free.
         </p>
 
-        <div className="divider my-8" />
+        <Separator className="my-8" />
 
         <h2 id="social-status" className="mb-2 font-serif text-3xl">
           Social status
@@ -307,90 +316,88 @@ const GuideContent = () => {
 
         <h3 className="mb-2 font-serif text-2xl">The different titles</h3>
 
-        <div className="overflow-x-auto">
-          <table className="table my-4 bg-gray-950 bg-opacity-50">
-            <thead>
-              <tr>
-                <th>Level</th>
-                <th>Title</th>
-                <th>Reward</th>
-                <th>Max ships</th>
-              </tr>
-            </thead>
+        <Table className="mb-6 rounded-xl bg-black/60">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Level</TableHead>
+              <TableHead>Title</TableHead>
+              <TableHead>Reward</TableHead>
+              <TableHead>Max ships</TableHead>
+            </TableRow>
+          </TableHeader>
 
-            <tbody>
-              <tr>
-                <td>0-9</td>
-                <td>{TITLE_INFO.Pirate.title}</td>
-                <td>{TITLE_INFO.Pirate.reward} gold</td>
-                <td>{TITLE_INFO.Pirate.maxShips}</td>
-              </tr>
+          <TableBody>
+            <TableRow>
+              <TableCell>0-9</TableCell>
+              <TableCell>{TITLE_INFO.Pirate.title}</TableCell>
+              <TableCell>{TITLE_INFO.Pirate.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Pirate.maxShips}</TableCell>
+            </TableRow>
 
-              <tr>
-                <td>10-19</td>
-                <td>{TITLE_INFO.Ensign.title}</td>
-                <td>{TITLE_INFO.Ensign.reward} gold</td>
-                <td>{TITLE_INFO.Ensign.maxShips}</td>
-              </tr>
+            <TableRow>
+              <TableCell>10-19</TableCell>
+              <TableCell>{TITLE_INFO.Ensign.title}</TableCell>
+              <TableCell>{TITLE_INFO.Ensign.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Ensign.maxShips}</TableCell>
+            </TableRow>
 
-              <tr>
-                <td>20-29</td>
-                <td>{TITLE_INFO.Captain.title}</td>
-                <td>{TITLE_INFO.Captain.reward} gold</td>
-                <td>{TITLE_INFO.Captain.maxShips}</td>
-              </tr>
+            <TableRow>
+              <TableCell>20-29</TableCell>
+              <TableCell>{TITLE_INFO.Captain.title}</TableCell>
+              <TableCell>{TITLE_INFO.Captain.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Captain.maxShips}</TableCell>
+            </TableRow>
 
-              <tr>
-                <td>30-39</td>
-                <td>{TITLE_INFO.Major.title}</td>
-                <td>{TITLE_INFO.Major.reward} gold</td>
-                <td>{TITLE_INFO.Major.maxShips}</td>
-              </tr>
+            <TableRow>
+              <TableCell>30-39</TableCell>
+              <TableCell>{TITLE_INFO.Major.title}</TableCell>
+              <TableCell>{TITLE_INFO.Major.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Major.maxShips}</TableCell>
+            </TableRow>
 
-              <tr>
-                <td>40-49</td>
-                <td>{TITLE_INFO.Colonel.title}</td>
-                <td>{TITLE_INFO.Colonel.reward} gold</td>
-                <td>{TITLE_INFO.Colonel.maxShips}</td>
-              </tr>
+            <TableRow>
+              <TableCell>40-49</TableCell>
+              <TableCell>{TITLE_INFO.Colonel.title}</TableCell>
+              <TableCell>{TITLE_INFO.Colonel.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Colonel.maxShips}</TableCell>
+            </TableRow>
 
-              <tr>
-                <td>50-64</td>
-                <td>{TITLE_INFO.Admiral.title}</td>
-                <td>{TITLE_INFO.Admiral.reward} gold</td>
-                <td>{TITLE_INFO.Admiral.maxShips}</td>
-              </tr>
+            <TableRow>
+              <TableCell>50-64</TableCell>
+              <TableCell>{TITLE_INFO.Admiral.title}</TableCell>
+              <TableCell>{TITLE_INFO.Admiral.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Admiral.maxShips}</TableCell>
+            </TableRow>
 
-              <tr>
-                <td>65-79</td>
-                <td>{TITLE_INFO.Baron.title}</td>
-                <td>{TITLE_INFO.Baron.reward} gold</td>
-                <td>{TITLE_INFO.Baron.maxShips}</td>
-              </tr>
+            <TableRow>
+              <TableCell>65-79</TableCell>
+              <TableCell>{TITLE_INFO.Baron.title}</TableCell>
+              <TableCell>{TITLE_INFO.Baron.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Baron.maxShips}</TableCell>
+            </TableRow>
 
-              <tr>
-                <td>80-99</td>
-                <td>{TITLE_INFO.Count.title}</td>
-                <td>{TITLE_INFO.Count.reward} gold</td>
-                <td>{TITLE_INFO.Count.maxShips}</td>
-              </tr>
+            <TableRow>
+              <TableCell>80-99</TableCell>
+              <TableCell>{TITLE_INFO.Count.title}</TableCell>
+              <TableCell>{TITLE_INFO.Count.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Count.maxShips}</TableCell>
+            </TableRow>
 
-              <tr>
-                <td>100-119</td>
-                <td>{TITLE_INFO.Marquis.title}</td>
-                <td>{TITLE_INFO.Marquis.reward} gold</td>
-                <td>{TITLE_INFO.Marquis.maxShips}</td>
-              </tr>
+            <TableRow>
+              <TableCell>100-119</TableCell>
+              <TableCell>{TITLE_INFO.Marquis.title}</TableCell>
+              <TableCell>{TITLE_INFO.Marquis.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Marquis.maxShips}</TableCell>
+            </TableRow>
 
-              <tr>
-                <td>120+</td>
-                <td>{TITLE_INFO.Duke.title}</td>
-                <td>{TITLE_INFO.Duke.reward} gold</td>
-                <td>{TITLE_INFO.Duke.maxShips}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+            <TableRow>
+              <TableCell>120+</TableCell>
+              <TableCell>{TITLE_INFO.Duke.title}</TableCell>
+              <TableCell>{TITLE_INFO.Duke.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Duke.maxShips}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
 
         <h3 className="my-2 font-serif text-2xl">Changing nation</h3>
 
@@ -411,7 +418,7 @@ const GuideContent = () => {
           Admiral at once when you get yourself an english citizenship.
         </p>
 
-        <div className="divider my-8" />
+        <Separator className="my-8" />
 
         <h2 id="economy" className="mb-4 font-serif text-3xl">
           Economy
@@ -461,7 +468,7 @@ const GuideContent = () => {
           add gold to your account until you have payed off your loan.
         </p>
 
-        <div className="divider my-8" />
+        <Separator className="my-8" />
 
         <h2 id="traveling" className="mb-2 font-serif text-3xl">
           Traveling
@@ -547,12 +554,12 @@ const GuideContent = () => {
         </p>
       </div>
 
-      <button
+      <Button
         onClick={goToTop}
-        className="fixed bottom-5 right-5 rounded-full bg-info bg-opacity-50 p-3 text-xs font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-opacity-100 hover:shadow-lg focus:bg-opacity-100 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-500 active:shadow-lg"
+        className="bg-info hover:bg-opacity-100 focus:bg-opacity-100 fixed right-5 bottom-5 rounded-full bg-black/50 p-3 text-xs leading-tight font-medium text-white uppercase shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:ring-0 focus:outline-none active:bg-blue-500 active:shadow-lg"
       >
         <BiArrowToTop className="h-7 w-7" />
-      </button>
+      </Button>
     </>
   )
 }

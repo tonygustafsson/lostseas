@@ -22,11 +22,11 @@ export default async function Page() {
             src="/img/startpage-bg.webp"
             fill
             alt="Lost Seas background"
-            className="absolute left-0 top-0 z-10 object-cover opacity-50"
+            className="absolute top-0 left-0 z-10 object-cover opacity-50"
           />
 
           <div className="relative z-20 flex min-h-screen w-full flex-col justify-items-stretch gap-4 lg:gap-8">
-            <div className="w-full rounded-lg bg-base-300 bg-opacity-70 p-6 lg:p-8">
+            <div className="w-full rounded-lg bg-gray-950/70 p-6 lg:p-8">
               <div className="mx-auto max-w-3xl text-lg">
                 <h1 className="mb-5 text-center font-serif text-5xl lg:text-6xl">
                   Player guide

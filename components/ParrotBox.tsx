@@ -1,6 +1,8 @@
 import { m as motion } from "framer-motion"
 import Image from "next/image"
 
+import { Card, CardContent } from "@/components/ui/card"
+
 type Props = {
   title: string
   children: React.ReactNode
@@ -8,14 +10,14 @@ type Props = {
 
 const ParrotBox = ({ title, children }: Props) => (
   <>
-    <div className="flex">
+    <div className="flex items-start gap-2">
       <Image
         src="/img/parrot.webp"
         alt="Parrot"
         width={100}
         height={57}
         draggable={false}
-        className="mx-6 select-none"
+        className="mx-4 mt-1 shrink-0 select-none"
       />
 
       <motion.div
@@ -29,13 +31,19 @@ const ParrotBox = ({ title, children }: Props) => (
           opacity: [0, 1],
           scale: [0, 1],
         }}
-        className="chat chat-start"
+        className="max-w-full"
       >
-        <div className="chat-bubble min-w-fit bg-slate-600">{title}</div>
+        <Card className="w-fit max-w-full gap-0 py-0 shadow-sm">
+          <CardContent className="font-heading px-4 py-3 text-sm font-medium">
+            {title}
+          </CardContent>
+        </Card>
       </motion.div>
     </div>
 
-    <div className="flex flex-col rounded-lg bg-gray-900 p-6">{children}</div>
+    <Card className="py-0 shadow-sm">
+      <CardContent className="p-6">{children}</CardContent>
+    </Card>
   </>
 )
 

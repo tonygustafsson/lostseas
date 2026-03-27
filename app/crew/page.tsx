@@ -23,45 +23,45 @@ export default async function Page() {
       <>
         <h1 className="text mb-8 font-serif text-3xl">Crew members</h1>
 
-        <div className="py-3bg-transparent stats mt-4 gap-2">
-          <div className="stat bg-gray-700">
-            <div className="stat-figure text-secondary">
-              <MdGroups className="h-11 w-11" />
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+          <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
+            <div>
+              <div className="text-muted-foreground text-sm">Crew members</div>
+              <div className="mt-1 text-2xl font-semibold">
+                {player?.crewMembers.count}
+              </div>
             </div>
-            <div className="stat-title">Crew members</div>
-            <div className="stat-value text-2xl">
-              {player?.crewMembers.count}
-            </div>
+            <MdGroups className="h-11 w-11 text-yellow-400" />
           </div>
 
-          <div className="stat bg-gray-700">
-            <div className="stat-figure text-secondary">
-              <RadialProgressBar
-                percentage={player?.crewMembers.health}
-                className="h-12 w-12"
-              />
+          <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
+            <div>
+              <div className="text-muted-foreground text-sm">Health</div>
+              <div className="mt-1 text-2xl font-semibold">
+                {player?.crewMembers.health}%
+              </div>
             </div>
-            <div className="stat-title">Health</div>
-            <div className="stat-value text-2xl">
-              {player?.crewMembers.health}%
-            </div>
+            <RadialProgressBar
+              percentage={player?.crewMembers.health}
+              className="h-12 w-12"
+            />
           </div>
 
-          <div className="stat bg-gray-700">
-            <div className="stat-figure text-secondary">
-              <RadialProgressBar
-                percentage={player?.crewMembers.mood}
-                className="h-12 w-12"
-              />
+          <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
+            <div>
+              <div className="text-muted-foreground text-sm">Mood</div>
+              <div className="mt-1 text-2xl font-semibold">
+                {player?.crewMembers.mood}%
+              </div>
             </div>
-            <div className="stat-title">Mood</div>
-            <div className="stat-value text-2xl">
-              {player?.crewMembers.mood}%
-            </div>
+            <RadialProgressBar
+              percentage={player?.crewMembers.mood}
+              className="h-12 w-12"
+            />
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 pt-8 lg:flex-row">
+        <div className="mt-8 grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
           <GiveMedicine />
           <GiveGold />
           <DismissCrewMembers />

@@ -1,6 +1,7 @@
 import { GiQuillInk } from "react-icons/gi"
 
 import ActionCard from "@/components/ActionCard"
+import { Button } from "@/components/ui/button"
 import { TOWNS } from "@/constants/locations"
 import { TitleInfo } from "@/constants/title"
 import { useCityhall } from "@/hooks/queries/useCityhall"
@@ -126,19 +127,15 @@ const Governor = () => {
         player?.character.name
       }`}
       message={greeting}
-      icon={<GiQuillInk className="h-20 w-20 text-secondary" />}
+      icon={<GiQuillInk className="text-accent h-20 w-20" />}
       {...(promotionAvailable && {
         actions: (
-          <button className="btn btn-primary" onClick={handleAcceptNewTitle}>
-            Accept new title
-          </button>
+          <Button onClick={handleAcceptNewTitle}>Accept new title</Button>
         ),
       })}
       {...(citizenshipChangeAvailable && {
         actions: (
-          <button className="btn btn-primary" onClick={handleChangeCitizenship}>
-            Change citizenship
-          </button>
+          <Button onClick={handleChangeCitizenship}>Change citizenship</Button>
         ),
       })}
     />

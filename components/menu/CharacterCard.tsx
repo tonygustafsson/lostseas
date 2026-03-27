@@ -6,24 +6,24 @@ import { GiPirateHat, GiProgression } from "react-icons/gi"
 import { getScore } from "@/utils/score"
 
 import Flag from "../icons/Flag"
+import { Button } from "../ui/button"
+import { Card, CardContent, CardHeader } from "../ui/card"
 
 type Props = {
   player: Player
 }
 
 const CharacterCard = ({ player }: Props) => (
-  <div className="card mt-2 w-full rounded-md bg-gray-800 shadow-lg">
-    <figure className="mt-4">
-      <GiPirateHat className="hidden h-14 w-14 lg:block" />
-    </figure>
+  <Card className="gap-2 bg-gray-800">
+    <CardHeader className="flex flex-col items-center gap-2">
+      <figure>
+        <GiPirateHat className="hidden size-14 lg:block" />
+      </figure>
+    </CardHeader>
 
-    <div className="card-body px-4 py-6 pt-2">
-      <h2 className="card-title gap-2 font-serif">
-        <Flag
-          nation={player.character.nationality}
-          size={28}
-          className="opacity-[0.8]"
-        />
+    <CardContent className="space-y-4">
+      <h2 className="flex gap-2 font-serif text-xl">
+        <Flag nation={player.character.nationality} size={28} />
         {player.character.name}
       </h2>
 
@@ -32,22 +32,18 @@ const CharacterCard = ({ player }: Props) => (
         {player.character.nationality}.
       </p>
 
-      <div className="stats bg-gray-800 py-1">
-        <div className="stat px-0 py-0">
-          <div className="stat-figure text-secondary">
-            <GiProgression className="h-8 w-8" />
-          </div>
-          <p className="stat-title">Score</p>
-          <p className="stat-value w-fit">{getScore(player)}</p>
+      <div className="flex items-center justify-between py-0">
+        <div>
+          <p className="text-gray-400">Score</p>
+          <p className="w-fit">{getScore(player)}</p>
         </div>
+
+        <GiProgression className="text-accent h-8 w-8" />
       </div>
 
-      <div className="stats bg-gray-800 py-1">
-        <div className="stat px-0 py-0">
-          <div className="stat-figure text-secondary">
-            <FaCoins className="h-8 w-8" />
-          </div>
-          <p className="stat-title">Gold</p>
+      <div className="flex items-center justify-between py-0">
+        <div>
+          <p className="text-gray-400">Gold</p>
           <motion.p
             key={`character-gold-${player.character.gold}`}
             initial={{ scale: 1, color: "#fff" }}
@@ -61,15 +57,19 @@ const CharacterCard = ({ player }: Props) => (
             {player.character.gold}
           </motion.p>
         </div>
+
+        <FaCoins className="text-accent h-8 w-8" />
       </div>
 
-      <div className="card-actions justify-end">
+      <div className="flex justify-end">
         <Link href="/status">
-          <button className="btn btn-secondary btn-sm">More info</button>
+          <Button variant="outline" size="sm" className="mt-2">
+            More info
+          </Button>
         </Link>
       </div>
-    </div>
-  </div>
+    </CardContent>
+  </Card>
 )
 
 export default CharacterCard

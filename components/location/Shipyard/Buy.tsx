@@ -1,8 +1,13 @@
 "use client"
 
+import { AlertTriangleIcon } from "lucide-react"
+
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import MerchandiseShopItem from "@/components/MerchandiseShopItem"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_TYPES } from "@/constants/ship"
 import { TITLE_INFO } from "@/constants/title"
@@ -18,45 +23,51 @@ const ShipyardBuy = () => {
   }
 
   const titleInfo = TITLE_INFO[player?.character.title || "Pirate"]
-  const shipBuyingDisabled =
-    Object.keys(player?.ships || {}).length + 1 > titleInfo.maxShips
+  const shipCount = Object.keys(player?.ships || {}).length
+  const maxShipsReached = shipCount >= titleInfo.maxShips
+
+  const shipBuyingDisabled = (price: number) =>
+    maxShipsReached || price > (player?.character.gold || 0)
 
   return (
     <>
-      {shipBuyingDisabled && (
-        <div className="alert mb-8 bg-slate-700">
-          <p>
+      {maxShipsReached && (
+        <Alert className="mb-8 bg-gray-800">
+          <AlertTriangleIcon />
+          <AlertTitle>Max ships reached</AlertTitle>
+          <AlertDescription>
             You can only have {titleInfo.maxShips} ships as long as you have the
             title {titleInfo.title}.
-          </p>
-        </div>
+          </AlertDescription>
+        </Alert>
       )}
 
-      <div className="flex flex-wrap gap-6">
+      <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
         {Object.entries(SHIP_TYPES).map(([shipType, { description, buy }]) => (
           <MerchandiseCard
             key={`shipyard-buy-${shipType}`}
             title={shipType}
+            disabled={shipBuyingDisabled(buy)}
             icon={<MerchandiseIcon item={shipType} />}
             body={
               <>
                 <p>{description}</p>
 
-                <div className="flex gap-2">
-                  <div className="badge badge-secondary">Price: {buy} gold</div>
-                </div>
+                <Badge variant="secondary" className="mt-4">
+                  Price: {buy} gold
+                </Badge>
               </>
             }
             actions={
-              <button
-                className="btn btn-primary btn-sm"
+              <Button
+                size="sm"
                 onClick={() =>
                   handleBuyShip(shipType as keyof typeof SHIP_TYPES)
                 }
-                disabled={shipBuyingDisabled}
+                disabled={shipBuyingDisabled(buy)}
               >
                 Buy
-              </button>
+              </Button>
             }
           />
         ))}
