@@ -41,6 +41,7 @@ const MainMenuItem = ({
         onClick={onClick}
         disabled={disabled}
         asChild={!!href}
+        className="cursor-pointer"
       >
         {href ? (
           <Link

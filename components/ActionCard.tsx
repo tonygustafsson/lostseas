@@ -6,7 +6,7 @@ type Props = {
 }
 
 const ActionCard = ({ title, message, actions, icon }: Props) => (
-  <div className="mb-8 rounded-lg border border-gray-700 bg-gray-800">
+  <div className="mb-8 rounded-lg border bg-gray-900">
     <div className="flex w-full max-w-none flex-col items-start justify-start gap-4 p-8 lg:flex-row">
       {icon}
 

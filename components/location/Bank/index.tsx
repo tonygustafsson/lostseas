@@ -34,7 +34,7 @@ const Bank = () => {
         setCurrentTab={setTab}
       />
 
-      <div className="mt-4 grid w-full gap-4 md:grid-cols-3">
+      <div className="mt-4 grid w-full gap-6 md:grid-cols-3">
         {balances.map((balance) => (
           <Card key={balance.label} className="gap-0">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
