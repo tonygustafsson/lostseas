@@ -26,7 +26,7 @@ export default async function Page() {
           />
 
           <div className="relative z-20 flex min-h-screen w-full flex-col justify-items-stretch gap-4 lg:gap-8">
-            <div className="w-full rounded-lg bg-gray-900/70 p-6 lg:p-8">
+            <div className="w-full rounded-lg bg-gray-950/70 p-6 lg:p-8">
               <div className="mx-auto max-w-3xl text-lg">
                 <h1 className="mb-5 text-center font-serif text-5xl lg:text-6xl">
                   Player guide

@@ -174,7 +174,7 @@ const GuideContent = () => {
 
         <h3 className="mb-2 font-serif text-2xl">Different ship types</h3>
 
-        <Table>
+        <Table className="mb-6 rounded-xl bg-black/60">
           <TableHeader>
             <TableRow>
               <TableHead>Type</TableHead>
@@ -316,7 +316,7 @@ const GuideContent = () => {
 
         <h3 className="mb-2 font-serif text-2xl">The different titles</h3>
 
-        <Table>
+        <Table className="mb-6 rounded-xl bg-black/60">
           <TableHeader>
             <TableRow>
               <TableHead>Level</TableHead>

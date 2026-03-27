@@ -18,9 +18,12 @@ const Modal = () => {
         >
           <DialogContent
             aria-describedby={undefined}
-            className={cn("max-w-2xl border border-gray-900", {
-              "h-[95vh]! max-w-[95vw]!": modal.fullWidth,
-            })}
+            className={cn(
+              "max-h-[90vh] max-w-2xl overflow-auto border border-gray-900",
+              {
+                "h-[95vh]! max-w-[95vw]!": modal.fullWidth,
+              }
+            )}
           >
             <DialogTitle className="mb-6 text-center font-serif text-xl font-bold">
               {modal.title}
