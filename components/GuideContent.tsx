@@ -9,6 +9,14 @@ import { TITLE_INFO } from "@/constants/title"
 import { Button } from "./ui/button"
 import { ButtonGroup } from "./ui/button-group"
 import { Separator } from "./ui/separator"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./ui/table"
 
 const GuideContent = () => {
   const goToSection = (id: string) => {
@@ -25,7 +33,7 @@ const GuideContent = () => {
   return (
     <>
       <nav className="my-8 flex w-full justify-center">
-        <ButtonGroup>
+        <ButtonGroup className="overflow-x-auto">
           <Button
             variant="secondary"
             size="sm"
@@ -166,45 +174,43 @@ const GuideContent = () => {
 
         <h3 className="mb-2 font-serif text-2xl">Different ship types</h3>
 
-        <div className="overflow-x-auto">
-          <table className="my-4 table bg-black/50 bg-gray-950">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Min crew members</th>
-                <th>Max crew members</th>
-                <th>Price</th>
-              </tr>
-            </thead>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Type</TableHead>
+              <TableHead>Min crew members</TableHead>
+              <TableHead>Max crew members</TableHead>
+              <TableHead>Price</TableHead>
+            </TableRow>
+          </TableHeader>
 
-            <tbody>
-              <tr>
-                <td>Merchantman</td>
-                <td>{SHIP_TYPES.Merchantman.minCrewMembers}</td>
-                <td>{SHIP_TYPES.Merchantman.maxCrewMembers}</td>
-                <td>{SHIP_TYPES.Merchantman.buy}</td>
-              </tr>
-              <tr>
-                <td>Brig</td>
-                <td>{SHIP_TYPES.Brig.minCrewMembers}</td>
-                <td>{SHIP_TYPES.Brig.maxCrewMembers}</td>
-                <td>{SHIP_TYPES.Brig.buy}</td>
-              </tr>
-              <tr>
-                <td>Galleon</td>
-                <td>{SHIP_TYPES.Galleon.minCrewMembers}</td>
-                <td>{SHIP_TYPES.Galleon.maxCrewMembers}</td>
-                <td>{SHIP_TYPES.Galleon.buy}</td>
-              </tr>
-              <tr>
-                <td>Frigate</td>
-                <td>{SHIP_TYPES.Frigate.minCrewMembers}</td>
-                <td>{SHIP_TYPES.Frigate.maxCrewMembers}</td>
-                <td>{SHIP_TYPES.Frigate.buy}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+          <TableBody>
+            <TableRow>
+              <TableCell>Merchantman</TableCell>
+              <TableCell>{SHIP_TYPES.Merchantman.minCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Merchantman.maxCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Merchantman.buy}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Brig</TableCell>
+              <TableCell>{SHIP_TYPES.Brig.minCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Brig.maxCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Brig.buy}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Galleon</TableCell>
+              <TableCell>{SHIP_TYPES.Galleon.minCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Galleon.maxCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Galleon.buy}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Frigate</TableCell>
+              <TableCell>{SHIP_TYPES.Frigate.minCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Frigate.maxCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Frigate.buy}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
 
         <h3 className="mb-2 font-serif text-2xl">Cannons</h3>
 
@@ -310,90 +316,88 @@ const GuideContent = () => {
 
         <h3 className="mb-2 font-serif text-2xl">The different titles</h3>
 
-        <div className="overflow-x-auto">
-          <table className="my-4 table bg-black/50 bg-gray-950">
-            <thead>
-              <tr>
-                <th>Level</th>
-                <th>Title</th>
-                <th>Reward</th>
-                <th>Max ships</th>
-              </tr>
-            </thead>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Level</TableHead>
+              <TableHead>Title</TableHead>
+              <TableHead>Reward</TableHead>
+              <TableHead>Max ships</TableHead>
+            </TableRow>
+          </TableHeader>
 
-            <tbody>
-              <tr>
-                <td>0-9</td>
-                <td>{TITLE_INFO.Pirate.title}</td>
-                <td>{TITLE_INFO.Pirate.reward} gold</td>
-                <td>{TITLE_INFO.Pirate.maxShips}</td>
-              </tr>
+          <TableBody>
+            <TableRow>
+              <TableCell>0-9</TableCell>
+              <TableCell>{TITLE_INFO.Pirate.title}</TableCell>
+              <TableCell>{TITLE_INFO.Pirate.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Pirate.maxShips}</TableCell>
+            </TableRow>
 
-              <tr>
-                <td>10-19</td>
-                <td>{TITLE_INFO.Ensign.title}</td>
-                <td>{TITLE_INFO.Ensign.reward} gold</td>
-                <td>{TITLE_INFO.Ensign.maxShips}</td>
-              </tr>
+            <TableRow>
+              <TableCell>10-19</TableCell>
+              <TableCell>{TITLE_INFO.Ensign.title}</TableCell>
+              <TableCell>{TITLE_INFO.Ensign.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Ensign.maxShips}</TableCell>
+            </TableRow>
 
-              <tr>
-                <td>20-29</td>
-                <td>{TITLE_INFO.Captain.title}</td>
-                <td>{TITLE_INFO.Captain.reward} gold</td>
-                <td>{TITLE_INFO.Captain.maxShips}</td>
-              </tr>
+            <TableRow>
+              <TableCell>20-29</TableCell>
+              <TableCell>{TITLE_INFO.Captain.title}</TableCell>
+              <TableCell>{TITLE_INFO.Captain.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Captain.maxShips}</TableCell>
+            </TableRow>
 
-              <tr>
-                <td>30-39</td>
-                <td>{TITLE_INFO.Major.title}</td>
-                <td>{TITLE_INFO.Major.reward} gold</td>
-                <td>{TITLE_INFO.Major.maxShips}</td>
-              </tr>
+            <TableRow>
+              <TableCell>30-39</TableCell>
+              <TableCell>{TITLE_INFO.Major.title}</TableCell>
+              <TableCell>{TITLE_INFO.Major.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Major.maxShips}</TableCell>
+            </TableRow>
 
-              <tr>
-                <td>40-49</td>
-                <td>{TITLE_INFO.Colonel.title}</td>
-                <td>{TITLE_INFO.Colonel.reward} gold</td>
-                <td>{TITLE_INFO.Colonel.maxShips}</td>
-              </tr>
+            <TableRow>
+              <TableCell>40-49</TableCell>
+              <TableCell>{TITLE_INFO.Colonel.title}</TableCell>
+              <TableCell>{TITLE_INFO.Colonel.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Colonel.maxShips}</TableCell>
+            </TableRow>
 
-              <tr>
-                <td>50-64</td>
-                <td>{TITLE_INFO.Admiral.title}</td>
-                <td>{TITLE_INFO.Admiral.reward} gold</td>
-                <td>{TITLE_INFO.Admiral.maxShips}</td>
-              </tr>
+            <TableRow>
+              <TableCell>50-64</TableCell>
+              <TableCell>{TITLE_INFO.Admiral.title}</TableCell>
+              <TableCell>{TITLE_INFO.Admiral.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Admiral.maxShips}</TableCell>
+            </TableRow>
 
-              <tr>
-                <td>65-79</td>
-                <td>{TITLE_INFO.Baron.title}</td>
-                <td>{TITLE_INFO.Baron.reward} gold</td>
-                <td>{TITLE_INFO.Baron.maxShips}</td>
-              </tr>
+            <TableRow>
+              <TableCell>65-79</TableCell>
+              <TableCell>{TITLE_INFO.Baron.title}</TableCell>
+              <TableCell>{TITLE_INFO.Baron.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Baron.maxShips}</TableCell>
+            </TableRow>
 
-              <tr>
-                <td>80-99</td>
-                <td>{TITLE_INFO.Count.title}</td>
-                <td>{TITLE_INFO.Count.reward} gold</td>
-                <td>{TITLE_INFO.Count.maxShips}</td>
-              </tr>
+            <TableRow>
+              <TableCell>80-99</TableCell>
+              <TableCell>{TITLE_INFO.Count.title}</TableCell>
+              <TableCell>{TITLE_INFO.Count.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Count.maxShips}</TableCell>
+            </TableRow>
 
-              <tr>
-                <td>100-119</td>
-                <td>{TITLE_INFO.Marquis.title}</td>
-                <td>{TITLE_INFO.Marquis.reward} gold</td>
-                <td>{TITLE_INFO.Marquis.maxShips}</td>
-              </tr>
+            <TableRow>
+              <TableCell>100-119</TableCell>
+              <TableCell>{TITLE_INFO.Marquis.title}</TableCell>
+              <TableCell>{TITLE_INFO.Marquis.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Marquis.maxShips}</TableCell>
+            </TableRow>
 
-              <tr>
-                <td>120+</td>
-                <td>{TITLE_INFO.Duke.title}</td>
-                <td>{TITLE_INFO.Duke.reward} gold</td>
-                <td>{TITLE_INFO.Duke.maxShips}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+            <TableRow>
+              <TableCell>120+</TableCell>
+              <TableCell>{TITLE_INFO.Duke.title}</TableCell>
+              <TableCell>{TITLE_INFO.Duke.reward} gold</TableCell>
+              <TableCell>{TITLE_INFO.Duke.maxShips}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
 
         <h3 className="my-2 font-serif text-2xl">Changing nation</h3>
 
