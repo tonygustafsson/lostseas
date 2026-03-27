@@ -13,7 +13,6 @@ const QrScanner = () => {
 
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasElementRef = useRef<HTMLCanvasElement>(null)
-  const canvasContext = canvasElementRef.current?.getContext("2d")
 
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [playerId, setPlayerId] = useState<string | null>(null)
@@ -23,14 +22,19 @@ const QrScanner = () => {
       return
     }
 
-    canvasContext?.drawImage(
+    const ctx = canvasElementRef.current.getContext("2d")
+
+    if (!ctx) return
+
+    ctx.drawImage(
       videoRef.current,
       0,
       0,
       canvasElementRef.current.width,
       canvasElementRef.current.height
     )
-    const imageData = canvasContext?.getImageData(
+
+    const imageData = ctx.getImageData(
       0,
       0,
       canvasElementRef.current.width,
@@ -61,7 +65,7 @@ const QrScanner = () => {
 
     requestAnimationFrame(verifyPlayerIdFromImageData)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canvasElementRef, canvasContext])
+  }, [canvasElementRef])
 
   const openQrScannerModal = () => {
     setModalIsOpen(true)
@@ -90,18 +94,19 @@ const QrScanner = () => {
   useEffect(() => {
     if (!modalIsOpen) return
 
-    const videoElement = videoRef.current
-
     const captureVideo = async () => {
       const stream = await window.navigator.mediaDevices.getUserMedia({
         video: true,
       })
 
+      const videoElement = videoRef.current
+
       if (!videoElement) return
 
       videoElement.srcObject = stream
       videoElement.setAttribute("playsinline", "true") // required to tell iOS safari we don't want fullscreen
-      videoElement.play()
+
+      await videoElement.play()
 
       requestAnimationFrame(verifyPlayerIdFromImageData)
     }
@@ -110,6 +115,7 @@ const QrScanner = () => {
 
     return () => {
       // Stop capturing video if modal is closed
+      const videoElement = videoRef.current
       if (!videoElement) return
 
       videoElement.pause()
