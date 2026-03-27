@@ -1,5 +1,6 @@
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import { useTavern } from "@/hooks/queries/useTavern"
@@ -31,9 +32,9 @@ const ShopItem = ({ player, item }: Props) => {
         <>
           <p>{TAVERN_ITEMS[item].description}</p>
 
-          <div className="mt-2 flex gap-2">
-            <div className="badge badge-secondary">Price: {price} gold</div>
-          </div>
+          <Badge variant="secondary" className="mt-4">
+            Price: {price} gold
+          </Badge>
         </>
       }
       actions={

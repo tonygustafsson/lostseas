@@ -1,5 +1,6 @@
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { SHIP_REPAIR_COST, SHIP_TYPES } from "@/constants/ship"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -14,7 +15,7 @@ const ShipyardRepair = () => {
   }
 
   return (
-    <div className="mt-8 flex flex-wrap gap-4">
+    <div className="mt-8 grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {Object.entries(player?.ships || [])
         .filter(([_, { health }]) => health < 100)
         .map(([id, { name, type, health }]) => {
@@ -40,9 +41,10 @@ const ShipyardRepair = () => {
                     >
                       Health: {health}%
                     </div>
-                    <div className="badge badge-secondary">
+
+                    <Badge variant="secondary" className="mt-4">
                       Price: {repairCost} gold
-                    </div>
+                    </Badge>
                   </div>
                 </>
               }

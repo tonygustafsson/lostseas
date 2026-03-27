@@ -1,4 +1,5 @@
 import TreasureIcon from "@/components/TreasureIcon"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { TREASURES } from "@/constants/treasures"
 import { useCityhall } from "@/hooks/queries/useCityhall"
@@ -39,9 +40,9 @@ const HandOver = () => {
 
             <p className="text-sm">{treasureInfo?.description}</p>
 
-            <div className="badge badge-secondary my-4">
+            <Badge variant="secondary" className="mt-4">
               Value: {treasureInfo?.value} gold
-            </div>
+            </Badge>
 
             <Button size="sm" onClick={() => handleHandover(treasure.id)}>
               Hand over

@@ -80,7 +80,7 @@ const MerchandiseShopItem = ({ player, item, type, onBuy, onSell }: Props) => {
         <>
           <p>{MERCHANDISE[item].description}</p>
 
-          <div className="mt-2 flex gap-2">
+          <div className="mt-4 flex gap-2">
             {type === "Buy" && (
               <Badge variant="secondary">
                 Price: {MERCHANDISE[item].buy} gold

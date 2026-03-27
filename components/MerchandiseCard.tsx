@@ -32,7 +32,7 @@ const MerchandiseCard = ({
   <Card
     className={cn(
       "w-full gap-0 py-0 shadow-xl",
-      !fullWidth && "lg:w-80",
+      !fullWidth && "max-w-sm",
       disabled && "cursor-not-allowed opacity-50"
     )}
     aria-disabled={disabled}
@@ -51,7 +51,7 @@ const MerchandiseCard = ({
       </div>
     </CardHeader>
 
-    <CardContent className="px-6 pt-4 pb-2 text-sm">{body}</CardContent>
+    <CardContent className="flex-1 px-6 pt-4 pb-2 text-sm">{body}</CardContent>
 
     {actions ? (
       <CardFooter className="flex items-center justify-between gap-2 px-6 pt-4 pb-4">

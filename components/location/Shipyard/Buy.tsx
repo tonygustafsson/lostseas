@@ -6,6 +6,7 @@ import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import MerchandiseShopItem from "@/components/MerchandiseShopItem"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_TYPES } from "@/constants/ship"
@@ -41,7 +42,7 @@ const ShipyardBuy = () => {
         </Alert>
       )}
 
-      <div className="flex flex-wrap gap-6">
+      <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {Object.entries(SHIP_TYPES).map(([shipType, { description, buy }]) => (
           <MerchandiseCard
             key={`shipyard-buy-${shipType}`}
@@ -52,9 +53,9 @@ const ShipyardBuy = () => {
               <>
                 <p>{description}</p>
 
-                <div className="flex gap-2">
-                  <div className="badge badge-secondary">Price: {buy} gold</div>
-                </div>
+                <Badge variant="secondary" className="mt-4">
+                  Price: {buy} gold
+                </Badge>
               </>
             }
             actions={

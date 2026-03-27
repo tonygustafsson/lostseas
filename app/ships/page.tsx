@@ -3,6 +3,7 @@ import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import RadialProgressBar from "@/components/RadialProgressBar"
 import ShipActions from "@/components/ships/ShipActions"
+import { Badge } from "@/components/ui/badge"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_TYPES } from "@/constants/ship"
 import { getLoggedInPlayer } from "@/utils/app/getLoggedInPlayer"
@@ -24,7 +25,7 @@ export default async function Page() {
       <h1 className="text mb-8 font-serif text-3xl">Ships</h1>
 
       {!!Object.values(player.ships || []).length && (
-        <div className="flex flex-wrap gap-6">
+        <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {Object.values(player.ships || []).map((ship) => {
             const shipInfo = SHIP_TYPES[ship.type]
             const createdDate = getCurrentDate(ship.createdDay)
@@ -52,9 +53,7 @@ export default async function Page() {
                         />
                       </div>
 
-                      <div className="badge badge-secondary">
-                        Created: {createdDate}
-                      </div>
+                      <Badge variant="secondary">Created: {createdDate}</Badge>
                     </div>
                   </>
                 }

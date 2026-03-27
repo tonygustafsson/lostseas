@@ -23,7 +23,7 @@ export default async function Page() {
       <>
         <h1 className="text mb-8 font-serif text-3xl">Crew members</h1>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           <div className="flex items-center justify-between rounded-md bg-gray-800 p-4">
             <div>
               <div className="text-muted-foreground text-sm">Crew members</div>
@@ -61,7 +61,7 @@ export default async function Page() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 pt-8 lg:flex-row">
+        <div className="mt-8 grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <GiveMedicine />
           <GiveGold />
           <DismissCrewMembers />
