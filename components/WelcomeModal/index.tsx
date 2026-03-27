@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-import { useModal } from "@/app/stores/modals"
+import useModal from "@/app/stores/modals"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import WelcomeExistingUser from "./WelcomeExistingUser"

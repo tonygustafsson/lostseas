@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 
-import { useModal } from "@/app/stores/modals"
+import useModal from "@/app/stores/modals"
 import LocationTabs from "@/components/LocationTabs"
 import { Button } from "@/components/ui/button"
 import { ButtonGroup, ButtonGroupText } from "@/components/ui/button-group"

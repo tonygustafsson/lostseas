@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import { useModal } from "../app/stores/modals"
+import useModal from "../app/stores/modals"
 
 describe("modals store", () => {
   beforeEach(() => {

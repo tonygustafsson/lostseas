@@ -29,7 +29,7 @@ export interface SoundState {
   playSoundEffect: (soundEffect?: SoundEffect) => void
 }
 
-export const useSound = create<SoundState>((set) => ({
+const useSound = create<SoundState>((set) => ({
   musicOn: false,
   soundEffectsOn: false,
   soundEffect: undefined,

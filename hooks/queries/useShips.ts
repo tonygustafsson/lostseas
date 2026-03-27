@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import { useModal } from "@/app/stores/modals"
+import useModal from "@/app/stores/modals"
 import { useToasts } from "@/app/stores/toasts"
 import apiRequest from "@/utils/apiRequest"
 

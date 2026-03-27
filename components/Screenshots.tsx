@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 
-import { useModal } from "@/app/stores/modals"
+import useModal from "@/app/stores/modals"
 import { capitalize } from "@/utils/string"
 
 const Screenshots = () => {

@@ -35,7 +35,7 @@ type ModalState = {
 
 const timers = new Map<string, ReturnType<typeof setTimeout>[]>()
 
-export const useModal = create<ModalState>((set: any, get: any) => ({
+const useModal = create<ModalState>((set: any, get: any) => ({
   modals: {},
   setModal: (modal: ModalProps) => {
     const id = modal.id

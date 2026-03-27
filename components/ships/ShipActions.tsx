@@ -1,6 +1,6 @@
 "use client"
 
-import { useModal } from "@/app/stores/modals"
+import useModal from "@/app/stores/modals"
 import RenameShipForm from "@/components/RenameShipForm"
 import { useShips } from "@/hooks/queries/useShips"
 

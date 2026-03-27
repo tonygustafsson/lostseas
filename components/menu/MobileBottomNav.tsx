@@ -6,7 +6,7 @@ import { GiPirateHat } from "react-icons/gi"
 import { HiMenu } from "react-icons/hi"
 import { RiTreasureMapLine } from "react-icons/ri"
 
-import { useModal } from "@/app/stores/modals"
+import useModal from "@/app/stores/modals"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { cn } from "@/lib/utils"
 

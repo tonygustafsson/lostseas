@@ -4,7 +4,7 @@ import { m as motion } from "framer-motion"
 import { usePathname, useRouter } from "next/navigation"
 import { Fragment, useState } from "react"
 
-import { useModal } from "@/app/stores/modals"
+import useModal from "@/app/stores/modals"
 import { TOWNS } from "@/constants/locations"
 import { useSea } from "@/hooks/queries/useSea"
 

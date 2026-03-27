@@ -9,7 +9,7 @@ import {
 } from "react-icons/gi"
 import { RiTreasureMapLine } from "react-icons/ri"
 
-import { useModal } from "@/app/stores/modals"
+import useModal from "@/app/stores/modals"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Map from "../Map"

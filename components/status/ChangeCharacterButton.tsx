@@ -1,6 +1,6 @@
 "use client"
 
-import { useModal } from "@/app/stores/modals"
+import useModal from "@/app/stores/modals"
 import ChangeCharacterForm from "@/components/ChangeCharacterForm"
 
 import { Button } from "../ui/button"

@@ -1,4 +1,4 @@
-import { useModal } from "@/app/stores/modals"
+import useModal from "@/app/stores/modals"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
 
