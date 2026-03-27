@@ -19,7 +19,7 @@ const Market = () => {
   }
 
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap gap-6">
       {Object.entries(items || {}).map(([item, { price, quantity }]) => {
         const inventoryItem = item as keyof LocationStateMarketItems
         const canAffortIt = price * quantity <= (player?.character.gold || 0)

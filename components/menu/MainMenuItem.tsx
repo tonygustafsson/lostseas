@@ -45,14 +45,16 @@ const MainMenuItem = ({
         {href ? (
           <Link
             href={href}
-            className={cn("font-serif text-lg!", { "text-accent!": isActive })}
+            className={cn("font-serif text-base!", {
+              "text-accent!": isActive,
+            })}
             aria-current={isActive ? "page" : undefined}
           >
             {icon}
             {label}
           </Link>
         ) : (
-          <div className="flex gap-2 font-serif text-lg">
+          <div className="flex gap-2 font-serif text-base!">
             {icon}
             {label}
           </div>

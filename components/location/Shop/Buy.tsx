@@ -8,7 +8,7 @@ const ShopBuy = () => {
   const { buy, sell } = useShop()
 
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap gap-6">
       {Object.entries(MERCHANDISE)
         .filter(([_, item]) => item.availableAt === "shop")
         .map(([itemKey]) => (

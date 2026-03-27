@@ -24,7 +24,7 @@ export default async function Page() {
       <h1 className="text mb-8 font-serif text-3xl">Ships</h1>
 
       {!!Object.values(player.ships || []).length && (
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-6">
           {Object.values(player.ships || []).map((ship) => {
             const shipInfo = SHIP_TYPES[ship.type]
             const createdDate = getCurrentDate(ship.createdDay)

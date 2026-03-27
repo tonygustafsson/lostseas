@@ -133,7 +133,7 @@ const LoginScreen = () => {
                 Register
               </Button>
 
-              <Button variant="secondary" className="mt-2">
+              <Button size="lg" variant="secondary">
                 <Link
                   href="/guide"
                   className="flex w-full content-center justify-center gap-2"
