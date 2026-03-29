@@ -4,6 +4,7 @@ import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
 import { MERCHANDISE } from "@/constants/merchandise"
 import apiRequest from "@/utils/apiRequest"
+import { dbPatchToObj } from "@/utils/dbUpdateToObj"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
 
@@ -12,24 +13,61 @@ export const useShop = () => {
   const setToast = useToasts((s) => s.setToast)
   const { playSoundEffect } = useSound()
 
+  const handleError = (
+    title: string,
+    message: string,
+    previousState: Player | undefined
+  ) => {
+    if (previousState) {
+      queryClient.setQueryData([PLAYER_QUERY_KEY], previousState)
+    }
+
+    setToast({
+      title,
+      message,
+      variant: "error",
+    })
+  }
+
   const { mutate: buy, isPending: isBuying } = useMutation({
     mutationFn: (data: { item: keyof Inventory; quantity: number }) =>
       apiRequest("/api/shop/buy", data, "POST"),
-    onSuccess: (response) => {
+    onMutate: async (data: { item: keyof Inventory; quantity: number }) => {
+      await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
+      const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
+
+      if (previous) {
+        const price =
+          MERCHANDISE[data.item as keyof typeof MERCHANDISE].buy * data.quantity
+        const prevQuantity = previous.inventory?.[data.item] ?? 0
+
+        const playerUpdates = {
+          "character/gold": previous.character.gold - price,
+          [`inventory/${data.item}`]: prevQuantity + data.quantity,
+        } satisfies PlayerDB
+
+        const newPlayer = dbPatchToObj(previous, playerUpdates)
+
+        queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
+      }
+
+      return { previous }
+    },
+    onError: (err: any, variables, context: any) => {
+      handleError(
+        `Could not buy ${variables.item}`,
+        err?.message,
+        context?.previous
+      )
+    },
+    onSuccess: (response, _, context) => {
       const { error, quantity, item, totalPrice, totalQuantity } =
         response?.data
 
       if (error) {
-        setToast({
-          title: `Could not buy ${item}`,
-          message: error,
-          variant: "error",
-        })
-
+        handleError(`Could not buy ${item}`, error, context?.previous)
         return
       }
-
-      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
       const unit =
         quantity === 1
@@ -44,27 +82,48 @@ export const useShop = () => {
 
       playSoundEffect("coins")
     },
-    onError: (error) => console.error(error),
   })
 
   const { mutate: sell, isPending: isSelling } = useMutation({
     mutationFn: (data: { item: keyof Inventory; quantity: number }) =>
       apiRequest("/api/shop/sell", data, "POST"),
-    onSuccess: (response) => {
+    onMutate: async (data: { item: keyof Inventory; quantity: number }) => {
+      await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+      const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
+
+      if (previous) {
+        const price =
+          MERCHANDISE[data.item as keyof typeof MERCHANDISE].sell *
+          data.quantity
+        const prevQuantity = previous.inventory?.[data.item] ?? 0
+
+        const playerUpdates = {
+          "character/gold": previous.character.gold + price,
+          [`inventory/${data.item}`]: prevQuantity - data.quantity,
+        } satisfies PlayerDB
+
+        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
+      }
+
+      return { previous }
+    },
+    onError: (err: any, variables, context: any) => {
+      handleError(
+        `Could not sell ${variables.item}`,
+        err?.message,
+        context?.previous
+      )
+    },
+    onSuccess: (response, _, context) => {
       const { error, quantity, item, totalPrice, totalQuantity } =
         response?.data
 
       if (error) {
-        setToast({
-          title: `Could not sell ${item}`,
-          message: error,
-          variant: "error",
-        })
-
+        handleError(`Could not sell ${item}`, error, context?.previous)
         return
       }
-
-      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
       const unit =
         quantity === 1
@@ -79,7 +138,6 @@ export const useShop = () => {
 
       playSoundEffect("coins")
     },
-    onError: (error) => console.error(error),
   })
 
   const { mutate: buyNecessities, isPending: isBuyingNecessities } =

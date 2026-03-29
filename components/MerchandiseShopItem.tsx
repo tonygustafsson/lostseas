@@ -134,7 +134,7 @@ const MerchandiseShopItem = ({ player, item, type, onBuy, onSell }: Props) => {
               type="button"
               size="sm"
               onClick={handleBuy}
-              disabled={buyingDisabled}
+              // disabled={buyingDisabled}
             >
               Buy
             </Button>
@@ -155,7 +155,7 @@ const MerchandiseShopItem = ({ player, item, type, onBuy, onSell }: Props) => {
                 type="button"
                 size="sm"
                 onClick={handleSell}
-                disabled={sellingDisabled}
+                //   disabled={sellingDisabled}
               >
                 Sell
               </Button>

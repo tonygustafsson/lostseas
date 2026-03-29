@@ -25,7 +25,7 @@ const readValue = async <T>(path: string) => {
 }
 
 const writeValue = async (path: string, value: unknown, method = "PUT") => {
-  const response = await fetch(buildDatabaseUrl(path), {
+  const response = await fetch(`${buildDatabaseUrl(path)}?print=silent`, {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -42,9 +42,8 @@ const writeValue = async (path: string, value: unknown, method = "PUT") => {
 export const getPlayer = async (playerId: Player["id"]) =>
   readValue<Player>(playerId)
 
-export const savePlayer = async (playerId: Player["id"], player: Player) => {
-  await writeValue(playerId, player)
-}
+export const savePlayer = async (playerId: Player["id"], updates: PlayerDB) =>
+  await writeValue(playerId, updates, "PATCH")
 
 export const getCharacter = async (playerId: Player["id"]) =>
   readValue<Character>(`${playerId}/character`)
