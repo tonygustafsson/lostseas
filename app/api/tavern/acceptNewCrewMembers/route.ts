@@ -21,29 +21,19 @@ export async function POST() {
     return NextResponse.json({ error: "No sailors to accept" }, { status: 500 })
   }
 
-  const playerResult = {
-    ...player,
-    crewMembers: {
-      ...player.crewMembers,
-      count: player.crewMembers.count + numberOfSailors,
-    },
-    locationStates: {
-      ...player.locationStates,
-      tavern: {
-        ...player.locationStates?.tavern,
-        noOfSailors: 0,
-      },
-    },
-  } as Player
+  const dbUpdate = {
+    "crewMembers/count": player.crewMembers.count + numberOfSailors,
+    "locationStates/tavern/noOfSailors": 0,
+  }
 
   try {
-    await savePlayer(playerId, playerResult)
+    await savePlayer(playerId, dbUpdate)
+
+    return NextResponse.json({ success: true, numberOfSailors, isHostile })
   } catch (error) {
     return NextResponse.json(
       { error, numberOfSailors, isHostile },
       { status: 500 }
     )
   }
-
-  return NextResponse.json({ success: true, numberOfSailors, isHostile })
 }

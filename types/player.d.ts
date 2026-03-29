@@ -16,6 +16,7 @@ type PlayerDB = Partial<
   >
 > &
   CharacterDB &
+  CrewMembersDB &
   InventoryDB &
   LocationStatesDB & {
     ships?: any // TODO: type this properly

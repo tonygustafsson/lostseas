@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const { item } = body
+  const { item }: { item: keyof typeof TAVERN_ITEMS } = body
 
   if (!item || !Object.keys(TAVERN_ITEMS).includes(item || "")) {
     return NextResponse.json({ error: "Not a valid item" }, { status: 400 })
@@ -40,30 +40,23 @@ export async function POST(req: Request) {
       ? 100
       : player.crewMembers.health + healthIncrease
 
-  const playerResult = {
-    ...player,
-    character: {
-      ...player.character,
-      gold: player.character.gold - totalPrice,
-    },
-    crewMembers: {
-      ...player.crewMembers,
-      mood: newMood,
-      health: newHealth,
-    },
-  } as Player
+  const dbUpdate = {
+    "character/gold": player.character.gold - totalPrice,
+    "crewMembers/mood": newMood,
+    "crewMembers/health": newHealth,
+  }
 
   try {
-    await savePlayer(playerId, playerResult)
+    await savePlayer(playerId, dbUpdate)
+
+    return NextResponse.json({
+      success: true,
+      item,
+      newMood,
+      newHealth,
+      totalPrice,
+    })
   } catch (error) {
     return NextResponse.json({ error, item }, { status: 500 })
   }
-
-  return NextResponse.json({
-    success: true,
-    item,
-    newMood,
-    newHealth,
-    totalPrice,
-  })
 }

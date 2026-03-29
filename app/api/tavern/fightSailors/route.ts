@@ -27,48 +27,33 @@ export async function POST() {
     const loot = Math.round(randomInt(10, 100))
     const healthLoss = Math.round(randomInt(1, 10))
 
-    const playerResult = {
-      ...player,
-      character: {
-        ...player.character,
-        gold: player.character.gold + loot,
-      },
-      crewMembers: {
-        ...player.crewMembers,
-        health:
-          player.crewMembers.health - healthLoss > 0
-            ? player.crewMembers.health - healthLoss
-            : 0,
-      },
-      locationStates: {
-        ...player.locationStates,
-        tavern: {
-          ...player.locationStates?.tavern,
-          noOfSailors: 0,
-        },
-      },
-    } as Player
+    const dbUpdate = {
+      "character/gold": player.character.gold + loot,
+      "crewMembers/health":
+        player.crewMembers.health - healthLoss > 0
+          ? player.crewMembers.health - healthLoss
+          : 0,
+      "locationStates/tavern/noOfSailors": 0,
+    }
 
     try {
-      await savePlayer(playerId, playerResult)
+      await savePlayer(playerId, dbUpdate)
+
+      return NextResponse.json({
+        success: true,
+        numberOfSailors,
+        healthLoss,
+        loot,
+      })
     } catch (error) {
       return NextResponse.json(
         { error, numberOfSailors, loot, healthLoss },
         { status: 500 }
       )
     }
-
-    return NextResponse.json({
-      success: true,
-      numberOfSailors,
-      healthLoss,
-      loot,
-    })
   } else {
     const healthLoss = Math.round(randomInt(10, 30))
-
-    const result = {
-      ...player,
+    const dbUpdate = {
       crewMembers: {
         ...player.crewMembers,
         health:
@@ -76,17 +61,11 @@ export async function POST() {
             ? player.crewMembers.health - healthLoss
             : 0,
       },
-      locationStates: {
-        ...player.locationStates,
-        tavern: {
-          ...player.locationStates?.tavern,
-          noOfSailors: 0,
-        },
-      },
-    } as Player
+      "locationStates/tavern/noOfSailors": 0,
+    } satisfies PlayerDB
 
     try {
-      await savePlayer(playerId, result)
+      await savePlayer(playerId, dbUpdate)
     } catch (error) {
       return NextResponse.json(
         { error, numberOfSailors, healthLoss },

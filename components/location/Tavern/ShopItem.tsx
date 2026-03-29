@@ -38,7 +38,7 @@ const ShopItem = ({ player, item }: Props) => {
         </>
       }
       actions={
-        <Button size="sm" onClick={handlePurchase} disabled={buyingDisabled}>
+        <Button size="sm" onClick={handlePurchase}>
           Buy
         </Button>
       }

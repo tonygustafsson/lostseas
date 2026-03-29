@@ -28,5 +28,5 @@ export const TAVERN_ITEMS = {
   },
 }
 
-export const CARDS_PERCENTAGE_VALUES = [5, 10, 25, 50, 75, 100]
+export const CARDS_PERCENTAGE_VALUES = [5, 10, 25, 50, 75, 100, 110]
 export const CARDS_PERCENTAGE_DEFAULT_VALUE = 10

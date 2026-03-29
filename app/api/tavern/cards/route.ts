@@ -2,7 +2,7 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { getCharacter, saveCharacter } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
 import { getRandomInt } from "@/utils/random"
 import { getCardsBet } from "@/utils/tavern"
 
@@ -17,13 +17,16 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const { betPercentage, selectedCard } = body
+  const {
+    betPercentage,
+    selectedCard,
+  }: { betPercentage: number; selectedCard: number } = body
 
-  const character = await getCharacter(playerId)
+  const player = await getPlayer(playerId)
 
-  const bet = getCardsBet(betPercentage, character.gold || 0)
+  const bet = getCardsBet(betPercentage, player.character.gold || 0)
 
-  if (character.gold < bet) {
+  if (player.character.gold < bet) {
     return NextResponse.json({ error: "Not enough gold" }, { status: 400 })
   }
 
@@ -32,29 +35,28 @@ export async function POST(req: Request) {
     selectedCard === correctCard ? "won" : "lost"
   const cardsReturns = cardsResults === "won" ? bet * 5 : -bet
 
-  const goldResult = character.gold + cardsReturns
+  const goldResult = player.character.gold + cardsReturns
 
-  const characterResult: Character = {
-    ...character,
-    gold: goldResult,
+  const dbUpdate = {
+    "character/gold": goldResult,
   }
 
   try {
-    await saveCharacter(playerId, characterResult)
+    await savePlayer(playerId, dbUpdate)
+
+    return NextResponse.json({
+      success: true,
+      bet,
+      cardsResults,
+      cardsReturns,
+      selectedCard,
+      correctCard,
+      gold: goldResult,
+    })
   } catch (error) {
     return NextResponse.json(
       { error, bet, cardsResults, cardsReturns },
       { status: 500 }
     )
   }
-
-  return NextResponse.json({
-    success: true,
-    bet,
-    cardsResults,
-    cardsReturns,
-    selectedCard,
-    correctCard,
-    gold: goldResult,
-  })
 }
