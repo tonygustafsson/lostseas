@@ -33,13 +33,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Not enough gold" }, { status: 400 })
   }
 
-  const itemQuantity = player.inventory?.[item as keyof Inventory]
+  const itemQuantity = player.inventory?.[item as keyof Inventory] ?? 0
 
   const dbUpdate = {
     "character/gold": player.character.gold - totalPrice,
-    [`inventory/${item}` satisfies keyof InventoryDB]: itemQuantity
-      ? itemQuantity + quantity
-      : quantity,
+    [`inventory/${item}`]: itemQuantity ? itemQuantity + quantity : quantity,
   }
 
   try {

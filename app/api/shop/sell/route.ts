@@ -42,7 +42,7 @@ export async function POST(req: Request) {
 
   const dbUpdate = {
     "character/gold": player.character.gold + totalPrice,
-    [`inventory/${item}` satisfies keyof InventoryDB]: itemQuantity - quantity,
+    [`inventory/${item}`]: itemQuantity - quantity,
   }
 
   try {

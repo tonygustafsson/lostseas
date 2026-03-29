@@ -7,7 +7,7 @@ import { getNecessitiesInfo } from "@/utils/shop"
 
 export async function POST(req: Request) {
   const body = await req.json()
-  const { days } = body
+  const { days }: { days: number } = body
 
   if (!days) {
     return NextResponse.json(
@@ -44,12 +44,12 @@ export async function POST(req: Request) {
 
   try {
     await savePlayer(playerId, dbUpdate)
+
+    return NextResponse.json({ success: true, cost, foodNeeded, waterNeeded })
   } catch (error) {
     return NextResponse.json(
       { error, cost, foodNeeded, waterNeeded },
       { status: 500 }
     )
   }
-
-  return NextResponse.json({ success: true, cost, foodNeeded, waterNeeded })
 }

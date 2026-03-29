@@ -26,9 +26,8 @@ export async function POST() {
 
   try {
     await savePlayer(playerId, dbUpdate)
+    return NextResponse.json({ success: true, value })
   } catch (error) {
     return NextResponse.json({ error, value }, { status: 500 })
   }
-
-  return NextResponse.json({ success: true, value })
 }

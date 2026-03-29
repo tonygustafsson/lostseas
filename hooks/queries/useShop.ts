@@ -178,15 +178,11 @@ export const useShop = () => {
           context?.previous
         )
       },
-      onSuccess: (response) => {
+      onSuccess: (response, _, context) => {
         const { error, foodNeeded, waterNeeded, cost } = response?.data
 
         if (error) {
-          setToast({
-            title: `Could not buy necessities`,
-            message: error,
-            variant: "error",
-          })
+          handleError(`Could not buy necessities`, error, context?.previous)
 
           return
         }
@@ -244,15 +240,11 @@ export const useShop = () => {
           context?.previous
         )
       },
-      onSuccess: (response) => {
+      onSuccess: (response, _, context) => {
         const { error, value } = response?.data
 
         if (error) {
-          setToast({
-            title: `Could not sell barter goods`,
-            message: error,
-            variant: "error",
-          })
+          handleError(`Could not sell barter goods`, error, context?.previous)
 
           return
         }
