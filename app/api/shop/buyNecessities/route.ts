@@ -36,21 +36,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Not enough gold" }, { status: 500 })
   }
 
-  const playerResult = {
-    ...player,
-    inventory: {
-      ...player.inventory,
-      food: (player.inventory?.food || 0) + foodNeeded,
-      water: (player.inventory?.water || 0) + waterNeeded,
-    },
-    character: {
-      ...player.character,
-      gold: player.character.gold - cost,
-    },
-  } as Player
+  const dbUpdate = {
+    "character/gold": player.character.gold - cost,
+    "inventory/food": (player.inventory?.food || 0) + foodNeeded,
+    "inventory/water": (player.inventory?.water || 0) + waterNeeded,
+  }
 
   try {
-    await savePlayer(playerId, playerResult)
+    await savePlayer(playerId, dbUpdate)
   } catch (error) {
     return NextResponse.json(
       { error, cost, foodNeeded, waterNeeded },

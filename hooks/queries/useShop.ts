@@ -5,6 +5,7 @@ import { useToasts } from "@/app/stores/toasts"
 import { MERCHANDISE } from "@/constants/merchandise"
 import apiRequest from "@/utils/apiRequest"
 import { dbPatchToObj } from "@/utils/dbUpdateToObj"
+import { getBarterGoodsValue, getNecessitiesInfo } from "@/utils/shop"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
 
@@ -144,6 +145,39 @@ export const useShop = () => {
     useMutation({
       mutationFn: (days: number) =>
         apiRequest("/api/shop/buyNecessities", { days }, "POST"),
+      onMutate: async (days: number) => {
+        await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+        const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
+
+        if (previous) {
+          const { cost, foodNeeded, waterNeeded } = getNecessitiesInfo({
+            crewMembers: previous.crewMembers.count || 0,
+            currentFood: previous.inventory?.food || 0,
+            currentWater: previous.inventory?.water || 0,
+            days,
+          })
+
+          const playerUpdates = {
+            "character/gold": previous.character.gold - cost,
+            "inventory/food": (previous.inventory?.food || 0) + foodNeeded,
+            "inventory/water": (previous.inventory?.water || 0) + waterNeeded,
+          } satisfies PlayerDB
+
+          const newPlayer = dbPatchToObj(previous, playerUpdates)
+
+          queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
+        }
+
+        return { previous }
+      },
+      onError: (err: any, variables, context: any) => {
+        handleError(
+          `Could not buy necessities`,
+          err?.message,
+          context?.previous
+        )
+      },
       onSuccess: (response) => {
         const { error, foodNeeded, waterNeeded, cost } = response?.data
 
@@ -176,12 +210,40 @@ export const useShop = () => {
 
         playSoundEffect("coins")
       },
-      onError: (error) => console.error(error),
     })
 
   const { mutate: sellBarterGoods, isPending: isSellingBarterGoods } =
     useMutation({
       mutationFn: () => apiRequest("/api/shop/sellBarterGoods", null, "POST"),
+      onMutate: async () => {
+        await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+        const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
+
+        if (previous) {
+          const value = getBarterGoodsValue(previous.inventory)
+
+          const playerUpdates = {
+            "character/gold": previous.character.gold + value,
+            "inventory/porcelain": 0,
+            "inventory/spices": 0,
+            "inventory/tobacco": 0,
+            "inventory/rum": 0,
+          } satisfies PlayerDB
+
+          const newPlayer = dbPatchToObj(previous, playerUpdates)
+          queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
+        }
+
+        return { previous }
+      },
+      onError: (err: any, _, context: any) => {
+        handleError(
+          `Could not sell barter goods`,
+          err?.message,
+          context?.previous
+        )
+      },
       onSuccess: (response) => {
         const { error, value } = response?.data
 
@@ -205,7 +267,6 @@ export const useShop = () => {
 
         playSoundEffect("coins")
       },
-      onError: (error) => console.error(error),
     })
 
   return {

@@ -16,24 +16,16 @@ export async function POST() {
   const player = await getPlayer(playerId)
 
   const value = getBarterGoodsValue(player.inventory)
-
-  const playerResult = {
-    ...player,
-    inventory: {
-      ...player.inventory,
-      porcelain: 0,
-      spices: 0,
-      tobacco: 0,
-      rum: 0,
-    },
-    character: {
-      ...player.character,
-      gold: player.character.gold + value,
-    },
-  } as Player
+  const dbUpdate = {
+    "character/gold": player.character.gold + value,
+    "inventory/porcelain": 0,
+    "inventory/spices": 0,
+    "inventory/tobacco": 0,
+    "inventory/rum": 0,
+  }
 
   try {
-    await savePlayer(playerId, playerResult)
+    await savePlayer(playerId, dbUpdate)
   } catch (error) {
     return NextResponse.json({ error, value }, { status: 500 })
   }
