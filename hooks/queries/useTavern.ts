@@ -104,10 +104,7 @@ export const useTavern = () => {
             previous?.locationStates?.tavern?.noOfSailors || 0
 
           const playerUpdates = {
-            crewMembers: {
-              ...previous.crewMembers,
-              count: previous.crewMembers.count + numberOfSailors,
-            },
+            "crewMembers/count": previous.crewMembers.count + numberOfSailors,
             "locationStates/tavern/noOfSailors": 0,
           } satisfies PlayerDB
 

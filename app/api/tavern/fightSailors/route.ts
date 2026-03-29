@@ -54,25 +54,22 @@ export async function POST() {
   } else {
     const healthLoss = Math.round(randomInt(10, 30))
     const dbUpdate = {
-      crewMembers: {
-        ...player.crewMembers,
-        health:
-          player.crewMembers.health - healthLoss > 0
-            ? player.crewMembers.health - healthLoss
-            : 0,
-      },
+      "crewMembers/health":
+        player.crewMembers.health - healthLoss > 0
+          ? player.crewMembers.health - healthLoss
+          : 0,
       "locationStates/tavern/noOfSailors": 0,
-    } satisfies PlayerDB
+    }
 
     try {
       await savePlayer(playerId, dbUpdate)
+
+      return NextResponse.json({ success: false, numberOfSailors, healthLoss })
     } catch (error) {
       return NextResponse.json(
         { error, numberOfSailors, healthLoss },
         { status: 500 }
       )
     }
-
-    return NextResponse.json({ success: false, numberOfSailors, healthLoss })
   }
 }
