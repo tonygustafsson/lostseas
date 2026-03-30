@@ -2,7 +2,7 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { getCharacter, saveCharacter } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const { amount } = body
+  const { amount }: { amount: number } = body
 
   if (amount < 1) {
     return NextResponse.json(
@@ -22,34 +22,37 @@ export async function POST(req: Request) {
     )
   }
 
-  const character = await getCharacter(playerId)
+  const player = await getPlayer(playerId)
 
-  if (character.loan) {
+  if (player.character.loan) {
     return NextResponse.json(
       { error: "You cannot add funds until your loan is fully repaid." },
       { status: 400 }
     )
   }
-
-  if (character.gold < amount) {
+  if (player.character.gold < amount) {
     return NextResponse.json({ error: "Not enough gold" }, { status: 400 })
   }
 
-  const characterResult = {
-    ...character,
-    gold: character.gold - amount,
-    account: character.account ? character.account + amount : amount,
+  const newGold = player.character.gold - amount
+  const newAccount = player.character.account
+    ? player.character.account + amount
+    : amount
+
+  const dbUpdate = {
+    "character/gold": newGold,
+    "character/account": newAccount,
   }
 
   try {
-    await saveCharacter(playerId, characterResult)
+    await savePlayer(playerId, dbUpdate)
+
+    return NextResponse.json({
+      success: true,
+      amount,
+      gold: newGold,
+    })
   } catch (error) {
     return NextResponse.json({ error, amount }, { status: 500 })
   }
-
-  return NextResponse.json({
-    success: true,
-    amount,
-    gold: characterResult.gold,
-  })
 }

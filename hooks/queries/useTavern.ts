@@ -75,8 +75,6 @@ export const useTavern = () => {
         return
       }
 
-      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
-
       setToast({
         title: `You bought ${item} for you and your crew`,
         message: `It cost you ${totalPrice} gold and your crew now have the health ${newHealth} and mood ${newMood}`,
@@ -126,8 +124,6 @@ export const useTavern = () => {
           return
         }
 
-        queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
-
         setToast({
           title: `You took ${numberOfSailors} in as your crew`,
           message: `Your whole crew couldn't be happier`,
@@ -167,8 +163,6 @@ export const useTavern = () => {
         handleError(`Could not fight sailors`, error, context?.previous)
         return
       }
-
-      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
       if (success) {
         setToast({
@@ -226,8 +220,6 @@ export const useTavern = () => {
         return
       }
 
-      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
-
       setToast({
         title: `You ignored the ${numberOfSailors} sailors`,
         message: `You said "No thank you" and just walked away`,
@@ -244,8 +236,6 @@ export const useTavern = () => {
       apiRequest("/api/tavern/cards", data, "POST"),
     onSuccess: (response) => {
       const { bet, gold, cardsResults } = response?.data
-
-      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
       let title = ""
 

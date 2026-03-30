@@ -3,7 +3,7 @@ import { NextResponse } from "next/server"
 
 import { LOAN_LIMIT } from "@/constants/bank"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { getCharacter, saveCharacter } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const { amount } = body
+  const { amount }: { amount: number } = body
 
   if (amount < 1) {
     return NextResponse.json(
@@ -23,31 +23,31 @@ export async function POST(req: Request) {
     )
   }
 
-  const character = await getCharacter(playerId)
+  const player = await getPlayer(playerId)
 
-  if ((character.loan || 0) + amount > LOAN_LIMIT) {
+  if ((player.character.loan || 0) + amount > LOAN_LIMIT) {
     return NextResponse.json(
       { error: `You cannot loan more than a total of ${LOAN_LIMIT} gold.` },
       { status: 400 }
     )
   }
-
-  const characterResult = {
-    ...character,
-    gold: character.gold + amount,
-    loan: character.loan ? character.loan + amount : amount,
+  const dbUpdate = {
+    "character/gold": player.character.gold + amount,
+    "character/loan": player.character.loan
+      ? player.character.loan + amount
+      : amount,
   }
 
   try {
-    await saveCharacter(playerId, characterResult)
+    await savePlayer(playerId, dbUpdate)
+
+    return NextResponse.json({
+      success: true,
+      amount,
+      gold: player.character.gold + amount,
+      loan: player.character.loan ? player.character.loan + amount : amount,
+    })
   } catch (error) {
     return NextResponse.json({ error, amount }, { status: 500 })
   }
-
-  return NextResponse.json({
-    success: true,
-    amount,
-    gold: characterResult.gold,
-    loan: characterResult.loan,
-  })
 }

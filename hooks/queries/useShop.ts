@@ -187,8 +187,6 @@ export const useShop = () => {
           return
         }
 
-        queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
-
         const foodUnit =
           foodNeeded === 1
             ? MERCHANDISE["food"].singleUnit
@@ -248,8 +246,6 @@ export const useShop = () => {
 
           return
         }
-
-        queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
         setToast({
           title: `You sold all barter goods`,
