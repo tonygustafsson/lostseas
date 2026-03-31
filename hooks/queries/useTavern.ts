@@ -260,9 +260,10 @@ export const useTavern = () => {
 
   const { mutateAsync: playCards, isPending: isPlayingCard } = useMutation({
     mutationFn: (data: { betPercentage: number; selectedCard: number }) =>
+      // Use mutateAsync since client cannot predict if he will win
       apiRequest("/api/tavern/cards", data, "POST"),
     onSuccess: (response) => {
-      const { bet, gold, cardsResults } = response?.data
+      const { updatedPlayer, bet, gold, cardsResults } = response?.data
 
       let title = ""
 
@@ -270,6 +271,10 @@ export const useTavern = () => {
         title = `You played made a bet of ${bet} gold and won!`
       } else {
         title = `You played made a bet of ${bet} gold and lost`
+      }
+
+      if (updatedPlayer) {
+        queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
       }
 
       setToast({
