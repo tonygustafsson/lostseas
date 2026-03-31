@@ -26,7 +26,7 @@ export default async function Page() {
 
       {!!Object.values(player.ships || []).length && (
         <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-          {Object.values(player.ships || []).map((ship) => {
+          {Object.values(player.ships || []).map((ship, idx) => {
             const shipInfo = SHIP_TYPES[ship.type]
             const createdDate = getCurrentDate(ship.createdDay)
 
@@ -36,7 +36,7 @@ export default async function Page() {
 
             return (
               <MerchandiseCard
-                key={`ships-${ship.id}`}
+                key={`ships-${ship.id}-${idx}`}
                 title={`${ship.name} (${ship.type})`}
                 icon={<MerchandiseIcon item={ship.type} />}
                 body={

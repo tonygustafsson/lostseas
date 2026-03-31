@@ -30,26 +30,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Not enough gold." }, { status: 400 })
   }
 
-  const playerResult: Player = {
-    ...player,
-    character: {
-      ...player.character,
-      gold: player.character.gold - totalPrice,
-    },
-    ships: {
-      ...player.ships,
-      [id]: {
-        ...ship,
-        health: 100,
-      },
-    },
+  const dbUpdate = {
+    "character/gold": player.character.gold - totalPrice,
+    [`ships/${id}/health`]: 100,
   }
 
   try {
-    await savePlayer(playerId, playerResult)
+    const updatedPlayer = await savePlayer(playerId, dbUpdate)
+
+    return NextResponse.json({ success: true, updatedPlayer, ship, totalPrice })
   } catch (error) {
     return NextResponse.json({ error, ship, totalPrice }, { status: 500 })
   }
-
-  return NextResponse.json({ success: true, ship, totalPrice })
 }

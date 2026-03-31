@@ -14,7 +14,13 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const { item, quantity } = body
+  const {
+    item,
+    quantity,
+  }: {
+    item: keyof typeof MERCHANDISE
+    quantity: number
+  } = body
 
   if (
     !item ||
@@ -40,29 +46,25 @@ export async function POST(req: Request) {
     )
   }
 
-  const playerResult = {
-    ...player,
-    inventory: {
-      ...player.inventory,
-      [item]: itemQuantity - quantity,
-    },
-    character: {
-      ...player.character,
-      gold: player.character.gold + totalPrice,
-    },
-  } as Player
+  const newQuantity = itemQuantity - quantity
+
+  const dbUpdate = {
+    [`inventory/${item}`]: newQuantity,
+    "character/gold": player.character.gold + totalPrice,
+  }
 
   try {
-    await savePlayer(playerId, playerResult)
+    const updatedPlayer = await savePlayer(playerId, dbUpdate)
+
+    return NextResponse.json({
+      success: true,
+      updatedPlayer,
+      item,
+      quantity,
+      totalQuantity: updatedPlayer.inventory?.[item] ?? newQuantity,
+      totalPrice,
+    })
   } catch (error) {
     return NextResponse.json({ error, item }, { status: 500 })
   }
-
-  return NextResponse.json({
-    success: true,
-    item,
-    quantity,
-    totalQuantity: itemQuantity - quantity,
-    totalPrice,
-  })
 }

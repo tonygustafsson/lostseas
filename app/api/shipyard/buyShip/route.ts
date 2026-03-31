@@ -16,7 +16,7 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const { item } = body
+  const { item }: { item: keyof typeof SHIP_TYPES } = body
 
   if (!item || !Object.keys(SHIP_TYPES).includes(item || "")) {
     return NextResponse.json({ error: "Not a valid item" }, { status: 400 })
@@ -47,23 +47,16 @@ export async function POST(req: Request) {
 
   const newShip = createNewShip(shipItem as Ship["type"], player.character.day)
 
-  const playerResult: Player = {
-    ...player,
-    character: {
-      ...player.character,
-      gold: player.character.gold - totalPrice,
-    },
-    ships: {
-      ...player.ships,
-      [newShip.id]: newShip,
-    },
+  const dbUpdate = {
+    "character/gold": player.character.gold - totalPrice,
+    [`ships/${newShip.id}`]: newShip,
   }
 
   try {
-    await savePlayer(playerId, playerResult)
+    const updatedPlayer = await savePlayer(playerId, dbUpdate)
+
+    return NextResponse.json({ success: true, updatedPlayer, item, totalPrice })
   } catch (error) {
     return NextResponse.json({ error, item }, { status: 500 })
   }
-
-  return NextResponse.json({ success: true, item, totalPrice })
 }
