@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 400 })
   }
 
-  const body = await req.json()
+  const body = (await req.json()) as { count: string }
   const count = parseInt(body.count)
 
   const player = await getPlayer(playerId)
@@ -33,19 +33,15 @@ export async function POST(req: Request) {
 
   const newCount = player.crewMembers.count - count
 
-  const playerResult: Player = {
-    ...player,
-    crewMembers: {
-      ...player.crewMembers,
-      count: newCount,
-    },
+  const dbUpdate = {
+    "crewMembers/count": newCount,
   }
 
   try {
-    await savePlayer(playerId, playerResult)
+    const updatedPlayer = await savePlayer(playerId, dbUpdate)
+
+    return NextResponse.json({ success: true, updatedPlayer, count, newCount })
   } catch (error) {
     return NextResponse.json({ error, count, newCount }, { status: 500 })
   }
-
-  return NextResponse.json({ success: true, count, newCount })
 }

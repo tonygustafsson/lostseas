@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 400 })
   }
 
-  const body = await req.json()
+  const body = (await req.json()) as { medicine: string }
   const medicine = parseInt(body.medicine)
 
   const player = await getPlayer(playerId)
@@ -35,23 +35,21 @@ export async function POST(req: Request) {
     medicine
   )
 
-  const playerResult: Player = {
-    ...player,
-    inventory: {
-      ...player.inventory,
-      medicine: (player.inventory?.medicine || 0) - medicine,
-    },
-    crewMembers: {
-      ...player.crewMembers,
-      health: newHealth,
-    },
+  const dbUpdate = {
+    "inventory/medicine": (player.inventory?.medicine || 0) - medicine,
+    "crewMembers/health": newHealth,
   }
 
   try {
-    await savePlayer(playerId, playerResult)
+    const updatedPlayer = await savePlayer(playerId, dbUpdate)
+
+    return NextResponse.json({
+      success: true,
+      updatedPlayer,
+      medicine,
+      newHealth,
+    })
   } catch (error) {
     return NextResponse.json({ error, medicine, newHealth }, { status: 500 })
   }
-
-  return NextResponse.json({ success: true, medicine, newHealth })
 }

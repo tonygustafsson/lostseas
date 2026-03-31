@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 400 })
   }
 
-  const body = await req.json()
+  const body = (await req.json()) as { gold: string }
   const gold = parseInt(body.gold)
 
   const player = await getPlayer(playerId)
@@ -35,23 +35,16 @@ export async function POST(req: Request) {
     gold
   )
 
-  const playerResult: Player = {
-    ...player,
-    character: {
-      ...player.character,
-      gold: (player.character.gold || 0) - gold,
-    },
-    crewMembers: {
-      ...player.crewMembers,
-      mood: newMood,
-    },
+  const dbUpdate = {
+    "character/gold": (player.character.gold || 0) - gold,
+    "crewMembers/mood": newMood,
   }
 
   try {
-    await savePlayer(playerId, playerResult)
+    const updatedPlayer = await savePlayer(playerId, dbUpdate)
+
+    return NextResponse.json({ success: true, updatedPlayer, gold, newMood })
   } catch (error) {
     return NextResponse.json({ error, gold, newMood }, { status: 500 })
   }
-
-  return NextResponse.json({ success: true, gold, newMood })
 }
