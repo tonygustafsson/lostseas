@@ -33,20 +33,16 @@ export async function POST(req: Request) {
     return NextResponse.json({})
   }
 
-  const playerResult: Player = {
-    ...player,
-    character: {
-      ...player.character,
-      location: destination,
-    },
+  const dbUpdate = {
+    "character/location": destination,
   }
 
   try {
-    await savePlayer(playerId, playerResult)
+    const updatedPlayer = await savePlayer(playerId, dbUpdate)
     await createMoveEvents({ playerId, destination })
+
+    return NextResponse.json({ success: true, updatedPlayer })
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 })
   }
-
-  return NextResponse.json({ success: true })
 }
