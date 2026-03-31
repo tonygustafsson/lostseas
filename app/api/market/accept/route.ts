@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const { item } = body as { item: keyof typeof MERCHANDISE }
+  const { item }: { item: keyof typeof MERCHANDISE } = body
 
   if (!item || !Object.keys(MERCHANDISE).includes(item || "")) {
     return NextResponse.json({ error: "Not a valid item" }, { status: 400 })
@@ -47,41 +47,30 @@ export async function POST(req: Request) {
     )
   }
 
-  const playerResult: Player = {
-    ...player,
-    character: {
-      ...player.character,
-      gold: player.character.gold - totalPrice,
-    },
-    inventory: {
-      ...player.inventory,
-      [item]: player.inventory?.[item]
-        ? (player.inventory[item] || 0) + stateItem.quantity
-        : stateItem.quantity,
-    },
-    locationStates: {
-      ...player.locationStates,
-      market: {
-        ...player.locationStates.market,
-        items: {
-          ...player.locationStates.market.items,
-          [item]: null,
-        },
-      },
-    },
+  const newGold = player.character.gold - totalPrice
+
+  const newInventoryQty = player.inventory?.[item]
+    ? (player.inventory[item] || 0) + stateItem.quantity
+    : stateItem.quantity
+
+  const dbUpdate = {
+    "character/gold": newGold,
+    [`inventory/${item}`]: newInventoryQty,
+    [`locationStates/market/items/${item}`]: null,
   }
 
   try {
-    await savePlayer(playerId, playerResult)
+    const updatedPlayer = await savePlayer(playerId, dbUpdate)
+
+    return NextResponse.json({
+      success: true,
+      updatedPlayer,
+      item,
+      quantity: stateItem.quantity,
+      totalQuantity: updatedPlayer.inventory?.[item] || 0,
+      totalPrice,
+    })
   } catch (error) {
     return NextResponse.json({ error, item }, { status: 500 })
   }
-
-  return NextResponse.json({
-    success: true,
-    item,
-    quantity: stateItem.quantity,
-    totalQuantity: playerResult.inventory?.[item] || 0,
-    totalPrice,
-  })
 }
