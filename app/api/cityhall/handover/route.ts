@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const { id } = body
+  const { id }: { id: Treasure["id"] } = body
 
   const player = await getPlayer(playerId)
 
@@ -34,30 +34,23 @@ export async function POST(req: Request) {
     )
   }
 
-  const playerResult: Player = {
-    ...player,
-    character: {
-      ...player.character,
-      gold: player.character.gold + (treasureInfo?.value || 0),
-    },
-    treasures: {
-      ...player.treasures,
-      [id]: null,
-    },
+  const dbUpdate = {
+    "character/gold": player.character.gold + (treasureInfo?.value || 0),
+    [`treasures/${id}`]: null,
   }
 
   try {
-    await savePlayer(playerId, playerResult)
+    await savePlayer(playerId, dbUpdate)
+
+    return NextResponse.json({
+      success: true,
+      treasure: matchingTreasure,
+      treasureInfo,
+    })
   } catch (error) {
     return NextResponse.json(
       { error, treasure: matchingTreasure, treasureInfo },
       { status: 500 }
     )
   }
-
-  return NextResponse.json({
-    success: true,
-    treasure: matchingTreasure,
-    treasureInfo,
-  })
 }

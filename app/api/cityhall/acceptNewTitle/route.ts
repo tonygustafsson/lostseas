@@ -2,7 +2,7 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { getCharacter, saveCharacter } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
 import { getNewTitle } from "@/utils/title"
 
 export async function POST() {
@@ -13,9 +13,11 @@ export async function POST() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 400 })
   }
 
-  const character = await getCharacter(playerId)
+  const player = await getPlayer(playerId)
 
-  const { isHomeNation, titleInfo, promotionAvailable } = getNewTitle(character)
+  const { isHomeNation, titleInfo, promotionAvailable } = getNewTitle(
+    player.character
+  )
 
   if (!isHomeNation) {
     return NextResponse.json(
@@ -29,26 +31,29 @@ export async function POST() {
       {
         error: `You already have the title ${titleInfo?.title}.`,
         titleInfo,
-        title: character.title,
+        title: player.character.title,
       },
       { status: 500 }
     )
   }
 
-  const characterResult: Character = {
-    ...character,
-    title: titleInfo?.title,
-    gold: character.gold + titleInfo.reward,
+  const dbUpdate = {
+    "character/title": titleInfo?.title,
+    "character/gold": player.character.gold + titleInfo.reward,
   }
 
   try {
-    await saveCharacter(playerId, characterResult)
+    await savePlayer(playerId, dbUpdate)
+
+    return NextResponse.json({
+      success: true,
+      titleInfo,
+      title: player.character.title,
+    })
   } catch (error) {
     return NextResponse.json(
-      { error, titleInfo, title: character.title },
+      { error, titleInfo, title: player.character.title },
       { status: 500 }
     )
   }
-
-  return NextResponse.json({ success: true, titleInfo, title: character.title })
 }
