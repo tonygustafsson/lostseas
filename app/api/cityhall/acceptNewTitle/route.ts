@@ -43,10 +43,11 @@ export async function POST() {
   }
 
   try {
-    await savePlayer(playerId, dbUpdate)
+    const updatedPlayer = await savePlayer(playerId, dbUpdate)
 
     return NextResponse.json({
       success: true,
+      updatedPlayer,
       titleInfo,
       title: player.character.title,
     })

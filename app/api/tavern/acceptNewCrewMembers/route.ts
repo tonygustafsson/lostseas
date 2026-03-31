@@ -27,9 +27,14 @@ export async function POST() {
   }
 
   try {
-    await savePlayer(playerId, dbUpdate)
+    const updatedPlayer = await savePlayer(playerId, dbUpdate)
 
-    return NextResponse.json({ success: true, numberOfSailors, isHostile })
+    return NextResponse.json({
+      success: true,
+      updatedPlayer,
+      numberOfSailors,
+      isHostile,
+    })
   } catch (error) {
     return NextResponse.json(
       { error, numberOfSailors, isHostile },

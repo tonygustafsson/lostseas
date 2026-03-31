@@ -68,11 +68,16 @@ export const useTavern = () => {
       return { previous }
     },
     onSuccess: (response, _, context) => {
-      const { error, newMood, newHealth, item, totalPrice } = response?.data
+      const { updatedPlayer, error, newMood, newHealth, item, totalPrice } =
+        response?.data
 
       if (error) {
         handleError(`Could not buy ${item}`, error, context?.previous)
         return
+      }
+
+      if (updatedPlayer) {
+        queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
       }
 
       setToast({
@@ -113,7 +118,7 @@ export const useTavern = () => {
         return { previous }
       },
       onSuccess: (response, _, context) => {
-        const { error, numberOfSailors } = response?.data
+        const { updatedPlayer, error, numberOfSailors } = response?.data
 
         if (error) {
           handleError(
@@ -122,6 +127,10 @@ export const useTavern = () => {
             context?.previous
           )
           return
+        }
+
+        if (updatedPlayer) {
+          queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
         }
 
         setToast({
@@ -156,12 +165,22 @@ export const useTavern = () => {
       return { previous }
     },
     onSuccess: (response, _, context) => {
-      const { error, numberOfSailors, success, loot, healthLoss } =
-        response?.data
+      const {
+        updatedPlayer,
+        error,
+        numberOfSailors,
+        success,
+        loot,
+        healthLoss,
+      } = response?.data
 
       if (error) {
         handleError(`Could not fight sailors`, error, context?.previous)
         return
+      }
+
+      if (updatedPlayer) {
+        queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
       }
 
       if (success) {
@@ -208,16 +227,24 @@ export const useTavern = () => {
     },
     onSuccess: (
       response: {
-        data: { error?: string; numberOfSailors: number }
+        data: {
+          updatedPlayer?: Player
+          error?: string
+          numberOfSailors: number
+        }
       },
       _,
       context
     ) => {
-      const { error, numberOfSailors } = response?.data
+      const { updatedPlayer, error, numberOfSailors } = response?.data
 
       if (error) {
         handleError(`Could not ignore sailors`, error, context?.previous)
         return
+      }
+
+      if (updatedPlayer) {
+        queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
       }
 
       setToast({

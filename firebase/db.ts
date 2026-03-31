@@ -25,7 +25,7 @@ const readValue = async <T>(path: string) => {
 }
 
 const writeValue = async (path: string, value: unknown, method = "PUT") => {
-  const response = await fetch(`${buildDatabaseUrl(path)}?print=silent`, {
+  const response = await fetch(buildDatabaseUrl(path), {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -37,6 +37,10 @@ const writeValue = async (path: string, value: unknown, method = "PUT") => {
   if (!response.ok) {
     throw new Error(`Failed to write Firebase path: ${path}`)
   }
+
+  const updatedPlayer = await getPlayer(path)
+
+  return updatedPlayer
 }
 
 export const getPlayer = async (playerId: Player["id"]) =>

@@ -39,10 +39,11 @@ export async function POST(req: Request) {
   }
 
   try {
-    await savePlayer(playerId, dbUpdate)
+    const updatedPlayer = await savePlayer(playerId, dbUpdate)
 
     return NextResponse.json({
       success: true,
+      updatedPlayer,
       amount,
       gold: player.character.gold + amount,
       loan: player.character.loan ? player.character.loan + amount : amount,

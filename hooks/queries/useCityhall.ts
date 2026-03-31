@@ -61,7 +61,7 @@ export const useCityhall = () => {
         )
       },
       onSuccess: (response, _, context) => {
-        const { error, titleInfo } = response?.data
+        const { updatedPlayer, error, titleInfo } = response?.data
 
         if (error) {
           handleError(
@@ -70,6 +70,10 @@ export const useCityhall = () => {
             context?.previous
           )
           return
+        }
+
+        if (updatedPlayer) {
+          queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
         }
 
         playSoundEffect("fanfare")
@@ -119,7 +123,8 @@ export const useCityhall = () => {
         )
       },
       onSuccess: (response, _, context) => {
-        const { error, titleInfo, newNationality } = response?.data
+        const { updatedPlayer, error, titleInfo, newNationality } =
+          response?.data
 
         if (error) {
           handleError(
@@ -128,6 +133,10 @@ export const useCityhall = () => {
             context?.previous
           )
           return
+        }
+
+        if (updatedPlayer) {
+          queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
         }
 
         playSoundEffect("fanfare")
@@ -176,7 +185,7 @@ export const useCityhall = () => {
       )
     },
     onSuccess: (response, _, context) => {
-      const { error, treasure, treasureInfo } = response?.data
+      const { updatedPlayer, error, treasure, treasureInfo } = response?.data
 
       if (error) {
         handleError(
@@ -185,6 +194,10 @@ export const useCityhall = () => {
           context?.previous
         )
         return
+      }
+
+      if (updatedPlayer) {
+        queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
       }
 
       playSoundEffect("coins")

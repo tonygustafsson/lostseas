@@ -53,11 +53,15 @@ export const useBank = () => {
       handleError(`Could not deposit`, err?.message, context?.previous)
     },
     onSuccess: (response, _, context) => {
-      const { error, amount, gold } = response?.data
+      const { updatedPlayer, error, amount, gold } = response?.data
 
       if (error) {
         handleError(`Could not deposit`, error, context?.previous)
         return
+      }
+
+      if (updatedPlayer) {
+        queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
       }
 
       setToast({
@@ -96,11 +100,15 @@ export const useBank = () => {
       handleError(`Could not withdraw`, err?.message, context?.previous)
     },
     onSuccess: (response, _, context) => {
-      const { error, amount, gold } = response?.data
+      const { updatedPlayer, error, amount, gold } = response?.data
 
       if (error) {
         handleError(`Could not withdraw`, error, context?.previous)
         return
+      }
+
+      if (updatedPlayer) {
+        queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
       }
 
       setToast({
@@ -137,11 +145,21 @@ export const useBank = () => {
       handleError(`Could not take loan`, err?.message, context?.previous)
     },
     onSuccess: (response, _, context) => {
-      const { error, amount, gold, loan: loanAmount } = response?.data
+      const {
+        updatedPlayer,
+        error,
+        amount,
+        gold,
+        loan: loanAmount,
+      } = response?.data
 
       if (error) {
         handleError(`Could not take loan`, error, context?.previous)
         return
+      }
+
+      if (updatedPlayer) {
+        queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
       }
 
       setToast({
@@ -180,11 +198,21 @@ export const useBank = () => {
       handleError(`Could not repay loan`, err?.message, context?.previous)
     },
     onSuccess: (response, _, context) => {
-      const { error, amount, gold, loan: loanAmount } = response?.data
+      const {
+        updatedPlayer,
+        error,
+        amount,
+        gold,
+        loan: loanAmount,
+      } = response?.data
 
       if (error) {
         handleError(`Could not repay loan`, error, context?.previous)
         return
+      }
+
+      if (updatedPlayer) {
+        queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
       }
 
       setToast({

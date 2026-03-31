@@ -62,12 +62,22 @@ export const useShop = () => {
       )
     },
     onSuccess: (response, _, context) => {
-      const { error, quantity, item, totalPrice, totalQuantity } =
-        response?.data
+      const {
+        updatedPlayer,
+        error,
+        quantity,
+        item,
+        totalPrice,
+        totalQuantity,
+      } = response?.data
 
       if (error) {
         handleError(`Could not buy ${item}`, error, context?.previous)
         return
+      }
+
+      if (updatedPlayer) {
+        queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
       }
 
       const unit =
@@ -118,12 +128,22 @@ export const useShop = () => {
       )
     },
     onSuccess: (response, _, context) => {
-      const { error, quantity, item, totalPrice, totalQuantity } =
-        response?.data
+      const {
+        updatedPlayer,
+        error,
+        quantity,
+        item,
+        totalPrice,
+        totalQuantity,
+      } = response?.data
 
       if (error) {
         handleError(`Could not sell ${item}`, error, context?.previous)
         return
+      }
+
+      if (updatedPlayer) {
+        queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
       }
 
       const unit =
@@ -179,12 +199,16 @@ export const useShop = () => {
         )
       },
       onSuccess: (response, _, context) => {
-        const { error, foodNeeded, waterNeeded, cost } = response?.data
+        const { updatedPlayer, error, foodNeeded, waterNeeded, cost } =
+          response?.data
 
         if (error) {
           handleError(`Could not buy necessities`, error, context?.previous)
-
           return
+        }
+
+        if (updatedPlayer) {
+          queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
         }
 
         const foodUnit =
@@ -239,12 +263,15 @@ export const useShop = () => {
         )
       },
       onSuccess: (response, _, context) => {
-        const { error, value } = response?.data
+        const { updatedPlayer, error, value } = response?.data
 
         if (error) {
           handleError(`Could not sell barter goods`, error, context?.previous)
-
           return
+        }
+
+        if (updatedPlayer) {
+          queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
         }
 
         setToast({

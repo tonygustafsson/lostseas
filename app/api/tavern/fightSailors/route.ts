@@ -37,10 +37,11 @@ export async function POST() {
     }
 
     try {
-      await savePlayer(playerId, dbUpdate)
+      const updatedPlayer = await savePlayer(playerId, dbUpdate)
 
       return NextResponse.json({
         success: true,
+        updatedPlayer,
         numberOfSailors,
         healthLoss,
         loot,
@@ -62,9 +63,14 @@ export async function POST() {
     }
 
     try {
-      await savePlayer(playerId, dbUpdate)
+      const updatedPlayer = await savePlayer(playerId, dbUpdate)
 
-      return NextResponse.json({ success: false, numberOfSailors, healthLoss })
+      return NextResponse.json({
+        success: false,
+        updatedPlayer,
+        numberOfSailors,
+        healthLoss,
+      })
     } catch (error) {
       return NextResponse.json(
         { error, numberOfSailors, healthLoss },
