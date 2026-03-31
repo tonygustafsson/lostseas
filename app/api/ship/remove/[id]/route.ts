@@ -2,7 +2,7 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { removeShip } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
 
 type RouteContext = {
   params: Promise<{
@@ -24,11 +24,21 @@ export async function DELETE(_: Request, { params }: RouteContext) {
     return NextResponse.json({ error: "Ship not found" }, { status: 404 })
   }
 
+  const player = await getPlayer(playerId)
+
+  if (!player.ships?.[id]) {
+    return NextResponse.json({ error: "Ship not found" }, { status: 404 })
+  }
+
+  const dbUpdate = {
+    [`ships/${id}`]: null,
+  }
+
   try {
-    await removeShip(playerId, id)
+    const updatedPlayer = await savePlayer(playerId, dbUpdate)
+
+    return NextResponse.json({ success: true, updatedPlayer })
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 })
   }
-
-  return NextResponse.json({ success: true })
 }
