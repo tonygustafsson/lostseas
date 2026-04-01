@@ -45,6 +45,10 @@ export const useMarket = () => {
           if (stateItem) {
             const totalPrice = stateItem.price * stateItem.quantity
             const prevQuantity = previous.inventory?.[item] ?? 0
+            const marketItems =
+              previous.locationStates?.market?.items ??
+              ({} as LocationStateMarketItems)
+            const { [item]: _, ...remainingMarketItems } = marketItems
 
             const playerUpdates: DeepPartial<Player> = {
               character: {
@@ -55,9 +59,7 @@ export const useMarket = () => {
               },
               locationStates: {
                 market: {
-                  items: {
-                    [item]: null,
-                  },
+                  items: remainingMarketItems,
                 },
               },
             }

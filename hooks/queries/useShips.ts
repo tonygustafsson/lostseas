@@ -83,12 +83,12 @@ export const useShips = () => {
       await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
       const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
+      const ships = previous?.ships || {}
+      const { [shipId]: _, ...remainingShips } = ships
 
       if (previous) {
         const playerUpdates: DeepPartial<Player> = {
-          ships: {
-            [shipId]: null,
-          },
+          ships: remainingShips,
         }
 
         const newPlayer = patchDeep(previous, playerUpdates)

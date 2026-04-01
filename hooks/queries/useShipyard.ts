@@ -95,14 +95,14 @@ export const useShipyard = () => {
         const id = data.id
         const ship = (previous.ships || {})[id]
         const totalPrice = SHIP_TYPES[ship.type as keyof typeof SHIP_TYPES].sell
+        const ships = previous.ships || {}
+        const { [id]: _, ...remainingShips } = ships
 
         const playerUpdates: DeepPartial<Player> = {
           character: {
             gold: previous.character.gold + totalPrice,
           },
-          ships: {
-            [id]: null,
-          },
+          ships: remainingShips,
         }
 
         const newPlayer = patchDeep(previous, playerUpdates)
