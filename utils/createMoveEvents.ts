@@ -1,27 +1,21 @@
 import { MARKET_AVAILABLE_ITEMS } from "@/constants/market"
 import { MERCHANDISE } from "@/constants/merchandise"
-import {
-  getCrewMembers,
-  getLocationState,
-  saveLocationState,
-} from "@/firebase/db"
+import { savePlayer } from "@/firebase/db"
 
+import { patchDeep } from "./patchDeep"
 import { getRandomInt } from "./random"
 
 type Props = {
-  playerId: Player["id"]
+  player: Player
   destination: Character["location"]
 }
 
-export const createMoveEvents = async ({ playerId, destination }: Props) => {
+export const createMoveEvents = async ({ player, destination }: Props) => {
   if (destination === "Market") {
-    const marketEvent = await getLocationState<LocationStates["market"]>(
-      playerId,
-      "market"
-    )
+    const marketEvent = player.locationStates?.market
 
     if (marketEvent) {
-      return
+      return player
     }
 
     const noOfItems = getRandomInt(1, 4)
@@ -45,54 +39,55 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
       items,
     }
 
-    await saveLocationState<LocationStates["market"]>(
-      playerId,
-      "market",
-      eventResult
-    )
+    const dbUpdate: DeepPartial<Player> = {
+      locationStates: {
+        market: eventResult,
+      },
+    }
+
+    const newPlayer = patchDeep<Player>(player, dbUpdate)
+    return await savePlayer(newPlayer)
   }
 
   if (destination === "Tavern") {
-    const tavernEvent = await getLocationState<LocationStates["tavern"]>(
-      playerId,
-      "tavern"
-    )
+    const tavernEvent = player.locationStates?.tavern
 
     if (tavernEvent) {
-      return
+      return player
     }
 
     if (Math.random() < 0.5) {
       // 50% chance of no event
-      const eventResult: LocationStates["tavern"] = {
-        visited: true,
-        noOfSailors: 0,
-        isHostile: false,
+      const dbUpdate: DeepPartial<Player> = {
+        locationStates: {
+          tavern: {
+            visited: true,
+            noOfSailors: 0,
+            isHostile: false,
+          },
+        },
       }
 
-      await saveLocationState<LocationStates["tavern"]>(
-        playerId,
-        "tavern",
-        eventResult
-      ).catch((error) => {
-        throw new Error(error)
-      })
-
-      return
+      const newPlayer = patchDeep<Player>(player, dbUpdate)
+      return await savePlayer(newPlayer)
     }
-
-    const crewMembers = await getCrewMembers(playerId)
 
     let noOfSailors = 0
 
-    if (crewMembers.count === 0) {
+    if (player.crewMembers.count === 0) {
       noOfSailors = 1
-    } else if (crewMembers.count <= 10) {
-      noOfSailors = Math.round(crewMembers.count * (getRandomInt(10, 25) / 100))
-    } else if (crewMembers.count <= 20) {
-      noOfSailors = Math.round(crewMembers.count * (getRandomInt(8, 15) / 100))
-    } else if (crewMembers.count > 20) {
-      noOfSailors = Math.round(crewMembers.count * (getRandomInt(4, 10) / 100))
+    } else if (player.crewMembers.count <= 10) {
+      noOfSailors = Math.round(
+        player.crewMembers.count * (getRandomInt(10, 25) / 100)
+      )
+    } else if (player.crewMembers.count <= 20) {
+      noOfSailors = Math.round(
+        player.crewMembers.count * (getRandomInt(8, 15) / 100)
+      )
+    } else if (player.crewMembers.count > 20) {
+      noOfSailors = Math.round(
+        player.crewMembers.count * (getRandomInt(4, 10) / 100)
+      )
     }
 
     const isHostile = Math.random() < 0.3
@@ -103,12 +98,15 @@ export const createMoveEvents = async ({ playerId, destination }: Props) => {
       isHostile,
     }
 
-    await saveLocationState<LocationStates["tavern"]>(
-      playerId,
-      "tavern",
-      eventResult
-    ).catch((error) => {
-      throw new Error(error)
-    })
+    const dbUpdate: DeepPartial<Player> = {
+      locationStates: {
+        tavern: eventResult,
+      },
+    }
+
+    const newPlayer = patchDeep<Player>(player, dbUpdate)
+    return await savePlayer(newPlayer)
   }
+
+  return player
 }

@@ -48,19 +48,3 @@ export const getPlayer = async (playerId: Player["id"]) =>
 
 export const savePlayer = async (newPlayer: Player) =>
   await writeValue(newPlayer.id, newPlayer)
-
-export const getCrewMembers = async (playerId: Player["id"]) =>
-  readValue<CrewMembers>(`${playerId}/crewMembers`)
-
-export const getLocationState = async <T>(
-  playerId: Player["id"],
-  state: keyof LocationStates
-) => readValue<T>(`${playerId}/locationStates/${state}`)
-
-export const saveLocationState = async <T>(
-  playerId: Player["id"],
-  stateKey: keyof LocationStates,
-  state: T
-) => {
-  await writeValue(`${playerId}/locationStates/${stateKey}`, state)
-}

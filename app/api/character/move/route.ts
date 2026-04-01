@@ -44,9 +44,12 @@ export async function POST(req: Request) {
 
   try {
     const updatedPlayer = await savePlayer(newPlayer)
-    await createMoveEvents({ playerId, destination })
+    const playerWithEvents = await createMoveEvents({
+      player: updatedPlayer,
+      destination,
+    })
 
-    return NextResponse.json({ success: true, updatedPlayer })
+    return NextResponse.json({ success: true, updatedPlayer: playerWithEvents })
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 })
   }
