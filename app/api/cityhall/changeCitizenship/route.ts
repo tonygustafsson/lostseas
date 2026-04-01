@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 import { TOWNS } from "@/constants/locations"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { patchDeep } from "@/utils/patchDeep"
 import { getNewTitle } from "@/utils/title"
 
 export async function POST() {
@@ -35,14 +36,18 @@ export async function POST() {
     ? TOWNS[player.character.town]?.nation
     : player.character.nationality
 
-  const dbUpdate = {
-    "character/nationality": newNationality,
-    "character/title": titleInfo?.title,
-    "character/gold": player.character.gold + titleInfo.reward,
+  const dbUpdate: DeepPartial<Player> = {
+    character: {
+      nationality: newNationality,
+      title: titleInfo?.title,
+      gold: player.character.gold + titleInfo.reward,
+    },
   }
 
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
+
   try {
-    const updatedPlayer = await savePlayer(playerId, dbUpdate)
+    const updatedPlayer = await savePlayer(newPlayer)
 
     return NextResponse.json({
       success: true,

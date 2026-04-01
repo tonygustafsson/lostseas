@@ -5,6 +5,7 @@ import { NextResponse } from "next/server"
 import { TOWNS } from "@/constants/locations"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { patchDeep } from "@/utils/patchDeep"
 import { validateJourney } from "@/utils/validateJourney"
 
 export async function POST(req: Request) {
@@ -42,8 +43,7 @@ export async function POST(req: Request) {
   const journeyValidation = validateJourney(player, distance)
 
   if (!journeyValidation.success) {
-    const playerResult: Player = {
-      ...player,
+    const dbUpdate: DeepPartial<Player> = {
       character: {
         ...player.character,
         location: "Harbor",
@@ -56,16 +56,16 @@ export async function POST(req: Request) {
       },
     }
 
+    const newPlayer = patchDeep<Player>(player, dbUpdate)
+
     try {
-      await savePlayer(playerId, playerResult)
+      await savePlayer(newPlayer)
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })
     }
   } else {
-    const playerResult: Player = {
-      ...player,
+    const dbUpdate: DeepPartial<Player> = {
       character: {
-        ...player.character,
         town: null!,
         location: "Sea",
         journey: {
@@ -77,8 +77,10 @@ export async function POST(req: Request) {
       locationStates: null!,
     }
 
+    const newPlayer = patchDeep<Player>(player, dbUpdate)
+
     try {
-      await savePlayer(playerId, playerResult)
+      await savePlayer(newPlayer)
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })
     }

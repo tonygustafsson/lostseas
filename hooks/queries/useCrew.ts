@@ -4,7 +4,7 @@ import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
 import apiRequest from "@/utils/apiRequest"
 import { getGoldEffectiveness, getMedicineEffectiveness } from "@/utils/crew"
-import { dbPatchToObj } from "@/utils/dbUpdateToObj"
+import { patchDeep } from "@/utils/patchDeep"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
 
@@ -45,13 +45,16 @@ export const useCrew = () => {
           medicine
         )
 
-        const playerUpdates = {
-          "inventory/medicine":
-            (previous.inventory?.medicine || 0) - (medicine ?? 0),
-          "crewMembers/health": newHealth,
-        } satisfies PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          inventory: {
+            medicine: (previous.inventory?.medicine || 0) - (medicine ?? 0),
+          },
+          crewMembers: {
+            health: newHealth,
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
 
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
@@ -93,12 +96,16 @@ export const useCrew = () => {
           gold
         )
 
-        const playerUpdates = {
-          "character/gold": (previous.character.gold || 0) - gold,
-          "crewMembers/mood": newMood,
-        } satisfies PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          character: {
+            gold: (previous.character.gold || 0) - gold,
+          },
+          crewMembers: {
+            mood: newMood,
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
 
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
@@ -135,11 +142,13 @@ export const useCrew = () => {
       if (previous) {
         const newCount = (previous.crewMembers.count || 0) - (data.count ?? 0)
 
-        const playerUpdates = {
-          "crewMembers/count": newCount,
-        } satisfies PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          crewMembers: {
+            count: newCount,
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 

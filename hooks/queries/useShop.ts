@@ -4,7 +4,7 @@ import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
 import { MERCHANDISE } from "@/constants/merchandise"
 import apiRequest from "@/utils/apiRequest"
-import { dbPatchToObj } from "@/utils/dbUpdateToObj"
+import { patchDeep } from "@/utils/patchDeep"
 import { getBarterGoodsValue, getNecessitiesInfo } from "@/utils/shop"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
@@ -42,12 +42,16 @@ export const useShop = () => {
           MERCHANDISE[data.item as keyof typeof MERCHANDISE].buy * data.quantity
         const prevQuantity = previous.inventory?.[data.item] ?? 0
 
-        const playerUpdates = {
-          "character/gold": previous.character.gold - price,
-          [`inventory/${data.item}`]: prevQuantity + data.quantity,
-        } satisfies PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          character: {
+            gold: previous.character.gold - price,
+          },
+          inventory: {
+            [data.item]: prevQuantity + data.quantity,
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
 
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
@@ -109,12 +113,16 @@ export const useShop = () => {
           data.quantity
         const prevQuantity = previous.inventory?.[data.item] ?? 0
 
-        const playerUpdates = {
-          "character/gold": previous.character.gold + price,
-          [`inventory/${data.item}`]: prevQuantity - data.quantity,
-        } satisfies PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          character: {
+            gold: previous.character.gold + price,
+          },
+          inventory: {
+            [data.item]: prevQuantity - data.quantity,
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 
@@ -178,13 +186,17 @@ export const useShop = () => {
             days,
           })
 
-          const playerUpdates = {
-            "character/gold": previous.character.gold - cost,
-            "inventory/food": (previous.inventory?.food || 0) + foodNeeded,
-            "inventory/water": (previous.inventory?.water || 0) + waterNeeded,
-          } satisfies PlayerDB
+          const playerUpdates: DeepPartial<Player> = {
+            character: {
+              gold: previous.character.gold - cost,
+            },
+            inventory: {
+              food: (previous.inventory?.food || 0) + foodNeeded,
+              water: (previous.inventory?.water || 0) + waterNeeded,
+            },
+          }
 
-          const newPlayer = dbPatchToObj(previous, playerUpdates)
+          const newPlayer = patchDeep(previous, playerUpdates)
 
           queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
         }
@@ -241,15 +253,19 @@ export const useShop = () => {
         if (previous) {
           const value = getBarterGoodsValue(previous.inventory)
 
-          const playerUpdates = {
-            "character/gold": previous.character.gold + value,
-            "inventory/porcelain": 0,
-            "inventory/spices": 0,
-            "inventory/tobacco": 0,
-            "inventory/rum": 0,
-          } satisfies PlayerDB
+          const playerUpdates: DeepPartial<Player> = {
+            character: {
+              gold: previous.character.gold + value,
+            },
+            inventory: {
+              porcelain: 0,
+              spices: 0,
+              tobacco: 0,
+              rum: 0,
+            },
+          }
 
-          const newPlayer = dbPatchToObj(previous, playerUpdates)
+          const newPlayer = patchDeep(previous, playerUpdates)
           queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
         }
 

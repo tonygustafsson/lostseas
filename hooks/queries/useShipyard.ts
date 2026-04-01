@@ -5,7 +5,7 @@ import { useToasts } from "@/app/stores/toasts"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_REPAIR_COST, SHIP_TYPES } from "@/constants/ship"
 import apiRequest from "@/utils/apiRequest"
-import { dbPatchToObj } from "@/utils/dbUpdateToObj"
+import { patchDeep } from "@/utils/patchDeep"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
 
@@ -42,11 +42,13 @@ export const useShipyard = () => {
         const shipType = data.item
         const totalPrice = SHIP_TYPES[shipType].buy
 
-        const playerUpdates = {
-          "character/gold": previous.character.gold - totalPrice,
-        } satisfies PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          character: {
+            gold: previous.character.gold - totalPrice,
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 
@@ -94,12 +96,16 @@ export const useShipyard = () => {
         const ship = (previous.ships || {})[id]
         const totalPrice = SHIP_TYPES[ship.type as keyof typeof SHIP_TYPES].sell
 
-        const playerUpdates = {
-          "character/gold": previous.character.gold + totalPrice,
-          [`ships/${id}`]: null,
-        } satisfies PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          character: {
+            gold: previous.character.gold + totalPrice,
+          },
+          ships: {
+            [id]: null,
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 
@@ -143,14 +149,16 @@ export const useShipyard = () => {
           MERCHANDISE[data.item as keyof typeof MERCHANDISE].buy * data.quantity
         const prevQuantity = previous.inventory?.[data.item] ?? 0
 
-        console.log({ price, prevGold: previous.character.gold, prevQuantity })
+        const playerUpdates: DeepPartial<Player> = {
+          character: {
+            gold: previous.character.gold - price,
+          },
+          inventory: {
+            [data.item]: prevQuantity + data.quantity,
+          },
+        }
 
-        const playerUpdates = {
-          "character/gold": previous.character.gold - price,
-          [`inventory/${data.item}`]: prevQuantity + data.quantity,
-        } satisfies PlayerDB
-
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 
@@ -211,12 +219,16 @@ export const useShipyard = () => {
           data.quantity
         const prevQuantity = previous.inventory?.[data.item] ?? 0
 
-        const playerUpdates = {
-          "character/gold": previous.character.gold + price,
-          [`inventory/${data.item}`]: prevQuantity - data.quantity,
-        } satisfies PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          character: {
+            gold: previous.character.gold + price,
+          },
+          inventory: {
+            [data.item]: prevQuantity - data.quantity,
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 
@@ -274,15 +286,18 @@ export const useShipyard = () => {
         const ship = (previous.ships || {})[id]
         const totalPrice = (100 - ship.health) * SHIP_REPAIR_COST
 
-        const playerUpdates = {
-          "character/gold": previous.character.gold - totalPrice,
-          [`ships/${id}`]: {
-            ...ship,
-            health: 100,
+        const playerUpdates: DeepPartial<Player> = {
+          character: {
+            gold: previous.character.gold - totalPrice,
           },
-        } satisfies PlayerDB
+          ships: {
+            [id]: {
+              health: 100,
+            },
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 

@@ -9,21 +9,6 @@ type Player = {
   locationStates?: LocationStates
 }
 
-type PlayerDB = Partial<
-  Omit<
-    Player,
-    "ships" | "character" | "inventory" | "treasures" | "locationStates"
-  >
-> &
-  CharacterDB &
-  CrewMembersDB &
-  InventoryDB &
-  LocationStatesDB & {
-    ships?: any // TODO: type this properly
-  }
-
-type CreatePlayerServerRequest = Omit<Player, "id">
-
 type CreatePlayerClientRequest = Pick<
   Character,
   "name",

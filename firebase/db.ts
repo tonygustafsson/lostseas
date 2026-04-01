@@ -46,42 +46,11 @@ const writeValue = async (path: string, value: unknown, method = "PUT") => {
 export const getPlayer = async (playerId: Player["id"]) =>
   readValue<Player>(playerId)
 
-export const savePlayer = async (playerId: Player["id"], updates: PlayerDB) =>
-  await writeValue(playerId, updates, "PATCH")
-
-export const getCharacter = async (playerId: Player["id"]) =>
-  readValue<Character>(`${playerId}/character`)
-
-export const saveCharacter = async (
-  playerId: Player["id"],
-  character: Nullable<Character>
-) => {
-  await writeValue(`${playerId}/character`, character)
-}
+export const savePlayer = async (newPlayer: Player) =>
+  await writeValue(newPlayer.id, newPlayer)
 
 export const getCrewMembers = async (playerId: Player["id"]) =>
   readValue<CrewMembers>(`${playerId}/crewMembers`)
-
-export const saveCrewMembers = async (
-  playerId: Player["id"],
-  crewMembers: CrewMembers
-) => {
-  await writeValue(`${playerId}/crewMembers`, crewMembers)
-}
-
-export const getShip = async (playerId: Player["id"], shipId: Ship["id"]) =>
-  readValue<Ship>(`${playerId}/ships/${shipId}`)
-
-export const saveShip = async (playerId: Player["id"], ship: Ship) => {
-  await writeValue(`${playerId}/ships/${ship["id"]}`, ship)
-}
-
-export const removeShip = async (
-  playerId: Player["id"],
-  shipId: Ship["id"]
-) => {
-  await writeValue(`${playerId}/ships/${shipId}`, null, "DELETE")
-}
 
 export const getLocationState = async <T>(
   playerId: Player["id"],

@@ -4,7 +4,7 @@ import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import apiRequest from "@/utils/apiRequest"
-import { dbPatchToObj } from "@/utils/dbUpdateToObj"
+import { patchDeep } from "@/utils/patchDeep"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
 
@@ -54,13 +54,17 @@ export const useTavern = () => {
             ? 100
             : previous.crewMembers.health + healthIncrease
 
-        const playerUpdates = {
-          "character/gold": previous.character.gold - totalPrice,
-          "crewMembers/mood": newMood,
-          "crewMembers/health": newHealth,
-        } satisfies PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          character: {
+            gold: previous.character.gold - totalPrice,
+          },
+          crewMembers: {
+            mood: newMood,
+            health: newHealth,
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
 
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
@@ -106,12 +110,18 @@ export const useTavern = () => {
           const numberOfSailors =
             previous?.locationStates?.tavern?.noOfSailors || 0
 
-          const playerUpdates = {
-            "crewMembers/count": previous.crewMembers.count + numberOfSailors,
-            "locationStates/tavern/noOfSailors": 0,
-          } satisfies PlayerDB
+          const playerUpdates: DeepPartial<Player> = {
+            crewMembers: {
+              count: previous.crewMembers.count + numberOfSailors,
+            },
+            locationStates: {
+              tavern: {
+                noOfSailors: 0,
+              },
+            },
+          }
 
-          const newPlayer = dbPatchToObj(previous, playerUpdates)
+          const newPlayer = patchDeep(previous, playerUpdates)
           queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
         }
 
@@ -154,11 +164,15 @@ export const useTavern = () => {
       const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
 
       if (previous) {
-        const playerUpdates = {
-          "locationStates/tavern/noOfSailors": 0,
-        } satisfies PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          locationStates: {
+            tavern: {
+              noOfSailors: 0,
+            },
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 
@@ -215,11 +229,15 @@ export const useTavern = () => {
       const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
 
       if (previous) {
-        const playerUpdates = {
-          "locationStates/tavern/noOfSailors": 0,
-        } satisfies PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          locationStates: {
+            tavern: {
+              noOfSailors: 0,
+            },
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 

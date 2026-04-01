@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 import { SHIP_REPAIR_COST } from "@/constants/ship"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { patchDeep } from "@/utils/patchDeep"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -30,13 +31,21 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Not enough gold." }, { status: 400 })
   }
 
-  const dbUpdate = {
-    "character/gold": player.character.gold - totalPrice,
-    [`ships/${id}/health`]: 100,
+  const dbUpdate: DeepPartial<Player> = {
+    character: {
+      gold: player.character.gold - totalPrice,
+    },
+    ships: {
+      [id]: {
+        health: 100,
+      },
+    },
   }
 
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
+
   try {
-    const updatedPlayer = await savePlayer(playerId, dbUpdate)
+    const updatedPlayer = await savePlayer(newPlayer)
 
     return NextResponse.json({ success: true, updatedPlayer, ship, totalPrice })
   } catch (error) {

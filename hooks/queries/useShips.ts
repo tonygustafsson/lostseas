@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import useModal from "@/app/stores/modals"
 import { useToasts } from "@/app/stores/toasts"
 import apiRequest from "@/utils/apiRequest"
-import { dbPatchToObj } from "@/utils/dbUpdateToObj"
+import { patchDeep } from "@/utils/patchDeep"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
 
@@ -37,11 +37,15 @@ export const useShips = () => {
       const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
 
       if (previous) {
-        const playerUpdates = {
-          [`ships/${id}/name`]: name,
-        } satisfies PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          ships: {
+            [id]: {
+              name,
+            },
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
 
         removeModal("renameShip")
@@ -81,11 +85,13 @@ export const useShips = () => {
       const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
 
       if (previous) {
-        const playerUpdates = {
-          [`ships/${shipId}`]: null,
-        } satisfies PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          ships: {
+            [shipId]: null,
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 

@@ -25,7 +25,8 @@ const createPlayer = async (body: any) => {
   const ship = createNewShip("Brig", 0)
   const crewMembersCount = 4
 
-  const requestJson: CreatePlayerServerRequest = {
+  const newPlayer: Partial<Player> = {
+    id: playerId,
     character: {
       name,
       nationality,
@@ -53,7 +54,7 @@ const createPlayer = async (body: any) => {
     createdDate,
   }
 
-  await savePlayer(playerId, requestJson as Player)
+  await savePlayer(newPlayer as Player)
 
   return { playerId, musicOn, soundEffectsOn }
 }

@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
 import apiRequest from "@/utils/apiRequest"
-import { dbPatchToObj } from "@/utils/dbUpdateToObj"
+import { patchDeep } from "@/utils/patchDeep"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
 
@@ -37,12 +37,14 @@ export const useBank = () => {
       const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
 
       if (previous) {
-        const playerUpdates = {
-          "character/gold": previous.character.gold - data.amount,
-          "character/account": (previous.character.account || 0) + data.amount,
-        } satisfies PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          character: {
+            gold: previous.character.gold - data.amount,
+            account: (previous.character.account || 0) + data.amount,
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
 
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
@@ -85,12 +87,14 @@ export const useBank = () => {
       if (previous) {
         const currentAccount = previous.character.account || 0
 
-        const playerUpdates = {
-          "character/gold": previous.character.gold + data.amount,
-          "character/account": currentAccount - data.amount,
-        } satisfies PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          character: {
+            gold: previous.character.gold + data.amount,
+            account: currentAccount - data.amount,
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 
@@ -130,12 +134,14 @@ export const useBank = () => {
       const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
 
       if (previous) {
-        const playerUpdates = {
-          "character/gold": previous.character.gold + data.amount,
-          "character/loan": (previous.character.loan || 0) + data.amount,
-        } satisfies PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          character: {
+            gold: previous.character.gold + data.amount,
+            loan: (previous.character.loan || 0) + data.amount,
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 
@@ -183,12 +189,14 @@ export const useBank = () => {
       if (previous) {
         const currentLoan = previous.character.loan || 0
 
-        const playerUpdates = {
-          "character/gold": previous.character.gold - data.amount,
-          "character/loan": currentLoan - data.amount,
-        } satisfies PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          character: {
+            gold: previous.character.gold - data.amount,
+            loan: currentLoan - data.amount,
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 

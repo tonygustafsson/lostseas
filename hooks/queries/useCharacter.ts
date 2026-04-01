@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 import { useToasts } from "@/app/stores/toasts"
 import apiRequest from "@/utils/apiRequest"
-import { dbPatchToObj } from "@/utils/dbUpdateToObj"
+import { patchDeep } from "@/utils/patchDeep"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
 
@@ -32,11 +32,13 @@ export const useCharacter = () => {
       const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
 
       if (previous) {
-        const playerUpdates = {
-          "character/location": data.location,
-        } satisfies PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          character: {
+            location: data.location,
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 
@@ -70,13 +72,11 @@ export const useCharacter = () => {
       const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
 
       if (previous) {
-        const playerUpdates = Object.fromEntries(
-          Object.entries(characterData).map(([k, v]) => [`character/${k}`, v])
-        ) as PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          character: characterData,
+        }
 
-        console.log({ playerUpdates })
-
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 

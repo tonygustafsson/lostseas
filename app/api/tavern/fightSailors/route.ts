@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { patchDeep } from "@/utils/patchDeep"
 
 export async function POST() {
   const cookieStore = await cookies()
@@ -27,17 +28,27 @@ export async function POST() {
     const loot = Math.round(randomInt(10, 100))
     const healthLoss = Math.round(randomInt(1, 10))
 
-    const dbUpdate = {
-      "character/gold": player.character.gold + loot,
-      "crewMembers/health":
-        player.crewMembers.health - healthLoss > 0
-          ? player.crewMembers.health - healthLoss
-          : 0,
-      "locationStates/tavern/noOfSailors": 0,
+    const dbUpdate: DeepPartial<Player> = {
+      character: {
+        gold: player.character.gold + loot,
+      },
+      crewMembers: {
+        health:
+          player.crewMembers.health - healthLoss > 0
+            ? player.crewMembers.health - healthLoss
+            : 0,
+      },
+      locationStates: {
+        tavern: {
+          noOfSailors: 0,
+        },
+      },
     }
 
+    const newPlayer = patchDeep<Player>(player, dbUpdate)
+
     try {
-      const updatedPlayer = await savePlayer(playerId, dbUpdate)
+      const updatedPlayer = await savePlayer(newPlayer)
 
       return NextResponse.json({
         success: true,
@@ -54,16 +65,24 @@ export async function POST() {
     }
   } else {
     const healthLoss = Math.round(randomInt(10, 30))
-    const dbUpdate = {
-      "crewMembers/health":
-        player.crewMembers.health - healthLoss > 0
-          ? player.crewMembers.health - healthLoss
-          : 0,
-      "locationStates/tavern/noOfSailors": 0,
+    const dbUpdate: DeepPartial<Player> = {
+      crewMembers: {
+        health:
+          player.crewMembers.health - healthLoss > 0
+            ? player.crewMembers.health - healthLoss
+            : 0,
+      },
+      locationStates: {
+        tavern: {
+          noOfSailors: 0,
+        },
+      },
     }
 
+    const newPlayer = patchDeep<Player>(player, dbUpdate)
+
     try {
-      const updatedPlayer = await savePlayer(playerId, dbUpdate)
+      const updatedPlayer = await savePlayer(newPlayer)
 
       return NextResponse.json({
         success: false,

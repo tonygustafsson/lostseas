@@ -3,6 +3,7 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { patchDeep } from "@/utils/patchDeep"
 
 type RouteContext = {
   params: Promise<{
@@ -30,12 +31,16 @@ export async function DELETE(_: Request, { params }: RouteContext) {
     return NextResponse.json({ error: "Ship not found" }, { status: 404 })
   }
 
-  const dbUpdate = {
-    [`ships/${id}`]: null,
+  const dbUpdate: DeepPartial<Player> = {
+    ships: {
+      [id]: null,
+    },
   }
 
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
+
   try {
-    const updatedPlayer = await savePlayer(playerId, dbUpdate)
+    const updatedPlayer = await savePlayer(newPlayer)
 
     return NextResponse.json({ success: true, updatedPlayer })
   } catch (error) {

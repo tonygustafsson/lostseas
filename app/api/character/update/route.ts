@@ -2,7 +2,8 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { savePlayer } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
+import { patchDeep } from "@/utils/patchDeep"
 import { changeCharacterValidationSchema } from "@/utils/validation"
 
 export async function POST(req: Request) {
@@ -16,6 +17,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 400 })
   }
 
+  const player = await getPlayer(playerId)
+
   const {
     name,
     gender,
@@ -26,14 +29,18 @@ export async function POST(req: Request) {
     age: Character["age"]
   } = body
 
-  const dbUpdate = {
-    "character/name": name,
-    "character/gender": gender,
-    "character/age": age,
+  const dbUpdate: DeepPartial<Player> = {
+    character: {
+      name,
+      gender,
+      age,
+    },
   }
 
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
+
   try {
-    const updatedPlayer = await savePlayer(playerId, dbUpdate)
+    const updatedPlayer = await savePlayer(newPlayer)
     return NextResponse.json({ success: true, updatedPlayer })
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 })

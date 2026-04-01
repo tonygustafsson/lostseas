@@ -3,6 +3,7 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { patchDeep } from "@/utils/patchDeep"
 import { getRandomInt } from "@/utils/random"
 import { getCardsBet } from "@/utils/tavern"
 
@@ -37,12 +38,16 @@ export async function POST(req: Request) {
 
   const goldResult = player.character.gold + cardsReturns
 
-  const dbUpdate = {
-    "character/gold": goldResult,
+  const dbUpdate: DeepPartial<Player> = {
+    character: {
+      gold: goldResult,
+    },
   }
 
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
+
   try {
-    const updatedPlayer = await savePlayer(playerId, dbUpdate)
+    const updatedPlayer = await savePlayer(newPlayer)
 
     return NextResponse.json({
       success: true,

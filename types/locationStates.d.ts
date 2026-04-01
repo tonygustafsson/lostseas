@@ -27,19 +27,6 @@ type LocationStates = {
   sea?: SeaState
 }
 
-type LocationStatesDB = Partial<{
-  "locationStates/market/visited": MarketState["visited"]
-  "locationStates/market/items": MarketState["items"]
-  "locationStates/tavern/visited": TavernState["visited"]
-  "locationStates/tavern/noOfSailors": TavernState["noOfSailors"]
-  "locationStates/tavern/isHostile": TavernState["isHostile"]
-  "locationStates/harbor/journeyValidation": HarborState["journeyValidation"]
-  "locationStates/harbor/landingTips": HarborState["landingTips"]
-  "locationStates/sea/shipMeeting": SeaState["shipMeeting"]
-  "locationStates/sea/attackSuccessReport": SeaState["attackSuccessReport"]
-  "locationStates/sea/attackFailureReport": SeaState["attackFailureReport"]
-}>
-
 type LandingTip =
   | "TOO_MUCH_GOLD"
   | "NEED_MORE_FOOD"

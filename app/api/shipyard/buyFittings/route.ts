@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { patchDeep } from "@/utils/patchDeep"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -43,13 +44,19 @@ export async function POST(req: Request) {
 
   const newQuantity = itemQuantity ? itemQuantity + quantity : quantity
 
-  const dbUpdate = {
-    "character/gold": player.character.gold - totalPrice,
-    [`inventory/${item}`]: newQuantity,
+  const dbUpdate: DeepPartial<Player> = {
+    character: {
+      gold: player.character.gold - totalPrice,
+    },
+    inventory: {
+      [item]: newQuantity,
+    },
   }
 
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
+
   try {
-    const updatedPlayer = await savePlayer(playerId, dbUpdate)
+    const updatedPlayer = await savePlayer(newPlayer)
 
     return NextResponse.json({
       success: true,

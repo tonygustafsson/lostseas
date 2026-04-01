@@ -5,6 +5,7 @@ import { LOCATIONS } from "@/constants/locations"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
 import { createMoveEvents } from "@/utils/createMoveEvents"
+import { patchDeep } from "@/utils/patchDeep"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -33,12 +34,16 @@ export async function POST(req: Request) {
     return NextResponse.json({})
   }
 
-  const dbUpdate = {
-    "character/location": destination,
+  const dbUpdate: DeepPartial<Player> = {
+    character: {
+      location: destination,
+    },
   }
 
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
+
   try {
-    const updatedPlayer = await savePlayer(playerId, dbUpdate)
+    const updatedPlayer = await savePlayer(newPlayer)
     await createMoveEvents({ playerId, destination })
 
     return NextResponse.json({ success: true, updatedPlayer })

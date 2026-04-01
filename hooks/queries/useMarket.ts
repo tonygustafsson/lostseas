@@ -4,7 +4,7 @@ import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
 import { MERCHANDISE } from "@/constants/merchandise"
 import apiRequest from "@/utils/apiRequest"
-import { dbPatchToObj } from "@/utils/dbUpdateToObj"
+import { patchDeep } from "@/utils/patchDeep"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
 
@@ -46,13 +46,23 @@ export const useMarket = () => {
             const totalPrice = stateItem.price * stateItem.quantity
             const prevQuantity = previous.inventory?.[item] ?? 0
 
-            const playerUpdates = {
-              "character/gold": previous.character.gold - totalPrice,
-              [`inventory/${item}`]: prevQuantity + stateItem.quantity,
-              [`locationStates/market/items/${item}`]: null,
-            } satisfies PlayerDB
+            const playerUpdates: DeepPartial<Player> = {
+              character: {
+                gold: previous.character.gold - totalPrice,
+              },
+              inventory: {
+                [item]: prevQuantity + stateItem.quantity,
+              },
+              locationStates: {
+                market: {
+                  items: {
+                    [item]: null,
+                  },
+                },
+              },
+            }
 
-            const newPlayer = dbPatchToObj(previous, playerUpdates)
+            const newPlayer = patchDeep(previous, playerUpdates)
 
             queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
           }

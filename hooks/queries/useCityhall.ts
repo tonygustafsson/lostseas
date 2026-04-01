@@ -5,7 +5,7 @@ import { useToasts } from "@/app/stores/toasts"
 import { TOWNS } from "@/constants/locations"
 import { TREASURES } from "@/constants/treasures"
 import apiRequest from "@/utils/apiRequest"
-import { dbPatchToObj } from "@/utils/dbUpdateToObj"
+import { patchDeep } from "@/utils/patchDeep"
 import { getNewTitle } from "@/utils/title"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
@@ -40,13 +40,14 @@ export const useCityhall = () => {
         if (previous) {
           const titleInfo = getNewTitle(previous.character).titleInfo
 
-          const playerUpdates = {
-            "character/title": titleInfo?.title,
-            "character/gold":
-              previous.character.gold + (titleInfo?.reward || 0),
-          } satisfies PlayerDB
+          const playerUpdates: DeepPartial<Player> = {
+            character: {
+              title: titleInfo?.title,
+              gold: previous.character.gold + (titleInfo?.reward || 0),
+            },
+          }
 
-          const newPlayer = dbPatchToObj(previous, playerUpdates)
+          const newPlayer = patchDeep(previous, playerUpdates)
 
           queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
         }
@@ -102,14 +103,15 @@ export const useCityhall = () => {
             ? TOWNS[previous.character.town]?.nation
             : previous.character.nationality
 
-          const playerUpdates = {
-            "character/nationality": newNationality,
-            "character/title": titleInfo?.title,
-            "character/gold":
-              previous.character.gold + (titleInfo?.reward || 0),
-          } satisfies PlayerDB
+          const playerUpdates: DeepPartial<Player> = {
+            character: {
+              nationality: newNationality,
+              title: titleInfo?.title,
+              gold: previous.character.gold + (titleInfo?.reward || 0),
+            },
+          }
 
-          const newPlayer = dbPatchToObj(previous, playerUpdates)
+          const newPlayer = patchDeep(previous, playerUpdates)
           queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
         }
 
@@ -166,12 +168,16 @@ export const useCityhall = () => {
         )
         const treasureVal = treasureInfo?.value || 0
 
-        const playerUpdates = {
-          "character/gold": previous.character.gold + treasureVal,
-          [`treasures/${id}`]: null,
-        } satisfies PlayerDB
+        const playerUpdates: DeepPartial<Player> = {
+          character: {
+            gold: previous.character.gold + treasureVal,
+          },
+          treasures: {
+            [id]: undefined,
+          },
+        }
 
-        const newPlayer = dbPatchToObj(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, playerUpdates)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 

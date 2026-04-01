@@ -6,6 +6,7 @@ import { getPlayer, savePlayer } from "@/firebase/db"
 import { createTreasure } from "@/utils/createTreasure"
 import { decreaseCrewHealth, increaseCrewMood } from "@/utils/crew"
 import { addToInventory, removeFromAllInventoryItems } from "@/utils/inventory"
+import { patchDeep } from "@/utils/patchDeep"
 import { getRandomInt } from "@/utils/random"
 import { reduceShipsHealth } from "@/utils/ship"
 import {
@@ -73,21 +74,16 @@ export async function POST() {
       foundTreasure,
     }
 
-    const playerResults: Player = {
-      ...player,
+    const dbUpdate: DeepPartial<Player> = {
       character: {
-        ...player.character,
         gold: player.character.gold + lootedGold,
         battles: {
-          ...(player.character.battles || {}),
           [opponentNation]: {
-            ...player.character.battles?.[opponentNation],
             won: (player.character.battles?.[opponentNation]?.won || 0) + 1,
           },
         } as Character["battles"],
       },
       crewMembers: {
-        ...player.crewMembers,
         count: player.crewMembers.count + crewMemberRecruits,
         health: newCrewHealth,
         mood: newCrewMood,
@@ -96,22 +92,21 @@ export async function POST() {
       inventory: newInventory,
       ...(foundTreasure && {
         treasures: {
-          ...(player.treasures || {}),
           [foundTreasure.id]: foundTreasure,
         },
       }),
       locationStates: {
-        ...player.locationStates,
         sea: {
-          ...player.locationStates.sea,
           shipMeeting: null,
           attackSuccessReport: report,
         },
       },
     }
 
+    const newPlayer = patchDeep<Player>(player, dbUpdate)
+
     try {
-      await savePlayer(playerId, playerResults)
+      await savePlayer(newPlayer)
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })
     }
@@ -147,21 +142,16 @@ export async function POST() {
       shipHealthLoss,
     }
 
-    const playerResults: Player = {
-      ...player,
+    const dbUpdate: DeepPartial<Player> = {
       character: {
-        ...player.character,
         gold: 0,
         battles: {
-          ...(player.character.battles || {}),
           [opponentNation]: {
-            ...player.character.battles?.[opponentNation],
             lost: (player.character.battles?.[opponentNation]?.lost || 0) + 1,
           },
         } as Character["battles"],
       },
       crewMembers: {
-        ...player.crewMembers,
         health: newCrewHealth,
       },
       ships: {
@@ -172,17 +162,17 @@ export async function POST() {
       },
       inventory: newInventory,
       locationStates: {
-        ...player.locationStates,
         sea: {
-          ...player.locationStates.sea,
           shipMeeting: null,
           attackFailureReport: report,
         },
       },
     }
 
+    const newPlayer = patchDeep<Player>(player, dbUpdate)
+
     try {
-      await savePlayer(playerId, playerResults)
+      await savePlayer(newPlayer)
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })
     }

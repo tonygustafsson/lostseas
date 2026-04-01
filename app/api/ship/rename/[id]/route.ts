@@ -3,6 +3,7 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { patchDeep } from "@/utils/patchDeep"
 import { renameShipValidationSchema } from "@/utils/validation"
 
 type RouteContext = {
@@ -42,12 +43,18 @@ export async function POST(req: Request, { params }: RouteContext) {
     return NextResponse.json({ error: "Ship not found" }, { status: 404 })
   }
 
-  const dbUpdate = {
-    [`ships/${id}/name`]: name,
+  const dbUpdate: DeepPartial<Player> = {
+    ships: {
+      [id]: {
+        name,
+      },
+    },
   }
 
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
+
   try {
-    const updatedPlayer = await savePlayer(playerId, dbUpdate)
+    const updatedPlayer = await savePlayer(newPlayer)
 
     return NextResponse.json({
       success: true,
