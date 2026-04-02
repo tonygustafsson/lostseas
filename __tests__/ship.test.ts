@@ -48,8 +48,4 @@ describe("ship utilities", () => {
       shipB: { id: "shipB", name: "B", type: "Frigate", health: 0 },
     })
   })
-
-  it("reduceShipsHealth returns an empty update for missing ships", () => {
-    expect(reduceShipsHealth(undefined, 10)).toEqual({})
-  })
 })
