@@ -3,7 +3,6 @@ import { useEffect } from "react"
 import useModal from "@/app/stores/modals"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
-import WelcomeExistingUser from "./WelcomeExistingUser"
 import WelcomeNewUser from "./WelcomeNewUser"
 
 const WelcomeModal = () => {
@@ -16,23 +15,19 @@ const WelcomeModal = () => {
     }
 
     const isNewUser = player.createdDate >= Date.now() - 1000 * 60
-    const title = isNewUser ? "Welcome!" : "Welcome back!"
 
-    setModal({
-      id: "welcome",
-      title,
-      content: isNewUser ? (
-        <WelcomeNewUser
-          player={player}
-          onClose={() => removeModal("welcome")}
-        />
-      ) : (
-        <WelcomeExistingUser
-          player={player}
-          onClose={() => removeModal("welcome")}
-        />
-      ),
-    })
+    if (isNewUser) {
+      setModal({
+        id: "welcome",
+        title: "Welcome!",
+        content: (
+          <WelcomeNewUser
+            player={player}
+            onClose={() => removeModal("welcome")}
+          />
+        ),
+      })
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

@@ -1,6 +1,11 @@
+import { getCookie } from "cookies-next"
 import { useCallback, useEffect, useMemo } from "react"
 
 import useSound from "@/app/stores/sound"
+import {
+  MUSIC_STATE_COOKIE_NAME,
+  SOUND_EFFECTS_STATE_COOKIE_NAME,
+} from "@/constants/system"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getRandomInt } from "@/utils/random"
 
@@ -15,7 +20,11 @@ const seaSongs = Array.from(
 
 const Sound = () => {
   const { data: player } = useGetPlayer()
-  const { musicOn, soundEffectsOn, soundEffect } = useSound()
+  const { musicOn, soundEffectsOn, soundEffect, setMusic, setSoundEffects } =
+    useSound()
+
+  const musicCookieValue = getCookie(MUSIC_STATE_COOKIE_NAME)
+  const soundEffectsCookieValue = getCookie(SOUND_EFFECTS_STATE_COOKIE_NAME)
 
   const musicPlayer = useMemo(
     () => typeof Audio !== "undefined" && new Audio(),
@@ -55,7 +64,9 @@ const Sound = () => {
 
     musicPlayer.src = randomSong
     musicPlayer.volume = 0.8
-    musicPlayer.play()
+    musicPlayer.play().catch(() => {
+      // Autoplay blocked — will resume on first user interaction
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [musicPlayer, player?.character?.location])
 
@@ -81,7 +92,7 @@ const Sound = () => {
 
       musicPlayer.addEventListener("ended", playRandomSong)
     } else if (musicOn && musicPlayer.src) {
-      musicPlayer.play()
+      musicPlayer.play().catch(() => {})
     } else {
       musicPlayer.pause()
       musicPlayer.removeEventListener("ended", playRandomSong)
@@ -120,6 +131,51 @@ const Sound = () => {
     const soundEffectPlayer = new Audio(audioFile)
     soundEffectPlayer.play()
   }, [soundEffect, soundEffectsOn])
+
+  useEffect(() => {
+    if (!musicPlayer || !musicOn) return
+
+    const handleClick = () => {
+      if (!musicPlayer.paused) return
+
+      if (musicPlayer.src) {
+        musicPlayer.play().catch(() => {})
+      } else {
+        playRandomSong()
+        musicPlayer.addEventListener("ended", playRandomSong)
+      }
+    }
+
+    document.addEventListener("click", handleClick, { once: true })
+    return () => {
+      musicPlayer.pause()
+      document.removeEventListener("click", handleClick)
+      musicPlayer.removeEventListener("ended", playRandomSong)
+    }
+  }, [musicOn, musicPlayer, playRandomSong])
+
+  useEffect(() => {
+    if (!player) {
+      return
+    }
+
+    setMusic(
+      typeof musicCookieValue !== "undefined"
+        ? musicCookieValue === "true"
+        : true
+    )
+    setSoundEffects(
+      typeof soundEffectsCookieValue !== "undefined"
+        ? soundEffectsCookieValue === "true"
+        : true
+    )
+  }, [
+    player,
+    setMusic,
+    setSoundEffects,
+    musicCookieValue,
+    soundEffectsCookieValue,
+  ])
 
   return null
 }
