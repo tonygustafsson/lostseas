@@ -5,7 +5,6 @@ import { almendra, andika } from "@/fonts"
 
 import DesktopMenu from "../menu/DesktopMenu"
 import MobileMenu from "../menu/MobileMenu"
-import PageSpinner from "../PageSpinner"
 import { SidebarProvider } from "../ui/sidebar"
 import { TooltipProvider } from "../ui/tooltip"
 
@@ -40,8 +39,6 @@ export default function DefaultLayout({
             {children}
           </main>
         </div>
-
-        <PageSpinner />
       </TooltipProvider>
     </SidebarProvider>
   )

@@ -2,7 +2,8 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { getShip, saveShip } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
+import { patchDeep } from "@/utils/patchDeep"
 import { renameShipValidationSchema } from "@/utils/validation"
 
 type RouteContext = {
@@ -25,7 +26,7 @@ export async function POST(req: Request, { params }: RouteContext) {
     return NextResponse.json({ error: "Ship not found" }, { status: 404 })
   }
 
-  const body = await req.json()
+  const body = (await req.json()) as { name: string }
   const { name } = body
 
   try {
@@ -34,19 +35,37 @@ export async function POST(req: Request, { params }: RouteContext) {
     return NextResponse.json({ error }, { status: 400 })
   }
 
-  const ship = await getShip(playerId, id)
+  const player = await getPlayer(playerId)
 
-  if (!ship) {
+  const existingShip = player.ships?.[id]
+
+  if (!existingShip) {
     return NextResponse.json({ error: "Ship not found" }, { status: 404 })
   }
 
-  const shipResult: Ship = { ...ship, name }
-
-  try {
-    await saveShip(playerId, shipResult)
-  } catch (error) {
-    return NextResponse.json({ error, ship, name }, { status: 500 })
+  const dbUpdate: DeepPartial<Player> = {
+    ships: {
+      [id]: {
+        name,
+      },
+    },
   }
 
-  return NextResponse.json({ success: true, name, ship })
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
+
+  try {
+    const updatedPlayer = await savePlayer(newPlayer)
+
+    return NextResponse.json({
+      success: true,
+      updatedPlayer,
+      name,
+      ship: existingShip,
+    })
+  } catch (error) {
+    return NextResponse.json(
+      { error, ship: existingShip, name },
+      { status: 500 }
+    )
+  }
 }

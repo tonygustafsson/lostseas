@@ -37,58 +37,14 @@ const writeValue = async (path: string, value: unknown, method = "PUT") => {
   if (!response.ok) {
     throw new Error(`Failed to write Firebase path: ${path}`)
   }
+
+  const updatedPlayer = await getPlayer(path)
+
+  return updatedPlayer
 }
 
 export const getPlayer = async (playerId: Player["id"]) =>
   readValue<Player>(playerId)
 
-export const savePlayer = async (playerId: Player["id"], player: Player) => {
-  await writeValue(playerId, player)
-}
-
-export const getCharacter = async (playerId: Player["id"]) =>
-  readValue<Character>(`${playerId}/character`)
-
-export const saveCharacter = async (
-  playerId: Player["id"],
-  character: Nullable<Character>
-) => {
-  await writeValue(`${playerId}/character`, character)
-}
-
-export const getCrewMembers = async (playerId: Player["id"]) =>
-  readValue<CrewMembers>(`${playerId}/crewMembers`)
-
-export const saveCrewMembers = async (
-  playerId: Player["id"],
-  crewMembers: CrewMembers
-) => {
-  await writeValue(`${playerId}/crewMembers`, crewMembers)
-}
-
-export const getShip = async (playerId: Player["id"], shipId: Ship["id"]) =>
-  readValue<Ship>(`${playerId}/ships/${shipId}`)
-
-export const saveShip = async (playerId: Player["id"], ship: Ship) => {
-  await writeValue(`${playerId}/ships/${ship["id"]}`, ship)
-}
-
-export const removeShip = async (
-  playerId: Player["id"],
-  shipId: Ship["id"]
-) => {
-  await writeValue(`${playerId}/ships/${shipId}`, null, "DELETE")
-}
-
-export const getLocationState = async <T>(
-  playerId: Player["id"],
-  state: keyof LocationStates
-) => readValue<T>(`${playerId}/locationStates/${state}`)
-
-export const saveLocationState = async <T>(
-  playerId: Player["id"],
-  stateKey: keyof LocationStates,
-  state: T
-) => {
-  await writeValue(`${playerId}/locationStates/${stateKey}`, state)
-}
+export const savePlayer = async (newPlayer: Player) =>
+  await writeValue(newPlayer.id, newPlayer)

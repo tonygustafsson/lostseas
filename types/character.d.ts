@@ -1,3 +1,10 @@
+type Journey = {
+  destination: Town
+  day: number
+  totalDays: number
+  ongoingJourney?: true
+}
+
 type Character = {
   age: number
   name: string
@@ -6,12 +13,7 @@ type Character = {
   title: Title
   town: Town | undefined
   location: TownLocation | SeaLocation
-  journey?: {
-    destination: Town
-    day: number
-    totalDays: number
-    ongoingJourney?: true
-  }
+  journey?: Journey
   gold: number
   account?: number
   loan?: number

@@ -52,8 +52,16 @@ const Bank = () => {
         ))}
       </div>
 
-      {tab === "account" && <BankAccount />}
-      {tab === "loan" && <BankLoan />}
+      {tab === "account" && (
+        <BankAccount
+          key={`${player?.character?.loan}_${player?.character?.gold}`}
+        />
+      )}
+      {tab === "loan" && (
+        <BankLoan
+          key={`${player?.character?.loan}_${player?.character?.gold}`}
+        />
+      )}
     </>
   )
 }

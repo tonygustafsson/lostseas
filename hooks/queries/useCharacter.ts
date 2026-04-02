@@ -1,27 +1,100 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
+import { useToasts } from "@/app/stores/toasts"
 import apiRequest from "@/utils/apiRequest"
+import { patchDeep } from "@/utils/patchDeep"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
 
 export const useCharacter = () => {
   const queryClient = useQueryClient()
 
+  const setToast = useToasts((s) => s.setToast)
+
+  const handleError = (
+    title: string,
+    message: string,
+    previousState?: Player
+  ) => {
+    if (previousState) {
+      queryClient.setQueryData([PLAYER_QUERY_KEY], previousState)
+    }
+
+    setToast({ title, message, variant: "error" })
+  }
+
   const { mutate: move, isPending: isMoving } = useMutation({
     mutationFn: (data: { location: TownLocation | SeaLocation }) =>
       apiRequest("/api/character/move", data, "POST"),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] }),
-    onError: (error) => console.error(error),
+    onMutate: async (data: { location: TownLocation | SeaLocation }) => {
+      await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+      const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
+
+      if (previous) {
+        const playerUpdates: DeepPartial<Player> = {
+          character: {
+            location: data.location,
+          },
+        }
+
+        const newPlayer = patchDeep(previous, playerUpdates)
+        queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
+      }
+
+      return { previous }
+    },
+    onError: (err, { location }, context) => {
+      handleError(
+        `Could not move to ${location}`,
+        err?.message,
+        context?.previous
+      )
+    },
+    onSuccess: (response, { location }, context) => {
+      const { updatedPlayer, error } = response?.data
+
+      if (error) {
+        handleError(`Could not move to ${location}`, error, context?.previous)
+        return
+      }
+
+      queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
+    },
   })
 
   const { mutate: update, isPending: updateIsLoading } = useMutation({
     mutationFn: (characterData: Partial<Character>) =>
       apiRequest("/api/character/update", characterData, "POST"),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+    onMutate: async (characterData: Partial<Character>) => {
+      await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+      const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
+
+      if (previous) {
+        const playerUpdates: DeepPartial<Player> = {
+          character: characterData,
+        }
+
+        const newPlayer = patchDeep(previous, playerUpdates)
+        queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
+      }
+
+      return { previous }
     },
-    onError: (error) => console.error(error),
+    onError: (err, _vars, context) => {
+      handleError("Could not update character", err?.message, context?.previous)
+    },
+    onSuccess: (response, _vars, context) => {
+      const { updatedPlayer, error } = response?.data
+
+      if (error) {
+        handleError("Could not update character", error, context?.previous)
+        return
+      }
+
+      queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
+    },
   })
 
   return {

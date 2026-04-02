@@ -3,6 +3,7 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { patchDeep } from "@/utils/patchDeep"
 
 export async function POST() {
   const cookieStore = await cookies()
@@ -21,29 +22,32 @@ export async function POST() {
     return NextResponse.json({ error: "No sailors to accept" }, { status: 500 })
   }
 
-  const playerResult = {
-    ...player,
+  const dbUpdate: DeepPartial<Player> = {
     crewMembers: {
-      ...player.crewMembers,
       count: player.crewMembers.count + numberOfSailors,
     },
     locationStates: {
-      ...player.locationStates,
       tavern: {
-        ...player.locationStates?.tavern,
         noOfSailors: 0,
       },
     },
-  } as Player
+  }
+
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    await savePlayer(playerId, playerResult)
+    const updatedPlayer = await savePlayer(newPlayer)
+
+    return NextResponse.json({
+      success: true,
+      updatedPlayer,
+      numberOfSailors,
+      isHostile,
+    })
   } catch (error) {
     return NextResponse.json(
       { error, numberOfSailors, isHostile },
       { status: 500 }
     )
   }
-
-  return NextResponse.json({ success: true, numberOfSailors, isHostile })
 }

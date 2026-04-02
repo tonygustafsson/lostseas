@@ -9,8 +9,6 @@ type Player = {
   locationStates?: LocationStates
 }
 
-type CreatePlayerServerRequest = Omit<Player, "id">
-
 type CreatePlayerClientRequest = Pick<
   Character,
   "name",

@@ -4,6 +4,7 @@ import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import apiRequest from "@/utils/apiRequest"
+import { patchDeep } from "@/utils/patchDeep"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
 
@@ -12,23 +13,76 @@ export const useTavern = () => {
   const setToast = useToasts((s) => s.setToast)
   const { playSoundEffect } = useSound()
 
+  const handleError = (
+    title: string,
+    message: string,
+    previousState: Player | undefined
+  ) => {
+    if (previousState) {
+      queryClient.setQueryData([PLAYER_QUERY_KEY], previousState)
+    }
+
+    setToast({
+      title,
+      message,
+      variant: "error",
+    })
+  }
+
   const { mutate: buy, isPending: isBuying } = useMutation({
     mutationFn: (data: { item: keyof typeof TAVERN_ITEMS }) =>
       apiRequest("/api/tavern/buy", data, "POST"),
-    onSuccess: (response) => {
-      const { error, newMood, newHealth, item, totalPrice } = response?.data
+    onMutate: async (data: { item: keyof typeof TAVERN_ITEMS }) => {
+      await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+      const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
+
+      if (previous) {
+        const tavernItem = data.item
+        const totalPrice =
+          TAVERN_ITEMS[tavernItem].price * (previous.crewMembers.count || 0)
+
+        const healthIncrease = TAVERN_ITEMS[tavernItem].healthIncrease
+        const moodIncrease = TAVERN_ITEMS[tavernItem].moodIncrease
+
+        const newMood =
+          previous.crewMembers.mood + moodIncrease > 40
+            ? 40
+            : previous.crewMembers.mood + moodIncrease
+        const newHealth =
+          previous.crewMembers.health + healthIncrease > 100
+            ? 100
+            : previous.crewMembers.health + healthIncrease
+
+        const playerUpdates: DeepPartial<Player> = {
+          character: {
+            gold: previous.character.gold - totalPrice,
+          },
+          crewMembers: {
+            mood: newMood,
+            health: newHealth,
+          },
+        }
+
+        const newPlayer = patchDeep(previous, playerUpdates)
+
+        queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
+      }
+
+      return { previous }
+    },
+    onSuccess: (response, _, context) => {
+      const { updatedPlayer, error, newMood, newHealth, item, totalPrice } =
+        response?.data
 
       if (error) {
-        setToast({
-          title: `Could not buy ${item}`,
-          message: error,
-          variant: "error",
-        })
-
+        handleError(`Could not buy ${item}`, error, context?.previous)
         return
       }
 
-      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+      if (updatedPlayer) {
+        queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
+      }
 
       setToast({
         title: `You bought ${item} for you and your crew`,
@@ -38,27 +92,56 @@ export const useTavern = () => {
 
       playSoundEffect("cheers")
     },
-    onError: (error) => console.error(error),
+    onError: (err: any, { item }, context: any) => {
+      handleError(`Could not buy ${item}`, err, context?.previous)
+    },
   })
 
   const { mutate: acceptNewCrewMembers, isPending: isAcceptingNewCrewMembers } =
     useMutation({
       mutationFn: () =>
         apiRequest("/api/tavern/acceptNewCrewMembers", null, "POST"),
-      onSuccess: (response) => {
-        const { error, numberOfSailors } = response?.data
+      onMutate: async () => {
+        await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+        const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
+
+        if (previous) {
+          const numberOfSailors =
+            previous?.locationStates?.tavern?.noOfSailors || 0
+
+          const playerUpdates: DeepPartial<Player> = {
+            crewMembers: {
+              count: previous.crewMembers.count + numberOfSailors,
+            },
+            locationStates: {
+              tavern: {
+                noOfSailors: 0,
+              },
+            },
+          }
+
+          const newPlayer = patchDeep(previous, playerUpdates)
+          queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
+        }
+
+        return { previous }
+      },
+      onSuccess: (response, _, context) => {
+        const { updatedPlayer, error, numberOfSailors } = response?.data
 
         if (error) {
-          setToast({
-            title: `Could accept new crew members`,
-            message: error,
-            variant: "error",
-          })
-
+          handleError(
+            `Could not accept new crew members`,
+            error,
+            context?.previous
+          )
           return
         }
 
-        queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+        if (updatedPlayer) {
+          queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
+        }
 
         setToast({
           title: `You took ${numberOfSailors} in as your crew`,
@@ -68,26 +151,51 @@ export const useTavern = () => {
 
         playSoundEffect("cheers")
       },
-      onError: (error) => console.error(error),
+      onError: (err: any, _, context: any) => {
+        handleError(`Could not accept new crew members`, err, context?.previous)
+      },
     })
 
   const { mutate: fightSailors, isPending: isFightingSailors } = useMutation({
     mutationFn: () => apiRequest("/api/tavern/fightSailors", null, "POST"),
-    onSuccess: (response) => {
-      const { error, numberOfSailors, success, loot, healthLoss } =
-        response?.data
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+      const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
+
+      if (previous) {
+        const playerUpdates: DeepPartial<Player> = {
+          locationStates: {
+            tavern: {
+              noOfSailors: 0,
+            },
+          },
+        }
+
+        const newPlayer = patchDeep(previous, playerUpdates)
+        queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
+      }
+
+      return { previous }
+    },
+    onSuccess: (response, _, context) => {
+      const {
+        updatedPlayer,
+        error,
+        numberOfSailors,
+        success,
+        loot,
+        healthLoss,
+      } = response?.data
 
       if (error) {
-        setToast({
-          title: `Could ignore sailors`,
-          message: error,
-          variant: "error",
-        })
-
+        handleError(`Could not fight sailors`, error, context?.previous)
         return
       }
 
-      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+      if (updatedPlayer) {
+        queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
+      }
 
       if (success) {
         setToast({
@@ -107,28 +215,55 @@ export const useTavern = () => {
         playSoundEffect("hurt")
       }
     },
-    onError: (error) => console.error(error),
+    onError: (err: any, _, context: any) => {
+      handleError(`Could not fight sailors`, err, context?.previous)
+    },
   })
 
   const { mutate: ignoreSailors, isPending: isIgnoringSailors } = useMutation({
     mutationFn: () =>
       apiRequest("/api/tavern/ignoreSailors", null, "POST") as Promise<any>,
-    onSuccess: (response: {
-      data: { error?: string; numberOfSailors: number }
-    }) => {
-      const { error, numberOfSailors } = response?.data
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+      const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
+
+      if (previous) {
+        const playerUpdates: DeepPartial<Player> = {
+          locationStates: {
+            tavern: {
+              noOfSailors: 0,
+            },
+          },
+        }
+
+        const newPlayer = patchDeep(previous, playerUpdates)
+        queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
+      }
+
+      return { previous }
+    },
+    onSuccess: (
+      response: {
+        data: {
+          updatedPlayer?: Player
+          error?: string
+          numberOfSailors: number
+        }
+      },
+      _,
+      context
+    ) => {
+      const { updatedPlayer, error, numberOfSailors } = response?.data
 
       if (error) {
-        setToast({
-          title: `Could not ignore sailors`,
-          message: error,
-          variant: "error",
-        })
-
+        handleError(`Could not ignore sailors`, error, context?.previous)
         return
       }
 
-      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+      if (updatedPlayer) {
+        queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
+      }
 
       setToast({
         title: `You ignored the ${numberOfSailors} sailors`,
@@ -136,26 +271,17 @@ export const useTavern = () => {
         variant: "success",
       })
     },
-    onError: (error) => console.error(error),
+    onError: (err: any, _, context: any) => {
+      handleError(`Could not ignore sailors`, err, context?.previous)
+    },
   })
 
   const { mutateAsync: playCards, isPending: isPlayingCard } = useMutation({
     mutationFn: (data: { betPercentage: number; selectedCard: number }) =>
+      // Use mutateAsync since client cannot predict if he will win
       apiRequest("/api/tavern/cards", data, "POST"),
     onSuccess: (response) => {
-      const { error, bet, gold, cardsResults } = response?.data
-
-      if (error) {
-        setToast({
-          title: `Could not place bet`,
-          message: error,
-          variant: "error",
-        })
-
-        return
-      }
-
-      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+      const { updatedPlayer, bet, gold, cardsResults } = response?.data
 
       let title = ""
 
@@ -163,6 +289,10 @@ export const useTavern = () => {
         title = `You played made a bet of ${bet} gold and won!`
       } else {
         title = `You played made a bet of ${bet} gold and lost`
+      }
+
+      if (updatedPlayer) {
+        queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
       }
 
       setToast({
@@ -177,7 +307,9 @@ export const useTavern = () => {
         playSoundEffect("frustration")
       }
     },
-    onError: (error) => console.error(error),
+    onError: (err: any, _, context: any) => {
+      handleError(`Could not place bet`, err, context?.previous)
+    },
   })
 
   return {

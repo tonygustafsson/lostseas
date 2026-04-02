@@ -4,6 +4,7 @@ import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
 import { MERCHANDISE } from "@/constants/merchandise"
 import apiRequest from "@/utils/apiRequest"
+import { patchDeep } from "@/utils/patchDeep"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
 
@@ -12,25 +13,80 @@ export const useMarket = () => {
   const setToast = useToasts((s) => s.setToast)
   const { playSoundEffect } = useSound()
 
+  const handleError = (
+    title: string,
+    message: string,
+    previousState: Player | undefined
+  ) => {
+    if (previousState) {
+      queryClient.setQueryData([PLAYER_QUERY_KEY], previousState)
+    }
+
+    setToast({
+      title,
+      message,
+      variant: "error",
+    })
+  }
+
   const { mutate: acceptMarketBargain, isPending: isAcceptingMarketBargain } =
     useMutation({
       mutationFn: (data: { item: keyof LocationStateMarketItems }) =>
         apiRequest("/api/market/accept", data, "POST"),
-      onSuccess: (response) => {
-        const { error, quantity, item, totalPrice, totalQuantity } =
-          response?.data
+      onMutate: async (data: { item: keyof LocationStateMarketItems }) => {
+        await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+        const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
+
+        if (previous) {
+          const item = data.item
+          const stateItem = previous.locationStates?.market?.items?.[item]
+
+          if (stateItem) {
+            const totalPrice = stateItem.price * stateItem.quantity
+            const prevQuantity = previous.inventory?.[item] ?? 0
+
+            const dbUpdate: DeepPartial<Player> = {
+              character: {
+                gold: previous.character.gold - totalPrice,
+              },
+              inventory: {
+                [item]: prevQuantity + stateItem.quantity,
+              },
+              locationStates: {
+                market: {
+                  items: {
+                    [item]: null,
+                  },
+                },
+              },
+            }
+
+            const newPlayer = patchDeep(previous, dbUpdate)
+            queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
+          }
+        }
+
+        return { previous }
+      },
+      onSuccess: (response, _, context) => {
+        const {
+          updatedPlayer,
+          error,
+          quantity,
+          item,
+          totalPrice,
+          totalQuantity,
+        } = response?.data
 
         if (error) {
-          setToast({
-            title: `Could not accept ${item}`,
-            message: error,
-            variant: "error",
-          })
-
+          handleError(`Could not accept ${item}`, error, context?.previous)
           return
         }
 
-        queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+        if (updatedPlayer) {
+          queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
+        }
 
         const unit =
           quantity === 1
@@ -45,7 +101,13 @@ export const useMarket = () => {
 
         playSoundEffect("coins")
       },
-      onError: (error) => console.error(error),
+      onError: (error, variables, context) => {
+        handleError(
+          `Could not accept ${variables?.item}`,
+          String(error),
+          context?.previous
+        )
+      },
     })
 
   return {

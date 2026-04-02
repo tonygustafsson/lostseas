@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { patchDeep } from "@/utils/patchDeep"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -14,7 +15,7 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const { item } = body as { item: keyof typeof MERCHANDISE }
+  const { item }: { item: keyof typeof MERCHANDISE } = body
 
   if (!item || !Object.keys(MERCHANDISE).includes(item || "")) {
     return NextResponse.json({ error: "Not a valid item" }, { status: 400 })
@@ -47,41 +48,42 @@ export async function POST(req: Request) {
     )
   }
 
-  const playerResult: Player = {
-    ...player,
+  const newGold = player.character.gold - totalPrice
+
+  const newInventoryQty = player.inventory?.[item]
+    ? (player.inventory[item] || 0) + stateItem.quantity
+    : stateItem.quantity
+
+  const dbUpdate: DeepPartial<Player> = {
     character: {
-      ...player.character,
-      gold: player.character.gold - totalPrice,
+      gold: newGold,
     },
     inventory: {
-      ...player.inventory,
-      [item]: player.inventory?.[item]
-        ? (player.inventory[item] || 0) + stateItem.quantity
-        : stateItem.quantity,
+      [item]: newInventoryQty,
     },
     locationStates: {
-      ...player.locationStates,
       market: {
-        ...player.locationStates.market,
         items: {
-          ...player.locationStates.market.items,
           [item]: null,
         },
       },
     },
   }
 
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
+
   try {
-    await savePlayer(playerId, playerResult)
+    const updatedPlayer = await savePlayer(newPlayer)
+
+    return NextResponse.json({
+      success: true,
+      updatedPlayer,
+      item,
+      quantity: stateItem.quantity,
+      totalQuantity: updatedPlayer.inventory?.[item] || 0,
+      totalPrice,
+    })
   } catch (error) {
     return NextResponse.json({ error, item }, { status: 500 })
   }
-
-  return NextResponse.json({
-    success: true,
-    item,
-    quantity: stateItem.quantity,
-    totalQuantity: playerResult.inventory?.[item] || 0,
-    totalPrice,
-  })
 }

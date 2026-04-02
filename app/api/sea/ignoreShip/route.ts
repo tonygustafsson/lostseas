@@ -2,7 +2,8 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { getPlayer, saveLocationState } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
+import { patchDeep } from "@/utils/patchDeep"
 
 export async function POST() {
   const cookieStore = await cookies()
@@ -21,13 +22,18 @@ export async function POST() {
     )
   }
 
-  const locationStateResult: Nullable<LocationStates["sea"]> = {
-    ...player.locationStates.sea,
-    shipMeeting: null,
+  const dbUpdate: DeepPartial<Player> = {
+    locationStates: {
+      sea: {
+        shipMeeting: null,
+      },
+    },
   }
 
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
+
   try {
-    await saveLocationState(playerId, "sea", locationStateResult)
+    await savePlayer(newPlayer)
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 })
   }

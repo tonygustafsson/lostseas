@@ -28,7 +28,7 @@ const BankLoan = () => {
     amount: z
       .number()
       .min(1)
-      .max(player?.character.loan || player?.character.gold || 0),
+      .max(Math.min(player?.character.loan || 0, player?.character.gold || 0)),
   })
 
   type RepayValidationSchema = z.infer<typeof repayValidationSchema>

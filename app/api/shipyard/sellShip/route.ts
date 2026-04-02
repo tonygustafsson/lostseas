@@ -3,7 +3,8 @@ import { NextResponse } from "next/server"
 
 import { SHIP_TYPES } from "@/constants/ship"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { getPlayer, removeShip, savePlayer } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
+import { patchDeep } from "@/utils/patchDeep"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -27,25 +28,22 @@ export async function POST(req: Request) {
   const shipInfo = SHIP_TYPES[ship.type as keyof typeof SHIP_TYPES]
   const totalPrice = shipInfo.sell
 
-  const playerResult: Player = {
-    ...player,
+  const dbUpdate: DeepPartial<Player> = {
     character: {
-      ...player.character,
       gold: player.character.gold + totalPrice,
+    },
+    ships: {
+      [id]: null,
     },
   }
 
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
+
   try {
-    await savePlayer(playerId, playerResult)
+    const updatedPlayer = await savePlayer(newPlayer)
+
+    return NextResponse.json({ success: true, updatedPlayer, ship, totalPrice })
   } catch (error) {
     return NextResponse.json({ error, ship }, { status: 500 })
   }
-
-  try {
-    await removeShip(playerId, id)
-  } catch (error) {
-    return NextResponse.json({ error, ship }, { status: 500 })
-  }
-
-  return NextResponse.json({ success: true, ship, totalPrice })
 }

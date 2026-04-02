@@ -1,22 +1,30 @@
+type MarketState = {
+  visited: true | undefined | null
+  items: LocationStateMarketItems
+}
+
+type TavernState = {
+  visited: true | undefined | null
+  noOfSailors: number
+  isHostile: boolean
+}
+
+type HarborState = {
+  journeyValidation?: JourneyValidation
+  landingTips?: LandingTip[]
+}
+
+type SeaState = {
+  shipMeeting: ShipMeetingState | undefined | null
+  attackSuccessReport?: AttackSuccessReport
+  attackFailureReport?: AttackFailureReport
+}
+
 type LocationStates = {
-  market?: {
-    visited: true | undefined | null
-    items: LocationStateMarketItems
-  }
-  tavern?: {
-    visited: true | undefined | null
-    noOfSailors: number
-    isHostile: boolean
-  }
-  harbor?: {
-    journeyValidation?: JourneyValidation
-    landingTips?: LandingTip[]
-  }
-  sea?: {
-    shipMeeting: ShipMeetingState | undefined | null
-    attackSuccessReport?: AttackSuccessReport
-    attackFailureReport?: AttackFailureReport
-  }
+  market?: MarketState
+  tavern?: TavernState
+  harbor?: HarborState
+  sea?: SeaState
 }
 
 type LandingTip =

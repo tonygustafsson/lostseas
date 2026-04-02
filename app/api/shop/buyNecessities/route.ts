@@ -3,11 +3,12 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { patchDeep } from "@/utils/patchDeep"
 import { getNecessitiesInfo } from "@/utils/shop"
 
 export async function POST(req: Request) {
   const body = await req.json()
-  const { days } = body
+  const { days }: { days: number } = body
 
   if (!days) {
     return NextResponse.json(
@@ -36,27 +37,32 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Not enough gold" }, { status: 500 })
   }
 
-  const playerResult = {
-    ...player,
+  const dbUpdate: DeepPartial<Player> = {
+    character: {
+      gold: player.character.gold - cost,
+    },
     inventory: {
-      ...player.inventory,
       food: (player.inventory?.food || 0) + foodNeeded,
       water: (player.inventory?.water || 0) + waterNeeded,
     },
-    character: {
-      ...player.character,
-      gold: player.character.gold - cost,
-    },
-  } as Player
+  }
+
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    await savePlayer(playerId, playerResult)
+    const updatedPlayer = await savePlayer(newPlayer)
+
+    return NextResponse.json({
+      success: true,
+      updatedPlayer,
+      cost,
+      foodNeeded,
+      waterNeeded,
+    })
   } catch (error) {
     return NextResponse.json(
       { error, cost, foodNeeded, waterNeeded },
       { status: 500 }
     )
   }
-
-  return NextResponse.json({ success: true, cost, foodNeeded, waterNeeded })
 }

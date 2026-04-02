@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
 import { getGoldEffectiveness } from "@/utils/crew"
+import { patchDeep } from "@/utils/patchDeep"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -13,7 +14,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 400 })
   }
 
-  const body = await req.json()
+  const body = (await req.json()) as { gold: string }
   const gold = parseInt(body.gold)
 
   const player = await getPlayer(playerId)
@@ -35,23 +36,22 @@ export async function POST(req: Request) {
     gold
   )
 
-  const playerResult: Player = {
-    ...player,
+  const dbUpdate: DeepPartial<Player> = {
     character: {
-      ...player.character,
       gold: (player.character.gold || 0) - gold,
     },
     crewMembers: {
-      ...player.crewMembers,
       mood: newMood,
     },
   }
 
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
+
   try {
-    await savePlayer(playerId, playerResult)
+    const updatedPlayer = await savePlayer(newPlayer)
+
+    return NextResponse.json({ success: true, updatedPlayer, gold, newMood })
   } catch (error) {
     return NextResponse.json({ error, gold, newMood }, { status: 500 })
   }
-
-  return NextResponse.json({ success: true, gold, newMood })
 }

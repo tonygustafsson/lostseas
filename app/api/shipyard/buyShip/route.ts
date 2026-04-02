@@ -5,6 +5,7 @@ import { SHIP_TYPES } from "@/constants/ship"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { TITLE_INFO } from "@/constants/title"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { patchDeep } from "@/utils/patchDeep"
 import { createNewShip } from "@/utils/ship"
 
 export async function POST(req: Request) {
@@ -16,7 +17,7 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const { item } = body
+  const { item }: { item: keyof typeof SHIP_TYPES } = body
 
   if (!item || !Object.keys(SHIP_TYPES).includes(item || "")) {
     return NextResponse.json({ error: "Not a valid item" }, { status: 400 })
@@ -38,7 +39,7 @@ export async function POST(req: Request) {
 
   const titleInfo = TITLE_INFO[player.character.title]
 
-  if (Object.keys(player.ships).length + 1 > titleInfo.maxShips) {
+  if (Object.keys(player.ships || {}).length + 1 > titleInfo.maxShips) {
     return NextResponse.json(
       { error: "Max ships reached due to title", item },
       { status: 500 }
@@ -47,23 +48,24 @@ export async function POST(req: Request) {
 
   const newShip = createNewShip(shipItem as Ship["type"], player.character.day)
 
-  const playerResult: Player = {
-    ...player,
+  const dbUpdate: DeepPartial<Player> = {
     character: {
-      ...player.character,
       gold: player.character.gold - totalPrice,
     },
     ships: {
-      ...player.ships,
       [newShip.id]: newShip,
     },
   }
 
+  console.log({ dbUpdate })
+
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
+
   try {
-    await savePlayer(playerId, playerResult)
+    const updatedPlayer = await savePlayer(newPlayer)
+
+    return NextResponse.json({ success: true, updatedPlayer, item, totalPrice })
   } catch (error) {
     return NextResponse.json({ error, item }, { status: 500 })
   }
-
-  return NextResponse.json({ success: true, item, totalPrice })
 }

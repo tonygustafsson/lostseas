@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { patchDeep } from "@/utils/patchDeep"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -14,7 +15,7 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const { item } = body
+  const { item }: { item: keyof typeof TAVERN_ITEMS } = body
 
   if (!item || !Object.keys(TAVERN_ITEMS).includes(item || "")) {
     return NextResponse.json({ error: "Not a valid item" }, { status: 400 })
@@ -40,30 +41,30 @@ export async function POST(req: Request) {
       ? 100
       : player.crewMembers.health + healthIncrease
 
-  const playerResult = {
-    ...player,
+  const dbUpdate: DeepPartial<Player> = {
     character: {
-      ...player.character,
       gold: player.character.gold - totalPrice,
     },
     crewMembers: {
-      ...player.crewMembers,
       mood: newMood,
       health: newHealth,
     },
-  } as Player
+  }
+
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    await savePlayer(playerId, playerResult)
+    const updatedPlayer = await savePlayer(newPlayer)
+
+    return NextResponse.json({
+      success: true,
+      updatedPlayer,
+      item,
+      newMood,
+      newHealth,
+      totalPrice,
+    })
   } catch (error) {
     return NextResponse.json({ error, item }, { status: 500 })
   }
-
-  return NextResponse.json({
-    success: true,
-    item,
-    newMood,
-    newHealth,
-    totalPrice,
-  })
 }

@@ -5,6 +5,7 @@ import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
 import { getMannedCannons } from "@/utils/crew"
 import { getLandingTips } from "@/utils/getLandingTips"
+import { patchDeep } from "@/utils/patchDeep"
 import { createMeetingShip } from "@/utils/shipMeeting"
 
 export async function POST() {
@@ -65,77 +66,68 @@ export async function POST() {
   if (destinationReached) {
     const landingTips = getLandingTips(player)
 
-    const playerResult: Player = {
-      ...player,
+    const dbUpdate: DeepPartial<Player> = {
       character: {
-        ...player.character,
         town: player.character.journey.destination,
         location: "Harbor",
         day: player.character.day + 1,
         journey: null,
-      } as Omit<Character, "journey">,
+      },
       inventory: {
-        ...player.inventory,
         food: newFood,
         water: newWater,
       },
       locationStates: {
-        ...player.locationStates,
         ...(landingTips && {
           harbor: {
-            ...player.locationStates?.harbor,
             landingTips,
           },
         }),
         sea: {
-          ...player.locationStates?.sea,
-          attackSuccessReport: null!,
-          attackFailureReport: null!,
           shipMeeting: shipMeetingState,
+          attackSuccessReport: null,
+          attackFailureReport: null,
         },
       },
     }
 
+    const newPlayer = patchDeep<Player>(player, dbUpdate)
+
     try {
-      await savePlayer(playerId, playerResult)
+      await savePlayer(newPlayer)
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })
     }
   } else {
-    const playerResult: Player = {
-      ...player,
+    const dbUpdates: DeepPartial<Player> = {
       character: {
-        ...player.character,
         ...(!previouslyHadAShipMeeting && {
           day: player.character.day + 1,
           journey: {
-            ...player.character.journey,
             day: player.character.journey.day + 1,
           },
         }),
       },
       locationStates: {
-        ...player.locationStates,
         sea: {
-          ...player.locationStates?.sea,
-          attackSuccessReport: null!,
-          attackFailureReport: null!,
           shipMeeting: shipMeetingState,
+          attackSuccessReport: null,
+          attackFailureReport: null,
         },
       },
       inventory: {
-        ...player.inventory,
         food: newFood,
         water: newWater,
       },
       crewMembers: {
-        ...player.crewMembers,
         mood: player.crewMembers.mood - 1,
       },
     }
 
+    const newPlayer = patchDeep<Player>(player, dbUpdates)
+
     try {
-      await savePlayer(playerId, playerResult)
+      await savePlayer(newPlayer)
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })
     }
