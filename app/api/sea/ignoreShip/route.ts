@@ -22,19 +22,17 @@ export async function POST() {
     )
   }
 
-  const locationStateResult: Nullable<LocationStates["sea"]> = {
-    ...player.locationStates.sea,
-    shipMeeting: null,
+  const dbUpdate: DeepPartial<Player> = {
+    locationStates: {
+      sea: {
+        shipMeeting: null,
+      },
+    },
   }
 
-  try {
-    const dbUpdate: DeepPartial<Player> = {
-      locationStates: {
-        sea: locationStateResult,
-      },
-    }
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
-    const newPlayer = patchDeep<Player>(player, dbUpdate)
+  try {
     await savePlayer(newPlayer)
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 })

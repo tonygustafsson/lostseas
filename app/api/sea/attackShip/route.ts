@@ -32,9 +32,9 @@ export async function POST() {
     )
   }
 
-  const opponentNation = player?.locationStates.sea.shipMeeting.nation
-  const opponentCannons = player?.locationStates.sea.shipMeeting.cannons
-  const opponentCrewMembers = player?.locationStates.sea.shipMeeting.crewMembers
+  const opponentNation = player.locationStates.sea.shipMeeting.nation
+  const opponentCannons = player.locationStates.sea.shipMeeting.cannons
+  const opponentCrewMembers = player.locationStates.sea.shipMeeting.crewMembers
 
   const wonBattle = calculateAttackSuccess(
     player.crewMembers.count,
@@ -157,7 +157,7 @@ export async function POST() {
       ships: {
         ...newShips,
         ...(sinkShip && {
-          [randomShipId]: null!,
+          [randomShipId]: null,
         }),
       },
       inventory: newInventory,

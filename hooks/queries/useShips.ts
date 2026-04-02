@@ -37,7 +37,7 @@ export const useShips = () => {
       const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
 
       if (previous) {
-        const playerUpdates: DeepPartial<Player> = {
+        const dbUpdate: DeepPartial<Player> = {
           ships: {
             [id]: {
               name,
@@ -45,7 +45,7 @@ export const useShips = () => {
           },
         }
 
-        const newPlayer = patchDeep(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, dbUpdate)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
 
         removeModal("renameShip")
@@ -83,15 +83,15 @@ export const useShips = () => {
       await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
       const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
-      const ships = previous?.ships || {}
-      const { [shipId]: _, ...remainingShips } = ships
 
       if (previous) {
-        const playerUpdates: DeepPartial<Player> = {
-          ships: remainingShips,
+        const dbUpdate: DeepPartial<Player> = {
+          ships: {
+            [shipId]: null,
+          },
         }
 
-        const newPlayer = patchDeep(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, dbUpdate)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 

@@ -45,11 +45,9 @@ export async function POST(req: Request) {
   if (!journeyValidation.success) {
     const dbUpdate: DeepPartial<Player> = {
       character: {
-        ...player.character,
         location: "Harbor",
       },
       locationStates: {
-        ...player.locationStates,
         harbor: {
           journeyValidation,
         },
@@ -66,7 +64,7 @@ export async function POST(req: Request) {
   } else {
     const dbUpdate: DeepPartial<Player> = {
       character: {
-        town: null!,
+        town: null,
         location: "Sea",
         journey: {
           destination: town,
@@ -74,7 +72,7 @@ export async function POST(req: Request) {
           totalDays: distance,
         },
       },
-      locationStates: null!,
+      locationStates: null,
     }
 
     const newPlayer = patchDeep<Player>(player, dbUpdate)

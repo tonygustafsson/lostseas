@@ -168,16 +168,16 @@ export const useCityhall = () => {
         )
         const treasureVal = treasureInfo?.value || 0
 
-        const playerUpdates: DeepPartial<Player> = {
+        const dbUpdate: DeepPartial<Player> = {
           character: {
             gold: previous.character.gold + treasureVal,
           },
           treasures: {
-            [id]: undefined,
+            [id]: null,
           },
         }
 
-        const newPlayer = patchDeep(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, dbUpdate)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 

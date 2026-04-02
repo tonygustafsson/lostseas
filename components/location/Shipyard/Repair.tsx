@@ -58,7 +58,7 @@ const ShipyardRepair = () => {
         })}
 
       {!Object.keys(player?.ships || {}).length && (
-        <p>You do not own any ships currently.</p>
+        <p className="w-full">You do not own any ships currently.</p>
       )}
 
       {!!Object.keys(player?.ships || {}).length &&

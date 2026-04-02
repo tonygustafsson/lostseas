@@ -42,13 +42,13 @@ export const useShipyard = () => {
         const shipType = data.item
         const totalPrice = SHIP_TYPES[shipType].buy
 
-        const playerUpdates: DeepPartial<Player> = {
+        const dbUpdate: DeepPartial<Player> = {
           character: {
             gold: previous.character.gold - totalPrice,
           },
         }
 
-        const newPlayer = patchDeep(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, dbUpdate)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 
@@ -95,17 +95,17 @@ export const useShipyard = () => {
         const id = data.id
         const ship = (previous.ships || {})[id]
         const totalPrice = SHIP_TYPES[ship.type as keyof typeof SHIP_TYPES].sell
-        const ships = previous.ships || {}
-        const { [id]: _, ...remainingShips } = ships
 
-        const playerUpdates: DeepPartial<Player> = {
+        const dbUpdate: DeepPartial<Player> = {
           character: {
             gold: previous.character.gold + totalPrice,
           },
-          ships: remainingShips,
+          ships: {
+            [id]: null,
+          },
         }
 
-        const newPlayer = patchDeep(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, dbUpdate)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 
@@ -149,7 +149,7 @@ export const useShipyard = () => {
           MERCHANDISE[data.item as keyof typeof MERCHANDISE].buy * data.quantity
         const prevQuantity = previous.inventory?.[data.item] ?? 0
 
-        const playerUpdates: DeepPartial<Player> = {
+        const dbUpdate: DeepPartial<Player> = {
           character: {
             gold: previous.character.gold - price,
           },
@@ -158,7 +158,7 @@ export const useShipyard = () => {
           },
         }
 
-        const newPlayer = patchDeep(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, dbUpdate)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 
@@ -219,7 +219,7 @@ export const useShipyard = () => {
           data.quantity
         const prevQuantity = previous.inventory?.[data.item] ?? 0
 
-        const playerUpdates: DeepPartial<Player> = {
+        const dbUpdate: DeepPartial<Player> = {
           character: {
             gold: previous.character.gold + price,
           },
@@ -228,7 +228,7 @@ export const useShipyard = () => {
           },
         }
 
-        const newPlayer = patchDeep(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, dbUpdate)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 
@@ -286,7 +286,7 @@ export const useShipyard = () => {
         const ship = (previous.ships || {})[id]
         const totalPrice = (100 - ship.health) * SHIP_REPAIR_COST
 
-        const playerUpdates: DeepPartial<Player> = {
+        const dbUpdate: DeepPartial<Player> = {
           character: {
             gold: previous.character.gold - totalPrice,
           },
@@ -297,7 +297,7 @@ export const useShipyard = () => {
           },
         }
 
-        const newPlayer = patchDeep(previous, playerUpdates)
+        const newPlayer = patchDeep(previous, dbUpdate)
         queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
       }
 

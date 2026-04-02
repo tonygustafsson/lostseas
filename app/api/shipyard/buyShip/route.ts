@@ -39,7 +39,7 @@ export async function POST(req: Request) {
 
   const titleInfo = TITLE_INFO[player.character.title]
 
-  if (Object.keys(player.ships).length + 1 > titleInfo.maxShips) {
+  if (Object.keys(player.ships || {}).length + 1 > titleInfo.maxShips) {
     return NextResponse.json(
       { error: "Max ships reached due to title", item },
       { status: 500 }
@@ -56,6 +56,8 @@ export async function POST(req: Request) {
       [newShip.id]: newShip,
     },
   }
+
+  console.log({ dbUpdate })
 
   const newPlayer = patchDeep<Player>(player, dbUpdate)
 

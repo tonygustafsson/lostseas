@@ -20,6 +20,15 @@ export function patchDeep<T>(original: T, patch: DeepPartial<T>): T {
       continue
     }
 
+    if (patchValue === null) {
+      if (Object.prototype.hasOwnProperty.call(result, key)) {
+        delete result[key]
+        changed = true
+      }
+
+      continue
+    }
+
     let nextValue: unknown
 
     if (isPlainObject(originalValue) && isPlainObject(patchValue)) {

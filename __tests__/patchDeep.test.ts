@@ -54,4 +54,39 @@ describe("patchDeep", () => {
 
     expect(updated).toBe(original)
   })
+
+  it("removes keys when the patch sets them to null", () => {
+    const original = {
+      name: "Black Pearl",
+      ship: {
+        hp: 10,
+        cargo: {
+          food: 4,
+          water: 2,
+        },
+      },
+      status: "active",
+    }
+
+    const updated = patchDeep(original, {
+      ship: {
+        cargo: {
+          water: null,
+        },
+      },
+      status: null,
+    })
+
+    expect(updated).toEqual({
+      name: "Black Pearl",
+      ship: {
+        hp: 10,
+        cargo: {
+          food: 4,
+        },
+      },
+    })
+    expect("status" in updated).toBe(false)
+    expect("water" in updated.ship.cargo).toBe(false)
+  })
 })

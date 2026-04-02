@@ -37,7 +37,7 @@ export const getScore = (player: Player) => {
     (player.character.loan || 0)
 
   score += Math.floor(totalGold / 500)
-  score += Math.floor(Object.keys(player.ships).length * 10)
+  score += Math.floor(Object.keys(player.ships || {}).length * 10)
 
   const mannedCannons = getMannedCannons(
     player.crewMembers.count,

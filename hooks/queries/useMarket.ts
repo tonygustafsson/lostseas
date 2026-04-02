@@ -45,12 +45,8 @@ export const useMarket = () => {
           if (stateItem) {
             const totalPrice = stateItem.price * stateItem.quantity
             const prevQuantity = previous.inventory?.[item] ?? 0
-            const marketItems =
-              previous.locationStates?.market?.items ??
-              ({} as LocationStateMarketItems)
-            const { [item]: _, ...remainingMarketItems } = marketItems
 
-            const playerUpdates: DeepPartial<Player> = {
+            const dbUpdate: DeepPartial<Player> = {
               character: {
                 gold: previous.character.gold - totalPrice,
               },
@@ -59,13 +55,14 @@ export const useMarket = () => {
               },
               locationStates: {
                 market: {
-                  items: remainingMarketItems,
+                  items: {
+                    [item]: null,
+                  },
                 },
               },
             }
 
-            const newPlayer = patchDeep(previous, playerUpdates)
-
+            const newPlayer = patchDeep(previous, dbUpdate)
             queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
           }
         }

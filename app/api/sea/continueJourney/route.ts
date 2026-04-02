@@ -84,9 +84,9 @@ export async function POST() {
           },
         }),
         sea: {
-          attackSuccessReport: null!,
-          attackFailureReport: null!,
           shipMeeting: shipMeetingState,
+          attackSuccessReport: null,
+          attackFailureReport: null,
         },
       },
     }
@@ -99,7 +99,7 @@ export async function POST() {
       return NextResponse.json({ error }, { status: 500 })
     }
   } else {
-    const dbUpdate: DeepPartial<Player> = {
+    const dbUpdates: DeepPartial<Player> = {
       character: {
         ...(!previouslyHadAShipMeeting && {
           day: player.character.day + 1,
@@ -110,9 +110,9 @@ export async function POST() {
       },
       locationStates: {
         sea: {
-          attackSuccessReport: null!,
-          attackFailureReport: null!,
           shipMeeting: shipMeetingState,
+          attackSuccessReport: null,
+          attackFailureReport: null,
         },
       },
       inventory: {
@@ -124,7 +124,7 @@ export async function POST() {
       },
     }
 
-    const newPlayer = patchDeep<Player>(player, dbUpdate)
+    const newPlayer = patchDeep<Player>(player, dbUpdates)
 
     try {
       await savePlayer(newPlayer)
