@@ -1,12 +1,8 @@
 "use client"
 
-import { AlertTriangleIcon } from "lucide-react"
 import { useQRCode } from "next-qrcode"
-import { useState } from "react"
-import { BsClipboardCheck } from "react-icons/bs"
 
-import { Alert, AlertDescription, AlertTitle } from "../ui/alert"
-import { Button } from "../ui/button"
+import UserIdDisplay from "./UserIdDisplay"
 
 type Props = {
   playerId: Player["id"]
@@ -15,16 +11,6 @@ type Props = {
 
 const SettingsPanel = ({ playerId, createdDate }: Props) => {
   const { SVG } = useQRCode()
-  const [copiedToClipboard, setCopiedToClipboard] = useState(false)
-
-  const copyIdToClipboard = () => {
-    navigator.clipboard.writeText(playerId)
-    setCopiedToClipboard(true)
-
-    setTimeout(() => {
-      setCopiedToClipboard(false)
-    }, 2000)
-  }
 
   return (
     <div className="flex w-full max-w-xl flex-col gap-4">
@@ -43,20 +29,7 @@ const SettingsPanel = ({ playerId, createdDate }: Props) => {
 
       <h3 className="font-serif text-xl">Your ID</h3>
 
-      <Alert className="mb-8 bg-gray-800">
-        <AlertTriangleIcon />
-        <AlertTitle>Your ID</AlertTitle>
-        <AlertDescription className="flex items-center gap-2">
-          {playerId}
-          <Button onClick={copyIdToClipboard} title="Copy User ID to clipboard">
-            {copiedToClipboard ? (
-              <span className="text-sm">Copied!</span>
-            ) : (
-              <BsClipboardCheck className="h-6 w-6" />
-            )}
-          </Button>
-        </AlertDescription>
-      </Alert>
+      <UserIdDisplay playerId={playerId} />
 
       <h3 className="font-serif text-xl">QR code</h3>
 

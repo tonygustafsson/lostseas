@@ -8,6 +8,8 @@ import {
   SOUND_EFFECTS_STATE_COOKIE_NAME,
 } from "@/constants/system"
 
+import UserIdDisplay from "../settings/UserIdDisplay"
+
 type Props = {
   player: Player
   onClose: () => void
@@ -28,23 +30,32 @@ const WelcomeNewUser = ({ player, onClose }: Props) => {
 
   return (
     <>
-      <p className="mb-2">
-        Nice to see you. You are located at {player.character.town}s{" "}
-        {player.character.location}. You can either check out the town, or head
-        out to the open seas.
+      <p>
+        Nice to see you. You are located at{" "}
+        <span className="text-green-400">
+          {player.character.town}s {player.character.location}
+        </span>
+        . You can either check out the town, or head out to the open seas.
       </p>
 
-      <p className="mb-2">
-        Don&apos;t forget to save your user ID in the{" "}
-        <Link href="/settings" onClick={onClose}>
-          settings page
-        </Link>
-        . That way you can login again if you loose your browser settings.
-      </p>
+      <UserIdDisplay playerId={player.id} />
 
-      <Button className="mt-4 w-full" onClick={startExploring}>
-        Start exploring
-      </Button>
+      <div className="flex flex-col">
+        <Button size="lg" className="mt-4 w-full" onClick={startExploring}>
+          Start exploring
+        </Button>
+
+        <Button
+          variant="secondary"
+          size="lg"
+          className="mt-4 w-full"
+          onClick={startExploring}
+        >
+          <Link href="/settings" onClick={onClose}>
+            Get QR code
+          </Link>
+        </Button>
+      </div>
     </>
   )
 }
