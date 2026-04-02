@@ -24,7 +24,7 @@ const MerchandiseShopItem = ({ player, item, type, onBuy, onSell }: Props) => {
 
   const merchandise = MERCHANDISE[item]
   const buyingDisabled =
-    quantity * merchandise.buy > (player?.character.gold || Infinity)
+    quantity * merchandise.buy > (player?.character.gold || 0)
   const sellingDisabled = quantity > (player?.inventory?.[item] || 0)
 
   const changeQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {

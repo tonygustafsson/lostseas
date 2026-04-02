@@ -16,7 +16,7 @@ const ShopItem = ({ player, item }: Props) => {
 
   const merchandise = TAVERN_ITEMS[item]
   const price = merchandise.price * (player?.crewMembers.count || 0)
-  const buyingDisabled = price > (player?.character.gold || Infinity)
+  const buyingDisabled = price > (player?.character.gold || 0)
 
   const handlePurchase = () => {
     buy({ item })
