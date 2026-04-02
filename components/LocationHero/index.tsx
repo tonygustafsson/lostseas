@@ -38,7 +38,7 @@ const LocationHero = () => {
       <div
         key={
           player?.character.location === "Sea"
-            ? `sea-${randomId}`
+            ? `sea-${player.character.journey?.day}-${randomId}`
             : `${player?.character.town}-${player?.character.location}`
         }
         className={cn(

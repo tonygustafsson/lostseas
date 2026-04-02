@@ -1,6 +1,13 @@
 import TreasureIcon from "@/components/TreasureIcon"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { TREASURES } from "@/constants/treasures"
 import { useCityhall } from "@/hooks/queries/useCityhall"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -22,32 +29,36 @@ const HandOver = () => {
   }
 
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
       {treasursOfInterest.map((treasure, idx) => {
         const treasureInfo = TREASURES.find(
           (treasureItem) => treasureItem.name === treasure.name
         )
 
         return (
-          <div
-            className="stat rounded-lg bg-gray-800 pr-4 shadow-md hover:shadow-lg lg:w-1/3"
-            key={`${treasure.name}-${idx}`}
-          >
-            <div className="stat-figure text-accent">
-              <TreasureIcon size="lg" item={treasure.name} />
-            </div>
-            <p className="text-xl">{treasure.name}</p>
+          <Card key={`${treasure.name}-${idx}`}>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 font-serif text-2xl font-semibold">
+                <TreasureIcon size="lg" item={treasure.name} />
 
-            <p className="text-sm">{treasureInfo?.description}</p>
+                {treasure.name}
+              </CardTitle>
+            </CardHeader>
 
-            <Badge variant="secondary" className="mt-4">
-              Value: {treasureInfo?.value} gold
-            </Badge>
+            <CardContent>
+              <p>{treasureInfo?.description}</p>
 
-            <Button size="sm" onClick={() => handleHandover(treasure.id)}>
-              Hand over
-            </Button>
-          </div>
+              <Badge variant="secondary" className="mt-4">
+                Value: {treasureInfo?.value} gold
+              </Badge>
+            </CardContent>
+
+            <CardAction className="px-6">
+              <Button size="sm" onClick={() => handleHandover(treasure.id)}>
+                Hand over
+              </Button>
+            </CardAction>
+          </Card>
         )
       })}
     </div>
