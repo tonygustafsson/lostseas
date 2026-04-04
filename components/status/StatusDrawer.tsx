@@ -36,7 +36,7 @@ const StatusDrawer = () => {
   }, [isOpen])
 
   return (
-    <DrawerPanel isOpen={isOpen} onClose={closeDrawer} className="sm:w-[600px]">
+    <DrawerPanel isOpen={isOpen} onClose={closeDrawer} className="sm:w-lg">
       <AnimatePresence mode="wait" initial={false}>
         {view === "status" ? (
           <motion.div
