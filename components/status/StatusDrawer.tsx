@@ -11,7 +11,6 @@ import DrawerPanel from "@/components/DrawerPanel"
 import GuideContent from "@/components/GuideContent"
 import CharacterInfo from "@/components/status/CharacterInfo"
 import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
 
 type View = "status" | "guide"
 
@@ -47,20 +46,19 @@ const StatusDrawer = () => {
             exit="exitToLeft"
             transition={{ duration: 0.18 }}
           >
-            <h1 className="mb-2 flex items-center gap-2 font-serif text-2xl">
-              <GiPirateCoat className="text-yellow-400" />
-              Status
-            </h1>
+            <h1 className="mb-2 flex items-center justify-between gap-2 font-serif text-2xl">
+              <div className="flex gap-2">
+                <GiPirateCoat className="text-yellow-400" />
+                Status
+              </div>
 
-            <CharacterInfo />
-
-            <div className="mt-6 lg:hidden">
-              <Separator className="mb-6" />
               <Button variant="secondary" onClick={() => setView("guide")}>
                 <PiBookOpenTextBold className="h-4 w-4" />
                 Player Guide
               </Button>
-            </div>
+            </h1>
+
+            <CharacterInfo />
           </motion.div>
         ) : (
           <motion.div
