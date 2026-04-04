@@ -20,13 +20,13 @@ const FleetDrawer = () => {
         Crew & Fleet
       </h1>
 
-      <h2 className="mb-4 font-serif text-xl">Crew members</h2>
-      <CrewBoard />
+      <h2 className="mb-4 font-serif text-xl">Ships</h2>
+      <ShipList />
 
       <Separator className="my-8" />
 
-      <h2 className="mb-4 font-serif text-xl">Ships</h2>
-      <ShipList />
+      <h2 className="mb-4 font-serif text-xl">Crew members</h2>
+      <CrewBoard />
 
       <h2 className="mt-8 mb-4 font-serif text-xl">Ship fittings</h2>
       <FittingsList />

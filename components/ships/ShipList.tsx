@@ -23,7 +23,7 @@ export default function ShipList() {
   return (
     <>
       {!!Object.values(player.ships || []).length && (
-        <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
           {Object.values(player.ships || []).map((ship, idx) => {
             const shipInfo = SHIP_TYPES[ship.type]
             const createdDate = getCurrentDate(ship.createdDay)

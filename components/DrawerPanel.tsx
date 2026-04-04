@@ -67,7 +67,7 @@ const DrawerPanel = ({ isOpen, onClose, children, className }: Props) => {
             whileDrag={{ opacity: 0.85, transition: { duration: 0.1 } }}
             onDrag={(_, info) => handleDrag(info)}
             className={cn(
-              "fixed top-0 z-50 h-full w-full overflow-y-auto bg-gray-900 px-6 py-6 shadow-2xl md:py-10",
+              "fixed top-0 z-50 h-full w-full overflow-y-auto border-gray-900 bg-gray-950 px-6 py-6 shadow-2xl sm:border-l-2 md:py-10",
               isMobile ? "left-0" : "right-0",
               className
             )}

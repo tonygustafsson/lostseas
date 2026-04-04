@@ -15,7 +15,7 @@ export default function FittingsList() {
     <div className="flex items-center justify-between rounded-lg bg-gray-800 p-4 shadow-md hover:shadow-lg lg:w-52">
       <div>
         <div className="text-muted-foreground text-sm">Cannons</div>
-        <div className="mt-1 text-2xl font-semibold">
+        <div>
           {player.inventory?.cannons}{" "}
           <span className="ml-1 text-sm font-normal">
             {player.inventory?.cannons === 1
