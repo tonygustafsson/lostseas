@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import { useRef } from "react"
 import { BiArrowToTop } from "react-icons/bi"
 
 import { SHIP_TYPES } from "@/constants/ship"
@@ -19,6 +20,8 @@ import {
 } from "./ui/table"
 
 const GuideContent = () => {
+  const topRef = useRef<HTMLDivElement>(null)
+
   const goToSection = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
@@ -27,11 +30,12 @@ const GuideContent = () => {
   }
 
   const goToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" })
+    topRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
   return (
     <>
+      <div ref={topRef} />
       <nav className="my-8 flex w-full justify-center">
         <ButtonGroup className="overflow-x-auto">
           <Button

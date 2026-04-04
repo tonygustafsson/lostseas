@@ -9,9 +9,14 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import React, { useState } from "react"
 
+import FleetDrawer from "@/components/fleet/FleetDrawer"
+import GuideDrawer from "@/components/guide/GuideDrawer"
+import InventoryDrawer from "@/components/inventory/InventoryDrawer"
 import Modal from "@/components/Modal"
 import MotionProvider from "@/components/MotionProvider"
+import SettingsDrawer from "@/components/settings/SettingsDrawer"
 import Sound from "@/components/Sound"
+import StatusDrawer from "@/components/status/StatusDrawer"
 import Toast from "@/components/Toast"
 import WelcomeModal from "@/components/WelcomeModal"
 
@@ -42,11 +47,16 @@ export default function Providers({ children, dehydratedState }: Props) {
 
           <Toast />
           <Modal />
+          <InventoryDrawer />
+          <StatusDrawer />
+          <FleetDrawer />
+          <SettingsDrawer />
+          <GuideDrawer />
           <WelcomeModal />
           <Sound />
         </MotionProvider>
 
-        <ReactQueryDevtools initialIsOpen={false} />
+        <ReactQueryDevtools />
       </HydrationBoundary>
     </QueryClientProvider>
   )

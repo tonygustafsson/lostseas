@@ -1,14 +1,13 @@
 "use client"
 
 import {
-  GiBandana,
   GiOpenedFoodCan,
   GiPirateCoat,
-  GiPirateHat,
   GiShoonerSailboat,
 } from "react-icons/gi"
 import { RiTreasureMapLine } from "react-icons/ri"
 
+import useDrawer from "@/app/stores/drawer"
 import useModal from "@/app/stores/modals"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
@@ -19,8 +18,8 @@ import MainMenuItem from "./MainMenuItem"
 const MainMenu = () => {
   const { data: player } = useGetPlayer()
   const { setModal } = useModal()
+  const { open: openDrawer } = useDrawer()
 
-  const numberOfShips = Object.values(player?.ships ?? {}).length
   const numberOfInventoryItems = Object.values(player?.inventory ?? {}).length
 
   const showMap = () => {
@@ -35,26 +34,19 @@ const MainMenu = () => {
   return (
     <ul className="flex flex-col gap-1">
       <MainMenuItem
-        href="/"
-        icon={<GiPirateHat className="group-hover/play:text-accent size-5!" />}
-        label="Play"
-        className="group/play"
-      />
-
-      <MainMenuItem
         onClick={showMap}
         disabled={!!player?.character.journey}
         icon={
           <RiTreasureMapLine className="group-hover/map:text-accent size-5!" />
         }
-        label="Map"
+        label="Travel"
         className="group/map"
       />
 
       <Separator className="my-2" />
 
       <MainMenuItem
-        href="/status"
+        onClick={() => openDrawer("status")}
         icon={
           <GiPirateCoat className="group-hover/status:text-accent size-5!" />
         }
@@ -63,25 +55,16 @@ const MainMenu = () => {
       />
 
       <MainMenuItem
-        href="/ships"
+        onClick={() => openDrawer("fleet")}
         icon={
-          <GiShoonerSailboat className="group-hover/ships:text-accent size-5!" />
+          <GiShoonerSailboat className="group-hover/fleet:text-accent size-5!" />
         }
-        label="Ships"
-        badge={numberOfShips}
-        className="group/ships"
+        label="Crew & Fleet"
+        className="group/fleet"
       />
 
       <MainMenuItem
-        href="/crew"
-        icon={<GiBandana className="group-hover/crew:text-accent size-5!" />}
-        label="Crew members"
-        badge={player?.crewMembers.count}
-        className="group/crew"
-      />
-
-      <MainMenuItem
-        href="/inventory"
+        onClick={() => openDrawer("inventory")}
         icon={
           <GiOpenedFoodCan className="group-hover/inventory:text-accent size-5!" />
         }

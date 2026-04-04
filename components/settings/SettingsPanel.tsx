@@ -2,20 +2,21 @@
 
 import { useQRCode } from "next-qrcode"
 
+import { useGetPlayer } from "@/hooks/queries/usePlayer"
+
 import UserIdDisplay from "./UserIdDisplay"
 
-type Props = {
-  playerId: Player["id"]
-  createdDate: Player["createdDate"]
-}
-
-const SettingsPanel = ({ playerId, createdDate }: Props) => {
+const SettingsPanel = () => {
+  const { data: player } = useGetPlayer()
   const { SVG } = useQRCode()
+
+  if (!player) return null
 
   return (
     <div className="flex w-full max-w-xl flex-col gap-4">
       <p className="mb-4">
-        Your account were created {new Date(createdDate).toLocaleDateString()}.
+        Your account were created{" "}
+        {new Date(player.createdDate).toLocaleDateString()}.
       </p>
 
       <h2 className="font-serif text-2xl">Save your game</h2>
@@ -29,7 +30,7 @@ const SettingsPanel = ({ playerId, createdDate }: Props) => {
 
       <h3 className="font-serif text-xl">Your ID</h3>
 
-      <UserIdDisplay playerId={playerId} />
+      <UserIdDisplay playerId={player.id} />
 
       <h3 className="font-serif text-xl">QR code</h3>
 
@@ -39,7 +40,7 @@ const SettingsPanel = ({ playerId, createdDate }: Props) => {
       </p>
 
       <SVG
-        text={playerId}
+        text={player.id}
         options={{
           margin: 2,
           width: 300,

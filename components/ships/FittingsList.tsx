@@ -1,11 +1,12 @@
+"use client"
+
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import { MERCHANDISE } from "@/constants/merchandise"
+import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
-type Props = {
-  player: Player
-}
+export default function FittingsList() {
+  const { data: player } = useGetPlayer()
 
-export default async function FittingsList({ player }: Props) {
   if (!player) {
     return null
   }
