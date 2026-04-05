@@ -33,19 +33,20 @@ const InventoryDrawer = () => {
 
       <div className="pb-8">
         <h2 className="mb-4 font-serif text-xl">Necessities</h2>
-        <div className="flex flex-wrap gap-4">
+
+        <div className="grid grid-cols-2 gap-2 md:grid-cols-2 md:gap-4">
           {necessities.map(([item, possession]) => (
             <div
               className="flex items-center justify-between rounded-lg bg-gray-900 p-4 shadow-md hover:shadow-lg"
               key={`inventory-${item}`}
             >
               <div>
-                <div className="text-muted-foreground text-sm">
+                <div className="text-muted-foreground text-xs md:text-sm">
                   {capitalize(item)}
                 </div>
-                <div className="mt-1 text-xl">
+                <div className="mt-1 text-xs md:text-xl">
                   {possession}{" "}
-                  <span className="ml-1 text-sm font-normal">
+                  <span className="ml-1 text-xs font-normal md:text-sm">
                     {possession === 1
                       ? MERCHANDISE[item].singleUnit
                       : MERCHANDISE[item].unit}
