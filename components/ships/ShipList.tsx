@@ -69,7 +69,7 @@ export default function ShipList() {
 
                       <RadialProgressBar
                         percentage={ship.health}
-                        className="h-14 w-14"
+                        className="size-12"
                       />
                     </div>
                   </div>
