@@ -36,14 +36,14 @@ const InventoryDrawer = () => {
         <div className="flex flex-wrap gap-4">
           {necessities.map(([item, possession]) => (
             <div
-              className="flex items-center justify-between rounded-lg bg-gray-800 p-4 shadow-md hover:shadow-lg"
+              className="flex items-center justify-between rounded-lg bg-gray-900 p-4 shadow-md hover:shadow-lg"
               key={`inventory-${item}`}
             >
               <div>
                 <div className="text-muted-foreground text-sm">
                   {capitalize(item)}
                 </div>
-                <div className="mt-1 text-2xl font-bold">
+                <div className="mt-1 text-xl">
                   {possession}{" "}
                   <span className="ml-1 text-sm font-normal">
                     {possession === 1
@@ -53,7 +53,6 @@ const InventoryDrawer = () => {
                 </div>
               </div>
               <MerchandiseIcon
-                size="lg"
                 item={item as keyof Inventory}
                 className="ml-4 text-yellow-400"
               />
@@ -67,14 +66,14 @@ const InventoryDrawer = () => {
             <div className="flex flex-wrap gap-4">
               {tradingAssets.map(([item, possession]) => (
                 <div
-                  className="flex items-center justify-between rounded-lg bg-gray-800 p-4 shadow-md hover:shadow-lg"
+                  className="flex items-center justify-between rounded-lg bg-gray-900 p-4 shadow-md hover:shadow-lg"
                   key={`inventory-${item}`}
                 >
                   <div>
                     <div className="text-muted-foreground text-sm">
                       {capitalize(item)}
                     </div>
-                    <div className="mt-1 text-2xl font-bold">
+                    <div className="mt-1 text-xl">
                       {possession}{" "}
                       <span className="ml-1 text-sm font-normal">
                         {possession === 1
@@ -84,7 +83,6 @@ const InventoryDrawer = () => {
                     </div>
                   </div>
                   <MerchandiseIcon
-                    size="lg"
                     item={item as keyof Inventory}
                     className="ml-4 text-yellow-400"
                   />
