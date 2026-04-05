@@ -13,7 +13,7 @@ module.exports = {
     extend: {
       fontFamily: {
         serif: ["var(--font-almendra)", ...defaultTheme.fontFamily.serif],
-        sans: ["var(--font-andika)", ...defaultTheme.fontFamily.sans],
+        sans: ["var(--font-crimson-text)", ...defaultTheme.fontFamily.sans],
       },
       colors: {
         primary: "#FFD700",

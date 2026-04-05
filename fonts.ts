@@ -1,4 +1,4 @@
-import { Almendra, Andika } from "next/font/google"
+import { Almendra, Crimson_Text } from "next/font/google"
 
 export const almendra = Almendra({
   weight: "400",
@@ -6,8 +6,8 @@ export const almendra = Almendra({
   variable: "--font-almendra",
 })
 
-export const andika = Andika({
+export const crimsonText = Crimson_Text({
   weight: "400",
   subsets: ["latin"],
-  variable: "--font-andika",
+  variable: "--font-crimson-text",
 })
