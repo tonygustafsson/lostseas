@@ -2,17 +2,19 @@
 
 import { MdGroups } from "react-icons/md"
 
-import DismissCrewMembers from "@/components/crew/DismissCrewMembers"
-import GiveGold from "@/components/crew/GiveGold"
-import GiveMedicine from "@/components/crew/GiveMedicine"
 import RadialProgressBar from "@/components/RadialProgressBar"
+import { Button } from "@/components/ui/button"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 export const metadata = {
   title: "Crew",
 }
 
-export default function CrewBoard() {
+type Props = {
+  onManage: () => void
+}
+
+export default function CrewBoard({ onManage }: Props) {
   const { data: player } = useGetPlayer()
 
   if (!player) {
@@ -53,11 +55,9 @@ export default function CrewBoard() {
         </div>
       </div>
 
-      <div className="mt-8 grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-        <GiveMedicine />
-        <GiveGold />
-        <DismissCrewMembers />
-      </div>
+      <Button className="mt-4 w-full" variant="outline" onClick={onManage}>
+        Manage Crew
+      </Button>
     </>
   )
 }

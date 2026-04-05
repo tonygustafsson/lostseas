@@ -7,6 +7,7 @@ import ShipActions from "@/components/ships/ShipActions"
 import { Badge } from "@/components/ui/badge"
 import { SHIP_TYPES } from "@/constants/ship"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { cn } from "@/lib/utils"
 import { getCurrentDate } from "@/utils/date"
 
 export default function ShipList() {
@@ -23,7 +24,11 @@ export default function ShipList() {
   return (
     <>
       {!!Object.values(player.ships || []).length && (
-        <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
+        <div
+          className={cn("grid w-full grid-cols-1 gap-2 sm:grid-cols-2", {
+            "sm:grid-cols-1": Object.values(player.ships || []).length === 1,
+          })}
+        >
           {Object.values(player.ships || []).map((ship, idx) => {
             const shipInfo = SHIP_TYPES[ship.type]
             const createdDate = getCurrentDate(ship.createdDay)
