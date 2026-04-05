@@ -63,7 +63,7 @@ const ShipActions = ({ shipId, shipName, shipType }: Props) => {
   }
 
   return (
-    <div className="flex gap-2">
+    <div className="flex w-full justify-end gap-2">
       <Button
         variant="secondary"
         size="xs"

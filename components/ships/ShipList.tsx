@@ -10,6 +10,14 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { cn } from "@/lib/utils"
 import { getCurrentDate } from "@/utils/date"
 
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../ui/card"
+
 export default function ShipList() {
   const { data: player } = useGetPlayer()
 
@@ -36,6 +44,46 @@ export default function ShipList() {
             if (!shipInfo) {
               return null
             }
+
+            return (
+              <Card
+                key={`ships-${ship.id}-${idx}`}
+                size="sm"
+                className="bg-gray-900"
+              >
+                <CardHeader>
+                  <CardTitle>{ship.name}</CardTitle>
+                </CardHeader>
+
+                <CardContent className="flex flex-col justify-between gap-4">
+                  <p className="text-xs">{shipInfo.description}</p>
+
+                  <div className="flex gap-4">
+                    <div className="flex w-fit flex-col items-center gap-1">
+                      <p className="text-xs">{ship.type}</p>
+                      <MerchandiseIcon size="lg" item={ship.type} />
+                    </div>
+
+                    <div className="flex w-fit flex-col items-center gap-1">
+                      <p className="text-xs">Health</p>
+
+                      <RadialProgressBar
+                        percentage={ship.health}
+                        className="h-14 w-14"
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+
+                <CardAction className="w-full px-4">
+                  <ShipActions
+                    shipId={ship.id}
+                    shipName={ship.name}
+                    shipType={ship.type}
+                  />
+                </CardAction>
+              </Card>
+            )
 
             return (
               <MerchandiseCard
