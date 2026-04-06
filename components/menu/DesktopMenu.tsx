@@ -9,6 +9,8 @@ import SocialMedia from "../SocialMedia"
 import SoundControls from "../Sound/Controls"
 import { Sidebar, SidebarContent, SidebarGroup } from "../ui/sidebar"
 import CharacterCard from "./CharacterCard"
+import FleetCard from "./FleetCard"
+import InventoryCard from "./InventoryCard"
 import MainMenu from "./MainMenu"
 import QuickButtonMenu from "./QuickButtonMenu"
 import WeatherCard from "./WeatherCard"
@@ -46,13 +48,14 @@ const DesktopMenu = ({ className }: Props) => {
         </SidebarGroup>
 
         <SidebarGroup className="gap-4">
+          <CharacterCard player={player} />
+          <FleetCard player={player} />
+          <InventoryCard player={player} />
+          <WeatherCard day={player.character.day} />
           <div className="mb-4 flex flex-col gap-8">
             <QuickButtonMenu />
             <SoundControls />
           </div>
-
-          <CharacterCard player={player} />
-          <WeatherCard day={player.character.day} />
           <SocialMedia />
         </SidebarGroup>
       </SidebarContent>

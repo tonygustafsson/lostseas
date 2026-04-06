@@ -2,7 +2,7 @@
 
 import { m as motion } from "framer-motion"
 import { FaCoins } from "react-icons/fa"
-import { GiPirateHat, GiProgression } from "react-icons/gi"
+import { GiPirateCoat, GiProgression } from "react-icons/gi"
 
 import useDrawer from "@/app/stores/drawer"
 import { getScore } from "@/utils/score"
@@ -19,62 +19,67 @@ const CharacterCard = ({ player }: Props) => {
   const { open: openDrawer } = useDrawer()
 
   return (
-    <Card className="gap-2 bg-gray-800">
-      <CardHeader className="flex flex-col items-center gap-2">
-        <figure>
-          <GiPirateHat className="hidden size-14 lg:block" />
-        </figure>
+    <Card className="gap-2 bg-gray-800 p-2">
+      <CardHeader className="flex items-center justify-between px-2 font-serif text-lg">
+        {player.character.name}
+
+        <Button
+          variant="outline"
+          size="xs"
+          onClick={() => openDrawer("status")}
+        >
+          More info
+        </Button>
       </CardHeader>
 
-      <CardContent className="space-y-4">
-        <h2 className="flex gap-2 font-serif text-xl">
-          <Flag nation={player.character.nationality} size={28} />
-          {player.character.name}
-        </h2>
+      <CardContent className="space-y-2 px-2">
+        <div className="grid grid-cols-2 gap-2">
+          <div className="flex items-center justify-between rounded-sm bg-gray-900 p-2">
+            <div>
+              <p className="text-xs text-gray-400">Score</p>
+              <p className="w-fit">{getScore(player)}</p>
+            </div>
 
-        <p className="text-sm">
-          You are a {player.character.age} year old {player.character.title}{" "}
-          from {player.character.nationality}.
-        </p>
-
-        <div className="flex items-center justify-between py-0">
-          <div>
-            <p className="text-gray-400">Score</p>
-            <p className="w-fit">{getScore(player)}</p>
+            <GiProgression className="text-accent size-5" />
           </div>
 
-          <GiProgression className="text-accent h-8 w-8" />
-        </div>
+          <div className="flex items-center justify-between rounded-sm bg-gray-900 p-2">
+            <div>
+              <p className="text-xs text-gray-400">Gold</p>
+              <motion.p
+                key={`character-gold-${player.character.gold}`}
+                initial={{ scale: 1, color: "#fff" }}
+                animate={{
+                  scale: [null, 1.3, 1],
+                  color: [null, "#fbbf24", "#fff"],
+                  transition: { duration: 0.5 },
+                }}
+                className="stat-value w-fit"
+              >
+                {player.character.gold}
+              </motion.p>
+            </div>
 
-        <div className="flex items-center justify-between py-0">
-          <div>
-            <p className="text-gray-400">Gold</p>
-            <motion.p
-              key={`character-gold-${player.character.gold}`}
-              initial={{ scale: 1, color: "#fff" }}
-              animate={{
-                scale: [null, 1.3, 1],
-                color: [null, "#fbbf24", "#fff"],
-                transition: { duration: 0.5 },
-              }}
-              className="stat-value w-fit"
-            >
-              {player.character.gold}
-            </motion.p>
+            <FaCoins className="text-accent size-5" />
           </div>
 
-          <FaCoins className="text-accent h-8 w-8" />
-        </div>
+          <div className="flex items-center justify-between rounded-sm bg-gray-900 p-2">
+            <div>
+              <p className="text-xs text-gray-400">Title</p>
+              <p className="w-fit">{player.character.title}</p>
+            </div>
 
-        <div className="flex justify-end">
-          <Button
-            variant="outline"
-            size="sm"
-            className="mt-2"
-            onClick={() => openDrawer("status")}
-          >
-            More info
-          </Button>
+            <GiPirateCoat className="text-accent size-5" />
+          </div>
+
+          <div className="flex items-center justify-between rounded-sm bg-gray-900 p-2">
+            <div>
+              <p className="text-xs text-gray-400">Nation</p>
+              <p className="w-fit">{player.character.nationality}</p>
+            </div>
+
+            <Flag nation={player.character.nationality} size={20} />
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -34,7 +34,7 @@ const InventoryDrawer = () => {
       <div className="pb-8">
         <h2 className="mb-4 font-serif text-xl">Necessities</h2>
 
-        <div className="grid grid-cols-2 gap-2 md:grid-cols-2 md:gap-4">
+        <div className="grid grid-cols-2 gap-2 md:grid-cols-2">
           {necessities.map(([item, possession]) => (
             <div
               className="flex items-center justify-between rounded-lg bg-gray-900 p-4 shadow-md hover:shadow-lg"
@@ -64,7 +64,8 @@ const InventoryDrawer = () => {
         {!!tradingAssets.length && (
           <>
             <h2 className="mt-8 mb-4 font-serif text-xl">Trading assets</h2>
-            <div className="flex flex-wrap gap-4">
+
+            <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
               {tradingAssets.map(([item, possession]) => (
                 <div
                   className="flex items-center justify-between rounded-lg bg-gray-900 p-4 shadow-md hover:shadow-lg"
