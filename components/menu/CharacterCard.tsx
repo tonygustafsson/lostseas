@@ -28,7 +28,7 @@ const CharacterCard = ({ player }: Props) => {
           size="xs"
           onClick={() => openDrawer("status")}
         >
-          More info
+          More
         </Button>
       </CardHeader>
 
