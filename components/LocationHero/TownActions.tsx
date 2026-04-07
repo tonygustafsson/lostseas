@@ -18,42 +18,42 @@ const getLocationData = (location: TownLocation) => {
       return {
         key: location,
         title: "Shop",
-        icon: <AiOutlineShop className="h-6 w-6 text-cyan-600" />,
+        icon: <AiOutlineShop className="h-6 w-6 text-cyan-500" />,
         order: 1,
       }
     case "Tavern":
       return {
         key: location,
         title: "Tavern",
-        icon: <GiTavernSign className="h-6 w-6 text-cyan-600" />,
+        icon: <GiTavernSign className="h-6 w-6 text-cyan-500" />,
         order: 2,
       }
     case "Bank":
       return {
         key: location,
         title: "Bank",
-        icon: <GiBank className="h-6 w-6 text-cyan-600" />,
+        icon: <GiBank className="h-6 w-6 text-cyan-500" />,
         order: 3,
       }
     case "City hall":
       return {
         key: location,
         title: "City hall",
-        icon: <BsBank2 className="h-5 w-5 text-cyan-600" />,
+        icon: <BsBank2 className="h-5 w-5 text-cyan-500" />,
         order: 4,
       }
     case "Market":
       return {
         key: location,
         title: "Market",
-        icon: <GiFarmer className="h-6 w-6 text-cyan-600" />,
+        icon: <GiFarmer className="h-6 w-6 text-cyan-500" />,
         order: 5,
       }
     case "Shipyard":
       return {
         key: location,
         title: "Shipyard",
-        icon: <BsTools className="h-5 w-5 text-cyan-600" />,
+        icon: <BsTools className="h-5 w-5 text-cyan-500" />,
         order: 6,
       }
     default:
