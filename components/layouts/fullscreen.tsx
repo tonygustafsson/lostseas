@@ -1,7 +1,7 @@
 import { almendra, crimsonText } from "@/fonts"
 
 import DesktopMenu from "../menu/DesktopMenu"
-import MobileMenu from "../menu/MobileMenu"
+import MobileBottomNav from "../menu/MobileBottomNav"
 
 export default function FullscreenLayout({
   children,
@@ -10,7 +10,7 @@ export default function FullscreenLayout({
 }) {
   return (
     <div className="flex min-h-screen flex-col lg:flex-row">
-      <MobileMenu className="lg:hidden" />
+      <MobileBottomNav className="lg:hidden" />
       <DesktopMenu className="hidden lg:block" />
 
       <main

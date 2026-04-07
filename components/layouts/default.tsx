@@ -4,7 +4,7 @@ import Link from "next/link"
 import { almendra, crimsonText } from "@/fonts"
 
 import DesktopMenu from "../menu/DesktopMenu"
-import MobileMenu from "../menu/MobileMenu"
+import MobileBottomNav from "../menu/MobileBottomNav"
 import { SidebarProvider } from "../ui/sidebar"
 import { TooltipProvider } from "../ui/tooltip"
 
@@ -16,7 +16,7 @@ export default function DefaultLayout({
   return (
     <SidebarProvider>
       <TooltipProvider>
-        <MobileMenu className="lg:hidden" />
+        <MobileBottomNav className="lg:hidden" />
         <DesktopMenu className="hidden lg:block" />
 
         <div className="flex w-full flex-col">

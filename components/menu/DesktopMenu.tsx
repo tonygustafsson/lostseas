@@ -2,16 +2,19 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { RiTreasureMapLine } from "react-icons/ri"
 
+import useModal from "@/app/stores/modals"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
+import Map from "../Map"
 import SocialMedia from "../SocialMedia"
 import SoundControls from "../Sound/Controls"
+import { Button } from "../ui/button"
 import { Sidebar, SidebarContent, SidebarGroup } from "../ui/sidebar"
 import CharacterCard from "./CharacterCard"
 import FleetCard from "./FleetCard"
 import InventoryCard from "./InventoryCard"
-import MainMenu from "./MainMenu"
 import QuickButtonMenu from "./QuickButtonMenu"
 import WeatherCard from "./WeatherCard"
 
@@ -21,6 +24,17 @@ type Props = {
 
 const DesktopMenu = ({ className }: Props) => {
   const { data: player } = useGetPlayer()
+
+  const { setModal } = useModal()
+
+  const showMap = () => {
+    setModal({
+      id: "map",
+      title: "Pick your destination",
+      fullWidth: true,
+      content: <Map currentTown={player?.character.town} />,
+    })
+  }
 
   if (!player) return null
 
@@ -44,7 +58,14 @@ const DesktopMenu = ({ className }: Props) => {
         </SidebarGroup>
 
         <SidebarGroup>
-          <MainMenu />
+          <Button
+            onClick={showMap}
+            disabled={!!player?.character.journey}
+            className="group/map"
+          >
+            <RiTreasureMapLine className="group-hover/map:text-accent size-5!" />
+            Travel
+          </Button>
         </SidebarGroup>
 
         <SidebarGroup className="gap-4">
