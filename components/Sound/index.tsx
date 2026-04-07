@@ -31,6 +31,14 @@ const Sound = () => {
     []
   )
 
+  const playMusic = useCallback(() => {
+    if (!musicPlayer) return
+
+    musicPlayer.play().catch(() => {
+      // Autoplay blocked — will resume on first user interaction
+    })
+  }, [musicPlayer])
+
   const fadeOutMusic = () =>
     new Promise((resolve) => {
       if (!musicPlayer) {
@@ -64,11 +72,19 @@ const Sound = () => {
 
     musicPlayer.src = randomSong
     musicPlayer.volume = 0.8
-    musicPlayer.play().catch(() => {
-      // Autoplay blocked — will resume on first user interaction
-    })
+    playMusic()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [musicPlayer, player?.character?.location])
+  }, [musicPlayer, player?.character?.location, playMusic])
+
+  useEffect(() => {
+    if (!musicPlayer) return
+
+    musicPlayer.onended = musicOn ? playRandomSong : null
+
+    return () => {
+      musicPlayer.onended = null
+    }
+  }, [musicOn, musicPlayer, playRandomSong])
 
   useEffect(() => {
     // Change music track if you are going out to sea or coming in to harbor
@@ -89,15 +105,12 @@ const Sound = () => {
 
     if (musicOn && !musicPlayer.src) {
       playRandomSong()
-
-      musicPlayer.addEventListener("ended", playRandomSong)
     } else if (musicOn && musicPlayer.src) {
-      musicPlayer.play().catch(() => {})
+      playMusic()
     } else {
       musicPlayer.pause()
-      musicPlayer.removeEventListener("ended", playRandomSong)
     }
-  }, [musicOn, musicPlayer, playRandomSong])
+  }, [musicOn, musicPlayer, playRandomSong, playMusic])
 
   useEffect(() => {
     if (!soundEffectsOn || !soundEffect) return
@@ -139,20 +152,17 @@ const Sound = () => {
       if (!musicPlayer.paused) return
 
       if (musicPlayer.src) {
-        musicPlayer.play().catch(() => {})
+        playMusic()
       } else {
         playRandomSong()
-        musicPlayer.addEventListener("ended", playRandomSong)
       }
     }
 
     document.addEventListener("click", handleClick, { once: true })
     return () => {
-      musicPlayer.pause()
       document.removeEventListener("click", handleClick)
-      musicPlayer.removeEventListener("ended", playRandomSong)
     }
-  }, [musicOn, musicPlayer, playRandomSong])
+  }, [musicOn, musicPlayer, playRandomSong, playMusic])
 
   useEffect(() => {
     if (!player) {
