@@ -6,6 +6,7 @@ import useDrawer from "@/app/stores/drawer"
 
 import { Button } from "../ui/button"
 import { Card, CardContent, CardHeader } from "../ui/card"
+import { StatCard } from "./StatCard"
 
 type Props = {
   player: Player
@@ -15,7 +16,7 @@ const InventoryCard = ({ player }: Props) => {
   const { open: openDrawer } = useDrawer()
 
   return (
-    <Card className="gap-2 bg-gray-800 p-2">
+    <Card className="gap-2 bg-neutral-900 p-2">
       <CardHeader className="flex items-center justify-between px-2 font-serif text-lg">
         Inventory
         <Button
@@ -27,26 +28,17 @@ const InventoryCard = ({ player }: Props) => {
         </Button>
       </CardHeader>
 
-      <CardContent className="space-y-2 px-2">
-        <div className="grid grid-cols-2 gap-2">
-          <div className="flex items-center justify-between rounded-sm bg-gray-900 p-2">
-            <div>
-              <p className="text-xs text-gray-400">Food</p>
-              <p className="w-fit">{player?.inventory?.food}</p>
-            </div>
-
-            <GiMeat className="text-accent size-5" />
-          </div>
-
-          <div className="flex items-center justify-between rounded-sm bg-gray-900 p-2">
-            <div>
-              <p className="text-xs text-gray-400">Water</p>
-              <p className="w-fit">{player?.inventory?.water}</p>
-            </div>
-
-            <GiWaterFlask className="text-accent size-5" />
-          </div>
-        </div>
+      <CardContent className="grid grid-cols-2 gap-4 px-2">
+        <StatCard
+          title="Food"
+          value={player?.inventory?.food || 0}
+          Icon={<GiMeat />}
+        />
+        <StatCard
+          title="Water"
+          value={player?.inventory?.water || 0}
+          Icon={<GiWaterFlask />}
+        />
       </CardContent>
     </Card>
   )
