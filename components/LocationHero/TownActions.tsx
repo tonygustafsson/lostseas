@@ -91,7 +91,7 @@ const TownActions = ({ location }: Props) => {
             key={`change-location-${key}`}
             variant={location === key ? "secondary" : "outline"}
             size="lg"
-            className="gap-2 px-6 font-serif text-lg"
+            className="gap-2 px-6 font-serif text-lg font-normal!"
             onClick={() => handleMove(title as TownLocation)}
             disabled={location === key}
             style={
