@@ -37,7 +37,7 @@ const InventoryDrawer = () => {
         <div className="grid grid-cols-2 gap-2 md:grid-cols-2">
           {necessities.map(([item, possession]) => (
             <div
-              className="flex items-center justify-between rounded-lg bg-gray-900 p-4 shadow-md hover:shadow-lg"
+              className="flex items-center justify-between rounded-lg bg-neutral-900 p-4 shadow-md hover:shadow-lg"
               key={`inventory-${item}`}
             >
               <div>
@@ -68,7 +68,7 @@ const InventoryDrawer = () => {
             <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
               {tradingAssets.map(([item, possession]) => (
                 <div
-                  className="flex items-center justify-between rounded-lg bg-gray-900 p-4 shadow-md hover:shadow-lg"
+                  className="flex items-center justify-between rounded-lg bg-neutral-900 p-4 shadow-md hover:shadow-lg"
                   key={`inventory-${item}`}
                 >
                   <div>

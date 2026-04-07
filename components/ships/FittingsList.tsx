@@ -12,7 +12,7 @@ export default function FittingsList() {
   }
 
   return (
-    <div className="flex items-center justify-between rounded-lg bg-gray-900 p-4 shadow-md hover:shadow-lg lg:w-52">
+    <div className="flex items-center justify-between rounded-lg bg-neutral-900 p-4 shadow-md hover:shadow-lg lg:w-52">
       <div>
         <div className="text-muted-foreground text-sm">Cannons</div>
         <div>

@@ -1,6 +1,5 @@
 "use client"
 
-import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import RadialProgressBar from "@/components/RadialProgressBar"
 import ShipActions from "@/components/ships/ShipActions"
@@ -33,7 +32,7 @@ export default function ShipList() {
     <>
       {!!Object.values(player.ships || []).length && (
         <div
-          className={cn("grid w-full grid-cols-1 gap-2 sm:grid-cols-2", {
+          className={cn("grid w-full grid-cols-1 gap-4 sm:grid-cols-2", {
             "sm:grid-cols-1": Object.values(player.ships || []).length === 1,
           })}
         >
@@ -49,7 +48,7 @@ export default function ShipList() {
               <Card
                 key={`ships-${ship.id}-${idx}`}
                 size="sm"
-                className="bg-gray-900"
+                className="bg-neutral-900"
               >
                 <CardHeader>
                   <CardTitle>{ship.name}</CardTitle>
@@ -57,6 +56,8 @@ export default function ShipList() {
 
                 <CardContent className="flex flex-col justify-between gap-4">
                   <p className="text-xs">{shipInfo.description}</p>
+
+                  <Badge variant="secondary">Created: {createdDate}</Badge>
 
                   <div className="flex gap-4">
                     <div className="flex w-fit flex-col items-center gap-1">
@@ -83,39 +84,6 @@ export default function ShipList() {
                   />
                 </CardAction>
               </Card>
-            )
-
-            return (
-              <MerchandiseCard
-                key={`ships-${ship.id}-${idx}`}
-                title={`${ship.name} (${ship.type})`}
-                icon={<MerchandiseIcon item={ship.type} />}
-                body={
-                  <>
-                    <p>{shipInfo.description}</p>
-
-                    <div className="mt-2 flex flex-col gap-4">
-                      <div className="flex w-fit flex-col items-center gap-1">
-                        <p className="text-xs font-bold">Health</p>
-
-                        <RadialProgressBar
-                          percentage={ship.health}
-                          className="h-14 w-14"
-                        />
-                      </div>
-
-                      <Badge variant="secondary">Created: {createdDate}</Badge>
-                    </div>
-                  </>
-                }
-                actions={
-                  <ShipActions
-                    shipId={ship.id}
-                    shipName={ship.name}
-                    shipType={ship.type}
-                  />
-                }
-              />
             )
           })}
         </div>

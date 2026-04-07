@@ -24,7 +24,7 @@ export default function CrewBoard({ onManage }: Props) {
   return (
     <>
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-        <div className="flex items-center justify-between rounded-md bg-gray-900 p-4">
+        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
           <div>
             <div className="text-muted-foreground text-sm">Members</div>
             <div>{player?.crewMembers.count}</div>
@@ -32,7 +32,7 @@ export default function CrewBoard({ onManage }: Props) {
           <MdGroups className="h-11 w-11 text-yellow-400" />
         </div>
 
-        <div className="flex items-center justify-between rounded-md bg-gray-900 p-4">
+        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
           <div>
             <div className="text-muted-foreground text-sm">Health</div>
             <div>{player?.crewMembers.health}%</div>
@@ -43,7 +43,7 @@ export default function CrewBoard({ onManage }: Props) {
           />
         </div>
 
-        <div className="flex items-center justify-between rounded-md bg-gray-900 p-4">
+        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
           <div>
             <div className="text-muted-foreground text-sm">Mood</div>
             <div>{player?.crewMembers.mood}%</div>

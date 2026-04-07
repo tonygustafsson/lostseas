@@ -31,7 +31,7 @@ export default function CharacterInfo() {
       </span>
 
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        <div className="flex items-center justify-between rounded-md bg-gray-900 p-4">
+        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
           <div>
             <div className="text-muted-foreground text-xs">Title</div>
             <div>{player.character.title}</div>
@@ -39,7 +39,7 @@ export default function CharacterInfo() {
           <GiPirateCoat className="size-6 text-yellow-400" />
         </div>
 
-        <div className="flex items-center justify-between rounded-md bg-gray-900 p-4">
+        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
           <div>
             <div className="text-muted-foreground text-xs">Score</div>
             <div>{getScore(player)}</div>
@@ -47,7 +47,7 @@ export default function CharacterInfo() {
           <GiProgression className="size-6 text-yellow-400" />
         </div>
 
-        <div className="flex items-center justify-between rounded-md bg-gray-900 p-4">
+        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
           <div>
             <div className="text-muted-foreground text-xs">Age</div>
             <div>{player.character.age}</div>
@@ -55,7 +55,7 @@ export default function CharacterInfo() {
           <BiTime className="size-6 text-yellow-400" />
         </div>
 
-        <div className="flex items-center justify-between rounded-md bg-gray-900 p-4">
+        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
           <div>
             <div className="text-muted-foreground text-xs">Gender</div>
             <div>{player.character.gender}</div>
@@ -67,7 +67,7 @@ export default function CharacterInfo() {
           )}
         </div>
 
-        <div className="flex items-center justify-between rounded-md bg-gray-900 p-4">
+        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
           <div>
             <div className="text-muted-foreground text-xs">Nationality</div>
             <div>{player.character.nationality}</div>
@@ -79,7 +79,7 @@ export default function CharacterInfo() {
           />
         </div>
 
-        <div className="flex items-center justify-between rounded-md bg-gray-900 p-4">
+        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
           <div>
             <div className="text-muted-foreground text-xs">War with</div>
             <div>{NATIONS[player.character.nationality].warWith}</div>
@@ -93,7 +93,7 @@ export default function CharacterInfo() {
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
-        <div className="flex items-center justify-between rounded-md bg-gray-900 p-4">
+        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
           <div>
             <div className="text-muted-foreground text-xs">
               Has been playing for
@@ -103,7 +103,7 @@ export default function CharacterInfo() {
           <AiOutlineCalendar className="size-6 text-yellow-400" />
         </div>
 
-        <div className="flex items-center justify-between rounded-md bg-gray-900 p-4">
+        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
           <div>
             <div className="text-muted-foreground text-xs">Current date</div>
             <div>{currentDate}</div>
@@ -115,7 +115,7 @@ export default function CharacterInfo() {
       <span className="mt-8 mb-2 block font-serif text-xl">Economy</span>
 
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-        <div className="flex items-center justify-between rounded-md bg-gray-900 p-4">
+        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
           <div>
             <div className="text-muted-foreground text-xs">Gold</div>
             <div>{player.character.gold}</div>
@@ -124,7 +124,7 @@ export default function CharacterInfo() {
         </div>
 
         {player.character.account && (
-          <div className="flex items-center justify-between rounded-md bg-gray-900 p-4">
+          <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
             <div>
               <div className="text-muted-foreground text-xs">Account</div>
               <div>{player.character.account}</div>
@@ -134,7 +134,7 @@ export default function CharacterInfo() {
         )}
 
         {player.character.loan && (
-          <div className="flex items-center justify-between rounded-md bg-gray-900 p-4">
+          <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
             <div>
               <div className="text-muted-foreground text-xs">Loan</div>
               <div>{player.character.loan}</div>
@@ -153,7 +153,7 @@ export default function CharacterInfo() {
               ([nation, { won, lost }]) => (
                 <div
                   key={`battles-${nation}`}
-                  className="flex items-center justify-between rounded-md bg-gray-900 p-4"
+                  className="flex items-center justify-between rounded-md bg-neutral-900 p-4"
                 >
                   <div>
                     <div className="text-muted-foreground text-xs">
