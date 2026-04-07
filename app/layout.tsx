@@ -4,7 +4,7 @@ import { Analytics } from "@vercel/analytics/react"
 import { Metadata, Viewport } from "next"
 
 import Providers from "@/components/Providers"
-import { almendra, andika } from "@/fonts"
+import { almendra, crimsonText } from "@/fonts"
 import { cn } from "@/lib/utils"
 import { getDehydratedPlayerState } from "@/utils/app/getDehydratedPlayerState"
 
@@ -55,7 +55,12 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={cn(almendra.variable, andika.variable, "font-sans", "dark")}
+      className={cn(
+        almendra.variable,
+        crimsonText.variable,
+        "font-sans",
+        "dark"
+      )}
     >
       <body>
         <Providers dehydratedState={dehydratedState}>{children}</Providers>

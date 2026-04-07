@@ -1,13 +1,21 @@
 "use client"
 
-import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import RadialProgressBar from "@/components/RadialProgressBar"
 import ShipActions from "@/components/ships/ShipActions"
 import { Badge } from "@/components/ui/badge"
 import { SHIP_TYPES } from "@/constants/ship"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { cn } from "@/lib/utils"
 import { getCurrentDate } from "@/utils/date"
+
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../ui/card"
 
 export default function ShipList() {
   const { data: player } = useGetPlayer()
@@ -23,7 +31,11 @@ export default function ShipList() {
   return (
     <>
       {!!Object.values(player.ships || []).length && (
-        <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        <div
+          className={cn("grid w-full grid-cols-1 gap-4 sm:grid-cols-2", {
+            "sm:grid-cols-1": Object.values(player.ships || []).length === 1,
+          })}
+        >
           {Object.values(player.ships || []).map((ship, idx) => {
             const shipInfo = SHIP_TYPES[ship.type]
             const createdDate = getCurrentDate(ship.createdDay)
@@ -33,36 +45,45 @@ export default function ShipList() {
             }
 
             return (
-              <MerchandiseCard
+              <Card
                 key={`ships-${ship.id}-${idx}`}
-                title={`${ship.name} (${ship.type})`}
-                icon={<MerchandiseIcon item={ship.type} />}
-                body={
-                  <>
-                    <p>{shipInfo.description}</p>
+                size="sm"
+                className="bg-neutral-900"
+              >
+                <CardHeader>
+                  <CardTitle>{ship.name}</CardTitle>
+                </CardHeader>
 
-                    <div className="mt-2 flex flex-col gap-4">
-                      <div className="flex w-fit flex-col items-center gap-1">
-                        <p className="text-xs font-bold">Health</p>
+                <CardContent className="flex flex-col justify-between gap-4">
+                  <p className="text-xs">{shipInfo.description}</p>
 
-                        <RadialProgressBar
-                          percentage={ship.health}
-                          className="h-14 w-14"
-                        />
-                      </div>
+                  <Badge variant="secondary">Created: {createdDate}</Badge>
 
-                      <Badge variant="secondary">Created: {createdDate}</Badge>
+                  <div className="flex gap-4">
+                    <div className="flex w-fit flex-col items-center gap-1">
+                      <p className="text-xs">{ship.type}</p>
+                      <MerchandiseIcon size="lg" item={ship.type} />
                     </div>
-                  </>
-                }
-                actions={
+
+                    <div className="flex w-fit flex-col items-center gap-1">
+                      <p className="text-xs">Health</p>
+
+                      <RadialProgressBar
+                        percentage={ship.health}
+                        className="size-12"
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+
+                <CardAction className="w-full px-4">
                   <ShipActions
                     shipId={ship.id}
                     shipName={ship.name}
                     shipType={ship.type}
                   />
-                }
-              />
+                </CardAction>
+              </Card>
             )
           })}
         </div>

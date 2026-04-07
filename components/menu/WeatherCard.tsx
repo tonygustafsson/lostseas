@@ -11,11 +11,11 @@ const WeatherCard = ({ day }: Props) => {
   const currentDate = getCurrentDate(day)
 
   return (
-    <Card size="sm" className="bg-gray-800">
-      <CardContent>
+    <Card className="bg-neutral-900 p-2">
+      <CardContent className="px-2">
         <div className="flex items-center justify-between">
           <span className="text-sm font-bold">{currentDate}</span>
-          <WeatherIcon className="text-accent h-8 w-8" />
+          <WeatherIcon className="text-accent size-6" />
         </div>
       </CardContent>
     </Card>

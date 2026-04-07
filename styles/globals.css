@@ -51,7 +51,7 @@ html {
   --card-foreground: oklch(0.987 0.002 197.1);
   --popover: oklch(0.218 0.008 223.9);
   --popover-foreground: oklch(0.987 0.002 197.1);
-  --primary: oklch(0.443 0.11 240.79);
+  --primary: oklch(0.4 0.11 271);
   --primary-foreground: oklch(0.977 0.013 236.62);
   --secondary: oklch(0.274 0.006 286.033);
   --secondary-foreground: oklch(0.985 0 0);
@@ -80,7 +80,7 @@ html {
 
 @theme inline {
   --font-sans:
-    var(--font-andika), ui-sans-serif, system-ui, -apple-system,
+    var(--font-crimson-text), ui-sans-serif, system-ui, -apple-system,
     BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
     "Noto Sans", sans-serif;
   --font-serif:

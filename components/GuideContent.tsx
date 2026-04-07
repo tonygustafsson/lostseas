@@ -1,14 +1,16 @@
 "use client"
 
 import Image from "next/image"
-import { BiArrowToTop } from "react-icons/bi"
 
 import { SHIP_TYPES } from "@/constants/ship"
 import { TITLE_INFO } from "@/constants/title"
 
-import { Button } from "./ui/button"
-import { ButtonGroup } from "./ui/button-group"
-import { Separator } from "./ui/separator"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./ui/accordion"
 import {
   Table,
   TableBody,
@@ -18,80 +20,31 @@ import {
   TableRow,
 } from "./ui/table"
 
-const GuideContent = () => {
-  const goToSection = (id: string) => {
-    const element = document.getElementById(id)
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" })
-    }
-  }
+const SECTIONS = [
+  "supplies",
+  "ships",
+  "crew-members",
+  "social-status",
+  "economy",
+  "traveling",
+]
 
-  const goToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" })
-  }
+type Props = {
+  defaultOpen?: boolean
+}
 
-  return (
-    <>
-      <nav className="my-8 flex w-full justify-center">
-        <ButtonGroup className="overflow-x-auto">
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => goToSection("supplies")}
-          >
-            Supplies
-          </Button>
-
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => goToSection("ships")}
-          >
-            Ships
-          </Button>
-
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => goToSection("crew-members")}
-          >
-            Crew members
-          </Button>
-
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => goToSection("social-status")}
-          >
-            Social status
-          </Button>
-
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => goToSection("economy")}
-          >
-            Economy
-          </Button>
-
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => goToSection("traveling")}
-          >
-            Traveling
-          </Button>
-        </ButtonGroup>
-      </nav>
-
-      <Separator className="my-8" />
-
-      <div className="mx-auto max-w-2xl">
-        <h2 id="supplies" className="mb-4 font-serif text-3xl">
-          Supplies
-        </h2>
-
-        <h3 className="mb-2 font-serif text-2xl">Buying and selling</h3>
+const GuideContent = ({ defaultOpen = false }: Props) => (
+  <Accordion
+    type="multiple"
+    defaultValue={defaultOpen ? SECTIONS : []}
+    className="my-6"
+  >
+    <AccordionItem value="supplies">
+      <AccordionTrigger className="font-serif text-xl [&>svg]:mt-2">
+        Supplies
+      </AccordionTrigger>
+      <AccordionContent>
+        <h3 className="mb-2 font-serif text-lg">Buying and selling</h3>
 
         <p className="mb-4">
           At the shop you can buy and sell everything your crew needs to be
@@ -106,9 +59,10 @@ const GuideContent = () => {
           width={800}
           height={460}
           alt="The shop"
+          className="mb-4 aspect-[1.74]"
         />
 
-        <p className="my-4">
+        <p className="mb-4">
           The market is a bit different - here you will get an offers, that is
           often cheaper than the shop. But you cannot control how much of it you
           want, and if you cannot afford it; too bad. It&apos;s a good idea to
@@ -120,9 +74,10 @@ const GuideContent = () => {
           width={800}
           height={460}
           alt="The market"
+          className="mb-4 aspect-[1.74]"
         />
 
-        <h3 className="mt-4 mb-2 font-serif text-2xl">Food and water</h3>
+        <h3 className="mb-2 font-serif text-lg">Food and water</h3>
 
         <p className="mb-4">
           You and your crew will need both food and water for traveling at sea.
@@ -132,20 +87,19 @@ const GuideContent = () => {
           can buy more food and water.
         </p>
 
-        <h3 className="mb-2 font-serif text-2xl">Barter goods</h3>
+        <h3 className="mb-2 font-serif text-lg">Barter goods</h3>
 
-        <p className="mb-4">
+        <p>
           This includes tobacco, rum, porcelain, spices and silk. You don&apos;t
           have any use of these goods, but you will loot a lot of these at sea.
           You can them sell them at the shop and make some gold.
         </p>
+      </AccordionContent>
+    </AccordionItem>
 
-        <Separator className="my-8" />
-
-        <h2 id="ships" className="mb-2 font-serif text-3xl">
-          Ships
-        </h2>
-
+    <AccordionItem value="ships">
+      <AccordionTrigger className="font-serif text-xl">Ships</AccordionTrigger>
+      <AccordionContent>
         <p className="mb-4">
           If you lose in battle, one of your ships might be sunk. If you only
           have one ship you are safe. Another reason for having many ships is to
@@ -158,9 +112,10 @@ const GuideContent = () => {
           width={800}
           height={460}
           alt="The shipyard"
+          className="mb-4 aspect-[1.74]"
         />
 
-        <p className="my-4">
+        <p className="mb-4">
           The third reason is that you will only lose part of your goods when
           loosing a battle, if you have more than one ship. If you have three
           ships, you will lose one third of your goods. They will still take all
@@ -172,7 +127,7 @@ const GuideContent = () => {
           ships. But as your rank get higher, you will be able to own 15 ships.
         </p>
 
-        <h3 className="mb-2 font-serif text-2xl">Different ship types</h3>
+        <h3 className="mb-2 font-serif text-lg">Different ship types</h3>
 
         <Table className="mb-6 rounded-xl bg-black/60">
           <TableHeader>
@@ -212,23 +167,24 @@ const GuideContent = () => {
           </TableBody>
         </Table>
 
-        <h3 className="mb-2 font-serif text-2xl">Cannons</h3>
+        <h3 className="my-6 font-serif text-lg">Cannons</h3>
 
-        <p className="mb-4">
+        <p>
           Cannons are needed for battles at sea. It&apos;s the amount of manned
           cannons that controls if you win or lose, and also how powerful ships
           you will meet. You will need two crew members to control one cannon,
           which means that if you have 20 cannons, and 30 crew members, you will
           still only be able to use 15 of them.
         </p>
+      </AccordionContent>
+    </AccordionItem>
 
-        <Separator className="my-8" />
-
-        <h2 id="crew-members" className="mb-2 font-serif text-3xl">
-          Crew members
-        </h2>
-
-        <h3 className="mb-2 font-serif text-2xl">Purpose of crew members</h3>
+    <AccordionItem value="crew-members">
+      <AccordionTrigger className="font-serif text-xl">
+        Crew members
+      </AccordionTrigger>
+      <AccordionContent>
+        <h3 className="mb-2 font-serif text-lg">Purpose of crew members</h3>
 
         <p className="mb-4">
           The only real reason to have crew members is so that they can fight
@@ -259,32 +215,32 @@ const GuideContent = () => {
           width={800}
           height={460}
           alt="Crew stats"
+          className="mb-4 aspect-[1.74]"
         />
 
-        <h3 className="my-4 mb-2 font-serif text-2xl">
-          Getting more crew members
-        </h3>
+        <h3 className="mb-2 font-serif text-lg">Getting more crew members</h3>
 
-        <p className="mb-4">
+        <p>
           When you win battles at sea some of their crew will offer to join you.
           The other method is to visit the tavern and speak to the sailors
           there, they often want to offer their services for free.
         </p>
+      </AccordionContent>
+    </AccordionItem>
 
-        <Separator className="my-8" />
-
-        <h2 id="social-status" className="mb-2 font-serif text-3xl">
-          Social status
-        </h2>
-
-        <h3 className="mb-2 font-serif text-2xl">Nations</h3>
+    <AccordionItem value="social-status">
+      <AccordionTrigger className="font-serif text-xl">
+        Social status
+      </AccordionTrigger>
+      <AccordionContent>
+        <h3 className="mb-2 font-serif text-lg">Nations</h3>
         <p className="mb-4">
           This game takes place at the Spanish Main, in the Caribbean Sea at the
           1600th. There are four nations, battling over the towns. English,
           French, Spanish and Dutch.
         </p>
 
-        <h3 className="mb-2 font-serif text-2xl">Levels</h3>
+        <h3 className="mb-2 font-serif text-lg">Levels</h3>
 
         <p className="mb-4">
           The level system in this game is pretty simple. You belong to a
@@ -295,16 +251,17 @@ const GuideContent = () => {
           them.
         </p>
 
-        <h3 className="mb-2 font-serif text-2xl">Titles</h3>
+        <h3 className="mb-2 font-serif text-lg">Titles</h3>
 
         <Image
           src="/img/location/port-royale/city-hall.webp"
           width={800}
           height={460}
           alt="The City Hall"
+          className="mb-4 aspect-[1.74]"
         />
 
-        <p className="my-4">
+        <p className="mb-4">
           Levels doesn&apos;t do anything by itself, but you will be judged by
           the nations governor (At the City Hall) by it. You will get promoted
           if you are doing a good job. You will then get a reward, and higher
@@ -314,7 +271,7 @@ const GuideContent = () => {
           highest title.
         </p>
 
-        <h3 className="mb-2 font-serif text-2xl">The different titles</h3>
+        <h3 className="mb-2 font-serif text-lg">The different titles</h3>
 
         <Table className="mb-6 rounded-xl bg-black/60">
           <TableHeader>
@@ -333,63 +290,54 @@ const GuideContent = () => {
               <TableCell>{TITLE_INFO.Pirate.reward} gold</TableCell>
               <TableCell>{TITLE_INFO.Pirate.maxShips}</TableCell>
             </TableRow>
-
             <TableRow>
               <TableCell>10-19</TableCell>
               <TableCell>{TITLE_INFO.Ensign.title}</TableCell>
               <TableCell>{TITLE_INFO.Ensign.reward} gold</TableCell>
               <TableCell>{TITLE_INFO.Ensign.maxShips}</TableCell>
             </TableRow>
-
             <TableRow>
               <TableCell>20-29</TableCell>
               <TableCell>{TITLE_INFO.Captain.title}</TableCell>
               <TableCell>{TITLE_INFO.Captain.reward} gold</TableCell>
               <TableCell>{TITLE_INFO.Captain.maxShips}</TableCell>
             </TableRow>
-
             <TableRow>
               <TableCell>30-39</TableCell>
               <TableCell>{TITLE_INFO.Major.title}</TableCell>
               <TableCell>{TITLE_INFO.Major.reward} gold</TableCell>
               <TableCell>{TITLE_INFO.Major.maxShips}</TableCell>
             </TableRow>
-
             <TableRow>
               <TableCell>40-49</TableCell>
               <TableCell>{TITLE_INFO.Colonel.title}</TableCell>
               <TableCell>{TITLE_INFO.Colonel.reward} gold</TableCell>
               <TableCell>{TITLE_INFO.Colonel.maxShips}</TableCell>
             </TableRow>
-
             <TableRow>
               <TableCell>50-64</TableCell>
               <TableCell>{TITLE_INFO.Admiral.title}</TableCell>
               <TableCell>{TITLE_INFO.Admiral.reward} gold</TableCell>
               <TableCell>{TITLE_INFO.Admiral.maxShips}</TableCell>
             </TableRow>
-
             <TableRow>
               <TableCell>65-79</TableCell>
               <TableCell>{TITLE_INFO.Baron.title}</TableCell>
               <TableCell>{TITLE_INFO.Baron.reward} gold</TableCell>
               <TableCell>{TITLE_INFO.Baron.maxShips}</TableCell>
             </TableRow>
-
             <TableRow>
               <TableCell>80-99</TableCell>
               <TableCell>{TITLE_INFO.Count.title}</TableCell>
               <TableCell>{TITLE_INFO.Count.reward} gold</TableCell>
               <TableCell>{TITLE_INFO.Count.maxShips}</TableCell>
             </TableRow>
-
             <TableRow>
               <TableCell>100-119</TableCell>
               <TableCell>{TITLE_INFO.Marquis.title}</TableCell>
               <TableCell>{TITLE_INFO.Marquis.reward} gold</TableCell>
               <TableCell>{TITLE_INFO.Marquis.maxShips}</TableCell>
             </TableRow>
-
             <TableRow>
               <TableCell>120+</TableCell>
               <TableCell>{TITLE_INFO.Duke.title}</TableCell>
@@ -399,7 +347,7 @@ const GuideContent = () => {
           </TableBody>
         </Table>
 
-        <h3 className="my-2 font-serif text-2xl">Changing nation</h3>
+        <h3 className="mb-2 font-serif text-lg">Changing nation</h3>
 
         <p className="mb-4">
           If you are not pleased by your nation you can actually change it. You
@@ -411,20 +359,21 @@ const GuideContent = () => {
           you have destroyed).
         </p>
 
-        <p className="mb-4">
+        <p>
           Just to make things clear: If you are a Spanish citizen and have
           attacked 50 French ships even though this isn&apos;t your enemy, and
           you have not attacked any English ships, you will be an english
           Admiral at once when you get yourself an english citizenship.
         </p>
+      </AccordionContent>
+    </AccordionItem>
 
-        <Separator className="my-8" />
-
-        <h2 id="economy" className="mb-4 font-serif text-3xl">
-          Economy
-        </h2>
-
-        <h3 className="mb-2 font-serif text-2xl">Getting some gold</h3>
+    <AccordionItem value="economy">
+      <AccordionTrigger className="font-serif text-xl">
+        Economy
+      </AccordionTrigger>
+      <AccordionContent>
+        <h3 className="mb-2 font-serif text-lg">Getting some gold</h3>
 
         <p className="mb-4">
           The currency in this game is gold, for which you can buy and sell
@@ -438,7 +387,7 @@ const GuideContent = () => {
           but they need to be return to the correct Governor.
         </p>
 
-        <h3 className="mb-2 font-serif text-2xl">Saving money</h3>
+        <h3 className="mb-2 font-serif text-lg">Saving money</h3>
 
         <p className="mb-4">
           There is a banking system in this game. When you lose a battle at sea,
@@ -460,30 +409,32 @@ const GuideContent = () => {
           you can only get 95 dbl back.
         </p>
 
-        <h3 className="mb-2 font-serif text-2xl">Loans</h3>
+        <h3 className="mb-2 font-serif text-lg">Loans</h3>
 
-        <p className="mb-4">
+        <p>
           You can also take a loan if the game are tough on you. You cannot loan
           more than 10 000 gold. The loans are free of charge, but you cannot
           add gold to your account until you have payed off your loan.
         </p>
+      </AccordionContent>
+    </AccordionItem>
 
-        <Separator className="my-8" />
-
-        <h2 id="traveling" className="mb-2 font-serif text-3xl">
-          Traveling
-        </h2>
-
-        <h3 className="mb-2 font-serif text-2xl">Towns and nations</h3>
+    <AccordionItem value="traveling">
+      <AccordionTrigger className="font-serif text-xl">
+        Traveling
+      </AccordionTrigger>
+      <AccordionContent>
+        <h3 className="mb-2 font-serif text-lg">Towns and nations</h3>
 
         <Image
           src="/img/userguide/map.png"
           width={800}
           height={460}
           alt="The Spanish Main"
+          className="mb-4 aspect-[1.74]"
         />
 
-        <p className="my-4">
+        <p className="mb-4">
           All existing towns actually existed in the 1600th. The towns
           nationality varied from year to year though.
         </p>
@@ -512,7 +463,7 @@ const GuideContent = () => {
           belongs to.
         </p>
 
-        <h3 className="mb-2 font-serif text-2xl">Time</h3>
+        <h3 className="mb-2 font-serif text-lg">Time</h3>
 
         <p className="mb-4">
           Time is measured in weeks in Lost Seas. The time won&apos;t go by
@@ -520,20 +471,21 @@ const GuideContent = () => {
           when you travel from a town to the Caribbean Sea.
         </p>
 
-        <h3 className="mb-2 font-serif text-2xl">Weather</h3>
+        <h3 className="mb-2 font-serif text-lg">Weather</h3>
 
         <p className="mb-4">
           The weather will change by each passing day at sea, however it
           won&apos;t affect anything at the moment.
         </p>
 
-        <h3 className="mb-2 font-serif text-2xl">Battles at sea</h3>
+        <h3 className="mb-2 font-serif text-lg">Battles at sea</h3>
 
         <Image
           src="/img/location/ship-meeting/ship-meeting5.webp"
           width={800}
           height={460}
           alt="Meeting a ship"
+          className="mb-4 aspect-[1.74]"
         />
 
         <p className="mb-4">
@@ -549,19 +501,12 @@ const GuideContent = () => {
           of functional cannons that decides if you will lose or not.
         </p>
 
-        <p className="mb-4">
+        <p>
           You will get a report on how much you won or lost during the battle.
         </p>
-      </div>
-
-      <Button
-        onClick={goToTop}
-        className="bg-info hover:bg-opacity-100 focus:bg-opacity-100 fixed right-5 bottom-5 rounded-full bg-black/50 p-3 text-xs leading-tight font-medium text-white uppercase shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:ring-0 focus:outline-none active:bg-blue-500 active:shadow-lg"
-      >
-        <BiArrowToTop className="h-7 w-7" />
-      </Button>
-    </>
-  )
-}
+      </AccordionContent>
+    </AccordionItem>
+  </Accordion>
+)
 
 export default GuideContent

@@ -58,7 +58,7 @@ function Button({
       data-size={size}
       className={cn([
         buttonVariants({ variant, size, className }),
-        "cursor-pointer",
+        "cursor-pointer font-semibold",
       ])}
       {...props}
     />

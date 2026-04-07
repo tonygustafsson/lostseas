@@ -1,8 +1,10 @@
-import Link from "next/link"
+"use client"
+
 import React from "react"
 import { FiLogOut, FiSettings } from "react-icons/fi"
 import { PiBookOpenTextBold } from "react-icons/pi"
 
+import useDrawer from "@/app/stores/drawer"
 import { usePlayer } from "@/hooks/queries/usePlayer"
 
 import { Button } from "../ui/button"
@@ -10,17 +12,20 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
 const QuickButtonMenu = () => {
   const { logout } = usePlayer()
+  const { open: openDrawer } = useDrawer()
 
   return (
     <ul className="flex justify-center gap-4">
       <li>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Link href="/settings">
-              <Button variant="secondary" size="sm">
-                <FiSettings className="h-5 w-5" />
-              </Button>
-            </Link>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => openDrawer("settings")}
+            >
+              <FiSettings className="h-5 w-5" />
+            </Button>
           </TooltipTrigger>
 
           <TooltipContent>Settings</TooltipContent>
@@ -30,11 +35,13 @@ const QuickButtonMenu = () => {
       <li>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Link href="/guide">
-              <Button variant="secondary" size="sm">
-                <PiBookOpenTextBold className="h-5 w-5" />
-              </Button>
-            </Link>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => openDrawer("guide")}
+            >
+              <PiBookOpenTextBold className="h-5 w-5" />
+            </Button>
           </TooltipTrigger>
 
           <TooltipContent>Player guide</TooltipContent>

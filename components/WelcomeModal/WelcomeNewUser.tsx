@@ -1,6 +1,6 @@
 import { getCookie } from "cookies-next/client"
-import Link from "next/link"
 
+import useDrawer from "@/app/stores/drawer"
 import useSound from "@/app/stores/sound"
 import { Button } from "@/components/ui/button"
 import {
@@ -17,6 +17,7 @@ type Props = {
 
 const WelcomeNewUser = ({ player, onClose }: Props) => {
   const { setMusic, setSoundEffects } = useSound()
+  const { open: openDrawer } = useDrawer()
 
   const startExploring = () => {
     const musicOn = Boolean(getCookie(MUSIC_STATE_COOKIE_NAME))
@@ -26,6 +27,11 @@ const WelcomeNewUser = ({ player, onClose }: Props) => {
     setSoundEffects(soundEffectsOn)
 
     onClose()
+  }
+
+  const getQrCode = () => {
+    onClose()
+    openDrawer("settings")
   }
 
   return (
@@ -49,11 +55,9 @@ const WelcomeNewUser = ({ player, onClose }: Props) => {
           variant="secondary"
           size="lg"
           className="mt-4 w-full"
-          onClick={startExploring}
+          onClick={getQrCode}
         >
-          <Link href="/settings" onClick={onClose}>
-            Get QR code
-          </Link>
+          Get QR code
         </Button>
       </div>
     </>
