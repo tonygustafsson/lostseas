@@ -90,9 +90,10 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
         <h3 className="mb-2 font-serif text-lg">Barter goods</h3>
 
         <p>
-          This includes tobacco, rum, porcelain, spices and silk. You don&apos;t
-          have any use of these goods, but you will loot a lot of these at sea.
-          You can them sell them at the shop and make some gold.
+          This includes tobacco, rum, porcelain, spices, sugar, silk, tea and
+          cotton. You don&apos;t have any use of these goods, but you will loot
+          a lot of these at sea. You can then sell them at the shop and make
+          some gold.
         </p>
       </AccordionContent>
     </AccordionItem>

@@ -26,6 +26,10 @@ export async function POST() {
       spices: 0,
       tobacco: 0,
       rum: 0,
+      sugar: 0,
+      silk: 0,
+      tea: 0,
+      cotton: 0,
     },
   }
 

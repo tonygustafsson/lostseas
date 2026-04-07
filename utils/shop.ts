@@ -1,6 +1,15 @@
 import { MERCHANDISE } from "@/constants/merchandise"
 
-const BARTER_GOODS = ["porcelain", "spices", "tobacco", "rum"]
+const BARTER_GOODS = [
+  "porcelain",
+  "spices",
+  "tobacco",
+  "rum",
+  "sugar",
+  "silk",
+  "tea",
+  "cotton",
+]
 
 export const getNecessitiesInfo = ({
   crewMembers,

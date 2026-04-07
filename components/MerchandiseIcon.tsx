@@ -1,13 +1,17 @@
 import {
   GiBrandyBottle,
   GiCargoShip,
+  GiCottonFlower,
   GiMeat,
   GiPirateCannon,
   GiPorcelainVase,
   GiPowder,
+  GiRolledCloth,
   GiShoonerSailboat,
   GiSmallFishingSailboat,
   GiSmokingPipe,
+  GiSugarCane,
+  GiTeapotLeaves,
   GiWaterFlask,
   GiWineBottle,
 } from "react-icons/gi"
@@ -56,6 +60,14 @@ const MerchandiseIcon = ({ item, size = "md", className = "" }: Props) => {
       return <GiSmokingPipe className={iconClass} />
     case "rum":
       return <GiBrandyBottle className={iconClass} />
+    case "sugar":
+      return <GiSugarCane className={iconClass} />
+    case "silk":
+      return <GiRolledCloth className={iconClass} />
+    case "tea":
+      return <GiTeapotLeaves className={iconClass} />
+    case "cotton":
+      return <GiCottonFlower className={iconClass} />
     case "dinner":
       return <GiMeat className={iconClass} />
     case "wine":

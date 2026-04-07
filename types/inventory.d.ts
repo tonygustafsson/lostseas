@@ -6,5 +6,9 @@ type Inventory = {
   medicine?: number
   tobacco?: number
   rum?: number
+  sugar?: number
+  silk?: number
+  tea?: number
+  cotton?: number
   cannons?: number
 }
