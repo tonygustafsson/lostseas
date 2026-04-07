@@ -1,7 +1,6 @@
 "use client"
 
 import Image from "next/image"
-import Link from "next/link"
 import { RiTreasureMapLine } from "react-icons/ri"
 
 import useModal from "@/app/stores/modals"
@@ -42,10 +41,7 @@ const DesktopMenu = ({ className }: Props) => {
     <Sidebar className={className}>
       <SidebarContent className="mx-2 mt-4">
         <SidebarGroup>
-          <Link
-            href="/"
-            className="mx-3 flex items-baseline gap-3 font-serif text-3xl"
-          >
+          <div className="mx-3 flex items-baseline gap-3 font-serif text-3xl">
             <Image
               src="/img/logo.svg"
               alt="Lost Seas logotype"
@@ -54,7 +50,7 @@ const DesktopMenu = ({ className }: Props) => {
               style={{ height: 32 }}
             />
             Lost Seas
-          </Link>
+          </div>
         </SidebarGroup>
 
         <SidebarGroup>

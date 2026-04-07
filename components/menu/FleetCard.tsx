@@ -33,7 +33,7 @@ const FleetCard = ({ player }: Props) => {
         />
         <StatCard
           title="Crew"
-          value={Object.keys(player?.crewMembers || {}).length}
+          value={player?.crewMembers?.count}
           Icon={<MdGroups />}
         />
       </CardContent>

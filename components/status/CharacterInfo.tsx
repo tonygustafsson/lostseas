@@ -5,11 +5,15 @@ import { BiFemaleSign, BiMaleSign, BiTime } from "react-icons/bi"
 import { FaCoins } from "react-icons/fa"
 import { GiPirateCoat, GiProgression } from "react-icons/gi"
 
+import useModal from "@/app/stores/modals"
 import Flag from "@/components/icons/Flag"
 import { NATIONS } from "@/constants/locations"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { convertDaysToTimeSpan, getCurrentDate } from "@/utils/date"
 import { getScore } from "@/utils/score"
+
+import ChangeCharacterForm from "../ChangeCharacterForm"
+import { Button } from "../ui/button"
 
 export const metadata = {
   title: "Status",
@@ -17,9 +21,18 @@ export const metadata = {
 
 export default function CharacterInfo() {
   const { data: player } = useGetPlayer()
+  const { setModal } = useModal()
 
   if (!player) {
     return null
+  }
+
+  const changeCharacter = () => {
+    setModal({
+      id: "editCharacter",
+      title: "Edit Character",
+      content: <ChangeCharacterForm />,
+    })
   }
 
   const currentDate = getCurrentDate(player.character.day || 0)
@@ -91,6 +104,10 @@ export default function CharacterInfo() {
           />
         </div>
       </div>
+
+      <Button variant="secondary" className="mt-4" onClick={changeCharacter}>
+        Change character
+      </Button>
 
       <div className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
         <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
