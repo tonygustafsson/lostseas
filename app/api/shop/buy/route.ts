@@ -2,6 +2,7 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { MERCHANDISE } from "@/constants/merchandise"
+import { isTradeGoodAvailableInTown } from "@/constants/merchandise"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
 import { patchDeep } from "@/utils/patchDeep"
@@ -25,10 +26,17 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Not a valid item" }, { status: 400 })
   }
 
+  const player = await getPlayer(playerId)
+
+  if (!isTradeGoodAvailableInTown(item, player.character.town)) {
+    return NextResponse.json(
+      { error: "This item is not available in this port" },
+      { status: 400 }
+    )
+  }
+
   const totalPrice =
     MERCHANDISE[item as keyof typeof MERCHANDISE].buy * quantity
-
-  const player = await getPlayer(playerId)
 
   if (player.character.gold < totalPrice) {
     return NextResponse.json({ error: "Not enough gold" }, { status: 400 })

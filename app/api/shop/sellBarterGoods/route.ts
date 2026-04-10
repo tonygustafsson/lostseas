@@ -1,6 +1,10 @@
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
+import {
+  BARTER_GOODS,
+  isTradeGoodAvailableInTown,
+} from "@/constants/merchandise"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
 import { patchDeep } from "@/utils/patchDeep"
@@ -15,22 +19,26 @@ export async function POST() {
   }
 
   const player = await getPlayer(playerId)
+  const town = player.character.town
 
-  const value = getBarterGoodsValue(player.inventory)
+  const value = getBarterGoodsValue(player)
+
+  // Only zero out barter goods that are available (and thus sellable) in this town
+  const inventoryUpdate = Object.fromEntries(
+    Object.entries(player.inventory || {})
+      .filter(
+        ([item]) =>
+          BARTER_GOODS.includes(item) &&
+          isTradeGoodAvailableInTown(item as keyof Inventory, town)
+      )
+      .map(([item]) => [item, 0])
+  )
+
   const dbUpdate: DeepPartial<Player> = {
     character: {
       gold: player.character.gold + value,
     },
-    inventory: {
-      porcelain: 0,
-      spices: 0,
-      tobacco: 0,
-      rum: 0,
-      sugar: 0,
-      silk: 0,
-      tea: 0,
-      cotton: 0,
-    },
+    inventory: inventoryUpdate,
   }
 
   const newPlayer = patchDeep<Player>(player, dbUpdate)

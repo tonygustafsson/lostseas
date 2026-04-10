@@ -1,15 +1,8 @@
-import { MERCHANDISE } from "@/constants/merchandise"
-
-const BARTER_GOODS = [
-  "porcelain",
-  "spices",
-  "tobacco",
-  "rum",
-  "sugar",
-  "silk",
-  "tea",
-  "cotton",
-]
+import {
+  BARTER_GOODS,
+  isTradeGoodAvailableInTown,
+  MERCHANDISE,
+} from "@/constants/merchandise"
 
 export const getNecessitiesInfo = ({
   crewMembers,
@@ -58,13 +51,30 @@ export const getDaysWorthOfNecessities = ({
   return Math.min(foodDays, waterDays)
 }
 
-export const getBarterGoodsValue = (inventory: Inventory | undefined) => {
+export const getBarterGoodsValue = (player: {
+  inventory?: Inventory
+  character: Pick<Character, "town">
+}) => {
+  const {
+    inventory,
+    character: { town },
+  } = player
   let value = 0
 
   Object.entries(inventory || {}).forEach(([item, quantity]) => {
     if (!BARTER_GOODS.includes(item)) {
       return
     }
+
+    if (town && !isTradeGoodAvailableInTown(item as keyof Inventory, town)) {
+      return
+    }
+
+    console.log({
+      item,
+      sell: MERCHANDISE[item as keyof typeof MERCHANDISE].sell,
+      quantity,
+    })
 
     value += MERCHANDISE[item as keyof typeof MERCHANDISE].sell * quantity
   })

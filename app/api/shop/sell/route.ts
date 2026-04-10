@@ -2,6 +2,7 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { MERCHANDISE } from "@/constants/merchandise"
+import { isTradeGoodAvailableInTown } from "@/constants/merchandise"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
 import { patchDeep } from "@/utils/patchDeep"
@@ -28,10 +29,18 @@ export async function POST(req: Request) {
     )
   }
 
+  const player = await getPlayer(playerId)
+
+  if (!isTradeGoodAvailableInTown(item, player.character.town)) {
+    return NextResponse.json(
+      { error: "This item is not available in this port", item },
+      { status: 400 }
+    )
+  }
+
   const totalPrice =
     MERCHANDISE[item as keyof typeof MERCHANDISE].sell * quantity
 
-  const player = await getPlayer(playerId)
   const itemQuantity = player.inventory?.[item as keyof Inventory] || 0
 
   if (itemQuantity < quantity) {

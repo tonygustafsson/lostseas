@@ -22,7 +22,7 @@ const Shop = () => {
   const { sellBarterGoods } = useShop()
   const { setModal, removeModal } = useModal()
 
-  const barterGoodsValue = getBarterGoodsValue(player?.inventory)
+  const barterGoodsValue = player ? getBarterGoodsValue(player) : 0
 
   const showBuyNecessities = () => {
     setModal({
@@ -39,8 +39,8 @@ const Shop = () => {
       content: (
         <div className="flex flex-col gap-4">
           <p>
-            Do you want to sell all items you don&apos;t need? You will get{" "}
-            {barterGoodsValue} gold.
+            Do you want to sell all tradable goods available in this port? You
+            will get {barterGoodsValue} gold.
           </p>
 
           <div className="flex gap-2">
@@ -72,7 +72,7 @@ const Shop = () => {
 
         {barterGoodsValue > 0 && (
           <Button variant="outline" onClick={showSellBarterGoods}>
-            Sell all barter goods
+            Sell tradable goods
           </Button>
         )}
       </ButtonGroup>

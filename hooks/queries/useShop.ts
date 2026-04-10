@@ -2,7 +2,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
-import { MERCHANDISE } from "@/constants/merchandise"
+import {
+  BARTER_GOODS,
+  isTradeGoodAvailableInTown,
+  MERCHANDISE,
+} from "@/constants/merchandise"
 import apiRequest from "@/utils/apiRequest"
 import { patchDeep } from "@/utils/patchDeep"
 import { getBarterGoodsValue, getNecessitiesInfo } from "@/utils/shop"
@@ -251,18 +255,21 @@ export const useShop = () => {
         const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
 
         if (previous) {
-          const value = getBarterGoodsValue(previous.inventory)
+          const town = previous.character.town
+          const value = getBarterGoodsValue(previous)
+
+          // Zero out only town-available barter goods (mirrors server logic)
+          const inventoryUpdate = Object.fromEntries(
+            BARTER_GOODS.filter((item) =>
+              isTradeGoodAvailableInTown(item as keyof Inventory, town)
+            ).map((item) => [item, 0])
+          )
 
           const playerUpdates: DeepPartial<Player> = {
             character: {
               gold: previous.character.gold + value,
             },
-            inventory: {
-              porcelain: 0,
-              spices: 0,
-              tobacco: 0,
-              rum: 0,
-            },
+            inventory: inventoryUpdate,
           }
 
           const newPlayer = patchDeep(previous, playerUpdates)

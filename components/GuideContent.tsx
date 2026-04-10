@@ -2,8 +2,11 @@
 
 import Image from "next/image"
 
+import { NATIONS, TOWNS } from "@/constants/locations"
+import { TRADE_GOODS_TOWNS } from "@/constants/merchandise"
 import { SHIP_TYPES } from "@/constants/ship"
 import { TITLE_INFO } from "@/constants/title"
+import { capitalize } from "@/utils/string"
 
 import {
   Accordion,
@@ -89,12 +92,44 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
 
         <h3 className="mb-2 font-serif text-lg">Barter goods</h3>
 
-        <p>
+        <p className="mb-4">
           This includes tobacco, rum, porcelain, spices, sugar, silk, tea and
           cotton. You don&apos;t have any use of these goods, but you will loot
           a lot of these at sea. You can then sell them at the shop and make
           some gold.
         </p>
+
+        <p className="mb-4">
+          Tobacco and rum are traded in every port. The remaining six goods are
+          only available in certain towns — check the table below to see where
+          you can buy and sell them.
+        </p>
+
+        <Table className="mb-2 rounded-xl bg-black/60">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Town</TableHead>
+              {Object.keys(TRADE_GOODS_TOWNS).map((good) => (
+                <TableHead key={good} className="text-center">
+                  {capitalize(good)}
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+
+          <TableBody>
+            {(Object.keys(TOWNS) as Town[]).map((town) => (
+              <TableRow key={town}>
+                <TableCell className="font-medium">{town}</TableCell>
+                {Object.entries(TRADE_GOODS_TOWNS).map(([good, towns]) => (
+                  <TableCell key={good} className="text-center">
+                    {towns.includes(town) ? "✓" : "–"}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </AccordionContent>
     </AccordionItem>
 
@@ -440,24 +475,15 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
           nationality varied from year to year though.
         </p>
 
-        <p>
-          <strong>English towns:</strong> Charles Towne, Barbados, Port Royale,
-          Belize.
-        </p>
-
-        <p>
-          <strong>French towns: </strong> Tortuga, Leogane, Martinique, Biloxi.
-        </p>
-
-        <p>
-          <strong>Spanish towns:</strong> Panama, Havana, Villa Hermosa, San
-          Juan.
-        </p>
-
-        <p className="mb-4">
-          <strong>Dutch towns:</strong> Bonaire, Curacao, St. Martin, St.
-          Eustatius.
-        </p>
+        {Object.keys(NATIONS).map((nation, i, arr) => (
+          <p key={nation} className={i === arr.length - 1 ? "mb-4" : undefined}>
+            <strong>Towns of {nation}:</strong>{" "}
+            {(Object.keys(TOWNS) as Town[])
+              .filter((town) => TOWNS[town].nation === nation)
+              .join(", ")}
+            .
+          </p>
+        ))}
 
         <p className="mb-4">
           You can visit which of these you want, no matter which nationality you
