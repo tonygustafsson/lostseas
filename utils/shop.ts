@@ -70,12 +70,6 @@ export const getBarterGoodsValue = (player: {
       return
     }
 
-    console.log({
-      item,
-      sell: MERCHANDISE[item as keyof typeof MERCHANDISE].sell,
-      quantity,
-    })
-
     value += MERCHANDISE[item as keyof typeof MERCHANDISE].sell * quantity
   })
 

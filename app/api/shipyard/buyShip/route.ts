@@ -57,8 +57,6 @@ export async function POST(req: Request) {
     },
   }
 
-  console.log({ dbUpdate })
-
   const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {

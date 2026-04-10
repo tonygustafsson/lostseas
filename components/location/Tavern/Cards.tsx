@@ -151,8 +151,6 @@ const TavernCards = () => {
   const handlePlayCards = async () => {
     if (typeof selectedCard === "undefined") return
 
-    console.log({ selectedCard, betPercentage })
-
     const cardsResult = await playCards({ betPercentage, selectedCard })
     const correctCard = cardsResult?.data?.correctCard
 
