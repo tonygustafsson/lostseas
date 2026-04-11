@@ -43,46 +43,29 @@ export async function POST(req: Request) {
   const journeyValidation = validateJourney(player, distance)
 
   if (!journeyValidation.success) {
-    const dbUpdate: DeepPartial<Player> = {
-      character: {
-        location: "Harbor",
-      },
-      locationStates: {
-        harbor: {
-          journeyValidation,
-        },
-      },
-    }
-
-    const newPlayer = patchDeep<Player>(player, dbUpdate)
-
-    try {
-      await savePlayer(newPlayer)
-    } catch (error) {
-      return NextResponse.json({ error }, { status: 500 })
-    }
-  } else {
-    const dbUpdate: DeepPartial<Player> = {
-      character: {
-        town: null,
-        location: "Sea",
-        journey: {
-          destination: town,
-          day: 1,
-          totalDays: distance,
-        },
-      },
-      locationStates: null,
-    }
-
-    const newPlayer = patchDeep<Player>(player, dbUpdate)
-
-    try {
-      await savePlayer(newPlayer)
-    } catch (error) {
-      return NextResponse.json({ error }, { status: 500 })
-    }
+    return NextResponse.json({ success: false })
   }
 
-  return NextResponse.json({ success: journeyValidation.success })
+  const dbUpdate: DeepPartial<Player> = {
+    character: {
+      town: null,
+      location: "Sea",
+      journey: {
+        destination: town,
+        day: 1,
+        totalDays: distance,
+      },
+    },
+    locationStates: null,
+  }
+
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
+
+  try {
+    await savePlayer(newPlayer)
+  } catch (error) {
+    return NextResponse.json({ error }, { status: 500 })
+  }
+
+  return NextResponse.json({ success: true })
 }

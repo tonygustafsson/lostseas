@@ -12,10 +12,10 @@ const ParrotBox = ({ title, children }: Props) => (
   <>
     <div className="flex items-start gap-2">
       <Image
-        src="/img/parrot.webp"
+        src="/img/parrot.svg"
         alt="Parrot"
         width={100}
-        height={57}
+        height={100}
         draggable={false}
         className="mx-4 mt-1 shrink-0 select-none"
       />
@@ -41,9 +41,7 @@ const ParrotBox = ({ title, children }: Props) => (
       </motion.div>
     </div>
 
-    <Card className="py-0 shadow-sm">
-      <CardContent className="p-6">{children}</CardContent>
-    </Card>
+    {children}
   </>
 )
 

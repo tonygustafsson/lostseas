@@ -9,6 +9,7 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import React, { useState } from "react"
 
+import AdvisorDrawer from "@/components/advisor/AdvisorDrawer"
 import FleetDrawer from "@/components/fleet/FleetDrawer"
 import GuideDrawer from "@/components/guide/GuideDrawer"
 import InventoryDrawer from "@/components/inventory/InventoryDrawer"
@@ -52,6 +53,7 @@ export default function Providers({ children, dehydratedState }: Props) {
           <FleetDrawer />
           <SettingsDrawer />
           <GuideDrawer />
+          <AdvisorDrawer />
           <WelcomeModal />
           <Sound />
         </MotionProvider>

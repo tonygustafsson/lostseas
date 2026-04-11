@@ -4,6 +4,7 @@ import Image from "next/image"
 import { RiTreasureMapLine } from "react-icons/ri"
 
 import useModal from "@/app/stores/modals"
+import AdvisorDrawerTrigger from "@/components/advisor/AdvisorDrawerTrigger"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Map from "../Map"
@@ -53,7 +54,7 @@ const DesktopMenu = ({ className }: Props) => {
           </div>
         </SidebarGroup>
 
-        <SidebarGroup>
+        <SidebarGroup className="gap-2">
           <Button
             onClick={showMap}
             disabled={!!player?.character.journey}
@@ -62,6 +63,8 @@ const DesktopMenu = ({ className }: Props) => {
             <RiTreasureMapLine className="group-hover/map:text-accent size-5!" />
             Travel
           </Button>
+
+          <AdvisorDrawerTrigger />
         </SidebarGroup>
 
         <SidebarGroup className="gap-4">

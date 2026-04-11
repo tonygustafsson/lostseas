@@ -9,11 +9,6 @@ type TavernState = {
   isHostile: boolean
 }
 
-type HarborState = {
-  journeyValidation?: JourneyValidation
-  landingTips?: LandingTip[]
-}
-
 type SeaState = {
   shipMeeting: ShipMeetingState | undefined | null
   attackSuccessReport?: AttackSuccessReport
@@ -23,18 +18,29 @@ type SeaState = {
 type LocationStates = {
   market?: MarketState
   tavern?: TavernState
-  harbor?: HarborState
   sea?: SeaState
 }
 
-type LandingTip =
+type AdvisorWarning =
   | "TOO_MUCH_GOLD"
+  | "LOAN_BLOCKS_DEPOSIT"
+  | "NO_SHIPS"
+  | "DAMAGED_SHIPS"
+  | "SHIPS_NEED_REPAIRS"
   | "NEED_MORE_FOOD"
   | "NEED_MORE_WATER"
   | "CREW_IS_ILL"
-  | "DAMAGED_SHIPS"
+  | "LOW_CREW_HEALTH"
   | "NO_CREW"
+  | "NOT_ENOUGH_CREW"
+  | "TOO_MANY_CREW"
   | "ANGRY_CREW"
+  | "LOW_CREW_MOOD"
+  | "NO_CANNONS"
+  | "PROMOTION_AVAILABLE"
+
+/** @deprecated Use AdvisorWarning */
+type LandingTip = AdvisorWarning
 
 type JourneyValidation = {
   success: boolean

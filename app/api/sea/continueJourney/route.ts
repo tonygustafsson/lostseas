@@ -4,7 +4,6 @@ import { NextResponse } from "next/server"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
 import { getMannedCannons } from "@/utils/crew"
-import { getLandingTips } from "@/utils/getLandingTips"
 import { patchDeep } from "@/utils/patchDeep"
 import { createMeetingShip } from "@/utils/shipMeeting"
 
@@ -64,8 +63,6 @@ export async function POST() {
   if (newWater < 0) newWater = 0
 
   if (destinationReached) {
-    const landingTips = getLandingTips(player)
-
     const dbUpdate: DeepPartial<Player> = {
       character: {
         town: player.character.journey.destination,
@@ -78,11 +75,6 @@ export async function POST() {
         water: newWater,
       },
       locationStates: {
-        ...(landingTips && {
-          harbor: {
-            landingTips,
-          },
-        }),
         sea: {
           shipMeeting: shipMeetingState,
           attackSuccessReport: null,
