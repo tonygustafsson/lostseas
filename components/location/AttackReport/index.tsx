@@ -1,9 +1,10 @@
+import { m as motion } from "framer-motion"
+import Image from "next/image"
 import { FaCoins, FaUsers } from "react-icons/fa"
 import { GiBandana, GiOpenedFoodCan, GiShoonerSailboat } from "react-icons/gi"
 
 import AdvisorTipItem from "@/components/advisor/AdvisorTipItem"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
-import ParrotBox from "@/components/ParrotBox"
 import TreasureIcon from "@/components/TreasureIcon"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { TREASURES } from "@/constants/treasures"
@@ -16,7 +17,26 @@ const AttackReport = () => {
   const failureReport = player?.locationStates?.sea?.attackFailureReport
 
   return (
-    <ParrotBox title={successReport ? "Success, Captain!" : "Yarr, we failed!"}>
+    <>
+      <div className="flex items-start gap-2">
+        <Image
+          src="/img/parrot.svg"
+          alt="Parrot"
+          width={100}
+          height={100}
+          draggable={false}
+          className="mx-4 mt-1 shrink-0 select-none"
+        />
+
+        <motion.div
+          initial={{ translateX: -50, opacity: 0, scale: 0 }}
+          animate={{ translateX: [-50, 0], opacity: [0, 1], scale: [0, 1] }}
+          className="max-w-full"
+        >
+          {successReport ? "Success, Captain!" : "Yarr, we failed!"}
+        </motion.div>
+      </div>
+
       {successReport && (
         <ul className="flex flex-col gap-4">
           {successReport.foundTreasure && (
@@ -189,7 +209,7 @@ const AttackReport = () => {
           )}
         </ul>
       )}
-    </ParrotBox>
+    </>
   )
 }
 
