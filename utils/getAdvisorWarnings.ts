@@ -61,10 +61,10 @@ export const getAdvisorWarnings = (player?: Player): AdvisorWarningItem[] => {
   if (crewMoodIsLow) warn("LOW_CREW_MOOD", false)
   if (crewIsIll) warn("CREW_IS_ILL", true)
   if (crewHealthIsLow) warn("LOW_CREW_HEALTH", false)
-  if (!hasEnoughFood) warn("NEED_MORE_FOOD", false)
-  if (!hasEnoughWater) warn("NEED_MORE_WATER", false)
+  if (!hasEnoughFood) warn("NEED_MORE_FOOD", true)
+  if (!hasEnoughWater) warn("NEED_MORE_WATER", true)
   if (hasNoCannons) warn("NO_CANNONS", false)
   if (promotionAvailable) warn("PROMOTION_AVAILABLE", false)
 
-  return warnings
+  return warnings.sort((a, b) => Number(b.blocksTravel) - Number(a.blocksTravel))
 }

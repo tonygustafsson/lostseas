@@ -40,9 +40,18 @@ export async function POST(req: Request) {
     ? currentTownInfo.map.distanceTo[town]
     : randomInt(3, 9)
 
-  const journeyValidation = validateJourney(player, distance)
+  const { success } = validateJourney(player, distance)
 
-  if (!journeyValidation.success) {
+  if (!success) {
+    const harborUpdate: DeepPartial<Player> = {
+      character: { location: "Harbor" },
+    }
+    const harborPlayer = patchDeep<Player>(player, harborUpdate)
+    try {
+      await savePlayer(harborPlayer)
+    } catch (error) {
+      return NextResponse.json({ error }, { status: 500 })
+    }
     return NextResponse.json({ success: false })
   }
 

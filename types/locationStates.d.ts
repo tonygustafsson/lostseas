@@ -42,15 +42,6 @@ type AdvisorWarning =
 /** @deprecated Use AdvisorWarning */
 type LandingTip = AdvisorWarning
 
-type JourneyValidation = {
-  success: boolean
-  errors: JourneyValidationError[]
-  neededFood: number
-  neededWater: number
-  minCrew: number
-  maxCrew: number
-}
-
 type JourneyValidationError =
   | "NO_PLAYER"
   | "NO_SHIPS"

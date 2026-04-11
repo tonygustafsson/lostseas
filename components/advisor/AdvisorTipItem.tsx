@@ -4,11 +4,17 @@ type Props = {
   icon: ReactNode
   children: ReactNode
   blocksTravel?: boolean
+  variant?: "success" | "error"
 }
 
-const AdvisorTipItem = ({ icon, children, blocksTravel }: Props) => (
+const variantClass = {
+  success: "bg-green-500/15",
+  error: "bg-destructive/15",
+}
+
+const AdvisorTipItem = ({ icon, children, blocksTravel, variant }: Props) => (
   <li
-    className={`bg-card flex gap-4 rounded-md p-4 ${blocksTravel ? "border-destructive border-l-2" : ""}`}
+    className={`flex gap-4 rounded-md p-4 ${variant ? variantClass[variant] : "bg-card"} ${blocksTravel ? "border-destructive border-l-2" : ""}`}
   >
     <div className="text-accent shrink-0">{icon}</div>
     <div className="flex-1">{children}</div>

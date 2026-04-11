@@ -20,7 +20,7 @@ type Props = {
 }
 
 const getWarningContent = (
-  { tip, blocksTravel }: AdvisorWarningItem,
+  { tip }: AdvisorWarningItem,
   player: Player
 ): { icon: ReactNode; text: string } | null => {
   switch (tip) {
@@ -147,6 +147,7 @@ const AdvisorTips = ({ title }: Props) => {
               key={warning.tip}
               icon={content.icon}
               blocksTravel={warning.blocksTravel}
+              variant={warning.blocksTravel ? "error" : undefined}
             >
               {content.text}
             </AdvisorTipItem>
@@ -158,4 +159,3 @@ const AdvisorTips = ({ title }: Props) => {
 }
 
 export default AdvisorTips
-
