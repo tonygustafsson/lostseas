@@ -118,22 +118,29 @@ const AdvisorTips = ({ title }: Props) => {
 
   return (
     <>
-      <div className="flex items-start gap-2">
+      <div className="relative mb-2 flex items-start">
         <Image
           src="/img/parrot.svg"
           alt="Parrot"
           width={100}
           height={100}
           draggable={false}
-          className="mx-4 mt-1 shrink-0 select-none"
+          className="ml-2 shrink-0 select-none"
         />
 
         <motion.div
-          initial={{ translateX: -50, opacity: 0, scale: 0 }}
-          animate={{ translateX: [-50, 0], opacity: [0, 1], scale: [0, 1] }}
-          transition={{ delay: 0.5 }}
-          className="max-w-full"
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            delay: 0.3,
+            type: "spring",
+            stiffness: 260,
+            damping: 18,
+          }}
+          className="bg-card relative mt-2 rounded-2xl border px-4 py-3 text-sm leading-snug italic"
         >
+          <span className="border-r-border absolute top-4 -left-[9px] h-0 w-0 border-y-[8px] border-r-[9px] border-y-transparent" />
+          <span className="border-r-card absolute top-4 -left-[7px] h-0 w-0 border-y-[8px] border-r-[8px] border-y-transparent" />
           {title}
         </motion.div>
       </div>
@@ -141,7 +148,9 @@ const AdvisorTips = ({ title }: Props) => {
       <ul className="flex flex-col gap-4">
         {warnings.map((warning) => {
           const content = getWarningContent(warning, player)
+
           if (!content) return null
+
           return (
             <AdvisorTipItem
               key={warning.tip}
