@@ -35,7 +35,7 @@ const AttackReport = () => {
           width={100}
           height={100}
           draggable={false}
-          className="mt-1 ml-4 size-12 shrink-0 select-none lg:size-[100px]"
+          className="mt-1 ml-4 size-12 shrink-0 select-none lg:size-25"
         />
 
         <motion.div

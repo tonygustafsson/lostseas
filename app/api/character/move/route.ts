@@ -17,9 +17,6 @@ export async function POST(req: Request) {
 
   const body = await req.json()
   const destination = body.location as Character["location"]
-  const locationState = body.locationState as
-    | DeepPartial<LocationStates>
-    | undefined
 
   if (
     !Object.values(LOCATIONS)
@@ -31,10 +28,13 @@ export async function POST(req: Request) {
 
   const player = await getPlayer(playerId)
 
-  const currentLocation = player.character.location as TownLocation
+  const currentLocation = player.character.location
 
   if (currentLocation === destination) {
-    return NextResponse.json({})
+    return NextResponse.json(
+      { error: "You are already at this location" },
+      { status: 400 }
+    )
   }
 
   const dbUpdate: DeepPartial<Player> = {

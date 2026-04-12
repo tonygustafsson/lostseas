@@ -66,5 +66,7 @@ export const getAdvisorWarnings = (player?: Player): AdvisorWarningItem[] => {
   if (hasNoCannons) warn("NO_CANNONS", false)
   if (promotionAvailable) warn("PROMOTION_AVAILABLE", false)
 
-  return warnings.sort((a, b) => Number(b.blocksTravel) - Number(a.blocksTravel))
+  return warnings.sort(
+    (a, b) => Number(b.blocksTravel) - Number(a.blocksTravel)
+  )
 }
