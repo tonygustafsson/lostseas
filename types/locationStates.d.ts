@@ -15,10 +15,15 @@ type SeaState = {
   attackFailureReport?: AttackFailureReport
 }
 
+type HarborState = {
+  lastHarborReason?: "arrived" | "blocked" | null
+}
+
 type LocationStates = {
   market?: MarketState
   tavern?: TavernState
   sea?: SeaState
+  harbor?: HarborState
 }
 
 type AdvisorWarning =

@@ -129,13 +129,13 @@ const AdvisorTips = ({ title }: Props) => {
         />
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.85 }}
+          initial={{ opacity: 0, scale: 0.65 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{
-            delay: 0.3,
+            delay: 0.1,
             type: "spring",
-            stiffness: 260,
-            damping: 18,
+            stiffness: 350,
+            damping: 15,
           }}
           className="bg-card relative mt-2 rounded-2xl border px-4 py-3 text-sm leading-snug italic"
         >

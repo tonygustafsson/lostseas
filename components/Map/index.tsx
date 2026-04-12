@@ -52,7 +52,10 @@ const Map = ({ currentTown }: Props) => {
     const isBlocked = warnings.some((w) => w.blocksTravel)
 
     if (isBlocked) {
-      move({ location: "Harbor" })
+      move({
+        location: "Harbor",
+        locationState: { harbor: { lastHarborReason: "blocked" } },
+      })
     } else {
       startJourney({ town })
     }

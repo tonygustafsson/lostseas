@@ -17,6 +17,9 @@ export async function POST(req: Request) {
 
   const body = await req.json()
   const destination = body.location as Character["location"]
+  const locationState = body.locationState as
+    | DeepPartial<LocationStates>
+    | undefined
 
   if (
     !Object.values(LOCATIONS)
@@ -37,6 +40,11 @@ export async function POST(req: Request) {
   const dbUpdate: DeepPartial<Player> = {
     character: {
       location: destination,
+    },
+    locationStates: {
+      harbor: {
+        lastHarborReason: null,
+      },
     },
   }
 

@@ -75,6 +75,9 @@ export async function POST() {
         water: newWater,
       },
       locationStates: {
+        harbor: {
+          lastHarborReason: "arrived",
+        },
         sea: {
           shipMeeting: shipMeetingState,
           attackSuccessReport: null,
