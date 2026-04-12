@@ -11,6 +11,7 @@ import { getPirateQuip } from "@/utils/getPirateQuip"
 const AdvisorDrawer = () => {
   const { active, close } = useDrawer()
   const { data: player } = useGetPlayer()
+
   const quip = useMemo(
     () => getPirateQuip(player?.crewMembers, player?.character?.day),
     [player?.character?.day, player?.crewMembers]

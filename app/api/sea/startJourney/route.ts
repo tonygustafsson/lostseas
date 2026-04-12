@@ -47,6 +47,7 @@ export async function POST(req: Request) {
       character: { location: "Harbor" },
     }
     const harborPlayer = patchDeep<Player>(player, harborUpdate)
+
     try {
       await savePlayer(harborPlayer)
     } catch (error) {

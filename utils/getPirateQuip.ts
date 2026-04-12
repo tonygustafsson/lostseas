@@ -11,6 +11,54 @@ function pickRandom<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)]
 }
 
+const harborArrivedQuips = [
+  "Heads up!",
+  "Squawk! A word before ye wander off, Cap'n!",
+  "Lend me yer ear a moment, Cap'n!",
+  "Arrr, a quick word while we're still docked!",
+  "Before ye head into town — listen up, Cap'n!",
+  "Psst! Got somethin' on me mind, Cap'n!",
+  "Squawk! Don't walk off just yet — I've got somethin' to say!",
+  "A moment of yer time, Cap'n, if ye please!",
+  "Hold on a tick, Cap'n — I've been meanin' to mention this!",
+  "Arrr, while I've got yer attention, Cap'n!",
+  "Squawk! There be a thing or two worth knowin', Cap'n!",
+  "Pay heed, Cap'n — yer trusted parrot has some thoughts!",
+  "Before ye go explorin', Cap'n — a word!",
+  "I'd be remiss not to mention this, Cap'n. Squawk!",
+  "Now that we've made port — a few things worth hearin', Cap'n!",
+  "Arrr, listen well, Cap'n — yer feathered advisor speaks!",
+  "Squawk! Don't mind me, just an important thing or two!",
+  "While the ship be restin', so should yer ears — on me! Squawk!",
+  "Cap'n! Cap'n! Over here — got somethin' worth yer attention!",
+  "Now that the anchor's dropped, let me bend yer ear a moment!",
+  "Arrr, just a friendly reminder or two from yer loyal parrot!",
+]
+
+const harborBlockedQuips = [
+  "Not so fast!",
+  "Squawk! Hold yer anchor, Cap'n — we ain't ready to sail!",
+  "Belay that, Cap'n! We can't leave just yet!",
+  "Whoa there, Cap'n! The sea ain't ready for us!",
+  "Arrr, stand fast! There be things to sort before we set sail!",
+  "Easy now, Cap'n — we ain't fit to leave port yet!",
+  "Squawk! Stop right there! We've got problems to fix first!",
+  "Hold fast, Cap'n! We'd not last a day out there like this!",
+  "Arrr, I wouldn't advise leavin' just yet, Cap'n!",
+  "Squawk! The sea'll swallow us whole if we leave now!",
+  "Wait a moment, Cap'n — we've got some unfinished business here!",
+  "Not yet, Cap'n! Sort this out before we dare leave the harbor!",
+  "Shiver me timbers, we can't set sail like this, Cap'n!",
+  "Squawk! Ye'd best sort this out before even thinkin' of leavin'!",
+  "Arrr, pump the brakes, Cap'n — we're not ready for the open sea!",
+  "We'd be fish food before sunset if we left now! Squawk!",
+  "Hold yer horses, Cap'n! The open sea demands more of us!",
+  "Squawk! I refuse to fly above a ship that ain't ready to sail!",
+  "Steady on, Cap'n — we've got matters to attend to first!",
+  "Arrr, the sea'll still be there once we've sorted ourselves out!",
+  "Squawk! Even the bravest captain knows when not to sail!",
+]
+
 const weatherQuips: Record<WeatherType, string[]> = {
   sunny: [
     "Squawk! Clear skies today, Cap'n! The sun be blazin' brighter than stolen doubloons!",
@@ -73,6 +121,70 @@ const generalQuips = [
   "The sea don't care about yer plans, Cap'n — she makes her own! Best be ready for anything! Squawk!",
   "Arrr, fortune favours the bold and the well-armed, Cap'n! Remember that! Squawk!",
 ]
+
+const attackSuccessQuips = [
+  "Success, Captain!",
+  "Squawk! We did it, Cap'n! Victory is ours!",
+  "Arrr, they never stood a chance against us! Squawk!",
+  "Haha! That'll teach 'em to sail these waters! Squawk!",
+  "Squawk! A fine bit of plunderin', Cap'n!",
+  "Arrr, the sea favours the bold — and that's us! Squawk!",
+  "Squawk! We sent 'em runnin' with their tails between their legs!",
+  "Victory! The crew fought like lions, Cap'n! Squawk!",
+  "Squawk! Another fine prize for our hold, Cap'n!",
+  "Arrr, that's what we do, Cap'n — and we do it well! Squawk!",
+  "Squawk! The enemy's loss is our treasure, Cap'n!",
+  "Ha! They should've thought twice before crossin' us! Squawk!",
+  "Squawk! Our cannons spoke, and the enemy listened!",
+  "Arrr, the plunder's ours and the sea is quiet again! Squawk!",
+  "Squawk! A glorious battle, Cap'n — the bards will sing of this!",
+  "We showed 'em what pirates are made of, Cap'n! Squawk!",
+  "Squawk! Fortune smiled upon us today, Cap'n!",
+  "Arrr, swift and merciless — that's the pirate way! Squawk!",
+  "Squawk! Another ship bested, another legend grows!",
+  "The crew fought bravely and the spoils are ours, Cap'n! Squawk!",
+  "Arrr, well fought, Cap'n! The seas tremble at our name! Squawk!",
+]
+
+const attackFailureQuips = [
+  "Yarr, we failed!",
+  "Squawk! They got the better of us this time, Cap'n...",
+  "Arrr, the battle didn't go our way. Squawk!",
+  "Squawk! We bit off more than we could chew, Cap'n!",
+  "A hard loss, Cap'n. The sea gives and the sea takes. Squawk!",
+  "Squawk! They were tougher than they looked, Cap'n!",
+  "Arrr, we fought well, but it wasn't enough. Squawk!",
+  "Squawk! Even the bravest crew loses one now and again, Cap'n!",
+  "We'll get 'em next time, Cap'n. Squawk! This ain't over!",
+  "Arrr, lick yer wounds and live to fight another day! Squawk!",
+  "Squawk! The enemy had the wind at their backs today, Cap'n!",
+  "A setback, nothin' more. We'll rebuild and strike again! Squawk!",
+  "Squawk! The sea humbles even the mightiest pirates, Cap'n!",
+  "Arrr, they had more fight in 'em than expected. Squawk!",
+  "Squawk! Fortune wasn't with us today, Cap'n. Happens to all pirates!",
+  "We gave 'em a good scare at least, Cap'n! Squawk!",
+  "Squawk! Retreat now, plunder later — that's the smart pirate way!",
+  "Arrr, a painful lesson, but a lesson nonetheless. Squawk!",
+  "Squawk! Even Blackbeard lost a battle or two, Cap'n!",
+  "They bested us today, Cap'n. But our day will come! Squawk!",
+  "Arrr, no shame in it — we'll be back stronger than ever! Squawk!",
+]
+
+export function getAttackSuccessQuip() {
+  return pickRandom(attackSuccessQuips)
+}
+
+export function getAttackFailureQuip() {
+  return pickRandom(attackFailureQuips)
+}
+
+export function getHarborArrivedQuip() {
+  return pickRandom(harborArrivedQuips)
+}
+
+export function getHarborBlockedQuip() {
+  return pickRandom(harborBlockedQuips)
+}
 
 export function getPirateQuip(
   crew: Player["crewMembers"] | undefined,

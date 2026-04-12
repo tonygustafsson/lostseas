@@ -125,7 +125,7 @@ const AdvisorTips = ({ title }: Props) => {
           width={100}
           height={100}
           draggable={false}
-          className="ml-2 shrink-0 select-none"
+          className="-mb-2 ml-2 shrink-0 select-none"
         />
 
         <motion.div

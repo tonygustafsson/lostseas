@@ -1,5 +1,6 @@
 import { m as motion } from "framer-motion"
 import Image from "next/image"
+import { useMemo } from "react"
 import { FaCoins, FaUsers } from "react-icons/fa"
 import { GiBandana, GiOpenedFoodCan, GiShoonerSailboat } from "react-icons/gi"
 
@@ -9,12 +10,21 @@ import TreasureIcon from "@/components/TreasureIcon"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { TREASURES } from "@/constants/treasures"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import {
+  getAttackFailureQuip,
+  getAttackSuccessQuip,
+} from "@/utils/getPirateQuip"
 
 const AttackReport = () => {
   const { data: player } = useGetPlayer()
 
   const successReport = player?.locationStates?.sea?.attackSuccessReport
   const failureReport = player?.locationStates?.sea?.attackFailureReport
+
+  const quip = useMemo(
+    () => (successReport ? getAttackSuccessQuip() : getAttackFailureQuip()),
+    [successReport]
+  )
 
   return (
     <>
@@ -25,15 +35,17 @@ const AttackReport = () => {
           width={100}
           height={100}
           draggable={false}
-          className="mx-4 mt-1 shrink-0 select-none"
+          className="mt-1 ml-4 shrink-0 select-none"
         />
 
         <motion.div
           initial={{ translateX: -50, opacity: 0, scale: 0 }}
           animate={{ translateX: [-50, 0], opacity: [0, 1], scale: [0, 1] }}
-          className="max-w-full"
+          className="bg-card relative mt-2 rounded-2xl border px-4 py-3 text-sm leading-snug italic"
         >
-          {successReport ? "Success, Captain!" : "Yarr, we failed!"}
+          <span className="border-r-border absolute top-4 -left-[9px] h-0 w-0 border-y-[8px] border-r-[9px] border-y-transparent" />
+          <span className="border-r-card absolute top-4 -left-[7px] h-0 w-0 border-y-[8px] border-r-[8px] border-y-transparent" />
+          {quip}
         </motion.div>
       </div>
 
