@@ -61,7 +61,7 @@ const FleetDrawer = () => {
 
             <AdvisorDrawerTrigger
               onClick={() => setView("advisor")}
-              className="mb-4 w-full sm:w-auto"
+              className="mb-4 w-full sm:w-auto lg:hidden"
             />
 
             <span className="my-4 block font-serif text-xl">Ships</span>

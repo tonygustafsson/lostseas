@@ -125,7 +125,7 @@ const AdvisorTips = ({ title }: Props) => {
           width={100}
           height={100}
           draggable={false}
-          className="-mb-2 ml-2 shrink-0 select-none"
+          className="mr-3 -mb-2 size-12 shrink-0 self-center select-none lg:mr-0 lg:ml-2 lg:size-[100px]"
         />
 
         <motion.div
@@ -137,7 +137,7 @@ const AdvisorTips = ({ title }: Props) => {
             stiffness: 350,
             damping: 15,
           }}
-          className="bg-card relative mt-2 rounded-2xl border px-4 py-3 text-sm leading-snug italic"
+          className="bg-card relative rounded-2xl border px-4 py-3 text-sm leading-snug italic lg:mt-2"
         >
           <span className="border-r-border absolute top-4 -left-[9px] h-0 w-0 border-y-[8px] border-r-[9px] border-y-transparent" />
           <span className="border-r-card absolute top-4 -left-[7px] h-0 w-0 border-y-[8px] border-r-[8px] border-y-transparent" />
