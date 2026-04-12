@@ -9,9 +9,10 @@ import { getAdvisorWarnings } from "@/utils/getAdvisorWarnings"
 
 type Props = {
   onClick?: () => void
+  className?: string
 }
 
-const AdvisorDrawerTrigger = ({ onClick }: Props) => {
+const AdvisorDrawerTrigger = ({ onClick, className }: Props) => {
   const { data: player } = useGetPlayer()
   const { open } = useDrawer()
 
@@ -23,7 +24,8 @@ const AdvisorDrawerTrigger = ({ onClick }: Props) => {
     <Button
       variant="secondary"
       onClick={onClick ?? (() => open("advisor"))}
-      aria-label="Talk to advisor"
+      aria-label="Talk to the advisor"
+      className={className}
     >
       <Image
         src="/img/parrot.svg"

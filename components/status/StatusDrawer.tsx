@@ -7,14 +7,12 @@ import { GiPirateCoat } from "react-icons/gi"
 import { PiBookOpenTextBold } from "react-icons/pi"
 
 import useDrawer from "@/app/stores/drawer"
-import AdvisorDrawerTrigger from "@/components/advisor/AdvisorDrawerTrigger"
-import AdvisorTips from "@/components/advisor/AdvisorTips"
 import DrawerPanel from "@/components/DrawerPanel"
 import GuideContent from "@/components/GuideContent"
 import CharacterInfo from "@/components/status/CharacterInfo"
 import { Button } from "@/components/ui/button"
 
-type View = "status" | "guide" | "advisor"
+type View = "status" | "guide"
 
 const slideVariants = {
   enterFromRight: { x: "30%", opacity: 0 },
@@ -61,9 +59,8 @@ const StatusDrawer = () => {
             </h1>
 
             <CharacterInfo />
-            <AdvisorDrawerTrigger onClick={() => setView("advisor")} />
           </motion.div>
-        ) : view === "guide" ? (
+        ) : (
           <motion.div
             key="guide"
             variants={slideVariants}
@@ -90,29 +87,6 @@ const StatusDrawer = () => {
             </h1>
 
             <GuideContent />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="advisor"
-            variants={slideVariants}
-            initial="enterFromRight"
-            animate="center"
-            exit="exitToRight"
-            transition={{ duration: 0.18 }}
-          >
-            <div className="mb-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setView("status")}
-                className="-ml-2"
-              >
-                <AiOutlineArrowLeft className="h-4 w-4" />
-                Back to Status
-              </Button>
-            </div>
-
-            <AdvisorTips title="Good day, Captain!" />
           </motion.div>
         )}
       </AnimatePresence>
