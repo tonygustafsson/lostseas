@@ -118,14 +118,14 @@ const AdvisorTips = ({ title }: Props) => {
 
   return (
     <>
-      <div className="relative mb-2 flex items-start">
+      <div className="relative mb-2 flex items-start lg:gap-1">
         <Image
           src="/img/parrot.svg"
           alt="Parrot"
           width={100}
           height={100}
           draggable={false}
-          className="mr-3 -mb-2 size-12 shrink-0 self-center select-none lg:mr-0 lg:ml-2 lg:size-[100px]"
+          className="mr-3 -mb-4 size-15 shrink-0 self-center select-none lg:mr-0 lg:ml-2 lg:size-[100px]"
         />
 
         <motion.div
