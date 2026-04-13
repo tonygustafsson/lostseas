@@ -337,10 +337,10 @@ describe("getAdvisorWarnings", () => {
       expect(tips(p)).not.toContain("NEED_MORE_FOOD")
     })
 
-    it("is NOT a travel blocker", () => {
+    it("is a travel blocker", () => {
       const p = basePlayer()
       p.inventory = { food: 0, water: 100 }
-      expect(blocking(p)).not.toContain("NEED_MORE_FOOD")
+      expect(blocking(p)).toContain("NEED_MORE_FOOD")
     })
   })
 
@@ -359,10 +359,10 @@ describe("getAdvisorWarnings", () => {
       expect(tips(p)).not.toContain("NEED_MORE_WATER")
     })
 
-    it("is NOT a travel blocker", () => {
+    it("is a travel blocker", () => {
       const p = basePlayer()
       p.inventory = { food: 100, water: 0 }
-      expect(blocking(p)).not.toContain("NEED_MORE_WATER")
+      expect(blocking(p)).toContain("NEED_MORE_WATER")
     })
   })
 
