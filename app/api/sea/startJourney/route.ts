@@ -5,8 +5,8 @@ import { NextResponse } from "next/server"
 import { TOWNS } from "@/constants/locations"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { getAdvisorWarnings } from "@/utils/getAdvisorWarnings"
 import { patchDeep } from "@/utils/patchDeep"
-import { validateJourney } from "@/utils/validateJourney"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -40,49 +40,44 @@ export async function POST(req: Request) {
     ? currentTownInfo.map.distanceTo[town]
     : randomInt(3, 9)
 
-  const journeyValidation = validateJourney(player, distance)
+  const success = !getAdvisorWarnings(player).some((w) => w.blocksTravel)
 
-  if (!journeyValidation.success) {
-    const dbUpdate: DeepPartial<Player> = {
-      character: {
-        location: "Harbor",
-      },
-      locationStates: {
-        harbor: {
-          journeyValidation,
-        },
-      },
+  if (!success) {
+    // Prevent journey if validation fails,
+    // same warning system is used in frontend
+    const harborUpdate: DeepPartial<Player> = {
+      character: { location: "Harbor" },
     }
-
-    const newPlayer = patchDeep<Player>(player, dbUpdate)
+    const harborPlayer = patchDeep<Player>(player, harborUpdate)
 
     try {
-      await savePlayer(newPlayer)
+      await savePlayer(harborPlayer)
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })
     }
-  } else {
-    const dbUpdate: DeepPartial<Player> = {
-      character: {
-        town: null,
-        location: "Sea",
-        journey: {
-          destination: town,
-          day: 1,
-          totalDays: distance,
-        },
-      },
-      locationStates: null,
-    }
-
-    const newPlayer = patchDeep<Player>(player, dbUpdate)
-
-    try {
-      await savePlayer(newPlayer)
-    } catch (error) {
-      return NextResponse.json({ error }, { status: 500 })
-    }
+    return NextResponse.json({ success: false })
   }
 
-  return NextResponse.json({ success: journeyValidation.success })
+  const dbUpdate: DeepPartial<Player> = {
+    character: {
+      town: null,
+      location: "Sea",
+      journey: {
+        destination: town,
+        day: 1,
+        totalDays: distance,
+      },
+    },
+    locationStates: null,
+  }
+
+  const newPlayer = patchDeep<Player>(player, dbUpdate)
+
+  try {
+    await savePlayer(newPlayer)
+  } catch (error) {
+    return NextResponse.json({ error }, { status: 500 })
+  }
+
+  return NextResponse.json({ success: true })
 }

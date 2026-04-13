@@ -9,52 +9,40 @@ type TavernState = {
   isHostile: boolean
 }
 
-type HarborState = {
-  journeyValidation?: JourneyValidation
-  landingTips?: LandingTip[]
-}
-
 type SeaState = {
   shipMeeting: ShipMeetingState | undefined | null
   attackSuccessReport?: AttackSuccessReport
   attackFailureReport?: AttackFailureReport
 }
 
+type HarborState = {
+  lastHarborReason?: "arrived" | "blocked" | null
+}
+
 type LocationStates = {
   market?: MarketState
   tavern?: TavernState
-  harbor?: HarborState
   sea?: SeaState
+  harbor?: HarborState
 }
 
-type LandingTip =
+type AdvisorWarning =
   | "TOO_MUCH_GOLD"
+  | "LOAN_BLOCKS_DEPOSIT"
+  | "NO_SHIPS"
+  | "DAMAGED_SHIPS"
+  | "SHIPS_NEED_REPAIRS"
   | "NEED_MORE_FOOD"
   | "NEED_MORE_WATER"
   | "CREW_IS_ILL"
-  | "DAMAGED_SHIPS"
+  | "LOW_CREW_HEALTH"
   | "NO_CREW"
+  | "NOT_ENOUGH_CREW"
+  | "TOO_MANY_CREW"
   | "ANGRY_CREW"
-
-type JourneyValidation = {
-  success: boolean
-  errors: JourneyValidationError[]
-  neededFood: number
-  neededWater: number
-  minCrew: number
-  maxCrew: number
-}
-
-type JourneyValidationError =
-  | "NO_PLAYER"
-  | "NO_SHIPS"
-  | "DAMAGED_SHIPS"
-  | "NOT_ENOUGH_CREW_MEMBERS"
-  | "TOO_MANY_CREW_MEMBERS"
-  | "CREW_IS_ILL"
-  | "ANGRY_CREW"
-  | "NO_FOOD"
-  | "NO_WATER"
+  | "LOW_CREW_MOOD"
+  | "NO_CANNONS"
+  | "PROMOTION_AVAILABLE"
 
 type ShipMeetingState = {
   nation: Nation | "Pirate"

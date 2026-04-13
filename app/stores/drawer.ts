@@ -1,6 +1,12 @@
 import { create } from "zustand"
 
-export type DrawerId = "inventory" | "status" | "fleet" | "settings" | "guide"
+export type DrawerId =
+  | "inventory"
+  | "status"
+  | "fleet"
+  | "settings"
+  | "guide"
+  | "advisor"
 
 type DrawerStore = {
   active: DrawerId | null

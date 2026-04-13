@@ -20,23 +20,31 @@ export async function POST(req: Request) {
 
   if (
     !Object.values(LOCATIONS)
-      .filter((location) => !["Sea", "Harbor"].includes(location))
-      .includes(destination)
+      .filter((location) => location !== "Sea")
+      .includes(destination as TownLocation)
   ) {
     return NextResponse.json({ error: "Invalid location" }, { status: 400 })
   }
 
   const player = await getPlayer(playerId)
 
-  const currentLocation = player.character.location as TownLocation
+  const currentLocation = player.character.location
 
   if (currentLocation === destination) {
-    return NextResponse.json({})
+    return NextResponse.json(
+      { error: "You are already at this location" },
+      { status: 400 }
+    )
   }
 
   const dbUpdate: DeepPartial<Player> = {
     character: {
       location: destination,
+    },
+    locationStates: {
+      harbor: {
+        lastHarborReason: null,
+      },
     },
   }
 

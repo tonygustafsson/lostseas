@@ -17,7 +17,10 @@ import ShipList from "@/components/ships/ShipList"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 
-type View = "fleet" | "manageCrew"
+import AdvisorDrawerTrigger from "../advisor/AdvisorDrawerTrigger"
+import AdvisorTips from "../advisor/AdvisorTips"
+
+type View = "fleet" | "manageCrew" | "advisor"
 
 const slideVariants = {
   enterFromRight: { x: "30%", opacity: 0 },
@@ -56,6 +59,11 @@ const FleetDrawer = () => {
               Crew & Fleet
             </h1>
 
+            <AdvisorDrawerTrigger
+              onClick={() => setView("advisor")}
+              className="mb-4 w-full sm:w-auto lg:hidden"
+            />
+
             <span className="my-4 block font-serif text-xl">Ships</span>
             <ShipList />
 
@@ -69,7 +77,7 @@ const FleetDrawer = () => {
             <span className="my-4 block font-serif text-xl">Crew members</span>
             <CrewBoard onManage={() => setView("manageCrew")} />
           </motion.div>
-        ) : (
+        ) : view === "manageCrew" ? (
           <motion.div
             key="manageCrew"
             variants={slideVariants}
@@ -100,6 +108,29 @@ const FleetDrawer = () => {
               <GiveGold />
               <DismissCrewMembers />
             </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="advisor"
+            variants={slideVariants}
+            initial="enterFromRight"
+            animate="center"
+            exit="exitToRight"
+            transition={{ duration: 0.18 }}
+          >
+            <div className="mb-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setView("fleet")}
+                className="-ml-2"
+              >
+                <AiOutlineArrowLeft className="h-4 w-4" />
+                Back to Fleet
+              </Button>
+            </div>
+
+            <AdvisorTips title="Squawk! Here's what needs yer attention, Cap'n!" />
           </motion.div>
         )}
       </AnimatePresence>
