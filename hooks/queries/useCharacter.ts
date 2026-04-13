@@ -24,14 +24,9 @@ export const useCharacter = () => {
   }
 
   const { mutate: move, isPending: isMoving } = useMutation({
-    mutationFn: (data: {
-      location: TownLocation | SeaLocation
-      locationState?: DeepPartial<LocationStates>
-    }) => apiRequest("/api/character/move", data, "POST"),
-    onMutate: async (data: {
-      location: TownLocation | SeaLocation
-      locationState?: DeepPartial<LocationStates>
-    }) => {
+    mutationFn: (data: { location: TownLocation | SeaLocation }) =>
+      apiRequest("/api/character/move", data, "POST"),
+    onMutate: async (data: { location: TownLocation | SeaLocation }) => {
       await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
       const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
@@ -41,7 +36,6 @@ export const useCharacter = () => {
           character: {
             location: data.location,
           },
-          ...(data.locationState && { locationStates: data.locationState }),
         }
 
         const newPlayer = patchDeep(previous, playerUpdates)
