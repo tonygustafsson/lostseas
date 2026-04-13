@@ -43,6 +43,8 @@ export async function POST(req: Request) {
   const { success } = validateJourney(player, distance)
 
   if (!success) {
+    // Prevent journey if validation fails,
+    // same warning system is used in frontend
     const harborUpdate: DeepPartial<Player> = {
       character: { location: "Harbor" },
     }
