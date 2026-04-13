@@ -6,10 +6,7 @@ import { Fragment, useState } from "react"
 
 import useModal from "@/app/stores/modals"
 import { TOWNS } from "@/constants/locations"
-import { useCharacter } from "@/hooks/queries/useCharacter"
-import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useSea } from "@/hooks/queries/useSea"
-import { getAdvisorWarnings } from "@/utils/getAdvisorWarnings"
 
 import Tooltip from "./Tooltip"
 
@@ -28,11 +25,9 @@ type Props = {
 
 const Map = ({ currentTown }: Props) => {
   const { startJourney } = useSea()
-  const { move } = useCharacter()
   const { removeModal } = useModal()
   const router = useRouter()
   const pathname = usePathname()
-  const { data: player } = useGetPlayer()
 
   const [tooltipInfo, setTooltipInfo] = useState<{
     show: boolean
@@ -48,17 +43,7 @@ const Map = ({ currentTown }: Props) => {
       router.push("/")
     }
 
-    const warnings = getAdvisorWarnings(player)
-    const isBlocked = warnings.some((w) => w.blocksTravel)
-
-    if (isBlocked) {
-      move({
-        location: "Harbor",
-        locationState: { harbor: { lastHarborReason: "blocked" } },
-      })
-    } else {
-      startJourney({ town })
-    }
+    startJourney({ town })
   }
 
   const onCurrentTownLoad = (townImage: SVGImageElement) =>
