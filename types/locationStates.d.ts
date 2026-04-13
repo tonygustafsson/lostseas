@@ -44,20 +44,6 @@ type AdvisorWarning =
   | "NO_CANNONS"
   | "PROMOTION_AVAILABLE"
 
-/** @deprecated Use AdvisorWarning */
-type LandingTip = AdvisorWarning
-
-type JourneyValidationError =
-  | "NO_PLAYER"
-  | "NO_SHIPS"
-  | "DAMAGED_SHIPS"
-  | "NOT_ENOUGH_CREW_MEMBERS"
-  | "TOO_MANY_CREW_MEMBERS"
-  | "CREW_IS_ILL"
-  | "ANGRY_CREW"
-  | "NO_FOOD"
-  | "NO_WATER"
-
 type ShipMeetingState = {
   nation: Nation | "Pirate"
   shipType: ShipType

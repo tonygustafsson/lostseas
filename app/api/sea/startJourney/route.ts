@@ -5,8 +5,8 @@ import { NextResponse } from "next/server"
 import { TOWNS } from "@/constants/locations"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { getAdvisorWarnings } from "@/utils/getAdvisorWarnings"
 import { patchDeep } from "@/utils/patchDeep"
-import { validateJourney } from "@/utils/validateJourney"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
     ? currentTownInfo.map.distanceTo[town]
     : randomInt(3, 9)
 
-  const { success } = validateJourney(player, distance)
+  const success = !getAdvisorWarnings(player).some((w) => w.blocksTravel)
 
   if (!success) {
     // Prevent journey if validation fails,
