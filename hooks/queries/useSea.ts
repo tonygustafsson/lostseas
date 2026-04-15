@@ -27,7 +27,7 @@ export const useSea = () => {
     onError: (error) => console.error(error),
   })
 
-  const { mutate: continueJourney, isPending: isContinueingJourney } =
+  const { mutate: continueJourney, isPending: isContinuingJourney } =
     useMutation({
       mutationFn: () => apiRequest("/api/sea/continueJourney", null, "POST"),
       onSuccess: (response) => {
@@ -81,7 +81,7 @@ export const useSea = () => {
     startJourney,
     isStartingJourney,
     continueJourney,
-    isContinueingJourney,
+    isContinuingJourney,
     attackShip,
     isAttackingShip,
     ignoreShip,

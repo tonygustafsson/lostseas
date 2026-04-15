@@ -119,7 +119,7 @@ export function calculateDayPaths(
       { x: startPos.x, y: startPos.y },
       { x: endPos.x, y: endPos.y },
     ]
-    return Array(totalDays).fill(fallback)
+    return Array.from({ length: totalDays }, () => [...fallback])
   }
 
   const cumDist = buildCumDist(path)

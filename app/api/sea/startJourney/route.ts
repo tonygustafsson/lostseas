@@ -36,9 +36,7 @@ export async function POST(req: Request) {
 
   const currentTownInfo = player.character.town && TOWNS[player.character.town]
 
-  const distance = currentTownInfo?.map.distanceTo[town]
-    ? currentTownInfo.map.distanceTo[town]
-    : randomInt(3, 9)
+  const distance = currentTownInfo?.map.distanceTo[town] ?? randomInt(3, 9)
 
   const success = !getAdvisorWarnings(player).some((w) => w.blocksTravel)
 

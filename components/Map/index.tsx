@@ -2,7 +2,7 @@
 
 import { m as motion } from "framer-motion"
 import { usePathname, useRouter } from "next/navigation"
-import { Fragment, useState } from "react"
+import { Fragment, useMemo, useState } from "react"
 
 import useModal from "@/app/stores/modals"
 import { TOWNS } from "@/constants/locations"
@@ -45,31 +45,37 @@ const Map = ({ currentTown }: Props) => {
   const isTraveling = !!journey
 
   // --- Journey animation state ---
-  let shipState = null
-  let journeyPath: { x: number; y: number }[] = []
+  const { shipState, journeyPath } = useMemo(() => {
+    if (!journey || !journeyOrigin) {
+      return { shipState: null, journeyPath: [] }
+    }
 
-  if (journey && journeyOrigin) {
     const { destination, totalDays, day } = journey
     const dayPaths = calculateDayPaths(journeyOrigin, destination, totalDays)
-    journeyPath = getJourneyPath(journeyOrigin, destination)
+    const path = getJourneyPath(journeyOrigin, destination)
 
     const currentDayIndex = Math.max(0, Math.min(day - 1, dayPaths.length - 1))
     const currentDayPath = dayPaths[currentDayIndex]
 
-    if (currentDayPath && currentDayPath.length > 0) {
-      const endPt = currentDayPath[currentDayPath.length - 1]
-      const startPt = currentDayPath[0]
-      const scaleX = endPt.x >= startPt.x ? 1 : -1
-      const shipKey = `${journeyOrigin}-${destination}-${totalDays}`
-      const originPos = TOWNS[journeyOrigin].map
-      const freezePt = isShipMeeting ? startPt : null
-      const xs = currentDayPath.map((p) => (freezePt ?? p).x - 10)
-      const ys = currentDayPath.map((p) => (freezePt ?? p).y - 10)
-      const times = currentDayPath.map((_, i) =>
-        currentDayPath.length === 1 ? 0 : i / (currentDayPath.length - 1)
-      )
+    if (!currentDayPath || currentDayPath.length === 0) {
+      return { shipState: null, journeyPath: path }
+    }
 
-      shipState = {
+    const endPt = currentDayPath[currentDayPath.length - 1]
+    const startPt = currentDayPath[0]
+    const scaleX = endPt.x >= startPt.x ? 1 : -1
+    const shipKey = `${journeyOrigin}-${destination}-${totalDays}`
+    const originPos = TOWNS[journeyOrigin].map
+    const freezePt = isShipMeeting ? startPt : null
+    const xs = currentDayPath.map((p) => (freezePt ?? p).x - 10)
+    const ys = currentDayPath.map((p) => (freezePt ?? p).y - 10)
+    const times = currentDayPath.map((_, i) =>
+      currentDayPath.length === 1 ? 0 : i / (currentDayPath.length - 1)
+    )
+
+    return {
+      journeyPath: path,
+      shipState: {
         shipKey,
         xs,
         ys,
@@ -80,9 +86,9 @@ const Map = ({ currentTown }: Props) => {
         currentDay: day,
         totalDays,
         duration: isShipMeeting ? 0 : 2,
-      }
+      },
     }
-  }
+  }, [journey, journeyOrigin, isShipMeeting])
 
   // --- Handlers (only active when not traveling) ---
   const handleStartJourney = (town: Town) => {
@@ -210,8 +216,9 @@ const Map = ({ currentTown }: Props) => {
                 opacity={isCurrentTown ? 0.9 : 0.8}
                 filter={isCurrentTown ? "url(#blue)" : "url(#black)"}
                 style={{ userSelect: "none" }}
-                dangerouslySetInnerHTML={{ __html: `&nbsp;${townName}&nbsp;` }}
-              />
+              >
+                {`\u00a0${townName}\u00a0`}
+              </text>
             </Fragment>
           )
         })}
@@ -244,44 +251,46 @@ const Map = ({ currentTown }: Props) => {
         )}
 
         {/* Animated ship box — when traveling */}
-        {isTraveling && shipState && (
-          <motion.rect
-            key={`box-${shipState.shipKey}`}
-            fill={colors.lightBlue}
-            stroke={colors.black}
-            strokeWidth={0.75}
-            width={22}
-            height={22}
-            initial={{ x: shipState.initialX - 1, y: shipState.initialY - 1 }}
-            animate={{
-              x: shipState.xs.map((x) => x - 1),
-              y: shipState.ys.map((y) => y - 1),
-            }}
-            transition={{
+        {isTraveling &&
+          shipState &&
+          (() => {
+            const shipTransition = {
               duration: shipState.duration,
-              ease: "easeInOut",
+              ease: "easeInOut" as const,
               times: shipState.times,
-            }}
-          />
-        )}
-
-        {/* Animated ship — when traveling */}
-        {isTraveling && shipState && (
-          <motion.image
-            key={`ship-${shipState.shipKey}`}
-            initial={{ x: shipState.initialX, y: shipState.initialY }}
-            animate={{ x: shipState.xs, y: shipState.ys }}
-            transition={{
-              duration: shipState.duration,
-              ease: "easeInOut",
-              times: shipState.times,
-            }}
-            style={{ scaleX: shipState.scaleX }}
-            width="20"
-            height="20"
-            xlinkHref="img/logo.svg"
-          />
-        )}
+            }
+            return (
+              <>
+                <motion.rect
+                  key={`box-${shipState.shipKey}`}
+                  fill={colors.lightBlue}
+                  stroke={colors.black}
+                  strokeWidth={0.75}
+                  width={22}
+                  height={22}
+                  initial={{
+                    x: shipState.initialX - 1,
+                    y: shipState.initialY - 1,
+                  }}
+                  animate={{
+                    x: shipState.xs.map((x) => x - 1),
+                    y: shipState.ys.map((y) => y - 1),
+                  }}
+                  transition={shipTransition}
+                />
+                <motion.image
+                  key={`ship-${shipState.shipKey}`}
+                  initial={{ x: shipState.initialX, y: shipState.initialY }}
+                  animate={{ x: shipState.xs, y: shipState.ys }}
+                  transition={shipTransition}
+                  style={{ scaleX: shipState.scaleX }}
+                  width="20"
+                  height="20"
+                  xlinkHref="img/logo.svg"
+                />
+              </>
+            )
+          })()}
       </svg>
 
       {/* Tooltip — only when not traveling */}
