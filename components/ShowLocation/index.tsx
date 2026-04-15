@@ -8,6 +8,7 @@ import Market from "@/components/location/Market"
 import Shipyard from "@/components/location/Shipyard"
 import Shop from "@/components/location/Shop"
 import Tavern from "@/components/location/Tavern"
+import Map from "@/components/Map"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 const ShowLocation = () => {
@@ -22,6 +23,12 @@ const ShowLocation = () => {
       {player?.character.location === "City hall" && <Cityhall />}
       {player?.character.location === "Shipyard" && <Shipyard />}
       {player?.character.location === "Harbor" && <Harbor />}
+
+      {player?.character.location === "Sea" &&
+        !player.locationStates?.sea?.attackSuccessReport &&
+        !player.locationStates?.sea?.attackFailureReport && (
+          <Map currentTown={player.character.town} />
+        )}
 
       {player?.character.location === "Sea" &&
         (player.locationStates?.sea?.attackSuccessReport ||
