@@ -11,8 +11,6 @@ import { dirname, join } from "path"
 import { PNG } from "pngjs"
 import { fileURLToPath } from "url"
 
-// ─── Map & grid constants (must match waterDetection.ts) ─────────────────────
-
 const MAP_WIDTH = 850
 const MAP_HEIGHT = 540
 const GRID_SCALE = 4
