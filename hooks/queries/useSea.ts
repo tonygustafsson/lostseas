@@ -5,7 +5,7 @@ import apiRequest from "@/utils/apiRequest"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
 
-const SEA_TRAVEL_SPEED = 5000 // Milliseconds per step
+const SEA_TRAVEL_SPEED = 2500 // Milliseconds per step
 
 export const useSea = () => {
   const queryClient = useQueryClient()
@@ -27,7 +27,7 @@ export const useSea = () => {
     onError: (error) => console.error(error),
   })
 
-  const { mutate: continueJourney, isPending: isContinueingJourney } =
+  const { mutate: continueJourney, isPending: isContinuingJourney } =
     useMutation({
       mutationFn: () => apiRequest("/api/sea/continueJourney", null, "POST"),
       onSuccess: (response) => {
@@ -81,7 +81,7 @@ export const useSea = () => {
     startJourney,
     isStartingJourney,
     continueJourney,
-    isContinueingJourney,
+    isContinuingJourney,
     attackShip,
     isAttackingShip,
     ignoreShip,

@@ -1,4 +1,5 @@
 type Journey = {
+  origin?: Town
   destination: Town
   day: number
   totalDays: number

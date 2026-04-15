@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "test": "vitest"
+    "test": "vitest",
+    "generate:routes": "tsx --tsconfig tsconfig.json scripts/generateRoutes.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -42,6 +43,7 @@
     "@tailwindcss/postcss": "^4.2.2",
     "@types/bcrypt": "^6.0.0",
     "@types/node": "^25.5.0",
+    "@types/pngjs": "^6.0.5",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "babel-plugin-react-compiler": "^1.0.0",
@@ -51,9 +53,11 @@
     "eslint-plugin-prettier": "^5.5.5",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unused-imports": "^4.4.1",
+    "pngjs": "^7.0.0",
     "postcss": "^8.5.8",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vitest": "^4.1.2"
   }
