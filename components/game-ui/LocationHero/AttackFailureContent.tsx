@@ -1,3 +1,5 @@
+import JourneyProgress from "./JourneyProgress"
+
 const MESSAGES = [
   "Amidst the deafening roar of enemy cannons and the ominous splintering of our once-proud mast, our valiant vessel succumbed to the relentless onslaught, its fate sealed on the unforgiving waters.",
   "As our sails sagged and the relentless enemy onslaught continued, our gallant ship found itself overwhelmed, defeated by a foe whose determination proved insurmountable.",
@@ -23,13 +25,24 @@ const MESSAGES = [
 
 const randomMessage = MESSAGES[Math.floor(Math.random() * MESSAGES.length)]
 
-const AttackFailureContent = () => (
+type Props = {
+  journey: Character["journey"]
+  day: Character["day"]
+}
+
+const AttackFailureContent = ({ journey, day }: Props) => (
   <>
     <h1 className="mb-4 font-serif text-3xl lg:text-5xl">Battle lost!</h1>
 
     <div className="text-sm lg:mb-5">
       <p className="mb-4">{randomMessage} </p>
     </div>
+
+    <JourneyProgress
+      journey={journey}
+      day={day}
+      titleClass="text-xl! font-sans! lg:text-2xl!"
+    />
   </>
 )
 
