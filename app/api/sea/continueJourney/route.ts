@@ -41,18 +41,21 @@ export async function POST() {
   const destinationReached =
     player.character.journey.day === player.character.journey.totalDays
 
-  const shipMeeting = !destinationReached ? Math.random() < 0.33 : false
+  const shouldMeetAShip =
+    !destinationReached && !player.locationStates?.sea?.justMetAShip
+      ? Math.random() < 0.33
+      : false
   const mannedCannons = getMannedCannons(
     player.crewMembers.count,
     player.inventory?.cannons
   )
-  const previouslyHadAShipMeeting =
+  const hasPendingAttackReport = !!(
     player.locationStates?.sea?.attackSuccessReport ||
     player.locationStates?.sea?.attackFailureReport
-  const shipMeetingState =
-    shipMeeting && !previouslyHadAShipMeeting
-      ? createMeetingShip(mannedCannons, player.character.journey.destination)
-      : null
+  )
+  const shipMeetingState = shouldMeetAShip
+    ? createMeetingShip(mannedCannons, player.character.journey.destination)
+    : null
 
   const foodConsumption = player.crewMembers.count * 0.1
   let newFood = Math.round((player.inventory?.food || 0) - foodConsumption)
@@ -82,6 +85,7 @@ export async function POST() {
           shipMeeting: shipMeetingState,
           attackSuccessReport: null,
           attackFailureReport: null,
+          justMetAShip: null,
         },
       },
     }
@@ -96,7 +100,7 @@ export async function POST() {
   } else {
     const dbUpdates: DeepPartial<Player> = {
       character: {
-        ...(!previouslyHadAShipMeeting && {
+        ...(!hasPendingAttackReport && {
           day: player.character.day + 1,
           journey: {
             day: player.character.journey.day + 1,
@@ -108,6 +112,7 @@ export async function POST() {
           shipMeeting: shipMeetingState,
           attackSuccessReport: null,
           attackFailureReport: null,
+          justMetAShip: null,
         },
       },
       inventory: {

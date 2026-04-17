@@ -99,6 +99,7 @@ export async function POST() {
         sea: {
           shipMeeting: null,
           attackSuccessReport: report,
+          justMetAShip: true,
         },
       },
     }
@@ -165,6 +166,7 @@ export async function POST() {
         sea: {
           shipMeeting: null,
           attackFailureReport: report,
+          justMetAShip: true,
         },
       },
     }

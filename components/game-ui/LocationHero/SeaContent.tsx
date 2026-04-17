@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from "react"
 
 import { SEA_DESCRIPTIONS } from "@/constants/locations"
+import { SEA_TRAVEL_SPEED } from "@/constants/sea"
 import { useSea } from "@/hooks/queries/useSea"
 import { getCurrentDate } from "@/utils/date"
 import { getRandomInt } from "@/utils/random"
@@ -23,9 +24,11 @@ const SeaContent = ({ journey, day }: Props) => {
   )
 
   useEffect(() => {
-    if (journey?.ongoingJourney) {
-      continueJourney()
-    }
+    if (!journey?.ongoingJourney) return
+
+    const timer = setTimeout(() => continueJourney(), SEA_TRAVEL_SPEED)
+
+    return () => clearTimeout(timer)
   }, [continueJourney, journey?.ongoingJourney])
 
   return (
