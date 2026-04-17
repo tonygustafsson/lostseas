@@ -91,6 +91,7 @@ const LocationHero = () => {
                   crewMembers={player?.crewMembers.count}
                   cannons={player?.inventory?.cannons}
                   journey={player?.character.journey}
+                  nationality={player?.character.nationality}
                   day={player?.character.day}
                 />
               )}

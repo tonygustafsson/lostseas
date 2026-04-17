@@ -1,5 +1,6 @@
 import Flag from "@/components/icons/Flag"
 import { Separator } from "@/components/ui/separator"
+import { NATIONS } from "@/constants/locations"
 import { getMannedCannons } from "@/utils/crew"
 
 import JourneyProgress from "./JourneyProgress"
@@ -10,6 +11,7 @@ type Props = {
   cannons: Inventory["cannons"]
   journey: Character["journey"]
   day: Character["day"]
+  nationality: Character["nationality"]
 }
 
 const ShipMeetingContent = ({
@@ -18,8 +20,13 @@ const ShipMeetingContent = ({
   cannons,
   journey,
   day,
+  nationality,
 }: Props) => {
   const mannedCannons = getMannedCannons(crewMembers, cannons)
+  const isEnemy =
+    shipMeeting.nation !== "Pirate" &&
+    NATIONS[nationality]?.warWith === shipMeeting.nation
+  const isAllied = nationality === shipMeeting.nation
 
   return (
     <>
@@ -35,7 +42,9 @@ const ShipMeetingContent = ({
         )}
         {shipMeeting.nation !== "Pirate" && (
           <>
-            You meet a {shipMeeting.shipType} from{" "}
+            You meet {isEnemy && <span className="text-red-400">an enemy</span>}
+            {isAllied && <span className="text-green-400">an allied</span>}{" "}
+            {shipMeeting.shipType} from{" "}
             <Flag nation={shipMeeting.nation} className="mx-1 inline-block" />{" "}
             {shipMeeting?.nation}.
           </>
