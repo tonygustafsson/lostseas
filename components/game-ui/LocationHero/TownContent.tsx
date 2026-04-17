@@ -1,7 +1,6 @@
+import Flag from "@/components/icons/Flag"
 import { TOWNS } from "@/constants/locations"
 import { getTownsNationality } from "@/utils/location"
-
-import Flag from "../icons/Flag"
 
 type Props = {
   town: Character["town"]

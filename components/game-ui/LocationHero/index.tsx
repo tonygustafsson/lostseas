@@ -1,5 +1,3 @@
-"use client"
-
 import { useAnimate } from "framer-motion"
 import Image from "next/image"
 import { useId } from "react"

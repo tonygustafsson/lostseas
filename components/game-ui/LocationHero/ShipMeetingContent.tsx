@@ -1,6 +1,5 @@
+import Flag from "@/components/icons/Flag"
 import { getMannedCannons } from "@/utils/crew"
-
-import Flag from "../icons/Flag"
 
 type Props = {
   shipMeeting: ShipMeetingState

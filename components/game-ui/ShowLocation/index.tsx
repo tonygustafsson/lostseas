@@ -1,5 +1,3 @@
-"use client"
-
 import AttackReport from "@/components/location/AttackReport"
 import Bank from "@/components/location/Bank"
 import Cityhall from "@/components/location/Cityhall"

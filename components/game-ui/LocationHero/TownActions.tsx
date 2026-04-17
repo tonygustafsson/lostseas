@@ -2,11 +2,10 @@ import { AiOutlineShop } from "react-icons/ai"
 import { BsBank2, BsTools } from "react-icons/bs"
 import { GiBank, GiFarmer, GiTavernSign } from "react-icons/gi"
 
+import { Button } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { LOCATIONS } from "@/constants/locations"
 import { useCharacter } from "@/hooks/queries/useCharacter"
-
-import { Button } from "../ui/button"
 
 type Props = {
   location: Character["location"]

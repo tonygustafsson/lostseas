@@ -5,8 +5,8 @@ import { useSea } from "@/hooks/queries/useSea"
 import { getCurrentDate } from "@/utils/date"
 import { getRandomInt } from "@/utils/random"
 
-import RadialProgressBar from "../RadialProgressBar"
-import WeatherIcon from "../WeatherIcon"
+import RadialProgressBar from "../../RadialProgressBar"
+import WeatherIcon from "../../WeatherIcon"
 
 type Props = {
   journey: Character["journey"]

@@ -1,6 +1,5 @@
+import { Button } from "@/components/ui/button"
 import { useSea } from "@/hooks/queries/useSea"
-
-import { Button } from "../ui/button"
 
 const PostAttackActions = () => {
   const { continueJourney } = useSea()
