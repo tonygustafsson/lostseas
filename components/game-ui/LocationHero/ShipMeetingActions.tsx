@@ -1,3 +1,5 @@
+import { GiCrossedSwords, GiShoonerSailboat } from "react-icons/gi"
+
 import { Button } from "@/components/ui/button"
 import { useSea } from "@/hooks/queries/useSea"
 
@@ -20,17 +22,19 @@ const ShipMeetingActions = () => {
 
       <div className="mt-4 flex flex-wrap justify-center gap-3">
         <Button
-          className="min-w-[8rem] rounded-full px-5 text-base"
+          className="min-w-32 rounded-full px-5 text-base"
           onClick={handleAttack}
         >
+          <GiCrossedSwords />
           Attack
         </Button>
 
         <Button
           variant="secondary"
-          className="min-w-[8rem] rounded-full px-5 text-base"
+          className="min-w-32 rounded-full px-5 text-base"
           onClick={handleIgnore}
         >
+          <GiShoonerSailboat />
           Ignore
         </Button>
       </div>

@@ -23,9 +23,7 @@ const ShipMeetingContent = ({
   nationality,
 }: Props) => {
   const mannedCannons = getMannedCannons(crewMembers, cannons)
-  const isEnemy =
-    shipMeeting.nation !== "Pirate" &&
-    NATIONS[nationality]?.warWith === shipMeeting.nation
+  const isEnemy = NATIONS[nationality]?.warWith === shipMeeting.nation
   const isAllied = nationality === shipMeeting.nation
 
   return (
