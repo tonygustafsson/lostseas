@@ -1,3 +1,5 @@
+import { Separator } from "@/components/ui/separator"
+
 import JourneyProgress from "./JourneyProgress"
 
 const MESSAGES = [
@@ -37,6 +39,8 @@ const AttackSuccessContent = ({ journey, day }: Props) => (
     <div className="text-sm lg:mb-5">
       <p className="mb-4">{randomMessage} </p>
     </div>
+
+    <Separator className="my-4 lg:my-6" />
 
     <JourneyProgress
       journey={journey}
