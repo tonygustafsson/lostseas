@@ -33,6 +33,8 @@ const MobileBottomNav = ({ className }: Props) => {
     })
   }
 
+  if (!player) return null
+
   return (
     <div
       className={`fixed inset-x-0 bottom-0 z-20 border-t border-white/10 bg-slate-950/95 px-3 pt-2 shadow-[0_-12px_32px_rgba(2,6,23,0.45)] backdrop-blur-md lg:hidden ${className}`}

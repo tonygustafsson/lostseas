@@ -46,15 +46,15 @@ const WelcomeNewUser = ({ player, onClose }: Props) => {
 
       <UserIdDisplay playerId={player.id} />
 
-      <div className="flex flex-col">
-        <Button size="lg" className="mt-4 w-full" onClick={startExploring}>
+      <div className="flex flex-col gap-2">
+        <Button size="lg" className="w-full" onClick={startExploring}>
           Start exploring
         </Button>
 
         <Button
           variant="secondary"
           size="lg"
-          className="mt-4 w-full"
+          className="w-full"
           onClick={getQrCode}
         >
           Get QR code
