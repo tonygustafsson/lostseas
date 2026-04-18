@@ -4,7 +4,8 @@ import Image from "next/image"
 
 import { NATIONS, TOWNS } from "@/constants/locations"
 import { TRADE_GOODS_TOWNS } from "@/constants/merchandise"
-import { SHIP_TYPES } from "@/constants/ship"
+import { SHIP_REPAIR_COST, SHIP_TYPES } from "@/constants/ship"
+import { TAVERN_ITEMS } from "@/constants/tavern"
 import { TITLE_INFO } from "@/constants/title"
 import { capitalize } from "@/utils/string"
 
@@ -27,6 +28,7 @@ const SECTIONS = [
   "supplies",
   "ships",
   "crew-members",
+  "tavern",
   "social-status",
   "economy",
   "traveling",
@@ -203,6 +205,16 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
           </TableBody>
         </Table>
 
+        <h3 className="my-6 font-serif text-lg">Ship health and repairs</h3>
+
+        <p className="mb-4">
+          Every ship has a health rating. You will take damage in every battle,
+          win or lose. A ship at 0% health is completely disabled and will block
+          you from leaving port. You can repair ships at the shipyard for{" "}
+          {SHIP_REPAIR_COST} gold per 1% of damage. You can also sell any ship
+          you own at the shipyard for half its purchase price.
+        </p>
+
         <h3 className="my-6 font-serif text-lg">Cannons</h3>
 
         <p>
@@ -210,7 +222,8 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
           cannons that controls if you win or lose, and also how powerful ships
           you will meet. You will need two crew members to control one cannon,
           which means that if you have 20 cannons, and 30 crew members, you will
-          still only be able to use 15 of them.
+          still only be able to use 15 of them. Cannons are bought at the
+          shipyard.
         </p>
       </AccordionContent>
     </AccordionItem>
@@ -264,6 +277,63 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
       </AccordionContent>
     </AccordionItem>
 
+    <AccordionItem value="tavern">
+      <AccordionTrigger className="font-serif text-xl">Tavern</AccordionTrigger>
+      <AccordionContent>
+        <h3 className="mb-2 font-serif text-lg">
+          Keeping your crew happy and healthy
+        </h3>
+
+        <p className="mb-4">
+          The tavern is one of the most important stops in any town. You can buy
+          rounds for your crew to improve their health and mood. The more crew
+          members you have, the smaller the effect per item.
+        </p>
+
+        <Table className="mb-6 rounded-xl bg-black/60">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Item</TableHead>
+              <TableHead>Price (per round)</TableHead>
+              <TableHead>Health increase</TableHead>
+              <TableHead>Mood increase</TableHead>
+            </TableRow>
+          </TableHeader>
+
+          <TableBody>
+            {Object.entries(TAVERN_ITEMS).map(([key, item]) => (
+              <TableRow key={key}>
+                <TableCell className="font-medium">{capitalize(key)}</TableCell>
+                <TableCell>{item.price} gold</TableCell>
+                <TableCell>
+                  {item.healthIncrease > 0 ? `+${item.healthIncrease}` : "–"}
+                </TableCell>
+                <TableCell>
+                  {item.moodIncrease > 0 ? `+${item.moodIncrease}` : "–"}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+
+        <h3 className="mb-2 font-serif text-lg">Sailors</h3>
+
+        <p className="mb-4">
+          Sometimes you will find sailors at the tavern willing to join your
+          crew for free. On other occasions the sailors you meet are hostile. If
+          you beat them in a fight you will win a small amount of gold, but you
+          will also take some health damage.
+        </p>
+
+        <h3 className="mb-2 font-serif text-lg">Cards</h3>
+
+        <p>
+          Feeling lucky? You can gamble a percentage of your gold at the card
+          table. It&apos;s a quick way to double your money — or lose it.
+        </p>
+      </AccordionContent>
+    </AccordionItem>
+
     <AccordionItem value="social-status">
       <AccordionTrigger className="font-serif text-xl">
         Social status
@@ -273,7 +343,7 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
         <p className="mb-4">
           This game takes place at the Spanish Main, in the Caribbean Sea at the
           1600th. There are four nations, battling over the towns. English,
-          French, Spanish and Dutch.
+          French, Spanish and Holland.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Levels</h3>
@@ -419,8 +489,10 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
 
         <p className="mb-4">
           Oh, there is also treasures to be found! Sometimes when you are
-          winning a battle you will find these. The value can be really high,
-          but they need to be return to the correct Governor.
+          winning a battle you will find these. The value can be really high.
+          Each treasure is tied to a specific town — you must bring it to that
+          town&apos;s City Hall to collect the reward. The reward is paid
+          directly in gold.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Saving money</h3>
@@ -441,8 +513,7 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
         <p className="mb-4">
           It&apos;s recommended to only have cash when you are in a town, for
           buying and selling. Before you leave, you should put the rest in your
-          account. There is however a small tax of 5 %. If you put in 100 dbl,
-          you can only get 95 dbl back.
+          account.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Loans</h3>
