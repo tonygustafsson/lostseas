@@ -1,10 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
+import { GiPerspectiveDiceTwo } from "react-icons/gi"
 import { z } from "zod"
 
 import TextField from "@/components/TextField"
 import { NATIONS } from "@/constants/locations"
 import { usePlayer } from "@/hooks/queries/usePlayer"
+import { useRandomCharacter } from "@/hooks/queries/useRandomCharacter"
 import { getRandomCharacter } from "@/utils/getRandomCharacter"
 import { registrationValidationSchema } from "@/utils/validation"
 
@@ -18,6 +20,7 @@ const randomCharacter = getRandomCharacter()
 
 const RegistrationForm = () => {
   const { register: playerRegister, registrationIsLoading } = usePlayer()
+  const { fetchRandomCharacter, isRandomizing } = useRandomCharacter()
 
   const {
     control,
@@ -34,27 +37,28 @@ const RegistrationForm = () => {
     playerRegister(data)
   }
 
-  const fetchNewRandomCharacter = async () => {
-    const randomCharacterResponse = await fetch(`/api/user/getRandomCharacter`)
-    const randomCharacter =
-      (await randomCharacterResponse.json()) as CharacterCreation
-
-    setValue("name", randomCharacter.name)
-    setValue("nationality", randomCharacter.nationality)
-    setValue("gender", randomCharacter.gender)
-    setValue("age", randomCharacter.age)
-  }
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       <h2 className="font-serif text-2xl">Character</h2>
 
       <Button
         variant="secondary"
-        onClick={fetchNewRandomCharacter}
+        onClick={async () => {
+          const result = await fetchRandomCharacter()
+          const char = result.data
+          if (!char) return
+          setValue("name", char.name)
+          setValue("nationality", char.nationality)
+          setValue("gender", char.gender)
+          setValue("age", char.age)
+        }}
         type="button"
+        disabled={isRandomizing}
       >
-        Randomize
+        <GiPerspectiveDiceTwo
+          className={`${isRandomizing ? "animate-spin" : ""}`}
+        />
+        {isRandomizing ? "Randomizing..." : "Randomize"}
       </Button>
 
       <TextField
