@@ -1,5 +1,3 @@
-"use client"
-
 import { useAnimate } from "framer-motion"
 import Image from "next/image"
 import { useId } from "react"
@@ -92,17 +90,26 @@ const LocationHero = () => {
                   shipMeeting={player?.locationStates?.sea?.shipMeeting}
                   crewMembers={player?.crewMembers.count}
                   cannons={player?.inventory?.cannons}
+                  journey={player?.character.journey}
+                  nationality={player?.character.nationality}
+                  day={player?.character.day}
                 />
               )}
 
             {player?.character.location === "Sea" &&
               player?.locationStates?.sea?.attackSuccessReport && (
-                <AttackSuccessContent />
+                <AttackSuccessContent
+                  journey={player?.character.journey}
+                  day={player?.character.day}
+                />
               )}
 
             {player?.character.location === "Sea" &&
               player?.locationStates?.sea?.attackFailureReport && (
-                <AttackFailureContent />
+                <AttackFailureContent
+                  journey={player?.character.journey}
+                  day={player?.character.day}
+                />
               )}
           </div>
         </div>

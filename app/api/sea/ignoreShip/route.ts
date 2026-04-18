@@ -26,6 +26,7 @@ export async function POST() {
     locationStates: {
       sea: {
         shipMeeting: null,
+        justMetAShip: true,
       },
     },
   }

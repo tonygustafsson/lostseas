@@ -13,6 +13,7 @@ type SeaState = {
   shipMeeting: ShipMeetingState | undefined | null
   attackSuccessReport?: AttackSuccessReport
   attackFailureReport?: AttackFailureReport
+  justMetAShip?: boolean | null
 }
 
 type HarborState = {

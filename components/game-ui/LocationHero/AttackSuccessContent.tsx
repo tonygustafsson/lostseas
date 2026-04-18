@@ -1,3 +1,7 @@
+import { Separator } from "@/components/ui/separator"
+
+import JourneyProgress from "./JourneyProgress"
+
 const MESSAGES = [
   "Amidst billowing sails and roaring cannons, our majestic vessel outmaneuvered and outgunned the enemy fleet, securing a triumphant victory on the high seas.",
   "Beneath the unforgiving sun, our mighty ship prevailed against the adversary's fleet, claiming victory amidst cannon fire and billowing sails.",
@@ -23,13 +27,26 @@ const MESSAGES = [
 
 const randomMessage = MESSAGES[Math.floor(Math.random() * MESSAGES.length)]
 
-const AttackSuccessContent = () => (
+type Props = {
+  journey: Character["journey"]
+  day: Character["day"]
+}
+
+const AttackSuccessContent = ({ journey, day }: Props) => (
   <>
     <h1 className="mb-4 font-serif text-3xl lg:text-5xl">Battle won!</h1>
 
     <div className="text-sm lg:mb-5">
       <p className="mb-4">{randomMessage} </p>
     </div>
+
+    <Separator className="my-4 lg:my-6" />
+
+    <JourneyProgress
+      journey={journey}
+      day={day}
+      titleClass="text-xl! font-sans! lg:text-2xl!"
+    />
   </>
 )
 

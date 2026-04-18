@@ -1,11 +1,10 @@
 import { Metadata } from "next"
 import { preload } from "react-dom"
 
+import GameUI from "@/components/game-ui"
 import DefaultLayout from "@/components/layouts/default"
 import FullscreenLayout from "@/components/layouts/fullscreen"
-import LocationHero from "@/components/LocationHero"
 import LoginScreen from "@/components/LoginScreen"
-import ShowLocation from "@/components/ShowLocation"
 import { getLoggedInPlayer } from "@/utils/app/getLoggedInPlayer"
 import {
   getAllSeaLocationBackgrounds,
@@ -59,8 +58,7 @@ export default async function Page() {
 
   return (
     <DefaultLayout>
-      <LocationHero />
-      <ShowLocation />
+      <GameUI />
     </DefaultLayout>
   )
 }

@@ -1,11 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 import useSound from "@/app/stores/sound"
+import { SEA_TRAVEL_SPEED } from "@/constants/sea"
 import apiRequest from "@/utils/apiRequest"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
-
-const SEA_TRAVEL_SPEED = 5000 // Milliseconds per step
 
 export const useSea = () => {
   const queryClient = useQueryClient()

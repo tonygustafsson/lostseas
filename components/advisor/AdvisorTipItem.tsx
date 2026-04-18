@@ -8,8 +8,8 @@ type Props = {
 }
 
 const variantClass = {
-  success: "bg-green-500/15",
-  error: "bg-destructive/15",
+  success: "bg-green-900",
+  error: "bg-red-900",
 }
 
 const AdvisorTipItem = ({ icon, children, blocksTravel, variant }: Props) => (
