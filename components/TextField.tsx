@@ -19,14 +19,14 @@ const TextField = forwardRef<HTMLInputElement, Props>(
       className={`flex flex-col gap-2 ${type !== "hidden" ? "form-control w-full" : ""}`}
     >
       {label && (
-        <Label htmlFor={id} className="label">
+        <Label htmlFor={id} className="font-semibold">
           {label}
         </Label>
       )}
 
       <Input
         type={type}
-        className={`input input-bordered ${size === "xs" && "input-xs"} ${
+        className={`input input-bordered bg-neutral-950 ${size === "xs" && "input-xs"} ${
           size === "sm" && "input-sm"
         } ${size === "md" && "input-md"} ${size === "lg" && "input-lg"} ${
           fullWidth && "w-full"

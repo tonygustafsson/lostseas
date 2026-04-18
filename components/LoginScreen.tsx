@@ -2,10 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
-import { AiOutlineArrowLeft } from "react-icons/ai"
 import { FiCheckCircle } from "react-icons/fi"
-import { GiArchiveRegister } from "react-icons/gi"
 import { PiBookOpenTextBold } from "react-icons/pi"
 
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -15,11 +12,10 @@ import RegistrationForm from "./RegistrationForm"
 import Screenshots from "./Screenshots"
 import SocialMedia from "./SocialMedia"
 import { Button } from "./ui/button"
+import { Separator } from "./ui/separator"
 
 const LoginScreen = () => {
   const { data: player } = useGetPlayer()
-
-  const [showRegistrationForm, setShowRegistrationForm] = useState(false)
 
   if (player) return null
 
@@ -29,20 +25,41 @@ const LoginScreen = () => {
         src="/img/startpage-bg.webp"
         fill
         alt="Lost Seas background"
-        className="absolute top-0 left-0 z-10 object-cover opacity-50"
+        className="absolute top-0 left-0 z-10 object-cover"
       />
 
-      <div className="relative z-20 flex min-h-screen w-full flex-col justify-items-stretch gap-4 lg:flex-row lg:gap-8">
-        <div className="order-last w-full rounded-lg bg-black/70 p-6 lg:order-first lg:p-8">
+      <div className="relative z-20 flex min-h-screen w-full flex-col justify-items-stretch gap-4 lg:flex-row">
+        <div className="flex flex-col gap-4 rounded-lg bg-black/80 p-6 lg:w-1/2 lg:p-8">
+          <h1 className="mb-5 text-center font-serif text-5xl lg:text-5xl">
+            Lost Seas
+          </h1>
+
+          <h2 className="font-serif text-2xl">Register</h2>
+
+          <p>
+            Come on, start playing already! It&apos;s free and we don&apos;t
+            want to know anything about you, not even your email address.
+          </p>
+
+          <RegistrationForm />
+
+          <Separator className="mt-4 mb-2 lg:mt-8 lg:mb-4" />
+
+          <h2 className="font-serif text-2xl">Sign in</h2>
+
+          <LoginForm />
+        </div>
+
+        <div className="order-last w-full rounded-lg bg-black/80 p-6 lg:order-last lg:w-1/2 lg:p-8">
           <div className="mx-auto max-w-3xl text-lg">
-            <h1 className="mb-5 hidden text-center font-serif lg:block lg:text-6xl">
-              Lost Seas
-            </h1>
+            <h2 className="mb-5 font-serif text-4xl lg:text-3xl">
+              Welcome to the open seas
+            </h2>
 
             <p className="mb-4">
-              Welcome to the Lost Seas. You are placed in year 1640 and will
-              begin as a simple pirate. You will work your way up to get nicer
-              titles, more ships, crew members and wealth.
+              You are placed in year 1640 and will begin as a simple pirate. You
+              will work your way up to get nicer titles, more ships, crew
+              members and wealth.
             </p>
 
             <p className="mb-4">
@@ -81,71 +98,24 @@ const LoginScreen = () => {
               </li>
             </ul>
 
+            <Button variant="secondary" className="mt-4 self-start">
+              <Link
+                href="/guide"
+                className="flex content-center justify-center gap-2"
+              >
+                <PiBookOpenTextBold size={26} />
+                Check out the Player Guide
+              </Link>
+            </Button>
+
             <h2 className="mt-8 mb-4 font-serif text-2xl lg:text-3xl">
               Screenshots
             </h2>
 
             <Screenshots />
+
+            <SocialMedia />
           </div>
-        </div>
-
-        <div className="flex flex-col gap-4 rounded-lg bg-black/70 p-6 lg:w-1/3 lg:p-8">
-          <h1 className="mb-5 text-center font-serif text-5xl lg:hidden">
-            Lost Seas
-          </h1>
-
-          {showRegistrationForm ? (
-            <>
-              <h2 className="font-serif text-3xl">Register</h2>
-
-              <p className="mb-6">
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => setShowRegistrationForm(false)}
-                >
-                  <AiOutlineArrowLeft />
-                  Sign in
-                </Button>
-              </p>
-
-              <RegistrationForm />
-            </>
-          ) : (
-            <>
-              <h2 className="font-serif text-3xl">Sign in</h2>
-
-              <LoginForm />
-
-              <h2 className="mt-4 text-left font-serif text-3xl">Register</h2>
-
-              <p>
-                No account yet? Go ahead and register. We don&apos;t want to
-                know anything about you, not even your email address.
-              </p>
-
-              <Button
-                size="lg"
-                className="mt-4 w-full"
-                onClick={() => setShowRegistrationForm(true)}
-              >
-                <GiArchiveRegister size={24} />
-                Register
-              </Button>
-
-              <Button size="lg" variant="secondary">
-                <Link
-                  href="/guide"
-                  className="flex w-full content-center justify-center gap-2"
-                >
-                  <PiBookOpenTextBold size={26} />
-                  Check out the Player Guide
-                </Link>
-              </Button>
-
-              <SocialMedia />
-            </>
-          )}
         </div>
       </div>
     </div>

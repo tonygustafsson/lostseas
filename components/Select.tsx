@@ -22,11 +22,11 @@ type Props = {
 function Select({ id, label, name, value, options, onChange }: Props) {
   return (
     <div className="form-control w-full">
-      {label && <Label className="mb-2">{label}</Label>}
+      {label && <Label className="mb-2 font-semibold">{label}</Label>}
 
       <ShadSelect name={name} value={value} onValueChange={onChange}>
         {label && (
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full bg-neutral-950 hover:bg-neutral-900!">
             <SelectValue />
           </SelectTrigger>
         )}
