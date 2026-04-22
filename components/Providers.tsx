@@ -21,6 +21,8 @@ import StatusDrawer from "@/components/status/StatusDrawer"
 import Toast from "@/components/Toast"
 import WelcomeModal from "@/components/WelcomeModal"
 
+import LogsDrawer from "./logs/LogsDrawer"
+
 type Props = {
   children: React.ReactNode
   dehydratedState?: DehydratedState
@@ -54,6 +56,7 @@ export default function Providers({ children, dehydratedState }: Props) {
           <SettingsDrawer />
           <GuideDrawer />
           <AdvisorDrawer />
+          <LogsDrawer />
           <WelcomeModal />
           <Sound />
         </MotionProvider>

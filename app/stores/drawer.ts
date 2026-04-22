@@ -7,6 +7,7 @@ export type DrawerId =
   | "settings"
   | "guide"
   | "advisor"
+  | "logs"
 
 type DrawerStore = {
   active: DrawerId | null

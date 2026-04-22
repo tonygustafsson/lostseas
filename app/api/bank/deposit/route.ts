@@ -2,7 +2,7 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { getPlayer, savePlayer } from "@/firebase/db"
+import { addLog, getPlayer, savePlayer } from "@/firebase/db"
 import { patchDeep } from "@/utils/patchDeep"
 
 export async function POST(req: Request) {
@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   const playerId = cookieStore.get(PLAYER_ID_COOKIE_NAME)?.value
 
   if (!playerId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 400 })
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
   const body = await req.json()
@@ -24,6 +24,9 @@ export async function POST(req: Request) {
   }
 
   const player = await getPlayer(playerId)
+
+  if (!player)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
   if (player.character.loan) {
     return NextResponse.json(
@@ -50,12 +53,19 @@ export async function POST(req: Request) {
   const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    await savePlayer(newPlayer)
+    const updatedPlayer = await savePlayer(newPlayer)
+
+    await addLog(playerId, {
+      type: "bank_deposit",
+      day: player.character.day,
+      message: `Deposited ${amount} gold into the bank. Current account balance: ${newAccount} gold.`,
+    })
 
     return NextResponse.json({
       success: true,
       amount,
       gold: newGold,
+      updatedPlayer,
     })
   } catch (error) {
     return NextResponse.json({ error, amount }, { status: 500 })

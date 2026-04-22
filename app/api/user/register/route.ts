@@ -36,7 +36,7 @@ const createPlayer = async (body: any) => {
       town: startingTown,
       location: LOCATIONS.harbor,
       gold: 300,
-      day: 0,
+      day: 1,
     },
     inventory: {
       food: 20,

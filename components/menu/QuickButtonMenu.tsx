@@ -1,6 +1,7 @@
 "use client"
 
 import React from "react"
+import { FaBookDead } from "react-icons/fa"
 import { FiLogOut, FiSettings } from "react-icons/fi"
 import { PiBookOpenTextBold } from "react-icons/pi"
 
@@ -29,6 +30,22 @@ const QuickButtonMenu = () => {
           </TooltipTrigger>
 
           <TooltipContent>Settings</TooltipContent>
+        </Tooltip>
+      </li>
+
+      <li>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => openDrawer("logs")}
+            >
+              <FaBookDead className="h-5 w-5" />
+            </Button>
+          </TooltipTrigger>
+
+          <TooltipContent>Log book</TooltipContent>
         </Tooltip>
       </li>
 

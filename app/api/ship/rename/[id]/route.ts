@@ -37,6 +37,9 @@ export async function POST(req: Request, { params }: RouteContext) {
 
   const player = await getPlayer(playerId)
 
+  if (!player)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+
   const existingShip = player.ships?.[id]
 
   if (!existingShip) {

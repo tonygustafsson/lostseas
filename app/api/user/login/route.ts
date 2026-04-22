@@ -12,6 +12,9 @@ export async function POST(req: Request) {
     const { playerId } = body as { playerId: Player["id"] }
     const player = await getPlayer(playerId)
 
+    if (!player)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+
     if (!player) {
       return NextResponse.json({ message: "No user found" }, { status: 404 })
     }

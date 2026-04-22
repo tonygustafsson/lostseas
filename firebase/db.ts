@@ -1,50 +1,47 @@
 import "server-only"
 
-const databaseUrl = process.env.FIREBASE_DATABASE_URL
+import { adminDb } from "./firebase-admin"
 
-if (!databaseUrl) {
-  throw new Error("FIREBASE_DATABASE_URL is not configured")
+type LogEntry = {
+  timestamp: number
+  day: number
+  type: "bank_deposit" | "bank_withdrawal" | "bank_loan" | "bank_repay"
+  message: string
 }
 
-const buildDatabaseUrl = (path: string) => {
-  const normalizedPath = path.replace(/^\/+|\/+$/g, "")
+export const getPlayer = async (playerId: Player["id"]) => {
+  const snapshot = await adminDb.ref(`players/${playerId}`).get()
 
-  return `${databaseUrl.replace(/\/$/, "")}/${normalizedPath}.json`
+  return snapshot.exists() ? (snapshot.val() as Player) : null
 }
 
-const readValue = async <T>(path: string) => {
-  const response = await fetch(buildDatabaseUrl(path), {
-    cache: "no-store",
+export const savePlayer = async (player: Player) => {
+  await adminDb.ref(`players/${player.id}`).update(player)
+  const snapshot = await adminDb.ref(`players/${player.id}`).get()
+
+  return snapshot.val() as Player
+}
+
+export const addLog = async (
+  playerId: Player["id"],
+  entry: Omit<LogEntry, "timestamp">
+) => {
+  await adminDb.ref(`logs/${playerId}`).push({
+    ...entry,
+    timestamp: Date.now(),
   })
-
-  if (!response.ok) {
-    throw new Error(`Failed to read Firebase path: ${path}`)
-  }
-
-  return (await response.json()) as T
 }
 
-const writeValue = async (path: string, value: unknown, method = "PUT") => {
-  const response = await fetch(buildDatabaseUrl(path), {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(value),
-    cache: "no-store",
-  })
+export const getLog = async (playerId: Player["id"]) => {
+  const snapshot = await adminDb
+    .ref(`logs/${playerId}`)
+    .orderByChild("timestamp")
+    .limitToLast(100)
+    .get()
 
-  if (!response.ok) {
-    throw new Error(`Failed to write Firebase path: ${path}`)
-  }
+  if (!snapshot.exists()) return []
 
-  const updatedPlayer = await getPlayer(path)
+  const logs = snapshot.val() as Record<string, LogEntry>
 
-  return updatedPlayer
+  return Object.values(logs).sort((a, b) => a.timestamp - b.timestamp)
 }
-
-export const getPlayer = async (playerId: Player["id"]) =>
-  readValue<Player>(playerId)
-
-export const savePlayer = async (newPlayer: Player) =>
-  await writeValue(newPlayer.id, newPlayer)

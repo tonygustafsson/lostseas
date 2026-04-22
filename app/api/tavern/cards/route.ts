@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   const playerId = cookieStore.get(PLAYER_ID_COOKIE_NAME)?.value
 
   if (!playerId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 400 })
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
   const body = await req.json()
@@ -24,6 +24,9 @@ export async function POST(req: Request) {
   }: { betPercentage: number; selectedCard: number } = body
 
   const player = await getPlayer(playerId)
+
+  if (!player)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
   const bet = getCardsBet(betPercentage, player.character.gold || 0)
 

@@ -11,13 +11,16 @@ export async function POST(req: Request) {
   const playerId = cookieStore.get(PLAYER_ID_COOKIE_NAME)?.value
 
   if (!playerId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 400 })
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
   const body = await req.json()
   const { id }: { id: Treasure["id"] } = body
 
   const player = await getPlayer(playerId)
+
+  if (!player)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
   const currentTown = player.character.town
   const treasures = Object.values(player.treasures || {}).filter(

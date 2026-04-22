@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   const playerId = cookieStore.get(PLAYER_ID_COOKIE_NAME)?.value
 
   if (!playerId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 400 })
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
   const body = await req.json()

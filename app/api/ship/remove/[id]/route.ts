@@ -27,6 +27,9 @@ export async function DELETE(_: Request, { params }: RouteContext) {
 
   const player = await getPlayer(playerId)
 
+  if (!player)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+
   if (!player.ships?.[id]) {
     return NextResponse.json({ error: "Ship not found" }, { status: 404 })
   }
