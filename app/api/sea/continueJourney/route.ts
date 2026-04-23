@@ -96,7 +96,7 @@ export async function POST() {
     const newPlayer = patchDeep<Player>(player, dbUpdate)
 
     try {
-      await savePlayer(newPlayer)
+      await savePlayer(newPlayer, `Arrived at destination ${player.character.journey?.destination || ''}.`)
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })
     }
@@ -130,7 +130,7 @@ export async function POST() {
     const newPlayer = patchDeep<Player>(player, dbUpdates)
 
     try {
-      await savePlayer(newPlayer)
+      await savePlayer(newPlayer, `Continued journey (day ${player.character.journey?.day + 1}).`)
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })
     }

@@ -37,7 +37,7 @@ export async function POST() {
   const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    await savePlayer(newPlayer)
+    await savePlayer(newPlayer, `Ignored meeting ship.`)
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 })
   }

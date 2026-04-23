@@ -51,7 +51,7 @@ export async function POST() {
   const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(newPlayer)
+    const updatedPlayer = await savePlayer(newPlayer, `Accepted new title ${titleInfo?.title}.`)
 
     return NextResponse.json({
       success: true,

@@ -54,7 +54,7 @@ const createPlayer = async (body: any) => {
     createdDate,
   }
 
-  await savePlayer(newPlayer as Player)
+  await savePlayer(newPlayer as Player, `Created new character ${name}.`)
 
   return { playerId, musicOn, soundEffectsOn }
 }
