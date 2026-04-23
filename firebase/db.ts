@@ -5,7 +5,6 @@ import { adminDb } from "./firebase-admin"
 type LogEntry = {
   timestamp: number
   day: number
-  type: "bank_deposit" | "bank_withdrawal" | "bank_loan" | "bank_repay"
   message: string
 }
 
@@ -15,21 +14,27 @@ export const getPlayer = async (playerId: Player["id"]) => {
   return snapshot.exists() ? (snapshot.val() as Player) : null
 }
 
-export const savePlayer = async (player: Player) => {
-  await adminDb.ref(`players/${player.id}`).update(player)
-  const snapshot = await adminDb.ref(`players/${player.id}`).get()
+export const savePlayer = async (player: Player, logMessage?: string) => {
+  const updates: Record<string, unknown> = {}
 
-  return snapshot.val() as Player
-}
+  updates[`players/${player.id}`] = player
 
-export const addLog = async (
-  playerId: Player["id"],
-  entry: Omit<LogEntry, "timestamp">
-) => {
-  await adminDb.ref(`logs/${playerId}`).push({
-    ...entry,
-    timestamp: Date.now(),
-  })
+  if (logMessage) {
+    const pushRef = adminDb.ref(`logs/${player.id}`).push()
+    const key = pushRef.key
+
+    if (key) {
+      updates[`logs/${player.id}/${key}`] = {
+        message: logMessage,
+        day: player.character.day,
+        timestamp: Date.now(),
+      }
+    }
+  }
+
+  await adminDb.ref().update(updates)
+
+  return player
 }
 
 export const getLog = async (playerId: Player["id"]) => {

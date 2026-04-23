@@ -2,7 +2,7 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { addLog, getPlayer, savePlayer } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
 import { patchDeep } from "@/utils/patchDeep"
 
 export async function POST(req: Request) {
@@ -47,13 +47,10 @@ export async function POST(req: Request) {
   const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(newPlayer)
-
-    await addLog(playerId, {
-      type: "bank_withdrawal",
-      day: player.character.day,
-      message: `Withdrew ${amount} gold from the bank. Current account balance: ${currentAccount - amount} gold.`,
-    })
+    const updatedPlayer = await savePlayer(
+      newPlayer,
+      `Withdrew ${amount} gold from the bank. Current account balance: ${currentAccount - amount} gold.`
+    )
 
     return NextResponse.json({
       success: true,
