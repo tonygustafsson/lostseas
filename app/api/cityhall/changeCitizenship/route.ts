@@ -50,7 +50,10 @@ export async function POST() {
   const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(newPlayer, `Changed citizenship to ${newNationality}.`)
+    const updatedPlayer = await savePlayer(
+      newPlayer,
+      `Changed citizenship from ${player.character.nationality} to ${newNationality}.`
+    )
 
     return NextResponse.json({
       success: true,

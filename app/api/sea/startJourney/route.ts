@@ -54,7 +54,7 @@ export async function POST(req: Request) {
     const harborPlayer = patchDeep<Player>(player, harborUpdate)
 
     try {
-      await savePlayer(harborPlayer, `Attempted to start journey but blocked; returned to harbor.`)
+      await savePlayer(harborPlayer)
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })
     }
@@ -77,7 +77,10 @@ export async function POST(req: Request) {
   const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    await savePlayer(newPlayer, `Started journey to ${town}.`)
+    await savePlayer(
+      newPlayer,
+      `Started journey to ${town}. Expected arrival in ${distance} days.`
+    )
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 })
   }

@@ -110,7 +110,10 @@ export async function POST() {
     const newPlayer = patchDeep<Player>(player, dbUpdate)
 
     try {
-      await savePlayer(newPlayer, `Won a battle against ${opponentNation}; looted ${lootedGold} gold.`)
+      await savePlayer(
+        newPlayer,
+        `Won a battle against ${opponentNation}; looted ${lootedGold} gold.`
+      )
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })
     }
@@ -177,7 +180,10 @@ export async function POST() {
     const newPlayer = patchDeep<Player>(player, dbUpdate)
 
     try {
-      await savePlayer(newPlayer, `Lost a battle against ${opponentNation}; crew health loss ${crewHealthLoss}.`)
+      await savePlayer(
+        newPlayer,
+        `Lost a battle against ${opponentNation}; crew health loss ${crewHealthLoss}.`
+      )
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })
     }

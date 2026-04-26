@@ -54,7 +54,8 @@ export async function POST(req: Request) {
   const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(newPlayer, `Moved to ${destination}.`)
+    const updatedPlayer = await savePlayer(newPlayer)
+
     const playerWithEvents = await createMoveEvents({
       player: updatedPlayer,
       destination,

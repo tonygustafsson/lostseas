@@ -50,7 +50,10 @@ export async function POST(req: Request) {
   const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(newPlayer, `Handed over town duties.`)
+    const updatedPlayer = await savePlayer(
+      newPlayer,
+      `Handed over ${matchingTreasure?.name} to the town of ${currentTown}.`
+    )
 
     return NextResponse.json({
       success: true,

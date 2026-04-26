@@ -43,7 +43,10 @@ export async function DELETE(_: Request, { params }: RouteContext) {
   const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(newPlayer, `Removed ship ${id}.`)
+    const updatedPlayer = await savePlayer(
+      newPlayer,
+      `Removed ship ${player.ships[id]?.name}.`
+    )
 
     return NextResponse.json({ success: true, updatedPlayer })
   } catch (error) {

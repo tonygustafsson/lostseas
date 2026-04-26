@@ -57,7 +57,10 @@ export async function POST(req: Request, { params }: RouteContext) {
   const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(newPlayer, `Renamed ship ${id} to ${name}.`)
+    const updatedPlayer = await savePlayer(
+      newPlayer,
+      `Renamed ship ${existingShip.name} to ${name}.`
+    )
 
     return NextResponse.json({
       success: true,

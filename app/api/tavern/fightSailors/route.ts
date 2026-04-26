@@ -51,7 +51,10 @@ export async function POST() {
     const newPlayer = patchDeep<Player>(player, dbUpdate)
 
     try {
-      const updatedPlayer = await savePlayer(newPlayer, `Fought sailors and won; loot ${loot}, health loss ${healthLoss}.`)
+      const updatedPlayer = await savePlayer(
+        newPlayer,
+        `Fought sailors and won; loot ${loot}, health loss ${healthLoss}.`
+      )
 
       return NextResponse.json({
         success: true,
@@ -85,7 +88,10 @@ export async function POST() {
     const newPlayer = patchDeep<Player>(player, dbUpdate)
 
     try {
-      const updatedPlayer = await savePlayer(newPlayer, `Fought sailors and lost; health loss ${healthLoss}.`)
+      const updatedPlayer = await savePlayer(
+        newPlayer,
+        `Fought sailors and lost; health loss ${healthLoss}.`
+      )
 
       return NextResponse.json({
         success: false,

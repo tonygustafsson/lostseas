@@ -50,7 +50,10 @@ export async function POST(req: Request) {
   const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(newPlayer, `Played cards: bet ${bet}, result ${cardsResults}.`)
+    const updatedPlayer = await savePlayer(
+      newPlayer,
+      `Played cards: bet ${bet}, result ${cardsResults}. Gold change: ${cardsReturns}. New gold total: ${goldResult}.`
+    )
 
     return NextResponse.json({
       success: true,

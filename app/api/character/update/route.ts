@@ -43,7 +43,8 @@ export async function POST(req: Request) {
   const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(newPlayer, `Updated character info.`)
+    const updatedPlayer = await savePlayer(newPlayer)
+
     return NextResponse.json({ success: true, updatedPlayer })
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 })
