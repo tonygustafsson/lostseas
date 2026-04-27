@@ -16,7 +16,7 @@ const QuickButtonMenu = () => {
   const { open: openDrawer } = useDrawer()
 
   return (
-    <ul className="flex justify-center gap-4">
+    <ul className="flex justify-center gap-3">
       <li>
         <Tooltip>
           <TooltipTrigger asChild>

@@ -7,16 +7,14 @@ import useDrawer from "@/app/stores/drawer"
 import DrawerPanel from "@/components/DrawerPanel"
 import SoundControls from "@/components/Sound/Controls"
 import { Separator } from "@/components/ui/separator"
-import { useGetPlayer, usePlayer } from "@/hooks/queries/usePlayer"
+import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
-import { Button } from "../ui/button"
 import UserIdDisplay from "./UserIdDisplay"
 
 const SettingsDrawer = () => {
   const { active: activeDrawer, close: closeDrawer } = useDrawer()
   const isOpen = activeDrawer === "settings"
   const { data: player } = useGetPlayer()
-  const { logout } = usePlayer()
   const { SVG } = useQRCode()
 
   if (!player) return null
@@ -33,14 +31,6 @@ const SettingsDrawer = () => {
           <h2 className="mb-4 font-serif text-xl">Sound</h2>
 
           <SoundControls />
-
-          <Separator className="mt-8 mb-2" />
-        </div>
-
-        <div className="lg:hidden">
-          <h2 className="mb-4 font-serif text-xl">Log out</h2>
-
-          <Button onClick={() => logout()}>Log out</Button>
 
           <Separator className="mt-8 mb-2" />
         </div>

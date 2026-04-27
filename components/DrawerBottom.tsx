@@ -1,38 +1,24 @@
 "use client"
 
 import { AnimatePresence, m as motion, PanInfo } from "framer-motion"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { AiOutlineCloseCircle } from "react-icons/ai"
 
 import { cn } from "@/lib/utils"
 
 import { Button } from "./ui/button"
 
-const MOBILE_BREAKPOINT = 1024 // tailwind lg
-
 type Props = {
   isOpen: boolean
   onClose: () => void
   children: React.ReactNode
   className?: string
+  maxHeightPercent?: number
 }
 
-const DrawerPanel = ({ isOpen, onClose, children, className }: Props) => {
-  const [isMobile, setIsMobile] = useState(
-    () => typeof window !== "undefined" && window.innerWidth < MOBILE_BREAKPOINT
-  )
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-    window.addEventListener("resize", check)
-    return () => window.removeEventListener("resize", check)
-  }, [])
-
-  const xFrom = isMobile ? "-100%" : "100%"
-
+const DrawerBottom = ({ isOpen, onClose, children, className }: Props) => {
   const handleDrag = (info: PanInfo) => {
-    if (isMobile && info.offset.x < -50) onClose()
-    if (!isMobile && info.offset.x > 50) onClose()
+    if (info.offset.y > 50) onClose()
   }
 
   // Close on ESC key
@@ -49,34 +35,28 @@ const DrawerPanel = ({ isOpen, onClose, children, className }: Props) => {
       {isOpen && (
         <>
           <motion.div
-            initial={{ translateX: xFrom, opacity: 0 }}
+            initial={{ translateY: "100%", opacity: 0 }}
             animate={{
-              translateX: 0,
+              translateY: -70,
               opacity: 1,
               transition: {
-                translateX: { type: "spring", duration: 0.25 },
+                translateY: { type: "spring", duration: 0.25 },
                 opacity: { duration: 0.2 },
               },
             }}
-            exit={{ translateX: xFrom, opacity: 0 }}
-            drag="x"
-            dragConstraints={
-              isMobile ? { left: -50, right: 0 } : { left: 0, right: 50 }
-            }
-            whileDrag={{ opacity: 0.85, transition: { duration: 0.1 } }}
+            exit={{ translateY: "100%", opacity: 0 }}
+            drag="y"
+            dragConstraints={{ top: 0, bottom: 50 }}
+            whileDrag={{ opacity: 0.95, transition: { duration: 0.1 } }}
             onDrag={(_, info) => handleDrag(info)}
             className={cn(
-              "fixed top-0 z-50 h-full w-full overflow-y-auto border-neutral-900 bg-neutral-950 px-6 py-6 shadow-2xl sm:border-l-2 md:py-10",
-              isMobile ? "left-0" : "right-0",
+              "fixed bottom-0 left-0 z-50 max-h-[80vh] w-full overflow-y-auto border-neutral-900 bg-neutral-950 px-6 pt-12 pb-6 shadow-2xl sm:border-l-2 md:py-10",
               className
             )}
           >
             <Button
               variant="ghost"
-              className={cn(
-                "text-info absolute top-1",
-                isMobile ? "right-2" : "left-2"
-              )}
+              className="text-info absolute top-2 right-2"
               onClick={onClose}
             >
               <AiOutlineCloseCircle className="h-6 w-6" />
@@ -98,4 +78,4 @@ const DrawerPanel = ({ isOpen, onClose, children, className }: Props) => {
   )
 }
 
-export default DrawerPanel
+export default DrawerBottom
