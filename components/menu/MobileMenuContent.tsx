@@ -3,6 +3,7 @@
 import { FaBookDead } from "react-icons/fa"
 import { FiLogOut, FiSettings } from "react-icons/fi"
 import { GiPirateCoat } from "react-icons/gi"
+import { PiBookOpenTextBold } from "react-icons/pi"
 
 import useDrawer, { DrawerId } from "@/app/stores/drawer"
 import { usePlayer } from "@/hooks/queries/usePlayer"
@@ -52,6 +53,16 @@ const MobileMenuContent = ({ onClose }: Props) => {
       >
         <FiSettings className="size-5" />
         Settings
+      </Button>
+
+      <Button
+        variant="secondary"
+        size="lg"
+        className="justify-start gap-4 bg-neutral-900 text-lg font-normal!"
+        onClick={() => handleOpen("guide")}
+      >
+        <PiBookOpenTextBold className="size-5" />
+        Player guide
       </Button>
 
       <Button
