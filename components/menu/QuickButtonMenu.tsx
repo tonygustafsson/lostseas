@@ -1,9 +1,9 @@
 "use client"
 
 import React from "react"
-import { FaBookDead } from "react-icons/fa"
+import { FaBook } from "react-icons/fa6"
 import { FiLogOut, FiSettings } from "react-icons/fi"
-import { PiBookOpenTextBold } from "react-icons/pi"
+import { TbHelp } from "react-icons/tb"
 
 import useDrawer from "@/app/stores/drawer"
 import { usePlayer } from "@/hooks/queries/usePlayer"
@@ -16,7 +16,7 @@ const QuickButtonMenu = () => {
   const { open: openDrawer } = useDrawer()
 
   return (
-    <ul className="flex justify-center gap-3">
+    <ul className="flex justify-center gap-2">
       <li>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -41,7 +41,7 @@ const QuickButtonMenu = () => {
               size="sm"
               onClick={() => openDrawer("logs")}
             >
-              <FaBookDead className="h-5 w-5" />
+              <FaBook className="h-5 w-5" />
             </Button>
           </TooltipTrigger>
 
@@ -57,7 +57,7 @@ const QuickButtonMenu = () => {
               size="sm"
               onClick={() => openDrawer("guide")}
             >
-              <PiBookOpenTextBold className="h-5 w-5" />
+              <TbHelp className="h-5 w-5" />
             </Button>
           </TooltipTrigger>
 

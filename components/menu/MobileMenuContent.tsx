@@ -1,9 +1,9 @@
 "use client"
 
-import { FaBookDead } from "react-icons/fa"
+import { FaBook } from "react-icons/fa"
 import { FiLogOut, FiSettings } from "react-icons/fi"
 import { GiPirateCoat } from "react-icons/gi"
-import { PiBookOpenTextBold } from "react-icons/pi"
+import { TbHelp } from "react-icons/tb"
 
 import useDrawer, { DrawerId } from "@/app/stores/drawer"
 import { usePlayer } from "@/hooks/queries/usePlayer"
@@ -41,7 +41,7 @@ const MobileMenuContent = ({ onClose }: Props) => {
         className="justify-start gap-4 bg-neutral-900 text-lg font-normal!"
         onClick={() => handleOpen("logs")}
       >
-        <FaBookDead className="size-5" />
+        <FaBook className="size-5" />
         Log book
       </Button>
 
@@ -61,7 +61,7 @@ const MobileMenuContent = ({ onClose }: Props) => {
         className="justify-start gap-4 bg-neutral-900 text-lg font-normal!"
         onClick={() => handleOpen("guide")}
       >
-        <PiBookOpenTextBold className="size-5" />
+        <TbHelp className="size-5" />
         Player guide
       </Button>
 

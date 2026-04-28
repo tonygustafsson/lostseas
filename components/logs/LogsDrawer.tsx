@@ -1,6 +1,6 @@
 "use client"
 
-import { PiBookOpenTextBold } from "react-icons/pi"
+import { FaBook } from "react-icons/fa"
 
 import useDrawer from "@/app/stores/drawer"
 import DrawerPanel from "@/components/DrawerPanel"
@@ -21,7 +21,7 @@ const LogsDrawer = () => {
   return (
     <DrawerPanel isOpen={isOpen} onClose={closeDrawer} className="sm:w-lg">
       <h1 className="mb-4 flex items-center gap-2 font-serif text-2xl">
-        <PiBookOpenTextBold className="text-yellow-400" />
+        <FaBook className="text-yellow-400" />
         Log Book
       </h1>
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { PiBookOpenTextBold } from "react-icons/pi"
+import { TbHelp } from "react-icons/tb"
 
 import useDrawer from "@/app/stores/drawer"
 import DrawerPanel from "@/components/DrawerPanel"
@@ -13,7 +13,7 @@ const GuideDrawer = () => {
   return (
     <DrawerPanel isOpen={isOpen} onClose={closeDrawer} className="sm:w-lg">
       <h1 className="mb-2 flex items-center gap-2 font-serif text-2xl">
-        <PiBookOpenTextBold className="text-yellow-400" />
+        <TbHelp className="text-yellow-400" />
         Player Guide
       </h1>
 
