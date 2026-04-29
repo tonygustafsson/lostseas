@@ -2,34 +2,26 @@
 
 import { FaBook } from "react-icons/fa"
 
-import useDrawer from "@/app/stores/drawer"
-import DrawerPanel from "@/components/DrawerPanel"
 import { useGetLogs } from "@/hooks/queries/useLogs"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 const LogsDrawer = () => {
-  const { active: activeDrawer, close: closeDrawer } = useDrawer()
-  const isOpen = activeDrawer === "logs"
   const { data: player } = useGetPlayer()
 
-  const { data: logs } = useGetLogs(player?.id, isOpen)
-
-  const sorted = (logs || [])
-    .slice()
-    .sort((a: any, b: any) => b.timestamp - a.timestamp)
+  const { data: logs } = useGetLogs(player?.id)
 
   return (
-    <DrawerPanel isOpen={isOpen} onClose={closeDrawer} className="sm:w-lg">
+    <>
       <h1 className="mb-4 flex items-center gap-2 font-serif text-2xl">
         <FaBook className="text-yellow-400" />
         Log Book
       </h1>
 
-      {!sorted.length ? (
+      {!logs?.length ? (
         <div className="text-muted-foreground">No logs available.</div>
       ) : (
         <div className="flex flex-col gap-3">
-          {sorted.map((entry: any, idx: number) => (
+          {logs.map((entry: any, idx: number) => (
             <div
               key={`log-${entry.timestamp}-${idx}`}
               className="rounded-lg bg-neutral-900 p-4 shadow-md"
@@ -48,7 +40,7 @@ const LogsDrawer = () => {
           ))}
         </div>
       )}
-    </DrawerPanel>
+    </>
   )
 }
 

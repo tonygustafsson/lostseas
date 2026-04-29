@@ -1,25 +1,34 @@
 "use client"
 
 import { FaChartBar } from "react-icons/fa"
+import { IoArrowBack } from "react-icons/io5"
 
 import useDrawer from "@/app/stores/drawer"
-import DrawerPanel from "@/components/DrawerPanel"
+import { Button } from "@/components/ui/button"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useGetStatistics } from "@/hooks/queries/useStatistics"
 
 const StatisticsDrawer = () => {
-  const { active: activeDrawer, close: closeDrawer } = useDrawer()
   const { data: player } = useGetPlayer()
+  const { data: stats } = useGetStatistics(player?.id)
 
-  const isOpen = activeDrawer === "statistics"
-  const { data: stats } = useGetStatistics(player?.id, isOpen)
+  const { open: openDrawer } = useDrawer()
 
   return (
-    <DrawerPanel isOpen={isOpen} onClose={closeDrawer} className="sm:w-lg">
+    <>
       <h1 className="mb-4 flex items-center gap-2 font-serif text-2xl">
         <FaChartBar className="text-yellow-400" />
         Statistics
       </h1>
+
+      <Button
+        variant="secondary"
+        className="mb-4"
+        onClick={() => openDrawer("status")}
+      >
+        <IoArrowBack />
+        Back to Status
+      </Button>
 
       {!stats?.length ? (
         <div className="text-muted-foreground">No statistics available.</div>
@@ -60,7 +69,7 @@ const StatisticsDrawer = () => {
           </table>
         </div>
       )}
-    </DrawerPanel>
+    </>
   )
 }
 

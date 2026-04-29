@@ -2,8 +2,6 @@
 
 import { GiOpenedFoodCan } from "react-icons/gi"
 
-import useDrawer from "@/app/stores/drawer"
-import DrawerPanel from "@/components/DrawerPanel"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import TreasureIcon from "@/components/TreasureIcon"
 import { MERCHANDISE } from "@/constants/merchandise"
@@ -12,8 +10,6 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { capitalize } from "@/utils/string"
 
 const InventoryDrawer = () => {
-  const { active: activeDrawer, close: closeDrawer } = useDrawer()
-  const isOpen = activeDrawer === "inventory"
   const { data: player } = useGetPlayer()
 
   const necessities = Object.entries(player?.inventory || []).filter((item) =>
@@ -25,7 +21,7 @@ const InventoryDrawer = () => {
   ) as [keyof Inventory, number][]
 
   return (
-    <DrawerPanel isOpen={isOpen} onClose={closeDrawer} className="sm:w-lg">
+    <>
       <h1 className="mb-6 flex items-center gap-2 font-serif text-2xl">
         <GiOpenedFoodCan className="text-yellow-400" />
         Inventory
@@ -132,7 +128,7 @@ const InventoryDrawer = () => {
           </>
         )}
       </div>
-    </DrawerPanel>
+    </>
   )
 }
 

@@ -4,43 +4,36 @@ import { AiOutlineCalendar } from "react-icons/ai"
 import { BiFemaleSign, BiMaleSign, BiTime } from "react-icons/bi"
 import { FaChartBar, FaCoins } from "react-icons/fa"
 import { GiPirateCoat, GiProgression } from "react-icons/gi"
+import { GiQuillInk } from "react-icons/gi"
 
 import useDrawer from "@/app/stores/drawer"
-import useModal from "@/app/stores/modals"
 import Flag from "@/components/icons/Flag"
 import { NATIONS } from "@/constants/locations"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { convertDaysToTimeSpan, getCurrentDate } from "@/utils/date"
 import { getScore } from "@/utils/score"
 
-import ChangeCharacterForm from "../ChangeCharacterForm"
-import { Button } from "../ui/button"
+import { Button } from "../../ui/button"
 
-export const metadata = {
-  title: "Status",
-}
-
-export default function CharacterInfo() {
+const StatusDrawer = () => {
   const { data: player } = useGetPlayer()
-  const { setModal } = useModal()
   const { open: openDrawer } = useDrawer()
 
   if (!player) {
     return null
   }
 
-  const changeCharacter = () => {
-    setModal({
-      id: "editCharacter",
-      title: "Edit Character",
-      content: <ChangeCharacterForm />,
-    })
-  }
-
-  const currentDate = getCurrentDate(player.character.day || 0)
+  const currentDate = getCurrentDate(player?.character.day || 0)
 
   return (
     <>
+      <h1 className="mb-2 flex font-serif text-2xl">
+        <div className="flex gap-2">
+          <GiPirateCoat className="text-yellow-400" />
+          Status
+        </div>
+      </h1>
+
       <span className="my-4 block font-serif text-xl">
         {player.character.name}
       </span>
@@ -108,7 +101,8 @@ export default function CharacterInfo() {
       </div>
 
       <div className="mt-4 flex gap-2">
-        <Button variant="secondary" onClick={changeCharacter}>
+        <Button variant="secondary" onClick={() => openDrawer("editCharacter")}>
+          <GiQuillInk />
           Change character
         </Button>
 
@@ -203,3 +197,5 @@ export default function CharacterInfo() {
     </>
   )
 }
+
+export default StatusDrawer

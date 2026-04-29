@@ -1,24 +1,21 @@
 "use client"
 
 import { AnimatePresence, m as motion } from "framer-motion"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { AiOutlineArrowLeft } from "react-icons/ai"
 import { GiShoonerSailboat } from "react-icons/gi"
 import { MdGroups } from "react-icons/md"
 
-import useDrawer from "@/app/stores/drawer"
+import AdvisorDrawerTrigger from "@/components/advisor/AdvisorDrawerTrigger"
+import AdvisorTips from "@/components/advisor/AdvisorTips"
 import CrewBoard from "@/components/crew/CrewBoard"
 import DismissCrewMembers from "@/components/crew/DismissCrewMembers"
 import GiveGold from "@/components/crew/GiveGold"
 import GiveMedicine from "@/components/crew/GiveMedicine"
-import DrawerPanel from "@/components/DrawerPanel"
 import FittingsList from "@/components/ships/FittingsList"
 import ShipList from "@/components/ships/ShipList"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-
-import AdvisorDrawerTrigger from "../advisor/AdvisorDrawerTrigger"
-import AdvisorTips from "../advisor/AdvisorTips"
 
 type View = "fleet" | "manageCrew" | "advisor"
 
@@ -31,19 +28,10 @@ const slideVariants = {
 }
 
 const FleetDrawer = () => {
-  const { active: activeDrawer, close: closeDrawer } = useDrawer()
-  const isOpen = activeDrawer === "fleet"
   const [view, setView] = useState<View>("fleet")
 
-  useEffect(() => {
-    if (!isOpen) {
-      const t = setTimeout(() => setView("fleet"), 300)
-      return () => clearTimeout(t)
-    }
-  }, [isOpen])
-
   return (
-    <DrawerPanel isOpen={isOpen} onClose={closeDrawer} className="sm:w-lg">
+    <>
       <AnimatePresence mode="wait" initial={false}>
         {view === "fleet" ? (
           <motion.div
@@ -134,7 +122,7 @@ const FleetDrawer = () => {
           </motion.div>
         )}
       </AnimatePresence>
-    </DrawerPanel>
+    </>
   )
 }
 

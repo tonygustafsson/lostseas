@@ -3,24 +3,20 @@
 import { useQRCode } from "next-qrcode"
 import { FiSettings } from "react-icons/fi"
 
-import useDrawer from "@/app/stores/drawer"
-import DrawerPanel from "@/components/DrawerPanel"
 import SoundControls from "@/components/Sound/Controls"
 import { Separator } from "@/components/ui/separator"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
-import UserIdDisplay from "./UserIdDisplay"
+import UserIdDisplay from "../../settings/UserIdDisplay"
 
 const SettingsDrawer = () => {
-  const { active: activeDrawer, close: closeDrawer } = useDrawer()
-  const isOpen = activeDrawer === "settings"
   const { data: player } = useGetPlayer()
   const { SVG } = useQRCode()
 
   if (!player) return null
 
   return (
-    <DrawerPanel isOpen={isOpen} onClose={closeDrawer} className="sm:w-lg">
+    <>
       <h1 className="mb-6 flex items-center gap-2 font-serif text-2xl">
         <FiSettings className="text-yellow-400" />
         Settings
@@ -71,7 +67,7 @@ const SettingsDrawer = () => {
           }}
         />
       </div>
-    </DrawerPanel>
+    </>
   )
 }
 
