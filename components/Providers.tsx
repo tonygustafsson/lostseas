@@ -22,6 +22,7 @@ import Toast from "@/components/Toast"
 import WelcomeModal from "@/components/WelcomeModal"
 
 import LogsDrawer from "./logs/LogsDrawer"
+import StatisticsDrawer from "./statistics/StatisticsDrawer"
 
 type Props = {
   children: React.ReactNode
@@ -50,6 +51,8 @@ export default function Providers({ children, dehydratedState }: Props) {
 
           <Toast />
           <Modal />
+          <Sound />
+
           <InventoryDrawer />
           <StatusDrawer />
           <FleetDrawer />
@@ -57,8 +60,8 @@ export default function Providers({ children, dehydratedState }: Props) {
           <GuideDrawer />
           <AdvisorDrawer />
           <LogsDrawer />
+          <StatisticsDrawer />
           <WelcomeModal />
-          <Sound />
         </MotionProvider>
 
         <ReactQueryDevtools />

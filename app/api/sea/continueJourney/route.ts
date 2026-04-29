@@ -2,10 +2,12 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { getPlayer, savePlayer } from "@/firebase/db"
+import { getPlayer, savePlayer, savePlayerStatistics } from "@/firebase/db"
 import { getMannedCannons } from "@/utils/crew"
 import { patchDeep } from "@/utils/patchDeep"
+import { getScore } from "@/utils/score"
 import { createMeetingShip } from "@/utils/shipMeeting"
+import { getBarterGoodsValue } from "@/utils/shop"
 
 export async function POST() {
   const cookieStore = await cookies()
@@ -96,10 +98,25 @@ export async function POST() {
     const newPlayer = patchDeep<Player>(player, dbUpdate)
 
     try {
-      await savePlayer(
+      const updatedPlayer = await savePlayer(
         newPlayer,
         `Arrived at destination ${player.character.journey?.destination || ""}.`
       )
+
+      try {
+        await savePlayerStatistics(playerId, {
+          gold: updatedPlayer.character.gold || 0,
+          score: getScore(updatedPlayer),
+          crewMembers: updatedPlayer.crewMembers.count || 0,
+          noOfShips: Object.keys(updatedPlayer.ships || {}).length,
+          food: updatedPlayer.inventory?.food || 0,
+          water: updatedPlayer.inventory?.water || 0,
+          barterGoods: getBarterGoodsValue(updatedPlayer),
+        })
+      } catch (statError) {
+        // Swallow statistics errors so they don't block the main flow
+        console.error("Failed to save player statistics", statError)
+      }
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })
     }
@@ -133,7 +150,21 @@ export async function POST() {
     const newPlayer = patchDeep<Player>(player, dbUpdates)
 
     try {
-      await savePlayer(newPlayer)
+      const updatedPlayer = await savePlayer(newPlayer)
+
+      try {
+        await savePlayerStatistics(playerId, {
+          gold: updatedPlayer.character.gold || 0,
+          score: getScore(updatedPlayer),
+          crewMembers: updatedPlayer.crewMembers.count || 0,
+          noOfShips: Object.keys(updatedPlayer.ships || {}).length,
+          food: updatedPlayer.inventory?.food || 0,
+          water: updatedPlayer.inventory?.water || 0,
+          barterGoods: getBarterGoodsValue(updatedPlayer),
+        })
+      } catch (statError) {
+        console.error("Failed to save player statistics", statError)
+      }
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })
     }

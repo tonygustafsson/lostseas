@@ -2,9 +2,10 @@
 
 import { AiOutlineCalendar } from "react-icons/ai"
 import { BiFemaleSign, BiMaleSign, BiTime } from "react-icons/bi"
-import { FaCoins } from "react-icons/fa"
+import { FaChartBar, FaCoins } from "react-icons/fa"
 import { GiPirateCoat, GiProgression } from "react-icons/gi"
 
+import useDrawer from "@/app/stores/drawer"
 import useModal from "@/app/stores/modals"
 import Flag from "@/components/icons/Flag"
 import { NATIONS } from "@/constants/locations"
@@ -22,6 +23,7 @@ export const metadata = {
 export default function CharacterInfo() {
   const { data: player } = useGetPlayer()
   const { setModal } = useModal()
+  const { open: openDrawer } = useDrawer()
 
   if (!player) {
     return null
@@ -105,9 +107,20 @@ export default function CharacterInfo() {
         </div>
       </div>
 
-      <Button variant="secondary" className="mt-4" onClick={changeCharacter}>
-        Change character
-      </Button>
+      <div className="mt-4 flex gap-2">
+        <Button variant="secondary" onClick={changeCharacter}>
+          Change character
+        </Button>
+
+        <Button
+          variant="secondary"
+          onClick={() => openDrawer("statistics")}
+          title="Open statistics"
+        >
+          <FaChartBar className="mr-2" />
+          Statistics
+        </Button>
+      </div>
 
       <div className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
         <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">

@@ -50,3 +50,49 @@ export const getLog = async (playerId: Player["id"]) => {
 
   return Object.values(logs).sort((a, b) => a.timestamp - b.timestamp)
 }
+
+export type StatisticsEntry = {
+  timestamp: number
+  gold: number
+  score: number
+  crewMembers: number
+  noOfShips: number
+  food: number
+  water: number
+  barterGoods: number
+}
+
+export const getPlayerStatistics = async (playerId: Player["id"]) => {
+  const snapshot = await adminDb
+    .ref(`statistics/${playerId}`)
+    .orderByChild("timestamp")
+    .limitToLast(100)
+    .get()
+
+  if (!snapshot.exists()) return []
+
+  const stats = snapshot.val() as Record<string, StatisticsEntry>
+
+  return Object.values(stats).sort((a, b) => a.timestamp - b.timestamp)
+}
+
+export const savePlayerStatistics = async (
+  playerId: Player["id"],
+  statistics: Omit<StatisticsEntry, "timestamp">
+) => {
+  const updates: Record<string, unknown> = {}
+
+  const pushRef = adminDb.ref(`statistics/${playerId}`).push()
+  const key = pushRef.key
+
+  if (key) {
+    updates[`statistics/${playerId}/${key}`] = {
+      ...statistics,
+      timestamp: Date.now(),
+    }
+  }
+
+  await adminDb.ref().update(updates)
+
+  return { ...statistics, timestamp: Date.now() }
+}
