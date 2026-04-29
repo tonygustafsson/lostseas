@@ -9,6 +9,7 @@ import FleetDrawer from "./drawerContent/Fleet"
 import GuideDrawer from "./drawerContent/Guide"
 import InventoryDrawer from "./drawerContent/Inventory"
 import LogsDrawer from "./drawerContent/Logs"
+import ManageCrewDrawer from "./drawerContent/ManageCrew"
 import SettingsDrawer from "./drawerContent/Settings"
 import StatisticsDrawer from "./drawerContent/Statistics"
 import StatusDrawer from "./drawerContent/Status"
@@ -23,6 +24,7 @@ const ComponentMap: Record<DrawerId, React.FC> = {
   logs: LogsDrawer,
   statistics: StatisticsDrawer,
   editCharacter: EditCharacterDrawer,
+  manageCrew: ManageCrewDrawer,
 }
 
 const Drawer = () => {

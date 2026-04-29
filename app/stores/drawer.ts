@@ -10,6 +10,7 @@ export type DrawerId =
   | "logs"
   | "statistics"
   | "editCharacter"
+  | "manageCrew"
 
 type DrawerStore = {
   active: DrawerId | null

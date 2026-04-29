@@ -8,6 +8,7 @@ import { TbHelp } from "react-icons/tb"
 import useDrawer, { DrawerId } from "@/app/stores/drawer"
 import { usePlayer } from "@/hooks/queries/usePlayer"
 
+import AdvisorDrawerTrigger from "../advisor/AdvisorDrawerTrigger"
 import { Button } from "../ui/button"
 
 type Props = {
@@ -25,13 +26,18 @@ const MobileMenuContent = ({ onClose }: Props) => {
 
   return (
     <div className="flex flex-col gap-3">
+      <AdvisorDrawerTrigger
+        onClick={() => openDrawer("advisor")}
+        className="justify-start gap-4 bg-neutral-900 text-lg font-normal!"
+      />
+
       <Button
         variant="secondary"
         size="lg"
         className="justify-start gap-4 bg-neutral-900 text-lg font-normal!"
         onClick={() => handleOpen("status")}
       >
-        <GiPirateCoat className="size-5" />
+        <GiPirateCoat className="text-accent size-5" />
         Status
       </Button>
 
@@ -41,7 +47,7 @@ const MobileMenuContent = ({ onClose }: Props) => {
         className="justify-start gap-4 bg-neutral-900 text-lg font-normal!"
         onClick={() => handleOpen("logs")}
       >
-        <FaBook className="size-5" />
+        <FaBook className="text-accent size-5" />
         Log book
       </Button>
 
@@ -51,7 +57,7 @@ const MobileMenuContent = ({ onClose }: Props) => {
         className="justify-start gap-4 bg-neutral-900 text-lg font-normal!"
         onClick={() => handleOpen("settings")}
       >
-        <FiSettings className="size-5" />
+        <FiSettings className="text-accent size-5" />
         Settings
       </Button>
 
@@ -61,7 +67,7 @@ const MobileMenuContent = ({ onClose }: Props) => {
         className="justify-start gap-4 bg-neutral-900 text-lg font-normal!"
         onClick={() => handleOpen("guide")}
       >
-        <TbHelp className="size-5" />
+        <TbHelp className="text-accent size-5" />
         Player guide
       </Button>
 
@@ -71,7 +77,7 @@ const MobileMenuContent = ({ onClose }: Props) => {
         className="justify-start gap-4 bg-neutral-900 text-lg font-normal!"
         onClick={() => logout()}
       >
-        <FiLogOut className="size-5" />
+        <FiLogOut className="text-accent size-5" />
         Logout
       </Button>
     </div>

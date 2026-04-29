@@ -1,127 +1,83 @@
 "use client"
 
-import { AnimatePresence, m as motion } from "framer-motion"
-import { useState } from "react"
-import { AiOutlineArrowLeft } from "react-icons/ai"
 import { GiShoonerSailboat } from "react-icons/gi"
 import { MdGroups } from "react-icons/md"
 
-import AdvisorDrawerTrigger from "@/components/advisor/AdvisorDrawerTrigger"
-import AdvisorTips from "@/components/advisor/AdvisorTips"
-import CrewBoard from "@/components/crew/CrewBoard"
-import DismissCrewMembers from "@/components/crew/DismissCrewMembers"
-import GiveGold from "@/components/crew/GiveGold"
-import GiveMedicine from "@/components/crew/GiveMedicine"
+import useDrawer from "@/app/stores/drawer"
+import RadialProgressBar from "@/components/RadialProgressBar"
 import FittingsList from "@/components/ships/FittingsList"
 import ShipList from "@/components/ships/ShipList"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-
-type View = "fleet" | "manageCrew" | "advisor"
-
-const slideVariants = {
-  enterFromRight: { x: "30%", opacity: 0 },
-  enterFromLeft: { x: "-30%", opacity: 0 },
-  center: { x: 0, opacity: 1 },
-  exitToLeft: { x: "-30%", opacity: 0 },
-  exitToRight: { x: "30%", opacity: 0 },
-}
+import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 const FleetDrawer = () => {
-  const [view, setView] = useState<View>("fleet")
+  const { data: player } = useGetPlayer()
+
+  const { open: openDrawer } = useDrawer()
+
+  if (!player) {
+    return null
+  }
 
   return (
     <>
-      <AnimatePresence mode="wait" initial={false}>
-        {view === "fleet" ? (
-          <motion.div
-            key="fleet"
-            variants={slideVariants}
-            initial="enterFromLeft"
-            animate="center"
-            exit="exitToLeft"
-            transition={{ duration: 0.18 }}
-          >
-            <h1 className="mb-6 flex items-center gap-2 font-serif text-2xl">
-              <GiShoonerSailboat className="text-yellow-400" />
-              Crew & Fleet
-            </h1>
+      <h1 className="mb-6 flex items-center gap-2 font-serif text-2xl">
+        <GiShoonerSailboat className="text-yellow-400" />
+        Crew & Fleet
+      </h1>
 
-            <AdvisorDrawerTrigger
-              onClick={() => setView("advisor")}
-              className="mb-4 w-full sm:w-auto lg:hidden"
-            />
+      <span className="my-4 block font-serif text-xl">Ships</span>
+      <ShipList />
 
-            <span className="my-4 block font-serif text-xl">Ships</span>
-            <ShipList />
+      <Separator className="my-8" />
 
-            <Separator className="my-8" />
+      <h2 className="mt-8 mb-4 font-serif text-xl">Ship fittings</h2>
+      <FittingsList />
 
-            <h2 className="mt-8 mb-4 font-serif text-xl">Ship fittings</h2>
-            <FittingsList />
+      <Separator className="my-8" />
 
-            <Separator className="my-8" />
+      <span className="my-4 block font-serif text-xl">Crew members</span>
 
-            <span className="my-4 block font-serif text-xl">Crew members</span>
-            <CrewBoard onManage={() => setView("manageCrew")} />
-          </motion.div>
-        ) : view === "manageCrew" ? (
-          <motion.div
-            key="manageCrew"
-            variants={slideVariants}
-            initial="enterFromRight"
-            animate="center"
-            exit="exitToRight"
-            transition={{ duration: 0.18 }}
-          >
-            <div className="mb-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setView("fleet")}
-                className="-ml-2"
-              >
-                <AiOutlineArrowLeft className="h-4 w-4" />
-                Back to Fleet
-              </Button>
-            </div>
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
+          <div>
+            <div className="text-muted-foreground text-sm">Members</div>
+            <div>{player?.crewMembers.count}</div>
+          </div>
+          <MdGroups className="h-11 w-11 text-yellow-400" />
+        </div>
 
-            <h1 className="mb-6 flex items-center gap-2 font-serif text-2xl">
-              <MdGroups className="text-yellow-400" />
-              Manage Crew
-            </h1>
+        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
+          <div>
+            <div className="text-muted-foreground text-sm">Health</div>
+            <div>{player?.crewMembers.health}%</div>
+          </div>
+          <RadialProgressBar
+            percentage={player?.crewMembers.health}
+            className="h-12 w-12"
+          />
+        </div>
 
-            <div className="grid grid-cols-1 gap-6">
-              <GiveMedicine />
-              <GiveGold />
-              <DismissCrewMembers />
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="advisor"
-            variants={slideVariants}
-            initial="enterFromRight"
-            animate="center"
-            exit="exitToRight"
-            transition={{ duration: 0.18 }}
-          >
-            <div className="mb-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setView("fleet")}
-                className="-ml-2"
-              >
-                <AiOutlineArrowLeft className="h-4 w-4" />
-                Back to Fleet
-              </Button>
-            </div>
+        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
+          <div>
+            <div className="text-muted-foreground text-sm">Mood</div>
+            <div>{player?.crewMembers.mood}%</div>
+          </div>
+          <RadialProgressBar
+            percentage={player?.crewMembers.mood}
+            className="h-12 w-12"
+          />
+        </div>
+      </div>
 
-            <AdvisorTips title="Squawk! Here's what needs yer attention, Cap'n!" />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <Button
+        className="mt-4 w-full"
+        variant="outline"
+        onClick={() => openDrawer("manageCrew")}
+      >
+        Manage Crew
+      </Button>
     </>
   )
 }
