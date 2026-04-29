@@ -2,7 +2,7 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { getPlayerStatistics } from "@/firebase/db"
+import { getStatistics } from "@/firebase/db"
 
 export async function GET() {
   const cookieStore = await cookies()
@@ -12,7 +12,7 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const logs = await getPlayerStatistics(playerId)
+  const logs = await getStatistics(playerId)
 
   const res = NextResponse.json(logs ?? [])
   res.headers.set("Cache-Control", "no-cache")

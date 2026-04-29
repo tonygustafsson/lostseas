@@ -62,7 +62,7 @@ export type StatisticsEntry = {
   barterGoods: number
 }
 
-export const getPlayerStatistics = async (playerId: Player["id"]) => {
+export const getStatistics = async (playerId: Player["id"]) => {
   const snapshot = await adminDb
     .ref(`statistics/${playerId}`)
     .orderByChild("timestamp")
@@ -76,7 +76,7 @@ export const getPlayerStatistics = async (playerId: Player["id"]) => {
   return Object.values(stats).sort((a, b) => a.timestamp - b.timestamp)
 }
 
-export const savePlayerStatistics = async (
+export const saveStatistics = async (
   playerId: Player["id"],
   statistics: Omit<StatisticsEntry, "timestamp">
 ) => {
