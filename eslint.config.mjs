@@ -37,7 +37,13 @@ const eslintConfig = defineConfig([
       "simple-import-sort/exports": "warn",
       "prettier/prettier": "warn",
     },
+    settings: {
+      react: {
+        version: "19.2.5",
+      },
+    },
   },
+
   globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
 ])
 
