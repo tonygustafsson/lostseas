@@ -15,15 +15,7 @@ const CustomTooltip = ({ active, payload, label }: Props) => {
   const entry = payload[0].payload
 
   return (
-    <div
-      style={{
-        background: "#000",
-        color: "#fff",
-        border: "none",
-        boxShadow: "none",
-        padding: 8,
-      }}
-    >
+    <div className="rounded-sm border border-neutral-400 bg-neutral-800 p-2">
       <div style={{ color: "#aaa", fontSize: 12, marginBottom: 2 }}>
         {toDateTime(new Date(entry.timestamp))}
       </div>

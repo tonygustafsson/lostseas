@@ -4,7 +4,6 @@ import React from "react"
 import {
   Area,
   AreaChart,
-  CartesianGrid,
   Legend,
   ResponsiveContainer,
   Tooltip,
@@ -23,27 +22,24 @@ type Props = {
 }
 
 const StatisticsAreaChart = ({ metric, data }: Props) => {
-  const colors = [`var(--chart-1)`]
-
-  console.log({ data, metric })
-
   if (!data.length) return null
 
+  const color = "var(--chart-1)"
+
   return (
-    <div style={{ width: "100%", height: 280 }}>
+    <div className="h-60 w-full [&_.recharts-legend-item]:mr-0!">
       <ResponsiveContainer>
         <AreaChart
           data={data}
-          margin={{ top: 10, right: 24, left: 0, bottom: 0 }}
+          margin={{ top: 0, right: 12, left: -32, bottom: 0 }}
         >
           <defs>
             <linearGradient id={`grad-${metric}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor={colors[0]} stopOpacity={0.6} />
-              <stop offset="95%" stopColor={colors[0]} stopOpacity={0.08} />
+              <stop offset="5%" stopColor={color} stopOpacity={0.6} />
+              <stop offset="95%" stopColor={color} stopOpacity={0.08} />
             </linearGradient>
           </defs>
 
-          <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.04} />
           <XAxis
             dataKey="day"
             tick={{ fontSize: 12 }}
@@ -52,19 +48,19 @@ const StatisticsAreaChart = ({ metric, data }: Props) => {
             }
           />
           <YAxis tick={{ fontSize: 12 }} />
+
           <Tooltip content={<CustomTooltip />} />
-          <Legend verticalAlign="top" height={36} />
+
+          <Legend verticalAlign="top" height={36} style={{ marginRight: 0 }} />
 
           <Area
             name={snakeCaseToTitleCase(metric)}
-            type="monotone"
+            type="linear"
             dataKey={metric}
             isAnimationActive={false}
-            stroke={colors[0]}
+            stroke={color}
             fill={`url(#grad-${metric})`}
             strokeWidth={2}
-            dot={false}
-            activeDot={{ r: 4 }}
           />
         </AreaChart>
       </ResponsiveContainer>
