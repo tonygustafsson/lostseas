@@ -15,9 +15,14 @@ import { snakeCaseToTitleCase } from "@/utils/string"
 
 import CustomTooltip from "./CustomTooltip"
 
+export type ChartDataPoint = Pick<
+  StatisticsEntry,
+  "day" | "timestamp" | keyof StatisticsEntry
+>
+
 type Props = {
   metric: keyof StatisticsEntry
-  data: Pick<StatisticsEntry, "day" | "timestamp" | keyof StatisticsEntry>[]
+  data: ChartDataPoint[]
 }
 
 const StatisticsAreaChart = ({ metric, data }: Props) => {

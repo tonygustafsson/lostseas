@@ -4,13 +4,15 @@ import { FaChartBar } from "react-icons/fa"
 import { IoArrowBack } from "react-icons/io5"
 
 import useDrawer from "@/app/stores/drawer"
-import StatisticsAreaChart from "@/components/charts/StatisticsAreaChart"
+import StatisticsAreaChart, {
+  ChartDataPoint,
+} from "@/components/charts/StatisticsAreaChart"
 import { Button } from "@/components/ui/button"
 import { StatisticsEntry } from "@/firebase/db"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useGetStatistics } from "@/hooks/queries/useStatistics"
 
-const availableMetrics: Array<keyof StatisticsEntry> = [
+const availableMetrics: (keyof StatisticsEntry)[] = [
   "gold",
   "score",
   "crewMembers",
@@ -51,14 +53,15 @@ const StatisticsDrawer = () => {
             {availableMetrics.map((metric) => (
               <StatisticsAreaChart
                 key={metric}
-                data={Object.values(stats).reduce((acc: any, entry: any) => {
+                data={Object.values(stats).reduce((acc, entry) => {
+                  // Only include entries that have a value for the current metric
                   acc.push({
                     day: entry.day,
                     [metric]: entry[metric],
                     timestamp: entry.timestamp,
-                  })
+                  } as ChartDataPoint)
                   return acc
-                }, [])}
+                }, [] as ChartDataPoint[])}
                 metric={metric}
               />
             ))}
