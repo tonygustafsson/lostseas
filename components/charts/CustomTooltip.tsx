@@ -1,17 +1,15 @@
 "use client"
 
-import { Payload } from "recharts/types/component/DefaultTooltipContent"
+import { TooltipContentProps } from "recharts"
 
 import { toDateTime } from "@/utils/date"
 import { snakeCaseToTitleCase } from "@/utils/string"
 
-type Props = {
-  active?: boolean
-  payload?: Payload<any, any>[]
-  label?: number
-}
-
-const CustomTooltip = ({ active, payload, label }: Props) => {
+const CustomTooltip = ({
+  active,
+  payload,
+  label,
+}: TooltipContentProps<any, any>) => {
   if (!active || !payload || !payload.length) {
     return null
   }
@@ -31,7 +29,9 @@ const CustomTooltip = ({ active, payload, label }: Props) => {
           key={`tooltip-${p.name}-${i}`}
           className="flex content-between text-xs text-white"
         >
-          <div className="font-bold">{snakeCaseToTitleCase(p.name ?? "")}</div>
+          <div className="font-bold">
+            {snakeCaseToTitleCase(p.name?.toString() ?? "")}
+          </div>
           <div className="ml-2 font-bold">{p.value}</div>
         </div>
       ))}
