@@ -10,11 +10,11 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getRandomInt } from "@/utils/random"
 
 const townSongs = Array.from(
-  { length: 6 },
+  { length: 10 },
   (_, i) => `music/town/song${i + 1}.opus`
 )
 const seaSongs = Array.from(
-  { length: 7 },
+  { length: 8 },
   (_, i) => `music/sea/song${i + 1}.opus`
 )
 
