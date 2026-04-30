@@ -53,13 +53,11 @@ export const getLog = async (playerId: Player["id"]) => {
 
 export type StatisticsEntry = {
   timestamp: number
+  day: number
   gold: number
   score: number
   crewMembers: number
-  noOfShips: number
-  food: number
-  water: number
-  barterGoods: number
+  ships: number
 }
 
 export const getStatistics = async (playerId: Player["id"]) => {

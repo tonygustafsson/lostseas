@@ -4,6 +4,7 @@ import { FaBook } from "react-icons/fa"
 
 import { useGetLogs } from "@/hooks/queries/useLogs"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { toDateTime } from "@/utils/date"
 
 const LogsDrawer = () => {
   const { data: player } = useGetPlayer()
@@ -31,7 +32,7 @@ const LogsDrawer = () => {
                   Day {entry.day}
                 </div>
                 <div className="text-muted-foreground text-xs">
-                  {new Date(entry.timestamp).toLocaleString()}
+                  {toDateTime(new Date(entry.timestamp))}
                 </div>
               </div>
 

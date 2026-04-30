@@ -8,8 +8,9 @@ import {
   PLAYER_ID_COOKIE_NAME,
   SOUND_EFFECTS_STATE_COOKIE_NAME,
 } from "@/constants/system"
-import { savePlayer } from "@/firebase/db"
+import { savePlayer, saveStatistics } from "@/firebase/db"
 import { getRandomTown } from "@/utils/location"
+import { getScore } from "@/utils/score"
 import { createNewShip } from "@/utils/ship"
 import { registrationValidationSchema } from "@/utils/validation"
 
@@ -54,7 +55,23 @@ const createPlayer = async (body: any) => {
     createdDate,
   }
 
-  await savePlayer(newPlayer as Player, `Created new character ${name}.`)
+  const updatedPlayer = await savePlayer(
+    newPlayer as Player,
+    `Created new character ${name}.`
+  )
+
+  try {
+    await saveStatistics(playerId, {
+      day: updatedPlayer.character.day,
+      gold: updatedPlayer.character.gold || 0,
+      score: getScore(updatedPlayer),
+      crewMembers: updatedPlayer.crewMembers.count || 0,
+      ships: Object.keys(updatedPlayer.ships || {}).length,
+    })
+  } catch (statError) {
+    // Swallow statistics errors so they don't block the main flow
+    console.error("Failed to save player statistics", statError)
+  }
 
   return { playerId, musicOn, soundEffectsOn }
 }
