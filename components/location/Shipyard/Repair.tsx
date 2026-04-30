@@ -1,3 +1,5 @@
+import clsx from "clsx"
+
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import { Badge } from "@/components/ui/badge"
@@ -30,27 +32,19 @@ const ShipyardRepair = () => {
               title={`${name} (${type})`}
               icon={<MerchandiseIcon item={type} />}
               body={
-                <>
-                  <p>{shipInfo.description}</p>
-
-                  <div className="flex flex-col gap-2">
-                    <div
-                      className={`badge badge-secondary ${
-                        health < 75 ? "badge-warning" : ""
-                      } ${health <= 30 ? "badge-error" : ""}`}
-                    >
-                      Health: {health}%
-                    </div>
-
-                    <Badge variant="secondary" className="mt-2">
-                      Price: {repairCost} gold
-                    </Badge>
-                  </div>
-                </>
+                <Badge
+                  variant="secondary"
+                  className={clsx("mt-2", {
+                    "bg-amber-600 text-white": health < 75,
+                    "bg-red-600 text-white": health <= 30,
+                  })}
+                >
+                  Health: {health}%
+                </Badge>
               }
               actions={
                 <Button size="sm" onClick={() => handleRepairShip(id)}>
-                  Repair
+                  Repair for {repairCost} gold
                 </Button>
               }
             />
