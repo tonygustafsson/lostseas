@@ -1,5 +1,5 @@
 import { getCookie } from "cookies-next"
-import { useCallback, useEffect, useMemo } from "react"
+import { useCallback, useEffect, useRef } from "react"
 
 import useSound from "@/app/stores/sound"
 import {
@@ -26,15 +26,12 @@ const Sound = () => {
   const musicCookieValue = getCookie(MUSIC_STATE_COOKIE_NAME)
   const soundEffectsCookieValue = getCookie(SOUND_EFFECTS_STATE_COOKIE_NAME)
 
-  const musicPlayer = useMemo(
-    () => typeof Audio !== "undefined" && new Audio(),
-    []
-  )
+  const musicPlayer = useRef(typeof Audio !== "undefined" ? new Audio() : null)
 
   const playMusic = useCallback(() => {
     if (!musicPlayer) return
 
-    musicPlayer.play().catch(() => {
+    musicPlayer.current?.play().catch(() => {
       // Autoplay blocked — will resume on first user interaction
     })
   }, [musicPlayer])
@@ -46,12 +43,16 @@ const Sound = () => {
         return
       }
 
-      if (musicPlayer.src && !musicPlayer.paused) {
+      if (musicPlayer.current?.src && !musicPlayer.current.paused) {
         const fadeOutInterval = setInterval(() => {
-          if (musicPlayer.volume >= 0.05) {
-            musicPlayer.volume -= 0.05
+          const currentVolume = musicPlayer.current?.volume ?? 0
+
+          if (musicPlayer.current && currentVolume >= 0.05) {
+            musicPlayer.current.volume -= 0.05
           } else {
-            musicPlayer.volume = 0
+            if (musicPlayer.current) {
+              musicPlayer.current.volume = 0
+            }
             clearInterval(fadeOutInterval)
             resolve(true)
           }
@@ -62,27 +63,31 @@ const Sound = () => {
     })
 
   const playRandomSong = useCallback(async () => {
-    if (!musicPlayer) return
+    if (!musicPlayer.current) return
 
     await fadeOutMusic()
 
     const songs = player?.character?.location === "Sea" ? seaSongs : townSongs
-    const otherSongs = songs.filter((song) => song !== musicPlayer.src)
+    const otherSongs = songs.filter((song) => song !== musicPlayer.current?.src)
     const randomSong = otherSongs[Math.floor(Math.random() * otherSongs.length)]
 
-    musicPlayer.src = randomSong
-    musicPlayer.volume = 0.8
+    if (musicPlayer.current) {
+      musicPlayer.current.src = randomSong
+      musicPlayer.current.volume = 0.8
+    }
+
     playMusic()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [musicPlayer, player?.character?.location, playMusic])
 
   useEffect(() => {
-    if (!musicPlayer) return
+    if (!musicPlayer.current) return
 
-    musicPlayer.onended = musicOn ? playRandomSong : null
+    const player = musicPlayer.current
+
+    player.onended = musicOn ? playRandomSong : null
 
     return () => {
-      musicPlayer.onended = null
+      player.onended = null
     }
   }, [musicOn, musicPlayer, playRandomSong])
 
@@ -92,8 +97,9 @@ const Sound = () => {
 
     if (
       (player?.character?.location === "Sea" &&
-        musicPlayer.src.includes("town")) ||
-      (player?.character?.location !== "Sea" && musicPlayer.src.includes("sea"))
+        musicPlayer.current?.src.includes("town")) ||
+      (player?.character?.location !== "Sea" &&
+        musicPlayer.current?.src.includes("sea"))
     ) {
       playRandomSong()
     }
@@ -103,12 +109,12 @@ const Sound = () => {
   useEffect(() => {
     if (!musicPlayer) return
 
-    if (musicOn && !musicPlayer.src) {
+    if (musicOn && !musicPlayer.current?.src) {
       playRandomSong()
-    } else if (musicOn && musicPlayer.src) {
+    } else if (musicOn && musicPlayer.current?.src) {
       playMusic()
     } else {
-      musicPlayer.pause()
+      musicPlayer.current?.pause()
     }
   }, [musicOn, musicPlayer, playRandomSong, playMusic])
 
@@ -149,9 +155,9 @@ const Sound = () => {
     if (!musicPlayer || !musicOn) return
 
     const handleClick = () => {
-      if (!musicPlayer.paused) return
+      if (!musicPlayer.current?.paused) return
 
-      if (musicPlayer.src) {
+      if (musicPlayer.current?.src) {
         playMusic()
       } else {
         playRandomSong()
