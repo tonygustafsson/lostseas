@@ -2,9 +2,10 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { getPlayer, savePlayer } from "@/firebase/db"
+import { getPlayer, savePlayer, saveStatistics } from "@/firebase/db"
 import { getMannedCannons } from "@/utils/crew"
 import { patchDeep } from "@/utils/patchDeep"
+import { getScore } from "@/utils/score"
 import { createMeetingShip } from "@/utils/shipMeeting"
 
 export async function POST() {
@@ -96,10 +97,24 @@ export async function POST() {
     const newPlayer = patchDeep<Player>(player, dbUpdate)
 
     try {
-      await savePlayer(
+      const updatedPlayer = await savePlayer(
         newPlayer,
         `Arrived at destination ${player.character.journey?.destination || ""}.`
       )
+
+      if (destinationReached) {
+        try {
+          await saveStatistics(playerId, {
+            day: updatedPlayer.character.day,
+            gold: updatedPlayer.character.gold || 0,
+            score: getScore(updatedPlayer),
+            crewMembers: updatedPlayer.crewMembers.count || 0,
+            ships: Object.keys(updatedPlayer.ships || {}).length,
+          })
+        } catch (error) {
+          console.error("Failed to save player statistics", error)
+        }
+      }
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })
     }

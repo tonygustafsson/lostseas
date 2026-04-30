@@ -2,14 +2,11 @@
 
 import { useMemo } from "react"
 
-import useDrawer from "@/app/stores/drawer"
 import AdvisorTips from "@/components/advisor/AdvisorTips"
-import DrawerPanel from "@/components/DrawerPanel"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getPirateQuip } from "@/utils/getPirateQuip"
 
 const AdvisorDrawer = () => {
-  const { active, close } = useDrawer()
   const { data: player } = useGetPlayer()
 
   const quip = useMemo(
@@ -17,15 +14,7 @@ const AdvisorDrawer = () => {
     [player?.character?.day, player?.crewMembers]
   )
 
-  return (
-    <DrawerPanel
-      isOpen={active === "advisor"}
-      onClose={close}
-      className="sm:w-lg"
-    >
-      <AdvisorTips title={quip} />
-    </DrawerPanel>
-  )
+  return <AdvisorTips title={quip} />
 }
 
 export default AdvisorDrawer

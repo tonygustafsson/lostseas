@@ -2,43 +2,38 @@
 
 import { AiOutlineCalendar } from "react-icons/ai"
 import { BiFemaleSign, BiMaleSign, BiTime } from "react-icons/bi"
-import { FaCoins } from "react-icons/fa"
+import { FaChartBar, FaCoins } from "react-icons/fa"
 import { GiPirateCoat, GiProgression } from "react-icons/gi"
+import { GiQuillInk } from "react-icons/gi"
 
-import useModal from "@/app/stores/modals"
+import useDrawer from "@/app/stores/drawer"
 import Flag from "@/components/icons/Flag"
 import { NATIONS } from "@/constants/locations"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { convertDaysToTimeSpan, getCurrentDate } from "@/utils/date"
 import { getScore } from "@/utils/score"
 
-import ChangeCharacterForm from "../ChangeCharacterForm"
-import { Button } from "../ui/button"
+import { Button } from "../../ui/button"
 
-export const metadata = {
-  title: "Status",
-}
-
-export default function CharacterInfo() {
+const StatusDrawer = () => {
   const { data: player } = useGetPlayer()
-  const { setModal } = useModal()
+  const { open: openDrawer } = useDrawer()
 
   if (!player) {
     return null
   }
 
-  const changeCharacter = () => {
-    setModal({
-      id: "editCharacter",
-      title: "Edit Character",
-      content: <ChangeCharacterForm />,
-    })
-  }
-
-  const currentDate = getCurrentDate(player.character.day || 0)
+  const currentDate = getCurrentDate(player?.character.day || 0)
 
   return (
     <>
+      <h1 className="mb-2 flex font-serif text-2xl">
+        <div className="flex gap-2">
+          <GiPirateCoat className="text-yellow-400" />
+          Status
+        </div>
+      </h1>
+
       <span className="my-4 block font-serif text-xl">
         {player.character.name}
       </span>
@@ -105,9 +100,21 @@ export default function CharacterInfo() {
         </div>
       </div>
 
-      <Button variant="secondary" className="mt-4" onClick={changeCharacter}>
-        Change character
-      </Button>
+      <div className="mt-4 flex gap-2">
+        <Button variant="secondary" onClick={() => openDrawer("editCharacter")}>
+          <GiQuillInk />
+          Change character
+        </Button>
+
+        <Button
+          variant="secondary"
+          onClick={() => openDrawer("statistics")}
+          title="Open statistics"
+        >
+          <FaChartBar className="mr-2" />
+          Statistics
+        </Button>
+      </div>
 
       <div className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
         <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
@@ -190,3 +197,5 @@ export default function CharacterInfo() {
     </>
   )
 }
+
+export default StatusDrawer

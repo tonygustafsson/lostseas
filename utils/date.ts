@@ -22,3 +22,14 @@ export const convertDaysToTimeSpan = (numberOfDays: number) => {
 
   return `${days} days`
 }
+
+export const toDateTime = (date: Date) => {
+  const locale = typeof navigator !== "undefined" ? navigator.language : "en-US"
+
+  const dateTime = new Date(date).toLocaleString(locale, {
+    dateStyle: "short",
+    timeStyle: "short",
+  })
+
+  return dateTime
+}

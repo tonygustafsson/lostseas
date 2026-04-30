@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
-import useModal from "@/app/stores/modals"
+import useDrawer from "@/app/stores/drawer"
 import Select from "@/components/Select"
 import TextField from "@/components/TextField"
 import { useCharacter } from "@/hooks/queries/useCharacter"
@@ -18,7 +18,7 @@ type ValidationSchema = z.infer<typeof changeCharacterValidationSchema>
 const ChangeCharacterForm = () => {
   const { data: player } = useGetPlayer()
   const { update, updateIsLoading } = useCharacter()
-  const { removeModal } = useModal()
+  const { open: openDrawer } = useDrawer()
 
   const {
     control,
@@ -32,7 +32,7 @@ const ChangeCharacterForm = () => {
 
   const onSubmit: SubmitHandler<ValidationSchema> = async (data) => {
     update(data)
-    removeModal("editCharacter")
+    openDrawer("status")
   }
 
   return (
