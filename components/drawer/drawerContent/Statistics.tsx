@@ -10,6 +10,13 @@ import { StatisticsEntry } from "@/firebase/db"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useGetStatistics } from "@/hooks/queries/useStatistics"
 
+const availableMetrics: Array<keyof StatisticsEntry> = [
+  "gold",
+  "score",
+  "crewMembers",
+  "ships",
+]
+
 const StatisticsDrawer = () => {
   const { data: player } = useGetPlayer()
   const { data: stats } = useGetStatistics(player?.id)
@@ -63,11 +70,3 @@ const StatisticsDrawer = () => {
 }
 
 export default StatisticsDrawer
-
-// Helper components/hooks
-const availableMetrics: Array<keyof StatisticsEntry> = [
-  "gold",
-  "score",
-  "crewMembers",
-  "ships",
-]
