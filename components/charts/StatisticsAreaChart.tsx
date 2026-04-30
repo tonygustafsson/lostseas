@@ -1,6 +1,5 @@
 "use client"
 
-import React from "react"
 import {
   Area,
   AreaChart,
@@ -49,9 +48,9 @@ const StatisticsAreaChart = ({ metric, data }: Props) => {
           />
           <YAxis tick={{ fontSize: 12 }} />
 
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip content={(props) => <CustomTooltip {...props} />} />
 
-          <Legend verticalAlign="top" height={36} style={{ marginRight: 0 }} />
+          <Legend verticalAlign="top" height={36} className="mr-0" />
 
           <Area
             name={snakeCaseToTitleCase(metric)}

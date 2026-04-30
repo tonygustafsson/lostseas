@@ -111,9 +111,8 @@ export async function POST() {
             crewMembers: updatedPlayer.crewMembers.count || 0,
             ships: Object.keys(updatedPlayer.ships || {}).length,
           })
-        } catch (statError) {
-          // Swallow statistics errors so they don't block the main flow
-          console.error("Failed to save player statistics", statError)
+        } catch (error) {
+          console.error("Failed to save player statistics", error)
         }
       }
     } catch (error) {

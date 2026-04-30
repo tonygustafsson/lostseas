@@ -12,9 +12,9 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const logs = await getStatistics(playerId)
+  const stats = await getStatistics(playerId)
 
-  const res = NextResponse.json(logs ?? [])
+  const res = NextResponse.json(stats ?? [])
   res.headers.set("Cache-Control", "no-cache")
 
   return res
