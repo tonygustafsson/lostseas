@@ -17,12 +17,7 @@ type Town =
   | "Villa Hermosa"
 
 type TownLocation =
-  | "Bank"
-  | "Tavern"
-  | "Market"
-  | "Shop"
-  | "Shipyard"
-  | "City hall"
+  "Bank" | "Tavern" | "Market" | "Shop" | "Shipyard" | "City hall"
 
 type Nation = "England" | "France" | "Spain" | "Holland"
 
