@@ -48,7 +48,7 @@ const StatisticsAreaChart = ({ metric, data }: Props) => {
 
         <Tooltip content={(props) => <CustomTooltip {...props} />} />
 
-        <Legend verticalAlign="top" height={36} className="mr-0" />
+        <Legend position="top" height={36} wrapperStyle={{ marginRight: 0 }} />
 
         <Area
           name={snakeCaseToTitleCase(metric)}

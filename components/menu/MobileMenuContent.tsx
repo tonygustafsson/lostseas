@@ -19,6 +19,14 @@ const MobileMenuContent = ({ onClose }: Props) => {
   const { open: openDrawer } = useDrawer()
   const { logout } = usePlayer()
 
+  const handleLogout = async () => {
+    const response = await logout()
+
+    if (response?.status === 200) {
+      window.location.reload()
+    }
+  }
+
   const handleOpen = (key: DrawerId) => {
     openDrawer(key)
     onClose()
@@ -75,7 +83,7 @@ const MobileMenuContent = ({ onClose }: Props) => {
         variant="secondary"
         size="lg"
         className="justify-start gap-4 bg-neutral-900 text-lg font-normal!"
-        onClick={() => logout()}
+        onClick={handleLogout}
       >
         <FiLogOut className="text-accent size-5" />
         Logout

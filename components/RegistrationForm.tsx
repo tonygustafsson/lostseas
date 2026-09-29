@@ -34,7 +34,11 @@ const RegistrationForm = () => {
   })
 
   const onSubmit: SubmitHandler<ValidationSchema> = async (data) => {
-    playerRegister(data)
+    const response = await playerRegister(data)
+
+    if (response?.status === 200) {
+      window.location.reload()
+    }
   }
 
   return (

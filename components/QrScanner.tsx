@@ -107,6 +107,12 @@ const QrScanner = () => {
 
       if (qrCode) {
         login(qrCode.data)
+          .then((response) => {
+            if (response?.status === 200) {
+              window.location.reload()
+            }
+          })
+          .catch((error) => console.error(error))
         setPlayerId(qrCode.data)
         stopCapture()
         return

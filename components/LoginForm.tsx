@@ -37,7 +37,9 @@ const LoginForm = () => {
   const onSubmit: SubmitHandler<ValidationSchema> = async (data) => {
     const response = await login(data.playerId?.toString() || "")
 
-    if (response?.status !== 200) {
+    if (response?.status === 200) {
+      window.location.reload()
+    } else {
       setApiError("Could not sign in. Incorrect user ID?")
     }
   }

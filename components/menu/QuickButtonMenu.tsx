@@ -15,6 +15,14 @@ const QuickButtonMenu = () => {
   const { logout } = usePlayer()
   const { open: openDrawer } = useDrawer()
 
+  const handleLogout = async () => {
+    const response = await logout()
+
+    if (response?.status === 200) {
+      window.location.reload()
+    }
+  }
+
   return (
     <ul className="flex justify-center gap-2">
       <li>
@@ -71,7 +79,7 @@ const QuickButtonMenu = () => {
             <Button
               variant="secondary"
               size="sm"
-              onClick={() => logout()}
+              onClick={handleLogout}
               aria-label="Sign out"
             >
               <FiLogOut className="h-5 w-5" />
