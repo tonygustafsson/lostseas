@@ -97,9 +97,9 @@ const Sound = () => {
 
     if (
       (player?.character?.location === "Sea" &&
-        musicPlayer.current?.src.includes("town")) ||
+        musicPlayer.current?.src.includes("/music/town/")) ||
       (player?.character?.location !== "Sea" &&
-        musicPlayer.current?.src.includes("sea"))
+        musicPlayer.current?.src.includes("/music/sea/"))
     ) {
       playRandomSong()
     }
