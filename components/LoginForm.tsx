@@ -54,8 +54,8 @@ const LoginForm = () => {
       className="flex flex-col gap-2"
     >
       <TextField
+        id="playerId"
         label="User ID"
-        autoFocus
         {...register("playerId")}
         error={errors.playerId?.message}
       />

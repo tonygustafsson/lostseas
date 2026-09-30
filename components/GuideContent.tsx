@@ -7,6 +7,7 @@ import { TRADE_GOODS_TOWNS } from "@/constants/merchandise"
 import { SHIP_REPAIR_COST, SHIP_TYPES } from "@/constants/ship"
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import { TITLE_INFO } from "@/constants/title"
+import { cn } from "@/lib/utils"
 import { capitalize } from "@/utils/string"
 
 import {
@@ -36,18 +37,48 @@ const SECTIONS = [
 
 type Props = {
   defaultOpen?: boolean
+  appearance?: "game" | "public"
 }
 
-const GuideContent = ({ defaultOpen = false }: Props) => (
+const GuideSectionHeading = ({
+  appearance,
+  className,
+  children,
+}: {
+  appearance: Props["appearance"]
+  className?: string
+  children: React.ReactNode
+}) =>
+  appearance === "public" ? (
+    <h2
+      className={cn(className, "px-5 pt-6 text-2xl text-amber-200 sm:text-3xl")}
+    >
+      {children}
+    </h2>
+  ) : (
+    <AccordionTrigger className={className}>{children}</AccordionTrigger>
+  )
+
+const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
   <Accordion
     type="multiple"
-    defaultValue={defaultOpen ? SECTIONS : []}
-    className="my-6"
+    defaultValue={defaultOpen || appearance === "public" ? SECTIONS : []}
+    className={cn(
+      "my-6",
+      appearance === "public" &&
+        "bg-card/90 my-8 border-white/10 shadow-[0_24px_90px_rgba(0,0,0,0.42)] backdrop-blur-xl [&_[data-slot=accordion-content]]:text-base [&_[data-slot=accordion-content]]:leading-7 sm:[&_[data-slot=accordion-content]]:text-lg [&_[data-slot=accordion-content]_h3]:my-6 [&_[data-slot=accordion-content]_h3]:text-xl [&_[data-slot=accordion-content]_img]:rounded-xl [&_[data-slot=accordion-content]_img]:border [&_[data-slot=accordion-content]_img]:border-white/10 [&_[data-slot=accordion-item]]:border-white/10 [&_[data-slot=accordion-item][data-open]]:bg-transparent"
+    )}
   >
-    <AccordionItem value="supplies">
-      <AccordionTrigger className="font-serif text-xl [&>svg]:mt-2">
+    <AccordionItem
+      value="supplies"
+      className={appearance === "public" ? "py-4" : undefined}
+    >
+      <GuideSectionHeading
+        appearance={appearance}
+        className="font-serif text-xl [&>svg]:mt-2"
+      >
         Supplies
-      </AccordionTrigger>
+      </GuideSectionHeading>
       <AccordionContent>
         <h3 className="mb-2 font-serif text-lg">Buying and selling</h3>
 
@@ -64,7 +95,7 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
           width={800}
           height={460}
           alt="The shop"
-          className="mb-4 aspect-[1.74]"
+          className="mx-auto mb-4 aspect-[1.74]"
         />
 
         <p className="mb-4">
@@ -79,7 +110,7 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
           width={800}
           height={460}
           alt="The market"
-          className="mb-4 aspect-[1.74]"
+          className="mx-auto mb-4 aspect-[1.74]"
         />
 
         <h3 className="mb-2 font-serif text-lg">Food and water</h3>
@@ -135,8 +166,16 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
       </AccordionContent>
     </AccordionItem>
 
-    <AccordionItem value="ships">
-      <AccordionTrigger className="font-serif text-xl">Ships</AccordionTrigger>
+    <AccordionItem
+      value="ships"
+      className={appearance === "public" ? "py-8" : undefined}
+    >
+      <GuideSectionHeading
+        appearance={appearance}
+        className="font-serif text-xl"
+      >
+        Ships
+      </GuideSectionHeading>
       <AccordionContent>
         <p className="mb-4">
           If you lose in battle, one of your ships might be sunk. If you only
@@ -150,7 +189,7 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
           width={800}
           height={460}
           alt="The shipyard"
-          className="mb-4 aspect-[1.74]"
+          className="mx-auto mb-4 aspect-[1.74]"
         />
 
         <p className="mb-4">
@@ -228,10 +267,16 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
       </AccordionContent>
     </AccordionItem>
 
-    <AccordionItem value="crew-members">
-      <AccordionTrigger className="font-serif text-xl">
+    <AccordionItem
+      value="crew-members"
+      className={appearance === "public" ? "py-4" : undefined}
+    >
+      <GuideSectionHeading
+        appearance={appearance}
+        className="font-serif text-xl"
+      >
         Crew members
-      </AccordionTrigger>
+      </GuideSectionHeading>
       <AccordionContent>
         <h3 className="mb-2 font-serif text-lg">Purpose of crew members</h3>
 
@@ -264,7 +309,7 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
           width={800}
           height={460}
           alt="Crew stats"
-          className="mb-4 aspect-[1.74]"
+          className="mx-auto mb-4"
         />
 
         <h3 className="mb-2 font-serif text-lg">Getting more crew members</h3>
@@ -277,8 +322,16 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
       </AccordionContent>
     </AccordionItem>
 
-    <AccordionItem value="tavern">
-      <AccordionTrigger className="font-serif text-xl">Tavern</AccordionTrigger>
+    <AccordionItem
+      value="tavern"
+      className={appearance === "public" ? "py-4" : undefined}
+    >
+      <GuideSectionHeading
+        appearance={appearance}
+        className="font-serif text-xl"
+      >
+        Tavern
+      </GuideSectionHeading>
       <AccordionContent>
         <h3 className="mb-2 font-serif text-lg">
           Keeping your crew happy and healthy
@@ -334,10 +387,16 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
       </AccordionContent>
     </AccordionItem>
 
-    <AccordionItem value="social-status">
-      <AccordionTrigger className="font-serif text-xl">
+    <AccordionItem
+      value="social-status"
+      className={appearance === "public" ? "py-4" : undefined}
+    >
+      <GuideSectionHeading
+        appearance={appearance}
+        className="font-serif text-xl"
+      >
         Social status
-      </AccordionTrigger>
+      </GuideSectionHeading>
       <AccordionContent>
         <h3 className="mb-2 font-serif text-lg">Nations</h3>
         <p className="mb-4">
@@ -364,7 +423,7 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
           width={800}
           height={460}
           alt="The City Hall"
-          className="mb-4 aspect-[1.74]"
+          className="mx-auto mb-4 aspect-[1.74]"
         />
 
         <p className="mb-4">
@@ -474,10 +533,16 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
       </AccordionContent>
     </AccordionItem>
 
-    <AccordionItem value="economy">
-      <AccordionTrigger className="font-serif text-xl">
+    <AccordionItem
+      value="economy"
+      className={appearance === "public" ? "py-4" : undefined}
+    >
+      <GuideSectionHeading
+        appearance={appearance}
+        className="font-serif text-xl"
+      >
         Economy
-      </AccordionTrigger>
+      </GuideSectionHeading>
       <AccordionContent>
         <h3 className="mb-2 font-serif text-lg">Getting some gold</h3>
 
@@ -526,10 +591,16 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
       </AccordionContent>
     </AccordionItem>
 
-    <AccordionItem value="traveling">
-      <AccordionTrigger className="font-serif text-xl">
+    <AccordionItem
+      value="traveling"
+      className={appearance === "public" ? "py-4" : undefined}
+    >
+      <GuideSectionHeading
+        appearance={appearance}
+        className="font-serif text-xl"
+      >
         Traveling
-      </AccordionTrigger>
+      </GuideSectionHeading>
       <AccordionContent>
         <h3 className="mb-2 font-serif text-lg">Towns and nations</h3>
 
@@ -538,7 +609,7 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
           width={800}
           height={460}
           alt="The Spanish Main"
-          className="mb-4 aspect-[1.74]"
+          className="mx-auto mb-4 aspect-[1.74]"
         />
 
         <p className="mb-4">
@@ -583,7 +654,7 @@ const GuideContent = ({ defaultOpen = false }: Props) => (
           width={800}
           height={460}
           alt="Meeting a ship"
-          className="mb-4 aspect-[1.74]"
+          className="mx-auto mb-4 aspect-[1.74]"
         />
 
         <p className="mb-4">

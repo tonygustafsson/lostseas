@@ -42,10 +42,11 @@ const RegistrationForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
       <div className="grid gap-4 lg:grid-cols-2">
         <TextField
           label="Name"
+          id="name"
           {...register("name", { value: randomCharacter.name })}
           error={errors.name?.message}
         />
@@ -57,6 +58,7 @@ const RegistrationForm = () => {
           render={({ field }) => (
             <Select
               label="Nationality"
+              id="nationality"
               name={field.name}
               value={field.value}
               onChange={field.onChange}
@@ -74,6 +76,7 @@ const RegistrationForm = () => {
               label="Gender"
               name={field.name}
               value={field.value}
+              id="gender"
               onChange={field.onChange}
               options={["Male", "Female"]}
             />
@@ -83,6 +86,7 @@ const RegistrationForm = () => {
         <TextField
           type="number"
           label="Age"
+          id="age"
           {...register("age", {
             value: randomCharacter.age,
             valueAsNumber: true,
@@ -91,10 +95,10 @@ const RegistrationForm = () => {
         />
       </div>
 
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
         <Button
           variant="secondary"
-          className="self-start"
+          className="rounded-full"
           onClick={async () => {
             const result = await fetchRandomCharacter()
             const char = result.data
@@ -108,7 +112,7 @@ const RegistrationForm = () => {
           disabled={isRandomizing}
         >
           <GiPerspectiveDiceTwo
-            className={`${isRandomizing ? "animate-spin" : ""}`}
+            className={isRandomizing ? "animate-spin" : undefined}
           />
           {isRandomizing ? "Randomizing..." : "Randomize"}
         </Button>
@@ -149,10 +153,11 @@ const RegistrationForm = () => {
       <Button
         size="lg"
         type="submit"
+        variant="highlight"
         className="w-full"
         disabled={(!isValid && isDirty) || registrationIsLoading}
       >
-        Register
+        Register and start playing
       </Button>
     </form>
   )

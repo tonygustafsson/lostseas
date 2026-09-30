@@ -25,6 +25,7 @@ const TextField = forwardRef<HTMLInputElement, Props>(
       )}
 
       <Input
+        id={id}
         type={type}
         className={`input input-bordered bg-neutral-950 ${size === "xs" && "input-xs"} ${
           size === "sm" && "input-sm"

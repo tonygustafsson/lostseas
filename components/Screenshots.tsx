@@ -5,6 +5,22 @@ import Image from "next/image"
 import useModal from "@/app/stores/modals"
 import { capitalize } from "@/utils/string"
 
+const SCREENSHOTS = [
+  { id: "harbor", alt: "Screenshot of the harbor" },
+  { id: "map", alt: "Screenshot of the map" },
+  { id: "status", alt: "Screenshot of the status" },
+  { id: "crew", alt: "Screenshot of the crew members" },
+  { id: "battle", alt: "Screenshot of a ship encounter" },
+  { id: "battle-won", alt: "Screenshot of a battle won" },
+  { id: "inventory", alt: "Screenshot of the inventory" },
+  { id: "shop", alt: "Screenshot of the shop" },
+] as const
+
+const BUTTON_CLASS_NAME =
+  "group overflow-hidden rounded-xl border border-white/10 bg-black/30 transition hover:-translate-y-0.5 hover:border-amber-200/50 hover:shadow-lg hover:shadow-black/30 focus-visible:ring-2 focus-visible:ring-amber-200"
+const IMAGE_CLASS_NAME =
+  "aspect-[200/137] w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+
 const Screenshots = () => {
   const { setModal } = useModal()
 
@@ -28,86 +44,24 @@ const Screenshots = () => {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-      <button onClick={() => imageZoom("harbor")}>
-        <Image
-          width={200}
-          height={137}
-          src="/img/screenshots/harbor.png"
-          alt="Screenshot of the harbor"
-          className="h-full cursor-pointer"
-        />
-      </button>
-
-      <button onClick={() => imageZoom("map")}>
-        <Image
-          width={200}
-          height={137}
-          src="/img/screenshots/map.png"
-          alt="Screenshot of the map"
-          className="h-full cursor-pointer"
-        />
-      </button>
-
-      <button onClick={() => imageZoom("status")}>
-        <Image
-          width={200}
-          height={137}
-          src="/img/screenshots/status.png"
-          alt="Screenshot of the status"
-          className="h-full cursor-pointer"
-        />
-      </button>
-
-      <button onClick={() => imageZoom("crew")}>
-        <Image
-          width={200}
-          height={137}
-          src="/img/screenshots/crew.png"
-          alt="Screenshot of the crew members"
-          className="h-full cursor-pointer"
-        />
-      </button>
-
-      <button onClick={() => imageZoom("battle")}>
-        <Image
-          width={200}
-          height={137}
-          src="/img/screenshots/battle.png"
-          alt="Screenshot of the a ship meeting"
-          className="h-full cursor-pointer"
-        />
-      </button>
-
-      <button onClick={() => imageZoom("battle-won")}>
-        <Image
-          width={200}
-          height={137}
-          src="/img/screenshots/battle-won.png"
-          alt="Screenshot of a battle won"
-          className="h-full cursor-pointer"
-        />
-      </button>
-
-      <button onClick={() => imageZoom("inventory")}>
-        <Image
-          width={200}
-          height={137}
-          src="/img/screenshots/inventory.png"
-          alt="Screenshot of the inventory"
-          className="h-full cursor-pointer"
-        />
-      </button>
-
-      <button onClick={() => imageZoom("shop")}>
-        <Image
-          width={200}
-          height={137}
-          src="/img/screenshots/shop.png"
-          alt="Screenshot of the shop"
-          className="h-full cursor-pointer"
-        />
-      </button>
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      {SCREENSHOTS.map(({ id, alt }) => (
+        <button
+          key={id}
+          type="button"
+          aria-label={`View ${id.replaceAll("-", " ")} screenshot`}
+          className={BUTTON_CLASS_NAME}
+          onClick={() => imageZoom(id)}
+        >
+          <Image
+            width={200}
+            height={137}
+            src={`/img/screenshots/${id}.png`}
+            alt={alt}
+            className={IMAGE_CLASS_NAME}
+          />
+        </button>
+      ))}
     </div>
   )
 }

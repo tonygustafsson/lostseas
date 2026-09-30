@@ -1,5 +1,7 @@
 "use client"
 
+import { useId } from "react"
+
 import {
   Select as ShadSelect,
   SelectContent,
@@ -12,7 +14,7 @@ import { Label } from "./ui/label"
 
 type Props = {
   id?: string
-  label?: string
+  label: string
   name: string
   value?: string
   options: string[]
@@ -20,18 +22,24 @@ type Props = {
 }
 
 function Select({ id, label, name, value, options, onChange }: Props) {
+  const generatedId = useId()
+  const selectId = id ?? generatedId
+
   return (
     <div className="form-control w-full">
-      {label && <Label className="mb-2 font-semibold">{label}</Label>}
+      <Label htmlFor={selectId} className="mb-2 font-semibold">
+        {label}
+      </Label>
 
       <ShadSelect name={name} value={value} onValueChange={onChange}>
-        {label && (
-          <SelectTrigger className="w-full bg-neutral-950 hover:bg-neutral-900!">
-            <SelectValue />
-          </SelectTrigger>
-        )}
+        <SelectTrigger
+          id={selectId}
+          className="w-full bg-neutral-950 hover:bg-neutral-900!"
+        >
+          <SelectValue />
+        </SelectTrigger>
 
-        <SelectContent id={id}>
+        <SelectContent>
           {options.map((option) => (
             <SelectItem key={`select-option-${option}`} value={option}>
               {option}
