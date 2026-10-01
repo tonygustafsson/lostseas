@@ -1,10 +1,11 @@
 export const START_DATE = new Date(1640, 0, 1)
 
 export const getCurrentDate = (day: Character["day"]) => {
-  const startTime = START_DATE.getTime()
-  const currentTime = startTime + day * 24 * 60 * 60 * 1000
+  const elapsedDays = Math.max(0, day - 1)
+  const currentDate = new Date(START_DATE)
+  currentDate.setDate(currentDate.getDate() + elapsedDays)
 
-  return new Date(currentTime).toDateString()
+  return currentDate.toDateString()
 }
 
 export const convertDaysToTimeSpan = (numberOfDays: number) => {

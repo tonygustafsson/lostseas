@@ -1,5 +1,7 @@
 import { forwardRef, InputHTMLAttributes } from "react"
 
+import { cn } from "@/lib/utils"
+
 import { Input } from "./ui/input"
 import { Label } from "./ui/label"
 
@@ -15,9 +17,7 @@ const TextField = forwardRef<HTMLInputElement, Props>(
     { label, size, type, id, fullWidth = true, className, error, ...restProps },
     ref
   ) => (
-    <div
-      className={`flex flex-col gap-2 ${type !== "hidden" ? "form-control w-full" : ""}`}
-    >
+    <div className={cn("flex flex-col gap-2", fullWidth && "w-full")}>
       {label && (
         <Label htmlFor={id} className="font-semibold">
           {label}
@@ -27,11 +27,17 @@ const TextField = forwardRef<HTMLInputElement, Props>(
       <Input
         id={id}
         type={type}
-        className={`input input-bordered bg-neutral-950 ${size === "xs" && "input-xs"} ${
-          size === "sm" && "input-sm"
-        } ${size === "md" && "input-md"} ${size === "lg" && "input-lg"} ${
-          fullWidth && "w-full"
-        } ${className}`}
+        className={cn(
+          "bg-neutral-950",
+          {
+            "h-7 px-2 text-xs": size === "xs",
+            "h-8 px-3 text-sm": size === "sm",
+            "h-9 text-sm": size === "md",
+            "h-10 px-4 text-base": size === "lg",
+            "w-auto": !fullWidth,
+          },
+          className
+        )}
         ref={ref}
         {...restProps}
       />

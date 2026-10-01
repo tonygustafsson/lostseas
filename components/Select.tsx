@@ -26,7 +26,7 @@ function Select({ id, label, name, value, options, onChange }: Props) {
   const selectId = id ?? generatedId
 
   return (
-    <div className="form-control w-full">
+    <div className="w-full">
       <Label htmlFor={selectId} className="mb-2 font-semibold">
         {label}
       </Label>
