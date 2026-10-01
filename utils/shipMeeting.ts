@@ -37,10 +37,10 @@ export const calculateAttackSuccess = (
 
   let chanceVariation = 0.1
 
-  if (mannedCannons < 12) {
-    chanceVariation = 0.2
-  } else if (mannedCannons < 6) {
+  if (mannedCannons < 6) {
     chanceVariation = 0.4
+  } else if (mannedCannons < 12) {
+    chanceVariation = 0.2
   }
 
   const playerScore =

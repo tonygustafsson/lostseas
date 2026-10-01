@@ -34,7 +34,7 @@ export default function DefaultLayout({
           </Link>
 
           <main
-            className={`${almendra.variable} ${crimsonText.variable} flex min-h-screen w-full flex-col bg-mist-950 px-2 py-4 pb-32 lg:py-8 xl:px-12`}
+            className={`${almendra.variable} ${crimsonText.variable} bg-background flex min-h-screen w-full flex-col px-2 py-4 pb-32 lg:py-8 xl:px-12`}
           >
             {children}
           </main>

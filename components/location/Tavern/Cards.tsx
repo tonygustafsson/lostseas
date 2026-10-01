@@ -151,10 +151,14 @@ const TavernCards = () => {
   const handlePlayCards = async () => {
     if (typeof selectedCard === "undefined") return
 
-    const cardsResult = await playCards({ betPercentage, selectedCard })
-    const correctCard = cardsResult?.data?.correctCard
+    try {
+      const cardsResult = await playCards({ betPercentage, selectedCard })
+      const correctCard = cardsResult?.data?.correctCard
 
-    setCorrectCard(correctCard)
+      setCorrectCard(correctCard)
+    } catch {
+      // useTavern displays the request error in its toast handler.
+    }
   }
 
   const getCardClassNames = (index: number) => {
