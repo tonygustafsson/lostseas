@@ -23,7 +23,17 @@ export async function POST(req: Request) {
 
   const player = await getPlayer(playerId)
 
-  if (!player?.locationStates?.market) {
+  if (!player) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
+  if (player.character.location !== "Market")
+    return NextResponse.json(
+      { error: "You must be at Market to do this." },
+      { status: 400 }
+    )
+
+  if (!player.locationStates?.market) {
     return NextResponse.json(
       { error: "Not a valid item", item },
       { status: 400 }

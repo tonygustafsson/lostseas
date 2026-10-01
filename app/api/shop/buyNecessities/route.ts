@@ -3,6 +3,7 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { isPositiveSafeInteger } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
 import { getNecessitiesInfo } from "@/utils/shop"
 
@@ -10,10 +11,10 @@ export async function POST(req: Request) {
   const body = await req.json()
   const { days }: { days: number } = body
 
-  if (!days) {
+  if (!isPositiveSafeInteger(days)) {
     return NextResponse.json(
-      { error: "Not a valid number of days" },
-      { status: 500 }
+      { error: "Days must be a positive whole number" },
+      { status: 400 }
     )
   }
 
@@ -28,6 +29,12 @@ export async function POST(req: Request) {
 
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+
+  if (player.character.location !== "Shop")
+    return NextResponse.json(
+      { error: "You must be at Shop to do this." },
+      { status: 400 }
+    )
 
   const { cost, foodNeeded, waterNeeded } = getNecessitiesInfo({
     crewMembers: player?.crewMembers.count || 0,

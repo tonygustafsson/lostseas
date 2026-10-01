@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { isPositiveSafeInteger } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
 
 export async function POST(req: Request) {
@@ -23,6 +24,13 @@ export async function POST(req: Request) {
     quantity: number
   } = body
 
+  if (!isPositiveSafeInteger(quantity)) {
+    return NextResponse.json(
+      { error: "Quantity must be a positive whole number" },
+      { status: 400 }
+    )
+  }
+
   if (
     !item ||
     Object.entries(MERCHANDISE).find(([itemKey]) => itemKey === item)?.[1]
@@ -37,10 +45,20 @@ export async function POST(req: Request) {
   const totalPrice =
     MERCHANDISE[item as keyof typeof MERCHANDISE].sell * quantity
 
+  if (!Number.isSafeInteger(totalPrice)) {
+    return NextResponse.json({ error: "Invalid quantity" }, { status: 400 })
+  }
+
   const player = await getPlayer(playerId)
 
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+
+  if (player.character.location !== "Shipyard")
+    return NextResponse.json(
+      { error: "You must be at Shipyard to do this." },
+      { status: 400 }
+    )
 
   const itemQuantity = player.inventory?.[item as keyof Inventory] || 0
 

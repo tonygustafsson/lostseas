@@ -19,6 +19,12 @@ export async function POST() {
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
+  if (player.character.location !== "Tavern")
+    return NextResponse.json(
+      { error: "You must be at Tavern to do this." },
+      { status: 400 }
+    )
+
   const numberOfSailors = player?.locationStates?.tavern?.noOfSailors || 0
 
   if (!numberOfSailors) {

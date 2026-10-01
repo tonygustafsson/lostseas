@@ -33,6 +33,13 @@ export async function POST(req: Request) {
 
   const currentLocation = player.character.location
 
+  if (currentLocation === "Sea" || player.character.journey) {
+    return NextResponse.json(
+      { error: "You cannot change locations while on a journey." },
+      { status: 400 }
+    )
+  }
+
   if (currentLocation === destination) {
     return NextResponse.json(
       { error: "You are already at this location" },

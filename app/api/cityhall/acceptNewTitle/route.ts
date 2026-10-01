@@ -19,6 +19,12 @@ export async function POST() {
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
+  if (player.character.location !== "City hall")
+    return NextResponse.json(
+      { error: "You must be at City hall to do this." },
+      { status: 400 }
+    )
+
   const { isHomeNation, titleInfo, promotionAvailable } = getNewTitle(
     player.character
   )

@@ -33,6 +33,12 @@ export async function POST(req: Request) {
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
+  if (player.character.location !== "Shipyard")
+    return NextResponse.json(
+      { error: "You must be at Shipyard to do this." },
+      { status: 400 }
+    )
+
   if (player.character.gold < totalPrice) {
     return NextResponse.json(
       { error: "Not enough gold", item },

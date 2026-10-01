@@ -18,6 +18,14 @@ export async function POST(req: Request) {
 
   const body = await req.json()
   const town: Town = body.town
+
+  if (
+    typeof town !== "string" ||
+    !Object.prototype.hasOwnProperty.call(TOWNS, town)
+  ) {
+    return NextResponse.json({ error: "Invalid destination" }, { status: 400 })
+  }
+
   const player = await getPlayer(playerId)
 
   if (!player)
@@ -26,14 +34,21 @@ export async function POST(req: Request) {
   if (player.character.journey) {
     return NextResponse.json(
       { error: "Character is already on a journey" },
-      { status: 500 }
+      { status: 400 }
     )
   }
 
   if (player.character.location === "Sea") {
     return NextResponse.json(
       { error: "You can only start a journey from land." },
-      { status: 500 }
+      { status: 400 }
+    )
+  }
+
+  if (town === player.character.town) {
+    return NextResponse.json(
+      { error: "You are already at this destination." },
+      { status: 400 }
     )
   }
 

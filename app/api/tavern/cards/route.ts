@@ -2,6 +2,7 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
+import { CARDS_PERCENTAGE_VALUES } from "@/constants/tavern"
 import { getPlayer, savePlayer } from "@/firebase/db"
 import { patchDeep } from "@/utils/patchDeep"
 import { getRandomInt } from "@/utils/random"
@@ -23,12 +24,34 @@ export async function POST(req: Request) {
     selectedCard,
   }: { betPercentage: number; selectedCard: number } = body
 
+  if (
+    !CARDS_PERCENTAGE_VALUES.includes(betPercentage) ||
+    !Number.isInteger(selectedCard) ||
+    selectedCard < 0 ||
+    selectedCard >= 5
+  ) {
+    return NextResponse.json({ error: "Invalid card bet" }, { status: 400 })
+  }
+
   const player = await getPlayer(playerId)
 
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
+  if (player.character.location !== "Tavern")
+    return NextResponse.json(
+      { error: "You must be at Tavern to do this." },
+      { status: 400 }
+    )
+
   const bet = getCardsBet(betPercentage, player.character.gold || 0)
+
+  if (!Number.isSafeInteger(bet) || bet < 1) {
+    return NextResponse.json(
+      { error: "Bet must be at least 1 gold" },
+      { status: 400 }
+    )
+  }
 
   if (player.character.gold < bet) {
     return NextResponse.json({ error: "Not enough gold" }, { status: 400 })

@@ -29,6 +29,12 @@ export async function POST(req: Request) {
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
+  if (player.character.location !== "Bank")
+    return NextResponse.json(
+      { error: "You must be at Bank to do this." },
+      { status: 400 }
+    )
+
   if ((player.character.loan || 0) + amount > LOAN_LIMIT) {
     return NextResponse.json(
       { error: `You cannot loan more than a total of ${LOAN_LIMIT} gold.` },

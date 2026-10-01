@@ -22,6 +22,12 @@ export async function POST(req: Request) {
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
+  if (player.character.location !== "Shipyard")
+    return NextResponse.json(
+      { error: "You must be at Shipyard to do this." },
+      { status: 400 }
+    )
+
   const ship = (player.ships || {})[id]
 
   if (!ship) {

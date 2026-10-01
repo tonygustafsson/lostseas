@@ -26,6 +26,12 @@ export async function POST(req: Request) {
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
+  if (player.character.location !== "Tavern")
+    return NextResponse.json(
+      { error: "You must be at Tavern to do this." },
+      { status: 400 }
+    )
+
   const tavernItem = item as keyof typeof TAVERN_ITEMS
   const totalPrice = TAVERN_ITEMS[tavernItem].price * player.crewMembers.count
 

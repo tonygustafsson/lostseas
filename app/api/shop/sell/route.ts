@@ -1,10 +1,13 @@
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
-import { MERCHANDISE } from "@/constants/merchandise"
-import { isTradeGoodAvailableInTown } from "@/constants/merchandise"
+import {
+  isTradeGoodAvailableInTown,
+  MERCHANDISE,
+} from "@/constants/merchandise"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { isPositiveSafeInteger } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
 
 export async function POST(req: Request) {
@@ -17,6 +20,13 @@ export async function POST(req: Request) {
 
   const body = await req.json()
   const { item, quantity }: { item: keyof Inventory; quantity: number } = body
+
+  if (!isPositiveSafeInteger(quantity)) {
+    return NextResponse.json(
+      { error: "Quantity must be a positive whole number" },
+      { status: 400 }
+    )
+  }
 
   if (
     !item ||
@@ -34,6 +44,12 @@ export async function POST(req: Request) {
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
+  if (player.character.location !== "Shop")
+    return NextResponse.json(
+      { error: "You must be at Shop to do this." },
+      { status: 400 }
+    )
+
   if (!isTradeGoodAvailableInTown(item, player.character.town)) {
     return NextResponse.json(
       { error: "This item is not available in this port", item },
@@ -43,6 +59,10 @@ export async function POST(req: Request) {
 
   const totalPrice =
     MERCHANDISE[item as keyof typeof MERCHANDISE].sell * quantity
+
+  if (!Number.isSafeInteger(totalPrice)) {
+    return NextResponse.json({ error: "Invalid quantity" }, { status: 400 })
+  }
 
   const itemQuantity = player.inventory?.[item as keyof Inventory] || 0
 
