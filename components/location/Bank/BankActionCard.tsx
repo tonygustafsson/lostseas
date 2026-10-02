@@ -23,7 +23,7 @@ const BankActionCard = ({
   onSubmit,
   children,
 }: BankActionCardProps) => (
-  <Card className="border-accent/20 bg-card/95 relative w-full gap-0 py-0 shadow-lg shadow-black/20 ring-white/10">
+  <Card className="border-accent/20 bg-card/95 @container relative w-full gap-0 py-0 shadow-lg shadow-black/20 ring-white/10">
     <form onSubmit={onSubmit} className="relative flex h-full w-full flex-col">
       <div className="pointer-events-none absolute inset-x-0 top-0 z-0 h-40 overflow-hidden select-none">
         <Image
@@ -39,10 +39,10 @@ const BankActionCard = ({
 
       <CardHeader className="relative z-10 -mt-12 flex-1 gap-2 rounded-t-2xl px-4 pt-4 pb-3">
         <div className="flex items-center gap-3">
-          <span className="border-accent/60 bg-background/90 text-accent flex size-11 shrink-0 items-center justify-center rounded-full border shadow-md">
-            <Icon aria-hidden="true" className="size-6" />
+          <span className="border-accent/60 bg-background/90 text-accent flex size-11 shrink-0 items-center justify-center rounded-full border shadow-md @max-[250px]:size-9">
+            <Icon aria-hidden="true" className="size-6 @max-[250px]:size-5" />
           </span>
-          <CardTitle className="font-serif text-xl font-semibold">
+          <CardTitle className="font-serif text-xl font-semibold @max-[250px]:text-base">
             {title}
           </CardTitle>
         </div>
