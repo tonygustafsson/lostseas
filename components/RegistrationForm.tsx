@@ -16,8 +16,6 @@ import { Switch } from "./ui/switch"
 
 type ValidationSchema = z.infer<typeof registrationValidationSchema>
 
-const randomCharacter = getRandomCharacter()
-
 const RegistrationForm = () => {
   const { register: playerRegister, registrationIsLoading } = usePlayer()
   const { fetchRandomCharacter, isRandomizing } = useRandomCharacter()
@@ -40,6 +38,8 @@ const RegistrationForm = () => {
       window.location.reload()
     }
   }
+
+  const randomCharacter = getRandomCharacter()
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
