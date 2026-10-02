@@ -1,12 +1,13 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { BadgeCheck, ScrollText } from "lucide-react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
+import BankActionCard from "@/components/location/Bank/BankActionCard"
 import TextField from "@/components/TextField"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { LOAN_LIMIT } from "@/constants/bank"
 import { useBank } from "@/hooks/queries/useBank"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -65,60 +66,51 @@ const BankLoan = () => {
 
   return (
     <>
-      <Card className="w-full">
-        <form onSubmit={loanHandleSubmit(handleLoan)} className="w-full">
-          <CardHeader>
-            <CardTitle className="font-serif text-2xl font-semibold">
-              Take a loan
-            </CardTitle>
-          </CardHeader>
+      <BankActionCard
+        image="/img/bank/loan.png"
+        icon={ScrollText}
+        title="Take a loan"
+        description={`Borrow up to ${LOAN_LIMIT} gold. Repay it before making deposits.`}
+        onSubmit={loanHandleSubmit(handleLoan)}
+      >
+        <TextField
+          label="Amount"
+          type="number"
+          {...loanRegister("amount", { valueAsNumber: true })}
+          error={loanErrors.amount?.message}
+          className="border-border bg-background/80"
+        />
+        <Button
+          type="submit"
+          className="mt-auto w-full font-serif text-base"
+          disabled={!loanIsValid}
+        >
+          Take loan
+        </Button>
+      </BankActionCard>
 
-          <CardContent className="px-6 pt-4 pb-6 text-sm">
-            <p className="min-h-12 text-sm">
-              You can loan up to {LOAN_LIMIT} gold. If you have a loan you
-              cannot add funds to your account though until it has been repaid.
-            </p>
-
-            <TextField
-              label="Amount"
-              type="number"
-              {...loanRegister("amount", { valueAsNumber: true })}
-              error={loanErrors.amount?.message}
-            />
-
-            <Button type="submit" className="mt-4" disabled={!loanIsValid}>
-              Take loan
-            </Button>
-          </CardContent>
-        </form>
-      </Card>
-
-      <Card className="w-full">
-        <form onSubmit={repayHandleSubmit(handleRepay)} className="w-full">
-          <CardHeader>
-            <CardTitle className="font-serif text-2xl font-semibold">
-              Repay loan
-            </CardTitle>
-          </CardHeader>
-
-          <CardContent className="px-6 pt-4 pb-6 text-sm">
-            <p className="min-h-12 text-sm">
-              Repay your loan to be able to take more loans down the road.
-            </p>
-
-            <TextField
-              label="Amount"
-              type="number"
-              {...repayRegister("amount", { valueAsNumber: true })}
-              error={repayErrors.amount?.message}
-            />
-
-            <Button type="submit" className="mt-4" disabled={!repayIsValid}>
-              Repay loan
-            </Button>
-          </CardContent>
-        </form>
-      </Card>
+      <BankActionCard
+        image="/img/bank/repay.png"
+        icon={BadgeCheck}
+        title="Repay loan"
+        description="Settle your debt to open the way to future borrowing."
+        onSubmit={repayHandleSubmit(handleRepay)}
+      >
+        <TextField
+          label="Amount"
+          type="number"
+          {...repayRegister("amount", { valueAsNumber: true })}
+          error={repayErrors.amount?.message}
+          className="border-border bg-background/80"
+        />
+        <Button
+          type="submit"
+          className="mt-auto w-full font-serif text-base"
+          disabled={!repayIsValid}
+        >
+          Repay loan
+        </Button>
+      </BankActionCard>
     </>
   )
 }
