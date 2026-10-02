@@ -67,8 +67,8 @@ const BankAccount = () => {
   }
 
   return (
-    <div className="flex w-full flex-col lg:flex-row lg:gap-6">
-      <Card className="mt-6 w-full">
+    <>
+      <Card className="w-full">
         <form onSubmit={accountHandleSubmit(handleDeposit)} className="w-full">
           <CardHeader>
             <CardTitle className="font-serif text-2xl font-semibold">
@@ -105,7 +105,7 @@ const BankAccount = () => {
         </form>
       </Card>
 
-      <Card className="mt-6 w-full">
+      <Card className="w-full">
         <form
           onSubmit={withdrawalHandleSubmit(handleWithdrawal)}
           className="w-full"
@@ -138,7 +138,7 @@ const BankAccount = () => {
           </CardContent>
         </form>
       </Card>
-    </div>
+    </>
   )
 }
 

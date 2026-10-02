@@ -64,65 +64,62 @@ const BankLoan = () => {
   }
 
   return (
-    <div className="mt-6 flex w-full flex-wrap justify-center gap-6">
-      <div className="flex w-full flex-col lg:flex-row lg:gap-6">
-        <Card className="w-full">
-          <form onSubmit={loanHandleSubmit(handleLoan)} className="w-full">
-            <CardHeader>
-              <CardTitle className="font-serif text-2xl font-semibold">
-                Take a loan
-              </CardTitle>
-            </CardHeader>
+    <>
+      <Card className="w-full">
+        <form onSubmit={loanHandleSubmit(handleLoan)} className="w-full">
+          <CardHeader>
+            <CardTitle className="font-serif text-2xl font-semibold">
+              Take a loan
+            </CardTitle>
+          </CardHeader>
 
-            <CardContent className="px-6 pt-4 pb-6 text-sm">
-              <p className="min-h-12 text-sm">
-                You can loan up to {LOAN_LIMIT} gold. If you have a loan you
-                cannot add funds to your account though until it has been
-                repaid.
-              </p>
+          <CardContent className="px-6 pt-4 pb-6 text-sm">
+            <p className="min-h-12 text-sm">
+              You can loan up to {LOAN_LIMIT} gold. If you have a loan you
+              cannot add funds to your account though until it has been repaid.
+            </p>
 
-              <TextField
-                label="Amount"
-                type="number"
-                {...loanRegister("amount", { valueAsNumber: true })}
-                error={loanErrors.amount?.message}
-              />
+            <TextField
+              label="Amount"
+              type="number"
+              {...loanRegister("amount", { valueAsNumber: true })}
+              error={loanErrors.amount?.message}
+            />
 
-              <Button type="submit" className="mt-4" disabled={!loanIsValid}>
-                Take loan
-              </Button>
-            </CardContent>
-          </form>
-        </Card>
+            <Button type="submit" className="mt-4" disabled={!loanIsValid}>
+              Take loan
+            </Button>
+          </CardContent>
+        </form>
+      </Card>
 
-        <Card className="w-full">
-          <form onSubmit={repayHandleSubmit(handleRepay)} className="w-full">
-            <CardHeader>
-              <CardTitle className="font-serif text-2xl font-semibold">
-                Repay loan
-              </CardTitle>
-            </CardHeader>
+      <Card className="w-full">
+        <form onSubmit={repayHandleSubmit(handleRepay)} className="w-full">
+          <CardHeader>
+            <CardTitle className="font-serif text-2xl font-semibold">
+              Repay loan
+            </CardTitle>
+          </CardHeader>
 
-            <CardContent className="px-6 pt-4 pb-6 text-sm">
-              <p className="min-h-12 text-sm">
-                Repay your loan to be able to take more loans down the road.
-              </p>
+          <CardContent className="px-6 pt-4 pb-6 text-sm">
+            <p className="min-h-12 text-sm">
+              Repay your loan to be able to take more loans down the road.
+            </p>
 
-              <TextField
-                label="Amount"
-                type="number"
-                {...repayRegister("amount", { valueAsNumber: true })}
-                error={repayErrors.amount?.message}
-              />
+            <TextField
+              label="Amount"
+              type="number"
+              {...repayRegister("amount", { valueAsNumber: true })}
+              error={repayErrors.amount?.message}
+            />
 
-              <Button type="submit" className="mt-4" disabled={!repayIsValid}>
-                Repay loan
-              </Button>
-            </CardContent>
-          </form>
-        </Card>
-      </div>
-    </div>
+            <Button type="submit" className="mt-4" disabled={!repayIsValid}>
+              Repay loan
+            </Button>
+          </CardContent>
+        </form>
+      </Card>
+    </>
   )
 }
 
