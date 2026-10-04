@@ -5,7 +5,7 @@ import { BadgeCheck, ScrollText } from "lucide-react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
-import BankActionCard from "@/components/location/Bank/BankActionCard"
+import MerchandiseCard from "@/components/MerchandiseCard"
 import TextField from "@/components/TextField"
 import { Button } from "@/components/ui/button"
 import { LOAN_LIMIT } from "@/constants/bank"
@@ -66,51 +66,67 @@ const BankLoan = () => {
 
   return (
     <>
-      <BankActionCard
-        image="/img/bank/loan.png"
-        icon={ScrollText}
+      <MerchandiseCard
+        image="/img/cards/bank/loan.png"
+        icon={<ScrollText />}
         title="Take a loan"
-        description={`Borrow up to ${LOAN_LIMIT} gold. Repay it before making deposits.`}
-        onSubmit={loanHandleSubmit(handleLoan)}
-      >
-        <TextField
-          label="Amount"
-          type="number"
-          {...loanRegister("amount", { valueAsNumber: true })}
-          error={loanErrors.amount?.message}
-          className="border-border bg-background/80"
-        />
-        <Button
-          type="submit"
-          className="mt-auto w-full font-serif text-base"
-          disabled={!loanIsValid}
-        >
-          Take loan
-        </Button>
-      </BankActionCard>
+        fullWidth
+        body={
+          <p>
+            Borrow up to {LOAN_LIMIT} gold. Repay it before making deposits.
+          </p>
+        }
+        actions={
+          <form
+            onSubmit={loanHandleSubmit(handleLoan)}
+            className="flex flex-col gap-4"
+          >
+            <TextField
+              label="Amount"
+              type="number"
+              {...loanRegister("amount", { valueAsNumber: true })}
+              error={loanErrors.amount?.message}
+              className="border-border bg-background/80"
+            />
+            <Button
+              type="submit"
+              className="mt-auto w-full font-serif text-base"
+              disabled={!loanIsValid}
+            >
+              Take loan
+            </Button>
+          </form>
+        }
+      />
 
-      <BankActionCard
-        image="/img/bank/repay.png"
-        icon={BadgeCheck}
+      <MerchandiseCard
+        image="/img/cards/bank/repay.png"
+        icon={<BadgeCheck />}
         title="Repay loan"
-        description="Settle your debt to open the way to future borrowing."
-        onSubmit={repayHandleSubmit(handleRepay)}
-      >
-        <TextField
-          label="Amount"
-          type="number"
-          {...repayRegister("amount", { valueAsNumber: true })}
-          error={repayErrors.amount?.message}
-          className="border-border bg-background/80"
-        />
-        <Button
-          type="submit"
-          className="mt-auto w-full font-serif text-base"
-          disabled={!repayIsValid}
-        >
-          Repay loan
-        </Button>
-      </BankActionCard>
+        fullWidth
+        body={<p>Settle your debt to open the way to future borrowing.</p>}
+        actions={
+          <form
+            onSubmit={repayHandleSubmit(handleRepay)}
+            className="flex flex-col gap-4"
+          >
+            <TextField
+              label="Amount"
+              type="number"
+              {...repayRegister("amount", { valueAsNumber: true })}
+              error={repayErrors.amount?.message}
+              className="border-border bg-background/80"
+            />
+            <Button
+              type="submit"
+              className="mt-auto w-full font-serif text-base"
+              disabled={!repayIsValid}
+            >
+              Repay loan
+            </Button>
+          </form>
+        }
+      />
     </>
   )
 }

@@ -26,6 +26,7 @@ const ShopItem = ({ player, item }: Props) => {
     <MerchandiseCard
       key={`market-${item}`}
       title={capitalize(item)}
+      image={`/img/cards/tavern/${item}.png`}
       icon={<MerchandiseIcon item={item} />}
       disabled={buyingDisabled}
       body={

@@ -3,7 +3,7 @@ import { ArrowDownToLine, ArrowUpFromLine } from "lucide-react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
-import BankActionCard from "@/components/location/Bank/BankActionCard"
+import MerchandiseCard from "@/components/MerchandiseCard"
 import TextField from "@/components/TextField"
 import { Button } from "@/components/ui/button"
 import { useBank } from "@/hooks/queries/useBank"
@@ -69,57 +69,73 @@ const BankAccount = () => {
 
   return (
     <>
-      <BankActionCard
-        image="/img/bank/deposit.png"
-        icon={ArrowDownToLine}
+      <MerchandiseCard
+        image="/img/cards/bank/deposit.png"
+        icon={<ArrowDownToLine />}
         title="Make deposit"
-        description="Keep your gold safe from the dangers at sea."
-        notice={
-          player?.character.loan
-            ? "Repay your loan before adding money to your account."
-            : undefined
+        fullWidth
+        body={
+          <>
+            <p>Keep your gold safe from the dangers at sea.</p>
+            {!!player?.character.loan && (
+              <p className="text-destructive pt-1 text-sm font-semibold">
+                Repay your loan before adding money to your account.
+              </p>
+            )}
+          </>
         }
-        onSubmit={accountHandleSubmit(handleDeposit)}
-      >
-        <TextField
-          label="Amount"
-          type="number"
-          {...accountRegister("amount", { valueAsNumber: true })}
-          error={accountErrors.amount?.message}
-          className="border-border bg-background/80"
-        />
-        <Button
-          type="submit"
-          className="mt-auto w-full font-serif text-base"
-          disabled={!accountIsValid}
-        >
-          Deposit
-        </Button>
-      </BankActionCard>
+        actions={
+          <form
+            onSubmit={accountHandleSubmit(handleDeposit)}
+            className="flex flex-col gap-4"
+          >
+            <TextField
+              label="Amount"
+              type="number"
+              {...accountRegister("amount", { valueAsNumber: true })}
+              error={accountErrors.amount?.message}
+              className="border-border bg-background/80"
+            />
+            <Button
+              type="submit"
+              className="mt-auto w-full font-serif text-base"
+              disabled={!accountIsValid}
+            >
+              Deposit
+            </Button>
+          </form>
+        }
+      />
 
-      <BankActionCard
-        image="/img/bank/withdrawal.png"
-        icon={ArrowUpFromLine}
+      <MerchandiseCard
+        image="/img/cards/bank/withdrawal.png"
+        icon={<ArrowUpFromLine />}
         title="Make withdrawal"
-        description="Bring your saved gold back aboard to spend it."
-        onSubmit={withdrawalHandleSubmit(handleWithdrawal)}
-      >
-        <TextField
-          id="withdrawal"
-          label="Amount"
-          type="number"
-          {...withdrawalRegister("amount", { valueAsNumber: true })}
-          error={withdrawalErrors.amount?.message}
-          className="border-border bg-background/80"
-        />
-        <Button
-          type="submit"
-          className="mt-auto w-full font-serif text-base"
-          disabled={!withdrawalIsValid}
-        >
-          Withdrawal
-        </Button>
-      </BankActionCard>
+        fullWidth
+        body={<p>Bring your saved gold back aboard to spend it.</p>}
+        actions={
+          <form
+            onSubmit={withdrawalHandleSubmit(handleWithdrawal)}
+            className="flex flex-col gap-4"
+          >
+            <TextField
+              id="withdrawal"
+              label="Amount"
+              type="number"
+              {...withdrawalRegister("amount", { valueAsNumber: true })}
+              error={withdrawalErrors.amount?.message}
+              className="border-border bg-background/80"
+            />
+            <Button
+              type="submit"
+              className="mt-auto w-full font-serif text-base"
+              disabled={!withdrawalIsValid}
+            >
+              Withdrawal
+            </Button>
+          </form>
+        }
+      />
     </>
   )
 }
