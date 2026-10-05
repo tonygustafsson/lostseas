@@ -22,7 +22,6 @@ const ActionCard = ({ title, message, actions, icon, image }: Props) => (
             alt=""
             fill
             sizes="(min-width: 1024px) 40vw, 100vw"
-            unoptimized
             className="object-cover"
           />
           <div className="to-card absolute inset-0 bg-linear-to-b from-transparent from-60% @3xl:bg-linear-to-r" />

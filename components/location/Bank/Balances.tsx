@@ -50,7 +50,7 @@ const Balances = ({ gold, account, loan }: BalancesProps) => {
                 className="text-accent size-8 shrink-0"
               />
 
-              <div>
+              <dl>
                 <dt className="text-muted-foreground font-serif text-sm">
                   {balance.label}
                 </dt>
@@ -58,7 +58,7 @@ const Balances = ({ gold, account, loan }: BalancesProps) => {
                 <dd className="text-foreground mt-0.5 text-lg leading-none font-semibold tracking-tight tabular-nums md:text-xl">
                   {balance.value.toLocaleString("en-US")} gold
                 </dd>
-              </div>
+              </dl>
             </div>
           )
         })}

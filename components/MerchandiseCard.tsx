@@ -42,7 +42,6 @@ const MerchandiseCard = ({
             alt={title}
             fill
             sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw"
-            unoptimized
             className={cn(
               "object-cover opacity-80 transition-opacity duration-150 motion-reduce:transition-none",
               !disabled && "group-hover/card:opacity-100"
