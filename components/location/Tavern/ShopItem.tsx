@@ -32,9 +32,21 @@ const ShopItem = ({ player, item }: Props) => {
         <>
           <p>{merchandise.description}</p>
 
-          <Badge variant="secondary" className="mt-4">
-            Price: {price} gold
-          </Badge>
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <Badge variant="secondary">Price: {price} gold</Badge>
+
+            {merchandise.healthIncrease > 0 && (
+              <Badge className="bg-success/10 text-success">
+                Health +{merchandise.healthIncrease}
+              </Badge>
+            )}
+
+            {merchandise.moodIncrease > 0 && (
+              <Badge className="bg-success/10 text-success">
+                Mood +{merchandise.moodIncrease}
+              </Badge>
+            )}
+          </div>
         </>
       }
       actions={

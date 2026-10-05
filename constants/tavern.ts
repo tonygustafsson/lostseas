@@ -5,7 +5,7 @@ export const TAVERN_ITEMS = {
     healthIncrease: 25,
     moodIncrease: 3,
     description:
-      "Serve a good supper to increase your crew's health by 25 and mood by 3.",
+      "Pile the table with steaming stew and crusty bread as hungry deckhands trade tales of storms and sea monsters.",
   },
   "smoke-tobacco": {
     label: "Smoke tobacco",
@@ -13,7 +13,7 @@ export const TAVERN_ITEMS = {
     healthIncrease: 0,
     moodIncrease: 5,
     description:
-      "Smoke tobacco with your crew to increase their mood by 5 without increasing their health.",
+      "Light your pipes and let fragrant smoke curl toward the rafters while old sea dogs spin their tallest tales.",
   },
   "pour-the-wine": {
     label: "Pour the wine",
@@ -21,7 +21,7 @@ export const TAVERN_ITEMS = {
     healthIncrease: 0,
     moodIncrease: 7,
     description:
-      "Pour the wine for your crew and their mood will increase by 7.",
+      "Fill the goblets with ruby wine and toast lost treasures, narrow escapes, and the captain's wildly exaggerated exploits.",
   },
   "pass-the-rum": {
     label: "Pass the rum",
@@ -29,7 +29,7 @@ export const TAVERN_ITEMS = {
     healthIncrease: 0,
     moodIncrease: 10,
     description:
-      "Pass the rum around your crew and their mood will increase by 10.",
+      "Pass around a bottle of fiery rum until the shanties grow louder and every sailor swears they could captain the ship.",
   },
 }
 
