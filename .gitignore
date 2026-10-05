@@ -8,6 +8,9 @@
 # testing
 /coverage
 /test-results
+/storybook-static
+/output/playwright
+/.playwright-cli
 
 # next.js
 /.next/

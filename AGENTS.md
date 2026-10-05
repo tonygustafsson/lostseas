@@ -19,6 +19,8 @@
   - `npm run lint`
   - `npm test`
   - `npm run build`
+  - `npm run storybook`
+  - `npm run storybook:build`
 - Do not install new NPM packages without approval.
 - The project uses React Compiler. Write idiomatic React that the compiler can optimize:
   - Avoid unnecessary `useEffect`.
@@ -26,6 +28,7 @@
   - Prefer event handlers for user-driven side effects.
   - Avoid manual memoization such as `useMemo` and `useCallback` unless there is a demonstrated need.
   - Keep components and hooks compliant with the Rules of React.
+  - When updating component, also look for Storybook stories and tests and update them as well.
 
 ## Components
 
