@@ -1,30 +1,35 @@
 export const TAVERN_ITEMS = {
-  dinner: {
+  "serve-supper": {
+    label: "Serve supper",
     price: 25,
     healthIncrease: 25,
     moodIncrease: 3,
-    description: "A good meal will keep your crew healthy and happy.",
+    description:
+      "Pile the table with steaming stew and crusty bread as hungry deckhands trade tales of storms and sea monsters.",
   },
-  tobacco: {
+  "smoke-tobacco": {
+    label: "Smoke tobacco",
     price: 30,
     healthIncrease: 0,
     moodIncrease: 5,
     description:
-      "Buy some tobacco for your crew, it will not increase their health but it will increase their mood by 5.",
+      "Light your pipes and let fragrant smoke curl toward the rafters while old sea dogs spin their tallest tales.",
   },
-  wine: {
+  "pour-the-wine": {
+    label: "Pour the wine",
     price: 50,
     healthIncrease: 0,
     moodIncrease: 7,
     description:
-      "Buy rounds of wine for your crew and their mood will increase by 7.",
+      "Fill the goblets with ruby wine and toast lost treasures, narrow escapes, and the captain's wildly exaggerated exploits.",
   },
-  rum: {
+  "pass-the-rum": {
+    label: "Pass the rum",
     price: 70,
     healthIncrease: 0,
     moodIncrease: 10,
     description:
-      "Few things will bring more joy to your crew than grog and rum. Buy some and their mood will increase by 10.",
+      "Pass around a bottle of fiery rum until the shanties grow louder and every sailor swears they could captain the ship.",
   },
 }
 

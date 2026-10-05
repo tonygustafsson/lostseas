@@ -59,6 +59,7 @@ const GiveMedicine = () => {
   return (
     <MerchandiseCard
       title="Give medicine"
+      image="/img/cards/shop/medicine.png"
       indicator={player?.inventory?.medicine?.toString() || "0"}
       icon={<MerchandiseIcon item="medicine" />}
       disabled={isDisabled}

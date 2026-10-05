@@ -73,6 +73,7 @@ const MerchandiseShopItem = ({ player, item, type, onBuy, onSell }: Props) => {
   return (
     <MerchandiseCard
       title={capitalize(item)}
+      image={`/img/cards/${merchandise.availableAt}/${item}.png`}
       indicator={player?.inventory?.[item]?.toString() || "0"}
       icon={<MerchandiseIcon item={item} />}
       disabled={type === "Buy" ? buyingDisabled : sellingDisabled}

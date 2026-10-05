@@ -63,6 +63,7 @@ const ShipyardBuy = () => {
                 <MerchandiseCard
                   key={`shipyard-quick-repair-${id}`}
                   title={`${name} (${type})`}
+                  image={`/img/cards/shipyard/${type.toLowerCase()}.png`}
                   icon={<MerchandiseIcon item={type} />}
                   body={
                     <Badge
@@ -94,6 +95,7 @@ const ShipyardBuy = () => {
           <MerchandiseCard
             key={`shipyard-buy-${shipType}`}
             title={shipType}
+            image={`/img/cards/shipyard/${shipType.toLowerCase()}.png`}
             disabled={shipBuyingDisabled(buy)}
             icon={<MerchandiseIcon item={shipType} />}
             body={

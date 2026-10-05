@@ -121,21 +121,35 @@ const Governor = () => {
     changeCitizenship()
   }
 
+  const cardImage =
+    promotionAvailable || citizenshipChangeAvailable
+      ? "/img/cards/cityhall/governor-excited.png"
+      : "/img/cards/cityhall/governor-neutral.png"
+
   return (
     <ActionCard
       title={`Welcome ${player?.character.title.toLowerCase()} ${
         player?.character.name
       }`}
       message={greeting}
-      icon={<GiQuillInk className="text-accent h-20 w-20" />}
+      image={cardImage}
+      icon={<GiQuillInk />}
       {...(promotionAvailable && {
         actions: (
-          <Button onClick={handleAcceptNewTitle}>Accept new title</Button>
+          <Button size="lg" variant="highlight" onClick={handleAcceptNewTitle}>
+            Accept new title
+          </Button>
         ),
       })}
       {...(citizenshipChangeAvailable && {
         actions: (
-          <Button onClick={handleChangeCitizenship}>Change citizenship</Button>
+          <Button
+            size="lg"
+            variant="highlight"
+            onClick={handleChangeCitizenship}
+          >
+            Change citizenship
+          </Button>
         ),
       })}
     />

@@ -4,11 +4,13 @@ import nextTs from "eslint-config-next/typescript"
 import prettierConfig from "eslint-config-prettier"
 import prettierPlugin from "eslint-plugin-prettier"
 import simpleImportSort from "eslint-plugin-simple-import-sort"
+import storybook from "eslint-plugin-storybook"
 import unusedImports from "eslint-plugin-unused-imports"
 
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  ...storybook.configs["flat/recommended"],
   prettierConfig,
   {
     plugins: {
@@ -44,7 +46,16 @@ const eslintConfig = defineConfig([
     },
   },
 
-  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
+  globalIgnores([
+    ".next/**",
+    "out/**",
+    "build/**",
+    "storybook-static/**",
+    ".storybook/public/**",
+    "output/playwright/**",
+    ".playwright-cli/**",
+    "next-env.d.ts",
+  ]),
 ])
 
 export default eslintConfig

@@ -16,8 +16,6 @@ import { Switch } from "./ui/switch"
 
 type ValidationSchema = z.infer<typeof registrationValidationSchema>
 
-const randomCharacter = getRandomCharacter()
-
 const RegistrationForm = () => {
   const { register: playerRegister, registrationIsLoading } = usePlayer()
   const { fetchRandomCharacter, isRandomizing } = useRandomCharacter()
@@ -41,12 +39,13 @@ const RegistrationForm = () => {
     }
   }
 
+  const randomCharacter = getRandomCharacter()
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
       <div className="grid gap-4 lg:grid-cols-2">
         <TextField
           label="Name"
-          id="name"
           {...register("name", { value: randomCharacter.name })}
           error={errors.name?.message}
         />
@@ -58,7 +57,6 @@ const RegistrationForm = () => {
           render={({ field }) => (
             <Select
               label="Nationality"
-              id="nationality"
               name={field.name}
               value={field.value}
               onChange={field.onChange}
@@ -76,7 +74,6 @@ const RegistrationForm = () => {
               label="Gender"
               name={field.name}
               value={field.value}
-              id="gender"
               onChange={field.onChange}
               options={["Male", "Female"]}
             />
@@ -86,7 +83,6 @@ const RegistrationForm = () => {
         <TextField
           type="number"
           label="Age"
-          id="age"
           {...register("age", {
             value: randomCharacter.age,
             valueAsNumber: true,

@@ -4,7 +4,6 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import { useTavern } from "@/hooks/queries/useTavern"
-import { capitalize } from "@/utils/string"
 
 type Props = {
   player?: Player
@@ -12,34 +11,47 @@ type Props = {
 }
 
 const ShopItem = ({ player, item }: Props) => {
-  const { buy } = useTavern()
+  const { treatCrew } = useTavern()
 
   const merchandise = TAVERN_ITEMS[item]
   const price = merchandise.price * (player?.crewMembers.count || 0)
-  const buyingDisabled = price > (player?.character.gold || 0)
+  const treatmentDisabled = price > (player?.character.gold || 0)
 
-  const handlePurchase = () => {
-    buy({ item })
+  const handleTreatCrew = () => {
+    treatCrew({ item })
   }
 
   return (
     <MerchandiseCard
-      key={`market-${item}`}
-      title={capitalize(item)}
+      key={`tavern-${item}`}
+      title={merchandise.label}
+      image={`/img/cards/tavern/${item}.png`}
       icon={<MerchandiseIcon item={item} />}
-      disabled={buyingDisabled}
+      disabled={treatmentDisabled}
       body={
         <>
-          <p>{TAVERN_ITEMS[item].description}</p>
+          <p>{merchandise.description}</p>
 
-          <Badge variant="secondary" className="mt-4">
-            Price: {price} gold
-          </Badge>
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <Badge variant="secondary">Price: {price} gold</Badge>
+
+            {merchandise.healthIncrease > 0 && (
+              <Badge className="bg-success/10 text-success">
+                Health +{merchandise.healthIncrease}
+              </Badge>
+            )}
+
+            {merchandise.moodIncrease > 0 && (
+              <Badge className="bg-success/10 text-success">
+                Mood +{merchandise.moodIncrease}
+              </Badge>
+            )}
+          </div>
         </>
       }
       actions={
-        <Button size="sm" onClick={handlePurchase}>
-          Buy
+        <Button size="sm" onClick={handleTreatCrew}>
+          {merchandise.label}
         </Button>
       }
     />

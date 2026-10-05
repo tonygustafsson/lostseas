@@ -29,6 +29,7 @@ const ShipyardSell = () => {
             <MerchandiseCard
               key={`shipyard-sell-${name}`}
               title={`${name} (${type})`}
+              image={`/img/cards/shipyard/${type.toLowerCase()}.png`}
               icon={<MerchandiseIcon item={type} />}
               body={
                 <>

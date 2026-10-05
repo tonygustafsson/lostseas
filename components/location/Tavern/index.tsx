@@ -37,16 +37,25 @@ const Tavern = () => {
           <ActionCard
             title={`${player?.locationStates?.tavern?.noOfSailors} sailors approach you`}
             message="After a couple of drinks and a few games of cards, it turns out they want to join you on your adventure."
-            icon={<GiPirateCaptain className="text-accent h-20 w-20" />}
+            image="/img/cards/tavern/crew-joining.png"
+            icon={<GiPirateCaptain />}
             actions={
-              <>
-                <Button onClick={handleAcceptNewCrewMembers}>
+              <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
+                <Button
+                  variant="highlight"
+                  size="lg"
+                  onClick={handleAcceptNewCrewMembers}
+                >
                   Take them in
                 </Button>
-                <Button variant="secondary" onClick={handleIgnoreSailors}>
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  onClick={handleIgnoreSailors}
+                >
                   Pass
                 </Button>
-              </>
+              </div>
             }
           />
         )}
@@ -56,14 +65,25 @@ const Tavern = () => {
           <ActionCard
             title={`${player?.locationStates?.tavern?.noOfSailors} sailors approach you`}
             message="After a couple of drinks they start to get aggressive and want to fight you."
-            icon={<GiPirateCaptain className="text-accent h-20 w-20" />}
+            image="/img/cards/tavern/crew-fight.png"
+            icon={<GiPirateCaptain />}
             actions={
-              <>
-                <Button onClick={handleFightSailors}>Fight them</Button>
-                <Button variant="secondary" onClick={handleIgnoreSailors}>
+              <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
+                <Button
+                  variant="highlight"
+                  size="lg"
+                  onClick={handleFightSailors}
+                >
+                  Fight them
+                </Button>
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  onClick={handleIgnoreSailors}
+                >
                   Avoid
                 </Button>
-              </>
+              </div>
             }
           />
         )}

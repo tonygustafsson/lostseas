@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { ArrowDownToLine, ArrowUpFromLine } from "lucide-react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
+import MerchandiseCard from "@/components/MerchandiseCard"
 import TextField from "@/components/TextField"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useBank } from "@/hooks/queries/useBank"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
@@ -67,78 +68,75 @@ const BankAccount = () => {
   }
 
   return (
-    <div className="flex w-full flex-col lg:flex-row lg:gap-6">
-      <Card className="mt-6 w-full">
-        <form onSubmit={accountHandleSubmit(handleDeposit)} className="w-full">
-          <CardHeader>
-            <CardTitle className="font-serif text-2xl font-semibold">
-              Make deposit
-            </CardTitle>
-          </CardHeader>
-
-          <CardContent className="px-6 pt-4 pb-6 text-sm">
-            <div className="min-h-16">
-              <p className="text-sm">
-                When gold are stored at the bank you will not risk loosing it at
-                sea.
+    <>
+      <MerchandiseCard
+        image="/img/cards/bank/deposit.png"
+        icon={<ArrowDownToLine />}
+        title="Make deposit"
+        fullWidth
+        body={
+          <>
+            <p>Keep your gold safe from the dangers at sea.</p>
+            {!!player?.character.loan && (
+              <p className="text-destructive pt-1 text-sm font-semibold">
+                Repay your loan before adding money to your account.
               </p>
-
-              {player?.character.loan && (
-                <strong className="mt-4 block text-sm">
-                  You cannot deposit any money until your loan has been fully
-                  repaid.
-                </strong>
-              )}
-            </div>
-
+            )}
+          </>
+        }
+        actions={
+          <form
+            onSubmit={accountHandleSubmit(handleDeposit)}
+            className="flex flex-col gap-4"
+          >
             <TextField
               label="Amount"
               type="number"
               {...accountRegister("amount", { valueAsNumber: true })}
               error={accountErrors.amount?.message}
+              className="border-border bg-background/80"
             />
-
-            <Button type="submit" className="mt-4" disabled={!accountIsValid}>
+            <Button
+              type="submit"
+              className="mt-auto w-full font-serif text-base"
+              disabled={!accountIsValid}
+            >
               Deposit
             </Button>
-          </CardContent>
-        </form>
-      </Card>
+          </form>
+        }
+      />
 
-      <Card className="mt-6 w-full">
-        <form
-          onSubmit={withdrawalHandleSubmit(handleWithdrawal)}
-          className="w-full"
-        >
-          <CardHeader>
-            <CardTitle className="font-serif text-2xl font-semibold">
-              Make withdrawal
-            </CardTitle>
-          </CardHeader>
-
-          <CardContent className="px-6 pt-4 pb-6 text-sm">
-            <p className="min-h-16 text-sm">
-              Take out your gold in order to spend it.
-            </p>
-
+      <MerchandiseCard
+        image="/img/cards/bank/withdrawal.png"
+        icon={<ArrowUpFromLine />}
+        title="Make withdrawal"
+        fullWidth
+        body={<p>Bring your saved gold back aboard to spend it.</p>}
+        actions={
+          <form
+            onSubmit={withdrawalHandleSubmit(handleWithdrawal)}
+            className="flex flex-col gap-4"
+          >
             <TextField
+              id="withdrawal"
               label="Amount"
               type="number"
               {...withdrawalRegister("amount", { valueAsNumber: true })}
               error={withdrawalErrors.amount?.message}
+              className="border-border bg-background/80"
             />
-
             <Button
               type="submit"
-              className="mt-4"
+              className="mt-auto w-full font-serif text-base"
               disabled={!withdrawalIsValid}
             >
               Withdrawal
             </Button>
-          </CardContent>
-        </form>
-      </Card>
-    </div>
+          </form>
+        }
+      />
+    </>
   )
 }
 

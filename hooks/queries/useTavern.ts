@@ -4,6 +4,7 @@ import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import apiRequest from "@/utils/apiRequest"
+import { increaseCrewMood } from "@/utils/crew"
 import { patchDeep } from "@/utils/patchDeep"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
@@ -29,9 +30,9 @@ export const useTavern = () => {
     })
   }
 
-  const { mutate: buy, isPending: isBuying } = useMutation({
+  const { mutate: treatCrew, isPending: isTreatingCrew } = useMutation({
     mutationFn: (data: { item: keyof typeof TAVERN_ITEMS }) =>
-      apiRequest("/api/tavern/buy", data, "POST"),
+      apiRequest("/api/tavern/treat-crew", data, "POST"),
     onMutate: async (data: { item: keyof typeof TAVERN_ITEMS }) => {
       await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
@@ -45,10 +46,10 @@ export const useTavern = () => {
         const healthIncrease = TAVERN_ITEMS[tavernItem].healthIncrease
         const moodIncrease = TAVERN_ITEMS[tavernItem].moodIncrease
 
-        const newMood =
-          previous.crewMembers.mood + moodIncrease > 40
-            ? 40
-            : previous.crewMembers.mood + moodIncrease
+        const newMood = increaseCrewMood(
+          previous.crewMembers.mood,
+          moodIncrease
+        )
         const newHealth =
           previous.crewMembers.health + healthIncrease > 100
             ? 100
@@ -71,12 +72,13 @@ export const useTavern = () => {
 
       return { previous }
     },
-    onSuccess: (response, _, context) => {
-      const { updatedPlayer, error, newMood, newHealth, item, totalPrice } =
+    onSuccess: (response, { item }, context) => {
+      const { updatedPlayer, error, newMood, newHealth, totalPrice } =
         response?.data
+      const action = TAVERN_ITEMS[item].label.toLowerCase()
 
       if (error) {
-        handleError(`Could not buy ${item}`, error, context?.previous)
+        handleError(`Could not ${action}`, error, context?.previous)
         return
       }
 
@@ -85,7 +87,7 @@ export const useTavern = () => {
       }
 
       setToast({
-        title: `You bought ${item} for you and your crew`,
+        title: `You chose to ${action} with your crew`,
         message: `It cost you ${totalPrice} gold and your crew now have the health ${newHealth} and mood ${newMood}`,
         variant: "success",
       })
@@ -93,7 +95,11 @@ export const useTavern = () => {
       playSoundEffect("cheers")
     },
     onError: (err: any, { item }, context: any) => {
-      handleError(`Could not buy ${item}`, err, context?.previous)
+      handleError(
+        `Could not ${TAVERN_ITEMS[item].label.toLowerCase()}`,
+        err,
+        context?.previous
+      )
     },
   })
 
@@ -313,8 +319,8 @@ export const useTavern = () => {
   })
 
   return {
-    buy,
-    isBuying,
+    treatCrew,
+    isTreatingCrew,
     acceptNewCrewMembers,
     isAcceptingNewCrewMembers,
     fightSailors,
