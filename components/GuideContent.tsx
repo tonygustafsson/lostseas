@@ -2,8 +2,9 @@
 
 import Image from "next/image"
 
+import { LOAN_LIMIT } from "@/constants/bank"
 import { NATIONS, TOWNS } from "@/constants/locations"
-import { TRADE_GOODS_TOWNS } from "@/constants/merchandise"
+import { BARTER_GOODS, TRADE_GOODS_TOWNS } from "@/constants/merchandise"
 import { SHIP_REPAIR_COST, SHIP_TYPES } from "@/constants/ship"
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import { TITLE_INFO } from "@/constants/title"
@@ -83,11 +84,11 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mb-2 font-serif text-lg">Buying and selling</h3>
 
         <p className="mb-4">
-          At the shop you can buy and sell everything your crew needs to be
-          strong and healthy. For the most part you just want to buy food and
-          water, and perhaps sell of some barter goods. You can also buy
-          medicine that you can give to your crew members to increase their
-          health.
+          At the shop you can buy and sell food, water, medicine and barter
+          goods. Stock up on food and water for your journeys, sell loot for
+          gold, and buy medicine to restore your crew&apos;s health. The Buy
+          necessities action lets you choose how many days of food and water to
+          buy, taking your existing supplies into account.
         </p>
 
         <Image
@@ -99,10 +100,12 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         />
 
         <p className="mb-4">
-          The market is a bit different - here you will get an offers, that is
-          often cheaper than the shop. But you cannot control how much of it you
-          want, and if you cannot afford it; too bad. It&apos;s a good idea to
-          visit sometimes, buy some barter goods and sell it of at the shop.
+          The market offers fixed batches of goods, often at a discount. You
+          must buy the whole batch and have enough gold to cover its total
+          price. Compare the offer with the shop&apos;s selling price before
+          buying goods to resell, and check that a shop in your current town
+          accepts them. Market offers can include goods that the local shop does
+          not trade, as well as cannons, which are traded at the shipyard.
         </p>
 
         <Image
@@ -116,26 +119,33 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mb-2 font-serif text-lg">Food and water</h3>
 
         <p className="mb-4">
-          You and your crew will need both food and water for traveling at sea.
-          A half carton of food and a whole barrel of water for every crew
-          member per week. You and your crew won&apos;t die however, but they
-          will refuse to travel any longer. You&apos;ll be stranded until you
-          can buy more food and water.
+          Before leaving port, you need at least 0.5 crates of food and 1 barrel
+          of water per crew member, with each total rounded to the nearest whole
+          unit. This departure requirement is the same for every destination.
+        </p>
+
+        <p className="mb-4">
+          Each time your journey continues, 0.1 crates of food and 0.2 barrels
+          of water per crew member are subtracted from your supplies. The
+          remaining totals are rounded to the nearest whole unit and stop at
+          zero. Running out does not interrupt a journey already underway, but
+          you will need to restock before your next departure.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Barter goods</h3>
 
         <p className="mb-4">
-          This includes tobacco, rum, porcelain, spices, sugar, silk, tea and
-          cotton. You don&apos;t have any use of these goods, but you will loot
-          a lot of these at sea. You can then sell them at the shop and make
-          some gold.
+          Barter goods include {BARTER_GOODS.join(", ")}. You can loot them in
+          sea battles or buy them at the market, then sell them at a shop that
+          accepts them. They are used for trading; tavern actions cost gold and
+          do not consume the food, tobacco or rum in your inventory.
         </p>
 
         <p className="mb-4">
-          Tobacco and rum are traded in every port. The remaining six goods are
-          only available in certain towns — check the table below to see where
-          you can buy and sell them.
+          Shops trade tobacco and rum in every town. The other barter goods can
+          only be bought and sold at shops in the towns shown below. Sell
+          tradable goods sells all barter goods accepted by the local shop and
+          leaves the rest in your inventory.
         </p>
 
         <Table className="mb-2 rounded-xl bg-black/60">
@@ -178,10 +188,11 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
       </GuideSectionHeading>
       <AccordionContent>
         <p className="mb-4">
-          If you lose in battle, one of your ships might be sunk. If you only
-          have one ship you are safe. Another reason for having many ships is to
-          be able to have more crew members. And more crew members means harder
-          enemies - and <em>that</em> means more gold!
+          If you lose a sea battle, one of your ships may sink. Your last ship
+          cannot be sunk in battle, but it can still be damaged. A larger fleet
+          lets you support more crew members, who can man more cannons. The
+          number of manned cannons determines the strength of the ships you
+          encounter; stronger opponents can carry more gold.
         </p>
 
         <Image
@@ -193,15 +204,17 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         />
 
         <p className="mb-4">
-          The third reason is that you will only lose part of your goods when
-          loosing a battle, if you have more than one ship. If you have three
-          ships, you will lose one third of your goods. They will still take all
-          your gold though...
+          Losing a sea battle also costs you a share of every inventory item
+          except cannons, based on how many ships you had before the battle.
+          With three ships, you lose one third of those goods; with one ship,
+          you lose all of them. You lose all gold you carry, but your bank
+          balance and treasures are safe.
         </p>
 
         <p className="mb-4">
-          When you start out as a pirate, you will only be able to own three
-          ships. But as your rank get higher, you will be able to own 15 ships.
+          As a Pirate, you can own up to {TITLE_INFO.Pirate.maxShips} ships.
+          Higher titles increase this limit, up to {TITLE_INFO.Duke.maxShips}{" "}
+          ships as a Duke.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Different ship types</h3>
@@ -251,18 +264,18 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           win or lose. A ship at 0% health is completely disabled and will block
           you from leaving port. You can repair ships at the shipyard for{" "}
           {SHIP_REPAIR_COST} gold per 1% of damage. You can also sell any ship
-          you own at the shipyard for half its purchase price.
+          you own at the shipyard for half its purchase price, regardless of its
+          health. You must own at least one ship to leave port.
         </p>
 
         <h3 className="my-6 font-serif text-lg">Cannons</h3>
 
         <p>
-          Cannons are needed for battles at sea. It&apos;s the amount of manned
-          cannons that controls if you win or lose, and also how powerful ships
-          you will meet. You will need two crew members to control one cannon,
-          which means that if you have 20 cannons, and 30 crew members, you will
-          still only be able to use 15 of them. Cannons are bought at the
-          shipyard.
+          Manned cannons determine your fighting strength and the strength of
+          the ships you encounter. Each cannon needs two crew members, so 20
+          cannons and 30 crew members give you 15 manned cannons. Unmanned
+          cannons do not help in battle. You can buy and sell cannons at the
+          shipyard; owning cannons is not required to leave port.
         </p>
       </AccordionContent>
     </AccordionItem>
@@ -281,27 +294,30 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mb-2 font-serif text-lg">Purpose of crew members</h3>
 
         <p className="mb-4">
-          The only real reason to have crew members is so that they can fight
-          battles with you. To fire a cannon, you&apos;ll need two crew members.
+          Crew members sail your ships and man your cannons. To leave port, your
+          crew count must be between the combined minimum and maximum
+          requirements of all your ships. You need two crew members to fire one
+          cannon.
         </p>
 
         <p className="mb-4">
-          They demands things in return for their services. They become less
-          happy when they do boring stuff, like losing battles and traveling the
-          great Caribbean Sea. When they are angry they will refuse to leave
-          port with you.
+          Your crew loses 1 mood each time you continue a journey, except on
+          arrival. Winning a sea battle increases mood by 20, up to a maximum of
+          100. If their mood is 0 or below, they will refuse to leave port.
         </p>
 
         <p className="mb-4">
-          In order to fix this you have to please them, with food and drinks.
-          You can visit the tavern and pour the wine for them, or give them some
-          of your gold.
+          Improve their mood with tavern actions or use Give gold in Manage
+          Crew. The more crew members you have, the more gold you need for the
+          same improvement.
         </p>
 
         <p className="mb-4">
-          You are also responsible for their health. If the health goes to 0
-          they will not die, but they cannot follow you on your next journey.
-          You can give them medicine after battles.
+          Sea battles and tavern fights reduce your crew&apos;s health. At 0%
+          health, they do not die, but you cannot start another journey. Use
+          Give medicine in Manage Crew to restore health, or Serve supper at the
+          tavern. Larger crews need more medicine for the same improvement.
+          Health and mood increases are capped at 100%.
         </p>
 
         <Image
@@ -315,9 +331,11 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mb-2 font-serif text-lg">Getting more crew members</h3>
 
         <p>
-          When you win battles at sea some of their crew will offer to join you.
-          The other method is to visit the tavern and speak to the sailors
-          there, they often want to offer their services for free.
+          Winning sea battles can automatically add recruits from the opposing
+          crew. Friendly sailors at the tavern may also join for free if you
+          accept their offer. New recruits can take you above your fleet&apos;s
+          maximum crew size, so buy more ships or dismiss crew members before
+          your next departure if needed.
         </p>
       </AccordionContent>
     </AccordionItem>
@@ -340,8 +358,9 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <p className="mb-4">
           The tavern is one of the most important stops in any town. You can
           serve supper, smoke tobacco, pour the wine or pass the rum to improve
-          your crew&apos;s health and mood. Each action costs gold for every
-          crew member.
+          your crew&apos;s mood. Serve supper also restores health. Each action
+          costs gold for every crew member. The increases below are percentage
+          points, capped at 100% health or mood.
         </p>
 
         <Table className="mb-6 rounded-xl bg-black/60">
@@ -375,15 +394,20 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <p className="mb-4">
           Sometimes you will find sailors at the tavern willing to join your
           crew for free. On other occasions the sailors you meet are hostile. If
-          you beat them in a fight you will win a small amount of gold, but you
-          will also take some health damage.
+          you fight them and win, you gain a small amount of gold. Your crew
+          loses health whether you win or lose. You can also ignore the sailors
+          to avoid the fight.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Cards</h3>
 
         <p>
-          Feeling lucky? You can gamble a percentage of your gold at the card
-          table. It&apos;s a quick way to double your money — or lose it.
+          Choose a percentage of your gold to bet, then pick one of five cards.
+          A correct choice adds five times your bet to your gold; a wrong choice
+          costs your bet. For example, if you have 100 gold and bet all of it, a
+          win leaves you with 600 gold and a loss leaves you with 0. You have a
+          one-in-five chance of winning. Your bet must be at least 1 gold, and
+          bank savings are not used.
         </p>
       </AccordionContent>
     </AccordionItem>
@@ -401,20 +425,22 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
       <AccordionContent>
         <h3 className="mb-2 font-serif text-lg">Nations</h3>
         <p className="mb-4">
-          This game takes place at the Spanish Main, in the Caribbean Sea at the
-          1600th. There are four nations, battling over the towns. English,
-          French, Spanish and Holland.
+          Lost Seas is set in the Caribbean in the 17th century. Its nations are{" "}
+          {Object.keys(NATIONS).join(", ")}. England is at war with{" "}
+          {NATIONS.England.warWith}, and Spain is at war with{" "}
+          {NATIONS.Spain.warWith}.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Levels</h3>
 
         <p className="mb-4">
-          The level system in this game is pretty simple. You belong to a
-          nation, and for every ship you win over from that nations enemy will
-          raise your level by 1. And if you fight your own nations ships it will
-          be lowered by the same amount. Winning over neutral ships doesn&apos;t
-          change your level, but it still meaningful to loot some gold from
-          them.
+          Your level for a nation is your number of victories against its enemy,
+          minus all battles you fought against that nation, whether you won or
+          lost. Each enemy victory adds 1 level, and each battle against your
+          own nation subtracts 1. Battles against neutral nations and pirates
+          leave this level unchanged, but victories can still reward you with
+          gold. Losing a battle against your nation&apos;s enemy does not lower
+          your level.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Titles</h3>
@@ -428,13 +454,12 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         />
 
         <p className="mb-4">
-          Levels doesn&apos;t do anything by itself, but you will be judged by
-          the nations governor (At the City Hall) by it. You will get promoted
-          if you are doing a good job. You will then get a reward, and higher
-          titles will let you own more ships, which in turn give access to more
-          crew members, cannons and being able to load more goods. Some would
-          say that the main goal of this game (if you need any) is to reach the
-          highest title.
+          Your level determines the title the governor can offer you at the City
+          Hall. Promotions reward you with gold and let you own more ships. More
+          ships let you carry more crew members and man more cannons. Cargo has
+          no capacity limit. Reaching the highest title is one goal you can
+          choose to pursue. Accept promotions in a town belonging to your
+          nation. Your title does not automatically fall if your level drops.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">The different titles</h3>
@@ -451,7 +476,7 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
 
           <TableBody>
             <TableRow>
-              <TableCell>0-9</TableCell>
+              <TableCell>Below 10</TableCell>
               <TableCell>{TITLE_INFO.Pirate.title}</TableCell>
               <TableCell>{TITLE_INFO.Pirate.reward} gold</TableCell>
               <TableCell>{TITLE_INFO.Pirate.maxShips}</TableCell>
@@ -516,20 +541,19 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mb-2 font-serif text-lg">Changing nation</h3>
 
         <p className="mb-4">
-          If you are not pleased by your nation you can actually change it. You
-          do this by attacking the enemy of the nation you want to be a citizen
-          of. So if you want to be English, attack a lot of French ships! When
-          you have won over more French ships than over English ships you can
-          get yourself a citizenship. The title you receive depends on your
-          level (which depends on how many more French ships than English ships
-          you have destroyed).
+          You can change nationality at the City Hall of a town belonging to
+          your desired nation. You qualify when your victories against that
+          nation&apos;s enemy outnumber all battles you have fought against the
+          desired nation, including defeats. Your new title depends on this
+          difference, and you receive that title&apos;s gold reward. Changing
+          citizenship can give you a lower title than the one you previously
+          held.
         </p>
 
         <p>
-          Just to make things clear: If you are a Spanish citizen and have
-          attacked 50 French ships even though this isn&apos;t your enemy, and
-          you have not attacked any English ships, you will be an english
-          Admiral at once when you get yourself an english citizenship.
+          For example, if you are a Spanish citizen with 50 victories against
+          French ships and have never attacked an English ship, you qualify for
+          English citizenship with the title of Admiral.
         </p>
       </AccordionContent>
     </AccordionItem>
@@ -548,15 +572,14 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mb-2 font-serif text-lg">Getting some gold</h3>
 
         <p className="mb-4">
-          The currency in this game is gold, for which you can buy and sell
-          almost anything. You will mostly get money from looting ships at sea,
-          but you can also sell your goods, gamble for it, or fight at the bar.
+          Gold is the game&apos;s currency. You earn it by looting ships at sea,
+          selling goods or ships, collecting title rewards, winning at cards, or
+          winning tavern fights.
         </p>
 
         <p className="mb-4">
-          Oh, there is also treasures to be found! Sometimes when you are
-          winning a battle you will find these. The value can be really high.
-          Each treasure is tied to a specific town — you must bring it to that
+          Winning a sea battle can also reveal a valuable treasure. Each
+          treasure is tied to a specific town — you must bring it to that
           town&apos;s City Hall to collect the reward. The reward is paid
           directly in gold.
         </p>
@@ -564,30 +587,31 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mb-2 font-serif text-lg">Saving money</h3>
 
         <p className="mb-4">
-          There is a banking system in this game. When you lose a battle at sea,
-          you will lose all your gold, no matter how many ships you&apos;ve got.
-          It would be impossible to achieve anything if you couldn&apos;t save
-          it in a safe place.
+          The bank keeps your savings safe. Losing a sea battle takes all gold
+          you carry, regardless of the size of your fleet, but does not affect
+          your bank balance.
         </p>
 
         <p className="mb-4">
-          You have a bank account that you can put your money into and out of no
-          matter which nation you are in. If you put in 100 dbl in Panama, you
-          can take it out in Port Royale without any trouble.
+          Your bank account is shared across all towns and nations. Deposit 100
+          gold at the bank in Panama, and you can withdraw it at the bank in
+          Port Royale.
         </p>
 
         <p className="mb-4">
-          It&apos;s recommended to only have cash when you are in a town, for
-          buying and selling. Before you leave, you should put the rest in your
-          account.
+          Keep enough gold for purchases in town and deposit the rest before
+          leaving port. Repay any outstanding loan first so you can make
+          deposits.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Loans</h3>
 
         <p>
-          You can also take a loan if the game are tough on you. You cannot loan
-          more than 10 000 gold. The loans are free of charge, but you cannot
-          add gold to your account until you have payed off your loan.
+          You can borrow gold at the bank, up to a total outstanding loan of{" "}
+          {LOAN_LIMIT.toLocaleString("en-US")} gold. Loans have no interest or
+          fees. You cannot deposit gold until the loan is fully repaid, but you
+          can still withdraw existing savings. You can repay the loan in smaller
+          amounts or all at once.
         </p>
       </AccordionContent>
     </AccordionItem>
@@ -614,8 +638,8 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         />
 
         <p className="mb-4">
-          All existing towns actually existed in the 1600th. The towns
-          nationality varied from year to year though.
+          Each town belongs to one of the game&apos;s four nations. The list
+          below shows their nationalities in Lost Seas.
         </p>
 
         {Object.keys(NATIONS).map((nation, i, arr) => (
@@ -629,23 +653,33 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         ))}
 
         <p className="mb-4">
-          You can visit which of these you want, no matter which nationality you
-          belongs to.
+          You can visit any town regardless of your nationality. Choose another
+          town on the map to start a journey. If you cannot leave port, the
+          advisor at the harbor explains which problems you need to resolve.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Time</h3>
 
         <p className="mb-4">
-          Time is measured in weeks in Lost Seas. The time won&apos;t go by
-          itself, but depends on your activity in the game. A week will pass
-          when you travel from a town to the Caribbean Sea.
+          Time is measured in days in Lost Seas. Each normal journey step
+          advances one day, including arrival at your destination. Starting a
+          journey and visiting locations in town do not advance the calendar.
+          Journeys continue automatically between ship encounters. Sailing
+          pauses at an encounter or battle report. Choose Attack or Ignore when
+          you meet a ship, and Continue journey after a battle to resume
+          sailing.
+        </p>
+
+        <p className="mb-4">
+          Continuing after a battle report uses supplies but does not advance
+          the date, except when that step is your arrival.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Weather</h3>
 
         <p className="mb-4">
-          The weather will change by each passing day at sea, however it
-          won&apos;t affect anything at the moment.
+          The weather shown depends on the current game day. It does not affect
+          travel, supply consumption or battles.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Battles at sea</h3>
@@ -659,20 +693,21 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         />
 
         <p className="mb-4">
-          You will find ships from England, France, Spain and Holland. You will
-          also find some pirates. If you want to attack a ship from a particular
-          nation it is suggested that you travel to a town of that nation.
+          You can encounter ships from any nation, as well as pirates. Ships
+          from your destination&apos;s nation are more common, so sail towards
+          one of its towns if you want to find that nation&apos;s ships.
         </p>
 
         <p className="mb-4">
-          Be careful when attacking ships that have more manned cannons than you
-          have. The is a random factor here, so you can win if the gap
-          isn&apos;t too big. But it&apos;s really risky! It&apos;s the amount
-          of functional cannons that decides if you will lose or not.
+          Battle outcomes compare your manned cannons with the opponent&apos;s
+          cannons, with a random bonus for both sides. You can sometimes beat a
+          slightly stronger ship, but attacking one with more cannons is risky.
+          You can ignore an encounter to continue sailing without fighting.
         </p>
 
         <p>
-          You will get a report on how much you won or lost during the battle.
+          After a battle, a report shows your loot, recruits, damage and any
+          losses. Both victories and defeats damage your crew and ships.
         </p>
       </AccordionContent>
     </AccordionItem>
