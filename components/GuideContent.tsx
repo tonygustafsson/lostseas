@@ -294,8 +294,8 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
 
         <p className="mb-4">
           In order to fix this you have to please them, with food and drinks.
-          You can visit the tavern and buy them some wine perhaps, or give them
-          some of your gold.
+          You can visit the tavern and pour the wine for them, or give them some
+          of your gold.
         </p>
 
         <p className="mb-4">
@@ -338,16 +338,17 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         </h3>
 
         <p className="mb-4">
-          The tavern is one of the most important stops in any town. You can buy
-          rounds for your crew to improve their health and mood. The more crew
-          members you have, the smaller the effect per item.
+          The tavern is one of the most important stops in any town. You can
+          serve supper, smoke tobacco, pour the wine or pass the rum to improve
+          your crew&apos;s health and mood. Each action costs gold for every
+          crew member.
         </p>
 
         <Table className="mb-6 rounded-xl bg-black/60">
           <TableHeader>
             <TableRow>
-              <TableHead>Item</TableHead>
-              <TableHead>Price (per round)</TableHead>
+              <TableHead>Action</TableHead>
+              <TableHead>Price (per crew member)</TableHead>
               <TableHead>Health increase</TableHead>
               <TableHead>Mood increase</TableHead>
             </TableRow>
@@ -356,7 +357,7 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           <TableBody>
             {Object.entries(TAVERN_ITEMS).map(([key, item]) => (
               <TableRow key={key}>
-                <TableCell className="font-medium">{capitalize(key)}</TableCell>
+                <TableCell className="font-medium">{item.label}</TableCell>
                 <TableCell>{item.price} gold</TableCell>
                 <TableCell>
                   {item.healthIncrease > 0 ? `+${item.healthIncrease}` : "–"}

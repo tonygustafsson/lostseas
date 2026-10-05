@@ -57,8 +57,10 @@ const MerchandiseIcon = ({ item, size = "md", className = "" }: Props) => {
     case "medicine":
       return <RiMedicineBottleLine className={iconClass} />
     case "tobacco":
+    case "smoke-tobacco":
       return <GiSmokingPipe className={iconClass} />
     case "rum":
+    case "pass-the-rum":
       return <GiBrandyBottle className={iconClass} />
     case "sugar":
       return <GiSugarCane className={iconClass} />
@@ -68,9 +70,9 @@ const MerchandiseIcon = ({ item, size = "md", className = "" }: Props) => {
       return <GiTeapotLeaves className={iconClass} />
     case "cotton":
       return <GiCottonFlower className={iconClass} />
-    case "dinner":
+    case "serve-supper":
       return <GiMeat className={iconClass} />
-    case "wine":
+    case "pour-the-wine":
       return <GiWineBottle className={iconClass} />
     case "cannons":
       return <GiPirateCannon className={iconClass} />

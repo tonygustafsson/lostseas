@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import { getPlayer, savePlayer } from "@/firebase/db"
+import { increaseCrewMood } from "@/utils/crew"
 import { patchDeep } from "@/utils/patchDeep"
 
 export async function POST(req: Request) {
@@ -41,10 +42,7 @@ export async function POST(req: Request) {
 
   const healthIncrease = TAVERN_ITEMS[tavernItem].healthIncrease
   const moodIncrease = TAVERN_ITEMS[tavernItem].moodIncrease
-  const newMood =
-    player.crewMembers.mood + moodIncrease > 40
-      ? 40
-      : player.crewMembers.mood + moodIncrease
+  const newMood = increaseCrewMood(player.crewMembers.mood, moodIncrease)
   const newHealth =
     player.crewMembers.health + healthIncrease > 100
       ? 100
@@ -65,7 +63,7 @@ export async function POST(req: Request) {
   try {
     const updatedPlayer = await savePlayer(
       newPlayer,
-      `Bought ${item} from tavern for ${totalPrice} gold. New mood: ${newMood}, new health: ${newHealth}.`
+      `Tavern action "${TAVERN_ITEMS[tavernItem].label}" cost ${totalPrice} gold. New mood: ${newMood}, new health: ${newHealth}.`
     )
 
     return NextResponse.json({
