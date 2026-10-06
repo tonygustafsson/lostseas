@@ -46,9 +46,10 @@ export const removeFromAllInventoryItems = (
         return acc
       }
 
-      acc[merchandise as keyof Inventory] =
+      acc[merchandise as keyof Inventory] = Math.floor(
         (inventory[merchandise as keyof Inventory] || 0) *
-        (1 - percentage / 100)
+          (1 - percentage / 100)
+      )
 
       return acc
     },

@@ -42,12 +42,12 @@ const getWarningContent = (
     case "DAMAGED_SHIPS":
       return {
         icon: <GiShoonerSailboat className="h-7 w-7" />,
-        text: "Some of your ships are too damaged to continue traveling. Fix them in the shipyard.",
+        text: "Some of your ships are too damaged to continue traveling. Repair them at the shipyard or click Use under Equipment > Repair kits in Crew & Fleet.",
       }
     case "SHIPS_NEED_REPAIRS":
       return {
         icon: <GiShoonerSailboat className="h-7 w-7" />,
-        text: "Your ships have taken some damage. Consider repairing them at the shipyard before your next journey.",
+        text: "Your ships have taken some damage. Repair them at the shipyard or click Use under Equipment > Repair kits in Crew & Fleet, even at sea.",
       }
     case "NO_CREW":
       return {

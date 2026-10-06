@@ -29,4 +29,14 @@ describe("inventory utils", () => {
     expect(res.porcelain).toBe(2)
     expect(res.cannons).toBe(5)
   })
+
+  it("rounds remaining merchandise down to whole units after a loss", () => {
+    const inventory = { food: 9, water: 8, repairKits: 5, cannons: 3 } as any
+    const res = removeFromAllInventoryItems(inventory, 33) as any
+
+    expect(res.food).toBe(6)
+    expect(res.water).toBe(5)
+    expect(res.repairKits).toBe(3)
+    expect(res.cannons).toBe(3)
+  })
 })

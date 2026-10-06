@@ -13,7 +13,7 @@ const EditCharacterDrawer = () => {
   return (
     <>
       <h1 className="mb-2 flex items-center gap-2 font-serif text-2xl">
-        <GiQuillInk className="text-yellow-400" />
+        <GiQuillInk className="text-accent" />
         Edit character
       </h1>
 

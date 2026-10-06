@@ -1,8 +1,6 @@
-import clsx from "clsx"
-
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
-import { Badge } from "@/components/ui/badge"
+import ShipHealthBadge from "@/components/ships/ShipHealthBadge"
 import { Button } from "@/components/ui/button"
 import { SHIP_REPAIR_COST, SHIP_TYPES } from "@/constants/ship"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -17,7 +15,7 @@ const ShipyardRepair = () => {
   }
 
   return (
-    <div className="mt-8 grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+    <div className="mt-8 grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
       {Object.entries(player?.ships || [])
         .filter(([_, { health }]) => health < 100)
         .map(([id, { name, type, health }]) => {
@@ -32,17 +30,7 @@ const ShipyardRepair = () => {
               title={`${name} (${type})`}
               image={`/img/cards/shipyard/${type.toLowerCase()}.png`}
               icon={<MerchandiseIcon item={type} />}
-              body={
-                <Badge
-                  variant="secondary"
-                  className={clsx("mt-2", {
-                    "bg-amber-600 text-white": health < 75,
-                    "bg-red-600 text-white": health <= 30,
-                  })}
-                >
-                  Health: {health}%
-                </Badge>
-              }
+              body={<ShipHealthBadge health={health} className="mt-2" />}
               actions={
                 <Button size="sm" onClick={() => handleRepairShip(id)}>
                   Repair for {repairCost} gold

@@ -28,7 +28,7 @@ const StatisticsDrawer = () => {
   return (
     <>
       <h1 className="mb-4 flex items-center gap-2 font-serif text-2xl">
-        <FaChartBar className="text-yellow-400" />
+        <FaChartBar className="text-accent" />
         Statistics
       </h1>
 

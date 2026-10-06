@@ -114,10 +114,45 @@ export const useShips = () => {
     },
   })
 
+  const { mutate: repairWithKits, isPending: isUsingRepairKits } = useMutation({
+    mutationFn: (data: { id: Ship["id"]; quantity: number }) =>
+      apiRequest("/api/ship/repair", data, "POST"),
+    onSuccess: (response) => {
+      const { error, updatedPlayer, quantity } = response?.data ?? {}
+
+      if (error || !updatedPlayer) {
+        handleError(
+          "Could not repair your ship",
+          error ?? "Please try again.",
+          undefined
+        )
+        return
+      }
+
+      queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
+
+      removeModal("repairShip")
+
+      setToast({
+        title: "Ship repaired",
+        message: `Used ${quantity} repair ${quantity === 1 ? "kit" : "kits"}.`,
+        variant: "success",
+      })
+    },
+    onError: (error) => {
+      handleError("Could not repair your ship", String(error), undefined)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+    },
+  })
+
   return {
     remove,
     isRemoving,
     rename,
     isRenaming,
+    repairWithKits,
+    isUsingRepairKits,
   }
 }

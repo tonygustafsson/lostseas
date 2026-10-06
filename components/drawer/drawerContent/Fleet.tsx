@@ -23,16 +23,17 @@ const FleetDrawer = () => {
   return (
     <>
       <h1 className="mb-6 flex items-center gap-2 font-serif text-2xl">
-        <GiShoonerSailboat className="text-yellow-400" />
+        <GiShoonerSailboat className="text-accent" />
         Crew & Fleet
       </h1>
 
       <span className="my-4 block font-serif text-xl">Ships</span>
+
       <ShipList />
 
       <Separator className="my-8" />
 
-      <h2 className="mt-8 mb-4 font-serif text-xl">Ship fittings</h2>
+      <h2 className="mt-8 mb-4 font-serif text-xl">Equipment</h2>
       <FittingsList />
 
       <Separator className="my-8" />
@@ -45,7 +46,7 @@ const FleetDrawer = () => {
             <div className="text-muted-foreground text-sm">Members</div>
             <div>{player?.crewMembers.count}</div>
           </div>
-          <MdGroups className="h-11 w-11 text-yellow-400" />
+          <MdGroups className="text-accent h-11 w-11" />
         </div>
 
         <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">

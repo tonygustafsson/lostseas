@@ -29,7 +29,7 @@ const StatusDrawer = () => {
     <>
       <h1 className="mb-2 flex font-serif text-2xl">
         <div className="flex gap-2">
-          <GiPirateCoat className="text-yellow-400" />
+          <GiPirateCoat className="text-accent" />
           Status
         </div>
       </h1>
@@ -44,7 +44,7 @@ const StatusDrawer = () => {
             <div className="text-muted-foreground text-xs">Title</div>
             <div>{player.character.title}</div>
           </div>
-          <GiPirateCoat className="size-6 text-yellow-400" />
+          <GiPirateCoat className="text-accent size-6" />
         </div>
 
         <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
@@ -52,7 +52,7 @@ const StatusDrawer = () => {
             <div className="text-muted-foreground text-xs">Score</div>
             <div>{getScore(player)}</div>
           </div>
-          <GiProgression className="size-6 text-yellow-400" />
+          <GiProgression className="text-accent size-6" />
         </div>
 
         <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
@@ -60,7 +60,7 @@ const StatusDrawer = () => {
             <div className="text-muted-foreground text-xs">Age</div>
             <div>{player.character.age}</div>
           </div>
-          <BiTime className="size-6 text-yellow-400" />
+          <BiTime className="text-accent size-6" />
         </div>
 
         <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
@@ -69,9 +69,9 @@ const StatusDrawer = () => {
             <div>{player.character.gender}</div>
           </div>
           {player.character.gender === "Male" ? (
-            <BiMaleSign className="size-6 text-yellow-400" />
+            <BiMaleSign className="text-accent size-6" />
           ) : (
-            <BiFemaleSign className="size-6 text-yellow-400" />
+            <BiFemaleSign className="text-accent size-6" />
           )}
         </div>
 
@@ -124,7 +124,7 @@ const StatusDrawer = () => {
             </div>
             <div>{convertDaysToTimeSpan(player.character.day)}</div>
           </div>
-          <AiOutlineCalendar className="size-6 text-yellow-400" />
+          <AiOutlineCalendar className="text-accent size-6" />
         </div>
 
         <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
@@ -132,7 +132,7 @@ const StatusDrawer = () => {
             <div className="text-muted-foreground text-xs">Current date</div>
             <div>{currentDate}</div>
           </div>
-          <AiOutlineCalendar className="size-6 text-yellow-400" />
+          <AiOutlineCalendar className="text-accent size-6" />
         </div>
       </div>
 
@@ -144,7 +144,7 @@ const StatusDrawer = () => {
             <div className="text-muted-foreground text-xs">Gold</div>
             <div>{player.character.gold}</div>
           </div>
-          <FaCoins className="size-6 text-yellow-400" />
+          <FaCoins className="text-accent size-6" />
         </div>
 
         {player.character.account && (
@@ -153,7 +153,7 @@ const StatusDrawer = () => {
               <div className="text-muted-foreground text-xs">Account</div>
               <div>{player.character.account}</div>
             </div>
-            <FaCoins className="size-6 text-yellow-400" />
+            <FaCoins className="text-accent size-6" />
           </div>
         )}
 
@@ -163,7 +163,7 @@ const StatusDrawer = () => {
               <div className="text-muted-foreground text-xs">Loan</div>
               <div>{player.character.loan}</div>
             </div>
-            <FaCoins className="size-6 text-yellow-400" />
+            <FaCoins className="text-accent size-6" />
           </div>
         )}
       </div>

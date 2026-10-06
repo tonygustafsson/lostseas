@@ -5,7 +5,11 @@ import Image from "next/image"
 import { LOAN_LIMIT } from "@/constants/bank"
 import { NATIONS, TOWNS } from "@/constants/locations"
 import { BARTER_GOODS, MERCHANDISE } from "@/constants/merchandise"
-import { SHIP_REPAIR_COST, SHIP_TYPES } from "@/constants/ship"
+import {
+  REPAIR_KIT_HEALTH,
+  SHIP_REPAIR_COST,
+  SHIP_TYPES,
+} from "@/constants/ship"
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import { TITLE_INFO } from "@/constants/title"
 import { cn } from "@/lib/utils"
@@ -105,7 +109,8 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           price. Compare the offer with the shop&apos;s selling price before
           buying goods to resell, and check that a shop in your current town
           accepts them. Market offers can include goods that the local shop does
-          not trade, as well as cannons, which are traded at the shipyard.
+          not trade, as well as cannons and repair kits, which are traded at the
+          shipyard.
         </p>
 
         <Image
@@ -317,6 +322,25 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           {SHIP_REPAIR_COST} gold per 1% of damage. You can also sell any ship
           you own at the shipyard for half its purchase price, regardless of its
           health. You must own at least one ship to leave port.
+        </p>
+
+        <p className="mb-4">
+          Buy repair kits at any shipyard for {MERCHANDISE.repairKits.buy} gold
+          each, or sell them there for {MERCHANDISE.repairKits.sell} gold each.
+          In Crew &amp; Fleet, click Use under Equipment &gt; Repair kits, then
+          choose a damaged ship and how many kits to use. You can use them
+          anywhere, including at sea, without paying additional gold. Each kit
+          restores up to {REPAIR_KIT_HEALTH} percentage points of health to one
+          ship, capped at 100%. Kits can also be found in market offers or
+          battle loot and are lost like other supplies when you lose a battle,
+          with remaining kits rounded down to a whole number.
+        </p>
+
+        <p className="mb-4">
+          A ship at 50% health needs five kits; two such ships need ten. Use
+          fewer kits for a partial repair. At normal prices, kits cost 20% more
+          than shipyard repairs for ten points of health. Smaller repairs still
+          consume a whole kit.
         </p>
 
         <h3 className="my-6 font-serif text-lg">Cannons</h3>

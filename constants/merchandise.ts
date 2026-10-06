@@ -188,14 +188,23 @@ export const MERCHANDISE: Record<
       "You need cannons to fight other ships. You need 2 crew members per cannon in order to make it functional.",
     availableAt: "shipyard",
   },
+  repairKits: {
+    buy: 60,
+    sell: 40,
+    singleUnit: "kit",
+    unit: "kits",
+    description:
+      "Repair a ship anywhere, including at sea. Each kit restores up to 10 percentage points of health to one ship. It's cheaper to repair at the shipyard though.",
+    availableAt: "shipyard",
+    isUtility: true,
+  },
 }
 
 /** Items that can be traded for profit but have no functional purpose. */
-export const BARTER_GOODS = Object.keys(MERCHANDISE).filter(
-  (k) =>
-    MERCHANDISE[k as keyof typeof MERCHANDISE].isBarterGoods ||
-    MERCHANDISE[k as keyof typeof MERCHANDISE].isUtility
-)
+export const BARTER_GOODS = Object.keys(MERCHANDISE).filter((k) => {
+  const item = MERCHANDISE[k as keyof typeof MERCHANDISE]
+  return item.availableAt === "shop" && (item.isBarterGoods || item.isUtility)
+})
 
 /** Restricted trade goods mapped to the towns where they are available. */
 export const TRADE_GOODS_TOWNS = Object.fromEntries(

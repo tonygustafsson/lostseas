@@ -1,3 +1,4 @@
+import { HammerIcon } from "lucide-react"
 import {
   GiBrandyBottle,
   GiCargoShip,
@@ -76,6 +77,8 @@ const MerchandiseIcon = ({ item, size = "md", className = "" }: Props) => {
       return <GiWineBottle className={iconClass} />
     case "cannons":
       return <GiPirateCannon className={iconClass} />
+    case "repairKits":
+      return <HammerIcon className={iconClass} />
     case "Brig":
       return <TbSailboat className={iconClass} />
     case "Merchantman":

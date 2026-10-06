@@ -32,3 +32,4 @@ export const SHIP_TYPES = {
 }
 
 export const SHIP_REPAIR_COST = 5 // per 1% of damage
+export const REPAIR_KIT_HEALTH = 10 // percentage points per kit, per ship

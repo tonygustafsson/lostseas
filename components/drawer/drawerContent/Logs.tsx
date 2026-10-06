@@ -14,7 +14,7 @@ const LogsDrawer = () => {
   return (
     <>
       <h1 className="mb-4 flex items-center gap-2 font-serif text-2xl">
-        <FaBook className="text-yellow-400" />
+        <FaBook className="text-accent" />
         Log Book
       </h1>
 

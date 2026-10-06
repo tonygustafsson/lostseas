@@ -11,4 +11,5 @@ type Inventory = {
   tea?: number
   cotton?: number
   cannons?: number
+  repairKits?: number
 }

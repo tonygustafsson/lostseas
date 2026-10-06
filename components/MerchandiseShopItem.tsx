@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { cn } from "@/lib/utils"
-import { capitalize } from "@/utils/string"
+import { snakeCaseToTitleCase } from "@/utils/string"
 
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
@@ -72,7 +72,7 @@ const MerchandiseShopItem = ({ player, item, type, onBuy, onSell }: Props) => {
 
   return (
     <MerchandiseCard
-      title={capitalize(item)}
+      title={snakeCaseToTitleCase(item)}
       image={`/img/cards/${merchandise.availableAt}/${item}.png`}
       indicator={player?.inventory?.[item]?.toString() || "0"}
       icon={<MerchandiseIcon item={item} />}

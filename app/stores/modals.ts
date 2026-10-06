@@ -6,6 +6,7 @@ export type ModalId =
   | "qrScanner"
   | "editCharacter"
   | "renameShip"
+  | "repairShip"
   | "welcome"
   | "sellBarterGoods"
   | "buyNecesseties"
