@@ -69,7 +69,7 @@ const LoginScreen = () => {
             id="page-title"
             className="max-w-3xl font-serif text-5xl leading-[1.04] tracking-tight text-amber-50 sm:text-6xl lg:text-7xl"
           >
-            Your story begins <span className="text-amber-300">at sea.</span>
+            Your story begins <span className="text-accent">at sea.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-100/80 sm:text-xl">
             Lost Seas is a free browser game set in 1640. Start as a simple
@@ -78,10 +78,7 @@ const LoginScreen = () => {
           </p>
           <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             <article className="bg-card/75 rounded-2xl border border-white/10 p-4 backdrop-blur">
-              <Compass
-                className="mb-3 size-5 text-amber-300"
-                aria-hidden="true"
-              />
+              <Compass className="text-accent mb-3 size-5" aria-hidden="true" />
               <h2 className="font-serif text-lg text-amber-50">
                 Four rival nations
               </h2>
@@ -134,7 +131,7 @@ const LoginScreen = () => {
                 <Anchor className="size-6" aria-hidden="true" />
               </div>
               <div>
-                <p className="mb-1 text-xs font-semibold tracking-[0.16em] text-amber-300 uppercase">
+                <p className="text-accent mb-1 text-xs font-semibold tracking-[0.16em] uppercase">
                   Join the crew
                 </p>
                 <h2
@@ -178,7 +175,7 @@ const LoginScreen = () => {
           className="mt-20 border-t border-white/10 pt-12 sm:mt-24 sm:pt-16"
         >
           <div className="max-w-3xl">
-            <p className="mb-2 text-xs font-semibold tracking-[0.16em] text-amber-300 uppercase">
+            <p className="text-accent mb-2 text-xs font-semibold tracking-[0.16em] uppercase">
               The world beyond the horizon
             </p>
             <h2
@@ -237,7 +234,7 @@ const LoginScreen = () => {
                 <BookOpenText className="size-7" aria-hidden="true" />
               </div>
               <div className="flex-1">
-                <p className="mb-1 text-xs font-semibold tracking-[0.16em] text-amber-300 uppercase">
+                <p className="text-accent mb-1 text-xs font-semibold tracking-[0.16em] uppercase">
                   New to Lost Seas?
                 </p>
                 <h3 className="font-serif text-2xl text-amber-50 sm:text-3xl">
@@ -263,7 +260,7 @@ const LoginScreen = () => {
           </div>
 
           <div className="mt-12 mb-5 sm:mt-16">
-            <p className="mb-1 text-xs font-semibold tracking-[0.16em] text-amber-300 uppercase">
+            <p className="text-accent mb-1 text-xs font-semibold tracking-[0.16em] uppercase">
               A glimpse of the voyage
             </p>
             <h2 className="font-serif text-3xl text-amber-50 sm:text-4xl">

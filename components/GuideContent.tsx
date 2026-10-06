@@ -53,9 +53,7 @@ const GuideSectionHeading = ({
   children: React.ReactNode
 }) =>
   appearance === "public" ? (
-    <h2
-      className={cn(className, "px-5 pt-6 text-2xl text-amber-200 sm:text-3xl")}
-    >
+    <h2 className={cn(className, "text-accent px-5 pt-6 text-2xl sm:text-3xl")}>
       {children}
     </h2>
   ) : (
