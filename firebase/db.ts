@@ -2,6 +2,16 @@ import "server-only"
 
 import { adminDb } from "./firebase-admin"
 
+const validatePlayerId = (id: string) => {
+  if (
+    typeof id !== "string" ||
+    !id ||
+    /[.#$\[\]/\u0000-\u001f\u007f]/.test(id)
+  ) {
+    throw new Error("Invalid player ID")
+  }
+}
+
 type LogEntry = {
   timestamp: number
   day: number
@@ -9,12 +19,14 @@ type LogEntry = {
 }
 
 export const getPlayer = async (playerId: Player["id"]) => {
+  validatePlayerId(playerId)
   const snapshot = await adminDb.ref(`players/${playerId}`).get()
 
   return snapshot.exists() ? (snapshot.val() as Player) : null
 }
 
 export const savePlayer = async (player: Player, logMessage?: string) => {
+  validatePlayerId(player.id)
   const updates: Record<string, unknown> = {}
 
   updates[`players/${player.id}`] = player
@@ -38,6 +50,7 @@ export const savePlayer = async (player: Player, logMessage?: string) => {
 }
 
 export const getLog = async (playerId: Player["id"]) => {
+  validatePlayerId(playerId)
   const snapshot = await adminDb
     .ref(`logs/${playerId}`)
     .orderByChild("timestamp")
@@ -61,6 +74,7 @@ export type StatisticsEntry = {
 }
 
 export const getStatistics = async (playerId: Player["id"]) => {
+  validatePlayerId(playerId)
   const snapshot = await adminDb
     .ref(`statistics/${playerId}`)
     .orderByChild("timestamp")
@@ -78,6 +92,8 @@ export const saveStatistics = async (
   playerId: Player["id"],
   statistics: Omit<StatisticsEntry, "timestamp">
 ) => {
+  validatePlayerId(playerId)
+  const timestamp = Date.now()
   const updates: Record<string, unknown> = {}
 
   const pushRef = adminDb.ref(`statistics/${playerId}`).push()
@@ -86,11 +102,11 @@ export const saveStatistics = async (
   if (key) {
     updates[`statistics/${playerId}/${key}`] = {
       ...statistics,
-      timestamp: Date.now(),
+      timestamp,
     }
   }
 
   await adminDb.ref().update(updates)
 
-  return { ...statistics, timestamp: Date.now() }
+  return { ...statistics, timestamp }
 }

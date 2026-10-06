@@ -15,10 +15,11 @@ export const useGetPlayer = () => {
 
   const query = useQuery<Player | undefined, Error>({
     queryKey: [PLAYER_QUERY_KEY],
-    queryFn: async () => {
+    queryFn: async ({ signal }) => {
       try {
         const res = await fetch("/api/user/get", {
           cache: "no-store",
+          signal,
         })
 
         if (res.status !== 200) {
@@ -30,7 +31,7 @@ export const useGetPlayer = () => {
         const data = (await res.json()) as Player
         return data
       } catch (error) {
-        console.error(error)
+        if (!signal.aborted) console.error(error)
       }
     },
     enabled: !!playerId,
