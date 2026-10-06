@@ -5,7 +5,7 @@
 - Keep communication short and concise. Avoid unnecessarily long explanations and code examples.
 - Prefer existing project patterns, components, hooks, and utilities before introducing new abstractions.
 - When a task is complete, run linting and formatting.
-- Never commit, stash or push anything in GIT, that will always be handled by a human.
+- Never commit, stage, stash or push anything in GIT, that will always be handled by a human.
 
 ## Project
 
@@ -29,11 +29,12 @@
   - Avoid manual memoization such as `useMemo` and `useCallback` unless there is a demonstrated need.
   - Keep components and hooks compliant with the Rules of React.
   - When updating component, also look for Storybook stories and tests and update them as well.
+- Code should have enough white space and air - have line breaks between components if it makes sense. Specially if they are visibly separate.
 
 ## Components
 
 - Prefer existing shadcn components in `components/ui/` when building interfaces.
-- Use icons from `lucide-react` only.
+- Use icons from `lucide-react` and `react-icons` only.
 - Use colors defined by the theme in `styles/globals.css`. Do not introduce colors outside the theme.
 - Prefer existing theme and Tailwind values over arbitrary values such as `w-[137px]`, `mt-[7px]`, or custom colors.
 - Prefer spacing values from this scale where practical: `1`, `2`, `4`, `6`, `8`, `12`, `16`, `32`, `64`.

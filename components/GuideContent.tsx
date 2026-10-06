@@ -4,7 +4,7 @@ import Image from "next/image"
 
 import { LOAN_LIMIT } from "@/constants/bank"
 import { NATIONS, TOWNS } from "@/constants/locations"
-import { BARTER_GOODS, TRADE_GOODS_TOWNS } from "@/constants/merchandise"
+import { BARTER_GOODS, MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_REPAIR_COST, SHIP_TYPES } from "@/constants/ship"
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import { TITLE_INFO } from "@/constants/title"
@@ -17,9 +17,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion"
+import { Badge } from "./ui/badge"
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -116,7 +118,83 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           className="mx-auto mb-4 aspect-[1.74]"
         />
 
-        <h3 className="mb-2 font-serif text-lg">Food and water</h3>
+        <h3 className="mt-8 mb-4 font-serif text-lg">Merchandise reference</h3>
+
+        <Table
+          aria-label="Merchandise reference"
+          className="rounded-xl bg-black/60 [&_td]:align-top"
+        >
+          <TableCaption>
+            Buy and sell prices are in gold per unit at the listed location.
+            Market offers may have different prices.
+          </TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead scope="col">Item and description</TableHead>
+              <TableHead scope="col">Category</TableHead>
+              <TableHead scope="col">Unit / units</TableHead>
+              <TableHead scope="col" className="text-right">
+                Buy
+              </TableHead>
+              <TableHead scope="col" className="text-right">
+                Sell
+              </TableHead>
+              <TableHead scope="col">Availability</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {Object.entries(MERCHANDISE).map(([item, merchandise]) => (
+              <TableRow key={item}>
+                <TableHead
+                  scope="row"
+                  className="h-auto max-w-64 min-w-48 py-4 align-top whitespace-normal"
+                >
+                  <div>{capitalize(item)}</div>
+                  <div className="text-muted-foreground mt-1 leading-relaxed font-normal">
+                    {merchandise.description}
+                  </div>
+                </TableHead>
+                <TableCell>
+                  <div className="flex flex-col items-start gap-1">
+                    {merchandise.isNecessity && (
+                      <Badge variant="secondary">Necessity</Badge>
+                    )}
+                    {merchandise.isUtility && (
+                      <Badge variant="secondary">Utility</Badge>
+                    )}
+                    {merchandise.isBarterGoods && (
+                      <Badge variant="secondary">Barter goods</Badge>
+                    )}
+                    {!merchandise.isNecessity &&
+                      !merchandise.isUtility &&
+                      !merchandise.isBarterGoods && (
+                        <span className="text-muted-foreground">None</span>
+                      )}
+                  </div>
+                </TableCell>
+                <TableCell className="whitespace-normal">
+                  {merchandise.singleUnit} / {merchandise.unit}
+                </TableCell>
+                <TableCell className="text-right tabular-nums">
+                  {merchandise.buy}
+                </TableCell>
+                <TableCell className="text-right tabular-nums">
+                  {merchandise.sell}
+                </TableCell>
+                <TableCell className="max-w-64 min-w-48 whitespace-normal">
+                  <div className="font-medium">
+                    {capitalize(merchandise.availableAt)}
+                  </div>
+                  <div className="text-muted-foreground mt-1 leading-relaxed">
+                    {merchandise.towns?.join(", ") ?? "All towns"}
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+
+        <h3 className="mt-4 mb-2 font-serif text-lg">Food and water</h3>
 
         <p className="mb-4">
           Before leaving port, you need at least 0.5 crates of food and 1 barrel
@@ -143,36 +221,11 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
 
         <p className="mb-4">
           Shops trade tobacco and rum in every town. The other barter goods can
-          only be bought and sold at shops in the towns shown below. Sell
-          tradable goods sells all barter goods accepted by the local shop and
-          leaves the rest in your inventory.
+          only be bought and sold at shops in the towns listed in the
+          merchandise reference above. Sell tradable goods sells all barter
+          goods accepted by the local shop and leaves the rest in your
+          inventory.
         </p>
-
-        <Table className="mb-2 rounded-xl bg-black/60">
-          <TableHeader>
-            <TableRow>
-              <TableHead>Town</TableHead>
-              {Object.keys(TRADE_GOODS_TOWNS).map((good) => (
-                <TableHead key={good} className="text-center">
-                  {capitalize(good)}
-                </TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-
-          <TableBody>
-            {(Object.keys(TOWNS) as Town[]).map((town) => (
-              <TableRow key={town}>
-                <TableCell className="font-medium">{town}</TableCell>
-                {Object.entries(TRADE_GOODS_TOWNS).map(([good, towns]) => (
-                  <TableCell key={good} className="text-center">
-                    {towns.includes(town) ? "✓" : "–"}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
       </AccordionContent>
     </AccordionItem>
 

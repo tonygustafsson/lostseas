@@ -8,7 +8,11 @@ export const MERCHANDISE: Record<
     description: string
     availableAt: "shop" | "shipyard"
     /** Marks items that can be traded for profit but have no other purpose. */
-    barter?: true
+    isBarterGoods?: true
+    /** Marks items that are essential for survival, like food and water. */
+    isNecessity?: true
+    /** Marks items that are useful for the ship or crew but not essential for survival. */
+    isUtility?: true
     /** If set, this item is only buyable/sellable in these specific towns. */
     towns?: Town[]
   }
@@ -20,6 +24,7 @@ export const MERCHANDISE: Record<
     unit: "crates",
     description: "You need food to travel the open seas.",
     availableAt: "shop",
+    isNecessity: true,
   },
   water: {
     buy: 12,
@@ -28,6 +33,7 @@ export const MERCHANDISE: Record<
     unit: "barrels",
     description: "You need water to travel the open seas.",
     availableAt: "shop",
+    isNecessity: true,
   },
   porcelain: {
     buy: 35,
@@ -36,7 +42,7 @@ export const MERCHANDISE: Record<
     unit: "crates",
     description: "A great trading asset. Not used for anything specific.",
     availableAt: "shop",
-    barter: true,
+    isBarterGoods: true,
     towns: [
       "Port Royale",
       "Barbados",
@@ -55,7 +61,7 @@ export const MERCHANDISE: Record<
     unit: "crates",
     description: "A great trading asset. Not used for anything specific.",
     availableAt: "shop",
-    barter: true,
+    isBarterGoods: true,
     towns: [
       "Charles Towne",
       "Belize",
@@ -75,6 +81,7 @@ export const MERCHANDISE: Record<
     description:
       "You can heal your crew with this mix of willow bark and herbs.",
     availableAt: "shop",
+    isUtility: true,
   },
   tobacco: {
     buy: 75,
@@ -83,7 +90,7 @@ export const MERCHANDISE: Record<
     unit: "crates",
     description: "A great trading asset and can also make your crew happy.",
     availableAt: "shop",
-    barter: true,
+    isBarterGoods: true,
   },
   rum: {
     buy: 150,
@@ -92,7 +99,7 @@ export const MERCHANDISE: Record<
     unit: "barrels",
     description: "A great trading asset and can also make your crew happy.",
     availableAt: "shop",
-    barter: true,
+    isBarterGoods: true,
   },
   sugar: {
     buy: 25,
@@ -101,7 +108,7 @@ export const MERCHANDISE: Record<
     unit: "crates",
     description: "A great trading asset. Not used for anything specific.",
     availableAt: "shop",
-    barter: true,
+    isBarterGoods: true,
     towns: [
       "Barbados",
       "Martinique",
@@ -122,7 +129,7 @@ export const MERCHANDISE: Record<
     unit: "bolts",
     description: "A great trading asset. Not used for anything specific.",
     availableAt: "shop",
-    barter: true,
+    isBarterGoods: true,
     towns: [
       "Charles Towne",
       "Port Royale",
@@ -141,7 +148,7 @@ export const MERCHANDISE: Record<
     unit: "crates",
     description: "A great trading asset. Not used for anything specific.",
     availableAt: "shop",
-    barter: true,
+    isBarterGoods: true,
     towns: [
       "Charles Towne",
       "Barbados",
@@ -160,7 +167,7 @@ export const MERCHANDISE: Record<
     unit: "bales",
     description: "A great trading asset. Not used for anything specific.",
     availableAt: "shop",
-    barter: true,
+    isBarterGoods: true,
     towns: [
       "Charles Towne",
       "Belize",
@@ -185,7 +192,9 @@ export const MERCHANDISE: Record<
 
 /** Items that can be traded for profit but have no functional purpose. */
 export const BARTER_GOODS = Object.keys(MERCHANDISE).filter(
-  (k) => MERCHANDISE[k as keyof typeof MERCHANDISE].barter
+  (k) =>
+    MERCHANDISE[k as keyof typeof MERCHANDISE].isBarterGoods ||
+    MERCHANDISE[k as keyof typeof MERCHANDISE].isUtility
 )
 
 /** Restricted trade goods mapped to the towns where they are available. */

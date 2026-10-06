@@ -5,7 +5,6 @@ import { useState } from "react"
 import useModal from "@/app/stores/modals"
 import LocationTabs from "@/components/LocationTabs"
 import { Button } from "@/components/ui/button"
-import { ButtonGroup, ButtonGroupText } from "@/components/ui/button-group"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShop } from "@/hooks/queries/useShop"
 import { getBarterGoodsValue } from "@/utils/shop"
@@ -64,19 +63,6 @@ const Shop = () => {
 
   return (
     <div className="flex flex-col">
-      <ButtonGroup className="mb-6 self-center">
-        <ButtonGroupText>Quick menu</ButtonGroupText>
-        <Button variant="outline" onClick={showBuyNecessities}>
-          Buy necessities
-        </Button>
-
-        {barterGoodsValue > 0 && (
-          <Button variant="outline" onClick={showSellBarterGoods}>
-            Sell tradable goods
-          </Button>
-        )}
-      </ButtonGroup>
-
       <LocationTabs<ShopTab>
         items={[
           { id: "buy", label: "Buy" },
@@ -86,8 +72,8 @@ const Shop = () => {
         setCurrentTab={setTab}
       />
 
-      {tab === "buy" && <ShopBuy />}
-      {tab === "sell" && <ShopSell />}
+      {tab === "buy" && <ShopBuy onBuyNecessities={showBuyNecessities} />}
+      {tab === "sell" && <ShopSell onSellBarterGoods={showSellBarterGoods} />}
     </div>
   )
 }

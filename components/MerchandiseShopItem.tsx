@@ -142,7 +142,7 @@ const MerchandiseShopItem = ({ player, item, type, onBuy, onSell }: Props) => {
           )}
 
           {type === "Sell" && (
-            <ButtonGroup className="w-fit">
+            <ButtonGroup className="w-full *:flex-1">
               <Button
                 type="button"
                 size="sm"
