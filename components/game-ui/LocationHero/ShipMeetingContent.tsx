@@ -1,16 +1,11 @@
 import Flag from "@/components/icons/Flag"
-import { Separator } from "@/components/ui/separator"
 import { NATIONS } from "@/constants/locations"
 import { getMannedCannons } from "@/utils/crew"
-
-import JourneyProgress from "./JourneyProgress"
 
 type Props = {
   shipMeeting: ShipMeetingState
   crewMembers: CrewMembers["count"]
   cannons: Inventory["cannons"]
-  journey: Character["journey"]
-  day: Character["day"]
   nationality: Character["nationality"]
 }
 
@@ -18,8 +13,6 @@ const ShipMeetingContent = ({
   shipMeeting,
   crewMembers,
   cannons,
-  journey,
-  day,
   nationality,
 }: Props) => {
   const mannedCannons = getMannedCannons(crewMembers, cannons)
@@ -28,9 +21,9 @@ const ShipMeetingContent = ({
 
   return (
     <>
-      <h1 className="mb-4 font-serif text-3xl lg:text-5xl">Sail ho!</h1>
+      <h1 className="mb-3 font-serif text-2xl">Sail ho!</h1>
 
-      <p className="mb-4 text-2xl">
+      <p className="mb-3 text-base">
         {shipMeeting.nation === "Pirate" && (
           <>
             You meet a{" "}
@@ -52,17 +45,9 @@ const ShipMeetingContent = ({
         crew members.
       </p>
 
-      <p>
+      <p className="text-base">
         You have {mannedCannons} manned cannons and {crewMembers} crew members.
       </p>
-
-      <Separator className="my-4 lg:my-6" />
-
-      <JourneyProgress
-        journey={journey}
-        day={day}
-        titleClass="text-xl! font-sans! lg:text-2xl!"
-      />
     </>
   )
 }

@@ -35,13 +35,13 @@ const AttackReport = () => {
           width={100}
           height={100}
           draggable={false}
-          className="mt-1 ml-4 size-12 shrink-0 select-none lg:size-25"
+          className="mt-1 ml-1 size-10 shrink-0 select-none lg:size-16"
         />
 
         <motion.div
           initial={{ translateX: -50, opacity: 0, scale: 0 }}
           animate={{ translateX: [-50, 0], opacity: [0, 1], scale: [0, 1] }}
-          className="bg-card relative mt-2 rounded-2xl border px-4 py-3 text-sm leading-snug italic"
+          className="bg-card relative mt-2 rounded-xl border px-3 py-2 text-base leading-snug italic"
         >
           <span className="border-r-border absolute top-4 -left-[9px] h-0 w-0 border-y-[8px] border-r-[9px] border-y-transparent" />
           <span className="border-r-card absolute top-4 -left-[7px] h-0 w-0 border-y-[8px] border-r-[8px] border-y-transparent" />
@@ -50,7 +50,7 @@ const AttackReport = () => {
       </div>
 
       {successReport && (
-        <ul className="flex flex-col gap-4">
+        <ul className="flex flex-col gap-2">
           {successReport.foundTreasure && (
             <AdvisorTipItem
               variant="success"
@@ -163,7 +163,7 @@ const AttackReport = () => {
       )}
 
       {failureReport && (
-        <ul className="flex flex-col gap-4">
+        <ul className="flex flex-col gap-2">
           <AdvisorTipItem
             variant="error"
             icon={<FaCoins className="h-7 w-7" />}

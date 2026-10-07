@@ -15,8 +15,8 @@ const ShipMeetingActions = () => {
   }
 
   return (
-    <div className="flex flex-col items-center px-4 py-5 sm:px-6 sm:py-6">
-      <span className="font-serif text-xl text-stone-100">
+    <div className="flex flex-col items-center px-2 py-2">
+      <span className="font-serif text-base text-stone-100">
         What do you want to do?
       </span>
 

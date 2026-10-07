@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 import useSound from "@/app/stores/sound"
-import { SEA_TRAVEL_SPEED } from "@/constants/sea"
 import apiRequest from "@/utils/apiRequest"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
@@ -14,13 +13,12 @@ export const useSea = () => {
     mutationFn: (data: { town: Town }) =>
       apiRequest("/api/sea/startJourney", data, "POST"),
     onSuccess: (response) => {
-      const { success } = response?.data
+      const { success } = response?.data ?? {}
 
       queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
       if (success) {
         playSoundEffect("journey")
-        setTimeout(() => continueJourney(), SEA_TRAVEL_SPEED)
       }
     },
     onError: (error) => console.error(error),
@@ -29,11 +27,10 @@ export const useSea = () => {
   const { mutate: continueJourney, isPending: isContinueingJourney } =
     useMutation({
       mutationFn: () => apiRequest("/api/sea/continueJourney", null, "POST"),
-      onSuccess: (response) => {
+      onSuccess: async (response) => {
         const {
           destinationReached,
           shipMeetingState,
-          error,
         }: Character["journey"] & {
           success: boolean
           destinationReached: boolean
@@ -41,17 +38,13 @@ export const useSea = () => {
           error?: string
         } = response?.data
 
-        queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+        await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
         if (shipMeetingState) {
           playSoundEffect("sailho")
         } else if (destinationReached) {
           playSoundEffect("landho")
         } else {
           playSoundEffect("journey")
-        }
-
-        if (!error && !destinationReached && !shipMeetingState) {
-          setTimeout(() => continueJourney(), SEA_TRAVEL_SPEED)
         }
       },
       onError: (error) => console.error(error),

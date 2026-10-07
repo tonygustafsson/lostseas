@@ -81,6 +81,7 @@ export async function POST(req: Request) {
       town: null,
       location: "Sea",
       journey: {
+        ...(player.character.town && { origin: player.character.town }),
         destination: town,
         day: 1,
         totalDays: distance,
