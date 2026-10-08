@@ -49,17 +49,21 @@ export async function POST() {
     !destinationReached && !player.locationStates?.sea?.justMetAShip
       ? Math.random() < 0.33
       : false
+
   const mannedCannons = getMannedCannons(
     player.crewMembers.count,
     player.inventory?.cannons
   )
+
   const hasPendingAttackReport = !!(
     player.locationStates?.sea?.attackSuccessReport ||
     player.locationStates?.sea?.attackFailureReport
   )
+
   const shipMeetingState = shouldMeetAShip
     ? createMeetingShip(mannedCannons, player.character.journey.destination)
     : null
+
   const clearedSeaState: DeepPartial<SeaState> = {
     shipMeeting: null,
     attackSuccessReport: null,
@@ -67,7 +71,9 @@ export async function POST() {
     justMetAShip: null,
   }
 
-  // Resume the paused final stretch before the normal arrival step.
+  // A ship met on the last day of sailing already moved journey.day to totalDays.
+  // Clear the meeting/attack state first and keep the player at sea, so the
+  // outcome is shown before the player arrives. The next call does the arrival.
   if (
     destinationReached &&
     (hasPendingAttackReport || player.locationStates?.sea?.justMetAShip)

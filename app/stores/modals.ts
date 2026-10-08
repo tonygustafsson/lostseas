@@ -21,7 +21,6 @@ export type ModalProps = {
   content: React.ReactNode
   open?: boolean
   fullWidth?: boolean
-  compact?: boolean
   onClose?: () => void
 }
 
