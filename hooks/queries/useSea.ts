@@ -31,14 +31,13 @@ export const useSea = () => {
         const {
           destinationReached,
           shipMeetingState,
-        }: Character["journey"] & {
-          success: boolean
+        }: {
           destinationReached: boolean
-          shipMeetingState: ShipMeetingState
-          error?: string
+          shipMeetingState: ShipMeetingState | null
         } = response?.data
 
         await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
         if (shipMeetingState) {
           playSoundEffect("sailho")
         } else if (destinationReached) {

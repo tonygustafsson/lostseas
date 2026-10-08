@@ -5,8 +5,8 @@ import { useEffect, useRef, useState } from "react"
 
 import { TOWNS } from "@/constants/locations"
 import { SEA_TRAVEL_SPEED } from "@/constants/sea"
-import { type Point, splitRoute } from "@/utils/seaPath"
-import { getJourneyOrigin, getSeaRoute } from "@/utils/seaRoutes"
+import type { Point } from "@/utils/seaPath"
+import { getJourneyOrigin, getSeaRoute, splitRoute } from "@/utils/seaRoutes"
 
 import Tooltip from "./Tooltip"
 

@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import ShowLocation from "@/components/game-ui/ShowLocation"
+import Sea from "@/components/location/Sea"
 import { SEA_TRAVEL_SPEED } from "@/constants/sea"
 
 const state = vi.hoisted(() => ({
@@ -40,18 +40,11 @@ vi.mock("@/hooks/queries/useSea", () => ({
   }),
 }))
 
-vi.mock("@/components/location/Bank", () => ({ default: () => null }))
-vi.mock("@/components/location/Cityhall", () => ({ default: () => null }))
-vi.mock("@/components/location/Harbor", () => ({ default: () => null }))
-vi.mock("@/components/location/Market", () => ({ default: () => null }))
-vi.mock("@/components/location/Shipyard", () => ({ default: () => null }))
-vi.mock("@/components/location/Shop", () => ({ default: () => null }))
-vi.mock("@/components/location/Tavern", () => ({ default: () => null }))
 vi.mock("@/components/Map/SeaMapCanvas", () => ({ default: () => null }))
-vi.mock("@/components/game-ui/LocationHero/JourneyProgress", () => ({
+vi.mock("@/components/location/Sea/JourneyProgress", () => ({
   default: () => null,
 }))
-vi.mock("@/components/game-ui/ShowLocation/SeaEventDialog", () => ({
+vi.mock("@/components/location/Sea/SeaEventDialog", () => ({
   default: () => null,
 }))
 
@@ -76,7 +69,7 @@ describe("journey timer", () => {
   })
 
   it("resumes a saved journey on load", () => {
-    ShowLocation()
+    Sea()
 
     vi.advanceTimersByTime(SEA_TRAVEL_SPEED - 1)
     expect(state.continueJourney).not.toHaveBeenCalled()
@@ -87,7 +80,7 @@ describe("journey timer", () => {
 
   it("schedules the arrival step on the final travel day", () => {
     state.player.character.journey!.day = 7
-    ShowLocation()
+    Sea()
 
     vi.advanceTimersByTime(SEA_TRAVEL_SPEED)
     expect(state.continueJourney).toHaveBeenCalledOnce()
@@ -99,7 +92,7 @@ describe("journey timer", () => {
     "attackFailureReport",
   ] as const)("pauses for %s", (event) => {
     state.player.locationStates!.sea = { [event]: {} } as SeaState
-    ShowLocation()
+    Sea()
 
     vi.advanceTimersByTime(SEA_TRAVEL_SPEED)
     expect(state.continueJourney).not.toHaveBeenCalled()
@@ -107,27 +100,20 @@ describe("journey timer", () => {
 
   it("waits for a pending journey mutation", () => {
     state.isPending = true
-    ShowLocation()
-
-    expect(vi.getTimerCount()).toBe(0)
-  })
-
-  it("does not schedule travel in port", () => {
-    state.player.character.location = "Harbor"
-    ShowLocation()
+    Sea()
 
     expect(vi.getTimerCount()).toBe(0)
   })
 
   it("does not schedule travel without a journey", () => {
     state.player.character.journey = undefined
-    ShowLocation()
+    Sea()
 
     expect(vi.getTimerCount()).toBe(0)
   })
 
   it("cancels the timer when the view unmounts or its state changes", () => {
-    ShowLocation()
+    Sea()
     state.cleanup?.()
 
     vi.advanceTimersByTime(SEA_TRAVEL_SPEED)

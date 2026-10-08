@@ -1,6 +1,8 @@
+// Builds the sea routes in constants/seaRoutes.json, see scripts/generate-sea-routes.mjs
+
 export type Point = { x: number; y: number }
 
-export type WaterGrid = {
+type WaterGrid = {
   width: number
   height: number
   cellSize: number
@@ -87,7 +89,7 @@ const isWaterCell = (grid: WaterGrid, cx: number, cy: number) =>
   cy < grid.height &&
   grid.water[cy * grid.width + cx] === 1
 
-export const isWaterAt = (grid: WaterGrid, point: Point) =>
+const isWaterAt = (grid: WaterGrid, point: Point) =>
   isWaterCell(
     grid,
     Math.floor(point.x / grid.cellSize),
@@ -99,7 +101,7 @@ const cellCenter = (grid: WaterGrid, index: number): Point => ({
   y: (Math.floor(index / grid.width) + 0.5) * grid.cellSize,
 })
 
-export const snapToWater = (grid: WaterGrid, point: Point) => {
+const snapToWater = (grid: WaterGrid, point: Point) => {
   const startX = Math.min(
     grid.width - 1,
     Math.max(0, Math.floor(point.x / grid.cellSize))
@@ -143,7 +145,7 @@ const octile = (grid: WaterGrid, a: number, b: number) => {
   return Math.max(dx, dy) + (Math.SQRT2 - 1) * Math.min(dx, dy)
 }
 
-export const findPath = (grid: WaterGrid, start: number, goal: number) => {
+const findPath = (grid: WaterGrid, start: number, goal: number) => {
   const size = grid.width * grid.height
   const cost = new Float64Array(size).fill(Infinity)
   const cameFrom = new Int32Array(size).fill(-1)
@@ -235,7 +237,7 @@ export const findPath = (grid: WaterGrid, start: number, goal: number) => {
   return null
 }
 
-export const hasLineOfSight = (grid: WaterGrid, a: Point, b: Point) => {
+const hasLineOfSight = (grid: WaterGrid, a: Point, b: Point) => {
   const distance = Math.hypot(b.x - a.x, b.y - a.y)
   const steps = Math.max(1, Math.ceil(distance / (grid.cellSize / 4)))
 
@@ -255,7 +257,7 @@ export const isPathOnWater = (grid: WaterGrid, points: Point[]) =>
     (point, i) => i === 0 || hasLineOfSight(grid, points[i - 1], point)
   )
 
-export const simplifyByLineOfSight = (grid: WaterGrid, points: Point[]) => {
+const simplifyByLineOfSight = (grid: WaterGrid, points: Point[]) => {
   if (points.length <= 2) return points
 
   const result = [points[0]]
@@ -272,7 +274,7 @@ export const simplifyByLineOfSight = (grid: WaterGrid, points: Point[]) => {
   return result
 }
 
-export const smoothPath = (points: Point[], spacing = 4) => {
+const smoothPath = (points: Point[], spacing = 4) => {
   if (points.length <= 2) return points
 
   const result: Point[] = []
@@ -311,7 +313,7 @@ export const smoothPath = (points: Point[], spacing = 4) => {
   return result
 }
 
-export const reducePoints = (points: Point[], tolerance: number): Point[] => {
+const reducePoints = (points: Point[], tolerance: number): Point[] => {
   if (points.length <= 2) return points
 
   const first = points[0]
@@ -366,48 +368,4 @@ export const computeSeaRoute = (
   }
 
   return null
-}
-
-export const getRouteLength = (route: Point[]) =>
-  route.reduce(
-    (total, point, i) =>
-      i === 0
-        ? 0
-        : total +
-          Math.hypot(point.x - route[i - 1].x, point.y - route[i - 1].y),
-    0
-  )
-
-// Splits the route at a progress between 0 and 1
-export const splitRoute = (route: Point[], progress: number) => {
-  const target = getRouteLength(route) * Math.min(1, Math.max(0, progress))
-  let travelled = 0
-
-  for (let i = 1; i < route.length; i++) {
-    const a = route[i - 1]
-    const b = route[i]
-    const segment = Math.hypot(b.x - a.x, b.y - a.y)
-
-    if (travelled + segment >= target) {
-      const t = segment === 0 ? 0 : (target - travelled) / segment
-      const position = { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t }
-
-      return {
-        position,
-        heading: { x: b.x - a.x, y: b.y - a.y },
-        travelledRoute: [...route.slice(0, i), position],
-      }
-    }
-
-    travelled += segment
-  }
-
-  const last = route[route.length - 1]
-  const beforeLast = route[route.length - 2] ?? last
-
-  return {
-    position: last,
-    heading: { x: last.x - beforeLast.x, y: last.y - beforeLast.y },
-    travelledRoute: route,
-  }
 }

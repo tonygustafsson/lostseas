@@ -60,6 +60,12 @@ export async function POST() {
   const shipMeetingState = shouldMeetAShip
     ? createMeetingShip(mannedCannons, player.character.journey.destination)
     : null
+  const clearedSeaState: DeepPartial<SeaState> = {
+    shipMeeting: null,
+    attackSuccessReport: null,
+    attackFailureReport: null,
+    justMetAShip: null,
+  }
 
   // Resume the paused final stretch before the normal arrival step.
   if (
@@ -67,14 +73,7 @@ export async function POST() {
     (hasPendingAttackReport || player.locationStates?.sea?.justMetAShip)
   ) {
     const newPlayer = patchDeep<Player>(player, {
-      locationStates: {
-        sea: {
-          shipMeeting: null,
-          attackSuccessReport: null,
-          attackFailureReport: null,
-          justMetAShip: null,
-        },
-      },
+      locationStates: { sea: clearedSeaState },
     })
 
     try {
@@ -117,12 +116,7 @@ export async function POST() {
         harbor: {
           lastHarborReason: "arrived",
         },
-        sea: {
-          shipMeeting: shipMeetingState,
-          attackSuccessReport: null,
-          attackFailureReport: null,
-          justMetAShip: null,
-        },
+        sea: clearedSeaState,
       },
     }
 
@@ -134,18 +128,16 @@ export async function POST() {
         `Arrived at destination ${player.character.journey?.destination || ""}.`
       )
 
-      if (destinationReached) {
-        try {
-          await saveStatistics(playerId, {
-            day: updatedPlayer.character.day,
-            gold: updatedPlayer.character.gold || 0,
-            score: getScore(updatedPlayer),
-            crewMembers: updatedPlayer.crewMembers.count || 0,
-            ships: Object.keys(updatedPlayer.ships || {}).length,
-          })
-        } catch (error) {
-          console.error("Failed to save player statistics", error)
-        }
+      try {
+        await saveStatistics(playerId, {
+          day: updatedPlayer.character.day,
+          gold: updatedPlayer.character.gold || 0,
+          score: getScore(updatedPlayer),
+          crewMembers: updatedPlayer.crewMembers.count || 0,
+          ships: Object.keys(updatedPlayer.ships || {}).length,
+        })
+      } catch (error) {
+        console.error("Failed to save player statistics", error)
       }
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })
@@ -161,12 +153,7 @@ export async function POST() {
         }),
       },
       locationStates: {
-        sea: {
-          shipMeeting: shipMeetingState,
-          attackSuccessReport: null,
-          attackFailureReport: null,
-          justMetAShip: null,
-        },
+        sea: { ...clearedSeaState, shipMeeting: shipMeetingState },
       },
       inventory: {
         food: newFood,

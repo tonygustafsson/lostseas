@@ -1,7 +1,6 @@
+import RadialProgressBar from "@/components/RadialProgressBar"
+import WeatherIcon from "@/components/WeatherIcon"
 import { getCurrentDate } from "@/utils/date"
-
-import RadialProgressBar from "../../RadialProgressBar"
-import WeatherIcon from "../../WeatherIcon"
 
 type Props = {
   journey: Character["journey"]

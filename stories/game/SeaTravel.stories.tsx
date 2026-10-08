@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactNode, useState } from "react"
 
 import useModal from "@/app/stores/modals"
-import SeaEventDialog from "@/components/game-ui/ShowLocation/SeaEventDialog"
+import SeaEventDialog from "@/components/location/Sea/SeaEventDialog"
 import Map from "@/components/Map"
 import Modal from "@/components/Modal"
 import { Button } from "@/components/ui/button"

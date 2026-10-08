@@ -1,12 +1,12 @@
 "use client"
 
-import AttackReport from "@/components/location/AttackReport"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
-import PostAttackActions from "../LocationHero/PostAttackActions"
-import ShipMeetingActions from "../LocationHero/ShipMeetingActions"
-import ShipMeetingContent from "../LocationHero/ShipMeetingContent"
+import AttackReport from "./AttackReport"
+import PostAttackActions from "./PostAttackActions"
+import ShipMeetingActions from "./ShipMeetingActions"
+import ShipMeetingContent from "./ShipMeetingContent"
 
 const SeaEventDialog = () => {
   const { data: player } = useGetPlayer()
