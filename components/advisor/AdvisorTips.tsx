@@ -16,6 +16,7 @@ import { getAdvisorWarnings } from "@/utils/getAdvisorWarnings"
 import AdvisorTipItem from "./AdvisorTipItem"
 
 type Props = {
+  heading?: string
   title: string
 }
 
@@ -109,7 +110,14 @@ const getWarningContent = (
   }
 }
 
-const AdvisorTips = ({ title }: Props) => {
+const getVariant = ({ tip, blocksTravel }: AdvisorWarningItem) => {
+  if (blocksTravel) return "error"
+  if (tip === "PROMOTION_AVAILABLE") return "success"
+
+  return "warning"
+}
+
+const AdvisorTips = ({ heading, title }: Props) => {
   const { data: player } = useGetPlayer()
 
   const warnings = getAdvisorWarnings(player)
@@ -118,7 +126,7 @@ const AdvisorTips = ({ title }: Props) => {
 
   return (
     <>
-      <div className="mb-2 flex items-center gap-2">
+      <div className="mx-auto mb-2 flex w-full max-w-2xl items-center gap-2">
         <Image
           src="/img/parrot.svg"
           alt="Parrot"
@@ -137,13 +145,18 @@ const AdvisorTips = ({ title }: Props) => {
             stiffness: 350,
             damping: 15,
           }}
-          className="text-muted-foreground text-sm leading-snug italic"
         >
-          {title}
+          {heading && (
+            <h2 className="font-serif text-lg font-bold">{heading}</h2>
+          )}
+
+          <p className="text-muted-foreground text-sm leading-snug italic">
+            {title}
+          </p>
         </motion.div>
       </div>
 
-      <ul className="flex flex-col gap-1">
+      <ul className="mx-auto flex max-w-2xl flex-col gap-1">
         {warnings.map((warning) => {
           const content = getWarningContent(warning, player)
 
@@ -153,8 +166,7 @@ const AdvisorTips = ({ title }: Props) => {
             <AdvisorTipItem
               key={warning.tip}
               icon={content.icon}
-              blocksTravel={warning.blocksTravel}
-              variant={warning.blocksTravel ? "error" : undefined}
+              variant={getVariant(warning)}
             >
               {content.text}
             </AdvisorTipItem>

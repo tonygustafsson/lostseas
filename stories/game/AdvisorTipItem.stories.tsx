@@ -21,7 +21,7 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 export const Default: Story = {}
-export const BlocksTravel: Story = { args: { blocksTravel: true } }
+export const Warning: Story = { args: { variant: "warning" } }
 export const Error: Story = { args: { variant: "error" } }
 export const Success: Story = {
   args: { variant: "success", children: "Your fleet is ready to sail." },

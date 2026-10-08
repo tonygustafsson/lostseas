@@ -3,10 +3,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactNode, useState } from "react"
 
 import useModal from "@/app/stores/modals"
+import Harbor from "@/components/location/Harbor"
 import SeaEventDialog from "@/components/location/Sea/SeaEventDialog"
-import Map from "@/components/Map"
-import Modal from "@/components/Modal"
-import { Button } from "@/components/ui/button"
 import { PLAYER_QUERY_KEY } from "@/hooks/queries/usePlayer"
 
 import { player } from "../fixtures"
@@ -49,11 +47,39 @@ const defeat: Player = {
   },
 }
 
-const blocked: Player = {
+const meeting = (shipMeeting: ShipMeetingState): Player => ({
   ...player,
-  ships: { endeavour: { ...player.ships.endeavour, health: 0 } },
-  inventory: { ...player.inventory, food: 0, water: 0 },
-  crewMembers: { ...player.crewMembers, mood: 0, health: 0 },
+  character: { ...player.character, location: "Sea", town: undefined },
+  locationStates: { sea: { shipMeeting } },
+})
+
+const enemyShip = meeting({
+  nation: "France",
+  shipType: "Galleon",
+  cannons: 6,
+  crewMembers: 12,
+})
+
+const alliedShip = meeting({
+  nation: "England",
+  shipType: "Frigate",
+  cannons: 8,
+  crewMembers: 16,
+})
+
+const pirateShip = meeting({
+  nation: "Pirate",
+  shipType: "Brig",
+  cannons: 10,
+  crewMembers: 20,
+})
+
+const harborArrival: Player = {
+  ...player,
+  character: { ...player.character, location: "Harbor" },
+  crewMembers: { ...player.crewMembers, mood: 20 },
+  inventory: { ...player.inventory, food: 5 },
+  locationStates: { harbor: { lastHarborReason: "arrived" } },
 }
 
 const PlayerPreview = ({
@@ -76,35 +102,10 @@ const PlayerPreview = ({
   )
 }
 
-const DeparturePreview = () => {
-  const { setModal } = useModal()
-
-  return (
-    <>
-      <p>Current location: Shop, Port Royale</p>
-
-      <Button
-        onClick={() =>
-          setModal({
-            id: "map",
-            title: "Map",
-            fullWidth: true,
-            content: <Map currentTown="Port Royale" />,
-          })
-        }
-      >
-        Open map
-      </Button>
-
-      <Modal />
-    </>
-  )
-}
-
 const meta = {
   title: "game/SeaTravel",
   component: SeaEventDialog,
-  parameters: { player: victory },
+  parameters: { player },
   beforeEach() {
     useModal.setState(useModal.getInitialState(), true)
   },
@@ -120,9 +121,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Victory: Story = {}
+export const Victory: Story = { parameters: { player: victory } }
 export const Defeat: Story = { parameters: { player: defeat } }
-export const BlockedDeparture: Story = {
-  parameters: { player: blocked },
-  render: () => <DeparturePreview />,
+export const EnemyShip: Story = { parameters: { player: enemyShip } }
+export const AlliedShip: Story = { parameters: { player: alliedShip } }
+export const PirateShip: Story = { parameters: { player: pirateShip } }
+export const HarborArrival: Story = {
+  parameters: { player: harborArrival },
+  render: () => <Harbor />,
 }

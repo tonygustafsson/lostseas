@@ -28,9 +28,9 @@ const SeaEventDialog = () => {
         onInteractOutside={(event) => event.preventDefault()}
         className="border-border bg-background/95 max-h-[90dvh] gap-2 overflow-y-auto p-4 shadow-2xl backdrop-blur-md sm:max-w-lg"
       >
-        <DialogTitle className="sr-only">
-          {shipMeeting ? "Ship encounter" : "Battle report"}
-        </DialogTitle>
+        {!shipMeeting && (
+          <DialogTitle className="sr-only">Battle report</DialogTitle>
+        )}
 
         {shipMeeting && (
           <>
