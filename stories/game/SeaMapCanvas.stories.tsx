@@ -24,17 +24,3 @@ export const AtSea: Story = {
     },
   },
 }
-
-export const ShipMeeting: Story = {
-  args: { ...AtSea.args, isPaused: true },
-}
-
-export const AtSeaWithoutOrigin: Story = {
-  args: {
-    journey: {
-      destination: "Port Royale",
-      day: 2,
-      totalDays: 5,
-    },
-  },
-}
