@@ -182,14 +182,16 @@ const SeaMapCanvas = ({
 
     const drawShip = ({ x, y }: Point, now: number, flip = false) => {
       const width = isAtSea ? SEA_SHIP_WIDTH : SHIP_WIDTH
-      const boxSize = width + (isAtSea ? 1 : 2)
+      const radius = width * 1.25
+      const glow = context.createRadialGradient(x, y, 0, x, y, radius)
+      glow.addColorStop(0, colors.shipGlow)
+      glow.addColorStop(1, "transparent")
 
       context.save()
-      context.fillStyle = colors.lightBlue
-      context.strokeStyle = colors.black
-      context.lineWidth = 0.75
-      context.fillRect(x - boxSize / 2, y - boxSize / 2, boxSize, boxSize)
-      context.strokeRect(x - boxSize / 2, y - boxSize / 2, boxSize, boxSize)
+      context.fillStyle = glow
+      context.beginPath()
+      context.arc(x, y, radius, 0, Math.PI * 2)
+      context.fill()
 
       if (shipImage.complete && shipImage.naturalWidth > 0) {
         const height = width * SHIP_ASPECT_RATIO

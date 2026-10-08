@@ -4,7 +4,7 @@ export const MAP_ZOOM = 1.5
 export const TOWN_ANCHOR_SIZE = 20
 
 export const mapColors = {
-  lightBlue: "#3e9cbe",
+  shipGlow: "rgb(0 0 0 / 0.65)",
   darkBlue: "#00435c",
   black: "#000",
   trail: "oklch(0.577 0.245 27.325 / 0.6)",
