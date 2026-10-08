@@ -30,7 +30,7 @@ export const getJourneyOrigin = (journey: Journey) =>
       TOWNS[town].map.distanceTo[journey.destination] === journey.totalDays
   )
 
-const getRouteLength = (route: Point[]) =>
+export const getRouteLength = (route: Point[]) =>
   route.reduce(
     (total, point, i) =>
       i === 0
@@ -41,8 +41,12 @@ const getRouteLength = (route: Point[]) =>
   )
 
 // Splits the route at a progress between 0 and 1
-export const splitRoute = (route: Point[], progress: number) => {
-  const target = getRouteLength(route) * Math.min(1, Math.max(0, progress))
+export const splitRoute = (
+  route: Point[],
+  progress: number,
+  routeLength = getRouteLength(route)
+) => {
+  const target = routeLength * Math.min(1, Math.max(0, progress))
   let travelled = 0
 
   for (let i = 1; i < route.length; i++) {

@@ -6,29 +6,28 @@ import { useEffect, useRef, useState } from "react"
 import { TOWNS } from "@/constants/locations"
 import { SEA_TRAVEL_SPEED } from "@/constants/sea"
 import type { Point } from "@/utils/seaPath"
-import { getJourneyOrigin, getSeaRoute, splitRoute } from "@/utils/seaRoutes"
+import {
+  getJourneyOrigin,
+  getRouteLength,
+  getSeaRoute,
+  splitRoute,
+} from "@/utils/seaRoutes"
 
+import {
+  MAP_HEIGHT,
+  MAP_WIDTH,
+  MAP_ZOOM,
+  mapColors as colors,
+  TOWN_ANCHOR_SIZE,
+} from "./constants"
+import SeaMapTowns from "./SeaMapTowns"
 import Tooltip from "./Tooltip"
 
-const MAP_WIDTH = 850
-const MAP_HEIGHT = 540
 const MAP_CENTER = { x: MAP_WIDTH / 2, y: MAP_HEIGHT / 2 }
-const MAP_ZOOM = 1.5
 const FRAME_INTERVAL = 1000 / 30
-const TOWN_SIZE = 12
-const TOWN_ANCHOR_SIZE = 20
-const TOWN_HIT_PADDING = 6
 const SHIP_WIDTH = 12
 const SEA_SHIP_WIDTH = 16
 const SHIP_ASPECT_RATIO = 494 / 642
-
-const colors = {
-  lightBlue: "#3e9cbe",
-  darkBlue: "#00435c",
-  black: "#000",
-  trail: "oklch(0.577 0.245 27.325 / 0.6)",
-  trailTravelled: "oklch(0.577 0.245 27.325)",
-}
 
 const imageCache: Record<string, HTMLImageElement> = {}
 
@@ -40,8 +39,6 @@ const getCachedImage = (src: string) => {
 
   return imageCache[src]
 }
-
-const towns = Object.keys(TOWNS) as Town[]
 
 type Props = {
   currentTown?: Town
@@ -95,6 +92,7 @@ const SeaMapCanvas = ({
 
     const route =
       origin && destination ? getSeaRoute(origin, destination) : null
+    const routeLength = route ? getRouteLength(route) : 0
     const previewRoute =
       currentTown && hoveredTown && !isAtSea
         ? getSeaRoute(currentTown, hoveredTown)
@@ -219,7 +217,9 @@ const SeaMapCanvas = ({
 
       const elapsed = Math.min(1, (now - startTime) / SEA_TRAVEL_SPEED)
       const progress = fromProgress + (toProgress - fromProgress) * elapsed
-      const routeProgress = route ? splitRoute(route, progress) : null
+      const routeProgress = route
+        ? splitRoute(route, progress, routeLength)
+        : null
 
       prepareFrame(
         isAtSea ? (routeProgress?.position ?? MAP_CENTER) : undefined
@@ -313,6 +313,8 @@ const SeaMapCanvas = ({
     drag.current.suppressClick = false
   }
 
+  const hideTownTooltip = () => setHovered(null)
+
   const showTownTooltip = (
     town: Town,
     event: React.PointerEvent<HTMLButtonElement>
@@ -363,7 +365,7 @@ const SeaMapCanvas = ({
       onPointerUp={stopPanning}
       onPointerCancel={cancelPanning}
       onPointerLeave={(event) => {
-        setHovered(null)
+        hideTownTooltip()
         if (!event.currentTarget.hasPointerCapture(drag.current.pointerId)) {
           cancelPanning()
         }
@@ -371,7 +373,7 @@ const SeaMapCanvas = ({
     >
       <div
         ref={backgroundRef}
-        className="absolute top-0 left-0 origin-top-left select-none"
+        className="absolute top-0 left-0 origin-top-left will-change-transform select-none"
         style={{ width: MAP_WIDTH, height: MAP_HEIGHT }}
       >
         <Image
@@ -386,71 +388,14 @@ const SeaMapCanvas = ({
           className="pointer-events-none absolute inset-0 size-full"
         />
 
-        {towns.map((town) => {
-          const { x, y, textAlign } = TOWNS[town].map
-          const isCurrentTown = town === currentTown
-          const canSelectTown = !!onSelectTown && !isAtSea && !isCurrentTown
-
-          return (
-            <button
-              key={town}
-              type="button"
-              disabled={!canSelectTown}
-              aria-label={
-                isCurrentTown ? `${town}, current town` : `Sail to ${town}`
-              }
-              className="group absolute flex items-center justify-center outline-offset-2 focus-visible:outline-2 enabled:cursor-pointer disabled:pointer-events-none"
-              style={{
-                left: x - TOWN_HIT_PADDING,
-                top: y - TOWN_HIT_PADDING,
-                width: TOWN_ANCHOR_SIZE + TOWN_HIT_PADDING * 2,
-                height: TOWN_ANCHOR_SIZE + TOWN_HIT_PADDING * 2,
-              }}
-              onPointerMove={(event) => showTownTooltip(town, event)}
-              onPointerLeave={() => setHovered(null)}
-              onFocus={(event) => focusTown(town, event)}
-              onBlur={() => setHovered(null)}
-              onClick={(event) => selectTown(town, event)}
-            >
-              <Image
-                src="/img/map/town.svg"
-                alt=""
-                width={TOWN_SIZE}
-                height={TOWN_SIZE}
-                style={{ width: TOWN_SIZE, height: TOWN_SIZE }}
-                unoptimized
-                draggable={false}
-                className={
-                  canSelectTown
-                    ? "group-hover:scale-110 group-focus-visible:scale-110"
-                    : undefined
-                }
-              />
-
-              <span
-                className="pointer-events-none absolute font-mono whitespace-nowrap text-white"
-                style={{
-                  left:
-                    TOWN_HIT_PADDING +
-                    (textAlign === "right"
-                      ? 26 / MAP_ZOOM
-                      : -(town.length * 2) / MAP_ZOOM),
-                  top:
-                    TOWN_HIT_PADDING +
-                    (textAlign === "right" ? 6 : 25) / MAP_ZOOM,
-                  fontSize: 10 / MAP_ZOOM,
-                  lineHeight: `${12 / MAP_ZOOM}px`,
-                  backgroundColor: isCurrentTown
-                    ? colors.darkBlue
-                    : colors.black,
-                  opacity: isCurrentTown ? 0.9 : 0.8,
-                }}
-              >
-                {`\u00a0${town}\u00a0`}
-              </span>
-            </button>
-          )
-        })}
+        <SeaMapTowns
+          currentTown={currentTown}
+          canSelectTowns={!!onSelectTown && !isAtSea}
+          onHoverTown={showTownTooltip}
+          onLeaveTown={hideTownTooltip}
+          onFocusTown={focusTown}
+          onSelectTown={selectTown}
+        />
       </div>
 
       <canvas

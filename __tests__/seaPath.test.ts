@@ -2,7 +2,12 @@ import { describe, expect, it } from "vitest"
 
 import { TOWNS } from "@/constants/locations"
 import { buildWaterGrid, computeSeaRoute, isPathOnWater } from "@/utils/seaPath"
-import { getJourneyOrigin, getSeaRoute, splitRoute } from "@/utils/seaRoutes"
+import {
+  getJourneyOrigin,
+  getRouteLength,
+  getSeaRoute,
+  splitRoute,
+} from "@/utils/seaRoutes"
 
 // 30x20 mask with a land wall at x 12-17, open only at the bottom rows
 const createMask = () => {
@@ -60,6 +65,19 @@ describe("seaPath", () => {
     expect(splitRoute(route, 0.75).position).toEqual({ x: 10, y: 5 })
     expect(splitRoute(route, 0.75).heading).toEqual({ x: 0, y: 10 })
     expect(splitRoute(route, 1).position).toEqual({ x: 10, y: 10 })
+  })
+
+  it("splits a route using a precomputed length", () => {
+    const route = [
+      { x: 0, y: 0 },
+      { x: 10, y: 0 },
+      { x: 10, y: 10 },
+    ]
+
+    expect(getRouteLength(route)).toBe(20)
+    expect(splitRoute(route, 0.75, getRouteLength(route))).toEqual(
+      splitRoute(route, 0.75)
+    )
   })
 })
 
