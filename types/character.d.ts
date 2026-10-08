@@ -3,7 +3,6 @@ type Journey = {
   destination: Town
   day: number
   totalDays: number
-  ongoingJourney?: true
 }
 
 type Character = {

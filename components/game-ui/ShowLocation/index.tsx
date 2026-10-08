@@ -51,11 +51,7 @@ const ShowLocation = () => {
         <div className="relative mt-8 overflow-hidden rounded-xl border border-neutral-700 bg-neutral-700 first:mt-0">
           <SeaMapCanvas journey={journey} isPaused={isPaused} />
           <div className="absolute top-3 left-3 z-10 max-w-[calc(100%-1.5rem)] rounded-lg border border-white/15 bg-neutral-950/90 px-3 py-2 shadow-lg backdrop-blur-sm">
-            <JourneyProgress
-              journey={journey}
-              day={player.character.day}
-              compact
-            />
+            <JourneyProgress journey={journey} day={player.character.day} />
           </div>
         </div>
       )}

@@ -24,7 +24,11 @@ const victory: Player = {
         lootedMerchandise: { food: 12, water: 8, cannons: 1, repairKits: 2 },
         crewHealthLoss: 4,
         shipHealthLoss: 7,
-        foundTreasure: { name: "Inca mask", rewarder: "Havana" },
+        foundTreasure: {
+          id: "story-treasure",
+          name: "Inca mask",
+          rewarder: "Havana",
+        },
       },
     },
   },

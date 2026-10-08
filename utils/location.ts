@@ -1,5 +1,4 @@
 import { LOCATIONS, TOWNS } from "@/constants/locations"
-import { getRandomInt } from "@/utils/random"
 
 export const getTownsNationality = (
   town: Town | undefined
@@ -19,23 +18,11 @@ export const getRandomTown = (nation: Nation) => {
 
 export const getLocationBackground = (
   town: Character["town"],
-  location: Character["location"],
-  shipMeeting?: ShipMeetingState | null
-) => {
-  if (location === "Sea" && shipMeeting) {
-    const randomImageNumber = getRandomInt(1, 16)
-    return `/img/location/ship-meeting/ship-meeting${randomImageNumber}.webp`
-  }
-
-  if (location === "Sea") {
-    const randomImageNumber = getRandomInt(1, 21)
-    return `/img/location/sea/sea${randomImageNumber}.webp`
-  }
-
-  return `/img/location/${town?.toLowerCase().replace(" ", "-")}/${location
+  location: Character["location"]
+) =>
+  `/img/location/${town?.toLowerCase().replace(" ", "-")}/${location
     .toLowerCase()
     .replace(" ", "-")}.webp`
-}
 
 export const getAllTownLocationBackgrounds = (town: Character["town"]) => {
   const images = Object.values(LOCATIONS)
@@ -48,17 +35,4 @@ export const getAllTownLocationBackgrounds = (town: Character["town"]) => {
     )
 
   return images
-}
-
-export const getAllSeaLocationBackgrounds = () => {
-  const seaBackgrounds = Array.from({ length: 21 }, (_, i) => i + 1).map(
-    (i) => `/img/location/sea/sea${i}.webp`
-  )
-
-  const shipMeetingBackgrounds = Array.from(
-    { length: 16 },
-    (_, i) => i + 1
-  ).map((i) => `/img/location/ship-meeting/ship-meeting${i}.webp`)
-
-  return [...seaBackgrounds, ...shipMeetingBackgrounds]
 }

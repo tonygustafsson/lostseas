@@ -75,7 +75,7 @@ describe("journey timer", () => {
     vi.useRealTimers()
   })
 
-  it("resumes a saved journey without an ongoingJourney flag", () => {
+  it("resumes a saved journey on load", () => {
     ShowLocation()
 
     vi.advanceTimersByTime(SEA_TRAVEL_SPEED - 1)
