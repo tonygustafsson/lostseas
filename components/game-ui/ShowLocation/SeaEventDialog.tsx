@@ -23,9 +23,10 @@ const SeaEventDialog = () => {
     <Dialog open>
       <DialogContent
         showCloseButton={false}
+        aria-describedby={undefined}
         onEscapeKeyDown={(event) => event.preventDefault()}
         onInteractOutside={(event) => event.preventDefault()}
-        className="max-h-[90dvh] max-w-lg gap-3 overflow-y-auto border-sky-300/20 bg-slate-950/95 p-5 text-base shadow-2xl backdrop-blur-md"
+        className="border-border bg-background/95 max-h-[90dvh] gap-2 overflow-y-auto p-4 shadow-2xl backdrop-blur-md sm:max-w-lg"
       >
         <DialogTitle className="sr-only">
           {shipMeeting ? "Ship encounter" : "Battle report"}

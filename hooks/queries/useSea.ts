@@ -12,10 +12,10 @@ export const useSea = () => {
   const { mutate: startJourney, isPending: isStartingJourney } = useMutation({
     mutationFn: (data: { town: Town }) =>
       apiRequest("/api/sea/startJourney", data, "POST"),
-    onSuccess: (response) => {
+    onSuccess: async (response) => {
       const { success } = response?.data ?? {}
 
-      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+      await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
       if (success) {
         playSoundEffect("journey")

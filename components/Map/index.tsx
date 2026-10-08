@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from "next/navigation"
 
 import useModal from "@/app/stores/modals"
+import DepartureWarnings from "@/components/advisor/DepartureWarnings"
 import { useSea } from "@/hooks/queries/useSea"
 
 import SeaMapCanvas from "./SeaMapCanvas"
@@ -12,19 +13,34 @@ type Props = {
 }
 
 const Map = ({ currentTown }: Props) => {
-  const { startJourney } = useSea()
-  const { removeModal } = useModal()
+  const { startJourney, isStartingJourney } = useSea()
+  const { removeModal, setModal } = useModal()
   const router = useRouter()
   const pathname = usePathname()
 
   const handleStartJourney = (town: Town) => {
-    removeModal("map")
+    if (isStartingJourney) return
 
-    if (pathname !== "/") {
-      router.push("/")
-    }
+    startJourney(
+      { town },
+      {
+        onSuccess: (response) => {
+          if (response?.data?.success === false) {
+            removeModal("map")
+            setModal({
+              id: "departureWarnings",
+              title: "Cannot set sail",
+              compact: true,
+              content: <DepartureWarnings />,
+            })
+          } else if (response?.data?.success) {
+            removeModal("map")
 
-    startJourney({ town })
+            if (pathname !== "/") router.push("/")
+          }
+        },
+      }
+    )
   }
 
   return (

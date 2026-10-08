@@ -11,18 +11,15 @@ const PostAttackActions = () => {
   }
 
   return (
-    <div className="flex flex-col items-center px-2 py-2">
-      <div className="flex flex-wrap justify-center gap-3">
-        <Button
-          className="min-w-40 rounded-full px-5 text-base"
-          disabled={isContinueingJourney}
-          onClick={handleContinueJourney}
-        >
-          <GiShoonerSailboat />
-          Continue journey
-        </Button>
-      </div>
-    </div>
+    <Button
+      size="sm"
+      className="mt-2 w-full"
+      disabled={isContinueingJourney}
+      onClick={handleContinueJourney}
+    >
+      <GiShoonerSailboat />
+      Continue journey
+    </Button>
   )
 }
 

@@ -1,4 +1,3 @@
-import { m as motion } from "framer-motion"
 import Image from "next/image"
 import { useMemo } from "react"
 import { FaCoins, FaUsers } from "react-icons/fa"
@@ -17,210 +16,145 @@ import {
 
 const AttackReport = () => {
   const { data: player } = useGetPlayer()
-
   const successReport = player?.locationStates?.sea?.attackSuccessReport
   const failureReport = player?.locationStates?.sea?.attackFailureReport
+  const report = successReport || failureReport
+  const foundTreasure = successReport?.foundTreasure
 
   const quip = useMemo(
     () => (successReport ? getAttackSuccessQuip() : getAttackFailureQuip()),
     [successReport]
   )
 
+  if (!player || !report) return null
+
   return (
     <>
-      <div className="flex items-start gap-2">
+      <div className="flex items-center gap-2">
         <Image
           src="/img/parrot.svg"
           alt="Parrot"
           width={100}
           height={100}
           draggable={false}
-          className="mt-1 ml-1 size-10 shrink-0 select-none lg:size-16"
+          className="size-8 shrink-0 select-none"
         />
 
-        <motion.div
-          initial={{ translateX: -50, opacity: 0, scale: 0 }}
-          animate={{ translateX: [-50, 0], opacity: [0, 1], scale: [0, 1] }}
-          className="bg-card relative mt-2 rounded-xl border px-3 py-2 text-base leading-snug italic"
-        >
-          <span className="border-r-border absolute top-4 -left-[9px] h-0 w-0 border-y-[8px] border-r-[9px] border-y-transparent" />
-          <span className="border-r-card absolute top-4 -left-[7px] h-0 w-0 border-y-[8px] border-r-[8px] border-y-transparent" />
-          {quip}
-        </motion.div>
+        <div>
+          <h2 className="font-serif text-lg font-bold">
+            {successReport ? "Victory" : "Defeat"}
+          </h2>
+          <p className="text-muted-foreground text-sm leading-snug italic">
+            {quip}
+          </p>
+        </div>
       </div>
 
-      {successReport && (
-        <ul className="flex flex-col gap-2">
-          {successReport.foundTreasure && (
-            <AdvisorTipItem
-              variant="success"
-              icon={
-                <TreasureIcon
-                  item={successReport.foundTreasure.name}
-                  className="h-7 w-7"
-                />
-              }
-            >
-              You found a treasure - the {successReport.foundTreasure.name}.
-              Rumors say it&apos;s worth{" "}
-              {
-                TREASURES.find(
-                  (treasure) =>
-                    successReport.foundTreasure &&
-                    treasure.name === successReport.foundTreasure?.name
-                )?.value
-              }{" "}
-              gold and that the governor of{" "}
-              {successReport.foundTreasure.rewarder} is looking for it.
-            </AdvisorTipItem>
-          )}
+      <ul className="flex flex-col gap-1">
+        {successReport && (
+          <>
+            {foundTreasure && (
+              <AdvisorTipItem
+                variant="success"
+                icon={<TreasureIcon item={foundTreasure.name} />}
+              >
+                Found {foundTreasure.name}: worth{" "}
+                {
+                  TREASURES.find(
+                    (treasure) => treasure.name === foundTreasure.name
+                  )?.value
+                }{" "}
+                gold. Bring it to the governor of {foundTreasure.rewarder}.
+              </AdvisorTipItem>
+            )}
 
-          {successReport.lootedGold && (
-            <AdvisorTipItem
-              variant="success"
-              icon={<FaCoins className="h-7 w-7" />}
-            >
-              Your looted {successReport.lootedGold} gold and now have a total
-              of {player.character.gold} gold.
-            </AdvisorTipItem>
-          )}
+            {successReport.lootedGold > 0 && (
+              <AdvisorTipItem variant="success" icon={<FaCoins />}>
+                +{successReport.lootedGold} gold · {player.character.gold} total
+              </AdvisorTipItem>
+            )}
 
-          {successReport.crewMoodIncrease && (
-            <AdvisorTipItem
-              variant="success"
-              icon={<GiBandana className="h-7 w-7" />}
-            >
-              Your crews mood went up with {successReport.crewMoodIncrease}% and
-              is now at {player.crewMembers.mood}%.
-            </AdvisorTipItem>
-          )}
+            {successReport.crewMoodIncrease > 0 && (
+              <AdvisorTipItem variant="success" icon={<GiBandana />}>
+                Crew mood +{successReport.crewMoodIncrease} ·{" "}
+                {player.crewMembers.mood}% now
+              </AdvisorTipItem>
+            )}
 
-          {!!successReport.crewMemberRecruits && (
-            <AdvisorTipItem
-              variant="success"
-              icon={<FaUsers className="h-7 w-7" />}
-            >
-              {successReport.crewMemberRecruits} crew members of the enemy ship
-              decided to join you, and you now have a total of{" "}
-              {player.crewMembers.count} crew members.
-            </AdvisorTipItem>
-          )}
+            {successReport.crewMemberRecruits > 0 && (
+              <AdvisorTipItem variant="success" icon={<FaUsers />}>
+                +{successReport.crewMemberRecruits} crew ·{" "}
+                {player.crewMembers.count} total
+              </AdvisorTipItem>
+            )}
 
-          {successReport.lootedMerchandise &&
-            Object.entries(successReport.lootedMerchandise).map(
+            {Object.entries(successReport.lootedMerchandise || {}).map(
               ([key, value]) => {
+                if (value <= 0) return null
+
+                const item = key as keyof Inventory
                 const unit =
                   value === 1
-                    ? MERCHANDISE[key as keyof Inventory].singleUnit
-                    : MERCHANDISE[key as keyof Inventory].unit
+                    ? MERCHANDISE[item].singleUnit
+                    : MERCHANDISE[item].unit
 
                 return (
                   <AdvisorTipItem
                     variant="success"
-                    key={`looted-merchandise-report-${key}`}
-                    icon={<MerchandiseIcon item={key as keyof Inventory} />}
+                    key={key}
+                    icon={<MerchandiseIcon item={item} />}
                   >
-                    {unit === "cannons" && <>You looted {value} cannons.</>}
-                    {unit !== "cannons" && (
-                      <>
-                        You looted {value} {unit && `${unit} of `} {key}.
-                      </>
-                    )}
+                    +{value}{" "}
+                    {item === "cannons"
+                      ? unit
+                      : `${unit} ${unit ? "of " : ""}${item === "repairKits" ? "repair kits" : item}`}
                   </AdvisorTipItem>
                 )
               }
             )}
+          </>
+        )}
 
-          {successReport.crewHealthLoss && (
-            <AdvisorTipItem
-              variant="error"
-              icon={<GiBandana className="h-7 w-7" />}
-            >
-              Your crew lost {successReport.crewHealthLoss}% health, and now has
-              a health of {player?.crewMembers.health}%.
+        {failureReport && (
+          <>
+            <AdvisorTipItem variant="error" icon={<FaCoins />}>
+              All carried gold lost · Bank savings safe
             </AdvisorTipItem>
-          )}
 
-          {successReport.shipHealthLoss && (
-            <AdvisorTipItem
-              variant="error"
-              icon={<GiShoonerSailboat className="h-7 w-7" />}
-            >
-              Your ships lost {successReport.shipHealthLoss}% health. Your ships
-              now have the health of
-              <ul className="list-inside list-decimal">
-                {Object.entries(player?.ships).map(
-                  ([shipId, { name, health, type }]) => (
-                    <li key={shipId} className="list-item">
-                      {name} ({type}): {health}%
-                    </li>
-                  )
-                )}
-              </ul>
+            <AdvisorTipItem variant="error" icon={<GiOpenedFoodCan />}>
+              {failureReport.inventoryPercentageLoss === 100
+                ? "All inventory lost"
+                : `${failureReport.inventoryPercentageLoss}% of inventory lost`}
             </AdvisorTipItem>
-          )}
-        </ul>
-      )}
 
-      {failureReport && (
-        <ul className="flex flex-col gap-2">
-          <AdvisorTipItem
-            variant="error"
-            icon={<FaCoins className="h-7 w-7" />}
-          >
-            You lost all your gold. (Funds in bank are still safe)
+            {failureReport.sunkShip && (
+              <AdvisorTipItem variant="error" icon={<GiShoonerSailboat />}>
+                Ship sunk: {failureReport.sunkShip}
+              </AdvisorTipItem>
+            )}
+          </>
+        )}
+
+        {report.crewHealthLoss > 0 && (
+          <AdvisorTipItem variant="error" icon={<GiBandana />}>
+            Crew health −{report.crewHealthLoss} · {player.crewMembers.health}%
+            now
           </AdvisorTipItem>
+        )}
 
-          <AdvisorTipItem
-            variant="error"
-            icon={<GiOpenedFoodCan className="h-7 w-7" />}
-          >
-            You lost{" "}
-            {failureReport.inventoryPercentageLoss === 100
-              ? "all"
-              : `${failureReport.inventoryPercentageLoss}%`}{" "}
-            of your inventory.
+        {report.shipHealthLoss > 0 && (
+          <AdvisorTipItem variant="error" icon={<GiShoonerSailboat />}>
+            Ship health −{report.shipHealthLoss}
+            {Object.keys(player.ships).length > 0 && (
+              <span className="block text-xs">
+                {Object.values(player.ships)
+                  .map((ship) => `${ship.name} (${ship.type}) ${ship.health}%`)
+                  .join(" · ")}
+              </span>
+            )}
           </AdvisorTipItem>
-
-          {failureReport.crewHealthLoss && (
-            <AdvisorTipItem
-              variant="error"
-              icon={<GiBandana className="h-7 w-7" />}
-            >
-              Your crew lost {failureReport.crewHealthLoss}% health, and now has
-              a health of {player.crewMembers.health}%.
-            </AdvisorTipItem>
-          )}
-
-          {failureReport.sunkShip && (
-            <AdvisorTipItem
-              variant="error"
-              icon={<GiShoonerSailboat className="h-7 w-7" />}
-            >
-              They sunk your ship {failureReport.sunkShip}.
-            </AdvisorTipItem>
-          )}
-
-          {failureReport.shipHealthLoss && (
-            <AdvisorTipItem
-              variant="error"
-              icon={<GiShoonerSailboat className="h-7 w-7" />}
-            >
-              Your ships lost {failureReport.shipHealthLoss}% health. Your ships
-              now have the health of
-              <ul className="list-inside list-decimal">
-                {Object.entries(player?.ships).map(
-                  ([shipId, { name, health, type }]) => (
-                    <li key={shipId} className="list-item">
-                      {name} ({type}): {health}%
-                    </li>
-                  )
-                )}
-              </ul>
-            </AdvisorTipItem>
-          )}
-        </ul>
-      )}
+        )}
+      </ul>
     </>
   )
 }

@@ -1,5 +1,7 @@
 import { ReactNode } from "react"
 
+import { cn } from "@/lib/utils"
+
 type Props = {
   icon: ReactNode
   children: ReactNode
@@ -8,16 +10,22 @@ type Props = {
 }
 
 const variantClass = {
-  success: "bg-green-900",
-  error: "bg-red-900",
+  success: "bg-success/10",
+  error: "bg-destructive/10",
 }
 
 const AdvisorTipItem = ({ icon, children, blocksTravel, variant }: Props) => (
   <li
-    className={`flex gap-4 rounded-md p-4 ${variant ? variantClass[variant] : "bg-card"} ${blocksTravel ? "border-destructive border-l-2" : ""}`}
+    className={cn(
+      "flex items-start gap-2 rounded-md px-2 py-1 text-sm leading-snug",
+      variant ? variantClass[variant] : "bg-card",
+      blocksTravel && "border-destructive border-l-2"
+    )}
   >
-    <div className="text-accent shrink-0">{icon}</div>
-    <div className="flex-1">{children}</div>
+    <div className="text-accent mt-1 shrink-0 *:size-4" aria-hidden="true">
+      {icon}
+    </div>
+    <div className="min-w-0 flex-1">{children}</div>
   </li>
 )
 

@@ -730,9 +730,10 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <p className="mb-4">
           You can visit any town regardless of your nationality. Choose another
           town on the map to start a journey. If you cannot leave port, the
-          advisor at the harbor explains which problems you need to resolve.
-          While at sea, the map shows your ship sailing one day at a time along
-          its route, stopping whenever you encounter another ship.
+          advisor explains which problems you need to resolve in a popup. You
+          stay at your current location until you are ready to sail. While at
+          sea, the map shows your ship sailing one day at a time along its
+          route, stopping whenever you encounter another ship.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Time</h3>

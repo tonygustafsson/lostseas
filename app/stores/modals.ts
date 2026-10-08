@@ -13,6 +13,7 @@ export type ModalId =
   | "removeShip"
   | "dismissCrewMembers"
   | "screenshot"
+  | "departureWarnings"
 
 export type ModalProps = {
   id: ModalId
@@ -20,6 +21,7 @@ export type ModalProps = {
   content: React.ReactNode
   open?: boolean
   fullWidth?: boolean
+  compact?: boolean
   onClose?: () => void
 }
 

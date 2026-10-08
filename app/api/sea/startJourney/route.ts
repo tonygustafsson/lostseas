@@ -61,18 +61,6 @@ export async function POST(req: Request) {
   const success = !getAdvisorWarnings(player).some((w) => w.blocksTravel)
 
   if (!success) {
-    // Prevent journey if validation fails,
-    // same warning system is used in frontend
-    const harborUpdate: DeepPartial<Player> = {
-      character: { location: "Harbor" },
-    }
-    const harborPlayer = patchDeep<Player>(player, harborUpdate)
-
-    try {
-      await savePlayer(harborPlayer)
-    } catch (error) {
-      return NextResponse.json({ error }, { status: 500 })
-    }
     return NextResponse.json({ success: false })
   }
 
