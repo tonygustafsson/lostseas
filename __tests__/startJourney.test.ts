@@ -66,6 +66,8 @@ describe("starting a journey", () => {
   })
 
   it("starts sailing normally when only advisory warnings remain", async () => {
+    mocks.player!.crewMembers.count = 10
+
     const response = await startJourney(request())
 
     expect(response.status).toBe(200)
