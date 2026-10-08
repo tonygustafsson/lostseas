@@ -1,16 +1,18 @@
 "use client"
 
+import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 
 import { TOWNS } from "@/constants/locations"
 import { SEA_TRAVEL_SPEED } from "@/constants/sea"
-import { splitRoute } from "@/utils/seaPath"
+import { type Point, splitRoute } from "@/utils/seaPath"
 import { getJourneyOrigin, getSeaRoute } from "@/utils/seaRoutes"
 
 import Tooltip from "./Tooltip"
 
 const MAP_WIDTH = 850
 const MAP_HEIGHT = 540
+const MAP_CENTER = { x: MAP_WIDTH / 2, y: MAP_HEIGHT / 2 }
 const MAP_ZOOM = 1.5
 const FRAME_INTERVAL = 1000 / 30
 const TOWN_SIZE = 12
@@ -24,24 +26,20 @@ const colors = {
   lightBlue: "#3e9cbe",
   darkBlue: "#00435c",
   black: "#000",
-  white: "#fff",
   trail: "oklch(0.577 0.245 27.325 / 0.6)",
   trailTravelled: "oklch(0.577 0.245 27.325)",
 }
 
 const imageCache: Record<string, HTMLImageElement> = {}
 
-const getImage = (src: string) => {
+const getCachedImage = (src: string) => {
   if (!imageCache[src]) {
-    imageCache[src] = new Image()
+    imageCache[src] = new window.Image()
     imageCache[src].src = src
   }
 
   return imageCache[src]
 }
-
-const isLoaded = (image: HTMLImageElement) =>
-  image.complete && image.naturalWidth > 0
 
 const towns = Object.keys(TOWNS) as Town[]
 
@@ -58,18 +56,17 @@ const SeaMapCanvas = ({
   isPaused = false,
   onSelectTown,
 }: Props) => {
+  const viewportRef = useRef<HTMLDivElement>(null)
+  const backgroundRef = useRef<HTMLDivElement>(null)
+  const mapImageRef = useRef<HTMLImageElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animation = useRef({ routeKey: "", progress: 0 })
-  const view = useRef({
-    scale: 1,
-    scaleY: 1,
-    x: MAP_WIDTH / 2,
-    y: MAP_HEIGHT / 2,
-  })
+  const camera = useRef({ ...MAP_CENTER, scale: 1, scaleY: 1 })
   const centeredTown = useRef<Town | undefined>(undefined)
-  const initializedView = useRef(false)
   const drag = useRef({
     pointerId: -1,
+    startX: 0,
+    startY: 0,
     lastX: 0,
     lastY: 0,
     moved: false,
@@ -90,9 +87,11 @@ const SeaMapCanvas = ({
   const isAtSea = !!journey
 
   useEffect(() => {
+    const viewport = viewportRef.current
+    const background = backgroundRef.current
     const canvas = canvasRef.current
     const context = canvas?.getContext("2d")
-    if (!canvas || !context) return
+    if (!viewport || !background || !canvas || !context) return
 
     const route =
       origin && destination ? getSeaRoute(origin, destination) : null
@@ -106,47 +105,71 @@ const SeaMapCanvas = ({
       animation.current = { routeKey, progress: startProgress }
     }
 
+    if (!isAtSea && centeredTown.current !== currentTown) {
+      const center = currentTown ? TOWNS[currentTown].map : MAP_CENTER
+      camera.current.x = center.x
+      camera.current.y = center.y
+      centeredTown.current = currentTown
+    }
+
     const fromProgress = animation.current.progress
     const toProgress = isPaused ? fromProgress : targetProgress
     const startTime = performance.now()
+    const shipImage = getCachedImage("/img/logo.svg")
+    let previousTransform = ""
 
-    const mapImage = getImage("/img/map/spanish-main.png")
-    const townImage = getImage("/img/map/town.svg")
-    const shipImage = getImage("/img/logo.svg")
-    const townLayer = document.createElement("canvas")
-    const townContext = townLayer.getContext("2d")
-    if (!townContext) return
-    let townImageLoaded = false
+    // Align the DOM background and transparent canvas to the same camera.
+    const prepareFrame = (shipPosition?: Point) => {
+      if (shipPosition) {
+        camera.current.x = shipPosition.x
+        camera.current.y = shipPosition.y
+      }
 
-    const drawShip = (
-      x: number,
-      y: number,
-      width: number,
-      now: number,
-      flip: boolean
-    ) => {
-      if (!isLoaded(shipImage)) return
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2)
+      const width = viewport.clientWidth
+      const height = viewport.clientHeight
+      const canvasWidth = Math.round(width * pixelRatio)
+      const canvasHeight = Math.round(height * pixelRatio)
 
-      const height = width * SHIP_ASPECT_RATIO
-      const wave = Math.sin((now / 1500) * Math.PI * 2)
+      if (canvas.width !== canvasWidth || canvas.height !== canvasHeight) {
+        canvas.width = canvasWidth
+        canvas.height = canvasHeight
+      }
 
-      context.save()
-      context.translate(x, y + wave * 0.5)
-      context.rotate((wave * 3 * Math.PI) / 180)
-      if (flip) context.scale(-1, 1)
-      context.drawImage(shipImage, -width / 2, -height / 2, width, height)
-      context.restore()
+      context.setTransform(1, 0, 0, 1, 0, 0)
+      context.clearRect(0, 0, canvasWidth, canvasHeight)
+
+      const mapImage = mapImageRef.current
+      const mapYScale = mapImage?.naturalWidth
+        ? (MAP_WIDTH * mapImage.naturalHeight) /
+          (mapImage.naturalWidth * MAP_HEIGHT)
+        : 1
+      const scale =
+        Math.max(1, width / MAP_WIDTH, height / MAP_HEIGHT) * MAP_ZOOM
+      const scaleY = scale * mapYScale
+      const offsetX = width / 2 - camera.current.x * scale
+      const offsetY = height / 2 - camera.current.y * scaleY
+      const transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale}, ${scaleY})`
+
+      camera.current.scale = scale
+      camera.current.scaleY = scaleY
+
+      if (previousTransform !== transform) {
+        background.style.transform = transform
+        previousTransform = transform
+      }
+
+      context.setTransform(
+        scale * pixelRatio,
+        0,
+        0,
+        scaleY * pixelRatio,
+        offsetX * pixelRatio,
+        offsetY * pixelRatio
+      )
     }
 
-    const drawShipBox = (x: number, y: number, size: number) => {
-      context.fillStyle = colors.lightBlue
-      context.strokeStyle = colors.black
-      context.lineWidth = 0.75
-      context.fillRect(x, y, size, size)
-      context.strokeRect(x, y, size, size)
-    }
-
-    const drawRoute = (points: { x: number; y: number }[], color: string) => {
+    const drawDashedRoute = (points: Point[], color: string) => {
       context.save()
       context.strokeStyle = color
       context.lineWidth = 2
@@ -159,166 +182,77 @@ const SeaMapCanvas = ({
       context.restore()
     }
 
-    const drawTown = (town: Town) => {
-      const { x, y, textAlign } = TOWNS[town].map
-      const isCurrentTown = town === currentTown
-      const scale = town === hoveredTown ? 1.1 : 1
-      const size = TOWN_SIZE * scale
-      const offset = (TOWN_ANCHOR_SIZE - size) / 2
+    const drawShip = ({ x, y }: Point, now: number, flip = false) => {
+      const width = isAtSea ? SEA_SHIP_WIDTH : SHIP_WIDTH
+      const boxSize = width + (isAtSea ? 1 : 2)
 
-      if (isLoaded(townImage)) {
-        townContext.drawImage(townImage, x + offset, y + offset, size, size)
+      context.save()
+      context.fillStyle = colors.lightBlue
+      context.strokeStyle = colors.black
+      context.lineWidth = 0.75
+      context.fillRect(x - boxSize / 2, y - boxSize / 2, boxSize, boxSize)
+      context.strokeRect(x - boxSize / 2, y - boxSize / 2, boxSize, boxSize)
+
+      if (shipImage.complete && shipImage.naturalWidth > 0) {
+        const height = width * SHIP_ASPECT_RATIO
+        const wave = Math.sin((now / 1500) * Math.PI * 2)
+
+        context.translate(x, y + wave * 0.5)
+        context.rotate((wave * 3 * Math.PI) / 180)
+        if (flip) context.scale(-1, 1)
+        context.drawImage(shipImage, -width / 2, -height / 2, width, height)
       }
 
-      const label = `\u00a0${town}\u00a0`
-      const labelX =
-        textAlign === "right"
-          ? x + 26 / MAP_ZOOM
-          : x - (town.length * 2) / MAP_ZOOM
-      const labelY = y + (textAlign === "right" ? 15 : 34) / MAP_ZOOM
-      const labelWidth = townContext.measureText(label).width
-
-      townContext.save()
-      townContext.globalAlpha = isCurrentTown ? 0.9 : 0.8
-      townContext.fillStyle = isCurrentTown ? colors.darkBlue : colors.black
-      townContext.fillRect(
-        labelX,
-        labelY - 9 / MAP_ZOOM,
-        labelWidth,
-        12 / MAP_ZOOM
-      )
-      townContext.fillStyle = colors.white
-      townContext.fillText(label, labelX, labelY)
-      townContext.restore()
+      context.restore()
     }
 
+    // Animate only the ship and route; map imagery and towns stay in the DOM.
     let frame = 0
     let lastDrawTime = -Infinity
 
-    const draw = (now: number) => {
-      frame = requestAnimationFrame(draw)
+    const drawFrame = (now: number) => {
+      frame = requestAnimationFrame(drawFrame)
       if (document.hidden || now - lastDrawTime < FRAME_INTERVAL) return
       lastDrawTime = Number.isFinite(lastDrawTime)
         ? now - ((now - lastDrawTime) % FRAME_INTERVAL)
         : now
 
-      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2)
-      const width = Math.round(canvas.clientWidth * pixelRatio)
-      const height = Math.round(canvas.clientHeight * pixelRatio)
-      const scale = Math.max(
-        1,
-        canvas.clientWidth / MAP_WIDTH,
-        canvas.clientHeight / MAP_HEIGHT
-      )
-
-      if (canvas.width !== width || canvas.height !== height) {
-        canvas.width = width
-        canvas.height = height
-      }
-
-      context.setTransform(1, 0, 0, 1, 0, 0)
-      context.clearRect(0, 0, width, height)
-
       const elapsed = Math.min(1, (now - startTime) / SEA_TRAVEL_SPEED)
       const progress = fromProgress + (toProgress - fromProgress) * elapsed
       const routeProgress = route ? splitRoute(route, progress) : null
-      const shipPosition = routeProgress
-        ? routeProgress.position
-        : currentTown
-          ? TOWNS[currentTown].map
-          : { x: MAP_WIDTH / 2, y: MAP_HEIGHT / 2 }
 
-      if (isAtSea) {
-        view.current.x = shipPosition.x
-        view.current.y = shipPosition.y
-      } else if (
-        !initializedView.current ||
-        centeredTown.current !== currentTown
-      ) {
-        const center = currentTown
-          ? TOWNS[currentTown].map
-          : { x: MAP_WIDTH / 2, y: MAP_HEIGHT / 2 }
-        view.current.x = center.x
-        view.current.y = center.y
-        centeredTown.current = currentTown
-        initializedView.current = true
-      }
-      const mapYScale = isLoaded(mapImage)
-        ? (MAP_WIDTH * mapImage.naturalHeight) /
-          (mapImage.naturalWidth * MAP_HEIGHT)
-        : 1
-      const viewScale = scale * MAP_ZOOM
-      view.current.scale = viewScale
-      view.current.scaleY = viewScale * mapYScale
-      const focus = isAtSea ? shipPosition : view.current
-      context.setTransform(
-        viewScale * pixelRatio,
-        0,
-        0,
-        view.current.scaleY * pixelRatio,
-        (canvas.clientWidth / 2 - focus.x * viewScale) * pixelRatio,
-        (canvas.clientHeight / 2 - focus.y * view.current.scaleY) * pixelRatio
+      prepareFrame(
+        isAtSea ? (routeProgress?.position ?? MAP_CENTER) : undefined
       )
-      if (isLoaded(mapImage)) {
-        context.drawImage(mapImage, 0, 0, MAP_WIDTH, MAP_HEIGHT)
-      }
 
-      if (previewRoute) drawRoute(previewRoute, colors.trailTravelled)
-
-      const townWidth = Math.ceil(MAP_WIDTH * viewScale * pixelRatio)
-      const townHeight = Math.ceil(
-        MAP_HEIGHT * view.current.scaleY * pixelRatio
-      )
-      const isTownImageLoaded = isLoaded(townImage)
-
-      if (
-        townLayer.width !== townWidth ||
-        townLayer.height !== townHeight ||
-        townImageLoaded !== isTownImageLoaded
-      ) {
-        townLayer.width = townWidth
-        townLayer.height = townHeight
-        townContext.setTransform(
-          townWidth / MAP_WIDTH,
-          0,
-          0,
-          townHeight / MAP_HEIGHT,
-          0,
-          0
-        )
-        townContext.font = `${10 / MAP_ZOOM}px monospace`
-        towns.forEach(drawTown)
-        townImageLoaded = isTownImageLoaded
-      }
-
-      context.drawImage(townLayer, 0, 0, MAP_WIDTH, MAP_HEIGHT)
-
-      if (currentTown && !isAtSea) {
-        const { x, y } = TOWNS[currentTown].map
-
-        drawShipBox(x - 16, y, 14)
-        drawShip(x - 9, y + 7, SHIP_WIDTH, now, false)
-      }
+      if (previewRoute) drawDashedRoute(previewRoute, colors.trailTravelled)
 
       if (route && routeProgress) {
-        const { position, heading, travelledRoute } = routeProgress
-
         animation.current.progress = progress
-
-        drawRoute(route, colors.trail)
-        drawRoute(travelledRoute, colors.trailTravelled)
-        drawShipBox(
-          position.x - SEA_SHIP_WIDTH / 2 - 0.5,
-          position.y - SEA_SHIP_WIDTH / 2 - 0.5,
-          SEA_SHIP_WIDTH + 1
-        )
-        drawShip(position.x, position.y, SEA_SHIP_WIDTH, now, heading.x < 0)
+        drawDashedRoute(route, colors.trail)
+        drawDashedRoute(routeProgress.travelledRoute, colors.trailTravelled)
+        drawShip(routeProgress.position, now, routeProgress.heading.x < 0)
+      } else if (currentTown && !isAtSea) {
+        const { x, y } = TOWNS[currentTown].map
+        drawShip({ x: x - 9, y: y + 7 }, now)
       }
     }
 
-    frame = requestAnimationFrame(draw)
+    const panWithWheel = (event: WheelEvent) => {
+      if (isAtSea) return
 
-    return () => cancelAnimationFrame(frame)
+      event.preventDefault()
+      camera.current.x += event.deltaX / camera.current.scale
+      camera.current.y += event.deltaY / camera.current.scaleY
+    }
+
+    viewport.addEventListener("wheel", panWithWheel, { passive: false })
+    frame = requestAnimationFrame(drawFrame)
+
+    return () => {
+      cancelAnimationFrame(frame)
+      viewport.removeEventListener("wheel", panWithWheel)
+    }
   }, [
     origin,
     destination,
@@ -330,98 +264,195 @@ const SeaMapCanvas = ({
     hoveredTown,
   ])
 
-  const getTownAt = (event: React.MouseEvent<HTMLCanvasElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect()
-    const x =
-      view.current.x +
-      (event.clientX - rect.left - rect.width / 2) / view.current.scale
-    const y =
-      view.current.y +
-      (event.clientY - rect.top - rect.height / 2) / view.current.scaleY
-
-    return towns.find((town) => {
-      const { map } = TOWNS[town]
-
-      return (
-        town !== currentTown &&
-        x >= map.x - TOWN_HIT_PADDING &&
-        x <= map.x + TOWN_ANCHOR_SIZE + TOWN_HIT_PADDING &&
-        y >= map.y - TOWN_HIT_PADDING &&
-        y <= map.y + TOWN_ANCHOR_SIZE + TOWN_HIT_PADDING
-      )
-    })
-  }
-
-  const onPointerMove = (event: React.PointerEvent<HTMLCanvasElement>) => {
-    if (drag.current.pointerId === event.pointerId) {
-      const deltaX = event.clientX - drag.current.lastX
-      const deltaY = event.clientY - drag.current.lastY
-      drag.current.lastX = event.clientX
-      drag.current.lastY = event.clientY
-      drag.current.moved ||= Math.abs(deltaX) + Math.abs(deltaY) > 2
-
-      if (drag.current.moved) {
-        view.current.x -= deltaX / view.current.scale
-        view.current.y -= deltaY / view.current.scaleY
-      }
-
-      setHovered(null)
-      return
-    }
-
-    const town = getTownAt(event)
-
-    setHovered(
-      town ? { town, top: event.clientY + 20, left: event.clientX + 20 } : null
-    )
-  }
-
-  const onPointerDown = (event: React.PointerEvent<HTMLCanvasElement>) => {
+  const startPanning = (event: React.PointerEvent<HTMLDivElement>) => {
     if (isAtSea || event.button !== 0) return
 
     drag.current = {
       pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
       lastX: event.clientX,
       lastY: event.clientY,
       moved: false,
       suppressClick: false,
     }
-    event.currentTarget.setPointerCapture(event.pointerId)
   }
 
-  const onPointerUp = (event: React.PointerEvent<HTMLCanvasElement>) => {
+  const panMap = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (drag.current.pointerId !== event.pointerId) return
+
+    const deltaX = event.clientX - drag.current.lastX
+    const deltaY = event.clientY - drag.current.lastY
+    drag.current.lastX = event.clientX
+    drag.current.lastY = event.clientY
+    drag.current.moved ||=
+      Math.hypot(
+        event.clientX - drag.current.startX,
+        event.clientY - drag.current.startY
+      ) > 2
+
+    if (drag.current.moved) {
+      // Capture only after dragging starts so a town still receives a click.
+      event.currentTarget.setPointerCapture(event.pointerId)
+      camera.current.x -= deltaX / camera.current.scale
+      camera.current.y -= deltaY / camera.current.scaleY
+      setHovered(null)
+    }
+  }
+
+  const stopPanning = (event: React.PointerEvent<HTMLDivElement>) => {
     if (drag.current.pointerId !== event.pointerId) return
 
     drag.current.suppressClick = drag.current.moved
     drag.current.pointerId = -1
   }
 
-  const onPointerCancel = () => {
+  const cancelPanning = () => {
     drag.current.pointerId = -1
     drag.current.moved = false
     drag.current.suppressClick = false
   }
 
-  const onWheel = (event: React.WheelEvent<HTMLCanvasElement>) => {
-    if (isAtSea) return
+  const showTownTooltip = (
+    town: Town,
+    event: React.PointerEvent<HTMLButtonElement>
+  ) => {
+    if (drag.current.moved && drag.current.pointerId !== -1) return
 
-    event.preventDefault()
-    view.current.x += event.deltaX / view.current.scale
-    view.current.y += event.deltaY / view.current.scaleY
+    setHovered({ town, top: event.clientY + 20, left: event.clientX + 20 })
   }
 
-  const onClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
-    if (drag.current.suppressClick) {
+  // Bring keyboard-focused towns into view without moving the map on a mouse click.
+  const focusTown = (
+    town: Town,
+    event: React.FocusEvent<HTMLButtonElement>
+  ) => {
+    const viewport = viewportRef.current
+    if (!viewport || !event.currentTarget.matches(":focus-visible")) return
+
+    const { x, y } = TOWNS[town].map
+    camera.current.x = x + TOWN_ANCHOR_SIZE / 2
+    camera.current.y = y + TOWN_ANCHOR_SIZE / 2
+    const rect = viewport.getBoundingClientRect()
+
+    setHovered({
+      town,
+      top: rect.top + rect.height / 2 + 20,
+      left: rect.left + rect.width / 2 + 20,
+    })
+  }
+
+  const selectTown = (
+    town: Town,
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    if (drag.current.suppressClick && event.detail !== 0) {
       drag.current.suppressClick = false
       return
     }
 
-    const town = getTownAt(event)
-    if (town) onSelectTown?.(town)
+    onSelectTown?.(town)
   }
 
   return (
-    <div className="mx-auto w-full bg-neutral-700 opacity-80 lg:max-w-7xl">
+    <div
+      ref={viewportRef}
+      className={`relative mx-auto aspect-850/540 w-full touch-none overflow-clip bg-neutral-700 opacity-80 lg:max-w-7xl portrait:aspect-auto portrait:h-[calc(95dvh-8rem)] ${isAtSea ? "" : "cursor-grab active:cursor-grabbing"}`}
+      onPointerDown={startPanning}
+      onPointerMove={panMap}
+      onPointerUp={stopPanning}
+      onPointerCancel={cancelPanning}
+      onPointerLeave={(event) => {
+        setHovered(null)
+        if (!event.currentTarget.hasPointerCapture(drag.current.pointerId)) {
+          cancelPanning()
+        }
+      }}
+    >
+      <div
+        ref={backgroundRef}
+        className="absolute top-0 left-0 origin-top-left select-none"
+        style={{ width: MAP_WIDTH, height: MAP_HEIGHT }}
+      >
+        <Image
+          ref={mapImageRef}
+          src="/img/map/spanish-main.png"
+          alt=""
+          width={MAP_WIDTH}
+          height={MAP_HEIGHT}
+          unoptimized
+          loading="eager"
+          draggable={false}
+          className="pointer-events-none absolute inset-0 size-full"
+        />
+
+        {towns.map((town) => {
+          const { x, y, textAlign } = TOWNS[town].map
+          const isCurrentTown = town === currentTown
+          const canSelectTown = !!onSelectTown && !isAtSea && !isCurrentTown
+
+          return (
+            <button
+              key={town}
+              type="button"
+              disabled={!canSelectTown}
+              aria-label={
+                isCurrentTown ? `${town}, current town` : `Sail to ${town}`
+              }
+              className="group absolute flex items-center justify-center outline-offset-2 focus-visible:outline-2 enabled:cursor-pointer disabled:pointer-events-none"
+              style={{
+                left: x - TOWN_HIT_PADDING,
+                top: y - TOWN_HIT_PADDING,
+                width: TOWN_ANCHOR_SIZE + TOWN_HIT_PADDING * 2,
+                height: TOWN_ANCHOR_SIZE + TOWN_HIT_PADDING * 2,
+              }}
+              onPointerMove={(event) => showTownTooltip(town, event)}
+              onPointerLeave={() => setHovered(null)}
+              onFocus={(event) => focusTown(town, event)}
+              onBlur={() => setHovered(null)}
+              onClick={(event) => selectTown(town, event)}
+            >
+              <Image
+                src="/img/map/town.svg"
+                alt=""
+                width={TOWN_SIZE}
+                height={TOWN_SIZE}
+                style={{ width: TOWN_SIZE, height: TOWN_SIZE }}
+                unoptimized
+                draggable={false}
+                className={
+                  canSelectTown
+                    ? "group-hover:scale-110 group-focus-visible:scale-110"
+                    : undefined
+                }
+              />
+
+              <span
+                className="pointer-events-none absolute font-mono whitespace-nowrap text-white"
+                style={{
+                  left:
+                    TOWN_HIT_PADDING +
+                    (textAlign === "right"
+                      ? 26 / MAP_ZOOM
+                      : -(town.length * 2) / MAP_ZOOM),
+                  top:
+                    TOWN_HIT_PADDING +
+                    (textAlign === "right" ? 6 : 25) / MAP_ZOOM,
+                  fontSize: 10 / MAP_ZOOM,
+                  lineHeight: `${12 / MAP_ZOOM}px`,
+                  backgroundColor: isCurrentTown
+                    ? colors.darkBlue
+                    : colors.black,
+                  opacity: isCurrentTown ? 0.9 : 0.8,
+                }}
+              >
+                {`\u00a0${town}\u00a0`}
+              </span>
+            </button>
+          )
+        })}
+      </div>
+
       <canvas
         ref={canvasRef}
         role="img"
@@ -430,14 +461,7 @@ const SeaMapCanvas = ({
             ? `Sea map, sailing to ${journey.destination}`
             : "Sea map of the Spanish Main"
         }
-        className={`aspect-850/540 w-full touch-none portrait:aspect-auto portrait:h-[calc(95dvh-8rem)] ${isAtSea ? "" : "cursor-grab active:cursor-grabbing"} ${hovered ? "cursor-pointer" : ""}`}
-        onPointerDown={onPointerDown}
-        onPointerMove={onSelectTown ? onPointerMove : undefined}
-        onPointerUp={onPointerUp}
-        onPointerCancel={onPointerCancel}
-        onPointerLeave={() => setHovered(null)}
-        onWheel={onWheel}
-        onClick={onSelectTown ? onClick : undefined}
+        className="pointer-events-none absolute inset-0 size-full"
       />
 
       <Tooltip

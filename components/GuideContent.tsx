@@ -748,8 +748,10 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         </p>
 
         <p className="mb-4">
-          Continuing after a battle report uses supplies but does not advance
-          the date, except when that step is your arrival.
+          Continuing after a battle report does not advance the date. It uses
+          supplies unless you are on the final travel day. On that day, your
+          ship finishes sailing to town before arrival advances the date and
+          uses supplies.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Weather</h3>

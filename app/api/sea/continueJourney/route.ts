@@ -61,6 +61,38 @@ export async function POST() {
     ? createMeetingShip(mannedCannons, player.character.journey.destination)
     : null
 
+  // Resume the paused final stretch before the normal arrival step.
+  if (
+    destinationReached &&
+    (hasPendingAttackReport || player.locationStates?.sea?.justMetAShip)
+  ) {
+    const newPlayer = patchDeep<Player>(player, {
+      locationStates: {
+        sea: {
+          shipMeeting: null,
+          attackSuccessReport: null,
+          attackFailureReport: null,
+          justMetAShip: null,
+        },
+      },
+    })
+
+    try {
+      await savePlayer(newPlayer)
+    } catch (error) {
+      return NextResponse.json({ error }, { status: 500 })
+    }
+
+    return NextResponse.json({
+      success: true,
+      day: player.character.journey.day,
+      totalDays: player.character.journey.totalDays,
+      destination: player.character.journey.destination,
+      destinationReached: false,
+      shipMeetingState: null,
+    })
+  }
+
   const foodConsumption = player.crewMembers.count * 0.1
   let newFood = Math.round((player.inventory?.food || 0) - foodConsumption)
   if (newFood < 0) newFood = 0

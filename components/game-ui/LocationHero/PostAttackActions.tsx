@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { useSea } from "@/hooks/queries/useSea"
 
 const PostAttackActions = () => {
-  const { continueJourney } = useSea()
+  const { continueJourney, isContinueingJourney } = useSea()
 
   const handleContinueJourney = () => {
     continueJourney()
@@ -15,6 +15,7 @@ const PostAttackActions = () => {
       <div className="flex flex-wrap justify-center gap-3">
         <Button
           className="min-w-40 rounded-full px-5 text-base"
+          disabled={isContinueingJourney}
           onClick={handleContinueJourney}
         >
           <GiShoonerSailboat />
