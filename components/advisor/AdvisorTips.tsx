@@ -1,6 +1,5 @@
 "use client"
 
-import { m as motion } from "framer-motion"
 import Image from "next/image"
 import { ReactNode } from "react"
 import { FaCoins } from "react-icons/fa"
@@ -136,16 +135,7 @@ const AdvisorTips = ({ heading, title }: Props) => {
           className="size-8 shrink-0 select-none"
         />
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.65 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{
-            delay: 0.1,
-            type: "spring",
-            stiffness: 350,
-            damping: 15,
-          }}
-        >
+        <div>
           {heading && (
             <h2 className="font-serif text-lg font-bold">{heading}</h2>
           )}
@@ -153,7 +143,7 @@ const AdvisorTips = ({ heading, title }: Props) => {
           <p className="text-muted-foreground text-sm leading-snug italic">
             {title}
           </p>
-        </motion.div>
+        </div>
       </div>
 
       <ul className="mx-auto flex max-w-2xl flex-col gap-1">
