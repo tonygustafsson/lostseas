@@ -124,7 +124,7 @@ const AdvisorTips = ({ heading, title }: Props) => {
   if (!player || !warnings.length) return null
 
   return (
-    <>
+    <div>
       <div className="mx-auto mb-2 flex w-full max-w-2xl items-center gap-2">
         <Image
           src="/img/parrot.svg"
@@ -132,7 +132,7 @@ const AdvisorTips = ({ heading, title }: Props) => {
           width={100}
           height={100}
           draggable={false}
-          className="size-8 shrink-0 select-none"
+          className="size-12 shrink-0 select-none"
         />
 
         <div>
@@ -163,7 +163,7 @@ const AdvisorTips = ({ heading, title }: Props) => {
           )
         })}
       </ul>
-    </>
+    </div>
   )
 }
 

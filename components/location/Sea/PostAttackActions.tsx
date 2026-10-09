@@ -12,7 +12,8 @@ const PostAttackActions = () => {
 
   return (
     <Button
-      size="sm"
+      variant="highlight"
+      size="lg"
       className="mt-2 w-full"
       disabled={isContinueingJourney}
       onClick={handleContinueJourney}

@@ -12,6 +12,14 @@ import { player } from "../fixtures"
 const victory: Player = {
   ...player,
   character: { ...player.character, location: "Sea", town: undefined },
+  inventory: { ...player.inventory, repairKits: 2 },
+  treasures: {
+    "story-treasure": {
+      id: "story-treasure",
+      name: "Inca mask",
+      rewarder: "Havana",
+    },
+  },
   locationStates: {
     sea: {
       shipMeeting: null,
@@ -34,6 +42,19 @@ const victory: Player = {
 
 const defeat: Player = {
   ...victory,
+  character: { ...victory.character, gold: 0 },
+  crewMembers: { ...victory.crewMembers, health: 73 },
+  inventory: {
+    food: 90,
+    water: 120,
+    cannons: 8,
+    medicine: 6,
+    rum: 10,
+    repairKits: 1,
+  },
+  ships: {
+    endeavour: { ...player.ships.endeavour, health: 65 },
+  },
   locationStates: {
     sea: {
       shipMeeting: null,
@@ -43,6 +64,43 @@ const defeat: Player = {
         shipHealthLoss: 20,
         sunkShip: "Black Pearl",
       },
+    },
+  },
+}
+
+const totalLoss: Player = {
+  ...defeat,
+  inventory: {
+    food: 0,
+    water: 0,
+    cannons: 8,
+    medicine: 0,
+    rum: 0,
+    repairKits: 0,
+  },
+  locationStates: {
+    sea: {
+      shipMeeting: null,
+      attackFailureReport: {
+        inventoryPercentageLoss: 100,
+        crewHealthLoss: 12,
+        shipHealthLoss: 20,
+        sunkShip: false,
+      },
+    },
+  },
+}
+
+const fleetVictory: Player = {
+  ...victory,
+  ships: {
+    ...victory.ships,
+    blackPearl: {
+      id: "blackPearl",
+      name: "Black Pearl",
+      type: "Frigate",
+      health: 53,
+      createdDay: 1,
     },
   },
 }
@@ -123,6 +181,8 @@ type Story = StoryObj<typeof meta>
 
 export const Victory: Story = { parameters: { player: victory } }
 export const Defeat: Story = { parameters: { player: defeat } }
+export const TotalLoss: Story = { parameters: { player: totalLoss } }
+export const FleetVictory: Story = { parameters: { player: fleetVictory } }
 export const EnemyShip: Story = { parameters: { player: enemyShip } }
 export const AlliedShip: Story = { parameters: { player: alliedShip } }
 export const PirateShip: Story = { parameters: { player: pirateShip } }
