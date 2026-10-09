@@ -1,13 +1,17 @@
 import { describe, expect, it } from "vitest"
 
-import { TOWNS } from "@/constants/locations"
-import { buildWaterGrid, computeSeaRoute, isPathOnWater } from "@/utils/seaPath"
 import {
   getJourneyOrigin,
   getRouteLength,
   getSeaRoute,
   splitRoute,
-} from "@/utils/seaRoutes"
+} from "@/components/Map/seaRoutes"
+import { TOWNS } from "@/constants/locations"
+import {
+  buildWaterGrid,
+  computeSeaRoute,
+  isPathOnWater,
+} from "@/scripts/generate-sea-routes/seaPath"
 
 // 30x20 mask with a land wall at x 12-17, open only at the bottom rows
 const createMask = () => {

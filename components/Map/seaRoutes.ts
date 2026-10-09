@@ -1,7 +1,7 @@
 import { TOWNS } from "@/constants/locations"
 import SEA_ROUTES from "@/constants/seaRoutes.json"
 
-import type { Point } from "./seaPath"
+export type Point = { x: number; y: number }
 
 const routes = SEA_ROUTES as Record<string, number[]>
 

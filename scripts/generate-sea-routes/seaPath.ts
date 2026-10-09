@@ -1,6 +1,6 @@
-// Builds the sea routes in constants/seaRoutes.json, see scripts/generate-sea-routes.mjs
+// Builds the sea routes in constants/seaRoutes.json, see ./index.mjs
 
-export type Point = { x: number; y: number }
+import type { Point } from "../../components/Map/seaRoutes"
 
 type WaterGrid = {
   width: number

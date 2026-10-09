@@ -1,13 +1,15 @@
-// Precalculates sea routes between all towns from the water mask.
+// Precalculates sea routes between all towns from the spanish-main-mask.png mask.
+// Avoid land and find the quickest paths between each town.
 // Run with: npm run generate:sea-routes
 import { readFileSync, writeFileSync } from "node:fs"
 import { inflateSync } from "node:zlib"
 
-import { TOWNS } from "../constants/locations.ts"
-import { buildWaterGrid, computeSeaRoute } from "../utils/seaPath.ts"
+import { TOWNS } from "../../constants/locations.ts"
+import { buildWaterGrid, computeSeaRoute } from "./seaPath.ts"
 
 const MASK_PATH = "public/img/map/spanish-main-mask.png"
 const OUTPUT_PATH = "constants/seaRoutes.json"
+
 const CELL_SIZE = 3
 const COAST_MARGIN = 2
 const TOWN_ICON_SIZE = 20

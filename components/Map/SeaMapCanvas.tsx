@@ -5,13 +5,6 @@ import { useEffect, useRef, useState } from "react"
 
 import { TOWNS } from "@/constants/locations"
 import { SEA_TRAVEL_SPEED } from "@/constants/sea"
-import type { Point } from "@/utils/seaPath"
-import {
-  getJourneyOrigin,
-  getRouteLength,
-  getSeaRoute,
-  splitRoute,
-} from "@/utils/seaRoutes"
 
 import {
   MAP_HEIGHT,
@@ -21,6 +14,13 @@ import {
   TOWN_ANCHOR_SIZE,
 } from "./constants"
 import SeaMapTowns from "./SeaMapTowns"
+import {
+  getJourneyOrigin,
+  getRouteLength,
+  getSeaRoute,
+  type Point,
+  splitRoute,
+} from "./seaRoutes"
 import Tooltip from "./Tooltip"
 
 const MAP_CENTER = { x: MAP_WIDTH / 2, y: MAP_HEIGHT / 2 }
