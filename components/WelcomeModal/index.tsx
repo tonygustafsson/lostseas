@@ -29,7 +29,7 @@ const WelcomeModal = () => {
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [player?.id])
 
   return null
 }

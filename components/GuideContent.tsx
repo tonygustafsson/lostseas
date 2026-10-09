@@ -71,7 +71,7 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
     className={cn(
       "my-6",
       appearance === "public" &&
-        "bg-card/90 my-8 border-white/10 shadow-[0_24px_90px_rgba(0,0,0,0.42)] backdrop-blur-xl [&_[data-slot=accordion-content]]:text-base [&_[data-slot=accordion-content]]:leading-7 sm:[&_[data-slot=accordion-content]]:text-lg [&_[data-slot=accordion-content]_h3]:my-6 [&_[data-slot=accordion-content]_h3]:text-xl [&_[data-slot=accordion-content]_img]:rounded-xl [&_[data-slot=accordion-content]_img]:border [&_[data-slot=accordion-content]_img]:border-white/10 [&_[data-slot=accordion-item]]:border-white/10 [&_[data-slot=accordion-item][data-open]]:bg-transparent"
+        "bg-card/90 border-border [&_[data-slot=accordion-content]_img]:border-border [&_[data-slot=accordion-item]]:border-border my-8 shadow-[0_24px_90px_rgba(0,0,0,0.42)] backdrop-blur-xl [&_[data-slot=accordion-content]]:text-base [&_[data-slot=accordion-content]]:leading-7 sm:[&_[data-slot=accordion-content]]:text-lg [&_[data-slot=accordion-content]_h3]:my-6 [&_[data-slot=accordion-content]_h3]:text-xl [&_[data-slot=accordion-content]_img]:rounded-xl [&_[data-slot=accordion-content]_img]:border [&_[data-slot=accordion-item][data-open]]:bg-transparent"
     )}
   >
     <AccordionItem

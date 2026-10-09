@@ -19,7 +19,7 @@ const PublicGuidePage = () => (
     <div className="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(180deg,rgba(5,13,19,0.75)_0%,rgba(5,13,19,0.88)_36rem,var(--background)_76rem)]" />
     <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(ellipse_at_68%_12%,rgba(232,153,78,0.18),transparent_42%)]" />
 
-    <header className="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-4 border-b border-white/10 px-4 sm:px-6 lg:px-8">
+    <header className="border-border mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-4 border-b px-4 sm:px-6 lg:px-8">
       <Link
         href="/"
         className="flex items-center gap-3"

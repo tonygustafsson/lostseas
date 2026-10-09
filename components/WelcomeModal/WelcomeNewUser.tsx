@@ -38,7 +38,7 @@ const WelcomeNewUser = ({ player, onClose }: Props) => {
     <>
       <p>
         Nice to see you. You are located at{" "}
-        <span className="text-green-400">
+        <span className="text-success">
           {player.character.town}s {player.character.location}
         </span>
         . You can either check out the town, or head out to the open seas.
@@ -47,7 +47,12 @@ const WelcomeNewUser = ({ player, onClose }: Props) => {
       <UserIdDisplay playerId={player.id} />
 
       <div className="flex flex-col gap-2">
-        <Button size="lg" className="w-full" onClick={startExploring}>
+        <Button
+          size="lg"
+          variant="highlight"
+          className="w-full"
+          onClick={startExploring}
+        >
           Start exploring
         </Button>
 

@@ -41,7 +41,7 @@ const LoginScreen = () => {
       <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(ellipse_at_68%_12%,rgba(232,153,78,0.2),transparent_42%)]" />
 
       <div className="mx-auto flex max-w-7xl flex-col px-4 pb-16 sm:px-6 lg:px-8">
-        <header className="flex min-h-20 items-center gap-4 border-b border-white/10">
+        <header className="border-border flex min-h-20 items-center gap-4 border-b">
           <Link
             href="/"
             className="flex items-center gap-3"
@@ -77,7 +77,7 @@ const LoginScreen = () => {
             make your fortune across the open seas.
           </p>
           <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <article className="bg-card/75 rounded-2xl border border-white/10 p-4 backdrop-blur">
+            <article className="bg-card/75 border-border rounded-2xl border p-4 backdrop-blur">
               <Compass className="text-accent mb-3 size-5" aria-hidden="true" />
               <h2 className="font-serif text-lg text-amber-50">
                 Four rival nations
@@ -86,7 +86,7 @@ const LoginScreen = () => {
                 Explore 16 ports across England, France, Spain, and Holland.
               </p>
             </article>
-            <article className="bg-card/75 rounded-2xl border border-white/10 p-4 backdrop-blur">
+            <article className="bg-card/75 border-border rounded-2xl border p-4 backdrop-blur">
               <Ship className="mb-3 size-5 text-sky-200" aria-hidden="true" />
               <h2 className="font-serif text-lg text-amber-50">
                 Ships &amp; crew
@@ -95,7 +95,7 @@ const LoginScreen = () => {
                 Build your fleet, recruit sailors, and take on ships at sea.
               </p>
             </article>
-            <article className="bg-card/75 rounded-2xl border border-white/10 p-4 backdrop-blur">
+            <article className="bg-card/75 border-border rounded-2xl border p-4 backdrop-blur">
               <Sparkles
                 className="mb-3 size-5 text-violet-200"
                 aria-hidden="true"
@@ -107,7 +107,7 @@ const LoginScreen = () => {
                 Earn new titles, grow your wealth, and rise through the ranks.
               </p>
             </article>
-            <article className="bg-card/75 rounded-2xl border border-white/10 p-4 backdrop-blur">
+            <article className="bg-card/75 border-border rounded-2xl border p-4 backdrop-blur">
               <ShieldCheck
                 className="mb-3 size-5 text-emerald-200"
                 aria-hidden="true"
@@ -152,7 +152,7 @@ const LoginScreen = () => {
           <section
             id="sign-in"
             aria-labelledby="sign-in-title"
-            className="bg-card/85 scroll-mt-8 rounded-3xl border border-white/10 p-5 shadow-xl shadow-black/20 backdrop-blur-xl sm:p-8"
+            className="bg-card/85 border-border scroll-mt-8 rounded-3xl border p-5 shadow-xl shadow-black/20 backdrop-blur-xl sm:p-8"
           >
             <div className="mb-5">
               <p className="mb-1 text-xs font-semibold tracking-[0.16em] text-sky-200 uppercase">
@@ -172,7 +172,7 @@ const LoginScreen = () => {
         <section
           id="more"
           aria-labelledby="more-title"
-          className="mt-20 border-t border-white/10 pt-12 sm:mt-24 sm:pt-16"
+          className="border-border mt-20 border-t pt-12 sm:mt-24 sm:pt-16"
         >
           <div className="max-w-3xl">
             <p className="text-accent mb-2 text-xs font-semibold tracking-[0.16em] uppercase">
@@ -192,7 +192,7 @@ const LoginScreen = () => {
           </div>
 
           <div className="mt-8 grid gap-3 md:grid-cols-3">
-            <article className="bg-card/80 rounded-2xl border border-white/10 p-5 backdrop-blur">
+            <article className="bg-card/80 border-border rounded-2xl border p-5 backdrop-blur">
               <div className="mb-4 flex size-10 items-center justify-center rounded-xl bg-amber-200/10 text-amber-200">
                 <Compass className="size-5" aria-hidden="true" />
               </div>
@@ -202,7 +202,7 @@ const LoginScreen = () => {
                 and Holland.
               </p>
             </article>
-            <article className="bg-card/80 rounded-2xl border border-white/10 p-5 backdrop-blur">
+            <article className="bg-card/80 border-border rounded-2xl border p-5 backdrop-blur">
               <div className="mb-4 flex size-10 items-center justify-center rounded-xl bg-sky-200/10 text-sky-200">
                 <Ship className="size-5" aria-hidden="true" />
               </div>
@@ -214,7 +214,7 @@ const LoginScreen = () => {
                 build your fortune.
               </p>
             </article>
-            <article className="bg-card/80 rounded-2xl border border-white/10 p-5 backdrop-blur">
+            <article className="bg-card/80 border-border rounded-2xl border p-5 backdrop-blur">
               <div className="mb-4 flex size-10 items-center justify-center rounded-xl bg-emerald-200/10 text-emerald-200">
                 <Sparkles className="size-5" aria-hidden="true" />
               </div>
@@ -269,7 +269,7 @@ const LoginScreen = () => {
           </div>
           <Screenshots />
 
-          <footer className="mt-10 border-t border-white/10 pt-5">
+          <footer className="border-border mt-10 border-t pt-5">
             <SocialMedia className="my-0 text-slate-300/70" />
           </footer>
         </section>

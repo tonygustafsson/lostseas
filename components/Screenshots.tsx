@@ -17,7 +17,7 @@ const SCREENSHOTS = [
 ] as const
 
 const BUTTON_CLASS_NAME =
-  "group overflow-hidden rounded-xl border border-white/10 bg-black/30 transition hover:-translate-y-0.5 hover:border-amber-200/50 hover:shadow-lg hover:shadow-black/30 focus-visible:ring-2 focus-visible:ring-amber-200"
+  "group overflow-hidden rounded-xl border border-border bg-black/30 transition hover:-translate-y-0.5 hover:border-amber-200/50 hover:shadow-lg hover:shadow-black/30 focus-visible:ring-2 focus-visible:ring-amber-200"
 const IMAGE_CLASS_NAME =
   "aspect-[200/137] w-full object-cover transition duration-300 group-hover:scale-[1.03]"
 
