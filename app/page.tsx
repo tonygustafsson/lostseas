@@ -6,10 +6,7 @@ import DefaultLayout from "@/components/layouts/default"
 import FullscreenLayout from "@/components/layouts/fullscreen"
 import LoginScreen from "@/components/LoginScreen"
 import { getLoggedInPlayer } from "@/utils/app/getLoggedInPlayer"
-import {
-  getAllSeaLocationBackgrounds,
-  getAllTownLocationBackgrounds,
-} from "@/utils/location"
+import { getAllTownLocationBackgrounds } from "@/utils/location"
 
 export async function generateMetadata(): Promise<Metadata> {
   const player = await getLoggedInPlayer()
@@ -41,10 +38,7 @@ export default async function Page() {
       ? getAllTownLocationBackgrounds(player.character.town)
       : []
 
-  const allSeaBackgrounds =
-    player?.character.journey?.day === 1 ? getAllSeaLocationBackgrounds() : []
-
-  for (const background of [...allTownBackgrounds, ...allSeaBackgrounds]) {
+  for (const background of allTownBackgrounds) {
     preload(background, { as: "image" })
   }
 

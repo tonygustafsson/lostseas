@@ -730,7 +730,10 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <p className="mb-4">
           You can visit any town regardless of your nationality. Choose another
           town on the map to start a journey. If you cannot leave port, the
-          advisor at the harbor explains which problems you need to resolve.
+          advisor explains which problems you need to resolve in a popup. You
+          stay at your current location until you are ready to sail. While at
+          sea, the map shows your ship sailing one day at a time along its
+          route, stopping whenever you encounter another ship.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Time</h3>
@@ -746,8 +749,10 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         </p>
 
         <p className="mb-4">
-          Continuing after a battle report uses supplies but does not advance
-          the date, except when that step is your arrival.
+          Continuing after a battle report does not advance the date. It uses
+          supplies unless you are on the final travel day. On that day, your
+          ship finishes sailing to town before arrival advances the date and
+          uses supplies.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Weather</h3>

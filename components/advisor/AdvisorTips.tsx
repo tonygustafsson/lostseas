@@ -1,6 +1,5 @@
 "use client"
 
-import { m as motion } from "framer-motion"
 import Image from "next/image"
 import { ReactNode } from "react"
 import { FaCoins } from "react-icons/fa"
@@ -16,6 +15,7 @@ import { getAdvisorWarnings } from "@/utils/getAdvisorWarnings"
 import AdvisorTipItem from "./AdvisorTipItem"
 
 type Props = {
+  heading?: string
   title: string
 }
 
@@ -27,89 +27,96 @@ const getWarningContent = (
     case "TOO_MUCH_GOLD":
       return {
         icon: <FaCoins className="h-7 w-7" />,
-        text: `You are carrying ${player.character.gold} gold, it would be wise to spend it on something useful or save it in the bank so you won't lose it if you are defeated at sea.`,
+        text: `Carrying ${player.character.gold} gold. Spend it or bank it to keep it safe from defeat at sea.`,
       }
     case "LOAN_BLOCKS_DEPOSIT":
       return {
         icon: <RiBankLine className="h-7 w-7" />,
-        text: "You have an outstanding loan — you cannot deposit gold until the loan is repaid. Head to the bank to repay it.",
+        text: "Repay your bank loan before depositing gold.",
       }
     case "NO_SHIPS":
       return {
         icon: <GiShoonerSailboat className="h-7 w-7" />,
-        text: "You do not own any ships. Visit the shipyard to buy one before you can set sail.",
+        text: "No ships. Buy one at the shipyard before sailing.",
       }
     case "DAMAGED_SHIPS":
       return {
         icon: <GiShoonerSailboat className="h-7 w-7" />,
-        text: "Some of your ships are too damaged to continue traveling. Repair them at the shipyard or click Use under Equipment > Repair kits in Crew & Fleet.",
+        text: "Ships too damaged to sail. Visit the shipyard or use repair kits in Crew & Fleet > Equipment.",
       }
     case "SHIPS_NEED_REPAIRS":
       return {
         icon: <GiShoonerSailboat className="h-7 w-7" />,
-        text: "Your ships have taken some damage. Repair them at the shipyard or click Use under Equipment > Repair kits in Crew & Fleet, even at sea.",
+        text: "Ships need repairs. Visit the shipyard or use repair kits in Crew & Fleet > Equipment, even at sea.",
       }
     case "NO_CREW":
       return {
         icon: <GiBandana className="h-7 w-7" />,
-        text: "You do not have any crew members. Recruit some at the tavern.",
+        text: "No crew. Recruit at the tavern.",
       }
     case "NOT_ENOUGH_CREW":
       return {
         icon: <GiBandana className="h-7 w-7" />,
-        text: "You do not have enough crew members to sail your ships. Recruit more at the tavern or sell a ship at the shipyard.",
+        text: "Too few crew to sail. Recruit at the tavern or sell a ship at the shipyard.",
       }
     case "TOO_MANY_CREW":
       return {
         icon: <GiBandana className="h-7 w-7" />,
-        text: "Your ships cannot carry this many crew members. Buy a new ship at the shipyard or dismiss some crew members.",
+        text: "Too many crew to sail. Buy a ship at the shipyard or dismiss crew.",
       }
     case "ANGRY_CREW":
       return {
         icon: <GiBandana className="h-7 w-7" />,
-        text: "Your crew is furious and refuses to sail. Make them happy by giving them gold or taking them to the tavern.",
+        text: "Crew refuses to sail. Give them gold or treat them at the tavern.",
       }
     case "LOW_CREW_MOOD":
       return {
         icon: <GiBandana className="h-7 w-7" />,
-        text: "Your crew's mood is getting low. Give them gold or take them to the tavern before they refuse to sail.",
+        text: "Crew mood is low. Give them gold or treat them at the tavern.",
       }
     case "CREW_IS_ILL":
       return {
         icon: <GiBandana className="h-7 w-7" />,
-        text: "Your crew is too ill to travel. Give them medicine.",
+        text: "Crew too ill to sail. Give them medicine.",
       }
     case "LOW_CREW_HEALTH":
       return {
         icon: <GiBandana className="h-7 w-7" />,
-        text: "Your crew's health is dangerously low. Give them medicine before they become too ill to travel.",
+        text: "Crew health is low. Give them medicine before they are too ill to sail.",
       }
     case "NEED_MORE_FOOD":
       return {
         icon: <MerchandiseIcon item="food" />,
-        text: "You will need more food in stock for the next journey. Stock up at the shop.",
+        text: "Not enough food to sail. Stock up at the shop.",
       }
     case "NEED_MORE_WATER":
       return {
         icon: <MerchandiseIcon item="water" />,
-        text: "You will need more water in stock for the next journey. Stock up at the shop.",
+        text: "Not enough water to sail. Stock up at the shop.",
       }
     case "NO_CANNONS":
       return {
         icon: <GiCannon className="h-7 w-7" />,
-        text: "You have no cannons. Without them, you have little chance in a sea battle. Buy some at the shipyard.",
+        text: "No cannons: little chance in battle. Buy some at the shipyard.",
       }
     case "PROMOTION_AVAILABLE":
       return {
         icon: <PiMedalFill className="h-7 w-7" />,
-        text: "You have earned a promotion! Visit the City Hall to claim your new title and its gold reward.",
+        text: "Promotion earned! Claim your title and gold at City Hall.",
       }
     default:
       return null
   }
 }
 
-const AdvisorTips = ({ title }: Props) => {
+const getVariant = ({ tip, blocksTravel }: AdvisorWarningItem) => {
+  if (blocksTravel) return "error"
+  if (tip === "PROMOTION_AVAILABLE") return "success"
+
+  return "warning"
+}
+
+const AdvisorTips = ({ heading, title }: Props) => {
   const { data: player } = useGetPlayer()
 
   const warnings = getAdvisorWarnings(player)
@@ -117,35 +124,29 @@ const AdvisorTips = ({ title }: Props) => {
   if (!player || !warnings.length) return null
 
   return (
-    <>
-      <div className="relative mb-2 flex items-start lg:gap-1">
+    <div>
+      <div className="mx-auto mb-2 flex w-full max-w-2xl items-center gap-2">
         <Image
           src="/img/parrot.svg"
           alt="Parrot"
           width={100}
           height={100}
           draggable={false}
-          className="mr-3 -mb-4 size-15 shrink-0 self-center select-none lg:mr-0 lg:ml-2 lg:size-[100px]"
+          className="size-12 shrink-0 select-none"
         />
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.65 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{
-            delay: 0.1,
-            type: "spring",
-            stiffness: 350,
-            damping: 15,
-          }}
-          className="bg-card relative rounded-2xl border px-4 py-3 text-sm leading-snug italic lg:mt-2"
-        >
-          <span className="border-r-border absolute top-4 -left-[9px] h-0 w-0 border-y-[8px] border-r-[9px] border-y-transparent" />
-          <span className="border-r-card absolute top-4 -left-[7px] h-0 w-0 border-y-[8px] border-r-[8px] border-y-transparent" />
-          {title}
-        </motion.div>
+        <div>
+          {heading && (
+            <h2 className="font-serif text-lg font-bold">{heading}</h2>
+          )}
+
+          <p className="text-muted-foreground text-sm leading-snug italic">
+            {title}
+          </p>
+        </div>
       </div>
 
-      <ul className="flex flex-col gap-4">
+      <ul className="mx-auto flex max-w-2xl flex-col gap-1">
         {warnings.map((warning) => {
           const content = getWarningContent(warning, player)
 
@@ -155,15 +156,14 @@ const AdvisorTips = ({ title }: Props) => {
             <AdvisorTipItem
               key={warning.tip}
               icon={content.icon}
-              blocksTravel={warning.blocksTravel}
-              variant={warning.blocksTravel ? "error" : undefined}
+              variant={getVariant(warning)}
             >
               {content.text}
             </AdvisorTipItem>
           )
         })}
       </ul>
-    </>
+    </div>
   )
 }
 

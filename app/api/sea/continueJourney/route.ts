@@ -49,17 +49,54 @@ export async function POST() {
     !destinationReached && !player.locationStates?.sea?.justMetAShip
       ? Math.random() < 0.33
       : false
+
   const mannedCannons = getMannedCannons(
     player.crewMembers.count,
     player.inventory?.cannons
   )
+
   const hasPendingAttackReport = !!(
     player.locationStates?.sea?.attackSuccessReport ||
     player.locationStates?.sea?.attackFailureReport
   )
+
   const shipMeetingState = shouldMeetAShip
     ? createMeetingShip(mannedCannons, player.character.journey.destination)
     : null
+
+  const clearedSeaState: DeepPartial<SeaState> = {
+    shipMeeting: null,
+    attackSuccessReport: null,
+    attackFailureReport: null,
+    justMetAShip: null,
+  }
+
+  // A ship met on the last day of sailing already moved journey.day to totalDays.
+  // Clear the meeting/attack state first and keep the player at sea, so the
+  // outcome is shown before the player arrives. The next call does the arrival.
+  if (
+    destinationReached &&
+    (hasPendingAttackReport || player.locationStates?.sea?.justMetAShip)
+  ) {
+    const newPlayer = patchDeep<Player>(player, {
+      locationStates: { sea: clearedSeaState },
+    })
+
+    try {
+      await savePlayer(newPlayer)
+    } catch (error) {
+      return NextResponse.json({ error }, { status: 500 })
+    }
+
+    return NextResponse.json({
+      success: true,
+      day: player.character.journey.day,
+      totalDays: player.character.journey.totalDays,
+      destination: player.character.journey.destination,
+      destinationReached: false,
+      shipMeetingState: null,
+    })
+  }
 
   const foodConsumption = player.crewMembers.count * 0.1
   let newFood = Math.round((player.inventory?.food || 0) - foodConsumption)
@@ -85,12 +122,7 @@ export async function POST() {
         harbor: {
           lastHarborReason: "arrived",
         },
-        sea: {
-          shipMeeting: shipMeetingState,
-          attackSuccessReport: null,
-          attackFailureReport: null,
-          justMetAShip: null,
-        },
+        sea: clearedSeaState,
       },
     }
 
@@ -102,18 +134,16 @@ export async function POST() {
         `Arrived at destination ${player.character.journey?.destination || ""}.`
       )
 
-      if (destinationReached) {
-        try {
-          await saveStatistics(playerId, {
-            day: updatedPlayer.character.day,
-            gold: updatedPlayer.character.gold || 0,
-            score: getScore(updatedPlayer),
-            crewMembers: updatedPlayer.crewMembers.count || 0,
-            ships: Object.keys(updatedPlayer.ships || {}).length,
-          })
-        } catch (error) {
-          console.error("Failed to save player statistics", error)
-        }
+      try {
+        await saveStatistics(playerId, {
+          day: updatedPlayer.character.day,
+          gold: updatedPlayer.character.gold || 0,
+          score: getScore(updatedPlayer),
+          crewMembers: updatedPlayer.crewMembers.count || 0,
+          ships: Object.keys(updatedPlayer.ships || {}).length,
+        })
+      } catch (error) {
+        console.error("Failed to save player statistics", error)
       }
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })
@@ -129,12 +159,7 @@ export async function POST() {
         }),
       },
       locationStates: {
-        sea: {
-          shipMeeting: shipMeetingState,
-          attackSuccessReport: null,
-          attackFailureReport: null,
-          justMetAShip: null,
-        },
+        sea: { ...clearedSeaState, shipMeeting: shipMeetingState },
       },
       inventory: {
         food: newFood,

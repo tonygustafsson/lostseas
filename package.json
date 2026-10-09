@@ -10,7 +10,8 @@
     "lint:fix": "eslint --fix",
     "test": "vitest",
     "storybook": "storybook dev -p 6006",
-    "storybook:build": "storybook build"
+    "storybook:build": "storybook build",
+    "generate:sea-routes": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/generate-sea-routes/index.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "5.9.1",
