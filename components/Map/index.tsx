@@ -1,7 +1,5 @@
 "use client"
 
-import { usePathname, useRouter } from "next/navigation"
-
 import useModal from "@/app/stores/modals"
 import AdvisorTips from "@/components/advisor/AdvisorTips"
 import { Button } from "@/components/ui/button"
@@ -34,8 +32,6 @@ const DepartureWarnings = () => {
 const Map = ({ currentTown }: Props) => {
   const { startJourney, isStartingJourney } = useSea()
   const { removeModal, setModal } = useModal()
-  const router = useRouter()
-  const pathname = usePathname()
 
   const handleStartJourney = (town: Town) => {
     if (isStartingJourney) return
@@ -54,10 +50,6 @@ const Map = ({ currentTown }: Props) => {
             })
           } else if (response?.data?.success) {
             removeModal("map")
-
-            if (pathname !== "/") {
-              router.push("/")
-            }
           }
         },
       }
