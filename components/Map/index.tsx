@@ -40,16 +40,14 @@ const Map = ({ currentTown }: Props) => {
       { town },
       {
         onSuccess: (response) => {
-          if (response?.data?.success === false) {
-            removeModal("map")
+          removeModal("map")
 
+          if (response?.data?.success === false) {
             setModal({
               id: "departureWarnings",
               title: "Cannot set sail",
               content: <DepartureWarnings />,
             })
-          } else if (response?.data?.success) {
-            removeModal("map")
           }
         },
       }
