@@ -73,10 +73,7 @@ const DrawerPanel = ({ isOpen, onClose, children, className }: Props) => {
           >
             <Button
               variant="ghost"
-              className={cn(
-                "text-info absolute top-1",
-                isMobile ? "right-2" : "left-2"
-              )}
+              className={cn("absolute top-1", isMobile ? "right-2" : "left-2")}
               onClick={onClose}
             >
               <AiOutlineCloseCircle className="h-6 w-6" />

@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { ReactNode } from "react"
 import { FaUsers } from "react-icons/fa"
 import { GiCannon, GiCrossedSwords } from "react-icons/gi"
@@ -105,21 +106,19 @@ const ShipMeetingContent = ({
   const relation = getRelation(shipMeeting.nation, nationality)
   const odds = getOdds(mannedCannons - shipMeeting.cannons)
 
-  return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-4">
-        <Flag
-          nation={shipMeeting.nation}
-          size={48}
-          className="shrink-0 rounded-sm shadow-md"
-        />
+  const shipImg = `/img/ship-meeting/${shipMeeting.nation.toLowerCase()}-${shipMeeting.shipType.toLowerCase()}.png`
 
-        <div className="flex flex-col gap-1">
-          <DialogTitle className="font-serif text-xl leading-tight">
+  return (
+    <div className="flex min-w-0 flex-col gap-4">
+      <div className="flex items-center gap-4">
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <DialogTitle className="font-serif text-xl leading-tight wrap-break-word md:text-2xl">
             {getTitle(shipMeeting, relation)}
           </DialogTitle>
 
           <div className="flex flex-wrap items-center gap-2">
+            <Flag nation={shipMeeting.nation} size={38} />
+
             <Badge className={RELATIONS[relation].className}>
               {RELATIONS[relation].label}
             </Badge>
@@ -129,6 +128,16 @@ const ShipMeetingContent = ({
             </span>
           </div>
         </div>
+
+        <Image
+          src={shipImg}
+          alt={`${shipMeeting.nation} ${shipMeeting.shipType}`}
+          width={162}
+          height={162}
+          sizes="(min-width: 640px) 144px, 120px"
+          draggable={false}
+          className="border-accent aspect-square w-30 max-w-3/8 shrink-0 rounded-full border-4 object-cover object-right shadow-lg select-none sm:w-36"
+        />
       </div>
 
       <div className="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center">

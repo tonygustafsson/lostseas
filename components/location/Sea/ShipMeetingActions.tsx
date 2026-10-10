@@ -18,6 +18,8 @@ const ShipMeetingActions = () => {
     <div className="flex flex-col items-center pt-2">
       <div className="flex w-full flex-wrap justify-center gap-4">
         <Button
+          size="lg"
+          variant="highlight"
           className="w-full min-w-32 rounded-full px-5 text-base md:w-auto"
           onClick={handleAttack}
         >
@@ -26,6 +28,7 @@ const ShipMeetingActions = () => {
         </Button>
 
         <Button
+          size="lg"
           variant="secondary"
           className="w-full min-w-32 rounded-full px-5 text-base md:w-auto"
           onClick={handleIgnore}

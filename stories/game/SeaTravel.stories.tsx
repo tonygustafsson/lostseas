@@ -5,9 +5,13 @@ import { ReactNode, useState } from "react"
 import useModal from "@/app/stores/modals"
 import Harbor from "@/components/location/Harbor"
 import SeaEventDialog from "@/components/location/Sea/SeaEventDialog"
+import { NATIONS } from "@/constants/locations"
+import { SHIP_TYPES } from "@/constants/ship"
 import { PLAYER_QUERY_KEY } from "@/hooks/queries/usePlayer"
 
 import { player } from "../fixtures"
+
+type SeaTravelArgs = Partial<Pick<ShipMeetingState, "nation" | "shipType">>
 
 const victory: Player = {
   ...player,
@@ -164,28 +168,68 @@ const meta = {
   title: "game/SeaTravel",
   component: SeaEventDialog,
   parameters: { player },
+  argTypes: {
+    nation: {
+      name: "Nation",
+      control: "select",
+      options: [...Object.keys(NATIONS), "Pirate"],
+      if: { arg: "nation", exists: true },
+    },
+    shipType: {
+      name: "Ship type",
+      control: "select",
+      options: Object.keys(SHIP_TYPES),
+      if: { arg: "shipType", exists: true },
+    },
+  },
   beforeEach() {
     useModal.setState(useModal.getInitialState(), true)
   },
   decorators: [
-    (Story, context) => (
-      <PlayerPreview key={context.id} data={context.parameters.player}>
-        <Story />
-      </PlayerPreview>
-    ),
+    (Story, context) => {
+      const data: Player = context.parameters.player
+      const shipMeeting = data.locationStates?.sea?.shipMeeting
+
+      return (
+        <PlayerPreview
+          key={`${context.id}-${context.args.nation}-${context.args.shipType}`}
+          data={
+            shipMeeting
+              ? meeting({
+                  ...shipMeeting,
+                  nation: context.args.nation ?? shipMeeting.nation,
+                  shipType: context.args.shipType ?? shipMeeting.shipType,
+                })
+              : data
+          }
+        >
+          <Story />
+        </PlayerPreview>
+      )
+    },
   ],
-} satisfies Meta<typeof SeaEventDialog>
+} satisfies Meta<SeaTravelArgs>
 
 export default meta
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<SeaTravelArgs>
 
 export const Victory: Story = { parameters: { player: victory } }
 export const Defeat: Story = { parameters: { player: defeat } }
 export const TotalLoss: Story = { parameters: { player: totalLoss } }
 export const FleetVictory: Story = { parameters: { player: fleetVictory } }
-export const EnemyShip: Story = { parameters: { player: enemyShip } }
-export const AlliedShip: Story = { parameters: { player: alliedShip } }
-export const PirateShip: Story = { parameters: { player: pirateShip } }
+export const EnemyShip: Story = {
+  args: { nation: "France", shipType: "Galleon" },
+  parameters: { player: enemyShip },
+}
+export const AlliedShip: Story = {
+  args: { nation: "England", shipType: "Frigate" },
+  parameters: { player: alliedShip },
+}
+export const PirateShip: Story = {
+  args: { nation: "Pirate", shipType: "Brig" },
+  parameters: { player: pirateShip },
+}
+
 export const HarborArrival: Story = {
   parameters: { player: harborArrival },
   render: () => <Harbor />,

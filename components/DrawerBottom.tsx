@@ -56,7 +56,7 @@ const DrawerBottom = ({ isOpen, onClose, children, className }: Props) => {
           >
             <Button
               variant="ghost"
-              className="text-info absolute top-2 right-2"
+              className="absolute top-2 right-2"
               onClick={onClose}
             >
               <AiOutlineCloseCircle className="h-6 w-6" />
