@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button"
 import { useSea } from "@/hooks/queries/useSea"
 
 const ShipMeetingActions = () => {
-  const { attackShip, ignoreShip } = useSea()
+  const { attackShip, isAttackingShip, ignoreShip, isIgnoringShip } = useSea()
+  const isPending = isAttackingShip || isIgnoringShip
 
   const handleAttack = () => {
     attackShip()
@@ -21,6 +22,7 @@ const ShipMeetingActions = () => {
           size="lg"
           variant="highlight"
           className="w-full min-w-32 rounded-full px-5 text-base md:w-auto"
+          disabled={isPending}
           onClick={handleAttack}
         >
           <GiCrossedSwords />
@@ -31,6 +33,7 @@ const ShipMeetingActions = () => {
           size="lg"
           variant="secondary"
           className="w-full min-w-32 rounded-full px-5 text-base md:w-auto"
+          disabled={isPending}
           onClick={handleIgnore}
         >
           <GiShoonerSailboat />

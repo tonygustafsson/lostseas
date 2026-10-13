@@ -25,6 +25,13 @@ export async function POST() {
     )
   }
 
+  if (player.locationStates.sea.battle) {
+    return NextResponse.json(
+      { error: "You cannot ignore a ship during a battle" },
+      { status: 409 }
+    )
+  }
+
   const dbUpdate: DeepPartial<Player> = {
     locationStates: {
       sea: {

@@ -14,6 +14,7 @@ type SeaState = {
   attackSuccessReport?: AttackSuccessReport
   attackFailureReport?: AttackFailureReport
   justMetAShip?: boolean | null
+  battle?: BattleState | null
 }
 
 type HarborState = {

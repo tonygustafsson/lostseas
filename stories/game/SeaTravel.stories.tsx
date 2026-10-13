@@ -136,6 +136,80 @@ const pirateShip = meeting({
   crewMembers: 20,
 })
 
+const inBattle = (battle: BattleState): Player => ({
+  ...enemyShip,
+  locationStates: {
+    sea: {
+      shipMeeting: enemyShip.locationStates?.sea?.shipMeeting,
+      battle,
+    },
+  },
+})
+
+const battleStart = inBattle({ enemyStrength: 100, playerStrength: 100 })
+
+const battleMidway = inBattle({
+  enemyStrength: 58,
+  playerStrength: 82,
+  rounds: [
+    {
+      action: "fire",
+      hit: true,
+      enemyDamage: 42,
+      playerDamage: 0,
+      shipDamage: 0,
+      crewDamage: 0,
+    },
+    {
+      action: "fire",
+      hit: false,
+      enemyDamage: 0,
+      playerDamage: 18,
+      shipDamage: 5,
+      crewDamage: 4,
+    },
+  ],
+})
+
+const battleLastRound = inBattle({
+  enemyStrength: 35,
+  playerStrength: 70,
+  rounds: [
+    {
+      action: "fire",
+      hit: true,
+      enemyDamage: 33,
+      playerDamage: 0,
+      shipDamage: 0,
+      crewDamage: 0,
+    },
+    {
+      action: "fire",
+      hit: false,
+      enemyDamage: 0,
+      playerDamage: 21,
+      shipDamage: 6,
+      crewDamage: 4,
+    },
+    {
+      action: "evade",
+      hit: true,
+      enemyDamage: 0,
+      playerDamage: 0,
+      shipDamage: 0,
+      crewDamage: 0,
+    },
+    {
+      action: "evade",
+      hit: false,
+      enemyDamage: 0,
+      playerDamage: 9,
+      shipDamage: 2,
+      crewDamage: 2,
+    },
+  ],
+})
+
 const harborArrival: Player = {
   ...player,
   character: { ...player.character, location: "Harbor" },
@@ -195,11 +269,19 @@ const meta = {
           key={`${context.id}-${context.args.nation}-${context.args.shipType}`}
           data={
             shipMeeting
-              ? meeting({
-                  ...shipMeeting,
-                  nation: context.args.nation ?? shipMeeting.nation,
-                  shipType: context.args.shipType ?? shipMeeting.shipType,
-                })
+              ? {
+                  ...data,
+                  locationStates: {
+                    sea: {
+                      ...data.locationStates?.sea,
+                      shipMeeting: {
+                        ...shipMeeting,
+                        nation: context.args.nation ?? shipMeeting.nation,
+                        shipType: context.args.shipType ?? shipMeeting.shipType,
+                      },
+                    },
+                  },
+                }
               : data
           }
         >
@@ -228,6 +310,19 @@ export const AlliedShip: Story = {
 export const PirateShip: Story = {
   args: { nation: "Pirate", shipType: "Brig" },
   parameters: { player: pirateShip },
+}
+
+export const BattleStart: Story = {
+  args: { nation: "France", shipType: "Galleon" },
+  parameters: { player: battleStart },
+}
+export const BattleMidway: Story = {
+  args: { nation: "France", shipType: "Galleon" },
+  parameters: { player: battleMidway },
+}
+export const BattleLastRound: Story = {
+  args: { nation: "France", shipType: "Galleon" },
+  parameters: { player: battleLastRound },
 }
 
 export const HarborArrival: Story = {

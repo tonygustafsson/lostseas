@@ -5,6 +5,8 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { cn } from "@/lib/utils"
 
 import AttackReport from "./AttackReport"
+import BattleActions from "./BattleActions"
+import BattleContent from "./BattleContent"
 import PostAttackActions from "./PostAttackActions"
 import ShipMeetingActions from "./ShipMeetingActions"
 import ShipMeetingContent from "./ShipMeetingContent"
@@ -13,6 +15,7 @@ const SeaEventDialog = () => {
   const { data: player } = useGetPlayer()
   const seaState = player?.locationStates?.sea
   const shipMeeting = seaState?.shipMeeting
+  const battle = seaState?.battle
   const isVictory = !!seaState?.attackSuccessReport
   const hasAttackReport = !!(
     seaState?.attackSuccessReport || seaState?.attackFailureReport
@@ -50,7 +53,15 @@ const SeaEventDialog = () => {
               cannons={player.inventory?.cannons}
               nationality={player.character.nationality}
             />
-            <ShipMeetingActions />
+
+            {battle ? (
+              <>
+                <BattleContent battle={battle} />
+                <BattleActions />
+              </>
+            ) : (
+              <ShipMeetingActions />
+            )}
           </>
         )}
 

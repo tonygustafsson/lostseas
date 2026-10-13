@@ -13,6 +13,7 @@ import {
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import { TITLE_INFO } from "@/constants/title"
 import { cn } from "@/lib/utils"
+import { BATTLE_MAX_ROUNDS, EVADE_CHANCE } from "@/utils/seaBattle"
 import { capitalize } from "@/utils/string"
 
 import {
@@ -316,12 +317,13 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="my-6 font-serif text-lg">Ship health and repairs</h3>
 
         <p className="mb-4">
-          Every ship has a health rating. You will take damage in every battle,
-          win or lose. A ship at 0% health is completely disabled and will block
-          you from leaving port. You can repair ships at the shipyard for{" "}
-          {SHIP_REPAIR_COST} gold per 1% of damage. You can also sell any ship
-          you own at the shipyard for half its purchase price, regardless of its
-          health. You must own at least one ship to leave port.
+          Every ship has a health rating. Your ships take damage every time the
+          enemy hits them during a battle, win or lose. A ship at 0% health is
+          completely disabled and will block you from leaving port. You can
+          repair ships at the shipyard for {SHIP_REPAIR_COST} gold per 1% of
+          damage. You can also sell any ship you own at the shipyard for half
+          its purchase price, regardless of its health. You must own at least
+          one ship to leave port.
         </p>
 
         <p className="mb-4">
@@ -744,8 +746,8 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           journey and visiting locations in town do not advance the calendar.
           Journeys continue automatically between ship encounters. Sailing
           pauses at an encounter or battle report. Choose Attack or Ignore when
-          you meet a ship, and Continue journey after a battle to resume
-          sailing.
+          you meet a ship, fight the battle round by round, and choose Continue
+          journey after the battle to resume sailing.
         </p>
 
         <p className="mb-4">
@@ -779,15 +781,48 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         </p>
 
         <p className="mb-4">
-          Battle outcomes compare your manned cannons with the opponent&apos;s
-          cannons, with a random bonus for both sides. You can sometimes beat a
-          slightly stronger ship, but attacking one with more cannons is risky.
-          You can ignore an encounter to continue sailing without fighting.
+          You can ignore an encounter to continue sailing without fighting. If
+          you attack, the battle is fought over up to {BATTLE_MAX_ROUNDS}{" "}
+          rounds. Each round, choose to fire or evade. Firing compares your
+          manned cannons with the opponent&apos;s cannons, with a random bonus
+          for both sides. You can sometimes beat a slightly stronger ship, but
+          attacking one with more cannons is risky.
+        </p>
+
+        <ul className="mb-4 list-disc pl-6">
+          <li className="mb-2">
+            Both sides start the battle with 100% battle strength. It only
+            exists during the battle and is separate from your ships&apos;
+            health.
+          </li>
+          <li className="mb-2">
+            When you fire and win the move, the enemy loses 30–50% battle
+            strength. When you lose it, you lose 10–25% battle strength, each of
+            your ships loses 3–8% health and your crew loses 2–6% health.
+          </li>
+          <li className="mb-2">
+            Evading succeeds {EVADE_CHANCE}% of the time, whatever your cannons.
+            If it succeeds, you take no damage. If it fails, you lose 5–12%
+            battle strength, each of your ships loses 1–4% health and your crew
+            loses 1–3% health. Evading never damages the enemy.
+          </li>
+          <li>
+            The side whose battle strength reaches 0% loses. After the last
+            round, the side with the most battle strength left wins, and a draw
+            counts as a defeat.
+          </li>
+        </ul>
+
+        <p className="mb-4">
+          Each move is saved as you make it, so you can come back to a battle at
+          any time. You cannot ignore the ship or sail on until the battle is
+          over.
         </p>
 
         <p>
           After a battle, a report shows your loot, recruits, damage and any
-          losses. Both victories and defeats damage your crew and ships.
+          losses. Your crew also loses health when the battle ends, more after a
+          defeat than after a victory.
         </p>
       </AccordionContent>
     </AccordionItem>

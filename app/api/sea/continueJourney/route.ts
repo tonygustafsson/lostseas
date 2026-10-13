@@ -42,6 +42,13 @@ export async function POST() {
     )
   }
 
+  if (player.locationStates?.sea?.battle) {
+    return NextResponse.json(
+      { error: "You cannot sail on during a battle." },
+      { status: 409 }
+    )
+  }
+
   const destinationReached =
     player.character.journey.day === player.character.journey.totalDays
 

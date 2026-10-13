@@ -3,6 +3,27 @@ type AttackReport = {
   shipHealthLoss: number
 }
 
+type BattleAction = "fire" | "evade"
+
+type BattleRound = {
+  action: BattleAction
+  hit: boolean
+  enemyDamage: number
+  playerDamage: number
+  shipDamage: number
+  crewDamage: number
+}
+
+// Battle strength only exists during a battle and is separate from ship health
+type BattleState = {
+  enemyStrength: number
+  playerStrength: number
+  // Firebase drops empty arrays, so a fresh battle has no rounds stored
+  rounds?: BattleRound[]
+}
+
+type BattleOutcome = "ongoing" | "victory" | "defeat"
+
 type AttackSuccessReport = AttackReport & {
   crewMoodIncrease: number
   crewMemberRecruits: number

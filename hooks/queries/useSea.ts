@@ -51,9 +51,27 @@ export const useSea = () => {
 
   const { mutate: attackShip, isPending: isAttackingShip } = useMutation({
     mutationFn: () => apiRequest("/api/sea/attackShip", null, "POST"),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
-      playSoundEffect("cannons")
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+    },
+    onError: (error) => console.error(error),
+  })
+
+  const { mutate: battleMove, isPending: isMakingBattleMove } = useMutation({
+    mutationFn: (action: BattleAction) =>
+      apiRequest("/api/sea/battleMove", { action }, "POST"),
+    onSuccess: async (response, action) => {
+      const { outcome }: { outcome?: BattleOutcome } = response?.data ?? {}
+
+      await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+      if (outcome === "victory") {
+        playSoundEffect("cheers")
+      } else if (outcome === "defeat") {
+        playSoundEffect("frustration")
+      } else if (action === "fire") {
+        playSoundEffect("cannons")
+      }
     },
     onError: (error) => console.error(error),
   })
@@ -75,6 +93,8 @@ export const useSea = () => {
     isContinueingJourney,
     attackShip,
     isAttackingShip,
+    battleMove,
+    isMakingBattleMove,
     ignoreShip,
     isIgnoringShip,
   }
