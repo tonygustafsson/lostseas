@@ -32,11 +32,11 @@ const SeaEventDialog = () => {
         onEscapeKeyDown={(event) => event.preventDefault()}
         onInteractOutside={(event) => event.preventDefault()}
         className={cn(
-          "border-border bg-background/95 max-h-[90dvh] gap-4 overflow-y-auto p-4 shadow-2xl backdrop-blur-md sm:max-w-xl",
+          "max-h-[90dvh] gap-4 overflow-y-auto p-6 sm:max-w-xl",
           hasAttackReport &&
             (isVictory
-              ? "border-success/40 shadow-success/25 ring-success/40 border"
-              : "border-destructive/40 shadow-destructive/25 ring-destructive/40 border")
+              ? "shadow-success/25 shadow-2xl"
+              : "shadow-destructive/25 shadow-2xl")
         )}
       >
         {!shipMeeting && (

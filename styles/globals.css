@@ -6,6 +6,9 @@
 
 :root {
   --btn-text-case: none;
+  --gold: oklch(0.78 0.13 85);
+  --gold-light: oklch(0.93 0.09 95);
+  --gold-dark: oklch(0.48 0.09 70);
   --background: oklch(1 0 0);
   --foreground: oklch(0.148 0.004 228.8);
   --card: oklch(1 0 0);
@@ -106,6 +109,9 @@ html {
   --color-border: var(--border);
   --color-destructive: var(--destructive);
   --color-success: var(--success);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-dark: var(--gold-dark);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -139,4 +145,28 @@ html {
   html {
     @apply font-sans;
   }
+}
+
+@utility gilded-frame {
+  border: 8px solid transparent;
+  border-image: url("/img/ui/gilded-corners.svg") 64 / 64px / 8px stretch;
+  outline: 1px solid var(--gold);
+  outline-offset: -14px;
+  background:
+    linear-gradient(var(--background), var(--background)) padding-box,
+    linear-gradient(
+        135deg,
+        var(--gold-dark),
+        var(--gold-light) 20%,
+        var(--gold) 40%,
+        var(--gold-dark) 50%,
+        var(--gold) 60%,
+        var(--gold-light) 80%,
+        var(--gold-dark)
+      )
+      border-box;
+  box-shadow:
+    0 0 0 1px var(--gold-dark),
+    0 16px 48px oklch(0 0 0 / 60%),
+    0 0 32px oklch(from var(--gold) l c h / 20%);
 }
