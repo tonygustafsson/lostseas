@@ -5,6 +5,7 @@ import {
   getAttackSuccessQuip,
   getHarborArrivedQuip,
   getHarborBlockedQuip,
+  getHarborTownQuip,
   getPirateQuip,
 } from "@/utils/getPirateQuip"
 
@@ -345,6 +346,17 @@ describe("getHarborArrivedQuip", () => {
   it("returns a known harbor arrival quip", () => {
     mockPickFirst()
     expect(harborArrivedQuipSamples).toContain(getHarborArrivedQuip())
+  })
+})
+
+describe("getHarborTownQuip", () => {
+  it("returns a string", () => {
+    expect(typeof getHarborTownQuip()).toBe("string")
+  })
+
+  it("returns a known harbor town quip", () => {
+    mockPickFirst()
+    expect(getHarborTownQuip()).toBe("Fresh air at last!")
   })
 })
 

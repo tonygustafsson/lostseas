@@ -62,7 +62,6 @@ const SeaMapTowns = ({
           width={TOWN_SIZE}
           height={TOWN_SIZE}
           style={{ width: TOWN_SIZE, height: TOWN_SIZE }}
-          unoptimized
           draggable={false}
           className={
             canSelectTown

@@ -730,6 +730,13 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         ))}
 
         <p className="mb-4">
+          When you arrive in a town you start at the harbor, where you can see
+          the whole town. Click a building to go inside, and choose Back to town
+          to return to the harbor. You can also open the map with the Travel
+          button at the harbor.
+        </p>
+
+        <p className="mb-4">
           You can visit any town regardless of your nationality. Choose another
           town on the map to start a journey. If you cannot leave port, the
           advisor explains which problems you need to resolve in a popup. You

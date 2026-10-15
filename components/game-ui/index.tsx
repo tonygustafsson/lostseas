@@ -2,13 +2,15 @@
 
 import dynamic from "next/dynamic"
 
-const LocationHero = dynamic(() => import("./LocationHero"), { ssr: false })
-const ShowLocation = dynamic(() => import("./ShowLocation"), { ssr: false })
+const LocationScene = dynamic(() => import("./LocationScene"), { ssr: false })
+const LocationActions = dynamic(() => import("./LocationActions"), {
+  ssr: false,
+})
 
 const GameUI = () => (
   <>
-    <LocationHero />
-    <ShowLocation />
+    <LocationScene />
+    <LocationActions />
   </>
 )
 

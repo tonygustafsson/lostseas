@@ -1,15 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { ReactNode, useState } from "react"
 
 import useModal from "@/app/stores/modals"
-import Harbor from "@/components/location/Harbor"
 import SeaEventDialog from "@/components/location/Sea/SeaEventDialog"
 import { NATIONS } from "@/constants/locations"
 import { SHIP_TYPES } from "@/constants/ship"
-import { PLAYER_QUERY_KEY } from "@/hooks/queries/usePlayer"
 
 import { player } from "../fixtures"
+import PlayerPreview from "../PlayerPreview"
 
 type SeaTravelArgs = Partial<Pick<ShipMeetingState, "nation" | "shipType">>
 
@@ -210,34 +207,6 @@ const battleLastRound = inBattle({
   ],
 })
 
-const harborArrival: Player = {
-  ...player,
-  character: { ...player.character, location: "Harbor" },
-  crewMembers: { ...player.crewMembers, mood: 20 },
-  inventory: { ...player.inventory, food: 5 },
-  locationStates: { harbor: { lastHarborReason: "arrived" } },
-}
-
-const PlayerPreview = ({
-  data,
-  children,
-}: {
-  data: Player
-  children: ReactNode
-}) => {
-  const [queryClient] = useState(() => {
-    const client = new QueryClient({
-      defaultOptions: { queries: { retry: false, staleTime: Infinity } },
-    })
-    client.setQueryData([PLAYER_QUERY_KEY], data)
-    return client
-  })
-
-  return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  )
-}
-
 const meta = {
   title: "game/SeaTravel",
   component: SeaEventDialog,
@@ -323,9 +292,4 @@ export const BattleMidway: Story = {
 export const BattleLastRound: Story = {
   args: { nation: "France", shipType: "Galleon" },
   parameters: { player: battleLastRound },
-}
-
-export const HarborArrival: Story = {
-  parameters: { player: harborArrival },
-  render: () => <Harbor />,
 }

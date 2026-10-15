@@ -6,11 +6,10 @@ import { GiOpenedFoodCan, GiShoonerSailboat } from "react-icons/gi"
 import { RiTreasureMapLine } from "react-icons/ri"
 
 import useDrawer from "@/app/stores/drawer"
-import useModal from "@/app/stores/modals"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { useMapModal } from "@/hooks/useMapModal"
 
 import DrawerBottom from "../DrawerBottom"
-import Map from "../Map"
 import { Button } from "../ui/button"
 import MobileMenuContent from "./MobileMenuContent"
 
@@ -20,19 +19,10 @@ type Props = {
 
 const MobileBottomNav = ({ className }: Props) => {
   const { data: player } = useGetPlayer()
-  const { setModal } = useModal()
+  const { showMap, canTravel } = useMapModal()
   const { open: openDrawer } = useDrawer()
 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-  const showTravel = () => {
-    setModal({
-      id: "map",
-      title: "Pick your destination",
-      fullWidth: true,
-      content: <Map currentTown={player?.character.town} />,
-    })
-  }
 
   if (!player) return null
 
@@ -44,8 +34,8 @@ const MobileBottomNav = ({ className }: Props) => {
         <div className="grid grid-cols-4 gap-1 pb-[calc(env(safe-area-inset-bottom)+0.75rem)]">
           <Button
             variant="ghost"
-            onClick={showTravel}
-            disabled={!!player?.character.journey}
+            onClick={showMap}
+            disabled={!canTravel}
             className="h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-[0.65rem] leading-none font-semibold text-slate-400 transition-colors hover:bg-white/5 hover:text-amber-50"
           >
             <RiTreasureMapLine className="h-5 w-5" />

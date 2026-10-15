@@ -28,11 +28,27 @@ export const LOCATIONS = {
   sea: "Sea",
 } as Record<string, TownLocation | SeaLocation>
 
+// Position of a building on the town map image, in percent of the image
+// width and height. Size is the highlight diameter in percent of the width.
+export type TownBuildingPosition = {
+  x: number
+  y: number
+  size: number
+}
+
+export type TownBuilding = {
+  name: string
+  description: string
+  desktop: TownBuildingPosition
+  mobile: TownBuildingPosition
+}
+
 export type TownLocations = Record<
   Town,
   {
     nation: Nation
-    descriptions?: Partial<Record<TownLocation | SeaLocation, string>>
+    harborDescription: string
+    buildings: Record<TownLocation, TownBuilding>
     map: {
       x: number
       y: number
@@ -181,19 +197,51 @@ const DISTANCES = {
 export const TOWNS: TownLocations = {
   "Charles Towne": {
     nation: "England",
-    descriptions: {
-      Shop: "Amidst the lively town square, The Maritime Emporium allures passersby with its diverse wares, offering nourishing provisions, canteens of pure water, medicinal remedies, fine tobacco, aged rum, delicate porcelain, and an exotic assortment of aromatic spices, evoking the spirit of maritime adventure and worldly trade.",
-      Tavern:
-        "Amidst the cobbled streets, The Salty Seadog Tavern exudes a rustic charm, where wine, tobacco, and rum flow freely, and the lively chatter of talkative pirates fills the air with tales of daring escapades.",
-      Bank: "Amidst the dimly lit chamber, rows of heavy wooden desks adorned with quill pens and leather-bound ledgers stand as scribes meticulously record transactions, while the air carries the scent of ink and parchment.",
-      Market:
-        "Amidst the cobbled streets and bustling stalls, vendors hawk their wares to a vibrant tapestry of patrons, the air alive with the harmonious medley of haggling voices and the tantalizing aroma of exotic spices.",
-      Shipyard:
-        "Amidst wooden structures and echoing with the sounds of hammering and creaking timber, skilled craftsmen shape massive vessels under the vast expanse of the open sky.",
-      "City hall":
-        "At the epicenter of urban activity, the city hall's imposing stature underscores its role as the epicenter of governance, its design reflecting the community's commitment to organization and progress.",
-      Harbor:
-        "Nestled along the coastline, the bustling harbor teems with maritime activity, its docks alive with the comings and goings of ships, merchants, and the vibrant pulse of trade.",
+    harborDescription:
+      "Palmetto-log wharves line the mouth of the Cooper River, stacked high with barrels of rice and indigo bound for London, while redcoats watch from the battery and planters haggle with ship captains over the price of passage.",
+    buildings: {
+      Shop: {
+        name: "King's Mercantile",
+        description:
+          "Beneath a dark slate roof and a flag snapping in the wind, the King's Mercantile sets out its wares under striped awnings: baskets of fruit, sacks of flour and casks of fresh water stacked along the front. Lanterns burn at the door long after the evening gun has sounded from the fort.",
+        desktop: { x: 10, y: 52, size: 12 },
+        mobile: { x: 19, y: 63, size: 32 },
+      },
+      Tavern: {
+        name: "Redcoat Tavern",
+        description:
+          "With its crimson sign framed by golden tankards, the Redcoat Tavern is hard to miss. Lanterns hang from the flower-draped gallery above, warm light pours through the arched doorways, and off-duty soldiers share rum with sailors among the barrels outside.",
+        desktop: { x: 25, y: 50, size: 12 },
+        mobile: { x: 51, y: 63, size: 32 },
+      },
+      Bank: {
+        name: "Crown Ledger Bank",
+        description:
+          "Red brick trimmed with white stone and a navy sign set with golden crowns, the Crown Ledger Bank wears its loyalties openly. Potted palms flank the steps up to its arched oak door, where planters come to deposit their rice and indigo money.",
+        desktop: { x: 39, y: 50, size: 10 },
+        mobile: { x: 82, y: 63, size: 30 },
+      },
+      "City hall": {
+        name: "Governor's Hall",
+        description:
+          "Crowned by a white cupola and a carved crest with golden lions, the Governor's Hall rises in red brick behind tall white columns. Flower boxes brighten every window, and a broad stone stair leads up to the green front door.",
+        desktop: { x: 55.5, y: 48, size: 14 },
+        mobile: { x: 50, y: 33, size: 40 },
+      },
+      Market: {
+        name: "Dockside Market",
+        description:
+          "Red and white striped awnings shade the counters of the Dockside Market, a clapboard house with green shutters and flower boxes. Crates of oranges, apples and greens line the front, and porters roll barrels straight from the wharf to the stalls.",
+        desktop: { x: 73, y: 52, size: 12 },
+        mobile: { x: 16, y: 34, size: 28 },
+      },
+      Shipyard: {
+        name: "Royal Shipwrights",
+        description:
+          "Crossed hammers mark the sign of the Royal Shipwrights, an open timber frame raised over the slipway. A wooden hull sits in its cradle among ladders and scaffolding, and the smell of tar and fresh-cut pine drifts across the shore.",
+        desktop: { x: 89, y: 52, size: 14 },
+        mobile: { x: 84, y: 34, size: 30 },
+      },
     },
     map: {
       x: 388,
@@ -221,19 +269,51 @@ export const TOWNS: TownLocations = {
   },
   Barbados: {
     nation: "England",
-    descriptions: {
-      Shop: "Within the bustling market square, The Captain's Cove Emporium beckons with a rich assortment of provisions, leather-bound water bottles, healing tonics, aromatic tobacco, aged rum, delicate porcelain, and a tantalizing array of spices, evoking the essence of maritime exploration and exotic trade.",
-      Tavern:
-        "Nestled in the heart of the town, The Captain's Quarters Inn entices patrons with its rich libations of wine, tobacco, and rum, while talkative pirates spin riveting yarns that whisk listeners away to the high seas.",
-      Bank: "Inside the bank, clerks in ruffled collars and powdered wigs bustle about, orchestrating exchanges of coin and bills beneath the watchful gaze of ornate oil paintings and flickering candlelight.",
-      Market:
-        "In a lively bazaar of cobbled pathways and colorful awnings, traders peddle their diverse merchandise to a mosaic of eager shoppers, creating a sensory collage of bargaining banter and alluring scents.",
-      Shipyard:
-        "Within the maritime construction hub, the air resounds with the rhythmic cadence of hammers meeting wood, as skilled artisans fashion imposing ships beneath the expansive canopy of the heavens.",
-      "City hall":
-        "At the heart of the urban landscape, the city hall stands as an architectural emblem of civic governance, its grand façade and towering spires evoking a sense of authority and communal identity.",
-      Harbor:
-        "At the meeting point of land and sea, the harbor buzzes with a symphony of maritime engagements, where vessels, merchants, and the aroma of goods create a bustling tableau of trade.",
+    harborDescription:
+      "Coral-stone warehouses crowd the curve of Carlisle Bay, where hogsheads of sugar and molasses roll down to the waiting longboats and English merchantmen ride at anchor in water so clear you can count the shells on the sand.",
+    buildings: {
+      Shop: {
+        name: "Coral Crown Mercantile",
+        description:
+          "Beneath a slate roof and a gilded crown, the Coral Crown Mercantile spills its wares onto the quay. Crates of fruit and sacks of flour crowd the blue awnings out front, while barrels of salt pork and fresh water wait by the door for any captain about to put to sea.",
+        desktop: { x: 8.5, y: 48, size: 11 },
+        mobile: { x: 18, y: 35, size: 30 },
+      },
+      Tavern: {
+        name: "Anchor & Crown Tavern",
+        description:
+          "A red-brick house with green shutters and a row of dormer windows, the Anchor & Crown Tavern keeps its doors open to the sea breeze. Sailors drink rum at the tables beneath its wooden porch, and the smell of tobacco and roasting meat drifts out over the barrels stacked on the quay.",
+        desktop: { x: 22.5, y: 48, size: 11 },
+        mobile: { x: 49, y: 35, size: 30 },
+      },
+      Bank: {
+        name: "Island Ledger Bank",
+        description:
+          "Pale stone, tall arched windows and a carved crest above the roofline give the Island Ledger Bank an air of quiet authority. Lanterns flank the broad steps up to its heavy oak door, where planters and merchants come to deposit their sugar fortunes.",
+        desktop: { x: 37, y: 48, size: 10 },
+        mobile: { x: 82, y: 36, size: 30 },
+      },
+      "City hall": {
+        name: "Governor's Hall",
+        description:
+          "Under the flag flying from its rooftop, the red-brick Governor's Hall rises behind four white columns and a balcony overlooking the waterfront. Potted palms line the stone steps, and clerks hurry in and out with petitions for the governor's seal.",
+        desktop: { x: 54.5, y: 45, size: 14 },
+        mobile: { x: 32, y: 60, size: 44 },
+      },
+      Market: {
+        name: "Plantation Quay Market",
+        description:
+          "Striped red and cream awnings shade the arched stalls of the Plantation Quay Market, piled high with mangoes, plantains and sacks of sugar from the inland estates. Traders call out their prices over the clatter of carts on the cobbles.",
+        desktop: { x: 73, y: 48, size: 14 },
+        mobile: { x: 66, y: 63, size: 28 },
+      },
+      Shipyard: {
+        name: "King's Shipyard",
+        description:
+          "A timber shed with a crowned sign opens straight onto the water at the King's Shipyard. Inside, the ribs of a new hull rise from the slipway, and a tall wooden crane swings planks and crates down to the busy dock.",
+        desktop: { x: 90, y: 48, size: 14 },
+        mobile: { x: 90, y: 63, size: 26 },
+      },
     },
     map: {
       x: 779,
@@ -260,19 +340,51 @@ export const TOWNS: TownLocations = {
   },
   "Port Royale": {
     nation: "England",
-    descriptions: {
-      Shop: "Nestled along the lively quayside, The Seafarer's Emporium entices with its treasure trove of sustenance, leather-clad water flasks, healing elixirs, aromatic tobacco, aged rum, delicate porcelain, and an exotic array of spices, embodying the spirit of maritime adventure and alluring trade.",
-      Tavern:
-        "Within the lively tavern known as The Buccaneer's Cove, the air is thick with the aroma of wine, tobacco, and rum, as talkative pirates gather to swap stories of their adventurous exploits.",
-      Bank: "The heart of the bank beats with the rhythmic scratching of quills on parchment, as patrons huddle in small clusters, discussing trade deals and loans amidst the grandeur of oak-panelled walls and high vaulted ceilings.",
-      Market:
-        "Within a market square adorned with makeshift stalls and vibrant banners, a symphony of bartering voices weaves through the air, accompanied by the visual feast of goods ranging from glistening textiles to gleaming trinkets.",
-      Shipyard:
-        "Amid the shipbuilding precinct, the symphony of ringing tools and the scent of freshly hewn timber converge, creating a scene where master shipwrights sculpt mighty vessels against the backdrop of the boundless firmament.",
-      "City hall":
-        "Anchored in the urban center, the city hall's majestic presence embodies civic leadership, its architectural grandeur serving as a symbolic nexus for communal affairs.",
-      Harbor:
-        "Along the shore's edge, the harbor thrives as a hub of seafaring ventures, where ships dock amidst a lively scene of commerce, echoing with the sounds of rigging and negotiation.",
+    harborDescription:
+      "Crammed onto a narrow spit of sand, the docks of Port Royale never sleep. Navy frigates moor beside battered privateers, and gold of uncertain origin changes hands in plain sight of the fort.",
+    buildings: {
+      Shop: {
+        name: "Crown Compass Shop",
+        description:
+          "Red brick, green shutters and a golden crown above the sign mark the Crown Compass Shop. Its windows are stacked with sacks, jars and lanterns, barrels line the front, and an old anchor leans against the wall by the door.",
+        desktop: { x: 7.5, y: 55, size: 11 },
+        mobile: { x: 19, y: 50, size: 30 },
+      },
+      Tavern: {
+        name: "Mariner's Rest Tavern",
+        description:
+          "Every window of the Mariner's Rest Tavern glows with lantern light, from the dormers under its dark roof to the long gallery above the door. A ship's wheel sits over the sign, and privateers and navy men drink side by side, each pretending not to know the other.",
+        desktop: { x: 22, y: 52, size: 13 },
+        mobile: { x: 49, y: 50, size: 32 },
+      },
+      Bank: {
+        name: "Royal Exchange Bank",
+        description:
+          "Tall white columns and a golden crown above the sign give the Royal Exchange Bank the look of a temple to money. Lanterns light the stone steps, and behind its doors gold of uncertain origin is quietly turned into respectable English coin.",
+        desktop: { x: 37, y: 52, size: 10 },
+        mobile: { x: 82, y: 50, size: 32 },
+      },
+      "City hall": {
+        name: "Governor's Hall",
+        description:
+          "Red brick and white columns rise behind a sweep of stone steps at the Governor's Hall, its royal coat of arms painted in blue and gold. From the flag on the roof to the green shutters, every detail reminds the town who is in charge.",
+        desktop: { x: 52, y: 48, size: 14 },
+        mobile: { x: 50, y: 25, size: 40 },
+      },
+      Market: {
+        name: "Harbour Row Market",
+        description:
+          "Canvas awnings in cream and red stripes shelter the stalls of the Harbour Row Market, laden with yams, citrus, turtle meat and sacks of cocoa. The old timbered building behind holds the traders' stores, and the noise rarely stops before midnight.",
+        desktop: { x: 71, y: 55, size: 15 },
+        mobile: { x: 26, y: 75, size: 40 },
+      },
+      Shipyard: {
+        name: "Queen's Dockyard",
+        description:
+          "A golden anchor between two crowns decorates the sign of the Queen's Dockyard, a weathered timber shed facing the water. Inside, a hull stands in its cradle among ladders and ropes, and naval officers inspect every plank before it goes in.",
+        desktop: { x: 90, y: 52, size: 14 },
+        mobile: { x: 76, y: 73, size: 42 },
+      },
     },
     map: {
       x: 452,
@@ -299,19 +411,51 @@ export const TOWNS: TownLocations = {
   },
   Belize: {
     nation: "England",
-    descriptions: {
-      Shop: "Amidst the cobblestone streets, The Adventurer's Emporium beckons with its diverse offerings, from nourishing victuals and leather-bound water bottles to medicinal tinctures, aromatic tobacco, aged rum, delicate porcelain, and an exotic assortment of spices, all evoking the allure of daring expeditions and global trade.",
-      Tavern:
-        "Amidst the bustling town square, The Shipwrecked Sailor Alehouse beckons with its offerings of wine, tobacco, and rum, as talkative pirates recount their daring escapades over merry glasses.",
-      Bank: "Within the bank's opulent interior, the hushed whispers of bankers and traders intertwine with the rustle of fine silk garments, creating an atmosphere of clandestine negotiations amidst polished mahogany desks and stacks of gold coins.",
-      Market:
-        "Amidst the bustling marketplace, a lively dance of commerce unfolds as vendors flaunt their wares under a patchwork of sunlit canopies, while the chorus of negotiations mingles with the rustle of coins and the occasional burst of laughter.",
-      Shipyard:
-        "In the shipyard's bustling expanse, the harmony of chisels and saws intermingles with the salty breeze, as experienced shipbuilders shape majestic boats beneath the open expanse of the sky.",
-      "City hall":
-        "Within the bustling urban expanse, the city hall's imposing structure commands attention, a focal point where governance takes shape through intricate design and towering architecture.",
-      Harbor:
-        "Nestled within the coastal embrace, the harbor breathes life into the waterfront, a dynamic arena where ships dock and cargoes exchange hands, enveloped in the salty breeze of maritime enterprise.",
+    harborDescription:
+      "Rough wooden jetties poke out between the mangroves, where Baymen float great rafts of logwood down the river and load them by hand onto ships that must pick their way carefully through the shallow reef beyond.",
+    buildings: {
+      Shop: {
+        name: "Bay Crown Mercantile",
+        description:
+          "A weathered clapboard store with a grey shingle roof and a golden crown on its sign, the Bay Crown Mercantile sits close to the water's edge. Barrels, sacks and wooden chests crowd its porch beneath a cream canvas awning, and lanterns glow beside the open door.",
+        desktop: { x: 11, y: 48, size: 13 },
+        mobile: { x: 19, y: 20, size: 32 },
+      },
+      Tavern: {
+        name: "Sailmaker's Rest Tavern",
+        description:
+          "Under a heavy thatched roof and a sign painted with a foaming tankard, the Sailmaker's Rest Tavern welcomes anyone with a thirst. Lantern light spills through the windows onto rough tables outside, where crews mend canvas between rounds of rum.",
+        desktop: { x: 26, y: 47, size: 11 },
+        mobile: { x: 83, y: 20, size: 30 },
+      },
+      Bank: {
+        name: "Colonial Ledger Bank",
+        description:
+          "A carved crest crowns the pediment of the Colonial Ledger Bank, a neat building of pale stone and white columns. Behind its tall double doors, logwood cutters exchange a season's hard work for coin under the clerks' careful eyes.",
+        desktop: { x: 41, y: 47, size: 13 },
+        mobile: { x: 18, y: 40, size: 32 },
+      },
+      "City hall": {
+        name: "Governor's Hall",
+        description:
+          "Topped by a white clock tower and a slate dome, the red-brick Governor's Hall stands at the head of a wide stone stair, its columned porch and balcony looking out over the turquoise lagoon. Every ship that crosses the reef is noted in the harbourmaster's book inside.",
+        desktop: { x: 59, y: 45, size: 14 },
+        mobile: { x: 55, y: 37, size: 38 },
+      },
+      Market: {
+        name: "Mangrove Quay Market",
+        description:
+          "Open-sided and thatched, the Mangrove Quay Market shelters long rows of stalls beneath cream canvas. Bananas hang from the beams, baskets brim with limes and cacao, and canoes from up the river unload their goods straight onto the planks.",
+        desktop: { x: 75, y: 50, size: 13 },
+        mobile: { x: 26, y: 64, size: 40 },
+      },
+      Shipyard: {
+        name: "Belize Shipwrights",
+        description:
+          "A dark-roofed timber shed with crossed hammers on its sign, Belize Shipwrights smells of fresh-cut mahogany and pine tar. A half-built hull sits on the slipway inside, its bare ribs waiting for planks.",
+        desktop: { x: 91, y: 48, size: 14 },
+        mobile: { x: 80, y: 66, size: 38 },
+      },
     },
     map: {
       x: 207,
@@ -339,19 +483,51 @@ export const TOWNS: TownLocations = {
   },
   Tortuga: {
     nation: "France",
-    descriptions: {
-      Shop: "Within the old town's bustling center, The Maritime Emporium lures in passersby with its eclectic range of goods, from nourishing provisions and leather-clad water bottles to medicinal remedies, aromatic tobacco, aged rum, delicate porcelain, and a captivating variety of spices, invoking a sense of seafaring adventure and worldly intrigue.",
-      Tavern:
-        "The Jolly Roger Inn stands tall, a cozy tavern where wine, tobacco, and rum flow freely, and talkative pirates share their legendary tales with eager ears.",
-      Bank: "Stepping into the bank feels like entering a world frozen in time, where the gentle shuffle of papers mingles with the soft chiming of pocket watches, encapsulating the elegance of an era marked by handwritten ledgers and graceful transactions.",
-      Market:
-        "The market scene unfolds with a kaleidoscope of colors and sounds, as traders present their treasures against a backdrop of animated conversations and the tantalizing sizzle of food stalls, creating an atmosphere of spirited exchange.",
-      Shipyard:
-        "Within the naval construction site, the echoes of labor resonate against the backdrop of billowing clouds, as shipwrights meticulously craft formidable seafaring vessels with a chorus of hammer strikes and timber manipulation.",
-      "City hall":
-        "Amidst the urban tapestry, the city hall's regal edifice stands as a testament to civic administration, its stately appearance mirroring the importance of local governance.",
-      Harbor:
-        "The shoreline transforms into a theater of maritime affairs at the bustling harbor, where vessels of all sizes jostle for space while merchants and traders navigate the intricate dance of business.",
+    harborDescription:
+      "Beneath the cliffs and the guns of the old fort, buccaneer sloops crowd a cramped little harbor where nobody asks where the cargo came from, and every second sailor on the quay seems to be looking for a new captain.",
+    buildings: {
+      Shop: {
+        name: "Harbor Shop",
+        description:
+          "Golden fleurs-de-lis frame the sign of the Harbor Shop, a squat stone building with a terracotta roof right on the waterfront. Under its cream awning, crates of fruit and barrels of supplies wait for buyers, and nobody asks where your money came from.",
+        desktop: { x: 10, y: 62, size: 12 },
+        mobile: { x: 12, y: 72, size: 26 },
+      },
+      Tavern: {
+        name: "Golden Lily Tavern",
+        description:
+          "The Golden Lily Tavern sits on the steep stairs climbing from the harbour, its balconies wrapped in climbing vines and lit by warm lanterns. Inside, buccaneers drink, gamble and recruit, and fights break out as often as songs.",
+        desktop: { x: 26, y: 60, size: 14 },
+        mobile: { x: 39, y: 72, size: 26 },
+      },
+      Bank: {
+        name: "Royal Bank",
+        description:
+          "Golden lilies decorate the sign of the Royal Bank, a fine stone house with a blue slate roof that looks almost out of place among the rough houses of the town. Lanterns flank its three arched doors, and the clerks wisely ask few questions.",
+        desktop: { x: 41, y: 58, size: 11 },
+        mobile: { x: 31, y: 42, size: 30 },
+      },
+      "City hall": {
+        name: "Governor's Hall",
+        description:
+          "White banners with golden lilies hang either side of the doors of the Governor's Hall, a pale stone building with a long balcony and a blue slate roof. The governor keeps a careful peace with the buccaneers, and the fortress on the cliff above makes sure of it.",
+        desktop: { x: 58, y: 58, size: 13 },
+        mobile: { x: 70, y: 44, size: 40 },
+      },
+      Market: {
+        name: "Grand Market",
+        description:
+          "Red and cream striped awnings shade the stalls of the Grand Market, where looted silks sit beside fresh fruit and salted beef. The stone building behind has a terracotta roof and a row of arched windows, overlooking traders who argue loudly over every price.",
+        desktop: { x: 73.5, y: 63, size: 11 },
+        mobile: { x: 62, y: 72, size: 22 },
+      },
+      Shipyard: {
+        name: "Royal Dockyard",
+        description:
+          "Golden lilies flank the sign of the Royal Dockyard, a massive timber frame beside the tall masts of the harbour. A hull rests in the shadows inside, and a heavy crane lifts timber for the ships that buccaneers wear out so quickly.",
+        desktop: { x: 88, y: 62, size: 11 },
+        mobile: { x: 85, y: 76, size: 26 },
+      },
     },
     map: {
       x: 598,
@@ -378,19 +554,51 @@ export const TOWNS: TownLocations = {
   },
   Leogane: {
     nation: "France",
-    descriptions: {
-      Shop: "In the heart of the old town, The Seafarer's Emporium entices with its diverse selection, from nourishing provisions and leather-clad water bottles to healing elixirs, aromatic tobacco, aged rum, delicate porcelain, and an enchanting array of spices, evoking the charm of maritime exploration and international trade.",
-      Tavern:
-        "Tucked away in the narrow alleys, The Sea Serpent's Hideaway lures with its enticing wines, tobacco, and rum, and the laughter of talkative pirates fills the air.",
-      Bank: "In the heart of the bank, sunlight filters through stained glass windows, casting colorful reflections upon the intricate mosaic floors, as patrons engage in animated discussions while ink-stained fingers record the ebb and flow of financial fortunes.",
-      Market:
-        "In the heart of the marketplace, a mosaic of stalls forms a labyrinth of goods and opportunities, where buyers and sellers engage in an orchestrated rhythm of interaction, accompanied by the harmonious blend of languages and dialects.",
-      Shipyard:
-        "Amid the sprawling shipbuilding grounds, a panorama of craftsmanship unfolds under the watchful eye of the elements, where artisans shape sturdy ships through the harmonious interplay of skilled hands and natural forces.",
-      "City hall":
-        "At the crossroads of the city, the city hall's resplendent building speaks to the core of communal management, its design and stature reflecting the city's organizational heart.",
-      Harbor:
-        "Where land meets water, the harbor unfurls as a bustling gateway to distant horizons, where ships are moored and seafarers and merchants converge to shape the ebb and flow of trade.",
+    harborDescription:
+      "Flat-bottomed barges glide in from the sugar plains of Saint-Domingue, and French merchantmen load casks of indigo and raw sugar while customs officers in powdered wigs tally every crate in their leather ledgers.",
+    buildings: {
+      Shop: {
+        name: "Quay Shop",
+        description:
+          "Blue shutters and a red-tiled roof give the Quay Shop a warm, sunny charm. A striped awning shades its counter of cheeses, bread and dried goods, while crates and barrels wait by the waterfront for ships bound back to France.",
+        desktop: { x: 13, y: 58, size: 10 },
+        mobile: { x: 23, y: 74, size: 26 },
+      },
+      Tavern: {
+        name: "Blue Heron Tavern",
+        description:
+          "A painted blue heron swings on the sign outside the Blue Heron Tavern, a tall house of honey-coloured stone with a slate roof and a balcony full of flowers. Lanterns glow by the twin doors, and inside planters and sailors toast each other with rum and claret.",
+        desktop: { x: 26, y: 55, size: 11 },
+        mobile: { x: 50, y: 74, size: 28 },
+      },
+      Bank: {
+        name: "Royal Bank",
+        description:
+          "The white flag with golden lilies flies above the Royal Bank, a stately house of pale stone with a golden fleur-de-lis set into its slate roof. Columns frame the heavy oak door, and potted palms line the steps where sugar merchants come to count their profits.",
+        desktop: { x: 40, y: 55, size: 10 },
+        mobile: { x: 82, y: 72, size: 28 },
+      },
+      "City hall": {
+        name: "Governor's Hall",
+        description:
+          "Bougainvillea climbs the arcade of the Governor's Hall, a graceful building with blue shutters, an iron balcony and a golden fleur-de-lis above the roofline. Stone stairways wind up the hillside around it, past terraces of flowers and palms.",
+        desktop: { x: 56, y: 53, size: 14 },
+        mobile: { x: 30, y: 40, size: 40 },
+      },
+      Market: {
+        name: "Saint Pierre Market",
+        description:
+          "Beneath a terracotta roof and a row of arched windows, the Saint Pierre Market sets out its stalls under cream and red striped awnings. Baskets of oranges, plantains and coffee beans crowd the counters, and the old stone aqueduct can be seen on the hill above.",
+        desktop: { x: 72, y: 58, size: 12 },
+        mobile: { x: 75, y: 52, size: 38 },
+      },
+      Shipyard: {
+        name: "King's Yard",
+        description:
+          "Under a great open timber roof, the King's Yard cradles a hull still bare to its ribs. A wooden hoist stands beside the shed, and carpenters work by lantern light to finish ships for the French crown.",
+        desktop: { x: 92, y: 58, size: 14 },
+        mobile: { x: 81, y: 31, size: 36 },
+      },
     },
     map: {
       x: 537,
@@ -417,19 +625,51 @@ export const TOWNS: TownLocations = {
   },
   Martinique: {
     nation: "France",
-    descriptions: {
-      Shop: "Amidst the bustling market square, The Adventurer's Emporium calls out with its captivating offerings, encompassing nourishing victuals and leather-bound water bottles, medicinal tinctures, aromatic tobacco, aged rum, delicate porcelain, and an exotic assortment of spices, all conjuring visions of daring expeditions and global commerce.",
-      Tavern:
-        "Along the waterfront, The Smuggler's Den Tavern serves up wine, tobacco, and rum to a boisterous crowd of talkative pirates, swapping tales that captivate everyone present.",
-      Bank: "Within the bank's oak-paneled walls, the air is thick with the scent of aged leather and candle wax, as clerks meticulously copy entries from worn parchment scrolls onto fresh pages, preserving the intricate tapestry of economic activities.",
-      Market:
-        "Within the vibrant market setting, the air resonates with the hum of activity, interweaving the cadence of transactions and the mesmerizing array of products, from aromatic herbs to intricately woven fabrics.",
-      Shipyard:
-        "The shipyard's lively atmosphere comes alive with the symphony of creation, as skilled workers ply their trade amid stacks of timber and the vast panorama of the sky, fashioning vessels that will brave the open seas.",
-      "City hall":
-        "In the midst of urban activity, the city hall's architectural magnificence underscores its role as the administrative cornerstone, its form a tangible representation of communal structure.",
-      Harbor:
-        "Embraced by the sea's expanse, the harbor emerges as a dynamic crossroads of seafaring activities, its docks a stage where cargoes are loaded and unloaded, while tales of distant shores are exchanged.",
+    harborDescription:
+      "Under the brooding shadow of Mount Pelée, the busy roadstead fills with French ships taking on rum and sugar, and the scent of cane smoke drifts down from the hillside distilleries to the crowded quays.",
+    buildings: {
+      Shop: {
+        name: "Coral Crown Shop",
+        description:
+          "A carved red coral fan sits above the sign of the Coral Crown Shop, a cheerful house with blue shutters and a red-tiled roof. Blue and white striped awnings shade shelves of provisions, lanterns and casks, while the white banner of France flutters overhead.",
+        desktop: { x: 12, y: 52, size: 12 },
+        mobile: { x: 27, y: 30, size: 36 },
+      },
+      Tavern: {
+        name: "La Perle Tavern",
+        description:
+          "Smoke curls from the chimney of La Perle Tavern, where a foaming golden tankard hangs above the dark sign. Beneath its stone arches, lantern light falls on crowded tables of sailors and planters drinking rum from the island's own distilleries.",
+        desktop: { x: 26.5, y: 52, size: 11 },
+        mobile: { x: 64, y: 30, size: 36 },
+      },
+      Bank: {
+        name: "Royal Indies Bank",
+        description:
+          "White stone columns, a blue slate roof and a golden fleur-de-lis announce the Royal Indies Bank. Banners of the French crown hang either side of its arched door, and a broad flight of steps leads merchants inside to trade their sugar money for letters of credit.",
+        desktop: { x: 40, y: 52, size: 10 },
+        mobile: { x: 28, y: 50, size: 36 },
+      },
+      "City hall": {
+        name: "Governor's Maison",
+        description:
+          "A red carpet runs down the steps of the Governor's Maison, an elegant house of pale stone with blue shutters and a golden fleur-de-lis set into its slate roof. Lanterns and potted flowers line the entrance, ready for the next visiting captain.",
+        desktop: { x: 54.5, y: 50, size: 13 },
+        mobile: { x: 72, y: 50, size: 36 },
+      },
+      Market: {
+        name: "Spice Quay Market",
+        description:
+          "A carved golden pineapple crowns the sign of the Spice Quay Market, where red and green striped awnings shade crates of bananas, pineapples, cocoa and cinnamon bark. The warm ochre walls glow in the afternoon sun as traders haggle over every sack.",
+        desktop: { x: 71.5, y: 55, size: 14 },
+        mobile: { x: 26, y: 70, size: 38 },
+      },
+      Shipyard: {
+        name: "Fleur Harbor Dockyard",
+        description:
+          "A golden anchor emblem hangs over the entrance of the Fleur Harbor Dockyard, a stone and timber shed with a blue slate roof. Inside, a hull rests on its cradle, while ships flying the white flag of France wait at anchor for repairs.",
+        desktop: { x: 88.5, y: 55, size: 14 },
+        mobile: { x: 73, y: 74, size: 42 },
+      },
     },
     map: {
       x: 752,
@@ -457,19 +697,51 @@ export const TOWNS: TownLocations = {
   },
   Biloxi: {
     nation: "France",
-    descriptions: {
-      Shop: "Nestled along the cobblestone streets, The Maritime Emporium allures with its treasure trove, housing nourishing victuals and leather-clad water bottles, medicinal remedies, aromatic tobacco, aged rum, delicate porcelain, and a captivating variety of spices, embodying the spirit of seafaring adventures and exotic trade.",
-      Tavern:
-        "In the heart of the town's nightlife, The Blackbeard's Lair entices with its selection of wine, tobacco, and rum, while talkative pirates regale one another with thrilling stories.",
-      Bank: "Amidst the rich tapestries and velvet draperies, the bank exudes an air of sophistication and precision, with patrons consulting with bankers in quiet tones while the clink of metal coins resonates from the counting rooms nearby.",
-      Market:
-        "Amidst the open-air market's vibrant chaos, an array of vendors beckons with treasures ranging from gleaming jewels to handcrafted pottery, the ambiance enriched by the symphony of negotiations and the chatter of eager patrons.",
-      Shipyard:
-        "Within the maritime workshop, the resonant melody of tools against wood harmonizes with the vast azure canvas above, while dedicated shipbuilders bring forth maritime giants from raw materials.",
-      "City hall":
-        "Within the urban fabric, the city hall's dignified exterior symbolizes the city's collective identity, housing the mechanisms through which local governance finds expression.",
-      Harbor:
-        "Along the water's edge, the harbor forms a bustling canvas of maritime interactions, with ships unloading exotic goods and skilled dockworkers navigating the labyrinth of crates and barrels.",
+    harborDescription:
+      "The sound is too shallow for deep-hulled ships, so longboats shuttle cargo across the calm water to a modest landing of pine planks, where French settlers trade furs and timber for supplies they cannot grow themselves.",
+    buildings: {
+      Shop: {
+        name: "Pelican Pearl Shop",
+        description:
+          "Red tiles, teal shutters and climbing bougainvillea frame the Pelican Pearl Shop, where a striped red awning shades the door. Inside, lantern light falls on shelves of provisions, coils of rope and casks of fresh water for the voyage ahead.",
+        desktop: { x: 10, y: 50, size: 13 },
+        mobile: { x: 21, y: 51, size: 32 },
+      },
+      Tavern: {
+        name: "Belle Mer Tavern",
+        description:
+          "Lanterns glow along the long balcony of the Belle Mer Tavern, its dark blue sign painted with golden fleurs-de-lis. Flowers tumble over the railings, and from the arched doorways below comes the sound of fiddles, laughter and clinking cups of wine.",
+        desktop: { x: 26, y: 50, size: 12 },
+        mobile: { x: 54, y: 51, size: 34 },
+      },
+      Bank: {
+        name: "Gulf Crown Bank",
+        description:
+          "A golden fleur-de-lis crowns the slate roof of the Gulf Crown Bank, a handsome cream building with teal shutters and flower-filled window boxes. Twin lanterns light the arched entrance, where traders in furs and timber come to settle their accounts.",
+        desktop: { x: 40, y: 50, size: 11 },
+        mobile: { x: 24, y: 28, size: 36 },
+      },
+      "City hall": {
+        name: "Governor's Hall",
+        description:
+          "Wide steps lead up to the Governor's Hall, a stately cream building with a blue slate roof, a golden fleur-de-lis and a balcony draped in flowers. The white royal banner of France flies nearby as officials debate the colony's affairs inside.",
+        desktop: { x: 55.5, y: 48, size: 14 },
+        mobile: { x: 71, y: 28, size: 40 },
+      },
+      Market: {
+        name: "Bayfront Spice Market",
+        description:
+          "Under a red-tiled roof wreathed in flowers, the Bayfront Spice Market opens its stalls beneath red and green striped awnings. Baskets of peppers, vanilla and fresh fruit crowd the counters, and the scent of spices carries all the way to the water.",
+        desktop: { x: 73, y: 52, size: 12 },
+        mobile: { x: 29, y: 72, size: 36 },
+      },
+      Shipyard: {
+        name: "Crescent Dockyard",
+        description:
+          "A great timber frame with a fleur-de-lis above its sign, the Crescent Dockyard rings with mallets and saws. Scaffolding wraps a hull taking shape on the slipway, and a wooden crane lifts timber from the barges below.",
+        desktop: { x: 89, y: 52, size: 14 },
+        mobile: { x: 74, y: 72, size: 40 },
+      },
     },
     map: {
       x: 259,
@@ -496,19 +768,51 @@ export const TOWNS: TownLocations = {
   },
   Panama: {
     nation: "Spain",
-    descriptions: {
-      Shop: "Nestled along the cobblestone streets, The Maritime Emporium allures with its treasure trove, housing nourishing victuals and leather-clad water bottles, medicinal remedies, aromatic tobacco, aged rum, delicate porcelain, and a captivating variety of spices, embodying the spirit of seafaring adventures and exotic trade.",
-      Tavern:
-        "The Pirate's Cove Tavern exudes a seafaring charm, where wine, tobacco, and rum are readily available, and talkative pirates entertain with tales of daring adventures on the high seas.",
-      Bank: "The bank's interior is a tableau of ordered chaos, with clerks rushing to and fro beneath the gaze of stern portraits, ink-stained aprons contrasting against the polished grandeur of gilded mirrors and towering shelves of leather-bound ledgers.",
-      Market:
-        "Stepping into the bustling market square, one is enveloped by a sensory tapestry of sights and sounds, where traders extol their goods in a chorus of languages, set against the backdrop of vivid fabrics and fragrant spices.",
-      Shipyard:
-        "Amid the ship construction arena, the orchestrated dance of artisans and raw materials takes center stage, as majestic vessels begin to take shape beneath the boundless expanse of the heavens.",
-      "City hall":
-        "Anchored in the urban sprawl, the city hall's impressive architecture embodies civic order, a visual embodiment of the mechanisms that guide the community's functioning.",
-      Harbor:
-        "Nestled within the coastal embrace, the harbor comes alive with the pulse of maritime connections, as sailors and traders collaborate amidst the backdrop of anchored vessels and bustling quaysides.",
+    harborDescription:
+      "Mule trains laden with Peruvian silver descend from the jungle road to the stone quays, where Spanish soldiers guard every chest until the treasure galleons are ready to carry the King's fortune home.",
+    buildings: {
+      Shop: {
+        name: "Pearl Shop",
+        description:
+          "Through the wide arches of the Pearl Shop, strings of pearls and polished shells glitter in the lantern light. Bougainvillea climbs the whitewashed walls, and behind the treasures sit the plainer goods every crew needs: food, water and medicine for the voyage.",
+        desktop: { x: 8, y: 58, size: 10 },
+        mobile: { x: 14, y: 73, size: 26 },
+      },
+      Tavern: {
+        name: "Compass Tavern",
+        description:
+          "A ship's wheel hangs above the sign of the Compass Tavern, a long white house with a red-tiled roof and a wooden gallery along its upper floor. Muleteers fresh from the jungle road crowd its tables alongside sailors waiting for the silver fleet.",
+        desktop: { x: 22.5, y: 56, size: 13 },
+        mobile: { x: 46, y: 72, size: 34 },
+      },
+      Bank: {
+        name: "Treasure Bank",
+        description:
+          "The Treasure Bank is built like a fortress, its thick stone walls carved with the royal crest and its heavy studded doors guarded day and night. Lanterns burn on either side of the entrance, for here the silver of Peru waits before it sails for Spain.",
+        desktop: { x: 37, y: 55, size: 10 },
+        mobile: { x: 17, y: 45, size: 28 },
+      },
+      "City hall": {
+        name: "Governor's Hall",
+        description:
+          "Crimson banners embroidered in gold hang from the arcade of the Governor's Hall, a white stone building with a carved crest and a small bell tower. A grand stairway leads up from the quay, lined with potted palms and flowers.",
+        desktop: { x: 54, y: 50, size: 15 },
+        mobile: { x: 51, y: 43, size: 38 },
+      },
+      Market: {
+        name: "Plaza Market",
+        description:
+          "The Plaza Market spreads its striped awnings over stalls of fruit, fish and woven goods. Behind them, a cool arcade of stone arches offers shade to traders bargaining over pearls, cacao and Peruvian cloth.",
+        desktop: { x: 71.5, y: 57, size: 14 },
+        mobile: { x: 86, y: 49, size: 30 },
+      },
+      Shipyard: {
+        name: "Panama Shipyard",
+        description:
+          "Under a long red-tiled roof held up by heavy beams, the Panama Shipyard keeps a hull in its cradle. Carpenters patch the battered ships of the treasure fleet here before they brave the long voyage home.",
+        desktop: { x: 90, y: 52, size: 14 },
+        mobile: { x: 80, y: 72, size: 36 },
+      },
     },
     map: {
       x: 382,
@@ -535,19 +839,51 @@ export const TOWNS: TownLocations = {
   },
   Havana: {
     nation: "Spain",
-    descriptions: {
-      Shop: "Within the town's lively center, The Wandering Merchant beckons with its diverse stock, ranging from nourishing victuals and leather-bound water bottles to healing tonics, fragrant tobacco, aged rum, delicate porcelain, and a tantalizing array of spices, invoking the essence of adventurous journeys and cultural exchange.",
-      Tavern:
-        "Nestled within the old town's narrow lanes, The Mariner's Retreat beckons with its offerings of wine, tobacco, and rum, as talkative pirates share their escapades, weaving an atmosphere of excitement and merriment.",
-      Bank: "Inside the bank, the flickering glow of candles dances across the faces of clients gathered around heavy oak tables, where transactions are recorded in flowing script, encapsulating the timeless artistry of financial record-keeping.",
-      Market:
-        "The market unfolds as a dynamic tableau of exchange, with traders and buyers engaging in a dance of offers and counteroffers amidst the backdrop of colorful stalls laden with exotic fruits, fine textiles, and ornate crafts.",
-      Shipyard:
-        "In the shipyard's dynamic theater of craftsmanship, the interplay of labor and the elements gives birth to maritime marvels, as immense ships emerge beneath the ever-changing tableau of the sky.",
-      "City hall":
-        "Amid the city's bustling rhythm, the city hall's commanding presence signifies governance, its design a visual embodiment of the urban body's organizational hub.",
-      Harbor:
-        "The harbor's energetic waterfront scene is a testament to maritime enterprise, where vessels find refuge and commodities change hands, painting a picture of bustling activity framed by the sea.",
+    harborDescription:
+      "Guarded by the great Morro fortress, the deep and sheltered bay holds the whole Spanish treasure fleet as it gathers for the crossing to Seville, while chandlers and caulkers grow rich preparing the galleons for the voyage.",
+    buildings: {
+      Shop: {
+        name: "Harbor Shop",
+        description:
+          "Whitewashed walls, a terracotta roof and two wide arches open to the street: the Harbor Shop is where Havana's captains stock up before the long crossing. Barrels, coils of rope and baskets of supplies fill the shaded interior, and an iron anchor hangs beside the door.",
+        desktop: { x: 10, y: 50, size: 11 },
+        mobile: { x: 16, y: 58, size: 30 },
+      },
+      Tavern: {
+        name: "Parrot Tavern",
+        description:
+          "A brightly painted parrot perches above the sign of the Parrot Tavern, keeping watch over the tables beneath its arches. Bougainvillea spills from the balcony, lanterns glow on iron posts, and guitars and loud voices carry out into the warm night.",
+        desktop: { x: 24.5, y: 50, size: 10 },
+        mobile: { x: 25, y: 40, size: 34 },
+      },
+      Bank: {
+        name: "Royal Bank",
+        description:
+          "Behind ornate iron gates and a gilded royal coat of arms, the Royal Bank guards the silver of the Spanish crown. Its pale stone front is carved with columns and balconies, and armed clerks watch every chest that passes through the arched doors.",
+        desktop: { x: 39, y: 50, size: 10 },
+        mobile: { x: 79, y: 43, size: 36 },
+      },
+      "City hall": {
+        name: "Governor's Hall",
+        description:
+          "Red and gold banners of Spain hang from the balcony of the Governor's Hall, a grand building of white stone with tall arches and a bell tower rising behind. Officials in fine coats climb the steps, while the governor keeps an eye on the treasure fleet in the bay.",
+        desktop: { x: 56, y: 48, size: 15 },
+        mobile: { x: 54, y: 25, size: 38 },
+      },
+      Market: {
+        name: "Harbor Market",
+        description:
+          "Striped awnings stretch out from the Harbor Market, covering tables heaped with mangoes, pineapples, tobacco leaves and sacks of sugar. Market women call out prices in the shade, while the cathedral towers rise over the rooftops behind.",
+        desktop: { x: 74, y: 52, size: 11 },
+        mobile: { x: 64, y: 64, size: 36 },
+      },
+      Shipyard: {
+        name: "Havana Shipyard",
+        description:
+          "Built of stone and dark timber beside a small watchtower, the Havana Shipyard shelters a new hull under its broad roof. Tall-masted ships tie up alongside, and the yard is famous for vessels of tough Cuban hardwood that outlast any built in Europe.",
+        desktop: { x: 89, y: 50, size: 14 },
+        mobile: { x: 74, y: 82, size: 36 },
+      },
     },
     map: {
       x: 351,
@@ -574,19 +910,51 @@ export const TOWNS: TownLocations = {
   },
   "Villa Hermosa": {
     nation: "Spain",
-    descriptions: {
-      Shop: "In the heart of the quaint town square, The Trader's Emporium enchants patrons with its alluring assortment, featuring nourishing provisions and leather-clad water bottles, medicinal elixirs, aromatic tobacco, aged rum, delicate porcelain, and an exotic blend of spices, evoking the spirit of exploration and intercontinental trade.",
-      Tavern:
-        "The Swashbuckler's Hideout entices patrons with its choice wines, tobacco, and rum, where talkative pirates fill the air with captivating tales of their high-sea exploits.",
-      Bank: "Stepping into the bank is like entering a realm of calculated elegance, where the symphony of quills and the rustle of fine parchment provide the backdrop to a stage where fortunes are measured and deals are struck with utmost solemnity.",
-      Market:
-        "Amidst the vibrant market scene, a diverse array of merchants presents their merchandise beneath a canopy of sunlit awnings, the air alive with the music of commerce as patrons navigate the tapestry of goods and deals.",
-      Shipyard:
-        "Within the bustling shipbuilding domain, a convergence of human ingenuity and natural backdrop takes place, where colossal ships arise from the symphony of tools and the embrace of the open firmament.",
-      "City hall":
-        "At the heart of the urban mosaic, the city hall's monumental construction stands as an emblem of civic administration, its form reflecting the community's cooperative endeavors.",
-      Harbor:
-        "The harbor becomes a vibrant epicenter of maritime affairs, where the interplay of vessels, goods, and aspirations creates a dynamic tapestry woven with the threads of trade and exploration.",
+    harborDescription:
+      "Far up the muddy river, the small landing smells of wet earth and cacao, where dugout canoes bring sacks of beans and dyewood out of the swamps to be loaded aboard Spanish coasters bound for Veracruz.",
+    buildings: {
+      Shop: {
+        name: "Plaza Shop",
+        description:
+          "A white stucco house with a terracotta roof and a balcony draped in flowers, the Plaza Shop opens two wide arches to the quay. A colourful striped awning covers baskets of fruit and dried goods, and barrels of water line the doorstep.",
+        desktop: { x: 8.5, y: 52, size: 12 },
+        mobile: { x: 20, y: 35, size: 30 },
+      },
+      Tavern: {
+        name: "Sailor's Tavern",
+        description:
+          "A great carved ship's wheel sits under the gable of the Sailor's Tavern. Its arched doorway glows with lantern light, vines and flowers climb the walls, and the tables outside are crowded with barrels and thirsty river men.",
+        desktop: { x: 23, y: 50, size: 13 },
+        mobile: { x: 78, y: 42, size: 34 },
+      },
+      Bank: {
+        name: "Crown Bank",
+        description:
+          "Behind a gate of black and gold ironwork, the Crown Bank guards its treasury under a painted royal coat of arms. Its pale yellow stone and red-tiled roof catch the sun, and potted palms stand on either side of the heavy door.",
+        desktop: { x: 38, y: 50, size: 10 },
+        mobile: { x: 27, y: 56, size: 34 },
+      },
+      "City hall": {
+        name: "Governor's Hall",
+        description:
+          "Red and gold banners of Spain hang down the white walls of the Governor's Hall, a grand building with arched windows, an iron balcony and a gilded crest under the flag. A wide stair leads up to its wooden doors from the plaza below.",
+        desktop: { x: 53.5, y: 47, size: 14 },
+        mobile: { x: 52, y: 24, size: 38 },
+      },
+      Market: {
+        name: "Grand Market",
+        description:
+          "Green and orange striped awnings shade the stalls of the Grand Market, piled high with cacao beans, peppers and tropical fruit. Vines climb the timbered gable above, and the twin towers of the cathedral rise over the rooftops behind.",
+        desktop: { x: 70.5, y: 52, size: 13 },
+        mobile: { x: 74, y: 58, size: 38 },
+      },
+      Shipyard: {
+        name: "Villa Hermosa Shipyard",
+        description:
+          "A golden anchor marks the sign of the Villa Hermosa Shipyard, a broad timber shed with a stone tower beside it. River boats and a half-built hull share the slipway, and tall masts sway at the pier outside.",
+        desktop: { x: 87, y: 50, size: 16 },
+        mobile: { x: 63, y: 78, size: 46 },
+      },
     },
     map: {
       x: 133,
@@ -613,19 +981,51 @@ export const TOWNS: TownLocations = {
   },
   "San Juan": {
     nation: "Spain",
-    descriptions: {
-      Shop: "Amidst the bustling streets, The Globe-Trotter's Emporium entices with its rich collection, including nourishing victuals and leather-bound water bottles, medicinal concoctions, fragrant tobacco, aged rum, delicate porcelain, and an enticing array of spices, evoking a sense of adventurous voyages and cosmopolitan commerce.",
-      Tavern:
-        "Within the cozy tavern known as The Rumrunner's Haven, wine, tobacco, and rum flow aplenty, while talkative pirates regale eager listeners with stories of their daring adventures.",
-      Bank: "Within the bank, the ambiance is one of subdued grandeur, where patrons converse in hushed tones amidst the intricate carvings of wooden fixtures, and the gentle shuffle of parchment echoes the cadence of financial transactions.",
-      Market:
-        "Within the lively market enclave, a vibrant mosaic of traders and customers converges, their interactions painting a vivid tableau of animated discussions, clinking coins, and the delightful fragrance of street food.",
-      Shipyard:
-        "Amidst the maritime construction hub, the resonance of tools against wood forms a backdrop for the creation of grand vessels, their emergence under the vast sky a testament to the artistry of shipwrights.",
-      "City hall":
-        "Within the urban landscape, the city hall's resolute structure conveys the essence of local governance, its design encapsulating the principles that underpin communal life.",
-      Harbor:
-        "At the juncture of land and sea, the harbor flourishes as a bustling arena of maritime interactions, where ships find haven and bustling quayside activities shape the rhythms of trade.",
+    harborDescription:
+      "Ships slip past the towering walls of El Morro into a sheltered bay, where Spanish men-of-war take on fresh water and supplies and soldiers drill on the ramparts above the bustling waterfront.",
+    buildings: {
+      Shop: {
+        name: "Port Shop",
+        description:
+          "A cream awning shades the arched doors of the Port Shop, a whitewashed building with a terracotta roof and a balcony hung with vines. Crates, barrels and baskets of supplies crowd the doorstep, ready for crews who have just sailed in past El Morro.",
+        desktop: { x: 8, y: 58, size: 10 },
+        mobile: { x: 16, y: 69, size: 28 },
+      },
+      Tavern: {
+        name: "Anchor Tavern",
+        description:
+          "An iron anchor hangs above the sign of the Anchor Tavern, and three tall arches open its lantern-lit room to the street. Bougainvillea spills down the walls while soldiers from the garrison swap stories with sailors over cups of wine.",
+        desktop: { x: 22.5, y: 58, size: 11 },
+        mobile: { x: 45, y: 70, size: 32 },
+      },
+      Bank: {
+        name: "Royal Bank",
+        description:
+          "A golden crown is set into the pale stone front of the Royal Bank, above a sturdy arched door at the top of a short flight of steps. Inside, the King's officials count the coin that pays the garrison and keeps the great fortress walls in good repair.",
+        desktop: { x: 38, y: 56, size: 10 },
+        mobile: { x: 80, y: 69, size: 34 },
+      },
+      "City hall": {
+        name: "Governor's Palace",
+        description:
+          "Twin towers frame the Governor's Palace, its red-tiled roof crowned with the royal coat of arms and its balcony hung with banners in red and gold. Palms and flowering vines soften the pale stone, and a stone stair leads up to the main doors.",
+        desktop: { x: 54.5, y: 52, size: 13 },
+        mobile: { x: 48, y: 43, size: 36 },
+      },
+      Market: {
+        name: "San Juan Market",
+        description:
+          "Beneath a terracotta roof, cream and blue striped awnings shade the stalls of the San Juan Market. Sacks of grain, baskets of fruit and jars of olive oil fresh from Spain change hands, and flowers tumble from every wall around it.",
+        desktop: { x: 71, y: 60, size: 12 },
+        mobile: { x: 16, y: 45, size: 28 },
+      },
+      Shipyard: {
+        name: "San Juan Shipyard",
+        description:
+          "Crossed tools hang on the sign of the San Juan Shipyard, a timber shed whose open front faces straight onto the bay. A new hull rests inside, and warships of the Spanish crown tie up alongside to have their damage repaired.",
+        desktop: { x: 88, y: 58, size: 14 },
+        mobile: { x: 80, y: 42, size: 36 },
+      },
     },
     map: {
       x: 661,
@@ -652,19 +1052,51 @@ export const TOWNS: TownLocations = {
   },
   Bonaire: {
     nation: "Holland",
-    descriptions: {
-      Shop: "Nestled along the historic quayside, The Traveler's Bazaar enthralls visitors with its diverse treasure trove, encompassing nourishing provisions and leather-clad water bottles, medicinal tonics, aromatic tobacco, aged rum, delicate porcelain, and a captivating mix of spices, embodying the allure of maritime adventures and international markets.",
-      Tavern:
-        "Nestled amidst the town's bustling streets, The Tipsy Buccaneer Inn invites with its selection of wine, tobacco, and rum, where talkative pirates gather to share their enthralling escapades.",
-      Bank: "Inside the bank's chamber, the walls adorned with maps of distant lands and exotic commodities, patrons gather to negotiate while clerks diligently transcribe their agreements, encapsulating the essence of a world fueled by ink and commerce.",
-      Market:
-        "Amidst the bustling market square, a bustling ecosystem of commerce thrives, where spirited barter and the vibrant array of products create a scene reminiscent of a living, breathing tapestry.",
-      Shipyard:
-        "In the shipyard's energetic milieu, the steady rhythm of craftsmanship harmonizes with the expanse of the heavens, as adept shipbuilders meticulously shape seaworthy giants from raw materials.",
-      "City hall":
-        "Nestled amidst the urban fabric, the city hall's architectural opulence conveys the essence of civic management, its towering spires and intricate façade mirroring the intricacies of communal affairs.",
-      Harbor:
-        "Along the coastline, the harbor stands as a testament to maritime vitality, a place where ships berth and the air is filled with the resonant calls of seafarers and merchants.",
+    harborDescription:
+      "Gleaming white pyramids of salt line the low shore, where flamingos wade in the shallow pans and Dutch ships anchor offshore to fill their holds with the island's only real treasure.",
+    buildings: {
+      Shop: {
+        name: "Oranje Trade House",
+        description:
+          "A Dutch house of orange brick with a stepped gable and green shutters, the Oranje Trade House sells everything from salted fish to sailcloth. Cream awnings shade its doorway, and barrels of supplies stand ready on the stone landing.",
+        desktop: { x: 9.5, y: 48, size: 11 },
+        mobile: { x: 19, y: 37, size: 30 },
+      },
+      Tavern: {
+        name: "Admiral's Rest Tavern",
+        description:
+          "A long, low house with a dark slate roof and a timber balcony, the Admiral's Rest Tavern sets its tables out by the water. Lanterns burn beside the door, and inside the talk is of salt prices, storms and the next voyage.",
+        desktop: { x: 24, y: 50, size: 12 },
+        mobile: { x: 50, y: 46, size: 34 },
+      },
+      Bank: {
+        name: "Guild Ledger Bank",
+        description:
+          "Tall and narrow, the Guild Ledger Bank wears a stepped brick gable topped with the red, white and blue flag. Lanterns flank its green arched door, behind which careful Dutch clerks weigh coins and record every guilder.",
+        desktop: { x: 40, y: 48, size: 11 },
+        mobile: { x: 84, y: 43, size: 30 },
+      },
+      "City hall": {
+        name: "Stadholder's Hall",
+        description:
+          "Golden stone, a blue crest above the door and a slender bell tower mark the Stadholder's Hall, which rises above a broad flight of stone steps. Green shutters stand open to catch the trade winds as island officials go about the Company's business.",
+        desktop: { x: 56, y: 46, size: 13 },
+        mobile: { x: 51, y: 22, size: 36 },
+      },
+      Market: {
+        name: "Spice Wharf Market",
+        description:
+          "Beneath a red-brick stepped gable, the Spice Wharf Market spreads its cream awnings over stalls of cloves, nutmeg, fresh fruit and bolts of bright cloth. Crates of goods line the front, all within sight of the windmill turning on the hill.",
+        desktop: { x: 72.5, y: 50, size: 11 },
+        mobile: { x: 35, y: 70, size: 34 },
+      },
+      Shipyard: {
+        name: "Eastwind Dockyard",
+        description:
+          "Bare timber scaffolding surrounds a ship's hull inside the Eastwind Dockyard, a great open shed with a slate roof. A wooden crane leans out over the quay, and stacked crates and planks wait to be hauled aboard.",
+        desktop: { x: 90, y: 48, size: 14 },
+        mobile: { x: 78, y: 70, size: 40 },
+      },
     },
     map: {
       x: 610,
@@ -691,19 +1123,51 @@ export const TOWNS: TownLocations = {
   },
   Curacao: {
     nation: "Holland",
-    descriptions: {
-      Shop: "Within the town's vibrant center, The Globetrotter's Market charms passersby with its diverse offerings, from nourishing victuals and leather-bound water bottles to healing elixirs, fragrant tobacco, aged rum, delicate porcelain, and an enchanting variety of spices, all evoking the spirit of exploratory journeys and worldly trade.",
-      Tavern:
-        "Along the waterfront, The Groggy Sailor Alehouse beckons with its enticing wines, tobacco, and rum, while talkative pirates recount their swashbuckling tales in a lively atmosphere.",
-      Bank: "Stepping into the bank feels like entering a treasury of secrets, with the flickering glow of candles casting an enigmatic light on the faces of bankers engrossed in intricate calculations, surrounded by shelves laden with tomes of economic wisdom.",
-      Market:
-        "Stepping into the market's bustling realm, one is immersed in a sensory panorama, where the interplay of enthusiastic haggling and the captivating display of goods forms a living portrait of trade.",
-      Shipyard:
-        "Within the ship construction realm, the symphony of labor and the natural world intertwines, culminating in the birth of majestic ships that will navigate the open waters under the watchful eye of the sky.",
-      "City hall":
-        "Anchored at the urban crossroads, the city hall's dignified construction embodies the spirit of governance, its presence a visual reminder of the city's administrative nucleus.",
-      Harbor:
-        "Embracing the shoreline, the harbor reverberates with the heartbeat of maritime commerce, its docks alive with the exchange of goods and stories, woven together by the threads of seafaring.",
+    harborDescription:
+      "Brightly painted Dutch gabled houses crowd the waterfront of Willemstad, and the deep natural harbor is packed with merchantmen from every nation, all welcome as long as their trade pays the Company its share.",
+    buildings: {
+      Shop: {
+        name: "Oranje Supply House",
+        description:
+          "Painted a warm orange with white trim and a stepped Dutch gable, the Oranje Supply House is the brightest building on the waterfront. Under its cream awning, barrels of salt fish, water casks and sacks of provisions stand ready beside the green front door.",
+        desktop: { x: 9, y: 50, size: 10 },
+        mobile: { x: 17, y: 45, size: 28 },
+      },
+      Tavern: {
+        name: "Sailor's Rest Tavern",
+        description:
+          "A red-tiled roof and sky blue walls give the Sailor's Rest Tavern a cheerful look. Its wooden veranda is lined with lanterns and tables, where sailors from every nation share pipes and rum as the evening breeze comes in off the water.",
+        desktop: { x: 24, y: 52, size: 11 },
+        mobile: { x: 49, y: 47, size: 30 },
+      },
+      Bank: {
+        name: "Merchant Ledger Bank",
+        description:
+          "A tall stepped gable with white trim crowns the Merchant Ledger Bank, its green shutters and arched door watched over by a pair of lanterns. The Company's clerks inside will count guilders, pieces of eight and English shillings alike, as long as the coin is good.",
+        desktop: { x: 39, y: 50, size: 10 },
+        mobile: { x: 83, y: 47, size: 28 },
+      },
+      "City hall": {
+        name: "Governor's Hall",
+        description:
+          "Pale yellow walls, a domed bell tower and a blue coat of arms above the door make the Governor's Hall the pride of Willemstad. A grand stair climbs to its green doors, past potted palms and flowering shrubs.",
+        desktop: { x: 54.5, y: 46, size: 13 },
+        mobile: { x: 50, y: 25, size: 34 },
+      },
+      Market: {
+        name: "Harbor Spice Market",
+        description:
+          "Under the stepped gable of the Harbor Spice Market, cream awnings shade crates overflowing with peppers, nutmeg, oranges and brightly dyed cloth. The windmill turns on the hill behind, and the air is thick with cinnamon and cloves.",
+        desktop: { x: 70, y: 52, size: 10 },
+        mobile: { x: 26, y: 75, size: 32 },
+      },
+      Shipyard: {
+        name: "Bluewater Dockyard",
+        description:
+          "Beneath a dark shingled roof and the Dutch flag, the Bluewater Dockyard is a forest of scaffolding around a growing hull. A tall crane swings timber in from the water, and shipwrights hammer away from first light until dusk.",
+        desktop: { x: 88, y: 52, size: 16 },
+        mobile: { x: 74, y: 75, size: 42 },
+      },
     },
     map: {
       x: 558,
@@ -730,19 +1194,51 @@ export const TOWNS: TownLocations = {
   },
   "St. Martin": {
     nation: "Holland",
-    descriptions: {
-      Shop: "In the heart of the bustling market, The Merchant's Oasis allures with its eclectic array, housing nourishing provisions and leather-clad water bottles, medicinal remedies, aromatic tobacco, aged rum, delicate porcelain, and a captivating blend of spices, capturing the essence of adventurous expeditions and cross-cultural exchange.",
-      Tavern:
-        "The Black Pearl Tavern stands tall, offering a variety of wine, tobacco, and rum, where talkative pirates fill the air with animated stories of their daring exploits.",
-      Bank: "The bank's interior resonates with the weight of history as patrons engage in earnest discussions, their voices mingling with the faint rustle of parchment as transactions are meticulously documented, painting a portrait of an era defined by tactile financial dealings.",
-      Market:
-        "The market's spirited ambiance unfolds as a realm of vibrant exchanges, where the chorus of vendor calls and the symphony of patrons' responses combine with the spectacle of goods, presenting a microcosm of economic vitality.",
-      Shipyard:
-        "Amid the shipbuilding arena, the dance of creation unfolds beneath the overarching sky, as seasoned artisans bring to life intricate vessels through the marriage of hands-on skill and atmospheric elements.",
-      "City hall":
-        "In the heart of the cityscape, the city hall's grandeur speaks volumes about civic responsibility, its ornate structure encapsulating the collective aspirations of the community.",
-      Harbor:
-        "Where waves lap against the land, the harbor emerges as a bustling nexus of maritime engagements, where vessels dock and depart, forming a kinetic mosaic of trade and exploration.",
+    harborDescription:
+      "Shared uneasily between the Dutch and the French, the island's harbor bustles with salt traders from the great ponds behind town, and sailors drink on both sides of a border nobody bothers to mark on the beach.",
+    buildings: {
+      Shop: {
+        name: "Nassau Supply Shop",
+        description:
+          "A red and white striped awning hangs over the door of the Nassau Supply Shop, a brick house with a stepped gable and green shutters. Flower boxes fill every window, and barrels of salt and supplies wait outside for the next ship to come in.",
+        desktop: { x: 8.5, y: 52, size: 10 },
+        mobile: { x: 17, y: 38, size: 28 },
+      },
+      Tavern: {
+        name: "Pelican Sail Tavern",
+        description:
+          "Under a red-tiled roof and pale blue walls, the Pelican Sail Tavern opens a lantern-lit veranda onto the quay. Salt rakers and sailors gather at its wooden tables, drinking until the stars come out over the bay.",
+        desktop: { x: 22.5, y: 54, size: 11 },
+        mobile: { x: 50, y: 46, size: 32 },
+      },
+      Bank: {
+        name: "Island Ledger Bank",
+        description:
+          "Painted a soft sage green, the Island Ledger Bank stands out with its stepped gable, flower boxes and green arched door. Lanterns light the steps, and the clerks inside keep careful records of every barrel of salt sold from the ponds.",
+        desktop: { x: 38, y: 52, size: 9 },
+        mobile: { x: 85, y: 42, size: 26 },
+      },
+      "City hall": {
+        name: "Governor's Hall",
+        description:
+          "A golden building with a clock above the entrance and a domed bell tower, the Governor's Hall sits at the top of a wide stone stair. Green shutters and potted palms soften its grand front, and the Dutch flag flies proudly from the tower.",
+        desktop: { x: 54, y: 50, size: 14 },
+        mobile: { x: 55, y: 20, size: 38 },
+      },
+      Market: {
+        name: "Salt Bay Market",
+        description:
+          "Green and cream striped awnings shade the stalls of the Salt Bay Market, set beneath an orange brick gable. Crates spill over with oranges, limes and peppers, and fishermen bring their catch straight up from the boats below.",
+        desktop: { x: 70.5, y: 54, size: 10 },
+        mobile: { x: 25, y: 70, size: 32 },
+      },
+      Shipyard: {
+        name: "Oyster Reef Shipyard",
+        description:
+          "A tall wooden crane leans over the Oyster Reef Shipyard, where a ship's hull rises within a cage of scaffolding. Rowing boats crowd the pier outside, and the sound of hammers carries across the water.",
+        desktop: { x: 88, y: 54, size: 16 },
+        mobile: { x: 74, y: 74, size: 44 },
+      },
     },
     map: {
       x: 720,
@@ -770,19 +1266,51 @@ export const TOWNS: TownLocations = {
   },
   "St. Eustatius": {
     nation: "Holland",
-    descriptions: {
-      Shop: "Amidst the cobblestone alleys, The Voyager's Trove calls out with its diverse assortment, offering nourishing victuals and leather-bound water bottles, medicinal tinctures, fragrant tobacco, aged rum, delicate porcelain, and an alluring medley of spices, evoking a sense of maritime discoveries and global commerce.",
-      Tavern:
-        "Tucked away in the old town's hidden corner, The Merry Marauder Tavern serves up wine, tobacco, and rum, while talkative pirates regale each other and curious visitors with thrilling accounts of their adventures.",
-      Bank: "Amidst the richly adorned interior of the bank, the air is charged with anticipation as patrons exchange knowing glances, while clerks in elaborate attire record each agreement with quills that scratch like a symphony, immortalizing the rhythm of commerce.",
-      Market:
-        "In the heart of the market, a mosaic of cultural treasures is presented by traders, the air resonating with the rhythm of commerce as visitors navigate the labyrinthine alleys, engaging in a dance of transactions amidst the vivid tapestry of offerings.",
-      Shipyard:
-        "The shipyard's vibrant setting reverberates with the music of industry, where dedicated craftsmen sculpt imposing ships beneath the ever-changing canvas of the sky, a testament to the symbiotic relationship between human endeavor and nature.",
-      "City hall":
-        "Amidst the bustling cityscape, the city hall's commanding architecture tells the story of civic order, its formidable appearance an emblem of the collaborative efforts that shape urban life.",
-      Harbor:
-        "The coastal harbor becomes a dynamic crossroads of the sea, where ships find refuge from their voyages and the waterfront hums with the activities of mariners, merchants, and the exchange of treasures.",
+    harborDescription:
+      "Known to every smuggler as the Golden Rock, this tiny free port has warehouses packed along the Lower Town shore, where Dutch traders sell gunpowder, cloth and wine to any flag that can pay in coin.",
+    buildings: {
+      Shop: {
+        name: "Quill Supply House",
+        description:
+          "Beneath a stepped gable of orange brick and the Dutch flag, the Quill Supply House trades in everything a ship might need. Cream awnings shade its green door, and crates of fruit, barrels of water and coils of rope wait on the stone quay outside.",
+        desktop: { x: 8.5, y: 52, size: 10 },
+        mobile: { x: 17, y: 32, size: 28 },
+      },
+      Tavern: {
+        name: "Harbor Lantern Tavern",
+        description:
+          "Lanterns hang all along the wooden gallery of the Harbor Lantern Tavern, a low house with a dark slate roof. Its tables spill out onto the quay, where smugglers from every flag share rum and keep one eye on the ships at anchor.",
+        desktop: { x: 23, y: 52, size: 14 },
+        mobile: { x: 49, y: 52, size: 40 },
+      },
+      Bank: {
+        name: "Statia Ledger Bank",
+        description:
+          "A carved white crest crowns the stepped brick gable of the Statia Ledger Bank, and lanterns burn on either side of its green double door. Pots of flowers line the steps, and inside, letters of credit change hands as easily as coin.",
+        desktop: { x: 38.5, y: 52, size: 10 },
+        mobile: { x: 84, y: 33, size: 28 },
+      },
+      "City hall": {
+        name: "Island Council Hall",
+        description:
+          "Golden walls, a clock-faced crest and a slender bell tower mark the Island Council Hall. A broad stone stair climbs past potted palms to its green doors, and from the balcony the council watches over the busiest free port in the Caribbean.",
+        desktop: { x: 55, y: 50, size: 13 },
+        mobile: { x: 51, y: 30, size: 34 },
+      },
+      Market: {
+        name: "Fort Bay Market",
+        description:
+          "Under a stepped red gable, the Fort Bay Market stretches its cream awnings over crates bursting with fruit, flowers and spices. Barrels line the front, and buyers from every nation crowd the stalls in search of a bargain.",
+        desktop: { x: 72.5, y: 55, size: 11 },
+        mobile: { x: 32, y: 75, size: 34 },
+      },
+      Shipyard: {
+        name: "Oranje Shipworks",
+        description:
+          "Scaffolding wraps a half-built hull inside the Oranje Shipworks, an open timber shed with a slate roof and a crane leaning over the water. Small boats bob at the pier while shipwrights work through the day.",
+        desktop: { x: 89, y: 55, size: 15 },
+        mobile: { x: 76, y: 76, size: 42 },
+      },
     },
     map: {
       x: 741,

@@ -3,11 +3,10 @@
 import Image from "next/image"
 import { RiTreasureMapLine } from "react-icons/ri"
 
-import useModal from "@/app/stores/modals"
 import AdvisorDrawerTrigger from "@/components/advisor/AdvisorDrawerTrigger"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { useMapModal } from "@/hooks/useMapModal"
 
-import Map from "../Map"
 import SocialMedia from "../SocialMedia"
 import SoundControls from "../Sound/Controls"
 import { Button } from "../ui/button"
@@ -25,16 +24,7 @@ type Props = {
 const DesktopMenu = ({ className }: Props) => {
   const { data: player } = useGetPlayer()
 
-  const { setModal } = useModal()
-
-  const showMap = () => {
-    setModal({
-      id: "map",
-      title: "Pick your destination",
-      fullWidth: true,
-      content: <Map currentTown={player?.character.town} />,
-    })
-  }
+  const { showMap, canTravel } = useMapModal()
 
   if (!player) return null
 
@@ -55,11 +45,7 @@ const DesktopMenu = ({ className }: Props) => {
         </SidebarGroup>
 
         <SidebarGroup className="gap-2">
-          <Button
-            onClick={showMap}
-            disabled={!!player?.character.journey}
-            className="group/map"
-          >
+          <Button onClick={showMap} disabled={!canTravel} className="group/map">
             <RiTreasureMapLine className="group-hover/map:text-accent size-5!" />
             Travel
           </Button>

@@ -384,7 +384,6 @@ const SeaMapCanvas = ({
           alt=""
           width={MAP_WIDTH}
           height={MAP_HEIGHT}
-          unoptimized
           loading="eager"
           draggable={false}
           className="pointer-events-none absolute inset-0 size-full"

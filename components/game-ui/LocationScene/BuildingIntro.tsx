@@ -1,5 +1,5 @@
 import Flag from "@/components/icons/Flag"
-import { TOWNS } from "@/constants/locations"
+import { getBuilding } from "@/constants/townMaps"
 import { getTownsNationality } from "@/utils/location"
 
 type Props = {
@@ -7,14 +7,15 @@ type Props = {
   location: Character["location"]
 }
 
-const TownContent = ({ town, location }: Props) => {
+const BuildingIntro = ({ town, location }: Props) => {
   const nation = getTownsNationality(town)
-  const description = town && TOWNS[town].descriptions?.[location]
+  const building = getBuilding(town, location)
+  const description = building?.description
 
   return (
     <>
       <h1 className="mb-4 font-serif text-4xl tracking-wide text-stone-300 lg:text-5xl">
-        The {location}
+        {building?.name ?? `The ${location}`}
       </h1>
 
       <h2 className="mb-5 flex items-center justify-center gap-3 font-serif text-xl text-stone-300 lg:text-2xl">
@@ -29,4 +30,4 @@ const TownContent = ({ town, location }: Props) => {
   )
 }
 
-export default TownContent
+export default BuildingIntro
