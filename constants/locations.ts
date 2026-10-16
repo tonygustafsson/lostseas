@@ -203,42 +203,42 @@ export const TOWNS: TownLocations = {
       Shop: {
         name: "King's Mercantile",
         description:
-          "Beneath a dark slate roof and a flag snapping in the wind, the King's Mercantile sets out its wares under striped awnings: baskets of fruit, sacks of flour and casks of fresh water stacked along the front. Lanterns burn at the door long after the evening gun has sounded from the fort.",
+          "An orange and white striped awning shades the open doors of the King's Mercantile, looking out over the wharf towards the fort. Inside, lanterns glow above sacks of rice and flour, crates of indigo and baskets of fresh fruit, while a Union flag hangs over the long counter with its brass scales and shelves of bottles and blue-and-white porcelain.",
         desktop: { x: 10, y: 52, size: 12 },
         mobile: { x: 19, y: 63, size: 32 },
       },
       Tavern: {
         name: "Redcoat Tavern",
         description:
-          "With its crimson sign framed by golden tankards, the Redcoat Tavern is hard to miss. Lanterns hang from the flower-draped gallery above, warm light pours through the arched doorways, and off-duty soldiers share rum with sailors among the barrels outside.",
+          "Lanterns hang from the flower-draped gallery of the Redcoat Tavern, and its arched doorways open onto the harbour and the fort. Crimson banners with golden crowns hang over the long bar, where a chalkboard lists ale, porter, rum and grog alongside pies and roasts. Off-duty soldiers and sailors share rum at tables set with brass tankards and candle lanterns.",
         desktop: { x: 25, y: 50, size: 12 },
         mobile: { x: 51, y: 63, size: 32 },
       },
       Bank: {
         name: "Crown Ledger Bank",
         description:
-          "Red brick trimmed with white stone and a navy sign set with golden crowns, the Crown Ledger Bank wears its loyalties openly. Potted palms flank the steps up to its arched oak door, where planters come to deposit their rice and indigo money.",
+          "Red brick and tall arched windows look out over the harbour from the Crown Ledger Bank, where planters come to deposit their rice and indigo money. Navy banners set with golden crowns hang above a polished counter of scales, quills and ledgers, and a great iron vault stamped with a crown guards the back of the marble hall.",
         desktop: { x: 39, y: 50, size: 10 },
         mobile: { x: 82, y: 63, size: 30 },
       },
       "City hall": {
         name: "Governor's Hall",
         description:
-          "Crowned by a white cupola and a carved crest with golden lions, the Governor's Hall rises in red brick behind tall white columns. Flower boxes brighten every window, and a broad stone stair leads up to the green front door.",
+          "Behind its red brick and white columns, the Governor's Hall keeps a grand chamber beneath a candle chandelier. A carved crest with golden lions crowns the doors to a balcony overlooking the fort, flanked by Union flags and green curtains. A mahogany desk with green leather chairs faces a crackling fireplace, a brass telescope and a great map of the coast.",
         desktop: { x: 55.5, y: 48, size: 14 },
         mobile: { x: 50, y: 33, size: 40 },
       },
       Market: {
         name: "Dockside Market",
         description:
-          "Red and white striped awnings shade the counters of the Dockside Market, a clapboard house with green shutters and flower boxes. Crates of oranges, apples and greens line the front, and porters roll barrels straight from the wharf to the stalls.",
+          "Red and white striped awnings shade the entrance of the Dockside Market, a clapboard hall with green shutters and flower boxes. A ship's wheel hangs above the sign, and strings of chillies and garlic dangle from the beams. Crates of oranges, apples, cabbages and carrots line the aisle, while barrels and sacks run straight down to the wharf.",
         desktop: { x: 73, y: 52, size: 12 },
         mobile: { x: 16, y: 34, size: 28 },
       },
       Shipyard: {
         name: "Royal Shipwrights",
         description:
-          "Crossed hammers mark the sign of the Royal Shipwrights, an open timber frame raised over the slipway. A wooden hull sits in its cradle among ladders and scaffolding, and the smell of tar and fresh-cut pine drifts across the shore.",
+          "Crossed hammers mark the sign of the Royal Shipwrights, an open timber frame raised over the slipway. A wooden hull sits in its cradle among ladders and scaffolding, and a tall crane leans out over the water towards the fort. Barrels of tar, stacks of fresh-cut planks and a workbench spread with ship plans fill the floor.",
         desktop: { x: 89, y: 52, size: 14 },
         mobile: { x: 84, y: 34, size: 30 },
       },
@@ -275,42 +275,42 @@ export const TOWNS: TownLocations = {
       Shop: {
         name: "Coral Crown Mercantile",
         description:
-          "Beneath a slate roof and a gilded crown, the Coral Crown Mercantile spills its wares onto the quay. Crates of fruit and sacks of flour crowd the blue awnings out front, while barrels of salt pork and fresh water wait by the door for any captain about to put to sea.",
+          "Beneath a slate roof and a crowned blue sign, the Coral Crown Mercantile opens onto the quay under blue awnings. Inside, sacks of sugar, bundles of cane and crates of bananas and limes crowd the floor, barrels of salt pork and fresh water wait by the counter, and a Union flag and a map of Barbados hang beside shelves of bottles, rope and porcelain.",
         desktop: { x: 8.5, y: 48, size: 11 },
         mobile: { x: 18, y: 35, size: 30 },
       },
       Tavern: {
         name: "Anchor & Crown Tavern",
         description:
-          "A red-brick house with green shutters and a row of dormer windows, the Anchor & Crown Tavern keeps its doors open to the sea breeze. Sailors drink rum at the tables beneath its wooden porch, and the smell of tobacco and roasting meat drifts out over the barrels stacked on the quay.",
+          "A red-brick house with green shutters, the Anchor & Crown Tavern keeps its doors open to the sea breeze and the ships in the bay. Inside, a whole pig turns on the spit over the hearth, a chalkboard offers rum, spiced rum and plantation punch, and sailors in tricorn hats drink from pewter tankards while a cat dozes by the tables.",
         desktop: { x: 22.5, y: 48, size: 11 },
         mobile: { x: 49, y: 35, size: 30 },
       },
       Bank: {
         name: "Island Ledger Bank",
         description:
-          "Pale stone, tall arched windows and a carved crest above the roofline give the Island Ledger Bank an air of quiet authority. Lanterns flank the broad steps up to its heavy oak door, where planters and merchants come to deposit their sugar fortunes.",
+          "Pale stone and tall arched windows give the Island Ledger Bank an air of quiet authority. Beneath a carved crest of lions and a palm, clerks at green-shaded lamps record deposits along the polished counter, while a guard stands by the open vault stacked with gold bars. Planters and merchants cross the chequered marble floor to deposit their sugar fortunes.",
         desktop: { x: 37, y: 48, size: 10 },
         mobile: { x: 82, y: 36, size: 30 },
       },
       "City hall": {
         name: "Governor's Hall",
         description:
-          "Under the flag flying from its rooftop, the red-brick Governor's Hall rises behind four white columns and a balcony overlooking the waterfront. Potted palms line the stone steps, and clerks hurry in and out with petitions for the governor's seal.",
+          "The red-brick Governor's Hall rises behind white columns and a balcony overlooking the waterfront. Inside, the governor sits at a raised desk between two Union flags, beneath a crest of the lion and unicorn and a candle chandelier. Clerks scratch away at desks lined with potted palms, and great maps of Barbados and the Caribbean cover the walls.",
         desktop: { x: 54.5, y: 45, size: 14 },
         mobile: { x: 32, y: 60, size: 44 },
       },
       Market: {
         name: "Plantation Quay Market",
         description:
-          "Striped red and cream awnings shade the arched stalls of the Plantation Quay Market, piled high with mangoes, plantains and sacks of sugar from the inland estates. Traders call out their prices over the clatter of carts on the cobbles.",
+          "Striped red and cream awnings shade the stone arches of the Plantation Quay Market, piled high with mangoes, plantains, bananas and pineapples. Traders weigh brown and fine sugar from open sacks beside bundles of cane and barrels of rum, a fish stall sells the fresh catch, and carts of sacks rumble over the cobbles towards the harbour.",
         desktop: { x: 73, y: 48, size: 14 },
         mobile: { x: 66, y: 63, size: 28 },
       },
       Shipyard: {
         name: "King's Shipyard",
         description:
-          "A timber shed with a crowned sign opens straight onto the water at the King's Shipyard. Inside, the ribs of a new hull rise from the slipway, and a tall wooden crane swings planks and crates down to the busy dock.",
+          "A crowned sign and a Union flag hang over the timber shed of the King's Shipyard, which opens straight onto the water. Inside, carpenters climb the scaffolding around a tall new hull, and others saw planks at long workbenches. A great wooden crane swings a crate out over the dock, where barrels of tar wait beside stacks of timber.",
         desktop: { x: 90, y: 48, size: 14 },
         mobile: { x: 90, y: 63, size: 26 },
       },
@@ -346,42 +346,42 @@ export const TOWNS: TownLocations = {
       Shop: {
         name: "Crown Compass Shop",
         description:
-          "Red brick, green shutters and a golden crown above the sign mark the Crown Compass Shop. Its windows are stacked with sacks, jars and lanterns, barrels line the front, and an old anchor leans against the wall by the door.",
+          "Red brick, green shutters and a golden crown above a green sign mark the Crown Compass Shop. Inside, shelves are crowded with compasses, spyglasses, globes and model ships, while bolts of cloth, sacks of beans and barrels of cannonballs fill the floor. An old anchor leans by the open green doors, which look out across the harbour to the fort.",
         desktop: { x: 7.5, y: 55, size: 11 },
         mobile: { x: 19, y: 50, size: 30 },
       },
       Tavern: {
         name: "Mariner's Rest Tavern",
         description:
-          "Every window of the Mariner's Rest Tavern glows with lantern light, from the dormers under its dark roof to the long gallery above the door. A ship's wheel sits over the sign, and privateers and navy men drink side by side, each pretending not to know the other.",
+          "A ship's wheel sits over the green sign of the Mariner's Rest Tavern, and lantern light fills every window from the dormers to the long gallery. Inside, a fire roars in the stone hearth, Union flags hang from the gallery and a naval coat is slung over a chair. Privateers and navy men drink side by side, each pretending not to know the other.",
         desktop: { x: 22, y: 52, size: 13 },
         mobile: { x: 49, y: 50, size: 32 },
       },
       Bank: {
         name: "Royal Exchange Bank",
         description:
-          "Tall white columns and a golden crown above the sign give the Royal Exchange Bank the look of a temple to money. Lanterns light the stone steps, and behind its doors gold of uncertain origin is quietly turned into respectable English coin.",
+          "Tall white columns and golden crowns give the Royal Exchange Bank the look of a temple to money. Inside, portraits of a redcoat general and a naval officer flank a great barred vault heaped with gold, and a red carpet leads past chests of coin to the clerks' counter. Here gold of uncertain origin is quietly turned into respectable English coin.",
         desktop: { x: 37, y: 52, size: 10 },
         mobile: { x: 82, y: 50, size: 32 },
       },
       "City hall": {
         name: "Governor's Hall",
         description:
-          "Red brick and white columns rise behind a sweep of stone steps at the Governor's Hall, its royal coat of arms painted in blue and gold. From the flag on the roof to the green shutters, every detail reminds the town who is in charge.",
+          "Red brick and white columns rise behind a sweep of stone steps at the Governor's Hall. Inside, blue banners bearing the royal coat of arms in gold hang beneath a candle chandelier, and Union flags stand beside green doors opening onto a balcony above the fort. The governor's carved desk faces two crowned blue chairs, a fireplace and a great map of the world.",
         desktop: { x: 52, y: 48, size: 14 },
         mobile: { x: 50, y: 25, size: 40 },
       },
       Market: {
         name: "Harbour Row Market",
         description:
-          "Canvas awnings in cream and red stripes shelter the stalls of the Harbour Row Market, laden with yams, citrus, turtle meat and sacks of cocoa. The old timbered building behind holds the traders' stores, and the noise rarely stops before midnight.",
+          "Cream canvas awnings and red and white striped canopies shelter the stalls of the Harbour Row Market, laden with yams, citrus, bananas, slabs of meat and sacks of cocoa. Fish hang from hooks above the counters, and woven rugs drape the old timbered building that holds the traders' stores. The noise rolls out over the cobbled quay and rarely stops before midnight.",
         desktop: { x: 71, y: 55, size: 15 },
         mobile: { x: 26, y: 75, size: 40 },
       },
       Shipyard: {
         name: "Queen's Dockyard",
         description:
-          "A golden anchor between two crowns decorates the sign of the Queen's Dockyard, a weathered timber shed facing the water. Inside, a hull stands in its cradle among ladders and ropes, and naval officers inspect every plank before it goes in.",
+          "A golden anchor between two crowns decorates the sign of the Queen's Dockyard, a weathered timber shed facing the water and the fort. Inside, a long hull stands in its cradle among ladders, pulleys and ropes, while plans and a model ship lie on the workbench. Naval officers inspect every plank before it goes in, and barrels of tar line the slipway.",
         desktop: { x: 90, y: 52, size: 14 },
         mobile: { x: 76, y: 73, size: 42 },
       },
@@ -417,42 +417,42 @@ export const TOWNS: TownLocations = {
       Shop: {
         name: "Bay Crown Mercantile",
         description:
-          "A gilded crown and the cross of St George hang above the long counter of the Bay Crown Mercantile, where the shopkeeper weighs out coin on brass scales. Shelves of cloth, rope and porcelain line the walls, pistols and cutlasses wait on their racks, and sacks, barrels and chests crowd the floor beside the open door to the bay.",
+          "A crowned sign hangs outside the blue doors of the Bay Crown Mercantile, which open straight onto the bay. Inside, a Union flag and a gilded crown hang above the long blue counter, where the shopkeeper weighs out coin on brass scales. Shelves of cloth and porcelain line the walls, pistols and cutlasses hang on racks, and a parrot watches over the chests.",
         desktop: { x: 11, y: 48, size: 13 },
         mobile: { x: 19, y: 20, size: 32 },
       },
       Tavern: {
         name: "Sailmaker's Rest Tavern",
         description:
-          "Beneath the thatch of the Sailmaker's Rest, spare sails and coils of rope hang from the rafters while brass lanterns glow over crowded tables. The English flag and a portrait of the King look down on the rum barrels behind the bar, and through the open shutters the turquoise bay sparkles as sailors mend canvas between rounds.",
+          "Open shutters let the turquoise bay sparkle into the Sailmaker's Rest Tavern, where spare sails and coils of rope hang from the rafters. A ship's wheel crowns the sign above the bar, and the cross of St George and a portrait of the King look down on the rum barrels behind it. Sailors crowd the tables beneath the glow of brass lanterns.",
         desktop: { x: 26, y: 47, size: 11 },
         mobile: { x: 83, y: 20, size: 30 },
       },
       Bank: {
         name: "Colonial Ledger Bank",
         description:
-          "Beneath the royal lion and unicorn, bewigged clerks of the Colonial Ledger Bank record every coin in great ledgers behind gleaming brass grilles. Logwood cutters queue across the chequered floor with their bundles, trading a season's hard work for silver, while the heavy iron vault stands open on chests of gold.",
+          "Tall arched windows light the pale stone hall of the Colonial Ledger Bank, beneath the royal lion and unicorn. Bewigged clerks record every coin in great ledgers behind gleaming brass grilles, while logwood cutters queue across the chequered floor with their bundles, trading a season's hard work for silver. A redcoat guards the heavy iron vault, standing open on chests of gold.",
         desktop: { x: 41, y: 47, size: 13 },
         mobile: { x: 18, y: 40, size: 32 },
       },
       "City hall": {
         name: "Governor's Hall",
         description:
-          "In a red-brick chamber hung with a great map of the Caribbean and a portrait of the King, the Governor receives captains at his carved mahogany desk. Tall doors open onto a balcony above the turquoise lagoon, and every ship that crosses the reef is noted in the harbourmaster's book.",
+          "Doors beneath an arched fanlight open from the red-brick Governor's Hall onto a balcony above the turquoise lagoon. Inside, a great map of the Caribbean and a portrait in a red coat hang behind the carved mahogany desk where the Governor receives captains. The lion and unicorn crest, a Union flag and blue banners with crowns and anchors complete the room.",
         desktop: { x: 59, y: 45, size: 14 },
         mobile: { x: 55, y: 37, size: 38 },
       },
       Market: {
         name: "Mangrove Quay Market",
         description:
-          "Under the thatch of the Mangrove Quay Market, bananas hang from the beams above stalls heaped with limes, cacao, coconuts and pineapples. Traders weigh fruit on swinging scales, fresh fish glisten on beds of salt, and canoes from up the river unload their baskets straight onto the planks.",
+          "Under the timber roof of the Mangrove Quay Market, bananas hang from the beams above stalls heaped with limes, cacao, coconuts and pineapples. Traders weigh fruit on swinging scales, snapper, grouper and jack glisten on beds of salt, and canoes from up the river unload their baskets straight onto the planks of the long jetty.",
         desktop: { x: 75, y: 50, size: 13 },
         mobile: { x: 26, y: 64, size: 40 },
       },
       Shipyard: {
         name: "Belize Shipwrights",
         description:
-          "The great timber shed of Belize Shipwrights smells of fresh-cut mahogany and bubbling pine tar. Carpenters saw and hew beneath a half-built hull whose bare ribs rise above the slipway, while the master shipwright pores over plans with a captain at the workbench.",
+          "Crossed hammers mark the sign of Belize Shipwrights, a great timber shed that smells of fresh-cut mahogany and bubbling pine tar. Carpenters saw and hew beneath a half-built hull whose bare ribs rise above the slipway, and a crane swings cargo on the jetty outside. At the workbench, the master shipwright pores over plans with a captain.",
         desktop: { x: 91, y: 48, size: 14 },
         mobile: { x: 80, y: 66, size: 38 },
       },
@@ -489,42 +489,42 @@ export const TOWNS: TownLocations = {
       Shop: {
         name: "Harbor Shop",
         description:
-          "Golden fleurs-de-lis frame the sign of the Harbor Shop, a squat stone building with a terracotta roof right on the waterfront. Under its cream awning, crates of fruit and barrels of supplies wait for buyers, and nobody asks where your money came from.",
+          "Golden fleurs-de-lis frame the sign of the Harbor Shop, a squat stone building with a terracotta roof right on the waterfront. Inside, lanterns light shelves of bottles, porcelain jars and folded cloth, a rack of cutlasses and a brass globe, while sacks of beans, cannonballs, anchors and coils of rope crowd the floor. Nobody asks where your money came from.",
         desktop: { x: 10, y: 62, size: 12 },
         mobile: { x: 12, y: 72, size: 26 },
       },
       Tavern: {
         name: "Golden Lily Tavern",
         description:
-          "The Golden Lily Tavern sits on the steep stairs climbing from the harbour, its balconies wrapped in climbing vines and lit by warm lanterns. Inside, buccaneers drink, gamble and recruit, and fights break out as often as songs.",
+          "The Golden Lily Tavern sits on the steep stairs climbing from the harbour, its balconies wrapped in climbing vines and lit by warm lanterns. Inside, a long bar of bottles faces open stone arches that look out over the harbour and the fort, and dice, cards and gold coins litter the tables where buccaneers drink, gamble and recruit.",
         desktop: { x: 26, y: 60, size: 14 },
         mobile: { x: 39, y: 72, size: 26 },
       },
       Bank: {
         name: "Royal Bank",
         description:
-          "Golden lilies decorate the sign of the Royal Bank, a fine stone house with a blue slate roof that looks almost out of place among the rough houses of the town. Lanterns flank its three arched doors, and the clerks wisely ask few questions.",
+          "Golden lilies decorate the sign of the Royal Bank, a fine stone house with a blue slate roof that looks almost out of place among the rough houses of the town. Inside, brass-grilled counters marked Deposits, Exchange and Loans line a chequered marble hall, and a great vault door stands open on stacked gold bars. The clerks wisely ask few questions.",
         desktop: { x: 41, y: 58, size: 11 },
         mobile: { x: 31, y: 42, size: 30 },
       },
       "City hall": {
         name: "Governor's Hall",
         description:
-          "White banners with golden lilies hang either side of the doors of the Governor's Hall, a pale stone building with a long balcony and a blue slate roof. The governor keeps a careful peace with the buccaneers, and the fortress on the cliff above makes sure of it.",
+          "White banners with golden lilies hang either side of the doors of the Governor's Hall, a pale stone building with a blue slate roof. Inside, blue banners, a great wall map and a carved fleur-de-lis desk fill the governor's office, whose arched balcony looks out over the harbour to the fortress on the cliff. The governor keeps a careful peace with the buccaneers.",
         desktop: { x: 58, y: 58, size: 13 },
         mobile: { x: 70, y: 44, size: 40 },
       },
       Market: {
         name: "Grand Market",
         description:
-          "Red and cream striped awnings shade the stalls of the Grand Market, where looted silks sit beside fresh fruit and salted beef. The stone building behind has a terracotta roof and a row of arched windows, overlooking traders who argue loudly over every price.",
+          "Red and white striped awnings shade the stalls of the Grand Market, set beneath stone arches hung with flowering vines and white banners of golden lilies. Hams, garlic and chillies hang above heaps of fruit, fresh fish and bright spices, while looted silks and rugs pile up by the water, and traders argue loudly over every price.",
         desktop: { x: 73.5, y: 63, size: 11 },
         mobile: { x: 62, y: 72, size: 22 },
       },
       Shipyard: {
         name: "Royal Dockyard",
         description:
-          "Golden lilies flank the sign of the Royal Dockyard, a massive timber frame beside the tall masts of the harbour. A hull rests in the shadows inside, and a heavy crane lifts timber for the ships that buccaneers wear out so quickly.",
+          "Golden lilies flank the sign of the Royal Dockyard, a massive timber frame beside the tall masts of the harbour. Inside, a fully planked hull stands wrapped in scaffolding and ladders, while pulleys and iron hooks hang from the beams above workbenches, stacked timber and coils of rope. Beyond the open side, the fort watches over the ships that buccaneers wear out so quickly.",
         desktop: { x: 88, y: 62, size: 11 },
         mobile: { x: 85, y: 76, size: 26 },
       },
@@ -560,42 +560,42 @@ export const TOWNS: TownLocations = {
       Shop: {
         name: "Quay Shop",
         description:
-          "Blue shutters and a red-tiled roof give the Quay Shop a warm, sunny charm. A striped awning shades its counter of cheeses, bread and dried goods, while crates and barrels wait by the waterfront for ships bound back to France.",
+          "Blue shutters and a red-tiled roof give the Quay Shop a warm, sunny charm, and a cream striped awning shades its open front. Inside, cheeses, bread and strings of chillies sit beside sacks of salt, coffee beans and cinnamon, while shelves of bottles and blue and white porcelain rise behind a counter carved with golden lilies, looking straight out over the quay.",
         desktop: { x: 13, y: 58, size: 10 },
         mobile: { x: 23, y: 74, size: 26 },
       },
       Tavern: {
         name: "Blue Heron Tavern",
         description:
-          "A painted blue heron swings on the sign outside the Blue Heron Tavern, a tall house of honey-coloured stone with a slate roof and a balcony full of flowers. Lanterns glow by the twin doors, and inside planters and sailors toast each other with rum and claret.",
+          "A painted blue heron marks the sign of the Blue Heron Tavern, a tall house of honey-coloured stone with a slate roof and a balcony full of flowers. Inside, flowering galleries and white banners of golden lilies surround a long bar of bottles, and blue doors open onto the harbour while planters and sailors toast each other with rum and claret.",
         desktop: { x: 26, y: 55, size: 11 },
         mobile: { x: 50, y: 74, size: 28 },
       },
       Bank: {
         name: "Royal Bank",
         description:
-          "The white flag with golden lilies flies above the Royal Bank, a stately house of pale stone with a golden fleur-de-lis set into its slate roof. Columns frame the heavy oak door, and potted palms line the steps where sugar merchants come to count their profits.",
+          "The white flag with golden lilies flies above the Royal Bank, a stately house of pale stone with a golden fleur-de-lis set into its slate roof. Inside, tall arched windows light a chequered marble hall where a brass-railed counter guards ledgers and gold bars, and an iron vault stands open beside potted palms for the sugar merchants counting their profits.",
         desktop: { x: 40, y: 55, size: 10 },
         mobile: { x: 82, y: 72, size: 28 },
       },
       "City hall": {
         name: "Governor's Hall",
         description:
-          "Bougainvillea climbs the arcade of the Governor's Hall, a graceful building with blue shutters, an iron balcony and a golden fleur-de-lis above the roofline. Stone stairways wind up the hillside around it, past terraces of flowers and palms.",
+          "Bougainvillea climbs the arcade of the Governor's Hall, a graceful building with blue shutters and a golden fleur-de-lis above the roofline. Inside, a great map of the Caribbean hangs above a carved desk draped in red, flanked by blue velvet chairs and shelves of books, while the open arcade looks down over the harbour and the church on the hill.",
         desktop: { x: 56, y: 53, size: 14 },
         mobile: { x: 30, y: 40, size: 40 },
       },
       Market: {
         name: "Saint Pierre Market",
         description:
-          "Beneath a terracotta roof and a row of arched windows, the Saint Pierre Market sets out its stalls under cream and red striped awnings. Baskets of oranges, plantains and coffee beans crowd the counters, and the old stone aqueduct can be seen on the hill above.",
+          "Beneath a terracotta roof and a row of stone arches, the Saint Pierre Market sets out its stalls under red and white striped awnings. Baskets of oranges, plantains, pineapples and coffee beans crowd the counters, with chillies and garlic hanging overhead, and through the arches the old stone aqueduct can be seen on the hill above the harbour.",
         desktop: { x: 72, y: 58, size: 12 },
         mobile: { x: 75, y: 52, size: 38 },
       },
       Shipyard: {
         name: "King's Yard",
         description:
-          "Under a great open timber roof, the King's Yard cradles a hull still bare to its ribs. A wooden hoist stands beside the shed, and carpenters work by lantern light to finish ships for the French crown.",
+          "Under a great open timber roof, the King's Yard cradles a hull still bare to its ribs, ringed with scaffolding and ladders. Chains and pulley blocks hang from the beams over stacked timber, coils of rope and barrels of tar, and lanterns light the work on ships for the French crown, with the harbour and the aqueduct beyond.",
         desktop: { x: 92, y: 58, size: 14 },
         mobile: { x: 81, y: 31, size: 36 },
       },
@@ -631,42 +631,42 @@ export const TOWNS: TownLocations = {
       Shop: {
         name: "Coral Crown Shop",
         description:
-          "A carved red coral fan sits above the sign of the Coral Crown Shop, a cheerful house with blue shutters and a red-tiled roof. Blue and white striped awnings shade shelves of provisions, lanterns and casks, while the white banner of France flutters overhead.",
+          "A carved red coral fan sits above the sign of the Coral Crown Shop, a cheerful house with blue shutters and a red-tiled roof. Blue and white striped awnings shade the door, and inside, lanterns light shelves of porcelain, branches of red coral, seashells and coral necklaces, while casks, rope and sacks of provisions crowd the floor beneath white and blue banners of France.",
         desktop: { x: 12, y: 52, size: 12 },
         mobile: { x: 27, y: 30, size: 36 },
       },
       Tavern: {
         name: "La Perle Tavern",
         description:
-          "Smoke curls from the chimney of La Perle Tavern, where a foaming golden tankard hangs above the dark sign. Beneath its stone arches, lantern light falls on crowded tables of sailors and planters drinking rum from the island's own distilleries.",
+          "Smoke curls from the chimney of La Perle Tavern, where a foaming golden tankard hangs above the dark sign. Inside, a roaring fireplace, a candlelit gallery and a long bar stacked with bottles and barrels frame stone arches open to the harbour, and lantern light falls on tables of sailors and planters drinking rum from the island's own distilleries.",
         desktop: { x: 26.5, y: 52, size: 11 },
         mobile: { x: 64, y: 30, size: 36 },
       },
       Bank: {
         name: "Royal Indies Bank",
         description:
-          "White stone columns, a blue slate roof and a golden fleur-de-lis announce the Royal Indies Bank. Banners of the French crown hang either side of its arched door, and a broad flight of steps leads merchants inside to trade their sugar money for letters of credit.",
+          "White stone columns, a blue slate roof and a golden fleur-de-lis announce the Royal Indies Bank. Inside, a blue carpet of golden lilies leads across a chequered marble hall to a row of brass-grilled counters, past desks stacked with gold coins, scales and ledgers, where merchants trade their rum and sugar money for letters of credit.",
         desktop: { x: 40, y: 52, size: 10 },
         mobile: { x: 28, y: 50, size: 36 },
       },
       "City hall": {
         name: "Governor's Maison",
         description:
-          "A red carpet runs down the steps of the Governor's Maison, an elegant house of pale stone with blue shutters and a golden fleur-de-lis set into its slate roof. Lanterns and potted flowers line the entrance, ready for the next visiting captain.",
+          "A red carpet runs down the steps of the Governor's Maison, an elegant house of pale stone with blue shutters and a golden fleur-de-lis set into its slate roof. Inside, a red velvet chair waits behind a carved desk beneath a great map of the Caribbean, with a globe, telescope and books close at hand, and tall windows look out over the harbour.",
         desktop: { x: 54.5, y: 50, size: 13 },
         mobile: { x: 72, y: 50, size: 36 },
       },
       Market: {
         name: "Spice Quay Market",
         description:
-          "A carved golden pineapple crowns the sign of the Spice Quay Market, where red and green striped awnings shade crates of bananas, pineapples, cocoa and cinnamon bark. The warm ochre walls glow in the afternoon sun as traders haggle over every sack.",
+          "A carved golden pineapple crowns the sign of the Spice Quay Market, where red, green and white striped awnings shade crates of bananas, pineapples, cocoa pods and bundles of cinnamon bark. White banners of golden lilies hang from the warm ochre arches, and a path between the stalls leads straight down to the harbour as traders haggle over every sack.",
         desktop: { x: 71.5, y: 55, size: 14 },
         mobile: { x: 26, y: 70, size: 38 },
       },
       Shipyard: {
         name: "Fleur Harbor Dockyard",
         description:
-          "A golden anchor emblem hangs over the entrance of the Fleur Harbor Dockyard, a stone and timber shed with a blue slate roof. Inside, a hull rests on its cradle, while ships flying the white flag of France wait at anchor for repairs.",
+          "A golden anchor and crossed hammers mark the sign of the Fleur Harbor Dockyard, a stone and timber shed with a blue slate roof. Inside, a hull rests on its cradle amid scaffolding and ladders, with ship plans pinned by the workbenches and pulley blocks, rope and an old anchor close by, while ships flying the white flag of France wait at anchor.",
         desktop: { x: 88.5, y: 55, size: 14 },
         mobile: { x: 73, y: 74, size: 42 },
       },
@@ -703,42 +703,42 @@ export const TOWNS: TownLocations = {
       Shop: {
         name: "Pelican Pearl Shop",
         description:
-          "Red tiles, teal shutters and climbing bougainvillea frame the Pelican Pearl Shop, where a striped red awning shades the door. Inside, lantern light falls on shelves of provisions, coils of rope and casks of fresh water for the voyage ahead.",
+          "Red tiles, teal shutters and climbing bougainvillea frame the Pelican Pearl Shop, where a red and white striped awning shades the door. Inside, lantern light falls on chests of pearls, seashells and shelves of bottles and porcelain, with coils of rope, casks and crates of fruit for the voyage ahead and a fleur-de-lis rug laid before the counter.",
         desktop: { x: 10, y: 50, size: 13 },
         mobile: { x: 21, y: 51, size: 32 },
       },
       Tavern: {
         name: "Belle Mer Tavern",
         description:
-          "Lanterns glow along the long balcony of the Belle Mer Tavern, its dark blue sign painted with golden fleurs-de-lis. Flowers tumble over the railings, and from the arched doorways below comes the sound of fiddles, laughter and clinking cups of wine.",
+          "Lanterns glow along the long balcony of the Belle Mer Tavern, its dark blue sign painted with golden fleurs-de-lis. Inside, flowers tumble from the gallery over a long bar of wine bottles and barrels marked with lilies, a fiddle waits by the wall, and blue doors open on the harbour, filling the room with laughter and clinking cups of wine.",
         desktop: { x: 26, y: 50, size: 12 },
         mobile: { x: 54, y: 51, size: 34 },
       },
       Bank: {
         name: "Gulf Crown Bank",
         description:
-          "A golden fleur-de-lis crowns the slate roof of the Gulf Crown Bank, a handsome cream building with teal shutters and flower-filled window boxes. Twin lanterns light the arched entrance, where traders in furs and timber come to settle their accounts.",
+          "A golden fleur-de-lis crowns the slate roof of the Gulf Crown Bank, a handsome cream building with teal shutters and flower-filled window boxes. Inside, brass posts and ropes guide customers to a carved counter with scales and quill, and an iron vault stands open on stacked gold bars, while bundles of furs and timber show the trade that settles its accounts here.",
         desktop: { x: 40, y: 50, size: 11 },
         mobile: { x: 24, y: 28, size: 36 },
       },
       "City hall": {
         name: "Governor's Hall",
         description:
-          "Wide steps lead up to the Governor's Hall, a stately cream building with a blue slate roof, a golden fleur-de-lis and a balcony draped in flowers. The white royal banner of France flies nearby as officials debate the colony's affairs inside.",
+          "Wide steps lead up to the Governor's Hall, a stately cream building with a blue slate roof, a golden fleur-de-lis and a balcony draped in flowers. Inside, blue curtains and banners of golden lilies frame a carved desk, a marble fireplace and a large wall map, while open doors lead to the balcony where officials debate the colony's affairs.",
         desktop: { x: 55.5, y: 48, size: 14 },
         mobile: { x: 71, y: 28, size: 40 },
       },
       Market: {
         name: "Bayfront Spice Market",
         description:
-          "Under a red-tiled roof wreathed in flowers, the Bayfront Spice Market opens its stalls beneath red and green striped awnings. Baskets of peppers, vanilla and fresh fruit crowd the counters, and the scent of spices carries all the way to the water.",
+          "Under a red-tiled roof wreathed in flowers, the Bayfront Spice Market opens its stalls beneath red, green and white striped awnings. Labelled bins of cayenne, nutmeg, cinnamon, allspice and pepper sit beneath strings of chillies and garlic, beside baskets of fresh fruit, and the scent of spices carries all the way to the water.",
         desktop: { x: 73, y: 52, size: 12 },
         mobile: { x: 29, y: 72, size: 36 },
       },
       Shipyard: {
         name: "Crescent Dockyard",
         description:
-          "A great timber frame with a fleur-de-lis above its sign, the Crescent Dockyard rings with mallets and saws. Scaffolding wraps a hull taking shape on the slipway, and a wooden crane lifts timber from the barges below.",
+          "A great timber frame with a golden fleur-de-lis above its entrance, the Crescent Dockyard rings with mallets and saws. Scaffolding and ladders wrap a hull taking shape on the slipway, ship plans cover the workbenches, and a hook and pulley hoist timber from the quay beside the harbour fort.",
         desktop: { x: 89, y: 52, size: 14 },
         mobile: { x: 74, y: 72, size: 40 },
       },
@@ -774,42 +774,42 @@ export const TOWNS: TownLocations = {
       Shop: {
         name: "Pearl Shop",
         description:
-          "Through the wide arches of the Pearl Shop, strings of pearls and polished shells glitter in the lantern light. Bougainvillea climbs the whitewashed walls, and behind the treasures sit the plainer goods every crew needs: food, water and medicine for the voyage.",
+          "Bougainvillea climbs the whitewashed arches of the Pearl Shop, where red banners bearing the royal crest hang beneath lanterns on iron chains. Inside, open shells, chests and gold bowls brim with pearls beside brass scales on the counter, while sacks, barrels and crates of food, water and medicine wait by the arch that looks out over the harbour.",
         desktop: { x: 8, y: 58, size: 10 },
         mobile: { x: 14, y: 73, size: 26 },
       },
       Tavern: {
         name: "Compass Tavern",
         description:
-          "A ship's wheel hangs above the sign of the Compass Tavern, a long white house with a red-tiled roof and a wooden gallery along its upper floor. Muleteers fresh from the jungle road crowd its tables alongside sailors waiting for the silver fleet.",
+          "The Compass Tavern is a long white house with a red-tiled roof and a wooden gallery along its upper floor, and inside a great ship's wheel hangs on the wall above that gallery. Its compass-topped sign hangs over a bar lined with bottles and barrels, and muleteers fresh from the jungle road crowd the long tables alongside sailors waiting for the silver fleet.",
         desktop: { x: 22.5, y: 56, size: 13 },
         mobile: { x: 46, y: 72, size: 34 },
       },
       Bank: {
         name: "Treasure Bank",
         description:
-          "The Treasure Bank is built like a fortress, its thick stone walls carved with the royal crest and its heavy studded doors guarded day and night. Lanterns burn on either side of the entrance, for here the silver of Peru waits before it sails for Spain.",
+          "The Treasure Bank is built like a fortress, its thick stone walls and heavy doors guarded day and night. Inside, a carved royal crest flanked by golden lions crowns the iron-grilled vault, and chests of silver, gold bars and sacks of coin crowd the clerks' tables, where brass scales weigh the silver of Peru before it sails for Spain.",
         desktop: { x: 37, y: 55, size: 10 },
         mobile: { x: 17, y: 45, size: 28 },
       },
       "City hall": {
         name: "Governor's Hall",
         description:
-          "Crimson banners embroidered in gold hang from the arcade of the Governor's Hall, a white stone building with a carved crest and a small bell tower. A grand stairway leads up from the quay, lined with potted palms and flowers.",
+          "Crimson banners embroidered in gold hang from the arcade of the Governor's Hall, a white stone building with a small bell tower and a grand stairway up from the quay. Inside, a high-backed red chair bearing the royal crest stands behind a carved desk, with a great map, a portrait, a globe and a model galleon around it, and tall arches open onto the harbour.",
         desktop: { x: 54, y: 50, size: 15 },
         mobile: { x: 51, y: 43, size: 38 },
       },
       Market: {
         name: "Plaza Market",
         description:
-          "The Plaza Market spreads its striped awnings over stalls of fruit, fish and woven goods. Behind them, a cool arcade of stone arches offers shade to traders bargaining over pearls, cacao and Peruvian cloth.",
+          "The Plaza Market spreads red, green and blue striped awnings over its stalls beneath a cool arcade of stone arches hung with Spanish banners and flowers. Pineapples, bananas and cacao pods spill from crates, fresh fish and oysters lie on ice, and traders bargain over pearls, sacks of beans and bright woven cloth with the harbour glittering beyond.",
         desktop: { x: 71.5, y: 57, size: 14 },
         mobile: { x: 86, y: 49, size: 30 },
       },
       Shipyard: {
         name: "Panama Shipyard",
         description:
-          "Under a long red-tiled roof held up by heavy beams, the Panama Shipyard keeps a hull in its cradle. Carpenters patch the battered ships of the treasure fleet here before they brave the long voyage home.",
+          "Under a long red-tiled roof held up by heavy beams, the Panama Shipyard keeps a great hull in its cradle, wrapped in scaffolding and ladders. Spanish banners hang from the posts above stacks of timber, an anvil, coils of rope and chains, and carpenters patch the battered ships of the treasure fleet here before they brave the long voyage home.",
         desktop: { x: 90, y: 52, size: 14 },
         mobile: { x: 80, y: 72, size: 36 },
       },
@@ -845,42 +845,42 @@ export const TOWNS: TownLocations = {
       Shop: {
         name: "Harbor Shop",
         description:
-          "Whitewashed walls, a terracotta roof and two wide arches open to the street: the Harbor Shop is where Havana's captains stock up before the long crossing. Barrels, coils of rope and baskets of supplies fill the shaded interior, and an iron anchor hangs beside the door.",
+          "Two wide arches open the whitewashed Harbor Shop to the quay, and under its terracotta roof Havana's captains stock up before the long crossing. Inside, an iron anchor leans against the wall beside barrels, sacks and coils of rope, while shelves of bottles, blue and white jars and folded cloth rise behind a counter set with brass scales.",
         desktop: { x: 10, y: 50, size: 11 },
         mobile: { x: 16, y: 58, size: 30 },
       },
       Tavern: {
         name: "Parrot Tavern",
         description:
-          "A brightly painted parrot perches above the sign of the Parrot Tavern, keeping watch over the tables beneath its arches. Bougainvillea spills from the balcony, lanterns glow on iron posts, and guitars and loud voices carry out into the warm night.",
+          "A brightly painted parrot perches above the bar of the Parrot Tavern, beside a carved coat of arms and shelves of bottles and barrels. Bougainvillea spills from the iron-railed balcony overhead, lanterns glow on iron brackets, and a guitar rests by the candlelit tables while the arches look out over the harbour and the fortress walls.",
         desktop: { x: 24.5, y: 50, size: 10 },
         mobile: { x: 25, y: 40, size: 34 },
       },
       Bank: {
         name: "Royal Bank",
         description:
-          "Behind ornate iron gates and a gilded royal coat of arms, the Royal Bank guards the silver of the Spanish crown. Its pale stone front is carved with columns and balconies, and armed clerks watch every chest that passes through the arched doors.",
+          "Behind ornate iron gates and a gilded royal coat of arms, the Royal Bank guards the silver of the Spanish crown. Inside, red banners hang above a carved counter with a gilded railing, stacks of silver coin rise beside brass scales and quills, and an iron gate crowned with the royal arms opens onto the great round door of the vault.",
         desktop: { x: 39, y: 50, size: 10 },
         mobile: { x: 79, y: 43, size: 36 },
       },
       "City hall": {
         name: "Governor's Hall",
         description:
-          "Red and gold banners of Spain hang from the balcony of the Governor's Hall, a grand building of white stone with tall arches and a bell tower rising behind. Officials in fine coats climb the steps, while the governor keeps an eye on the treasure fleet in the bay.",
+          "Red and gold banners of Spain hang from the balcony of the Governor's Hall, a grand building of white stone with tall arches. Inside, a red carpet climbs a marble dais to the governor's carved desk and high-backed chair, flanked by banners, globes, maps and halberds, while the columned arches give him a clear view of the treasure fleet in the bay.",
         desktop: { x: 56, y: 48, size: 15 },
         mobile: { x: 54, y: 25, size: 38 },
       },
       Market: {
         name: "Harbor Market",
         description:
-          "Striped awnings stretch out from the Harbor Market, covering tables heaped with mangoes, pineapples, tobacco leaves and sacks of sugar. Market women call out prices in the shade, while the cathedral towers rise over the rooftops behind.",
+          "Orange and white striped awnings stretch out from the Harbor Market, covering tables heaped with mangoes, pineapples and sacks of sugar. Bundles of tobacco leaves and chillies hang from the beams, boxes of cigars sit beside baskets of spices and blue and white jars, and the cathedral towers rise over the rooftops behind.",
         desktop: { x: 74, y: 52, size: 11 },
         mobile: { x: 64, y: 64, size: 36 },
       },
       Shipyard: {
         name: "Havana Shipyard",
         description:
-          "Built of stone and dark timber beside a small watchtower, the Havana Shipyard shelters a new hull under its broad roof. Tall-masted ships tie up alongside, and the yard is famous for vessels of tough Cuban hardwood that outlast any built in Europe.",
+          "Built of stone and dark timber beside a small watchtower, the Havana Shipyard shelters a new hull in scaffolding under its broad roof. A Spanish flag hangs on the stone wall above stacks of timber, an anchor and a rope winch, tall-masted ships tie up at the quay outside, and the yard is famous for vessels of tough Cuban hardwood.",
         desktop: { x: 89, y: 50, size: 14 },
         mobile: { x: 74, y: 82, size: 36 },
       },
@@ -916,42 +916,42 @@ export const TOWNS: TownLocations = {
       Shop: {
         name: "Plaza Shop",
         description:
-          "A white stucco house with a terracotta roof and a balcony draped in flowers, the Plaza Shop opens two wide arches to the quay. A colourful striped awning covers baskets of fruit and dried goods, and barrels of water line the doorstep.",
+          "A white stucco house with a balcony draped in flowers, the Plaza Shop opens two wide arches to the quay under blue and white striped awnings. Inside, crates of oranges and peppers sit beneath strings of garlic and chillies, barrels line the floor, and shelves of bottles, cloth and blue and white jars rise behind a counter under a Spanish banner and a ship's wheel.",
         desktop: { x: 8.5, y: 52, size: 12 },
         mobile: { x: 20, y: 35, size: 30 },
       },
       Tavern: {
         name: "Sailor's Tavern",
         description:
-          "A great carved ship's wheel sits under the gable of the Sailor's Tavern. Its arched doorway glows with lantern light, vines and flowers climb the walls, and the tables outside are crowded with barrels and thirsty river men.",
+          "Vines and flowers climb the arches of the Sailor's Tavern, shaded outside by blue and white striped awnings. Inside, a great carved ship's wheel hangs on the wall above a bar faced with blue and white tiles, where tankards dangle over rows of bottles and barrels, and the lantern-lit tables are crowded with thirsty river men.",
         desktop: { x: 23, y: 50, size: 13 },
         mobile: { x: 78, y: 42, size: 34 },
       },
       Bank: {
         name: "Crown Bank",
         description:
-          "Behind a gate of black and gold ironwork, the Crown Bank guards its treasury under a painted royal coat of arms. Its pale yellow stone and red-tiled roof catch the sun, and potted palms stand on either side of the heavy door.",
+          "Behind a gate of black and gold ironwork, the Crown Bank guards its treasury under a painted royal coat of arms. Inside, red banners with golden crowns hang from the pale stone arches, gilded railings close off the clerks' counter, and a short red-carpeted stair leads through an iron gate to a round vault door and stacks of gold bars.",
         desktop: { x: 38, y: 50, size: 10 },
         mobile: { x: 27, y: 56, size: 34 },
       },
       "City hall": {
         name: "Governor's Hall",
         description:
-          "Red and gold banners of Spain hang down the white walls of the Governor's Hall, a grand building with arched windows, an iron balcony and a gilded crest under the flag. A wide stair leads up to its wooden doors from the plaza below.",
+          "Red and gold banners of Spain hang down the white walls of the Governor's Hall, a grand building with arched windows and an iron balcony. Inside, a gilded crest crowns the inner doorway, halberds and a great map line the walls, and a carved desk draped in the royal arms faces tall glass doors that open onto the balcony and the fortress beyond.",
         desktop: { x: 53.5, y: 47, size: 14 },
         mobile: { x: 52, y: 24, size: 38 },
       },
       Market: {
         name: "Grand Market",
         description:
-          "Green and orange striped awnings shade the stalls of the Grand Market, piled high with cacao beans, peppers and tropical fruit. Vines climb the timbered gable above, and the twin towers of the cathedral rise over the rooftops behind.",
+          "Green and orange striped awnings shade the stalls of the Grand Market, piled high with cacao pods, sacks of beans, pineapples and bananas. Strings of chillies and garlic hang from the beams, a carved ship's wheel sits in the vine-covered gable between Spanish banners, and the twin towers of the cathedral rise over the rooftops behind.",
         desktop: { x: 70.5, y: 52, size: 13 },
         mobile: { x: 74, y: 58, size: 38 },
       },
       Shipyard: {
         name: "Villa Hermosa Shipyard",
         description:
-          "A golden anchor marks the sign of the Villa Hermosa Shipyard, a broad timber shed with a stone tower beside it. River boats and a half-built hull share the slipway, and tall masts sway at the pier outside.",
+          "A golden anchor marks the sign of the Villa Hermosa Shipyard, a broad timber shed with a stone tower beside it. Inside, a half-built hull rests in its scaffolding beneath chains and pulley blocks, river boats sit on the wet slipway among stacks of timber and tools, and tall masts sway at the pier outside.",
         desktop: { x: 87, y: 50, size: 16 },
         mobile: { x: 63, y: 78, size: 46 },
       },
@@ -987,42 +987,42 @@ export const TOWNS: TownLocations = {
       Shop: {
         name: "Port Shop",
         description:
-          "A cream awning shades the arched doors of the Port Shop, a whitewashed building with a terracotta roof and a balcony hung with vines. Crates, barrels and baskets of supplies crowd the doorstep, ready for crews who have just sailed in past El Morro.",
+          "Bougainvillea spills from the balcony above the Port Shop, a whitewashed building whose arched wooden doors open straight onto the quay facing El Morro. Inside, a counter draped with a Spanish banner holds brass scales and an armillary sphere, shelves are stacked with sacks, cloth, bottles and jars, and barrels of cannonballs, coils of rope and an anchor crowd the floor.",
         desktop: { x: 8, y: 58, size: 10 },
         mobile: { x: 16, y: 69, size: 28 },
       },
       Tavern: {
         name: "Anchor Tavern",
         description:
-          "An iron anchor hangs above the sign of the Anchor Tavern, and three tall arches open its lantern-lit room to the street. Bougainvillea spills down the walls while soldiers from the garrison swap stories with sailors over cups of wine.",
+          "An iron anchor hangs beside the three tall arches of the Anchor Tavern, which open its lantern-lit room to the harbour and the fortress beyond. Bougainvillea spills down the walls, a fire burns in the hearth beside a bar lined with bottles, and soldiers from the garrison swap stories with sailors over cups of wine at the long tables.",
         desktop: { x: 22.5, y: 58, size: 11 },
         mobile: { x: 45, y: 70, size: 32 },
       },
       Bank: {
         name: "Royal Bank",
         description:
-          "A golden crown is set into the pale stone front of the Royal Bank, above a sturdy arched door at the top of a short flight of steps. Inside, the King's officials count the coin that pays the garrison and keeps the great fortress walls in good repair.",
+          "A golden crown is set into the pale stone front of the Royal Bank, above a sturdy arched door at the top of a short flight of steps. Inside, another carved crown tops the barred vault gate, where gold bars fill the shelves, and the King's officials count stacks of gold coin that pay the garrison and keep the great fortress walls in good repair.",
         desktop: { x: 38, y: 56, size: 10 },
         mobile: { x: 80, y: 69, size: 34 },
       },
       "City hall": {
         name: "Governor's Palace",
         description:
-          "Twin towers frame the Governor's Palace, its red-tiled roof crowned with the royal coat of arms and its balcony hung with banners in red and gold. Palms and flowering vines soften the pale stone, and a stone stair leads up to the main doors.",
+          "Twin towers frame the Governor's Palace, its red-tiled roof crowned with the royal coat of arms and its balcony hung with banners in red and gold. Inside, a red velvet chair stands behind a carved desk under a great sea chart, with shelves of books and a model ship beside it, and arched doors open onto a balustraded balcony overlooking the harbour.",
         desktop: { x: 54.5, y: 52, size: 13 },
         mobile: { x: 48, y: 43, size: 36 },
       },
       Market: {
         name: "San Juan Market",
         description:
-          "Beneath a terracotta roof, cream and blue striped awnings shade the stalls of the San Juan Market. Sacks of grain, baskets of fruit and jars of olive oil fresh from Spain change hands, and flowers tumble from every wall around it.",
+          "Beneath a terracotta roof, cream and blue striped awnings shade the stalls of the San Juan Market. Hams, garlic and chillies hang above crates of oranges and tomatoes, sacks of grain, bottles of olive oil fresh from Spain and fish laid on ice change hands, and flowers tumble from every arch around it.",
         desktop: { x: 71, y: 60, size: 12 },
         mobile: { x: 16, y: 45, size: 28 },
       },
       Shipyard: {
         name: "San Juan Shipyard",
         description:
-          "Crossed tools hang on the sign of the San Juan Shipyard, a timber shed whose open front faces straight onto the bay. A new hull rests inside, and warships of the Spanish crown tie up alongside to have their damage repaired.",
+          "Crossed hammers hang on the sign of the San Juan Shipyard, a timber shed whose open front faces straight onto the bay. A new hull rests inside behind scaffolding and stairs, surrounded by stacked timber, rope and a workbench of tools, while warships of the Spanish crown tie up alongside to have their damage repaired.",
         desktop: { x: 88, y: 58, size: 14 },
         mobile: { x: 80, y: 42, size: 36 },
       },
@@ -1058,42 +1058,42 @@ export const TOWNS: TownLocations = {
       Shop: {
         name: "Oranje Trade House",
         description:
-          "A Dutch house of orange brick with a stepped gable and green shutters, the Oranje Trade House sells everything from salted fish to sailcloth. Cream awnings shade its doorway, and barrels of supplies stand ready on the stone landing.",
+          "Behind orange brick, a stepped gable and green shutters, the Oranje Trade House sells everything from salted fish to sailcloth. Inside, the Dutch flag hangs beside a map of the island, salted fish dangle above bins of spices, and rolls of sailcloth, coils of rope and crates of white salt crowd the floor. Its green doors open under a cream awning onto the quay.",
         desktop: { x: 9.5, y: 48, size: 11 },
         mobile: { x: 19, y: 37, size: 30 },
       },
       Tavern: {
         name: "Admiral's Rest Tavern",
         description:
-          "A long, low house with a dark slate roof and a timber balcony, the Admiral's Rest Tavern sets its tables out by the water. Lanterns burn beside the door, and inside the talk is of salt prices, storms and the next voyage.",
+          "A long, low house with a dark slate roof, the Admiral's Rest Tavern opens its green doors wide onto the harbour. Inside, lanterns glow over blue-cushioned stools, Delft mugs and a bar stacked with bottles and a great tapped barrel, while sailors at the tables talk of salt prices, storms and the next voyage.",
         desktop: { x: 24, y: 50, size: 12 },
         mobile: { x: 50, y: 46, size: 34 },
       },
       Bank: {
         name: "Guild Ledger Bank",
         description:
-          "Tall and narrow, the Guild Ledger Bank wears a stepped brick gable topped with the red, white and blue flag. Lanterns flank its green arched door, behind which careful Dutch clerks weigh coins and record every guilder.",
+          "Tall and narrow, the Guild Ledger Bank wears a stepped brick gable and a green arched door. Inside, red, white and blue banners hang from the gallery, and beneath a gilded lion crest a great iron vault stands behind a brass-railed counter, where careful Dutch clerks weigh coins on brass scales and record every guilder.",
         desktop: { x: 40, y: 48, size: 11 },
         mobile: { x: 84, y: 43, size: 30 },
       },
       "City hall": {
         name: "Stadholder's Hall",
         description:
-          "Golden stone, a blue crest above the door and a slender bell tower mark the Stadholder's Hall, which rises above a broad flight of stone steps. Green shutters stand open to catch the trade winds as island officials go about the Company's business.",
+          "Golden stone, a slender bell tower and a broad flight of stone steps mark the Stadholder's Hall. Inside, a blue lion crest and red, white and blue banners hang above a great carved desk, while green shutters stand open to the harbour and the trade winds. Island officials pore over maps of Bonaire beneath a candle chandelier.",
         desktop: { x: 56, y: 46, size: 13 },
         mobile: { x: 51, y: 22, size: 36 },
       },
       Market: {
         name: "Spice Wharf Market",
         description:
-          "Beneath a red-brick stepped gable, the Spice Wharf Market spreads its cream awnings over stalls of cloves, nutmeg, fresh fruit and bolts of bright cloth. Crates of goods line the front, all within sight of the windmill turning on the hill.",
+          "Beneath a red-brick stepped gable and a pair of Dutch flags, the Spice Wharf Market spreads its cream awnings over stalls of cloves, nutmeg and cinnamon. Strings of peppers and garlic hang above crates of oranges, bananas and pineapples, bolts of bright cloth fill the far stalls, and the windmill turns on the hill across the water.",
         desktop: { x: 72.5, y: 50, size: 11 },
         mobile: { x: 35, y: 70, size: 34 },
       },
       Shipyard: {
         name: "Eastwind Dockyard",
         description:
-          "Bare timber scaffolding surrounds a ship's hull inside the Eastwind Dockyard, a great open shed with a slate roof. A wooden crane leans out over the quay, and stacked crates and planks wait to be hauled aboard.",
+          "Under a slate roof and the Dutch flag, the Eastwind Dockyard is a great open shed where bare timber scaffolding surrounds a ship's hull. A pulley and iron hook hang ready over the quay, ship plans are pinned to the wall, and stacked planks, barrels and crates of ironwork wait to be hauled aboard.",
         desktop: { x: 90, y: 48, size: 14 },
         mobile: { x: 78, y: 70, size: 40 },
       },
@@ -1129,42 +1129,42 @@ export const TOWNS: TownLocations = {
       Shop: {
         name: "Oranje Supply House",
         description:
-          "Painted a warm orange with white trim and a stepped Dutch gable, the Oranje Supply House is the brightest building on the waterfront. Under its cream awning, barrels of salt fish, water casks and sacks of provisions stand ready beside the green front door.",
+          "Painted a warm orange with white trim and a stepped Dutch gable, the Oranje Supply House is the brightest building on the waterfront. Inside its green doors, crates of salt fish, sacks of beans and baskets of oranges and limes crowd the floor, while muskets, rope and cannonballs line the walls behind a counter draped with the orange lion.",
         desktop: { x: 9, y: 50, size: 10 },
         mobile: { x: 17, y: 45, size: 28 },
       },
       Tavern: {
         name: "Sailor's Rest Tavern",
         description:
-          "A red-tiled roof and sky blue walls give the Sailor's Rest Tavern a cheerful look. Its wooden veranda is lined with lanterns and tables, where sailors from every nation share pipes and rum as the evening breeze comes in off the water.",
+          "A red-tiled roof and sky blue walls give the Sailor's Rest Tavern a cheerful look. Its lantern-lit veranda looks out over the painted houses of Willemstad, and inside a long bar of bottles and racked pipes stands beneath a gallery hung with the Dutch flag and a lion banner, where sailors from every nation share rum.",
         desktop: { x: 24, y: 52, size: 11 },
         mobile: { x: 49, y: 47, size: 30 },
       },
       Bank: {
         name: "Merchant Ledger Bank",
         description:
-          "A tall stepped gable with white trim crowns the Merchant Ledger Bank, its green shutters and arched door watched over by a pair of lanterns. The Company's clerks inside will count guilders, pieces of eight and English shillings alike, as long as the coin is good.",
+          "A tall stepped gable with white trim crowns the Merchant Ledger Bank, its green shutters and arched door watched over by a pair of lanterns. Inside, the Company's crest guards an iron-barred vault stacked with gold, and clerks behind the brass-railed counter count guilders, pieces of eight and English shillings alike, as long as the coin is good.",
         desktop: { x: 39, y: 50, size: 10 },
         mobile: { x: 83, y: 47, size: 28 },
       },
       "City hall": {
         name: "Governor's Hall",
         description:
-          "Pale yellow walls, a domed bell tower and a blue coat of arms above the door make the Governor's Hall the pride of Willemstad. A grand stair climbs to its green doors, past potted palms and flowering shrubs.",
+          "Pale yellow walls, a domed bell tower and a blue coat of arms above the door make the Governor's Hall the pride of Willemstad. Inside, blue lion banners and Dutch flags frame a raised desk on a carpeted dais, and green shutters open onto a balcony over the harbour, past potted palms and Delft vases.",
         desktop: { x: 54.5, y: 46, size: 13 },
         mobile: { x: 50, y: 25, size: 34 },
       },
       Market: {
         name: "Harbor Spice Market",
         description:
-          "Under the stepped gable of the Harbor Spice Market, cream awnings shade crates overflowing with peppers, nutmeg, oranges and brightly dyed cloth. The windmill turns on the hill behind, and the air is thick with cinnamon and cloves.",
+          "Under the stepped gable of the Harbor Spice Market, cream awnings and Dutch flags shade crates overflowing with peppers, cinnamon, oranges and limes beside bolts of brightly dyed cloth. Strings of chillies and garlic hang from the beams, and beyond the quay the windmill turns on the hill above Willemstad's painted houses.",
         desktop: { x: 70, y: 52, size: 10 },
         mobile: { x: 26, y: 75, size: 32 },
       },
       Shipyard: {
         name: "Bluewater Dockyard",
         description:
-          "Beneath a dark shingled roof and the Dutch flag, the Bluewater Dockyard is a forest of scaffolding around a growing hull. A tall crane swings timber in from the water, and shipwrights hammer away from first light until dusk.",
+          "Beneath a dark shingled roof and the Dutch flag, the Bluewater Dockyard is a forest of scaffolding around a growing hull. Pulleys swing bundles of timber in from the quay, past stacked beams, tar barrels and coils of rope, and shipwrights hammer away from first light until dusk with Willemstad's painted houses across the water.",
         desktop: { x: 88, y: 52, size: 16 },
         mobile: { x: 74, y: 75, size: 42 },
       },
@@ -1200,42 +1200,42 @@ export const TOWNS: TownLocations = {
       Shop: {
         name: "Nassau Supply Shop",
         description:
-          "A red and white striped awning hangs over the door of the Nassau Supply Shop, a brick house with a stepped gable and green shutters. Flower boxes fill every window, and barrels of salt and supplies wait outside for the next ship to come in.",
+          "A red and white striped awning hangs over the green door of the Nassau Supply Shop, a brick house with a stepped gable and flower boxes in every window. Inside, barrels and sacks brim with salt, hams, garlic and chillies hang from the beams, and bolts of cloth, coils of rope and crates of cannonballs crowd around a counter with brass scales.",
         desktop: { x: 8.5, y: 52, size: 10 },
         mobile: { x: 17, y: 38, size: 28 },
       },
       Tavern: {
         name: "Pelican Sail Tavern",
         description:
-          "Under a red-tiled roof and pale blue walls, the Pelican Sail Tavern opens a lantern-lit veranda onto the quay. Salt rakers and sailors gather at its wooden tables, drinking until the stars come out over the bay.",
+          "Under a red-tiled roof and pale blue walls, the Pelican Sail Tavern opens its green doors onto a striped-awning veranda over the quay. A pelican figure perches above the bar, flowers trail from the beams beside Dutch flags, and salt rakers and sailors gather at long wooden tables, drinking until the stars come out over the bay.",
         desktop: { x: 22.5, y: 54, size: 11 },
         mobile: { x: 50, y: 46, size: 32 },
       },
       Bank: {
         name: "Island Ledger Bank",
         description:
-          "Painted a soft sage green, the Island Ledger Bank stands out with its stepped gable, flower boxes and green arched door. Lanterns light the steps, and the clerks inside keep careful records of every barrel of salt sold from the ponds.",
+          "Painted a soft sage green, the Island Ledger Bank stands out with its stepped gable, flower boxes and green arched door. Inside, the Dutch flag hangs above rows of ledger drawers and an iron-barred vault, and clerks at the long counter weigh coin on brass scales and keep careful records of every sack of salt sold from the ponds.",
         desktop: { x: 38, y: 52, size: 9 },
         mobile: { x: 85, y: 42, size: 26 },
       },
       "City hall": {
         name: "Governor's Hall",
         description:
-          "A golden building with a clock above the entrance and a domed bell tower, the Governor's Hall sits at the top of a wide stone stair. Green shutters and potted palms soften its grand front, and the Dutch flag flies proudly from the tower.",
+          "A golden building with a clock above the entrance and a domed bell tower, the Governor's Hall sits at the top of a wide stone stair. Inside, a crowned lion crest and red, white and blue banners hang above a great map of the island, and green shutters open onto the harbour past potted palms, Delft vases and the Dutch flag.",
         desktop: { x: 54, y: 50, size: 14 },
         mobile: { x: 55, y: 20, size: 38 },
       },
       Market: {
         name: "Salt Bay Market",
         description:
-          "Green and cream striped awnings shade the stalls of the Salt Bay Market, set beneath an orange brick gable. Crates spill over with oranges, limes and peppers, and fishermen bring their catch straight up from the boats below.",
+          "Green and cream striped awnings shade the stalls of the Salt Bay Market, set beneath orange brick arches hung with flowers. Crates spill over with oranges, limes and peppers beneath strings of garlic and chillies, and fishermen bring their catch straight up from the boats below, laying it out on salt beside lobster pots and nets.",
         desktop: { x: 70.5, y: 54, size: 10 },
         mobile: { x: 25, y: 70, size: 32 },
       },
       Shipyard: {
         name: "Oyster Reef Shipyard",
         description:
-          "A tall wooden crane leans over the Oyster Reef Shipyard, where a ship's hull rises within a cage of scaffolding. Rowing boats crowd the pier outside, and the sound of hammers carries across the water.",
+          "A tall wooden crane leans over the Oyster Reef Shipyard, where a ship's hull rises within a cage of scaffolding and ladders. Pulleys lower bundles of timber to the quay, ship plans hang above the workbenches, and rowing boats crowd the pier outside as the sound of hammers carries across the water.",
         desktop: { x: 88, y: 54, size: 16 },
         mobile: { x: 74, y: 74, size: 44 },
       },
