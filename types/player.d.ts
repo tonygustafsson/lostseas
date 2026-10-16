@@ -16,5 +16,3 @@ type CreatePlayerClientRequest = Pick<
   "age",
   "nationality"
 >
-
-type UpdatePlayerClientRequest = Partial<CreatePlayerClientRequest>

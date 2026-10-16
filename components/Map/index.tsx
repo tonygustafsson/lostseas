@@ -1,9 +1,12 @@
 "use client"
 
+import { useState } from "react"
+
 import useModal from "@/app/stores/modals"
 import AdvisorTips from "@/components/advisor/AdvisorTips"
 import { Button } from "@/components/ui/button"
 import { useSea } from "@/hooks/queries/useSea"
+import { getHarborBlockedQuip } from "@/utils/getPirateQuip"
 
 import SeaMapCanvas from "./SeaMapCanvas"
 
@@ -13,10 +16,11 @@ type Props = {
 
 const DepartureWarnings = () => {
   const { removeModal } = useModal()
+  const [quip] = useState(getHarborBlockedQuip)
 
   return (
     <>
-      <AdvisorTips title="Resolve these problems before setting sail." />
+      <AdvisorTips title={quip} />
 
       <Button
         size="sm"

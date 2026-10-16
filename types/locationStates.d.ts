@@ -18,7 +18,7 @@ type SeaState = {
 }
 
 type HarborState = {
-  lastHarborReason?: "arrived" | "blocked" | null
+  lastHarborReason?: "arrived" | null
 }
 
 type LocationStates = {
