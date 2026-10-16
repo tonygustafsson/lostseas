@@ -7,11 +7,11 @@ const BackToTown = () => {
   const { move } = useCharacter()
 
   return (
-    <div className="flex justify-center px-4 py-5 sm:px-6 sm:py-6">
+    <div className="mt-6 flex justify-center">
       <Button
-        variant="outline"
+        variant="highlight"
         size="lg"
-        className="gap-2 px-6 font-serif text-lg font-normal!"
+        className="w-full gap-2 px-6 font-serif text-lg font-normal! sm:w-auto!"
         onClick={() => move({ location: "Harbor" })}
       >
         <ArrowLeft className="size-5!" />

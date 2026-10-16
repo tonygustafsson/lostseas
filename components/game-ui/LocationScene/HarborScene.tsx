@@ -74,10 +74,10 @@ const HarborScene = ({ town }: Props) => {
             size="lg"
             onClick={showMap}
             disabled={!canTravel}
-            className="mt-8 px-6 font-serif text-lg"
+            className="mt-8 w-full px-6 font-serif text-lg sm:h-11 sm:w-auto sm:px-14 lg:text-xl"
           >
             <RiTreasureMapLine className="size-5!" />
-            Travel
+            Set sail
           </Button>
         </div>
 
