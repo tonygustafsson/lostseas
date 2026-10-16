@@ -10,10 +10,10 @@ const onContinue = fn()
 const meta = {
   component: ActionCard,
   args: {
-    title: "Welcome to the harbor",
+    title: "Welcome to the shop",
     message: "Your crew is ready. Stock up on supplies before setting sail.",
     icon: <Anchor />,
-    image: "/img/location/port-royale/harbor.png",
+    image: "/img/location/port-royale/shop.png",
     actions: (
       <Button variant="highlight" size="lg" onClick={onContinue}>
         Continue

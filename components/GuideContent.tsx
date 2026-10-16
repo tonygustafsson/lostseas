@@ -774,11 +774,11 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mb-2 font-serif text-lg">Battles at sea</h3>
 
         <Image
-          src="/img/location/ship-meeting/ship-meeting5.png"
+          src="/img/ship-meeting/pirate-galleon.png"
           width={800}
-          height={460}
+          height={600}
           alt="Meeting a ship"
-          className="mx-auto mb-4 aspect-[1.74]"
+          className="mx-auto mb-4"
         />
 
         <p className="mb-4">
