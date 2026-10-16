@@ -170,3 +170,17 @@ html {
     0 16px 48px oklch(0 0 0 / 60%),
     0 0 32px oklch(from var(--gold) l c h / 20%);
 }
+
+/* Scene transitions between harbour, buildings and sea (see useSceneLocation) */
+::view-transition-old(scene),
+::view-transition-new(scene) {
+  animation-duration: 0.25s;
+  animation-timing-function: ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(scene),
+  ::view-transition-new(scene) {
+    animation: none;
+  }
+}

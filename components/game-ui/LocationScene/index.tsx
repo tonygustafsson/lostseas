@@ -1,14 +1,13 @@
-import { useGetPlayer } from "@/hooks/queries/usePlayer"
-
 import BuildingScene from "./BuildingScene"
 import HarborScene from "./HarborScene"
 
-const LocationScene = () => {
-  const { data: player } = useGetPlayer()
+type Props = {
+  town: Character["town"]
+  location: Character["location"]
+}
 
-  if (!player || player.character.location === "Sea") return null
-
-  const { town, location } = player.character
+const LocationScene = ({ town, location }: Props) => {
+  if (location === "Sea") return null
 
   if (location === "Harbor") {
     return <HarborScene town={town} />
