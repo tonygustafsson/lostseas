@@ -35,19 +35,7 @@ const HarborScene = ({ town }: Props) => {
     <div className="bg-card overflow-hidden rounded-xl border shadow-2xl">
       {map && (
         <div className="border-gold/40 border-b bg-slate-950">
-          <TownMap
-            image={map.mobile}
-            alt={`Map of ${town}`}
-            className="md:hidden"
-            onMove={handleMove}
-          />
-
-          <TownMap
-            image={map.desktop}
-            alt={`Map of ${town}`}
-            className="hidden md:block"
-            onMove={handleMove}
-          />
+          <TownMap map={map} alt={`Map of ${town}`} onMove={handleMove} />
         </div>
       )}
 

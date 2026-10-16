@@ -1,20 +1,75 @@
-import Image from "next/image"
-import { useState } from "react"
+import { getImageProps } from "next/image"
+import { CSSProperties, useState } from "react"
 
-import type { TownMapBuilding, TownMapImage } from "@/constants/townMaps"
+import type {
+  TownMap as TownMapData,
+  TownMapBuilding,
+} from "@/constants/townMaps"
 import { cn } from "@/lib/utils"
 
-type Props = {
-  image: TownMapImage
+// Matches the Tailwind md breakpoint used to switch the building buttons
+const DESKTOP_MEDIA = "(min-width: 48rem)"
+
+type PictureProps = {
+  map: TownMapData
   alt: string
   className?: string
+  style?: CSSProperties
+}
+
+const TownMapPicture = ({ map, alt, className, style }: PictureProps) => {
+  const { desktop, mobile } = map
+
+  const {
+    props: { srcSet: desktopSrcSet },
+  } = getImageProps({
+    src: desktop.src,
+    width: desktop.width,
+    height: desktop.height,
+    sizes: "100vw",
+    alt,
+  })
+
+  const { props: mobileProps } = getImageProps({
+    src: mobile.src,
+    width: mobile.width,
+    height: mobile.height,
+    sizes: "100vw",
+    loading: "eager",
+    fetchPriority: "high",
+    alt,
+  })
+
+  return (
+    <picture>
+      <source
+        media={DESKTOP_MEDIA}
+        srcSet={desktopSrcSet}
+        sizes="100vw"
+        width={desktop.width}
+        height={desktop.height}
+      />
+
+      <img
+        {...mobileProps}
+        alt={alt}
+        draggable={false}
+        className={className}
+        style={style}
+      />
+    </picture>
+  )
+}
+
+type Props = {
+  map: TownMapData
+  alt: string
   onMove: (location: TownLocation) => void
 }
 
-const TownMap = ({ image, alt, className, onMove }: Props) => {
+const TownMap = ({ map, alt, onMove }: Props) => {
   const [highlighted, setHighlighted] = useState<TownMapBuilding | null>(null)
   const [isHovering, setIsHovering] = useState(false)
-  const { src, width, height, buildings } = image
 
   const mask = highlighted
     ? `radial-gradient(circle ${highlighted.size / 2}cqw at ${highlighted.x}% ${highlighted.y}%, black 60%, transparent 100%)`
@@ -25,56 +80,54 @@ const TownMap = ({ image, alt, className, onMove }: Props) => {
     setIsHovering(true)
   }
 
+  const renderButtons = (buildings: TownMapBuilding[], className: string) =>
+    buildings.map((building) => (
+      <button
+        key={`town-map-building-${className}-${building.location}`}
+        type="button"
+        aria-label={building.name}
+        title={building.name}
+        className={cn(
+          "focus-visible:ring-ring absolute aspect-square -translate-1/2 cursor-pointer rounded-full outline-none focus-visible:ring-2",
+          className
+        )}
+        style={{
+          left: `${building.x}%`,
+          top: `${building.y}%`,
+          width: `${building.size}%`,
+        }}
+        onMouseEnter={() => handleHighlight(building)}
+        onFocus={() => handleHighlight(building)}
+        onBlur={() => setIsHovering(false)}
+        onClick={() => onMove(building.location)}
+      />
+    ))
+
   return (
     <div
-      className={cn(
-        "[container-type:inline-size] relative w-full overflow-hidden",
-        className
-      )}
+      className="[container-type:inline-size] relative w-full overflow-hidden"
       onMouseLeave={() => setIsHovering(false)}
     >
-      <Image
-        src={src}
-        width={width}
-        height={height}
-        sizes="100vw"
-        draggable={false}
+      <TownMapPicture
+        map={map}
         alt={alt}
-        className="w-full brightness-90 saturate-90 select-none"
+        className="h-auto w-full brightness-90 saturate-90 select-none"
       />
 
-      <Image
-        src={src}
-        fill
-        sizes="100vw"
-        draggable={false}
-        alt=""
-        aria-hidden
-        className={cn(
-          "pointer-events-none opacity-0 brightness-110 saturate-110 transition-opacity duration-300 select-none",
-          isHovering && "opacity-100"
-        )}
-        style={{ maskImage: mask, WebkitMaskImage: mask }}
-      />
-
-      {buildings.map((building) => (
-        <button
-          key={`town-map-building-${building.location}`}
-          type="button"
-          aria-label={building.name}
-          title={building.name}
-          className="focus-visible:ring-ring absolute aspect-square -translate-1/2 cursor-pointer rounded-full outline-none focus-visible:ring-2"
-          style={{
-            left: `${building.x}%`,
-            top: `${building.y}%`,
-            width: `${building.size}%`,
-          }}
-          onMouseEnter={() => handleHighlight(building)}
-          onFocus={() => handleHighlight(building)}
-          onBlur={() => setIsHovering(false)}
-          onClick={() => onMove(building.location)}
+      <div aria-hidden>
+        <TownMapPicture
+          map={map}
+          alt=""
+          className={cn(
+            "pointer-events-none absolute inset-0 size-full opacity-0 brightness-110 saturate-110 transition-opacity duration-300 select-none",
+            isHovering && "opacity-100"
+          )}
+          style={{ maskImage: mask, WebkitMaskImage: mask }}
         />
-      ))}
+      </div>
+
+      {renderButtons(map.mobile.buildings, "md:hidden")}
+      {renderButtons(map.desktop.buildings, "hidden md:block")}
     </div>
   )
 }
