@@ -1,23 +1,24 @@
 import { getImageProps } from "next/image"
-import { CSSProperties, useState } from "react"
+import { CSSProperties, Ref, useRef, useState } from "react"
 
-import type {
-  TownMap as TownMapData,
-  TownMapBuilding,
+import {
+  TOWN_MAP_DESKTOP_MEDIA,
+  type TownMap as TownMapData,
+  type TownMapBuilding,
 } from "@/constants/townMaps"
 import { cn } from "@/lib/utils"
 
-// Matches the Tailwind md breakpoint used to switch the building buttons
-const DESKTOP_MEDIA = "(min-width: 48rem)"
+import { useTownMapAmbience } from "./useTownMapAmbience"
 
 type PictureProps = {
   map: TownMapData
   alt: string
   className?: string
   style?: CSSProperties
+  ref?: Ref<HTMLImageElement>
 }
 
-const TownMapPicture = ({ map, alt, className, style }: PictureProps) => {
+const TownMapPicture = ({ map, alt, className, style, ref }: PictureProps) => {
   const { desktop, mobile } = map
 
   const {
@@ -43,7 +44,7 @@ const TownMapPicture = ({ map, alt, className, style }: PictureProps) => {
   return (
     <picture>
       <source
-        media={DESKTOP_MEDIA}
+        media={TOWN_MAP_DESKTOP_MEDIA}
         srcSet={desktopSrcSet}
         sizes="100vw"
         width={desktop.width}
@@ -52,6 +53,7 @@ const TownMapPicture = ({ map, alt, className, style }: PictureProps) => {
 
       <img
         {...mobileProps}
+        ref={ref}
         alt={alt}
         draggable={false}
         className={className}
@@ -70,6 +72,8 @@ type Props = {
 const TownMap = ({ map, alt, onMove }: Props) => {
   const [highlighted, setHighlighted] = useState<TownMapBuilding | null>(null)
   const [isHovering, setIsHovering] = useState(false)
+  const imageRef = useRef<HTMLImageElement>(null)
+  const ambienceRef = useTownMapAmbience(map, imageRef)
 
   const mask = highlighted
     ? `radial-gradient(circle ${highlighted.size / 2}cqw at ${highlighted.x}% ${highlighted.y}%, black 60%, transparent 100%)`
@@ -109,9 +113,16 @@ const TownMap = ({ map, alt, onMove }: Props) => {
       onMouseLeave={() => setIsHovering(false)}
     >
       <TownMapPicture
+        ref={imageRef}
         map={map}
         alt={alt}
         className="h-auto w-full brightness-90 saturate-90 select-none"
+      />
+
+      <canvas
+        ref={ambienceRef}
+        aria-hidden
+        className="pointer-events-none absolute inset-0 size-full brightness-90 saturate-90 motion-reduce:hidden"
       />
 
       <div aria-hidden>

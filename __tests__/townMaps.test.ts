@@ -31,6 +31,14 @@ describe("town maps", () => {
     expect(existsSync(join(process.cwd(), "public", src))).toBe(true)
   })
 
+  it.each(allImages)("$waterMask exists", ({ waterMask }) => {
+    expect(existsSync(join(process.cwd(), "public", waterMask))).toBe(true)
+  })
+
+  it.each(allImages)("$skyMask exists", ({ skyMask }) => {
+    expect(existsSync(join(process.cwd(), "public", skyMask))).toBe(true)
+  })
+
   it.each(allImages)("$src has every building once", ({ buildings }) => {
     const locations = buildings.map(({ location }) => location)
 
