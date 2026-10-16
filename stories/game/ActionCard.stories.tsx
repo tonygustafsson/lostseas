@@ -13,7 +13,7 @@ const meta = {
     title: "Welcome to the harbor",
     message: "Your crew is ready. Stock up on supplies before setting sail.",
     icon: <Anchor />,
-    image: "/img/location/port-royale/harbor.webp",
+    image: "/img/location/port-royale/harbor.png",
     actions: (
       <Button variant="highlight" size="lg" onClick={onContinue}>
         Continue

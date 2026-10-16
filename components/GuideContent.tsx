@@ -97,7 +97,7 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         </p>
 
         <Image
-          src="/img/location/port-royale/shop.webp"
+          src="/img/location/port-royale/shop.png"
           width={800}
           height={460}
           alt="The shop"
@@ -115,7 +115,7 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         </p>
 
         <Image
-          src="/img/location/belize/market.webp"
+          src="/img/location/belize/market.png"
           width={800}
           height={460}
           alt="The market"
@@ -253,7 +253,7 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         </p>
 
         <Image
-          src="/img/location/san-juan/shipyard.webp"
+          src="/img/location/san-juan/shipyard.png"
           width={800}
           height={460}
           alt="The shipyard"
@@ -523,7 +523,7 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mb-2 font-serif text-lg">Titles</h3>
 
         <Image
-          src="/img/location/port-royale/city-hall.webp"
+          src="/img/location/port-royale/city-hall.png"
           width={800}
           height={460}
           alt="The City Hall"
@@ -774,7 +774,7 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mb-2 font-serif text-lg">Battles at sea</h3>
 
         <Image
-          src="/img/location/ship-meeting/ship-meeting5.webp"
+          src="/img/location/ship-meeting/ship-meeting5.png"
           width={800}
           height={460}
           alt="Meeting a ship"
