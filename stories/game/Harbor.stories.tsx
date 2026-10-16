@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import HarborScene from "@/components/game-ui/LocationScene/HarborScene"
+import { TOWNS } from "@/constants/locations"
 
 import { player } from "../fixtures"
 import PlayerPreview from "../PlayerPreview"
@@ -36,24 +37,7 @@ const meta = {
   argTypes: {
     town: {
       control: "select",
-      options: [
-        "Barbados",
-        "Belize",
-        "Biloxi",
-        "Bonaire",
-        "Charles Towne",
-        "Curacao",
-        "Havana",
-        "Leogane",
-        "Martinique",
-        "Panama",
-        "Port Royale",
-        "San Juan",
-        "St. Eustatius",
-        "St. Martin",
-        "Tortuga",
-        "Villa Hermosa",
-      ],
+      options: Object.keys(TOWNS).sort(),
     },
   },
   decorators: [
