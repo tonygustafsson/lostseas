@@ -1228,7 +1228,7 @@ export const TOWNS: TownLocations = {
       Market: {
         name: "Salt Bay Market",
         description:
-          "Green and cream striped awnings shade the stalls of the Salt Bay Market, set beneath orange brick arches hung with flowers. Crates spill over with oranges, limes and peppers beneath strings of garlic and chillies, and fishermen bring their catch straight up from the boats below, laying it out on salt beside lobster pots and nets.",
+          "Green and cream striped awnings shade the stalls of the Salt Bay Market, set beneath cream stone arches in orange brick walls hung with flowers. Crates spill over with oranges, limes and peppers, sacks of spices sit beneath strings of garlic and chillies, and fishermen bring their catch straight up from the boats below, laying it out on salt beside lobster pots and nets.",
         desktop: { x: 70.5, y: 54, size: 10 },
         mobile: { x: 25, y: 70, size: 32 },
       },
