@@ -1,4 +1,5 @@
 import { type TownBuildingPosition, TOWNS } from "@/constants/locations"
+import { toSlug } from "@/utils/location"
 
 export type TownMapBuilding = TownBuildingPosition & {
   location: TownLocation
@@ -25,7 +26,7 @@ const IMAGE_SIZES: Record<TownMapVariant, { width: number; height: number }> = {
 }
 
 export const getTownMapSrc = (town: Town, variant: TownMapVariant) =>
-  `/img/towns/${town.toLowerCase().replaceAll(" ", "-")}-${variant}.png`
+  `/img/towns/${toSlug(town)}-${variant}.png`
 
 const getTownMapImage = (
   town: Town,

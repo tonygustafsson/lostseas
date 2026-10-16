@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { RiTreasureMapLine } from "react-icons/ri"
 
 import AdvisorTips from "@/components/advisor/AdvisorTips"
@@ -21,6 +22,8 @@ const HarborScene = ({ town }: Props) => {
   const { move } = useCharacter()
   const { data: player } = useGetPlayer()
   const { showMap, canTravel } = useMapModal()
+  const [arrivedQuip] = useState(getHarborArrivedQuip)
+  const [townQuip] = useState(getHarborTownQuip)
   const map = getTownMap(town)
   const nation = getTownsNationality(town)
   const hasArrived =
@@ -84,7 +87,8 @@ const HarborScene = ({ town }: Props) => {
         <div className="lg:col-span-2">
           <AdvisorTips
             heading={hasArrived ? "Land ho!" : "Back in town"}
-            title={hasArrived ? getHarborArrivedQuip() : getHarborTownQuip()}
+            title={hasArrived ? arrivedQuip : townQuip}
+            showAllClear
           />
         </div>
       </div>

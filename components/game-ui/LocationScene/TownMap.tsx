@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { useState } from "react"
 
-import type { TownMapImage } from "@/constants/townMaps"
+import type { TownMapBuilding, TownMapImage } from "@/constants/townMaps"
 import { cn } from "@/lib/utils"
 
 type Props = {
@@ -12,8 +12,18 @@ type Props = {
 }
 
 const TownMap = ({ image, alt, className, onMove }: Props) => {
-  const [hovered, setHovered] = useState<TownLocation | null>(null)
+  const [highlighted, setHighlighted] = useState<TownMapBuilding | null>(null)
+  const [isHovering, setIsHovering] = useState(false)
   const { src, width, height, buildings } = image
+
+  const mask = highlighted
+    ? `radial-gradient(circle ${highlighted.size / 2}cqw at ${highlighted.x}% ${highlighted.y}%, black 60%, transparent 100%)`
+    : undefined
+
+  const handleHighlight = (building: TownMapBuilding) => {
+    setHighlighted(building)
+    setIsHovering(true)
+  }
 
   return (
     <div
@@ -21,49 +31,48 @@ const TownMap = ({ image, alt, className, onMove }: Props) => {
         "[container-type:inline-size] relative w-full overflow-hidden",
         className
       )}
-      onMouseLeave={() => setHovered(null)}
+      onMouseLeave={() => setIsHovering(false)}
     >
       <Image
         src={src}
         width={width}
         height={height}
+        sizes="100vw"
         draggable={false}
         alt={alt}
         className="w-full brightness-90 saturate-90 select-none"
       />
 
-      {buildings.map(({ location: key, x, y, size }) => {
-        const mask = `radial-gradient(circle ${size / 2}cqw at ${x}% ${y}%, black 60%, transparent 100%)`
+      <Image
+        src={src}
+        fill
+        sizes="100vw"
+        draggable={false}
+        alt=""
+        aria-hidden
+        className={cn(
+          "pointer-events-none opacity-0 brightness-110 saturate-110 transition-opacity duration-300 select-none",
+          isHovering && "opacity-100"
+        )}
+        style={{ maskImage: mask, WebkitMaskImage: mask }}
+      />
 
-        return (
-          <Image
-            key={`town-map-highlight-${key}`}
-            src={src}
-            fill
-            draggable={false}
-            alt=""
-            aria-hidden
-            className={cn(
-              "pointer-events-none opacity-0 brightness-110 saturate-110 transition-opacity duration-300 select-none",
-              hovered === key && "opacity-100"
-            )}
-            style={{ maskImage: mask, WebkitMaskImage: mask }}
-          />
-        )
-      })}
-
-      {buildings.map(({ location: key, name, x, y, size }) => (
+      {buildings.map((building) => (
         <button
-          key={`town-map-building-${key}`}
+          key={`town-map-building-${building.location}`}
           type="button"
-          aria-label={name}
-          title={name}
+          aria-label={building.name}
+          title={building.name}
           className="focus-visible:ring-ring absolute aspect-square -translate-1/2 cursor-pointer rounded-full outline-none focus-visible:ring-2"
-          style={{ left: `${x}%`, top: `${y}%`, width: `${size}%` }}
-          onMouseEnter={() => setHovered(key)}
-          onFocus={() => setHovered(key)}
-          onBlur={() => setHovered(null)}
-          onClick={() => onMove(key)}
+          style={{
+            left: `${building.x}%`,
+            top: `${building.y}%`,
+            width: `${building.size}%`,
+          }}
+          onMouseEnter={() => handleHighlight(building)}
+          onFocus={() => handleHighlight(building)}
+          onBlur={() => setIsHovering(false)}
+          onClick={() => onMove(building.location)}
         />
       ))}
     </div>

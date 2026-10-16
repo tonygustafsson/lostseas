@@ -40,4 +40,7 @@ type Story = StoryObj<typeof meta>
 
 export const Warnings: Story = {}
 export const WithHeading: Story = { args: { heading: "Land ho!" } }
-export const AllClear: Story = { parameters: { player: allClear } }
+export const AllClear: Story = {
+  args: { showAllClear: true },
+  parameters: { player: allClear },
+}

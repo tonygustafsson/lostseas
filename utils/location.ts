@@ -16,10 +16,10 @@ export const getRandomTown = (nation: Nation) => {
   return nationTowns[Math.floor(Math.random() * nationTowns.length)] as Town
 }
 
+export const toSlug = (value: string) =>
+  value.toLowerCase().replaceAll(" ", "-")
+
 export const getLocationBackground = (
   town: Character["town"],
   location: Character["location"]
-) =>
-  `/img/location/${town?.toLowerCase().replace(" ", "-")}/${location
-    .toLowerCase()
-    .replace(" ", "-")}.png`
+) => `/img/location/${town && toSlug(town)}/${toSlug(location)}.png`

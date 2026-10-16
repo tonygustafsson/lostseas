@@ -77,9 +77,10 @@ const WarningGroup = ({
 type Props = {
   heading?: string
   title: string
+  showAllClear?: boolean
 }
 
-const AdvisorTips = ({ heading, title }: Props) => {
+const AdvisorTips = ({ heading, title, showAllClear }: Props) => {
   const { data: player } = useGetPlayer()
 
   if (!player) return null
@@ -87,6 +88,8 @@ const AdvisorTips = ({ heading, title }: Props) => {
   const warnings = getAdvisorWarnings(player)
   const blocking = warnings.filter(({ blocksTravel }) => blocksTravel)
   const advice = warnings.filter(({ blocksTravel }) => !blocksTravel)
+
+  if (!warnings.length && !showAllClear) return null
 
   return (
     <div className="bg-background/50 flex flex-col gap-6 rounded-lg border p-4 sm:p-6">
