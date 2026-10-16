@@ -14,62 +14,62 @@ export const getWarningContent = (
   switch (tip) {
     case "TOO_MUCH_GOLD":
       return {
-        icon: <FaCoins className="h-7 w-7" />,
+        icon: <FaCoins />,
         text: `Carrying ${player.character.gold} gold. Spend it or bank it to keep it safe from defeat at sea.`,
       }
     case "LOAN_BLOCKS_DEPOSIT":
       return {
-        icon: <RiBankLine className="h-7 w-7" />,
+        icon: <RiBankLine />,
         text: "Repay your bank loan before depositing gold.",
       }
     case "NO_SHIPS":
       return {
-        icon: <GiShoonerSailboat className="h-7 w-7" />,
+        icon: <GiShoonerSailboat />,
         text: "No ships. Buy one at the shipyard before sailing.",
       }
     case "DAMAGED_SHIPS":
       return {
-        icon: <GiShoonerSailboat className="h-7 w-7" />,
+        icon: <GiShoonerSailboat />,
         text: "Ships too damaged to sail. Visit the shipyard or use repair kits in Crew & Fleet > Equipment.",
       }
     case "SHIPS_NEED_REPAIRS":
       return {
-        icon: <GiShoonerSailboat className="h-7 w-7" />,
+        icon: <GiShoonerSailboat />,
         text: "Ships need repairs. Visit the shipyard or use repair kits in Crew & Fleet > Equipment, even at sea.",
       }
     case "NO_CREW":
       return {
-        icon: <GiBandana className="h-7 w-7" />,
+        icon: <GiBandana />,
         text: "No crew. Recruit at the tavern.",
       }
     case "NOT_ENOUGH_CREW":
       return {
-        icon: <GiBandana className="h-7 w-7" />,
+        icon: <GiBandana />,
         text: "Too few crew to sail. Recruit at the tavern or sell a ship at the shipyard.",
       }
     case "TOO_MANY_CREW":
       return {
-        icon: <GiBandana className="h-7 w-7" />,
+        icon: <GiBandana />,
         text: "Too many crew to sail. Buy a ship at the shipyard or dismiss crew.",
       }
     case "ANGRY_CREW":
       return {
-        icon: <GiBandana className="h-7 w-7" />,
+        icon: <GiBandana />,
         text: "Crew refuses to sail. Give them gold or treat them at the tavern.",
       }
     case "LOW_CREW_MOOD":
       return {
-        icon: <GiBandana className="h-7 w-7" />,
+        icon: <GiBandana />,
         text: "Crew mood is low. Give them gold or treat them at the tavern.",
       }
     case "CREW_IS_ILL":
       return {
-        icon: <GiBandana className="h-7 w-7" />,
+        icon: <GiBandana />,
         text: "Crew too ill to sail. Give them medicine.",
       }
     case "LOW_CREW_HEALTH":
       return {
-        icon: <GiBandana className="h-7 w-7" />,
+        icon: <GiBandana />,
         text: "Crew health is low. Give them medicine before they are too ill to sail.",
       }
     case "NEED_MORE_FOOD":
@@ -84,12 +84,12 @@ export const getWarningContent = (
       }
     case "NO_CANNONS":
       return {
-        icon: <GiCannon className="h-7 w-7" />,
+        icon: <GiCannon />,
         text: "No cannons: little chance in battle. Buy some at the shipyard.",
       }
     case "PROMOTION_AVAILABLE":
       return {
-        icon: <PiMedalFill className="h-7 w-7" />,
+        icon: <PiMedalFill />,
         text: "Promotion earned! Claim your title and gold at City Hall.",
       }
     default:
