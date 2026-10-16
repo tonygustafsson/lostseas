@@ -417,42 +417,42 @@ export const TOWNS: TownLocations = {
       Shop: {
         name: "Bay Crown Mercantile",
         description:
-          "A weathered clapboard store with a grey shingle roof and a golden crown on its sign, the Bay Crown Mercantile sits close to the water's edge. Barrels, sacks and wooden chests crowd its porch beneath a cream canvas awning, and lanterns glow beside the open door.",
+          "A gilded crown and the cross of St George hang above the long counter of the Bay Crown Mercantile, where the shopkeeper weighs out coin on brass scales. Shelves of cloth, rope and porcelain line the walls, pistols and cutlasses wait on their racks, and sacks, barrels and chests crowd the floor beside the open door to the bay.",
         desktop: { x: 11, y: 48, size: 13 },
         mobile: { x: 19, y: 20, size: 32 },
       },
       Tavern: {
         name: "Sailmaker's Rest Tavern",
         description:
-          "Under a heavy thatched roof and a sign painted with a foaming tankard, the Sailmaker's Rest Tavern welcomes anyone with a thirst. Lantern light spills through the windows onto rough tables outside, where crews mend canvas between rounds of rum.",
+          "Beneath the thatch of the Sailmaker's Rest, spare sails and coils of rope hang from the rafters while brass lanterns glow over crowded tables. The English flag and a portrait of the King look down on the rum barrels behind the bar, and through the open shutters the turquoise bay sparkles as sailors mend canvas between rounds.",
         desktop: { x: 26, y: 47, size: 11 },
         mobile: { x: 83, y: 20, size: 30 },
       },
       Bank: {
         name: "Colonial Ledger Bank",
         description:
-          "A carved crest crowns the pediment of the Colonial Ledger Bank, a neat building of pale stone and white columns. Behind its tall double doors, logwood cutters exchange a season's hard work for coin under the clerks' careful eyes.",
+          "Beneath the royal lion and unicorn, bewigged clerks of the Colonial Ledger Bank record every coin in great ledgers behind gleaming brass grilles. Logwood cutters queue across the chequered floor with their bundles, trading a season's hard work for silver, while the heavy iron vault stands open on chests of gold.",
         desktop: { x: 41, y: 47, size: 13 },
         mobile: { x: 18, y: 40, size: 32 },
       },
       "City hall": {
         name: "Governor's Hall",
         description:
-          "Topped by a white clock tower and a slate dome, the red-brick Governor's Hall stands at the head of a wide stone stair, its columned porch and balcony looking out over the turquoise lagoon. Every ship that crosses the reef is noted in the harbourmaster's book inside.",
+          "In a red-brick chamber hung with a great map of the Caribbean and a portrait of the King, the Governor receives captains at his carved mahogany desk. Tall doors open onto a balcony above the turquoise lagoon, and every ship that crosses the reef is noted in the harbourmaster's book.",
         desktop: { x: 59, y: 45, size: 14 },
         mobile: { x: 55, y: 37, size: 38 },
       },
       Market: {
         name: "Mangrove Quay Market",
         description:
-          "Open-sided and thatched, the Mangrove Quay Market shelters long rows of stalls beneath cream canvas. Bananas hang from the beams, baskets brim with limes and cacao, and canoes from up the river unload their goods straight onto the planks.",
+          "Under the thatch of the Mangrove Quay Market, bananas hang from the beams above stalls heaped with limes, cacao, coconuts and pineapples. Traders weigh fruit on swinging scales, fresh fish glisten on beds of salt, and canoes from up the river unload their baskets straight onto the planks.",
         desktop: { x: 75, y: 50, size: 13 },
         mobile: { x: 26, y: 64, size: 40 },
       },
       Shipyard: {
         name: "Belize Shipwrights",
         description:
-          "A dark-roofed timber shed with crossed hammers on its sign, Belize Shipwrights smells of fresh-cut mahogany and pine tar. A half-built hull sits on the slipway inside, its bare ribs waiting for planks.",
+          "The great timber shed of Belize Shipwrights smells of fresh-cut mahogany and bubbling pine tar. Carpenters saw and hew beneath a half-built hull whose bare ribs rise above the slipway, while the master shipwright pores over plans with a captain at the workbench.",
         desktop: { x: 91, y: 48, size: 14 },
         mobile: { x: 80, y: 66, size: 38 },
       },

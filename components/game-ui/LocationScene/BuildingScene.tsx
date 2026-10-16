@@ -18,7 +18,10 @@ const BuildingScene = ({ town, location }: Props) => {
     animate(
       "img",
       { objectPosition: "50% 50%", filter: "sepia(0)" },
-      { objectPosition: { duration: 1 }, filter: { duration: 2 } }
+      {
+        objectPosition: { duration: 1, delay: 0.2 },
+        filter: { duration: 2, delay: 0.2 },
+      }
     )
   }
 
@@ -39,7 +42,7 @@ const BuildingScene = ({ town, location }: Props) => {
           />
         </div>
 
-        <div className="z-20 flex w-full items-center justify-center px-4 py-10 text-center sm:px-6 lg:px-10 lg:py-20">
+        <div className="z-20 flex w-full items-center justify-center px-4 py-10 text-center sm:px-6 lg:px-10 lg:py-30">
           <div className="border-border w-full max-w-3xl rounded-[2rem] border bg-black/55 px-6 py-8 shadow-[0_24px_60px_rgba(0,0,0,0.45)] backdrop-blur-[2px] sm:px-8 lg:min-w-[600px] lg:px-14 lg:py-12">
             <BuildingIntro town={town} location={location} />
           </div>

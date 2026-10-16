@@ -1,4 +1,4 @@
-import { LOCATIONS, TOWNS } from "@/constants/locations"
+import { TOWNS } from "@/constants/locations"
 
 export const getTownsNationality = (
   town: Town | undefined
@@ -22,17 +22,4 @@ export const getLocationBackground = (
 ) =>
   `/img/location/${town?.toLowerCase().replace(" ", "-")}/${location
     .toLowerCase()
-    .replace(" ", "-")}.webp`
-
-export const getAllTownLocationBackgrounds = (town: Character["town"]) => {
-  const images = Object.values(LOCATIONS)
-    .filter((location) => location !== "Sea")
-    .map(
-      (location) =>
-        `/img/location/${town?.toLowerCase().replace(" ", "-")}/${location
-          .toLowerCase()
-          .replace(" ", "-")}.webp`
-    )
-
-  return images
-}
+    .replace(" ", "-")}.png`

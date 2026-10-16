@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest"
 
 import { TOWNS } from "@/constants/locations"
 import {
-  getAllTownLocationBackgrounds,
   getLocationBackground,
   getRandomTown,
   getTownsNationality,
@@ -21,14 +20,11 @@ describe("location utils", () => {
 
   it("getLocationBackground returns town image for non-sea locations", () => {
     const path = getLocationBackground("Charles Towne" as any, "Shop" as any)
-    expect(path).toBe("/img/location/charles-towne/shop.webp")
+    expect(path).toBe("/img/location/charles-towne/shop.png")
   })
 
-  it("getAllTownLocationBackgrounds contains town-specific images and excludes Sea", () => {
-    const images = getAllTownLocationBackgrounds("Charles Towne" as any)
-    expect(images.length).toBeGreaterThan(0)
-    expect(images).toContain("/img/location/charles-towne/shop.webp")
-    // ensure none of the images include '/img/location/sea'
-    expect(images.some((p) => p.includes("/img/location/sea"))).toBe(false)
+  it("getLocationBackground returns png for converted images", () => {
+    const path = getLocationBackground("Belize" as any, "Tavern" as any)
+    expect(path).toBe("/img/location/belize/tavern.png")
   })
 })
