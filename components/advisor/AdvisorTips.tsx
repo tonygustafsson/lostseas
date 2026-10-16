@@ -31,7 +31,13 @@ const WarningGroup = ({
   warnings,
   player,
 }: GroupProps) => {
-  if (!warnings.length) return null
+  const items = warnings.flatMap((warning) => {
+    const content = getWarningContent(warning, player)
+
+    return content ? [{ warning, content }] : []
+  })
+
+  if (!items.length) return null
 
   return (
     <section>
@@ -45,30 +51,24 @@ const WarningGroup = ({
       </h3>
 
       <ul className="divide-border divide-y">
-        {warnings.map((warning) => {
-          const content = getWarningContent(warning, player)
-
-          if (!content) return null
-
-          return (
-            <li
-              key={warning.tip}
-              className="flex items-center gap-4 py-2 text-sm leading-snug"
+        {items.map(({ warning, content }) => (
+          <li
+            key={warning.tip}
+            className="flex items-center gap-4 py-2 text-sm leading-snug"
+          >
+            <span
+              aria-hidden="true"
+              className={cn(
+                "grid size-8 shrink-0 place-items-center rounded-full *:size-4",
+                iconClass[getWarningVariant(warning)]
+              )}
             >
-              <span
-                aria-hidden="true"
-                className={cn(
-                  "grid size-8 shrink-0 place-items-center rounded-full *:size-4",
-                  iconClass[getWarningVariant(warning)]
-                )}
-              >
-                {content.icon}
-              </span>
+              {content.icon}
+            </span>
 
-              {content.text}
-            </li>
-          )
-        })}
+            {content.text}
+          </li>
+        ))}
       </ul>
     </section>
   )

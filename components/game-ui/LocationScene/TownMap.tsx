@@ -109,7 +109,7 @@ const TownMap = ({ map, alt, onMove }: Props) => {
 
   return (
     <div
-      className="[container-type:inline-size] relative w-full overflow-hidden"
+      className="@container relative w-full overflow-hidden"
       onMouseLeave={() => setIsHovering(false)}
     >
       <TownMapPicture
@@ -117,12 +117,6 @@ const TownMap = ({ map, alt, onMove }: Props) => {
         map={map}
         alt={alt}
         className="h-auto w-full brightness-90 saturate-90 select-none"
-      />
-
-      <canvas
-        ref={ambienceRef}
-        aria-hidden
-        className="pointer-events-none absolute inset-0 size-full brightness-90 saturate-90 motion-reduce:hidden"
       />
 
       <div aria-hidden>
@@ -136,6 +130,12 @@ const TownMap = ({ map, alt, onMove }: Props) => {
           style={{ maskImage: mask, WebkitMaskImage: mask }}
         />
       </div>
+
+      <div
+        ref={ambienceRef}
+        aria-hidden
+        className="pointer-events-none absolute inset-0 brightness-90 saturate-90 motion-reduce:hidden"
+      />
 
       {renderButtons(map.mobile.buildings, "md:hidden")}
       {renderButtons(map.desktop.buildings, "hidden md:block")}

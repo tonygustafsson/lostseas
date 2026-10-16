@@ -291,5 +291,12 @@ export const createTownMapRenderer = (canvas: HTMLCanvasElement) => {
       frame = requestAnimationFrame(draw)
     },
     stop: () => cancelAnimationFrame(frame),
+    // Frees the GPU memory and the context, browsers only allow a few at once
+    destroy: () => {
+      cancelAnimationFrame(frame)
+      textures.forEach((texture) => gl.deleteTexture(texture))
+      gl.deleteProgram(program)
+      gl.getExtension("WEBGL_lose_context")?.loseContext()
+    },
   }
 }

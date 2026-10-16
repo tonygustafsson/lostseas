@@ -16,27 +16,37 @@ const loadImage = (src: string) => {
 
 // Rippling water, drifting clouds and seagulls drawn on the GPU, reusing the
 // already loaded map image. Only animates while the map is on screen.
-// Returns the ref for the canvas to draw on.
+// Returns the ref for the element to draw in.
+//
+// Each run gets its own canvas, because a canvas whose context has been
+// released can never draw again (Strict Mode runs effects twice).
 export const useTownMapAmbience = (
   map: TownMapData,
   imageRef: RefObject<HTMLImageElement | null>
 ) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const { waterMask: desktopWater, skyMask: desktopSky } = map.desktop
   const { waterMask: mobileWater, skyMask: mobileSky } = map.mobile
 
   useEffect(() => {
-    const canvas = canvasRef.current
+    const container = containerRef.current
     const image = imageRef.current
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches
 
-    if (!canvas || !image || prefersReducedMotion) return
+    if (!container || !image || prefersReducedMotion) return
+
+    const canvas = document.createElement("canvas")
+    canvas.className = "size-full"
+    container.append(canvas)
 
     const renderer = createTownMapRenderer(canvas)
 
-    if (!renderer) return
+    if (!renderer) {
+      canvas.remove()
+      return
+    }
 
     let isCancelled = false
 
@@ -69,9 +79,10 @@ export const useTownMapAmbience = (
       isCancelled = true
       image.removeEventListener("load", loadTextures)
       observer.disconnect()
-      renderer.stop()
+      renderer.destroy()
+      canvas.remove()
     }
   }, [imageRef, desktopWater, desktopSky, mobileWater, mobileSky])
 
-  return canvasRef
+  return containerRef
 }

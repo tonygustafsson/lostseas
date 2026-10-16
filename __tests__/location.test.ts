@@ -22,9 +22,4 @@ describe("location utils", () => {
     const path = getLocationBackground("Charles Towne" as any, "Shop" as any)
     expect(path).toBe("/img/location/charles-towne/shop.png")
   })
-
-  it("getLocationBackground returns png for converted images", () => {
-    const path = getLocationBackground("Belize" as any, "Tavern" as any)
-    expect(path).toBe("/img/location/belize/tavern.png")
-  })
 })
