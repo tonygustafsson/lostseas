@@ -1,12 +1,10 @@
 import { Metadata } from "next"
-import { preload } from "react-dom"
 
 import GameUI from "@/components/game-ui"
 import DefaultLayout from "@/components/layouts/default"
 import FullscreenLayout from "@/components/layouts/fullscreen"
 import LoginScreen from "@/components/LoginScreen"
 import { getLoggedInPlayer } from "@/utils/app/getLoggedInPlayer"
-import { getAllTownLocationBackgrounds } from "@/utils/location"
 
 export async function generateMetadata(): Promise<Metadata> {
   const player = await getLoggedInPlayer()
@@ -32,15 +30,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Page() {
   const player = await getLoggedInPlayer()
-
-  const allTownBackgrounds =
-    player?.character.location === "Harbor"
-      ? getAllTownLocationBackgrounds(player.character.town)
-      : []
-
-  for (const background of allTownBackgrounds) {
-    preload(background, { as: "image" })
-  }
 
   if (!player) {
     return (

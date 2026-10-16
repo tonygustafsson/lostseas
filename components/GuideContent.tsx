@@ -97,7 +97,7 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         </p>
 
         <Image
-          src="/img/location/port-royale/shop.webp"
+          src="/img/location/port-royale/shop.png"
           width={800}
           height={460}
           alt="The shop"
@@ -115,7 +115,7 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         </p>
 
         <Image
-          src="/img/location/belize/market.webp"
+          src="/img/location/belize/market.png"
           width={800}
           height={460}
           alt="The market"
@@ -253,7 +253,7 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         </p>
 
         <Image
-          src="/img/location/san-juan/shipyard.webp"
+          src="/img/location/san-juan/shipyard.png"
           width={800}
           height={460}
           alt="The shipyard"
@@ -523,7 +523,7 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mb-2 font-serif text-lg">Titles</h3>
 
         <Image
-          src="/img/location/port-royale/city-hall.webp"
+          src="/img/location/port-royale/city-hall.png"
           width={800}
           height={460}
           alt="The City Hall"
@@ -730,6 +730,13 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         ))}
 
         <p className="mb-4">
+          When you arrive in a town you start at the harbor, where you can see
+          the whole town. Click a building to go inside, and choose Back to town
+          to return to the harbor. You can also open the map with the Set sail
+          button at the harbor.
+        </p>
+
+        <p className="mb-4">
           You can visit any town regardless of your nationality. Choose another
           town on the map to start a journey. If you cannot leave port, the
           advisor explains which problems you need to resolve in a popup. You
@@ -767,11 +774,11 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mb-2 font-serif text-lg">Battles at sea</h3>
 
         <Image
-          src="/img/location/ship-meeting/ship-meeting5.webp"
+          src="/img/ship-meeting/pirate-galleon.png"
           width={800}
-          height={460}
+          height={600}
           alt="Meeting a ship"
-          className="mx-auto mb-4 aspect-[1.74]"
+          className="mx-auto mb-4"
         />
 
         <p className="mb-4">

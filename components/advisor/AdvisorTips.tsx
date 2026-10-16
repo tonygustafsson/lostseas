@@ -1,131 +1,99 @@
 "use client"
 
+import { CircleCheck } from "lucide-react"
 import Image from "next/image"
-import { ReactNode } from "react"
-import { FaCoins } from "react-icons/fa"
-import { GiBandana, GiCannon, GiShoonerSailboat } from "react-icons/gi"
-import { PiMedalFill } from "react-icons/pi"
-import { RiBankLine } from "react-icons/ri"
 
-import MerchandiseIcon from "@/components/MerchandiseIcon"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-import { AdvisorWarningItem } from "@/utils/getAdvisorWarnings"
-import { getAdvisorWarnings } from "@/utils/getAdvisorWarnings"
+import { cn } from "@/lib/utils"
+import {
+  AdvisorWarningItem,
+  getAdvisorWarnings,
+} from "@/utils/getAdvisorWarnings"
 
-import AdvisorTipItem from "./AdvisorTipItem"
+import { getWarningContent, getWarningVariant } from "./warningContent"
+
+const iconClass = {
+  error: "bg-destructive/15 text-destructive",
+  warning: "bg-accent/15 text-accent",
+  success: "bg-success/15 text-success",
+}
+
+type GroupProps = {
+  label: string
+  labelClassName: string
+  warnings: AdvisorWarningItem[]
+  player: Player
+}
+
+const WarningGroup = ({
+  label,
+  labelClassName,
+  warnings,
+  player,
+}: GroupProps) => {
+  const items = warnings.flatMap((warning) => {
+    const content = getWarningContent(warning, player)
+
+    return content ? [{ warning, content }] : []
+  })
+
+  if (!items.length) return null
+
+  return (
+    <section>
+      <h3
+        className={cn(
+          "mb-2 text-xs font-semibold tracking-widest uppercase",
+          labelClassName
+        )}
+      >
+        {label}
+      </h3>
+
+      <ul className="divide-border divide-y">
+        {items.map(({ warning, content }) => (
+          <li
+            key={warning.tip}
+            className="flex items-center gap-4 py-2 text-sm leading-snug"
+          >
+            <span
+              aria-hidden="true"
+              className={cn(
+                "grid size-8 shrink-0 place-items-center rounded-full *:size-4",
+                iconClass[getWarningVariant(warning)]
+              )}
+            >
+              {content.icon}
+            </span>
+
+            {content.text}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
 
 type Props = {
   heading?: string
   title: string
+  showAllClear?: boolean
 }
 
-const getWarningContent = (
-  { tip }: AdvisorWarningItem,
-  player: Player
-): { icon: ReactNode; text: string } | null => {
-  switch (tip) {
-    case "TOO_MUCH_GOLD":
-      return {
-        icon: <FaCoins className="h-7 w-7" />,
-        text: `Carrying ${player.character.gold} gold. Spend it or bank it to keep it safe from defeat at sea.`,
-      }
-    case "LOAN_BLOCKS_DEPOSIT":
-      return {
-        icon: <RiBankLine className="h-7 w-7" />,
-        text: "Repay your bank loan before depositing gold.",
-      }
-    case "NO_SHIPS":
-      return {
-        icon: <GiShoonerSailboat className="h-7 w-7" />,
-        text: "No ships. Buy one at the shipyard before sailing.",
-      }
-    case "DAMAGED_SHIPS":
-      return {
-        icon: <GiShoonerSailboat className="h-7 w-7" />,
-        text: "Ships too damaged to sail. Visit the shipyard or use repair kits in Crew & Fleet > Equipment.",
-      }
-    case "SHIPS_NEED_REPAIRS":
-      return {
-        icon: <GiShoonerSailboat className="h-7 w-7" />,
-        text: "Ships need repairs. Visit the shipyard or use repair kits in Crew & Fleet > Equipment, even at sea.",
-      }
-    case "NO_CREW":
-      return {
-        icon: <GiBandana className="h-7 w-7" />,
-        text: "No crew. Recruit at the tavern.",
-      }
-    case "NOT_ENOUGH_CREW":
-      return {
-        icon: <GiBandana className="h-7 w-7" />,
-        text: "Too few crew to sail. Recruit at the tavern or sell a ship at the shipyard.",
-      }
-    case "TOO_MANY_CREW":
-      return {
-        icon: <GiBandana className="h-7 w-7" />,
-        text: "Too many crew to sail. Buy a ship at the shipyard or dismiss crew.",
-      }
-    case "ANGRY_CREW":
-      return {
-        icon: <GiBandana className="h-7 w-7" />,
-        text: "Crew refuses to sail. Give them gold or treat them at the tavern.",
-      }
-    case "LOW_CREW_MOOD":
-      return {
-        icon: <GiBandana className="h-7 w-7" />,
-        text: "Crew mood is low. Give them gold or treat them at the tavern.",
-      }
-    case "CREW_IS_ILL":
-      return {
-        icon: <GiBandana className="h-7 w-7" />,
-        text: "Crew too ill to sail. Give them medicine.",
-      }
-    case "LOW_CREW_HEALTH":
-      return {
-        icon: <GiBandana className="h-7 w-7" />,
-        text: "Crew health is low. Give them medicine before they are too ill to sail.",
-      }
-    case "NEED_MORE_FOOD":
-      return {
-        icon: <MerchandiseIcon item="food" />,
-        text: "Not enough food to sail. Stock up at the shop.",
-      }
-    case "NEED_MORE_WATER":
-      return {
-        icon: <MerchandiseIcon item="water" />,
-        text: "Not enough water to sail. Stock up at the shop.",
-      }
-    case "NO_CANNONS":
-      return {
-        icon: <GiCannon className="h-7 w-7" />,
-        text: "No cannons: little chance in battle. Buy some at the shipyard.",
-      }
-    case "PROMOTION_AVAILABLE":
-      return {
-        icon: <PiMedalFill className="h-7 w-7" />,
-        text: "Promotion earned! Claim your title and gold at City Hall.",
-      }
-    default:
-      return null
-  }
-}
-
-const getVariant = ({ tip, blocksTravel }: AdvisorWarningItem) => {
-  if (blocksTravel) return "error"
-  if (tip === "PROMOTION_AVAILABLE") return "success"
-
-  return "warning"
-}
-
-const AdvisorTips = ({ heading, title }: Props) => {
+const AdvisorTips = ({ heading, title, showAllClear }: Props) => {
   const { data: player } = useGetPlayer()
 
-  const warnings = getAdvisorWarnings(player)
+  if (!player) return null
 
-  if (!player || !warnings.length) return null
+  const warnings = getAdvisorWarnings(player)
+  const blocking = warnings.filter(({ blocksTravel }) => blocksTravel)
+  const advice = warnings.filter(({ blocksTravel }) => !blocksTravel)
+
+  if (!warnings.length && !showAllClear) return null
 
   return (
-    <div>
-      <div className="mx-auto mb-2 flex w-full max-w-2xl items-center gap-2">
+    <div className="bg-background/50 flex flex-col gap-6 rounded-lg border p-4 sm:p-6">
+      <div className="flex items-center gap-4">
         <Image
           src="/img/parrot.svg"
           alt="Parrot"
@@ -136,9 +104,7 @@ const AdvisorTips = ({ heading, title }: Props) => {
         />
 
         <div>
-          {heading && (
-            <h2 className="font-serif text-lg font-bold">{heading}</h2>
-          )}
+          {heading && <h2 className="font-serif text-xl">{heading}</h2>}
 
           <p className="text-muted-foreground text-sm leading-snug italic">
             {title}
@@ -146,23 +112,28 @@ const AdvisorTips = ({ heading, title }: Props) => {
         </div>
       </div>
 
-      <ul className="mx-auto flex max-w-2xl flex-col gap-1">
-        {warnings.map((warning) => {
-          const content = getWarningContent(warning, player)
+      {warnings.length ? (
+        <>
+          <WarningGroup
+            label="Before you sail"
+            labelClassName="text-destructive"
+            warnings={blocking}
+            player={player}
+          />
 
-          if (!content) return null
-
-          return (
-            <AdvisorTipItem
-              key={warning.tip}
-              icon={content.icon}
-              variant={getVariant(warning)}
-            >
-              {content.text}
-            </AdvisorTipItem>
-          )
-        })}
-      </ul>
+          <WarningGroup
+            label="Worth a look"
+            labelClassName="text-gold"
+            warnings={advice}
+            player={player}
+          />
+        </>
+      ) : (
+        <p className="text-success flex items-center gap-2 text-sm">
+          <CircleCheck className="size-5 shrink-0" />
+          All shipshape. Ready to set sail!
+        </p>
+      )}
     </div>
   )
 }

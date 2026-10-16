@@ -206,13 +206,6 @@ export const BARTER_GOODS = Object.keys(MERCHANDISE).filter((k) => {
   return item.availableAt === "shop" && (item.isBarterGoods || item.isUtility)
 })
 
-/** Restricted trade goods mapped to the towns where they are available. */
-export const TRADE_GOODS_TOWNS = Object.fromEntries(
-  Object.entries(MERCHANDISE)
-    .filter(([, v]) => v.towns)
-    .map(([k, v]) => [k, v.towns!])
-) as Record<string, Town[]>
-
 export const isTradeGoodAvailableInTown = (
   item: keyof Inventory,
   town: Town | undefined

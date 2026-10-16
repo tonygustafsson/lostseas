@@ -35,6 +35,17 @@ const harborArrivedQuips = [
   "Arrr, just a friendly reminder or two from yer loyal parrot!",
 ]
 
+const harborTownQuips = [
+  "Fresh air at last!",
+  "Squawk! Back out in the sunshine, Cap'n!",
+  "Arrr, where to next, Cap'n?",
+  "The whole town's yer oyster, Cap'n!",
+  "Squawk! Mind the cobbles, Cap'n!",
+  "Plenty more doors to knock on, Cap'n!",
+  "Arrr, the docks be callin' when ye're ready, Cap'n!",
+  "Squawk! Stretch yer legs while ye can, Cap'n!",
+]
+
 const harborBlockedQuips = [
   "Not so fast!",
   "Squawk! Hold yer anchor, Cap'n — we ain't ready to sail!",
@@ -180,6 +191,10 @@ export function getAttackFailureQuip() {
 
 export function getHarborArrivedQuip() {
   return pickRandom(harborArrivedQuips)
+}
+
+export function getHarborTownQuip() {
+  return pickRandom(harborTownQuips)
 }
 
 export function getHarborBlockedQuip() {
