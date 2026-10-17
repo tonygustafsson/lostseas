@@ -19,7 +19,8 @@ const Modal = () => {
           <DialogContent
             aria-describedby={undefined}
             className={cn("max-h-[90vh] max-w-2xl overflow-auto", {
-              "h-[95vh]! max-w-[95vw]!": modal.fullWidth,
+              "h-[95vh]! max-w-[95vw]! grid-rows-[auto_minmax(0,1fr)]":
+                modal.fullWidth,
             })}
           >
             <DialogTitle className="mb-6 text-center font-serif text-xl font-bold">

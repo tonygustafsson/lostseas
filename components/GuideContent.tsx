@@ -732,8 +732,17 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <p className="mb-4">
           When you arrive in a town you start at the harbor, where you can see
           the whole town. Click a building to go inside, and choose Back to town
-          to return to the harbor. You can also open the map with the Set sail
-          button at the harbor.
+          to return to the harbor. Each town has its own named shop, tavern,
+          bank, market, shipyard and city hall, but they all offer the same
+          services.
+        </p>
+
+        <p className="mb-4">
+          The harbor also shows your advisor. Problems listed under Before you
+          sail stop you from leaving port, while those under Worth a look are
+          only advice. When nothing needs your attention, the advisor tells you
+          that you are ready to set sail. Open the map with the Set sail button
+          at the harbor, or with Travel in the bottom menu on mobile.
         </p>
 
         <p className="mb-4">

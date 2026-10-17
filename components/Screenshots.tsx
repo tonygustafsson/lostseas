@@ -3,40 +3,44 @@
 import Image from "next/image"
 
 import useModal from "@/app/stores/modals"
-import { capitalize } from "@/utils/string"
 
 const SCREENSHOTS = [
-  { id: "harbor", alt: "Screenshot of the harbor" },
-  { id: "map", alt: "Screenshot of the map" },
-  { id: "status", alt: "Screenshot of the status" },
-  { id: "crew", alt: "Screenshot of the crew members" },
-  { id: "battle", alt: "Screenshot of a ship encounter" },
-  { id: "battle-won", alt: "Screenshot of a battle won" },
-  { id: "inventory", alt: "Screenshot of the inventory" },
-  { id: "shop", alt: "Screenshot of the shop" },
+  { id: "harbor", title: "Harbor", alt: "The harbor of Curacao" },
+  { id: "map", title: "Map", alt: "Picking a destination on the map" },
+  { id: "battle-won", title: "Battle won", alt: "The spoils of a won battle" },
+  {
+    id: "tavern",
+    title: "Tavern",
+    alt: "Buying supper and drinks at the tavern",
+  },
+  { id: "shipyard", title: "Shipyard", alt: "Buying ships at the shipyard" },
+  { id: "market", title: "Market", alt: "Trading goods at the market" },
+  { id: "crew", title: "Crew & fleet", alt: "Overview of ships and crew" },
+  { id: "status", title: "Status", alt: "The character status" },
 ] as const
 
 const BUTTON_CLASS_NAME =
-  "group overflow-hidden rounded-xl border border-border bg-black/30 transition hover:-translate-y-0.5 hover:border-amber-200/50 hover:shadow-lg hover:shadow-black/30 focus-visible:ring-2 focus-visible:ring-amber-200"
+  "group cursor-pointer overflow-hidden rounded-xl border border-border bg-black/30 transition hover:-translate-y-0.5 hover:border-amber-200/50 hover:shadow-lg hover:shadow-black/30 focus-visible:ring-2 focus-visible:ring-amber-200"
 const IMAGE_CLASS_NAME =
   "aspect-[200/137] w-full object-cover transition duration-300 group-hover:scale-[1.03]"
 
 const Screenshots = () => {
   const { setModal } = useModal()
 
-  const imageZoom = (imgId: string) => {
+  const imageZoom = ({ id, title, alt }: (typeof SCREENSHOTS)[number]) => {
     setModal({
       id: "screenshot",
-      title: capitalize(imgId),
+      title,
       fullWidth: true,
       content: (
-        <div className="min-h-screen overflow-auto">
+        <div className="-mx-6 flex h-full flex-col justify-center md:mx-0">
           <Image
-            src={`/img/screenshots/${imgId}.png`}
+            src={`/img/screenshots/${id}.png`}
             width={1700}
             height={1162}
-            alt={`Screenshot of ${imgId}`}
-            className="max-w-none object-cover"
+            sizes="(max-width: 767px) 1280px, 95vw"
+            alt={alt}
+            className="h-auto w-full rounded-lg md:max-h-[calc(95vh-13rem)] md:object-contain"
           />
         </div>
       ),
@@ -45,19 +49,19 @@ const Screenshots = () => {
 
   return (
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-      {SCREENSHOTS.map(({ id, alt }) => (
+      {SCREENSHOTS.map((screenshot) => (
         <button
-          key={id}
+          key={screenshot.id}
           type="button"
-          aria-label={`View ${id.replaceAll("-", " ")} screenshot`}
+          aria-label={`View ${screenshot.title.toLowerCase()} screenshot`}
           className={BUTTON_CLASS_NAME}
-          onClick={() => imageZoom(id)}
+          onClick={() => imageZoom(screenshot)}
         >
           <Image
             width={200}
             height={137}
-            src={`/img/screenshots/${id}.png`}
-            alt={alt}
+            src={`/img/screenshots/${screenshot.id}.png`}
+            alt={screenshot.alt}
             className={IMAGE_CLASS_NAME}
           />
         </button>
