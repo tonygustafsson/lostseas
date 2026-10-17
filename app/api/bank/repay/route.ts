@@ -3,7 +3,7 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { patchDeep } from "@/utils/patchDeep"
+import { repayLoan } from "@/utils/actions/bank"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -16,56 +16,24 @@ export async function POST(req: Request) {
   const body = await req.json()
   const { amount }: { amount: number } = body
 
-  if (amount < 1) {
-    return NextResponse.json(
-      { error: "You cannot repay less than 1 doubloon." },
-      { status: 400 }
-    )
-  }
-
   const player = await getPlayer(playerId)
 
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  if (player.character.location !== "Bank")
-    return NextResponse.json(
-      { error: "You must be at Bank to do this." },
-      { status: 400 }
-    )
+  const result = repayLoan(player, { amount })
 
-  const currentLoan = player.character.loan || 0
-
-  if (currentLoan < amount) {
-    return NextResponse.json(
-      { error: "You cannot repay more than you owe the bank." },
-      { status: 400 }
-    )
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error }, { status: 400 })
   }
-  const newGold = player.character.gold - amount
-  const newLoan = currentLoan - amount === 0 ? null : currentLoan - amount
-
-  const dbUpdate: DeepPartial<Player> = {
-    character: {
-      gold: newGold,
-      loan: newLoan ?? 0,
-    },
-  }
-
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(
-      newPlayer,
-      `Repaid ${amount} gold to the bank. Remaining loan: ${newLoan ?? 0} gold.`
-    )
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
     return NextResponse.json({
       success: true,
       updatedPlayer,
-      amount,
-      gold: newGold,
-      loan: newLoan,
+      ...result.data,
     })
   } catch (error) {
     return NextResponse.json({ error, amount }, { status: 500 })

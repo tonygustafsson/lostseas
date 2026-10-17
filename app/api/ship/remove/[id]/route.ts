@@ -3,7 +3,7 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { patchDeep } from "@/utils/patchDeep"
+import { removeShip } from "@/utils/actions/ship"
 
 type RouteContext = {
   params: Promise<{
@@ -21,32 +21,22 @@ export async function DELETE(_: Request, { params }: RouteContext) {
 
   const { id } = await params
 
-  if (!id) {
-    return NextResponse.json({ error: "Ship not found" }, { status: 404 })
-  }
-
   const player = await getPlayer(playerId)
 
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  if (!player.ships?.[id]) {
-    return NextResponse.json({ error: "Ship not found" }, { status: 404 })
-  }
+  const result = removeShip(player, { id })
 
-  const dbUpdate: DeepPartial<Player> = {
-    ships: {
-      [id]: null,
-    },
+  if ("error" in result) {
+    return NextResponse.json(
+      { error: result.error },
+      { status: result.status ?? 400 }
+    )
   }
-
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(
-      newPlayer,
-      `Removed ship ${player.ships[id]?.name}.`
-    )
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
     return NextResponse.json({ success: true, updatedPlayer })
   } catch (error) {

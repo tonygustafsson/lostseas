@@ -3,8 +3,7 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { getGoldEffectiveness } from "@/utils/crew"
-import { patchDeep } from "@/utils/patchDeep"
+import { giveGold } from "@/utils/actions/crew"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -14,50 +13,28 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const body = (await req.json()) as { gold: string }
-  const gold = parseInt(body.gold)
+  const body = (await req.json()) as { gold: number | string }
 
   const player = await getPlayer(playerId)
 
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  if (gold < 1) {
-    return NextResponse.json(
-      { error: "You need to give at least 1 doubloon" },
-      { status: 500 }
-    )
+  const result = giveGold(player, { gold: body?.gold })
+
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error }, { status: 400 })
   }
-
-  if ((player.character.gold || 0) < gold) {
-    return NextResponse.json({ error: "Not enough gold" }, { status: 500 })
-  }
-
-  const newMood = getGoldEffectiveness(
-    player.crewMembers.count,
-    player.crewMembers.mood,
-    gold
-  )
-
-  const dbUpdate: DeepPartial<Player> = {
-    character: {
-      gold: (player.character.gold || 0) - gold,
-    },
-    crewMembers: {
-      mood: newMood,
-    },
-  }
-
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(
-      newPlayer,
-      `Gave ${gold} gold to crew members, increasing their mood to ${newMood}.`
-    )
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
-    return NextResponse.json({ success: true, updatedPlayer, gold, newMood })
+    return NextResponse.json({
+      success: true,
+      updatedPlayer,
+      ...result.data,
+    })
   } catch (error) {
-    return NextResponse.json({ error, gold, newMood }, { status: 500 })
+    return NextResponse.json({ error, ...result.data }, { status: 500 })
   }
 }

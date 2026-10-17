@@ -1,11 +1,9 @@
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
-import { LOCATIONS } from "@/constants/locations"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { createMoveEvents } from "@/utils/createMoveEvents"
-import { patchDeep } from "@/utils/patchDeep"
+import { moveToLocation } from "@/utils/actions/character"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -16,59 +14,23 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const destination = body.location as Character["location"]
-
-  if (
-    !Object.values(LOCATIONS)
-      .filter((location) => location !== "Sea")
-      .includes(destination as TownLocation)
-  ) {
-    return NextResponse.json({ error: "Invalid location" }, { status: 400 })
-  }
+  const location = body?.location as Character["location"]
 
   const player = await getPlayer(playerId)
 
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  const currentLocation = player.character.location
+  const result = moveToLocation(player, { location })
 
-  if (currentLocation === "Sea" || player.character.journey) {
-    return NextResponse.json(
-      { error: "You cannot change locations while on a journey." },
-      { status: 400 }
-    )
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error }, { status: 400 })
   }
-
-  if (currentLocation === destination) {
-    return NextResponse.json(
-      { error: "You are already at this location" },
-      { status: 400 }
-    )
-  }
-
-  const dbUpdate: DeepPartial<Player> = {
-    character: {
-      location: destination,
-    },
-    locationStates: {
-      harbor: {
-        lastHarborReason: null,
-      },
-    },
-  }
-
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(newPlayer)
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
-    const playerWithEvents = await createMoveEvents({
-      player: updatedPlayer,
-      destination,
-    })
-
-    return NextResponse.json({ success: true, updatedPlayer: playerWithEvents })
+    return NextResponse.json({ success: true, updatedPlayer })
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 })
   }

@@ -1,7 +1,6 @@
 import crypto from "crypto"
 import { NextResponse } from "next/server"
 
-import { LOCATIONS } from "@/constants/locations"
 import {
   COOKIE_EXPIRE_TIME,
   MUSIC_STATE_COOKIE_NAME,
@@ -9,6 +8,7 @@ import {
   SOUND_EFFECTS_STATE_COOKIE_NAME,
 } from "@/constants/system"
 import { savePlayer, saveStatistics } from "@/firebase/db"
+import { createNewPlayer } from "@/utils/actions/user"
 import { getRandomTown } from "@/utils/location"
 import { getScore } from "@/utils/score"
 import { createNewShip } from "@/utils/ship"
@@ -19,44 +19,19 @@ const createPlayer = async (body: any) => {
   const { musicOn, soundEffectsOn } = body
 
   const playerId: Player["id"] = crypto.randomUUID()
-  const title: Title = "Pirate"
-  const createdDate = new Date().getTime()
-  const startingTown = getRandomTown(nationality)
 
-  const ship = createNewShip("Brig", 0)
-  const crewMembersCount = 4
-
-  const newPlayer: Partial<Player> = {
-    id: playerId,
-    character: {
-      name,
-      nationality,
-      title,
-      gender,
-      age,
-      town: startingTown,
-      location: LOCATIONS.harbor,
-      gold: 300,
-      day: 1,
-    },
-    inventory: {
-      food: 20,
-      water: 40,
-      cannons: 2,
-    },
-    ships: {
-      [ship.id]: ship,
-    },
-    crewMembers: {
-      count: crewMembersCount,
-      health: 100,
-      mood: 100,
-    },
-    createdDate,
-  }
+  const newPlayer = createNewPlayer(
+    { name, nationality, gender, age },
+    {
+      id: playerId,
+      createdDate: new Date().getTime(),
+      startingTown: getRandomTown(nationality),
+      ship: createNewShip("Brig", 0),
+    }
+  )
 
   const updatedPlayer = await savePlayer(
-    newPlayer as Player,
+    newPlayer,
     `Created new character ${name}.`
   )
 

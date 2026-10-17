@@ -287,14 +287,19 @@ export const useTavern = () => {
       // Use mutateAsync since client cannot predict if he will win
       apiRequest("/api/tavern/cards", data, "POST"),
     onSuccess: (response) => {
-      const { updatedPlayer, bet, gold, cardsResults } = response?.data
+      const { updatedPlayer, error, bet, gold, cardsResults } = response?.data
+
+      if (error) {
+        handleError(`Could not place bet`, error, undefined)
+        return
+      }
 
       let title = ""
 
       if (cardsResults === "won") {
-        title = `You played made a bet of ${bet} gold and won!`
+        title = `You made a bet of ${bet} gold and won!`
       } else {
-        title = `You played made a bet of ${bet} gold and lost`
+        title = `You made a bet of ${bet} gold and lost`
       }
 
       if (updatedPlayer) {

@@ -2,10 +2,8 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { TAVERN_ITEMS } from "@/constants/tavern"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { increaseCrewMood } from "@/utils/crew"
-import { patchDeep } from "@/utils/patchDeep"
+import { type TavernItem, treatCrew } from "@/utils/actions/tavern"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -16,63 +14,26 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const { item }: { item: keyof typeof TAVERN_ITEMS } = body
-
-  if (!item || !Object.keys(TAVERN_ITEMS).includes(item || "")) {
-    return NextResponse.json({ error: "Not a valid item" }, { status: 400 })
-  }
+  const { item }: { item: TavernItem } = body
 
   const player = await getPlayer(playerId)
 
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  if (player.character.location !== "Tavern")
-    return NextResponse.json(
-      { error: "You must be at Tavern to do this." },
-      { status: 400 }
-    )
+  const result = treatCrew(player, { item })
 
-  const tavernItem = item as keyof typeof TAVERN_ITEMS
-  const totalPrice = TAVERN_ITEMS[tavernItem].price * player.crewMembers.count
-
-  if (player.character.gold < totalPrice) {
-    return NextResponse.json({ error: "Not enough gold" }, { status: 400 })
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error, item }, { status: 400 })
   }
-
-  const healthIncrease = TAVERN_ITEMS[tavernItem].healthIncrease
-  const moodIncrease = TAVERN_ITEMS[tavernItem].moodIncrease
-  const newMood = increaseCrewMood(player.crewMembers.mood, moodIncrease)
-  const newHealth =
-    player.crewMembers.health + healthIncrease > 100
-      ? 100
-      : player.crewMembers.health + healthIncrease
-
-  const dbUpdate: DeepPartial<Player> = {
-    character: {
-      gold: player.character.gold - totalPrice,
-    },
-    crewMembers: {
-      mood: newMood,
-      health: newHealth,
-    },
-  }
-
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(
-      newPlayer,
-      `Tavern action "${TAVERN_ITEMS[tavernItem].label}" cost ${totalPrice} gold. New mood: ${newMood}, new health: ${newHealth}.`
-    )
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
     return NextResponse.json({
       success: true,
       updatedPlayer,
-      item,
-      newMood,
-      newHealth,
-      totalPrice,
+      ...result.data,
     })
   } catch (error) {
     return NextResponse.json({ error, item }, { status: 500 })

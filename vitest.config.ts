@@ -8,5 +8,8 @@ export default defineConfig({
       "@": path.resolve(__dirname, "."),
     },
   },
+  test: {
+    setupFiles: [path.resolve(__dirname, "__tests__/setup.ts")],
+  },
   logLevel: "error",
 })

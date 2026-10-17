@@ -3,13 +3,9 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { patchDeep } from "@/utils/patchDeep"
-import { changeCharacterValidationSchema } from "@/utils/validation"
+import { updateCharacter } from "@/utils/actions/character"
 
 export async function POST(req: Request) {
-  const body = await req.json()
-  await changeCharacterValidationSchema.parseAsync(body)
-
   const cookieStore = await cookies()
   const playerId = cookieStore.get(PLAYER_ID_COOKIE_NAME)?.value
 
@@ -17,33 +13,21 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
+  const body = await req.json()
+
   const player = await getPlayer(playerId)
 
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  const {
-    name,
-    gender,
-    age,
-  }: {
-    name: Character["name"]
-    gender: Character["gender"]
-    age: Character["age"]
-  } = body
+  const result = updateCharacter(player, body)
 
-  const dbUpdate: DeepPartial<Player> = {
-    character: {
-      name,
-      gender,
-      age,
-    },
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error }, { status: 400 })
   }
 
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
-
   try {
-    const updatedPlayer = await savePlayer(newPlayer)
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
     return NextResponse.json({ success: true, updatedPlayer })
   } catch (error) {

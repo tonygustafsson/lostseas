@@ -159,7 +159,6 @@ describe.each(["api", "optimistic update"] as const)(
       [94, 99],
       [95, 100],
       [96, 100],
-      [100, 100],
     ])("tobacco changes mood from %i to %i", async (mood, expectedMood) => {
       const updated = await treatCrew(path, createPlayer(mood), "smoke-tobacco")
 

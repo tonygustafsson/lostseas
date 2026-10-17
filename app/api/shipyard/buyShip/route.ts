@@ -1,12 +1,9 @@
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
-import { SHIP_TYPES } from "@/constants/ship"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { TITLE_INFO } from "@/constants/title"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { patchDeep } from "@/utils/patchDeep"
-import { createNewShip } from "@/utils/ship"
+import { buyShip } from "@/utils/actions/shipyard"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -17,64 +14,27 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const { item }: { item: keyof typeof SHIP_TYPES } = body
-
-  if (!item || !Object.keys(SHIP_TYPES).includes(item || "")) {
-    return NextResponse.json({ error: "Not a valid item" }, { status: 400 })
-  }
-
-  const shipItem = item as keyof typeof SHIP_TYPES
-  const ship = SHIP_TYPES[shipItem]
-
-  const totalPrice = ship.buy
+  const { item }: { item: ShipType } = body
 
   const player = await getPlayer(playerId)
 
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  if (player.character.location !== "Shipyard")
-    return NextResponse.json(
-      { error: "You must be at Shipyard to do this." },
-      { status: 400 }
-    )
+  const result = buyShip(player, { item })
 
-  if (player.character.gold < totalPrice) {
-    return NextResponse.json(
-      { error: "Not enough gold", item },
-      { status: 500 }
-    )
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error, item }, { status: 400 })
   }
-
-  const titleInfo = TITLE_INFO[player.character.title]
-
-  if (Object.keys(player.ships || {}).length + 1 > titleInfo.maxShips) {
-    return NextResponse.json(
-      { error: "Max ships reached due to title", item },
-      { status: 500 }
-    )
-  }
-
-  const newShip = createNewShip(shipItem as Ship["type"], player.character.day)
-
-  const dbUpdate: DeepPartial<Player> = {
-    character: {
-      gold: player.character.gold - totalPrice,
-    },
-    ships: {
-      [newShip.id]: newShip,
-    },
-  }
-
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(
-      newPlayer,
-      `Bought ship ${item} named ${newShip.name} for ${totalPrice} gold.`
-    )
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
-    return NextResponse.json({ success: true, updatedPlayer, item, totalPrice })
+    return NextResponse.json({
+      success: true,
+      updatedPlayer,
+      ...result.data,
+    })
   } catch (error) {
     return NextResponse.json({ error, item }, { status: 500 })
   }

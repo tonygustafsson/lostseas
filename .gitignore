@@ -42,3 +42,4 @@ next-env.d.ts
 graphql/codegen
 __tests__/node_modules/
 ai-binary-data
+console-*.log

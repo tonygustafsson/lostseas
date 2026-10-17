@@ -1,11 +1,9 @@
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
-import { TOWNS } from "@/constants/locations"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { patchDeep } from "@/utils/patchDeep"
-import { getNewTitle } from "@/utils/title"
+import { changeCitizenship } from "@/utils/actions/cityhall"
 
 export async function POST() {
   const cookieStore = await cookies()
@@ -20,58 +18,21 @@ export async function POST() {
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  if (player.character.location !== "City hall")
-    return NextResponse.json(
-      { error: "You must be at City hall to do this." },
-      { status: 400 }
-    )
+  const result = changeCitizenship(player)
 
-  const { titleInfo, citizenshipChangeAvailable } = getNewTitle(
-    player.character
-  )
-
-  if (!citizenshipChangeAvailable) {
-    return NextResponse.json(
-      {
-        error: `You are not having this option at the moment.`,
-        titleInfo,
-        title: player.character.title,
-      },
-      { status: 500 }
-    )
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error }, { status: 400 })
   }
-
-  const newNationality = player.character.town
-    ? TOWNS[player.character.town]?.nation
-    : player.character.nationality
-
-  const dbUpdate: DeepPartial<Player> = {
-    character: {
-      nationality: newNationality,
-      title: titleInfo?.title,
-      gold: player.character.gold + titleInfo.reward,
-    },
-  }
-
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(
-      newPlayer,
-      `Changed citizenship from ${player.character.nationality} to ${newNationality}.`
-    )
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
     return NextResponse.json({
       success: true,
       updatedPlayer,
-      titleInfo,
-      title: player.character.title,
-      newNationality,
+      ...result.data,
     })
   } catch (error) {
-    return NextResponse.json(
-      { error, titleInfo, title: player.character.title },
-      { status: 500 }
-    )
+    return NextResponse.json({ error, ...result.data }, { status: 500 })
   }
 }

@@ -1,0 +1,51 @@
+import { MERCHANDISE } from "@/constants/merchandise"
+import { patchDeep } from "@/utils/patchDeep"
+
+import type { ActionResult } from "./types"
+
+/** Buys a whole market batch at the offered price. */
+export const acceptMarketOffer = (
+  player: Player,
+  { item }: { item: keyof Inventory }
+): ActionResult<{
+  item: keyof Inventory
+  quantity: number
+  totalQuantity: number
+  totalPrice: number
+}> => {
+  if (typeof item !== "string" || !Object.hasOwn(MERCHANDISE, item)) {
+    return { error: "Not a valid item" }
+  }
+
+  if (player.character.location !== "Market") {
+    return { error: "You must be at Market to do this." }
+  }
+
+  const items = player.locationStates?.market?.items ?? {}
+  const offer = Object.hasOwn(items, item)
+    ? items[item as keyof typeof items]
+    : undefined
+
+  if (!offer) {
+    return { error: "Not a valid item" }
+  }
+
+  const { price, quantity } = offer
+  const totalPrice = price * quantity
+
+  if (player.character.gold < totalPrice) {
+    return { error: "Not enough gold" }
+  }
+
+  const totalQuantity = (player.inventory?.[item] ?? 0) + quantity
+
+  return {
+    player: patchDeep<Player>(player, {
+      character: { gold: player.character.gold - totalPrice },
+      inventory: { [item]: totalQuantity },
+      locationStates: { market: { items: { [item]: null } } },
+    }),
+    log: `Bought ${quantity} ${MERCHANDISE[item].unit} of ${item} in the market for ${totalPrice} gold.`,
+    data: { item, quantity, totalQuantity, totalPrice },
+  }
+}

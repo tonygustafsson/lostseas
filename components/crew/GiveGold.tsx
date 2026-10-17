@@ -46,10 +46,11 @@ const GiveGold = () => {
     [player?.crewMembers, quantity]
   )
 
-  const isDisabled = useMemo(
-    () => (player?.character.gold || 0) < quantity || quantity < 1,
-    [player?.character.gold, quantity]
-  )
+  const isDisabled =
+    (player?.character.gold || 0) < quantity ||
+    !(quantity >= 1) ||
+    !player?.crewMembers.count ||
+    player.crewMembers.mood >= 100
 
   const handleSubmit = () => {
     giveGold({ gold: quantity })

@@ -6,9 +6,14 @@ import { TOWNS } from "@/constants/locations"
 import { TREASURES } from "@/constants/treasures"
 import apiRequest from "@/utils/apiRequest"
 import { patchDeep } from "@/utils/patchDeep"
-import { getNewTitle } from "@/utils/title"
+import { getNewTitle, getTitleReward } from "@/utils/title"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
+
+const getRewardMessage = (reward: number) =>
+  reward > 0
+    ? `You also got a reward of ${reward} gold.`
+    : "You have already been rewarded for this title before."
 
 export const useCityhall = () => {
   const queryClient = useQueryClient()
@@ -38,12 +43,17 @@ export const useCityhall = () => {
         const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
 
         if (previous) {
-          const titleInfo = getNewTitle(previous.character).titleInfo
+          const { titleInfo } = getNewTitle(previous.character)
+          const { reward, highestRewardedTitle } = getTitleReward(
+            previous.character,
+            titleInfo
+          )
 
           const playerUpdates: DeepPartial<Player> = {
             character: {
-              title: titleInfo?.title,
-              gold: previous.character.gold + (titleInfo?.reward || 0),
+              title: titleInfo.title,
+              gold: previous.character.gold + reward,
+              highestRewardedTitle,
             },
           }
 
@@ -65,11 +75,7 @@ export const useCityhall = () => {
         const { updatedPlayer, error, titleInfo } = response?.data
 
         if (error) {
-          handleError(
-            `Could not accept new title ${titleInfo.title}`,
-            error,
-            context?.previous
-          )
+          handleError("Could not accept new title", error, context?.previous)
           return
         }
 
@@ -81,7 +87,7 @@ export const useCityhall = () => {
 
         setToast({
           title: `You are now a ${titleInfo.title}`,
-          message: `You also got a reward of ${titleInfo.reward} gold.`,
+          message: getRewardMessage(titleInfo.reward),
           variant: "success",
         })
       },
@@ -98,6 +104,10 @@ export const useCityhall = () => {
 
         if (previous) {
           const { titleInfo } = getNewTitle(previous.character)
+          const { reward, highestRewardedTitle } = getTitleReward(
+            previous.character,
+            titleInfo
+          )
 
           const newNationality = previous.character.town
             ? TOWNS[previous.character.town]?.nation
@@ -106,8 +116,9 @@ export const useCityhall = () => {
           const playerUpdates: DeepPartial<Player> = {
             character: {
               nationality: newNationality,
-              title: titleInfo?.title,
-              gold: previous.character.gold + (titleInfo?.reward || 0),
+              title: titleInfo.title,
+              gold: previous.character.gold + reward,
+              highestRewardedTitle,
             },
           }
 
@@ -129,11 +140,7 @@ export const useCityhall = () => {
           response?.data
 
         if (error) {
-          handleError(
-            `Could not change citizenship to ${newNationality}`,
-            error,
-            context?.previous
-          )
+          handleError("Could not change citizenship", error, context?.previous)
           return
         }
 
@@ -145,7 +152,7 @@ export const useCityhall = () => {
 
         setToast({
           title: `You are now a ${titleInfo.title} from ${newNationality}`,
-          message: `You also got a reward of ${titleInfo.reward} gold.`,
+          message: getRewardMessage(titleInfo.reward),
           variant: "success",
         })
       },
@@ -185,7 +192,7 @@ export const useCityhall = () => {
     },
     onError: (err, _, context) => {
       handleError(
-        `Could not handover treasure`,
+        `Could not hand over treasure`,
         (err as any)?.message,
         context?.previous
       )
@@ -194,11 +201,7 @@ export const useCityhall = () => {
       const { updatedPlayer, error, treasure, treasureInfo } = response?.data
 
       if (error) {
-        handleError(
-          `Could not handover treasure ${treasure.name}`,
-          error,
-          context?.previous
-        )
+        handleError("Could not hand over treasure", error, context?.previous)
         return
       }
 

@@ -1,14 +1,9 @@
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
-import {
-  BARTER_GOODS,
-  isTradeGoodAvailableInTown,
-} from "@/constants/merchandise"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { patchDeep } from "@/utils/patchDeep"
-import { getBarterGoodsValue } from "@/utils/shop"
+import { sellBarterGoods } from "@/utils/actions/shop"
 
 export async function POST() {
   const cookieStore = await cookies()
@@ -23,44 +18,21 @@ export async function POST() {
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  if (player.character.location !== "Shop")
-    return NextResponse.json(
-      { error: "You must be at Shop to do this." },
-      { status: 400 }
-    )
+  const result = sellBarterGoods(player)
 
-  const town = player.character.town
-
-  const value = getBarterGoodsValue(player)
-
-  // Only zero out barter goods that are available (and thus sellable) in this town
-  const inventoryUpdate = Object.fromEntries(
-    Object.entries(player.inventory || {})
-      .filter(
-        ([item]) =>
-          BARTER_GOODS.includes(item) &&
-          isTradeGoodAvailableInTown(item as keyof Inventory, town)
-      )
-      .map(([item]) => [item, 0])
-  )
-
-  const dbUpdate: DeepPartial<Player> = {
-    character: {
-      gold: player.character.gold + value,
-    },
-    inventory: inventoryUpdate,
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error }, { status: 400 })
   }
 
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
-
   try {
-    const updatedPlayer = await savePlayer(
-      newPlayer,
-      `Sold barter goods for ${value} gold.`
-    )
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
-    return NextResponse.json({ success: true, updatedPlayer, value })
+    return NextResponse.json({
+      success: true,
+      updatedPlayer,
+      ...result.data,
+    })
   } catch (error) {
-    return NextResponse.json({ error, value }, { status: 500 })
+    return NextResponse.json({ error, ...result.data }, { status: 500 })
   }
 }

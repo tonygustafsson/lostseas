@@ -19,6 +19,8 @@ type Character = {
   loan?: number
   day: number
   battles?: Record<Nation | "Pirate", { won?: number; lost?: number }>
+  /** Highest title a reward has been paid for. Missing on older players, then the current title is used. */
+  highestRewardedTitle?: Title
 }
 
 type Title =

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { patchDeep } from "@/utils/patchDeep"
+import { deposit } from "@/utils/actions/bank"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -16,59 +16,24 @@ export async function POST(req: Request) {
   const body = await req.json()
   const { amount }: { amount: number } = body
 
-  if (amount < 1) {
-    return NextResponse.json(
-      { error: "You cannot repay less than 1 doubloon." },
-      { status: 400 }
-    )
-  }
-
   const player = await getPlayer(playerId)
 
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  if (player.character.location !== "Bank")
-    return NextResponse.json(
-      { error: "You must be at Bank to do this." },
-      { status: 400 }
-    )
+  const result = deposit(player, { amount })
 
-  if (player.character.loan) {
-    return NextResponse.json(
-      { error: "You cannot add funds until your loan is fully repaid." },
-      { status: 400 }
-    )
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error }, { status: 400 })
   }
-  if (player.character.gold < amount) {
-    return NextResponse.json({ error: "Not enough gold" }, { status: 400 })
-  }
-
-  const newGold = player.character.gold - amount
-  const newAccount = player.character.account
-    ? player.character.account + amount
-    : amount
-
-  const dbUpdate: DeepPartial<Player> = {
-    character: {
-      gold: newGold,
-      account: newAccount,
-    },
-  }
-
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(
-      newPlayer,
-      `Deposited ${amount} gold into the bank. Current account balance: ${newAccount} gold.`
-    )
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
     return NextResponse.json({
       success: true,
-      amount,
-      gold: newGold,
       updatedPlayer,
+      ...result.data,
     })
   } catch (error) {
     return NextResponse.json({ error, amount }, { status: 500 })

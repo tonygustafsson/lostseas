@@ -3,10 +3,8 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer, saveStatistics } from "@/firebase/db"
-import { getMannedCannons } from "@/utils/crew"
-import { patchDeep } from "@/utils/patchDeep"
+import { continueJourney } from "@/utils/actions/sea"
 import { getScore } from "@/utils/score"
-import { createMeetingShip } from "@/utils/shipMeeting"
 
 export async function POST() {
   const cookieStore = await cookies()
@@ -21,126 +19,19 @@ export async function POST() {
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  if (player.character.location !== "Sea") {
+  const result = continueJourney(player)
+
+  if ("error" in result) {
     return NextResponse.json(
-      { error: `You cannot journey from ${player.character.location}.` },
-      { status: 500 }
+      { error: result.error },
+      { status: result.status ?? 400 }
     )
   }
 
-  if (!player.character.journey?.destination) {
-    return NextResponse.json(
-      { error: "Not a valid journey destination." },
-      { status: 500 }
-    )
-  }
+  try {
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
-  if (player.character.journey?.day > player.character.journey?.totalDays) {
-    return NextResponse.json(
-      { error: "Your journey is already finished." },
-      { status: 500 }
-    )
-  }
-
-  if (player.locationStates?.sea?.battle) {
-    return NextResponse.json(
-      { error: "You cannot sail on during a battle." },
-      { status: 409 }
-    )
-  }
-
-  const destinationReached =
-    player.character.journey.day === player.character.journey.totalDays
-
-  const shouldMeetAShip =
-    !destinationReached && !player.locationStates?.sea?.justMetAShip
-      ? Math.random() < 0.33
-      : false
-
-  const mannedCannons = getMannedCannons(
-    player.crewMembers.count,
-    player.inventory?.cannons
-  )
-
-  const hasPendingAttackReport = !!(
-    player.locationStates?.sea?.attackSuccessReport ||
-    player.locationStates?.sea?.attackFailureReport
-  )
-
-  const shipMeetingState = shouldMeetAShip
-    ? createMeetingShip(mannedCannons, player.character.journey.destination)
-    : null
-
-  const clearedSeaState: DeepPartial<SeaState> = {
-    shipMeeting: null,
-    attackSuccessReport: null,
-    attackFailureReport: null,
-    justMetAShip: null,
-  }
-
-  // A ship met on the last day of sailing already moved journey.day to totalDays.
-  // Clear the meeting/attack state first and keep the player at sea, so the
-  // outcome is shown before the player arrives. The next call does the arrival.
-  if (
-    destinationReached &&
-    (hasPendingAttackReport || player.locationStates?.sea?.justMetAShip)
-  ) {
-    const newPlayer = patchDeep<Player>(player, {
-      locationStates: { sea: clearedSeaState },
-    })
-
-    try {
-      await savePlayer(newPlayer)
-    } catch (error) {
-      return NextResponse.json({ error }, { status: 500 })
-    }
-
-    return NextResponse.json({
-      success: true,
-      day: player.character.journey.day,
-      totalDays: player.character.journey.totalDays,
-      destination: player.character.journey.destination,
-      destinationReached: false,
-      shipMeetingState: null,
-    })
-  }
-
-  const foodConsumption = player.crewMembers.count * 0.1
-  let newFood = Math.round((player.inventory?.food || 0) - foodConsumption)
-  if (newFood < 0) newFood = 0
-
-  const waterConsumption = player.crewMembers.count * 0.2
-  let newWater = Math.round((player.inventory?.water || 0) - waterConsumption)
-  if (newWater < 0) newWater = 0
-
-  if (destinationReached) {
-    const dbUpdate: DeepPartial<Player> = {
-      character: {
-        town: player.character.journey.destination,
-        location: "Harbor",
-        day: player.character.day + 1,
-        journey: null,
-      },
-      inventory: {
-        food: newFood,
-        water: newWater,
-      },
-      locationStates: {
-        harbor: {
-          lastHarborReason: "arrived",
-        },
-        sea: clearedSeaState,
-      },
-    }
-
-    const newPlayer = patchDeep<Player>(player, dbUpdate)
-
-    try {
-      const updatedPlayer = await savePlayer(
-        newPlayer,
-        `Arrived at destination ${player.character.journey?.destination || ""}.`
-      )
-
+    if (result.data.destinationReached) {
       try {
         await saveStatistics(playerId, {
           day: updatedPlayer.character.day,
@@ -152,46 +43,10 @@ export async function POST() {
       } catch (error) {
         console.error("Failed to save player statistics", error)
       }
-    } catch (error) {
-      return NextResponse.json({ error }, { status: 500 })
     }
-  } else {
-    const dbUpdates: DeepPartial<Player> = {
-      character: {
-        ...(!hasPendingAttackReport && {
-          day: player.character.day + 1,
-          journey: {
-            day: player.character.journey.day + 1,
-          },
-        }),
-      },
-      locationStates: {
-        sea: { ...clearedSeaState, shipMeeting: shipMeetingState },
-      },
-      inventory: {
-        food: newFood,
-        water: newWater,
-      },
-      crewMembers: {
-        mood: player.crewMembers.mood - 1,
-      },
-    }
-
-    const newPlayer = patchDeep<Player>(player, dbUpdates)
-
-    try {
-      await savePlayer(newPlayer)
-    } catch (error) {
-      return NextResponse.json({ error }, { status: 500 })
-    }
+  } catch (error) {
+    return NextResponse.json({ error }, { status: 500 })
   }
 
-  return NextResponse.json({
-    success: true,
-    day: player.character.journey.day + 1,
-    totalDays: player.character.journey.totalDays,
-    destination: player.character.journey.destination,
-    destinationReached,
-    shipMeetingState,
-  })
+  return NextResponse.json({ success: true, ...result.data })
 }

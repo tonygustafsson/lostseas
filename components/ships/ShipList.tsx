@@ -8,6 +8,7 @@ import { SHIP_TYPES } from "@/constants/ship"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { cn } from "@/lib/utils"
 import { getCurrentDate } from "@/utils/date"
+import { getRemoveShipBlocker } from "@/utils/ship"
 
 import {
   Card,
@@ -27,6 +28,8 @@ export default function ShipList() {
   if (!Object.values(player.ships || []).length) {
     return <p>You do not have any ships currently.</p>
   }
+
+  const removeShipBlocker = getRemoveShipBlocker(player)
 
   return (
     <>
@@ -81,6 +84,7 @@ export default function ShipList() {
                     shipId={ship.id}
                     shipName={ship.name}
                     shipType={ship.type}
+                    removeBlocker={removeShipBlocker}
                   />
                 </CardAction>
               </Card>

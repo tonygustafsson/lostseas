@@ -203,7 +203,7 @@ export const MERCHANDISE: Record<
 /** Items that can be traded for profit but have no functional purpose. */
 export const BARTER_GOODS = Object.keys(MERCHANDISE).filter((k) => {
   const item = MERCHANDISE[k as keyof typeof MERCHANDISE]
-  return item.availableAt === "shop" && (item.isBarterGoods || item.isUtility)
+  return item.availableAt === "shop" && item.isBarterGoods
 })
 
 export const isTradeGoodAvailableInTown = (

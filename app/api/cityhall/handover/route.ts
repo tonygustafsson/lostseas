@@ -2,9 +2,8 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { TREASURES } from "@/constants/treasures"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { patchDeep } from "@/utils/patchDeep"
+import { handOverTreasure } from "@/utils/actions/cityhall"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -22,55 +21,21 @@ export async function POST(req: Request) {
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  if (player.character.location !== "City hall")
-    return NextResponse.json(
-      { error: "You must be at City hall to do this." },
-      { status: 400 }
-    )
+  const result = handOverTreasure(player, { id })
 
-  const currentTown = player.character.town
-  const treasures = Object.values(player.treasures || {}).filter(
-    (treasure) => treasure.rewarder === currentTown
-  )
-  const matchingTreasure = treasures.find((treasure) => treasure.id === id)
-  const treasureInfo = TREASURES.find(
-    (treasure) => treasure.name === matchingTreasure?.name
-  )
-
-  if (!matchingTreasure) {
-    return NextResponse.json(
-      { error: "You don't have this treasure" },
-      { status: 500 }
-    )
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error }, { status: 400 })
   }
-
-  const dbUpdate: DeepPartial<Player> = {
-    character: {
-      gold: player.character.gold + (treasureInfo?.value || 0),
-    },
-    treasures: {
-      [id]: null,
-    },
-  }
-
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(
-      newPlayer,
-      `Handed over ${matchingTreasure?.name} to the town of ${currentTown}.`
-    )
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
     return NextResponse.json({
       success: true,
       updatedPlayer,
-      treasure: matchingTreasure,
-      treasureInfo,
+      ...result.data,
     })
   } catch (error) {
-    return NextResponse.json(
-      { error, treasure: matchingTreasure, treasureInfo },
-      { status: 500 }
-    )
+    return NextResponse.json({ error, ...result.data }, { status: 500 })
   }
 }

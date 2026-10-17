@@ -3,8 +3,7 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { patchDeep } from "@/utils/patchDeep"
-import { getNewTitle } from "@/utils/title"
+import { acceptNewTitle } from "@/utils/actions/cityhall"
 
 export async function POST() {
   const cookieStore = await cookies()
@@ -19,59 +18,21 @@ export async function POST() {
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  if (player.character.location !== "City hall")
-    return NextResponse.json(
-      { error: "You must be at City hall to do this." },
-      { status: 400 }
-    )
+  const result = acceptNewTitle(player)
 
-  const { isHomeNation, titleInfo, promotionAvailable } = getNewTitle(
-    player.character
-  )
-
-  if (!isHomeNation) {
-    return NextResponse.json(
-      { error: "Not your home nation." },
-      { status: 500 }
-    )
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error }, { status: 400 })
   }
-
-  if (!promotionAvailable) {
-    return NextResponse.json(
-      {
-        error: `You already have the title ${titleInfo?.title}.`,
-        titleInfo,
-        title: player.character.title,
-      },
-      { status: 500 }
-    )
-  }
-
-  const dbUpdate: DeepPartial<Player> = {
-    character: {
-      title: titleInfo?.title,
-      gold: player.character.gold + titleInfo.reward,
-    },
-  }
-
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(
-      newPlayer,
-      `Accepted new title ${titleInfo?.title} from the governor of ${player.character.town}.`
-    )
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
     return NextResponse.json({
       success: true,
       updatedPlayer,
-      titleInfo,
-      title: player.character.title,
+      ...result.data,
     })
   } catch (error) {
-    return NextResponse.json(
-      { error, titleInfo, title: player.character.title },
-      { status: 500 }
-    )
+    return NextResponse.json({ error, ...result.data }, { status: 500 })
   }
 }

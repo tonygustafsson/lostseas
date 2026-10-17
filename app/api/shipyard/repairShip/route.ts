@@ -1,10 +1,9 @@
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
-import { SHIP_REPAIR_COST } from "@/constants/ship"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { patchDeep } from "@/utils/patchDeep"
+import { repairShip } from "@/utils/actions/shipyard"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -15,52 +14,28 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const { id } = body as { id: Ship["id"] }
+  const { id }: { id: Ship["id"] } = body
 
   const player = await getPlayer(playerId)
 
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  if (player.character.location !== "Shipyard")
-    return NextResponse.json(
-      { error: "You must be at Shipyard to do this." },
-      { status: 400 }
-    )
+  const result = repairShip(player, { id })
 
-  const ship = (player.ships || {})[id]
-
-  if (!ship) {
-    return NextResponse.json({ error: "Not a valid item" }, { status: 400 })
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error }, { status: 400 })
   }
-
-  const totalPrice = (100 - ship.health) * SHIP_REPAIR_COST
-
-  if (player.character.gold < totalPrice) {
-    return NextResponse.json({ error: "Not enough gold." }, { status: 400 })
-  }
-
-  const dbUpdate: DeepPartial<Player> = {
-    character: {
-      gold: player.character.gold - totalPrice,
-    },
-    ships: {
-      [id]: {
-        health: 100,
-      },
-    },
-  }
-
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(
-      newPlayer,
-      `Repaired ship ${ship.name} for ${totalPrice} gold.`
-    )
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
-    return NextResponse.json({ success: true, updatedPlayer, ship, totalPrice })
+    return NextResponse.json({
+      success: true,
+      updatedPlayer,
+      ...result.data,
+    })
   } catch (error) {
-    return NextResponse.json({ error, ship, totalPrice }, { status: 500 })
+    return NextResponse.json({ error, ...result.data }, { status: 500 })
   }
 }

@@ -15,10 +15,6 @@ export async function POST(req: Request) {
     if (!player)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-    if (!player) {
-      return NextResponse.json({ message: "No user found" }, { status: 404 })
-    }
-
     const res = NextResponse.json({ success: true })
     res.cookies.set(PLAYER_ID_COOKIE_NAME, playerId, {
       expires: COOKIE_EXPIRE_TIME,

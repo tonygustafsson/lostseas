@@ -3,8 +3,7 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { patchDeep } from "@/utils/patchDeep"
-import { renameShipValidationSchema } from "@/utils/validation"
+import { renameShip, SHIP_NOT_FOUND } from "@/utils/actions/ship"
 
 type RouteContext = {
   params: Promise<{
@@ -21,57 +20,31 @@ export async function POST(req: Request, { params }: RouteContext) {
   }
 
   const { id } = await params
-
-  if (!id) {
-    return NextResponse.json({ error: "Ship not found" }, { status: 404 })
-  }
-
   const body = (await req.json()) as { name: string }
-  const { name } = body
-
-  try {
-    await renameShipValidationSchema.parseAsync({ id, name })
-  } catch (error) {
-    return NextResponse.json({ error }, { status: 400 })
-  }
 
   const player = await getPlayer(playerId)
 
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  const existingShip = player.ships?.[id]
+  const result = renameShip(player, { id, name: body?.name })
 
-  if (!existingShip) {
-    return NextResponse.json({ error: "Ship not found" }, { status: 404 })
+  if ("error" in result) {
+    return NextResponse.json(
+      { error: result.error },
+      { status: result.error === SHIP_NOT_FOUND ? 404 : 400 }
+    )
   }
-
-  const dbUpdate: DeepPartial<Player> = {
-    ships: {
-      [id]: {
-        name,
-      },
-    },
-  }
-
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(
-      newPlayer,
-      `Renamed ship ${existingShip.name} to ${name}.`
-    )
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
     return NextResponse.json({
       success: true,
       updatedPlayer,
-      name,
-      ship: existingShip,
+      ...result.data,
     })
   } catch (error) {
-    return NextResponse.json(
-      { error, ship: existingShip, name },
-      { status: 500 }
-    )
+    return NextResponse.json({ error, ...result.data }, { status: 500 })
   }
 }

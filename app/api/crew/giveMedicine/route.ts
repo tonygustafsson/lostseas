@@ -3,8 +3,7 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { getMedicineEffectiveness } from "@/utils/crew"
-import { patchDeep } from "@/utils/patchDeep"
+import { giveMedicine } from "@/utils/actions/crew"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -14,55 +13,28 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const body = (await req.json()) as { medicine: string }
-  const medicine = parseInt(body.medicine)
+  const body = (await req.json()) as { medicine: number | string }
 
   const player = await getPlayer(playerId)
 
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  if (medicine < 1) {
-    return NextResponse.json(
-      { error: "You need to give at least 1 box of medicine" },
-      { status: 500 }
-    )
+  const result = giveMedicine(player, { medicine: body?.medicine })
+
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error }, { status: 400 })
   }
-
-  if ((player.inventory?.medicine || 0) < medicine) {
-    return NextResponse.json({ error: "Not enough medicine" }, { status: 500 })
-  }
-
-  const newHealth = getMedicineEffectiveness(
-    player.crewMembers.count,
-    player.crewMembers.health,
-    medicine
-  )
-
-  const dbUpdate: DeepPartial<Player> = {
-    inventory: {
-      medicine: (player.inventory?.medicine || 0) - medicine,
-    },
-    crewMembers: {
-      health: newHealth,
-    },
-  }
-
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(
-      newPlayer,
-      `Gave ${medicine} medicine to crew, increasing their health to ${newHealth}.`
-    )
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
     return NextResponse.json({
       success: true,
       updatedPlayer,
-      medicine,
-      newHealth,
+      ...result.data,
     })
   } catch (error) {
-    return NextResponse.json({ error, medicine, newHealth }, { status: 500 })
+    return NextResponse.json({ error, ...result.data }, { status: 500 })
   }
 }

@@ -1,3 +1,4 @@
+import { getDailyConsumption } from "./shop"
 import { getNewTitle } from "./title"
 import { validateShipCrewRequirements } from "./validateCrew"
 
@@ -33,12 +34,9 @@ export const getAdvisorWarnings = (player?: Player): AdvisorWarningItem[] => {
   const crewBelowMinimum = playerHasShips && player.crewMembers.count < minCrew
   const crewAboveMaximum = playerHasShips && player.crewMembers.count > maxCrew
 
-  const neededFood = Math.round(
-    arbitraryJourneyLength * (player.crewMembers.count * 0.1)
-  )
-  const neededWater = Math.round(
-    arbitraryJourneyLength * (player.crewMembers.count * 0.2)
-  )
+  const daily = getDailyConsumption(player.crewMembers.count)
+  const neededFood = arbitraryJourneyLength * daily.food
+  const neededWater = arbitraryJourneyLength * daily.water
   const hasEnoughFood = (player.inventory?.food || 0) >= neededFood
   const hasEnoughWater = (player.inventory?.water || 0) >= neededWater
 

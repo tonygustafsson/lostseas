@@ -6,7 +6,7 @@ import { TOWNS } from "@/constants/locations"
 import { TitleInfo } from "@/constants/title"
 import { useCityhall } from "@/hooks/queries/useCityhall"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-import { getNewTitle } from "@/utils/title"
+import { getNewTitle, getTitleReward } from "@/utils/title"
 
 const getGreeting = ({
   isHomeNation,
@@ -15,6 +15,7 @@ const getGreeting = ({
   promotionAvailable,
   citizenshipChangeAvailable,
   titleInfo,
+  reward,
   enemyWins = 0,
 }: {
   isHomeNation: boolean
@@ -23,6 +24,7 @@ const getGreeting = ({
   promotionAvailable: boolean
   citizenshipChangeAvailable: boolean
   titleInfo: TitleInfo | null
+  reward: number
   enemyWins: number
 }) => {
   if (!townWarWith) {
@@ -40,8 +42,8 @@ const getGreeting = ({
         {promotionAvailable && titleInfo && (
           <p className="mt-2">
             I would like to share my appreciation by giving you the title{" "}
-            <strong>{titleInfo.title}</strong>. You will also get a reward of{" "}
-            {titleInfo.reward} gold.
+            <strong>{titleInfo.title}</strong>.
+            {reward > 0 && <> You will also get a reward of {reward} gold.</>}
           </p>
         )}
       </>
@@ -69,8 +71,8 @@ const getGreeting = ({
           I would like to share my appreciation by giving you the chance to be a
           citizen of {currentNation} with the title{" "}
           <strong>{titleInfo.title}</strong>.
-          {titleInfo.reward > 0 && (
-            <span>You will also get a reward of {titleInfo.reward} gold.</span>
+          {reward > 0 && (
+            <span> You will also get a reward of {reward} gold.</span>
           )}
         </p>
       </>
@@ -97,6 +99,10 @@ const Governor = () => {
     citizenshipChangeAvailable,
   } = getNewTitle(player?.character)
 
+  const { reward } = player
+    ? getTitleReward(player.character, titleInfo)
+    : { reward: 0 }
+
   const enemyWins = townWarWith
     ? player?.character.battles?.[townWarWith]?.won || 0
     : 0
@@ -110,6 +116,7 @@ const Governor = () => {
     promotionAvailable,
     citizenshipChangeAvailable,
     titleInfo,
+    reward,
     enemyWins,
   })
 

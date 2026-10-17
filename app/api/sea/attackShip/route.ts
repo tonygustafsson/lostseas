@@ -3,8 +3,7 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { patchDeep } from "@/utils/patchDeep"
-import { startBattle } from "@/utils/seaBattle"
+import { attackShip } from "@/utils/actions/sea"
 
 export async function POST() {
   const cookieStore = await cookies()
@@ -19,34 +18,20 @@ export async function POST() {
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  if (!player.locationStates?.sea?.shipMeeting) {
+  const result = attackShip(player)
+
+  if ("error" in result) {
     return NextResponse.json(
-      { error: "You are not currently meeting a ship" },
-      { status: 500 }
+      { error: result.error },
+      { status: result.status ?? 400 }
     )
   }
-
-  if (player.locationStates.sea.battle) {
-    return NextResponse.json(
-      { error: "The battle has already started" },
-      { status: 409 }
-    )
-  }
-
-  const battle = startBattle()
-
-  const newPlayer = patchDeep<Player>(player, {
-    locationStates: { sea: { battle } },
-  })
 
   try {
-    await savePlayer(
-      newPlayer,
-      `Attacked a ship from ${player.locationStates.sea.shipMeeting.nation}.`
-    )
+    await savePlayer(result.player, result.log)
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 })
   }
 
-  return NextResponse.json({ success: true, battle })
+  return NextResponse.json({ success: true, ...result.data })
 }

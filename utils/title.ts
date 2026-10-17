@@ -1,5 +1,5 @@
 import { NATIONS, TOWNS } from "@/constants/locations"
-import { TITLE_INFO } from "@/constants/title"
+import { TITLE_INFO, type TitleInfo } from "@/constants/title"
 
 export const getTitleInfoByScore = (score = 0) => {
   let titleInfo = TITLE_INFO.Pirate
@@ -80,5 +80,23 @@ export const getNewTitle = (character: Character | undefined) => {
     titleInfo: newTitleInfo,
     promotionAvailable,
     citizenshipChangeAvailable,
+  }
+}
+
+/**
+ * Title rewards are paid once per title. A title only pays its reward when it is
+ * higher than every title rewarded before, so changing citizenship and being
+ * promoted again cannot pay the same reward twice.
+ */
+export const getTitleReward = (
+  character: Pick<Character, "title" | "highestRewardedTitle">,
+  titleInfo: TitleInfo
+) => {
+  const highestRewarded = character.highestRewardedTitle ?? character.title
+  const isNewHighest = titleInfo.higherThan.includes(highestRewarded)
+
+  return {
+    reward: isNewHighest ? titleInfo.reward : 0,
+    highestRewardedTitle: isNewHighest ? titleInfo.title : highestRewarded,
   }
 }

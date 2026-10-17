@@ -201,17 +201,18 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mt-4 mb-2 font-serif text-lg">Food and water</h3>
 
         <p className="mb-4">
-          Before leaving port, you need at least 0.5 crates of food and 1 barrel
-          of water per crew member, with each total rounded to the nearest whole
-          unit. This departure requirement is the same for every destination.
+          Before leaving port, you need enough food and water for 5 days at sea.
+          Every 10 crew members eat 1 crate of food a day and every 5 crew
+          members drink 1 barrel of water a day, rounded to the nearest whole
+          unit. Any crew uses at least 1 crate and 1 barrel a day. This
+          departure requirement is the same for every destination.
         </p>
 
         <p className="mb-4">
-          Each time your journey continues, 0.1 crates of food and 0.2 barrels
-          of water per crew member are subtracted from your supplies. The
-          remaining totals are rounded to the nearest whole unit and stop at
-          zero. Running out does not interrupt a journey already underway, but
-          you will need to restock before your next departure.
+          Each time your journey continues, one day of food and water is
+          subtracted from your supplies, using the same daily amounts. Supplies
+          stop at zero. Running out does not interrupt a journey already
+          underway, but you will need to restock before your next departure.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Barter goods</h3>
@@ -323,7 +324,8 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           repair ships at the shipyard for {SHIP_REPAIR_COST} gold per 1% of
           damage. You can also sell any ship you own at the shipyard for half
           its purchase price, regardless of its health. You must own at least
-          one ship to leave port.
+          one ship to leave port. You can remove a ship from your fleet, but not
+          while at sea and not if it is your last ship.
         </p>
 
         <p className="mb-4">
@@ -380,7 +382,8 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <p className="mb-4">
           Your crew loses 1 mood each time you continue a journey, except on
           arrival. Winning a sea battle increases mood by 20, up to a maximum of
-          100. If their mood is 0 or below, they will refuse to leave port.
+          100. Mood never drops below 0. If their mood is 0, they will refuse to
+          leave port.
         </p>
 
         <p className="mb-4">
@@ -394,7 +397,9 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           health, they do not die, but you cannot start another journey. Use
           Give medicine in Manage Crew to restore health, or Serve supper at the
           tavern. Larger crews need more medicine for the same improvement.
-          Health and mood increases are capped at 100%.
+          Health and mood increases are capped at 100%. Give gold and Give
+          medicine need at least one crew member, and cannot be used when mood
+          or health is already at 100%.
         </p>
 
         <Image
@@ -437,7 +442,9 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           serve supper, smoke tobacco, pour the wine or pass the rum to improve
           your crew&apos;s mood. Serve supper also restores health. Each action
           costs gold for every crew member. The increases below are percentage
-          points, capped at 100% health or mood.
+          points, capped at 100% health or mood. You need at least one crew
+          member, and an action is unavailable when it would not raise your
+          crew&apos;s health or mood any further.
         </p>
 
         <Table className="mb-6 rounded-xl bg-black/60">
@@ -622,9 +629,11 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           your desired nation. You qualify when your victories against that
           nation&apos;s enemy outnumber all battles you have fought against the
           desired nation, including defeats. Your new title depends on this
-          difference, and you receive that title&apos;s gold reward. Changing
-          citizenship can give you a lower title than the one you previously
-          held.
+          difference. Changing citizenship can give you a lower title than the
+          one you previously held. Each title&apos;s gold reward is only paid
+          once: you only receive a reward for a title higher than any you have
+          been rewarded for before, whether through promotion or a change of
+          citizenship.
         </p>
 
         <p>

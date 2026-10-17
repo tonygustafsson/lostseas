@@ -3,7 +3,7 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { patchDeep } from "@/utils/patchDeep"
+import { dismissCrew } from "@/utils/actions/crew"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -13,46 +13,28 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const body = (await req.json()) as { count: string }
-  const count = parseInt(body.count)
+  const body = (await req.json()) as { count: number | string }
 
   const player = await getPlayer(playerId)
 
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  if (count < 1) {
-    return NextResponse.json(
-      { error: "You need to dismiss at least 1 crew member" },
-      { status: 500 }
-    )
+  const result = dismissCrew(player, { count: body?.count })
+
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error }, { status: 400 })
   }
-
-  if (player.crewMembers.count < count) {
-    return NextResponse.json(
-      { error: "Not enough crew members to dismiss" },
-      { status: 500 }
-    )
-  }
-
-  const newCount = player.crewMembers.count - count
-
-  const dbUpdate: DeepPartial<Player> = {
-    crewMembers: {
-      count: newCount,
-    },
-  }
-
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(
-      newPlayer,
-      `Dismissed ${count} crew members. New crew count is ${newCount}.`
-    )
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
-    return NextResponse.json({ success: true, updatedPlayer, count, newCount })
+    return NextResponse.json({
+      success: true,
+      updatedPlayer,
+      ...result.data,
+    })
   } catch (error) {
-    return NextResponse.json({ error, count, newCount }, { status: 500 })
+    return NextResponse.json({ error, ...result.data }, { status: 500 })
   }
 }

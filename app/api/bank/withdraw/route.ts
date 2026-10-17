@@ -3,7 +3,7 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { patchDeep } from "@/utils/patchDeep"
+import { withdraw } from "@/utils/actions/bank"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -16,53 +16,24 @@ export async function POST(req: Request) {
   const body = await req.json()
   const { amount }: { amount: number } = body
 
-  if (amount < 1) {
-    return NextResponse.json(
-      { error: "You cannot repay less than 1 doubloon." },
-      { status: 400 }
-    )
-  }
-
   const player = await getPlayer(playerId)
 
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  if (player.character.location !== "Bank")
-    return NextResponse.json(
-      { error: "You must be at Bank to do this." },
-      { status: 400 }
-    )
+  const result = withdraw(player, { amount })
 
-  const currentAccount = player.character.account || 0
-
-  if (currentAccount < amount) {
-    return NextResponse.json(
-      { error: "Not enough gold in bank account" },
-      { status: 400 }
-    )
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error }, { status: 400 })
   }
-
-  const dbUpdate: DeepPartial<Player> = {
-    character: {
-      gold: player.character.gold + amount,
-      account: currentAccount - amount,
-    },
-  }
-
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(
-      newPlayer,
-      `Withdrew ${amount} gold from the bank. Current account balance: ${currentAccount - amount} gold.`
-    )
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
     return NextResponse.json({
       success: true,
       updatedPlayer,
-      amount,
-      gold: player.character.gold + amount,
+      ...result.data,
     })
   } catch (error) {
     return NextResponse.json({ error, amount }, { status: 500 })

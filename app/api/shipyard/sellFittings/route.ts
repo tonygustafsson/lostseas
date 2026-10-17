@@ -1,11 +1,9 @@
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
-import { MERCHANDISE } from "@/constants/merchandise"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { isPositiveSafeInteger } from "@/utils/number"
-import { patchDeep } from "@/utils/patchDeep"
+import { sellFittings } from "@/utils/actions/shipyard"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -16,85 +14,26 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const {
-    item,
-    quantity,
-  }: {
-    item: keyof typeof MERCHANDISE
-    quantity: number
-  } = body
-
-  if (!isPositiveSafeInteger(quantity)) {
-    return NextResponse.json(
-      { error: "Quantity must be a positive whole number" },
-      { status: 400 }
-    )
-  }
-
-  if (
-    !item ||
-    Object.entries(MERCHANDISE).find(([itemKey]) => itemKey === item)?.[1]
-      .availableAt !== "shipyard"
-  ) {
-    return NextResponse.json(
-      { error: "Not a valid item", item },
-      { status: 400 }
-    )
-  }
-
-  const totalPrice =
-    MERCHANDISE[item as keyof typeof MERCHANDISE].sell * quantity
-
-  if (!Number.isSafeInteger(totalPrice)) {
-    return NextResponse.json({ error: "Invalid quantity" }, { status: 400 })
-  }
+  const { item, quantity }: { item: keyof Inventory; quantity: number } = body
 
   const player = await getPlayer(playerId)
 
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  if (player.character.location !== "Shipyard")
-    return NextResponse.json(
-      { error: "You must be at Shipyard to do this." },
-      { status: 400 }
-    )
+  const result = sellFittings(player, { item, quantity })
 
-  const itemQuantity = player.inventory?.[item as keyof Inventory] || 0
-
-  if (itemQuantity < quantity) {
-    return NextResponse.json(
-      { error: `Not enough ${item}.`, item },
-      { status: 400 }
-    )
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error, item }, { status: 400 })
   }
-
-  const newQuantity = itemQuantity - quantity
-
-  const dbUpdate: DeepPartial<Player> = {
-    inventory: {
-      [item]: newQuantity,
-    },
-    character: {
-      gold: player.character.gold + totalPrice,
-    },
-  }
-
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(
-      newPlayer,
-      `Sold ${quantity} ${item} for ${totalPrice} gold.`
-    )
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
     return NextResponse.json({
       success: true,
       updatedPlayer,
-      item,
-      quantity,
-      totalQuantity: updatedPlayer.inventory?.[item] ?? newQuantity,
-      totalPrice,
+      ...result.data,
     })
   } catch (error) {
     return NextResponse.json({ error, item }, { status: 500 })

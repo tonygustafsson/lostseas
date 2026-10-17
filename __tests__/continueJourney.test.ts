@@ -163,8 +163,9 @@ describe("continue journey after a final-day encounter", () => {
     expect(mocks.player?.character.location).toBe("Sea")
     expect(mocks.player?.character.journey?.day).toBe(6)
     expect(mocks.player?.character.day).toBe(20)
-    expect(mocks.player?.inventory).toMatchObject({ food: 98, water: 196 })
-    expect(mocks.player?.crewMembers.mood).toBe(74)
+    // Resuming after a battle is not a new day, so no supplies or mood are used
+    expect(mocks.player?.inventory).toMatchObject({ food: 100, water: 200 })
+    expect(mocks.player?.crewMembers.mood).toBe(75)
     expect(mocks.player?.locationStates?.sea).toEqual({})
   })
 })

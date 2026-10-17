@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import { useTavern } from "@/hooks/queries/useTavern"
+import { canTreatCrew } from "@/utils/tavern"
 
 type Props = {
   player?: Player
@@ -15,7 +16,10 @@ const ShopItem = ({ player, item }: Props) => {
 
   const merchandise = TAVERN_ITEMS[item]
   const price = merchandise.price * (player?.crewMembers.count || 0)
-  const treatmentDisabled = price > (player?.character.gold || 0)
+  const treatmentDisabled =
+    !player ||
+    price > player.character.gold ||
+    !canTreatCrew(player.crewMembers, merchandise)
 
   const handleTreatCrew = () => {
     treatCrew({ item })

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { patchDeep } from "@/utils/patchDeep"
+import { ignoreShip } from "@/utils/actions/sea"
 
 export async function POST() {
   const cookieStore = await cookies()
@@ -18,33 +18,17 @@ export async function POST() {
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  if (!player.locationStates?.sea?.shipMeeting) {
+  const result = ignoreShip(player)
+
+  if ("error" in result) {
     return NextResponse.json(
-      { error: "You are not currently meeting a ship" },
-      { status: 500 }
+      { error: result.error },
+      { status: result.status ?? 400 }
     )
   }
-
-  if (player.locationStates.sea.battle) {
-    return NextResponse.json(
-      { error: "You cannot ignore a ship during a battle" },
-      { status: 409 }
-    )
-  }
-
-  const dbUpdate: DeepPartial<Player> = {
-    locationStates: {
-      sea: {
-        shipMeeting: null,
-        justMetAShip: true,
-      },
-    },
-  }
-
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    await savePlayer(newPlayer)
+    await savePlayer(result.player, result.log)
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 })
   }

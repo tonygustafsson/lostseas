@@ -47,10 +47,11 @@ const GiveMedicine = () => {
     [player?.crewMembers, quantity]
   )
 
-  const isDisabled = useMemo(
-    () => (player?.inventory?.medicine || 0) < quantity || quantity < 1,
-    [player?.inventory?.medicine, quantity]
-  )
+  const isDisabled =
+    (player?.inventory?.medicine || 0) < quantity ||
+    !(quantity >= 1) ||
+    !player?.crewMembers.count ||
+    player.crewMembers.health >= 100
 
   const handleSubmit = () => {
     giveMedicine({ medicine: quantity })

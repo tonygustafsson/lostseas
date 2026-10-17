@@ -1,12 +1,9 @@
-import { randomInt } from "crypto"
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
-import { TOWNS } from "@/constants/locations"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { getAdvisorWarnings } from "@/utils/getAdvisorWarnings"
-import { patchDeep } from "@/utils/patchDeep"
+import { startJourney } from "@/utils/actions/sea"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -17,74 +14,29 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const town: Town = body.town
-
-  if (
-    typeof town !== "string" ||
-    !Object.prototype.hasOwnProperty.call(TOWNS, town)
-  ) {
-    return NextResponse.json({ error: "Invalid destination" }, { status: 400 })
-  }
+  const town: Town = body?.town
 
   const player = await getPlayer(playerId)
 
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  if (player.character.journey) {
-    return NextResponse.json(
-      { error: "Character is already on a journey" },
-      { status: 400 }
-    )
-  }
+  const result = startJourney(player, { town })
 
-  if (player.character.location === "Sea") {
-    return NextResponse.json(
-      { error: "You can only start a journey from land." },
-      { status: 400 }
-    )
-  }
-
-  if (town === player.character.town) {
-    return NextResponse.json(
-      { error: "You are already at this destination." },
-      { status: 400 }
-    )
-  }
-
-  const currentTownInfo = player.character.town && TOWNS[player.character.town]
-
-  const distance = currentTownInfo?.map.distanceTo[town]
-    ? currentTownInfo.map.distanceTo[town]
-    : randomInt(3, 9)
-
-  const success = !getAdvisorWarnings(player).some((w) => w.blocksTravel)
-
-  if (!success) {
+  // Blocked by the advisor: the client shows why the player cannot leave port
+  if ("blocked" in result) {
     return NextResponse.json({ success: false })
   }
 
-  const dbUpdate: DeepPartial<Player> = {
-    character: {
-      town: null,
-      location: "Sea",
-      journey: {
-        ...(player.character.town && { origin: player.character.town }),
-        destination: town,
-        day: 1,
-        totalDays: distance,
-      },
-    },
-    locationStates: null,
+  if ("error" in result) {
+    return NextResponse.json(
+      { error: result.error },
+      { status: result.status ?? 400 }
+    )
   }
 
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
-
   try {
-    await savePlayer(
-      newPlayer,
-      `Started journey to ${town}. Expected arrival in ${distance} days.`
-    )
+    await savePlayer(result.player, result.log)
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 })
   }

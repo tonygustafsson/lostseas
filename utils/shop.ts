@@ -4,6 +4,22 @@ import {
   MERCHANDISE,
 } from "@/constants/merchandise"
 
+/**
+ * Food and water the crew uses each day at sea: 1 crate of food per 10 crew
+ * and 1 barrel of water per 5 crew, rounded to whole units. Any crew uses at
+ * least 1 of each per day. No crew uses nothing.
+ */
+export const getDailyConsumption = (crewMembers: CrewMembers["count"]) => {
+  if (crewMembers <= 0) {
+    return { food: 0, water: 0 }
+  }
+
+  return {
+    food: Math.max(1, Math.round(crewMembers / 10)),
+    water: Math.max(1, Math.round(crewMembers / 5)),
+  }
+}
+
 export const getNecessitiesInfo = ({
   crewMembers,
   currentFood = 0,
@@ -15,8 +31,9 @@ export const getNecessitiesInfo = ({
   currentWater?: Inventory["water"]
   days?: number
 }) => {
-  const foodConsumption = Math.ceil(crewMembers * 0.1 * days)
-  const waterConsumption = Math.ceil(crewMembers * 0.2 * days)
+  const daily = getDailyConsumption(crewMembers)
+  const foodConsumption = daily.food * days
+  const waterConsumption = daily.water * days
 
   const foodNeeded =
     foodConsumption - currentFood > 0 ? foodConsumption - currentFood : 0
@@ -42,11 +59,13 @@ export const getDaysWorthOfNecessities = ({
   currentFood?: Inventory["food"]
   currentWater?: Inventory["water"]
 }) => {
-  const foodConsumption = crewMembers * 0.1
-  const waterConsumption = crewMembers * 0.2
+  const daily = getDailyConsumption(crewMembers)
 
-  const foodDays = Math.floor(currentFood / foodConsumption)
-  const waterDays = Math.floor(currentWater / waterConsumption)
+  // Without crew, supplies last forever
+  const foodDays = daily.food ? Math.floor(currentFood / daily.food) : Infinity
+  const waterDays = daily.water
+    ? Math.floor(currentWater / daily.water)
+    : Infinity
 
   return Math.min(foodDays, waterDays)
 }

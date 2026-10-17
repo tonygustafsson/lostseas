@@ -10,9 +10,11 @@ type Props = {
   shipId: Ship["id"]
   shipName: Ship["name"]
   shipType: Ship["type"]
+  /** Why the ship cannot be removed right now, if anything */
+  removeBlocker?: string
 }
 
-const ShipActions = ({ shipId, shipName, shipType }: Props) => {
+const ShipActions = ({ shipId, shipName, shipType, removeBlocker }: Props) => {
   const { remove, isRemoving } = useShips()
   const { setModal, removeModal } = useModal()
 
@@ -64,14 +66,17 @@ const ShipActions = ({ shipId, shipName, shipType }: Props) => {
 
   return (
     <div className="flex w-full justify-end gap-2">
-      <Button
-        variant="secondary"
-        size="xs"
-        onClick={openRemoveShipModal}
-        disabled={isRemoving}
-      >
-        Remove
-      </Button>
+      {/* Disabled buttons ignore the pointer, so the wrapper shows the reason */}
+      <span title={removeBlocker}>
+        <Button
+          variant="secondary"
+          size="xs"
+          onClick={openRemoveShipModal}
+          disabled={isRemoving || !!removeBlocker}
+        >
+          Remove
+        </Button>
+      </span>
 
       <Button variant="secondary" size="xs" onClick={openRenameModal}>
         Rename

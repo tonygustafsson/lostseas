@@ -96,7 +96,11 @@ export const getDefeatUpdate = (
     crewHealthLoss
   )
 
-  const inventoryPercentageLoss = (1 / numberOfShips) * 100
+  // Without ships everything is lost. Dividing by 0 ships would give Infinity
+  // and turn every inventory item negative.
+  const inventoryPercentageLoss = numberOfShips
+    ? (1 / numberOfShips) * 100
+    : 100
   const newInventory = removeFromAllInventoryItems(
     player.inventory,
     inventoryPercentageLoss

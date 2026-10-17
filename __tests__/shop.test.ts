@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 import { isTradeGoodAvailableInTown } from "@/constants/merchandise"
 import {
   getBarterGoodsValue,
+  getDailyConsumption,
   getDaysWorthOfNecessities,
   getNecessitiesInfo,
 } from "@/utils/shop"
@@ -15,12 +16,28 @@ describe("shop utils", () => {
       currentWater: 2,
       days: 2,
     })
-    // foodConsumption = ceil(10 * 0.1 * 2) = 2, water = 4
+    // 10 crew use 1 food and 2 water a day, so 2 days need 2 food and 4 water
     expect(info.foodNeeded).toBe(1)
     expect(info.waterNeeded).toBe(2)
     // using MERCHANDISE prices: food.buy = 16, water.buy = 12 => cost = 16*1 + 12*2 = 40
     expect(info.cost).toBe(40)
   })
+
+  it.each([
+    [0, 0, 0],
+    [1, 1, 1],
+    [4, 1, 1],
+    [5, 1, 1],
+    [14, 1, 3],
+    [15, 2, 3],
+    [25, 3, 5],
+    [100, 10, 20],
+  ])(
+    "getDailyConsumption: %i crew use %i food and %i water a day",
+    (crew, food, water) => {
+      expect(getDailyConsumption(crew)).toEqual({ food, water })
+    }
+  )
 
   it("getDaysWorthOfNecessities returns min days for food and water", () => {
     const days = getDaysWorthOfNecessities({
@@ -28,8 +45,8 @@ describe("shop utils", () => {
       currentFood: 2,
       currentWater: 4,
     })
-    // foodConsumption = 0.5 -> foodDays = floor(2/0.5)=4; waterConsumption =1 -> waterDays=4
-    expect(days).toBe(4)
+    // 5 crew use at least 1 food and 1 water a day, so 2 food lasts 2 days
+    expect(days).toBe(2)
   })
 
   it("getBarterGoodsValue sums only barter goods sell value", () => {

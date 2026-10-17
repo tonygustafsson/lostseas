@@ -1,10 +1,9 @@
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
-import { MERCHANDISE } from "@/constants/merchandise"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { patchDeep } from "@/utils/patchDeep"
+import { acceptMarketOffer } from "@/utils/actions/market"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -15,86 +14,26 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const { item }: { item: keyof typeof MERCHANDISE } = body
-
-  if (!item || !Object.keys(MERCHANDISE).includes(item || "")) {
-    return NextResponse.json({ error: "Not a valid item" }, { status: 400 })
-  }
+  const { item }: { item: keyof Inventory } = body
 
   const player = await getPlayer(playerId)
 
-  if (!player) {
+  if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+
+  const result = acceptMarketOffer(player, { item })
+
+  if ("error" in result) {
+    return NextResponse.json({ error: result.error, item }, { status: 400 })
   }
-
-  if (player.character.location !== "Market")
-    return NextResponse.json(
-      { error: "You must be at Market to do this." },
-      { status: 400 }
-    )
-
-  if (!player.locationStates?.market) {
-    return NextResponse.json(
-      { error: "Not a valid item", item },
-      { status: 400 }
-    )
-  }
-
-  const stateItem = player?.locationStates?.market.items?.[item]
-
-  if (!stateItem) {
-    return NextResponse.json(
-      { error: "Not a valid item", item },
-      { status: 400 }
-    )
-  }
-
-  const totalPrice = stateItem?.price * stateItem.quantity
-
-  if (player?.character.gold < totalPrice) {
-    return NextResponse.json(
-      { error: "Not enough gold", item },
-      { status: 400 }
-    )
-  }
-
-  const newGold = player.character.gold - totalPrice
-
-  const newInventoryQty = player.inventory?.[item]
-    ? (player.inventory[item] || 0) + stateItem.quantity
-    : stateItem.quantity
-
-  const dbUpdate: DeepPartial<Player> = {
-    character: {
-      gold: newGold,
-    },
-    inventory: {
-      [item]: newInventoryQty,
-    },
-    locationStates: {
-      market: {
-        items: {
-          [item]: null,
-        },
-      },
-    },
-  }
-
-  const newPlayer = patchDeep<Player>(player, dbUpdate)
 
   try {
-    const updatedPlayer = await savePlayer(
-      newPlayer,
-      `Bought ${item} ${stateItem.quantity} ${MERCHANDISE[item].unit} of ${item} in the market for ${totalPrice} gold.`
-    )
+    const updatedPlayer = await savePlayer(result.player, result.log)
 
     return NextResponse.json({
       success: true,
       updatedPlayer,
-      item,
-      quantity: stateItem.quantity,
-      totalQuantity: updatedPlayer.inventory?.[item] || 0,
-      totalPrice,
+      ...result.data,
     })
   } catch (error) {
     return NextResponse.json({ error, item }, { status: 500 })

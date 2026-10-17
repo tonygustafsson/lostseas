@@ -25,8 +25,9 @@ const BuyNecessities = ({ player }: Props) => {
   return (
     <div className="flex flex-col gap-4">
       <p>
-        You current inventory allows you to travel for {daysWorthOfNecessities}{" "}
-        days.
+        {Number.isFinite(daysWorthOfNecessities)
+          ? `Your current inventory allows you to travel for ${daysWorthOfNecessities} days.`
+          : "You have no crew, so you do not need any food or water."}
       </p>
       <p>
         Choose for how many days at sea you want to buy food and water for.
