@@ -29,14 +29,18 @@ const MobileBottomNav = ({ className }: Props) => {
   return (
     <>
       <div
-        className={`border-border fixed inset-x-0 bottom-0 z-20 border-t bg-slate-950/95 px-3 pt-2 shadow-[0_-12px_32px_rgba(2,6,23,0.45)] backdrop-blur-md lg:hidden ${className}`}
+        className={`bg-sidebar/95 fixed inset-x-0 bottom-0 z-20 overflow-hidden px-3 pt-2 shadow-[0_-12px_32px_rgba(0,0,0,0.45)] backdrop-blur-md lg:hidden ${className}`}
       >
-        <div className="grid grid-cols-4 gap-1 pb-[calc(env(safe-area-inset-bottom)+0.75rem)]">
+        <div className="via-gold/70 absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent to-transparent" />
+
+        <div className="bg-gold/10 absolute inset-x-0 -bottom-16 mx-auto h-24 w-64 rounded-full blur-2xl" />
+
+        <div className="relative grid grid-cols-4 gap-1 pb-[calc(env(safe-area-inset-bottom)+0.75rem)]">
           <Button
             variant="ghost"
             onClick={showMap}
             disabled={!canTravel}
-            className="h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-[0.65rem] leading-none font-semibold text-slate-400 transition-colors hover:bg-white/5 hover:text-amber-50"
+            className="hover:text-gold-light [&_svg]:text-accent h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-[0.65rem] leading-none font-semibold text-slate-300 transition-colors hover:bg-white/5"
           >
             <RiTreasureMapLine className="h-5 w-5" />
             Travel
@@ -45,7 +49,7 @@ const MobileBottomNav = ({ className }: Props) => {
           <Button
             variant="ghost"
             onClick={() => openDrawer("fleet")}
-            className="h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-[0.65rem] leading-none font-semibold text-slate-400 transition-colors hover:bg-white/5 hover:text-amber-50"
+            className="hover:text-gold-light [&_svg]:text-accent h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-[0.65rem] leading-none font-semibold text-slate-300 transition-colors hover:bg-white/5"
           >
             <GiShoonerSailboat className="h-5 w-5" />
             Fleet
@@ -54,7 +58,7 @@ const MobileBottomNav = ({ className }: Props) => {
           <Button
             variant="ghost"
             onClick={() => openDrawer("inventory")}
-            className="h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-[0.65rem] leading-none font-semibold text-slate-400 transition-colors hover:bg-white/5 hover:text-amber-50"
+            className="hover:text-gold-light [&_svg]:text-accent h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-[0.65rem] leading-none font-semibold text-slate-300 transition-colors hover:bg-white/5"
           >
             <GiOpenedFoodCan className="h-5 w-5" />
             Inventory
@@ -63,7 +67,7 @@ const MobileBottomNav = ({ className }: Props) => {
           <Button
             variant="ghost"
             onClick={() => setIsMenuOpen(true)}
-            className="h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-[0.65rem] leading-none font-semibold text-slate-400 transition-colors hover:bg-white/5 hover:text-amber-50"
+            className="hover:text-gold-light [&_svg]:text-accent h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-[0.65rem] leading-none font-semibold text-slate-300 transition-colors hover:bg-white/5"
           >
             <FiMenu className="h-5 w-5" />
             Menu
