@@ -7,17 +7,26 @@ import { Button } from "@/components/ui/button"
 
 const PublicGuidePage = () => (
   <div className="bg-background text-foreground relative isolate min-h-screen overflow-hidden">
-    <Image
-      src="/img/startpage-bg.webp"
-      fill
-      priority
-      sizes="100vw"
-      alt=""
-      aria-hidden="true"
-      className="fixed inset-0 -z-20 object-cover object-[44%_center] opacity-35"
-    />
-    <div className="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(180deg,rgba(5,13,19,0.75)_0%,rgba(5,13,19,0.88)_36rem,var(--background)_76rem)]" />
-    <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(ellipse_at_68%_12%,rgba(232,153,78,0.18),transparent_42%)]" />
+    <div className="pointer-events-none fixed inset-0 -z-20">
+      <Image
+        src="/img/startpage-bg.png"
+        fill
+        priority
+        sizes="100vw"
+        alt=""
+        aria-hidden="true"
+        className="object-cover object-[40%_center] brightness-75"
+      />
+    </div>
+
+    <div className="pointer-events-none absolute inset-0 -z-10 flex flex-col">
+      <div className="relative h-screen">
+        <div className="from-background/95 via-background/80 to-background/55 lg:via-background/70 lg:to-background/20 absolute inset-0 bg-linear-to-r" />
+        <div className="to-background/95 absolute inset-0 bg-linear-to-b from-transparent from-40%" />
+      </div>
+
+      <div className="bg-background/95 flex-1" />
+    </div>
 
     <header className="border-border mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-4 border-b px-4 sm:px-6 lg:px-8">
       <Link
