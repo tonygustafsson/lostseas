@@ -37,5 +37,11 @@ export const useSceneLocation = () => {
     )
   }, [town, location, scene.town, scene.location])
 
+  // Start every new scene at the top of the page. Runs inside the view
+  // transition's flushSync, so the new snapshot is already scrolled up.
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" })
+  }, [scene.town, scene.location])
+
   return scene
 }
