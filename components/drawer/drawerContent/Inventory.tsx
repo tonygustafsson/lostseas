@@ -2,12 +2,11 @@
 
 import { GiOpenedFoodCan } from "react-icons/gi"
 
-import MerchandiseIcon from "@/components/MerchandiseIcon"
+import InventoryItemCard from "@/components/InventoryItemCard"
 import TreasureIcon from "@/components/TreasureIcon"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { TREASURES } from "@/constants/treasures"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-import { capitalize } from "@/utils/string"
 
 const InventoryDrawer = () => {
   const { data: player } = useGetPlayer()
@@ -48,41 +47,16 @@ const InventoryDrawer = () => {
                 {title}
               </h2>
 
-              <div
-                className={`grid grid-cols-2 gap-2 ${title === "Necessities" ? "md:grid-cols-2" : "md:grid-cols-3"}`}
-              >
-                {items.map(([item, possession]) => (
-                  <div
-                    className="flex items-center justify-between rounded-lg bg-neutral-900 p-4 shadow-md hover:shadow-lg"
-                    key={`inventory-${item}`}
-                  >
-                    <div>
-                      <div
-                        className={`text-muted-foreground ${title === "Necessities" ? "text-xs md:text-sm" : "text-sm"}`}
-                      >
-                        {item === "repairKits"
-                          ? "Repair kits"
-                          : capitalize(item)}
-                      </div>
-                      <div
-                        className={`mt-1 ${title === "Necessities" ? "text-xs md:text-xl" : "text-xl"}`}
-                      >
-                        {possession}{" "}
-                        <span
-                          className={`ml-1 font-normal ${title === "Necessities" ? "text-xs md:text-sm" : "text-sm"}`}
-                        >
-                          {possession === 1
-                            ? MERCHANDISE[item].singleUnit
-                            : MERCHANDISE[item].unit}
-                        </span>
-                      </div>
-                    </div>
-                    <MerchandiseIcon
-                      item={item as keyof Inventory}
-                      className="text-accent ml-4"
+              <div className="@container">
+                <div className="grid grid-cols-2 gap-4 @lg:grid-cols-3">
+                  {items.map(([item, possession]) => (
+                    <InventoryItemCard
+                      key={`inventory-${item}`}
+                      item={item}
+                      quantity={possession}
                     />
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </section>
           ) : null

@@ -3,17 +3,28 @@
 import { AiOutlineCalendar } from "react-icons/ai"
 import { BiFemaleSign, BiMaleSign, BiTime } from "react-icons/bi"
 import { FaChartBar, FaCoins } from "react-icons/fa"
-import { GiPirateCoat, GiProgression } from "react-icons/gi"
-import { GiQuillInk } from "react-icons/gi"
+import {
+  GiCrossedSwords,
+  GiPiggyBank,
+  GiPirateCoat,
+  GiProgression,
+  GiQuillInk,
+  GiReceiveMoney,
+} from "react-icons/gi"
 
 import useDrawer from "@/app/stores/drawer"
 import Flag from "@/components/icons/Flag"
+import StatTile from "@/components/StatTile"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+import { Progress } from "@/components/ui/progress"
 import { NATIONS } from "@/constants/locations"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { convertDaysToTimeSpan, getCurrentDate } from "@/utils/date"
 import { getScore } from "@/utils/score"
 
-import { Button } from "../../ui/button"
+const chipClass = "h-7 gap-2 px-3 text-sm [&>svg]:size-4!"
 
 const StatusDrawer = () => {
   const { data: player } = useGetPlayer()
@@ -23,174 +34,175 @@ const StatusDrawer = () => {
     return null
   }
 
-  const currentDate = getCurrentDate(player?.character.day || 0)
+  const { character } = player
+  const enemy = NATIONS[character.nationality].warWith
 
   return (
     <>
-      <h1 className="mb-2 flex font-serif text-2xl">
-        <div className="flex gap-2">
-          <GiPirateCoat className="text-accent" />
-          Status
-        </div>
+      <h1 className="mb-6 flex items-center gap-2 font-serif text-2xl">
+        <GiPirateCoat className="text-accent" />
+        Status
       </h1>
 
-      <span className="my-4 block font-serif text-xl">
-        {player.character.name}
-      </span>
+      <Card className="shadow-background/20 relative gap-4 p-6 shadow-lg">
+        <Flag
+          decorative
+          nation={character.nationality}
+          size={160}
+          className="pointer-events-none absolute -top-4 -right-8 rotate-12 opacity-25"
+        />
 
-      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
-          <div>
-            <div className="text-muted-foreground text-xs">Title</div>
-            <div>{player.character.title}</div>
-          </div>
-          <GiPirateCoat className="text-accent size-6" />
+        <div className="relative">
+          <p className="text-accent text-xs tracking-wide uppercase">
+            {character.title}
+          </p>
+          <p className="font-serif text-2xl font-semibold">{character.name}</p>
         </div>
 
-        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
-          <div>
-            <div className="text-muted-foreground text-xs">Score</div>
-            <div>{getScore(player)}</div>
-          </div>
-          <GiProgression className="text-accent size-6" />
+        <div className="relative flex flex-wrap gap-2">
+          <Badge variant="secondary" className={chipClass}>
+            <BiTime />
+            {character.age} years
+          </Badge>
+
+          <Badge variant="secondary" className={chipClass}>
+            {character.gender === "Male" ? <BiMaleSign /> : <BiFemaleSign />}
+            {character.gender}
+          </Badge>
+
+          <Badge variant="secondary" className={chipClass}>
+            <Flag nation={character.nationality} size={16} decorative />
+            {character.nationality}
+          </Badge>
+
+          <Badge variant="secondary" className={chipClass}>
+            <GiCrossedSwords />
+            At war with {enemy}
+            <Flag nation={enemy} size={16} decorative />
+          </Badge>
         </div>
 
-        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
-          <div>
-            <div className="text-muted-foreground text-xs">Age</div>
-            <div>{player.character.age}</div>
-          </div>
-          <BiTime className="text-accent size-6" />
-        </div>
+        <div className="relative flex flex-wrap gap-2">
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => openDrawer("editCharacter")}
+          >
+            <GiQuillInk />
+            Change character
+          </Button>
 
-        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
-          <div>
-            <div className="text-muted-foreground text-xs">Gender</div>
-            <div>{player.character.gender}</div>
-          </div>
-          {player.character.gender === "Male" ? (
-            <BiMaleSign className="text-accent size-6" />
-          ) : (
-            <BiFemaleSign className="text-accent size-6" />
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => openDrawer("statistics")}
+            title="Open statistics"
+          >
+            <FaChartBar />
+            Statistics
+          </Button>
+        </div>
+      </Card>
+
+      <div className="@container mt-4">
+        <div className="grid grid-cols-1 gap-4 @md:grid-cols-3">
+          <StatTile
+            label="Score"
+            value={getScore(player)}
+            icon={<GiProgression />}
+          />
+
+          <StatTile
+            label="Playing for"
+            value={convertDaysToTimeSpan(character.day)}
+            icon={<BiTime />}
+            className="@md:col-span-2"
+          />
+
+          <StatTile
+            label="Current date"
+            value={getCurrentDate(character.day)}
+            icon={<AiOutlineCalendar />}
+            className="@md:col-span-3"
+          />
+        </div>
+      </div>
+
+      <h2 className="mt-8 mb-4 font-serif text-xl">Economy</h2>
+
+      <div className="@container">
+        <div className="grid grid-cols-1 gap-4 @md:grid-cols-3">
+          <StatTile
+            label="Gold"
+            value={character.gold}
+            unit="gold"
+            icon={<FaCoins />}
+          />
+
+          {!!character.account && (
+            <StatTile
+              label="Account"
+              value={character.account}
+              unit="gold"
+              icon={<GiPiggyBank />}
+            />
+          )}
+
+          {!!character.loan && (
+            <StatTile
+              label="Loan"
+              value={character.loan}
+              unit="gold"
+              icon={<GiReceiveMoney />}
+            />
           )}
         </div>
-
-        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
-          <div>
-            <div className="text-muted-foreground text-xs">Nationality</div>
-            <div>{player.character.nationality}</div>
-          </div>
-          <Flag
-            nation={player.character.nationality}
-            size={32}
-            className="opacity-80"
-          />
-        </div>
-
-        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
-          <div>
-            <div className="text-muted-foreground text-xs">War with</div>
-            <div>{NATIONS[player.character.nationality].warWith}</div>
-          </div>
-          <Flag
-            nation={NATIONS[player.character.nationality].warWith}
-            size={32}
-            className="opacity-80"
-          />
-        </div>
       </div>
 
-      <div className="mt-4 flex gap-2">
-        <Button variant="secondary" onClick={() => openDrawer("editCharacter")}>
-          <GiQuillInk />
-          Change character
-        </Button>
-
-        <Button
-          variant="secondary"
-          onClick={() => openDrawer("statistics")}
-          title="Open statistics"
-        >
-          <FaChartBar className="mr-2" />
-          Statistics
-        </Button>
-      </div>
-
-      <div className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
-        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
-          <div>
-            <div className="text-muted-foreground text-xs">
-              Has been playing for
-            </div>
-            <div>{convertDaysToTimeSpan(player.character.day)}</div>
-          </div>
-          <AiOutlineCalendar className="text-accent size-6" />
-        </div>
-
-        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
-          <div>
-            <div className="text-muted-foreground text-xs">Current date</div>
-            <div>{currentDate}</div>
-          </div>
-          <AiOutlineCalendar className="text-accent size-6" />
-        </div>
-      </div>
-
-      <span className="mt-8 mb-2 block font-serif text-xl">Economy</span>
-
-      <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
-          <div>
-            <div className="text-muted-foreground text-xs">Gold</div>
-            <div>{player.character.gold}</div>
-          </div>
-          <FaCoins className="text-accent size-6" />
-        </div>
-
-        {player.character.account && (
-          <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
-            <div>
-              <div className="text-muted-foreground text-xs">Account</div>
-              <div>{player.character.account}</div>
-            </div>
-            <FaCoins className="text-accent size-6" />
-          </div>
-        )}
-
-        {player.character.loan && (
-          <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
-            <div>
-              <div className="text-muted-foreground text-xs">Loan</div>
-              <div>{player.character.loan}</div>
-            </div>
-            <FaCoins className="text-accent size-6" />
-          </div>
-        )}
-      </div>
-
-      {player.character.battles && (
+      {!!Object.keys(character.battles || {}).length && (
         <>
-          <span className="mt-8 mb-2 block font-serif text-xl">Battles</span>
+          <h2 className="mt-8 mb-4 font-serif text-xl">Battles</h2>
 
-          <div className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {Object.entries(player.character.battles).map(
-              ([nation, { won, lost }]) => (
-                <div
-                  key={`battles-${nation}`}
-                  className="flex items-center justify-between rounded-md bg-neutral-900 p-4"
-                >
-                  <div>
-                    <div className="text-muted-foreground text-xs">
+          <div className="@container">
+            <div className="grid grid-cols-1 gap-4 @md:grid-cols-2">
+              {Object.entries(character.battles || {}).map(
+                ([nation, { won = 0, lost = 0 }]) => (
+                  <Card
+                    key={`battles-${nation}`}
+                    className="shadow-background/20 relative gap-2 p-4 shadow-lg"
+                  >
+                    <Flag
+                      decorative
+                      nation={nation as Nation}
+                      size={64}
+                      className="pointer-events-none absolute -right-2 -bottom-2 -rotate-12 opacity-25"
+                    />
+
+                    <p className="text-muted-foreground relative flex items-center gap-2 text-xs tracking-wide uppercase">
+                      <Flag nation={nation as Nation} size={16} decorative />
                       {nation === "Pirate" ? "Pirates" : nation}
-                    </div>
-                    <div>
-                      {won || 0} won, {lost || 0} lost
-                    </div>
-                  </div>
-                  <Flag nation={nation as Nation} size={32} />
-                </div>
-              )
-            )}
+                    </p>
+
+                    <p className="relative font-serif text-lg font-semibold">
+                      {won}
+                      <span className="text-muted-foreground mx-1 text-sm font-normal">
+                        won
+                      </span>
+                      {lost}
+                      <span className="text-muted-foreground ml-1 text-sm font-normal">
+                        lost
+                      </span>
+                    </p>
+
+                    <Progress
+                      value={won + lost ? (won / (won + lost)) * 100 : 0}
+                      className="relative h-1 w-2/3"
+                      aria-label={`Win rate against ${nation}`}
+                    />
+                  </Card>
+                )
+              )}
+            </div>
           </div>
         </>
       )}

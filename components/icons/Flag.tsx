@@ -2,9 +2,11 @@ type Props = {
   nation: (Nation | "Pirate") | undefined
   size?: number
   className?: string
+  /** Hide from assistive tech when the nation is already shown as text */
+  decorative?: boolean
 }
 
-const Flag = ({ nation, size = 32, className }: Props) => {
+const Flag = ({ nation, size = 32, className, decorative }: Props) => {
   if (!nation) {
     return null
   }
@@ -15,7 +17,8 @@ const Flag = ({ nation, size = 32, className }: Props) => {
       viewBox="0 0 640 480"
       width={size}
       height={size}
-      aria-label={nation}
+      aria-label={decorative ? undefined : nation}
+      aria-hidden={decorative}
       className={className}
     >
       {nation === "England" && (
