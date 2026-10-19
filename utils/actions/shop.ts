@@ -1,19 +1,14 @@
 import {
-  BARTER_GOODS,
   isTradeGoodAvailableInTown,
   MERCHANDISE,
 } from "@/constants/merchandise"
 import { isPositiveSafeInteger } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
-import { getNecessitiesInfo } from "@/utils/shop"
+import { describeTrade, formatQuantity, type TradeChange } from "@/utils/shop"
 
 import type { ActionResult } from "./types"
 
-type TradeInput = { item: keyof Inventory; quantity: number }
-
-type TradeData = TradeInput & { totalQuantity: number; totalPrice: number }
-
-const NOT_AT_SHOP = "You must be at Shop to do this."
+type TradeData = TradeChange & { totalQuantity: number; totalPrice: number }
 
 const isShopItem = (item: unknown): item is keyof Inventory =>
   typeof item === "string" &&
@@ -22,7 +17,7 @@ const isShopItem = (item: unknown): item is keyof Inventory =>
 
 const validateTrade = (
   player: Player,
-  { item, quantity }: TradeInput,
+  { item, quantity }: TradeChange,
   price: "buy" | "sell"
 ): { error: string } | { totalPrice: number; itemQuantity: number } => {
   if (!isPositiveSafeInteger(quantity)) {
@@ -34,7 +29,7 @@ const validateTrade = (
   }
 
   if (player.character.location !== "Shop") {
-    return { error: NOT_AT_SHOP }
+    return { error: "You must be at Shop to do this." }
   }
 
   if (!isTradeGoodAvailableInTown(item, player.character.town)) {
@@ -52,7 +47,7 @@ const validateTrade = (
 
 export const buyItem = (
   player: Player,
-  input: TradeInput
+  input: TradeChange
 ): ActionResult<TradeData> => {
   const trade = validateTrade(player, input, "buy")
 
@@ -78,14 +73,14 @@ export const buyItem = (
       character: { gold: player.character.gold - totalPrice },
       inventory: { [item]: totalQuantity },
     }),
-    log: `Bought ${quantity} ${MERCHANDISE[item].unit} of ${item} for ${totalPrice} gold.`,
+    log: `Bought ${formatQuantity(item, quantity)} of ${item} for ${totalPrice} gold.`,
     data: { item, quantity, totalQuantity, totalPrice },
   }
 }
 
 export const sellItem = (
   player: Player,
-  input: TradeInput
+  input: TradeChange
 ): ActionResult<TradeData> => {
   const trade = validateTrade(player, input, "sell")
 
@@ -107,80 +102,77 @@ export const sellItem = (
       character: { gold: player.character.gold + totalPrice },
       inventory: { [item]: totalQuantity },
     }),
-    log: `Sold ${quantity} ${MERCHANDISE[item].unit} of ${item} for ${totalPrice} gold.`,
+    log: `Sold ${formatQuantity(item, quantity)} of ${item} for ${totalPrice} gold.`,
     data: { item, quantity, totalQuantity, totalPrice },
   }
 }
 
-export const buyNecessities = (
+type TradeResult = { sold: TradeData[]; bought: TradeData[]; gold: number }
+
+/**
+ * Buys and sells several items in one go. A negative quantity sells, a
+ * positive one buys. All sales happen first, so their gold can pay for the
+ * purchases. If any part fails, nothing is traded.
+ */
+export const tradeItems = (
   player: Player,
-  { days }: { days: number }
-): ActionResult<{ cost: number; foodNeeded: number; waterNeeded: number }> => {
-  if (!isPositiveSafeInteger(days)) {
-    return { error: "Days must be a positive whole number" }
+  { changes }: { changes: TradeChange[] }
+): ActionResult<TradeResult> => {
+  if (!Array.isArray(changes) || changes.length === 0) {
+    return { error: "Nothing to trade" }
   }
 
-  if (player.character.location !== "Shop") {
-    return { error: NOT_AT_SHOP }
+  const isValidChange = (change: TradeChange) =>
+    typeof change === "object" &&
+    change !== null &&
+    Number.isSafeInteger(change.quantity) &&
+    change.quantity !== 0
+
+  if (!changes.every(isValidChange)) {
+    return { error: "Quantity must be a whole number other than zero" }
   }
 
-  const food = player.inventory?.food || 0
-  const water = player.inventory?.water || 0
+  const items = changes.map(({ item }) => item)
 
-  const { cost, foodNeeded, waterNeeded } = getNecessitiesInfo({
-    crewMembers: player.crewMembers.count || 0,
-    currentFood: food,
-    currentWater: water,
-    days,
-  })
-
-  if (cost === 0) {
-    return { error: `You already have enough food and water for ${days} days.` }
+  if (new Set(items).size !== items.length) {
+    return { error: "Each item can only be traded once" }
   }
 
-  if (player.character.gold < cost) {
-    return { error: "Not enough gold" }
+  const sales = changes.filter(({ quantity }) => quantity < 0)
+  const purchases = changes.filter(({ quantity }) => quantity > 0)
+
+  let current = player
+  const sold: TradeData[] = []
+  const bought: TradeData[] = []
+
+  for (const { item, quantity } of sales) {
+    const result = sellItem(current, { item, quantity: -quantity })
+
+    if ("error" in result) {
+      return result
+    }
+
+    current = result.player
+    sold.push(result.data)
   }
+
+  for (const { item, quantity } of purchases) {
+    const result = buyItem(current, { item, quantity })
+
+    if ("error" in result) {
+      return result
+    }
+
+    current = result.player
+    bought.push(result.data)
+  }
+
+  const gold = current.character.gold - player.character.gold
+  const log = `${describeTrade(sold, bought)} ${gold < 0 ? "Paid" : "Received"} ${Math.abs(gold)} gold.`
 
   return {
-    player: patchDeep<Player>(player, {
-      character: { gold: player.character.gold - cost },
-      inventory: { food: food + foodNeeded, water: water + waterNeeded },
-    }),
-    log: `Bought necessities for ${cost} gold. Enough food and water for ${days} days.`,
-    data: { cost, foodNeeded, waterNeeded },
-  }
-}
-
-export const sellBarterGoods = (
-  player: Player
-): ActionResult<{ value: number }> => {
-  if (player.character.location !== "Shop") {
-    return { error: NOT_AT_SHOP }
-  }
-
-  // Only goods the local shop accepts are sold. The rest stay in the inventory.
-  const soldGoods = Object.entries(player.inventory || {}).filter(
-    ([item]) =>
-      BARTER_GOODS.includes(item) &&
-      isTradeGoodAvailableInTown(item as keyof Inventory, player.character.town)
-  ) as [keyof Inventory, number][]
-
-  const value = soldGoods.reduce(
-    (sum, [item, quantity]) => sum + MERCHANDISE[item].sell * quantity,
-    0
-  )
-
-  if (value === 0) {
-    return { error: "You have no barter goods this port accepts." }
-  }
-
-  return {
-    player: patchDeep<Player>(player, {
-      character: { gold: player.character.gold + value },
-      inventory: Object.fromEntries(soldGoods.map(([item]) => [item, 0])),
-    }),
-    log: `Sold barter goods for ${value} gold.`,
-    data: { value },
+    player: current,
+    log,
+    data: { sold, bought, gold },
   }
 }

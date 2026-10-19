@@ -14,6 +14,7 @@
 - Shared UI is in `components/`.
 - Game data and rules live mainly in `constants/`, `hooks/`, and `utils/`.
 - Tests use Vitest and live in `__tests__/`.
+- Game actions are pure functions in `utils/actions/` that return an `ActionResult`. API routes stay thin: cookie → `getPlayer` → action → `savePlayer`. Test actions with `createTestPlayer` and `createSeededRandom` from `__tests__/helpers/`.
 - Common commands:
   - `npm run dev` — development server on port 8080
   - `npm run lint`
@@ -48,6 +49,7 @@
 - Treat it as the source of truth for existing game rules and player-facing behavior unless the task explicitly changes those rules.
 - Keep gameplay behavior and player-facing guidance consistent.
 - When game rules change, update `GuideContent.tsx` when necessary so the guide remains accurate.
+- Do not add new town buildings. Each one needs map hotspots and interior art for all 16 towns. Put new features in existing buildings.
 
 ## Verification
 

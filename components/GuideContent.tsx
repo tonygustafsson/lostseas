@@ -91,9 +91,17 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <p className="mb-4">
           At the shop you can buy and sell food, water, medicine and barter
           goods. Stock up on food and water for your journeys, sell loot for
-          gold, and buy medicine to restore your crew&apos;s health. The Buy
-          necessities action lets you choose how many days of food and water to
-          buy, taking your existing supplies into account.
+          gold, and buy medicine to restore your crew&apos;s health.
+        </p>
+
+        <p className="mb-4">
+          For each item, set how much you want to own. Going below what you have
+          sells the difference at the selling price, and going above it buys at
+          the buying price. You can change several items at once, so gold from
+          selling one item can pay for another. Nothing is traded until you
+          press Transfer, and the whole trade either goes through or nothing
+          changes. The day buttons top up food and water to last that many days,
+          taking your existing supplies into account.
         </p>
 
         <Image
@@ -227,8 +235,8 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <p className="mb-4">
           Shops trade tobacco and rum in every town. The other barter goods can
           only be bought and sold at shops in the towns listed in the
-          merchandise reference above. Sell tradable goods sells all barter
-          goods accepted by the local shop and leaves the rest in your
+          merchandise reference above. Sell all barter goods sets every barter
+          good the local shop accepts to zero and leaves the rest in your
           inventory.
         </p>
       </AccordionContent>

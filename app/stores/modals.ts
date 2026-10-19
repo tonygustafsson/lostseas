@@ -8,8 +8,6 @@ export type ModalId =
   | "renameShip"
   | "repairShip"
   | "welcome"
-  | "sellBarterGoods"
-  | "buyNecesseties"
   | "removeShip"
   | "dismissCrewMembers"
   | "screenshot"

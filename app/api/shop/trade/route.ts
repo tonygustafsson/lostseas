@@ -3,7 +3,8 @@ import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer } from "@/firebase/db"
-import { sellItem } from "@/utils/actions/shop"
+import { tradeItems } from "@/utils/actions/shop"
+import type { TradeChange } from "@/utils/shop"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -14,17 +15,17 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const { item, quantity }: { item: keyof Inventory; quantity: number } = body
+  const { changes }: { changes: TradeChange[] } = body ?? {}
 
   const player = await getPlayer(playerId)
 
   if (!player)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  const result = sellItem(player, { item, quantity })
+  const result = tradeItems(player, { changes })
 
   if ("error" in result) {
-    return NextResponse.json({ error: result.error, item }, { status: 400 })
+    return NextResponse.json({ error: result.error }, { status: 400 })
   }
 
   try {
@@ -36,6 +37,6 @@ export async function POST(req: Request) {
       ...result.data,
     })
   } catch (error) {
-    return NextResponse.json({ error, item }, { status: 500 })
+    return NextResponse.json({ error }, { status: 500 })
   }
 }

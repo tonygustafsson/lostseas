@@ -22,7 +22,8 @@ export const MERCHANDISE: Record<
     sell: 11,
     singleUnit: "crate",
     unit: "crates",
-    description: "You need food to travel the open seas.",
+    description:
+      "Salt pork, hard tack and the odd weevil. Every 10 crew eat a crate a day, and no captain leaves port without 5 days' worth.",
     availableAt: "shop",
     isNecessity: true,
   },
@@ -31,7 +32,8 @@ export const MERCHANDISE: Record<
     sell: 8,
     singleUnit: "barrel",
     unit: "barrels",
-    description: "You need water to travel the open seas.",
+    description:
+      "Fresh water in oak barrels, worth more than gold when the wind dies. Every 5 crew drink a barrel a day.",
     availableAt: "shop",
     isNecessity: true,
   },
@@ -40,7 +42,8 @@ export const MERCHANDISE: Record<
     sell: 24,
     singleUnit: "crate",
     unit: "crates",
-    description: "A great trading asset. Not used for anything specific.",
+    description:
+      "Delicate blue and white china from the far East. Pack it in straw and sell it where the wealthy dine.",
     availableAt: "shop",
     isBarterGoods: true,
     towns: [
@@ -59,7 +62,8 @@ export const MERCHANDISE: Record<
     sell: 14,
     singleUnit: "crate",
     unit: "crates",
-    description: "A great trading asset. Not used for anything specific.",
+    description:
+      "Pepper, cloves and nutmeg, once worth more than their weight in silver. Only a few ports have the taste for them.",
     availableAt: "shop",
     isBarterGoods: true,
     towns: [
@@ -79,7 +83,7 @@ export const MERCHANDISE: Record<
     singleUnit: "box",
     unit: "boxes",
     description:
-      "You can heal your crew with this mix of willow bark and herbs.",
+      "Willow bark, bitter herbs and a splash of something stronger. Give it to your crew to bring their health back up.",
     availableAt: "shop",
     isUtility: true,
   },
@@ -88,7 +92,8 @@ export const MERCHANDISE: Record<
     sell: 52,
     singleUnit: "crate",
     unit: "crates",
-    description: "A great trading asset and can also make your crew happy.",
+    description:
+      "Fragrant leaf, cured and pressed into rolls. Every shop in the Caribbean will take it off your hands.",
     availableAt: "shop",
     isBarterGoods: true,
   },
@@ -97,7 +102,8 @@ export const MERCHANDISE: Record<
     sell: 105,
     singleUnit: "barrel",
     unit: "barrels",
-    description: "A great trading asset and can also make your crew happy.",
+    description:
+      "Dark cane rum, sold in every port. Keep it under lock and key, it is cargo for trading, not for the crew.",
     availableAt: "shop",
     isBarterGoods: true,
   },
@@ -106,7 +112,8 @@ export const MERCHANDISE: Record<
     sell: 17,
     singleUnit: "crate",
     unit: "crates",
-    description: "A great trading asset. Not used for anything specific.",
+    description:
+      "Sacks of white gold from the island plantations, bound for the sweet tooth of Europe.",
     availableAt: "shop",
     isBarterGoods: true,
     towns: [
@@ -127,7 +134,8 @@ export const MERCHANDISE: Record<
     sell: 31,
     singleUnit: "bolt",
     unit: "bolts",
-    description: "A great trading asset. Not used for anything specific.",
+    description:
+      "Shimmering bolts that started their journey half a world away. Light to carry and dear to buy.",
     availableAt: "shop",
     isBarterGoods: true,
     towns: [
@@ -146,7 +154,8 @@ export const MERCHANDISE: Record<
     sell: 21,
     singleUnit: "crate",
     unit: "crates",
-    description: "A great trading asset. Not used for anything specific.",
+    description:
+      "Chests of fragrant leaves that fetch a fine price from homesick governors and merchants.",
     availableAt: "shop",
     isBarterGoods: true,
     towns: [
@@ -165,7 +174,8 @@ export const MERCHANDISE: Record<
     sell: 15,
     singleUnit: "bale",
     unit: "bales",
-    description: "A great trading asset. Not used for anything specific.",
+    description:
+      "Soft bales from the colonial fields. Plain to look at, but weavers and sailmakers always want more.",
     availableAt: "shop",
     isBarterGoods: true,
     towns: [
@@ -185,7 +195,7 @@ export const MERCHANDISE: Record<
     singleUnit: "cannon",
     unit: "cannons",
     description:
-      "You need cannons to fight other ships. You need 2 crew members per cannon in order to make it functional.",
+      "Iron guns that settle arguments at sea. Each one needs 2 crew members to load and fire it.",
     availableAt: "shipyard",
   },
   repairKits: {
@@ -194,7 +204,7 @@ export const MERCHANDISE: Record<
     singleUnit: "kit",
     unit: "kits",
     description:
-      "Repair a ship anywhere, including at sea. Each kit restores up to 10 percentage points of health to one ship. It's cheaper to repair at the shipyard though.",
+      "Planks, pitch, nails and oakum for patching a hull anywhere, even at sea. Each kit restores up to 10 percentage points of health to one ship, though the shipyard does it cheaper.",
     availableAt: "shipyard",
     isUtility: true,
   },
