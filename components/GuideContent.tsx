@@ -2,6 +2,10 @@
 
 import Image from "next/image"
 
+import {
+  APOTHECARY_PRICE_PER_POINT,
+  APOTHECARY_REMEDIES,
+} from "@/constants/apothecary"
 import { LOAN_LIMIT } from "@/constants/bank"
 import { NATIONS, TOWNS } from "@/constants/locations"
 import { BARTER_GOODS, MERCHANDISE } from "@/constants/merchandise"
@@ -13,13 +17,14 @@ import {
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import { TITLE_INFO } from "@/constants/title"
 import { cn } from "@/lib/utils"
+import { MEDICINE_HEALTH_PER_BOX } from "@/utils/crew"
 import {
   BATTLE_MAX_ROUNDS,
   CREW_DAMAGE_STRENGTH_STEP,
   EVADE_CHANCE,
 } from "@/utils/seaBattle"
 import { BASE_HIT_CHANCE } from "@/utils/shipMeeting"
-import { capitalize } from "@/utils/string"
+import { capitalize, snakeCaseToTitleCase } from "@/utils/string"
 
 import {
   Accordion,
@@ -135,6 +140,42 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           className="mx-auto mb-4 aspect-[1.74]"
         />
 
+        <h3 className="mt-8 mb-4 font-serif text-lg">Apothecary</h3>
+
+        <p className="mb-4">
+          The market also has an apothecary that sells remedies for your whole
+          crew. Each remedy raises crew health by a fixed number of points,
+          capped at 100%. The price is {APOTHECARY_PRICE_PER_POINT} gold per
+          crew member for every point the remedy gives. You always pay the full
+          price, so any healing past 100% is wasted. Pick the remedy that best
+          fits your crew&apos;s health to get the most for your gold. Used well,
+          the apothecary is the cheapest way to heal your crew in port. A remedy
+          cannot be bought when you have no crew or their health is already at
+          100%.
+        </p>
+
+        <Table className="mb-6 rounded-xl bg-black/60">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Remedy</TableHead>
+              <TableHead>Health</TableHead>
+              <TableHead>Description</TableHead>
+            </TableRow>
+          </TableHeader>
+
+          <TableBody>
+            {Object.entries(APOTHECARY_REMEDIES).map(([key, remedy]) => (
+              <TableRow key={key}>
+                <TableCell className="font-medium">{remedy.label}</TableCell>
+                <TableCell>+{remedy.healthIncrease}%</TableCell>
+                <TableCell className="whitespace-normal">
+                  {remedy.description}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+
         <h3 className="mt-8 mb-4 font-serif text-lg">Merchandise reference</h3>
 
         <Table
@@ -166,7 +207,7 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
                   scope="row"
                   className="h-auto max-w-64 min-w-48 py-4 align-top whitespace-normal"
                 >
-                  <div>{capitalize(item)}</div>
+                  <div>{snakeCaseToTitleCase(item)}</div>
                   <div className="text-muted-foreground mt-1 leading-relaxed font-normal">
                     {merchandise.description}
                   </div>
@@ -400,11 +441,13 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <p className="mb-4">
           Sea battles and tavern fights reduce your crew&apos;s health. At 0%
           health, they do not die, but you cannot start another journey. Use
-          Give medicine in Manage Crew to restore health, or Serve supper at the
-          tavern. Larger crews need more medicine for the same improvement.
-          Health and mood increases are capped at 100%. Give gold and Give
-          medicine need at least one crew member, and cannot be used when mood
-          or health is already at 100%.
+          Give medicine in Manage Crew to restore health, buy a remedy at the
+          apothecary in the market, or Serve supper at the tavern. Each box of
+          medicine restores {MEDICINE_HEALTH_PER_BOX} health points spread
+          across the crew, so larger crews need more medicine for the same
+          improvement. Health and mood increases are capped at 100%. Give gold
+          and Give medicine need at least one crew member, and cannot be used
+          when mood or health is already at 100%.
         </p>
 
         <Image

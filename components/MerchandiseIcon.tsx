@@ -1,8 +1,10 @@
 import { HammerIcon } from "lucide-react"
 import {
+  GiBandageRoll,
   GiBrandyBottle,
   GiCargoShip,
   GiCottonFlower,
+  GiHoneyJar,
   GiMeat,
   GiPirateCannon,
   GiPorcelainVase,
@@ -11,7 +13,9 @@ import {
   GiShoonerSailboat,
   GiSmallFishingSailboat,
   GiSmokingPipe,
+  GiStandingPotion,
   GiSugarCane,
+  GiTeapot,
   GiTeapotLeaves,
   GiWaterFlask,
   GiWineBottle,
@@ -57,6 +61,14 @@ const MerchandiseIcon = ({ item, size = "md", className = "" }: Props) => {
       return <GiPowder className={iconClass} />
     case "medicine":
       return <RiMedicineBottleLine className={iconClass} />
+    case "willow-bark-tea":
+      return <GiTeapot className={iconClass} />
+    case "comfrey-poultice":
+      return <GiBandageRoll className={iconClass} />
+    case "jesuits-bark-tonic":
+      return <GiStandingPotion className={iconClass} />
+    case "theriac-draught":
+      return <GiHoneyJar className={iconClass} />
     case "tobacco":
     case "smoke-tobacco":
       return <GiSmokingPipe className={iconClass} />

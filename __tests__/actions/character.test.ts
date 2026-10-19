@@ -146,14 +146,14 @@ describe("moveToLocation", () => {
         moveToLocation(
           createTestPlayer(),
           { location: "Market" },
-          // Always roll 4 offers, the rest is random
-          (min, max) => (min === 1 && max === 4 ? 4 : random.int(min, max))
+          // Always roll 6 offers, the rest is random
+          (min, max) => (min === 1 && max === 6 ? 6 : random.int(min, max))
         )
       )
 
       expect(
         Object.keys(result.player.locationStates?.market?.items ?? {})
-      ).toHaveLength(4)
+      ).toHaveLength(6)
     }
   })
 
@@ -330,6 +330,11 @@ describe("random walking around town", () => {
 
         if (location === "Market") {
           expect(market?.visited, context).toBe(true)
+
+          const offers = Object.keys(market?.items ?? {}).length
+
+          expect(offers, context).toBeGreaterThanOrEqual(1)
+          expect(offers, context).toBeLessThanOrEqual(6)
           Object.entries(market?.items ?? {}).forEach(([item, offer]) => {
             const fullPrice = MERCHANDISE[item as keyof Inventory].buy
 

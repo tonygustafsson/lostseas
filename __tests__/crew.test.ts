@@ -11,7 +11,7 @@ import {
 describe("crew utils", () => {
   it("getMedicineEffectiveness caps at 100 and floors values", () => {
     expect(getMedicineEffectiveness(5, 95, 10)).toBe(100)
-    expect(getMedicineEffectiveness(3, 50, 4)).toBe(63)
+    expect(getMedicineEffectiveness(3, 50, 4)).toBe(76)
   })
 
   it("getGoldEffectiveness adds gold per crew and floors", () => {

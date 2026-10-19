@@ -65,12 +65,12 @@ export const getWarningContent = (
     case "CREW_IS_ILL":
       return {
         icon: <GiBandana />,
-        text: "Crew too ill to sail. Give them medicine.",
+        text: "Crew too ill to sail. Give them medicine or visit the apothecary at the market.",
       }
     case "LOW_CREW_HEALTH":
       return {
         icon: <GiBandana />,
-        text: "Crew health is low. Give them medicine before they are too ill to sail.",
+        text: "Crew health is low. Give them medicine or visit the apothecary at the market before they are too ill to sail.",
       }
     case "NEED_MORE_FOOD":
       return {

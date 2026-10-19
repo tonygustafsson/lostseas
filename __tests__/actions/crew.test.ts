@@ -132,7 +132,7 @@ describe("giveGold", () => {
 
 describe("giveMedicine", () => {
   it("raises health by medicine per crew member", () => {
-    // 4 boxes for 20 crew raise health by 2
+    // 4 boxes for 20 crew raise health by 4
     const player = deepFreeze(
       createTestPlayer({
         crewMembers: { health: 50 },
@@ -143,8 +143,8 @@ describe("giveMedicine", () => {
     const result = expectSuccess(giveMedicine(player, { medicine: 4 }))
 
     expect(result.player.inventory?.medicine).toBe(6)
-    expect(result.player.crewMembers.health).toBe(52)
-    expect(result.data).toEqual({ medicine: 4, newHealth: 52 })
+    expect(result.player.crewMembers.health).toBe(54)
+    expect(result.data).toEqual({ medicine: 4, newHealth: 54 })
   })
 
   it("caps health at 100, as the guide says", () => {

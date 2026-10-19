@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest"
 
+import { APOTHECARY_REMEDIES, type Remedy } from "@/constants/apothecary"
 import { MERCHANDISE } from "@/constants/merchandise"
-import { acceptMarketOffer } from "@/utils/actions/market"
+import { acceptMarketOffer, buyRemedy } from "@/utils/actions/market"
 import type { ActionResult } from "@/utils/actions/types"
 import { patchDeep } from "@/utils/patchDeep"
 
@@ -257,4 +258,170 @@ describe("random market play", () => {
       expect(succeeded).toBeGreaterThan(0)
     }
   )
+})
+
+describe("buyRemedy", () => {
+  const injured = (overrides: DeepPartial<Player> = {}) =>
+    deepFreeze(
+      createTestPlayer(
+        patchDeep<DeepPartial<Player>>(
+          {
+            character: { location: "Market" },
+            crewMembers: { count: 50, health: 60 },
+          },
+          overrides
+        )
+      )
+    )
+
+  it("heals the crew and takes the gold", () => {
+    // 50 crew at 60% buy willow bark tea: +25 points, 0.6 × 50 × 25 = 750 gold
+    const player = injured()
+    const gold = player.character.gold
+
+    const result = expectSuccess(
+      buyRemedy(player, { remedy: "willow-bark-tea" })
+    )
+
+    expect(result.player.crewMembers.health).toBe(85)
+    expect(result.player.character.gold).toBe(gold - 750)
+    expect(result.data).toEqual({
+      remedy: "willow-bark-tea",
+      healed: 25,
+      newHealth: 85,
+      totalPrice: 750,
+    })
+    expect(result.log).toBe(
+      "Bought Willow bark tea at the apothecary for 750 gold. Crew health is now 85%."
+    )
+  })
+
+  it("charges the full price even when healing past 100% is wasted", () => {
+    // 50 crew at 90% buy Jesuit's bark tonic: +10 points, full 0.6 × 50 × 75 = 2250 gold
+    const result = expectSuccess(
+      buyRemedy(
+        injured({ crewMembers: { health: 90 }, character: { gold: 5000 } }),
+        { remedy: "jesuits-bark-tonic" }
+      )
+    )
+
+    expect(result.player.crewMembers.health).toBe(100)
+    expect(result.player.character.gold).toBe(5000 - 2250)
+    expect(result.data.healed).toBe(10)
+    expect(result.data.totalPrice).toBe(2250)
+  })
+
+  it.each(["toString", 5, undefined])("rejects remedy %s", (remedy) => {
+    expectError(buyRemedy(injured(), { remedy } as never), "Not a valid remedy")
+  })
+
+  it.each(OTHER_LOCATIONS)("rejects buying at the %s", (location) => {
+    expectError(
+      buyRemedy(injured({ character: { location } }), {
+        remedy: "willow-bark-tea",
+      }),
+      "You must be at Market to do this."
+    )
+  })
+
+  it("rejects when the crew count is missing from the save", () => {
+    const player = createTestPlayer({
+      character: { location: "Market" },
+      crewMembers: { health: 50 },
+    })
+    player.crewMembers.count = undefined as never
+
+    expectError(
+      buyRemedy(player, { remedy: "willow-bark-tea" }),
+      "You have no crew to treat."
+    )
+  })
+
+  it("rejects when there is no crew", () => {
+    expectError(
+      buyRemedy(injured({ crewMembers: { count: 0 } }), {
+        remedy: "willow-bark-tea",
+      }),
+      "You have no crew to treat."
+    )
+  })
+
+  it("rejects when crew health is already 100%", () => {
+    expectError(
+      buyRemedy(injured({ crewMembers: { health: 100 } }), {
+        remedy: "willow-bark-tea",
+      }),
+      "Your crew's health is already at 100%."
+    )
+  })
+
+  it.each([NaN, undefined])(
+    "rejects and keeps the gold when crew health is %s",
+    (health) => {
+      const player = createTestPlayer({ character: { location: "Market" } })
+      player.crewMembers.health = health as never
+
+      expectError(
+        buyRemedy(player, { remedy: "willow-bark-tea" }),
+        "Your crew's health is already at 100%."
+      )
+    }
+  )
+
+  it("rejects buying with too little gold", () => {
+    expectError(
+      buyRemedy(injured({ character: { gold: 749 } }), {
+        remedy: "willow-bark-tea",
+      }),
+      "Not enough gold"
+    )
+  })
+})
+
+describe("random apothecary play", () => {
+  const LOCATIONS: TownLocation[] = ["Market", "Market", ...OTHER_LOCATIONS]
+  const REMEDIES = Object.keys(APOTHECARY_REMEDIES) as Remedy[]
+
+  it.each([1, 2, 3, 4, 5])("keeps the game consistent with seed %i", (seed) => {
+    const random = createSeededRandom(seed)
+    let succeeded = 0
+
+    for (let step = 0; step < 1000; step++) {
+      const before = deepFreeze(
+        createTestPlayer({
+          character: {
+            location: random.pick(LOCATIONS),
+            gold: random.int(0, 1_000_000),
+          },
+          crewMembers: {
+            count: random.int(0, 10_000),
+            health: random.int(0, 100),
+          },
+        })
+      )
+      const remedy = random.pick(REMEDIES)
+      const context = `seed ${seed}, step ${step}, ${remedy}`
+
+      const result = buyRemedy(before, { remedy })
+
+      if ("error" in result) {
+        expect(result.error, context).toBeTruthy()
+        continue
+      }
+
+      succeeded++
+
+      const { gold } = result.player.character
+      const { health } = result.player.crewMembers
+
+      expect(Number.isInteger(health), context).toBe(true)
+      expect(health, context).toBeGreaterThanOrEqual(1)
+      expect(health, context).toBeLessThanOrEqual(100)
+      expect(Number.isSafeInteger(gold), context).toBe(true)
+      expect(gold, context).toBeGreaterThanOrEqual(0)
+      expect(before.character.gold - gold, context).toBe(result.data.totalPrice)
+    }
+
+    expect(succeeded).toBeGreaterThan(0)
+  })
 })

@@ -1,4 +1,10 @@
+import {
+  APOTHECARY_REMEDIES,
+  isRemedy,
+  type Remedy,
+} from "@/constants/apothecary"
 import { MERCHANDISE } from "@/constants/merchandise"
+import { getRemedyResult } from "@/utils/apothecary"
 import { patchDeep } from "@/utils/patchDeep"
 
 import type { ActionResult } from "./types"
@@ -47,5 +53,52 @@ export const acceptMarketOffer = (
     }),
     log: `Bought ${quantity} ${MERCHANDISE[item].unit} of ${item} in the market for ${totalPrice} gold.`,
     data: { item, quantity, totalQuantity, totalPrice },
+  }
+}
+
+/** Heals the whole crew with an apothecary remedy. */
+export const buyRemedy = (
+  player: Player,
+  { remedy }: { remedy: Remedy }
+): ActionResult<{
+  remedy: Remedy
+  healed: number
+  newHealth: number
+  totalPrice: number
+}> => {
+  if (!isRemedy(remedy)) {
+    return { error: "Not a valid remedy" }
+  }
+
+  if (player.character.location !== "Market") {
+    return { error: "You must be at Market to do this." }
+  }
+
+  const {
+    hasCrew,
+    healed,
+    newHealth,
+    price: totalPrice,
+  } = getRemedyResult(player.crewMembers, remedy)
+
+  if (!hasCrew) {
+    return { error: "You have no crew to treat." }
+  }
+
+  if (healed <= 0) {
+    return { error: "Your crew's health is already at 100%." }
+  }
+
+  if (player.character.gold < totalPrice) {
+    return { error: "Not enough gold" }
+  }
+
+  return {
+    player: patchDeep<Player>(player, {
+      character: { gold: player.character.gold - totalPrice },
+      crewMembers: { health: newHealth },
+    }),
+    log: `Bought ${APOTHECARY_REMEDIES[remedy].label} at the apothecary for ${totalPrice} gold. Crew health is now ${newHealth}%.`,
+    data: { remedy, healed, newHealth, totalPrice },
   }
 }

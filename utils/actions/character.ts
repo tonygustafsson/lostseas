@@ -1,5 +1,5 @@
 import { LOCATIONS } from "@/constants/locations"
-import { MARKET_AVAILABLE_ITEMS } from "@/constants/market"
+import { MARKET_AVAILABLE_ITEMS, MARKET_MAX_OFFERS } from "@/constants/market"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { patchDeep } from "@/utils/patchDeep"
 import { getRandomInt } from "@/utils/random"
@@ -18,7 +18,7 @@ const createMarketState = (randomInt: RandomInt): LocationStates["market"] => {
   // Pick each item at most once, so every rolled offer shows up
   const remainingItems = [...MARKET_AVAILABLE_ITEMS]
 
-  Array.from({ length: randomInt(1, 4) }).forEach(() => {
+  Array.from({ length: randomInt(1, MARKET_MAX_OFFERS) }).forEach(() => {
     const [item] = remainingItems.splice(
       randomInt(0, remainingItems.length - 1),
       1

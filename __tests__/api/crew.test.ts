@@ -48,8 +48,8 @@ const routes = [
   {
     name: "giveMedicine",
     call: (amount: unknown) => giveMedicine(request({ medicine: amount })),
-    log: "Gave 2 medicine to crew, increasing their health to 51.",
-    data: { medicine: 2, newHealth: 51 },
+    log: "Gave 2 medicine to crew, increasing their health to 52.",
+    data: { medicine: 2, newHealth: 52 },
   },
 ]
 

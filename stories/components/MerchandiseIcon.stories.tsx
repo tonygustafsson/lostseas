@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import MerchandiseIcon from "@/components/MerchandiseIcon"
+import { APOTHECARY_REMEDIES } from "@/constants/apothecary"
 import { MERCHANDISE } from "@/constants/merchandise"
 
 const items = Object.keys(MERCHANDISE) as (keyof Inventory)[]
@@ -19,6 +20,19 @@ export const AllItems: Story = {
         <div key={item} className="flex flex-col items-center gap-2">
           <MerchandiseIcon {...args} item={item} />
           <span className="text-sm">{item}</span>
+        </div>
+      ))}
+    </div>
+  ),
+}
+
+export const AllRemedies: Story = {
+  render: (args) => (
+    <div className="flex flex-wrap gap-6">
+      {Object.keys(APOTHECARY_REMEDIES).map((remedy) => (
+        <div key={remedy} className="flex flex-col items-center gap-2">
+          <MerchandiseIcon {...args} item={remedy} />
+          <span className="text-sm">{remedy}</span>
         </div>
       ))}
     </div>

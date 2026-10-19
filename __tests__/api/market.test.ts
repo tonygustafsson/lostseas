@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 import { POST as accept } from "@/app/api/market/accept/route"
+import { POST as buyRemedy } from "@/app/api/market/remedy/route"
 
 import { createTestPlayer } from "../helpers/createTestPlayer"
 
@@ -105,6 +106,66 @@ describe("POST /api/market/accept", () => {
     expect(await response.json()).toEqual({
       error: "Database down",
       item: "rum",
+    })
+  })
+})
+
+describe("POST /api/market/remedy", () => {
+  const callRemedy = () =>
+    buyRemedy(
+      new Request("http://localhost/api/market/remedy", {
+        method: "POST",
+        body: JSON.stringify({ remedy: "willow-bark-tea" }),
+      })
+    )
+
+  beforeEach(() => {
+    mocks.player = createTestPlayer({
+      character: { location: "Market" },
+      crewMembers: { count: 50, health: 60 },
+    })
+  })
+
+  it("returns 401 without a player cookie", async () => {
+    mocks.playerId = undefined
+
+    const response = await callRemedy()
+
+    expect(response.status).toBe(401)
+    expect(mocks.savePlayer).not.toHaveBeenCalled()
+  })
+
+  it("returns 400 with the game error and remedy, and saves nothing", async () => {
+    mocks.player = createTestPlayer({ character: { location: "Shop" } })
+
+    const response = await callRemedy()
+
+    expect(response.status).toBe(400)
+    expect(await response.json()).toEqual({
+      error: "You must be at Market to do this.",
+      remedy: "willow-bark-tea",
+    })
+    expect(mocks.savePlayer).not.toHaveBeenCalled()
+  })
+
+  it("saves the new player with a log and returns it", async () => {
+    const response = await callRemedy()
+    const body = await response.json()
+
+    expect(response.status).toBe(200)
+
+    const [savedPlayer, savedLog] = mocks.savePlayer.mock.calls[0]
+
+    expect(savedLog).toBe(
+      "Bought Willow bark tea at the apothecary for 750 gold. Crew health is now 85%."
+    )
+    expect(body).toEqual({
+      success: true,
+      updatedPlayer: savedPlayer,
+      remedy: "willow-bark-tea",
+      healed: 25,
+      newHealth: 85,
+      totalPrice: 750,
     })
   })
 })
