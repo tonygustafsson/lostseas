@@ -44,6 +44,8 @@ type Props = {
   currentTown?: Town
   journey?: Journey
   isPaused?: boolean
+  selectedTown?: Town
+  suppliesDays?: number
   onSelectTown?: (town: Town) => void
 }
 
@@ -51,6 +53,8 @@ const SeaMapCanvas = ({
   currentTown,
   journey,
   isPaused = false,
+  selectedTown,
+  suppliesDays,
   onSelectTown,
 }: Props) => {
   const viewportRef = useRef<HTMLDivElement>(null)
@@ -80,7 +84,7 @@ const SeaMapCanvas = ({
   const destination = journey?.destination
   const startProgress = journey ? (journey.day - 1) / journey.totalDays : 0
   const targetProgress = journey ? journey.day / journey.totalDays : 0
-  const hoveredTown = hovered?.town
+  const previewTown = hovered?.town ?? selectedTown
   const isAtSea = !!journey
 
   useEffect(() => {
@@ -94,8 +98,8 @@ const SeaMapCanvas = ({
       origin && destination ? getSeaRoute(origin, destination) : null
     const routeLength = route ? getRouteLength(route) : 0
     const previewRoute =
-      currentTown && hoveredTown && !isAtSea
-        ? getSeaRoute(currentTown, hoveredTown)
+      currentTown && previewTown && !isAtSea
+        ? getSeaRoute(currentTown, previewTown)
         : null
     const routeKey = `${origin}|${destination}`
 
@@ -263,7 +267,7 @@ const SeaMapCanvas = ({
     isPaused,
     currentTown,
     isAtSea,
-    hoveredTown,
+    previewTown,
   ])
 
   const startPanning = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -414,6 +418,7 @@ const SeaMapCanvas = ({
         show={!!hovered}
         currentTown={currentTown}
         destination={hovered?.town}
+        suppliesDays={suppliesDays}
         top={hovered?.top}
         left={hovered?.left}
       />

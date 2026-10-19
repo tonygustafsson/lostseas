@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { getAdvisorWarnings } from "@/utils/getAdvisorWarnings"
+import { getSuppliesDays } from "@/utils/journey"
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -35,7 +36,8 @@ const basePlayer = (): Player =>
     inventory: { food: 100, water: 100, cannons: 2 },
   }) as unknown as Player
 
-const tips = (player: Player) => getAdvisorWarnings(player).map((w) => w.tip)
+const tips = (player: Player, destination?: Town) =>
+  getAdvisorWarnings(player, destination).map((w) => w.tip)
 const blocking = (player: Player) =>
   getAdvisorWarnings(player)
     .filter((w) => w.blocksTravel)
@@ -322,11 +324,22 @@ describe("getAdvisorWarnings", () => {
   // -------------------------------------------------------------------------
 
   describe("NEED_MORE_FOOD", () => {
-    it("triggers when food is insufficient for a 5-day journey", () => {
+    it("triggers when food is insufficient for the destination", () => {
       const p = basePlayer()
-      // 5 crew * 0.1 * 5 days = 2.5 -> rounded to 3; set food below that
+      // 5 crew eat 1 food a day, Biloxi is 5 days from Port Royale
       p.crewMembers.count = 5
-      p.inventory = { food: 2, water: 100 }
+      p.inventory = { food: 4, water: 100 }
+      expect(tips(p, "Biloxi")).toContain("NEED_MORE_FOOD")
+      expect(tips(p, "Leogane")).not.toContain("NEED_MORE_FOOD")
+    })
+
+    it("without a destination, triggers only when no town is in reach", () => {
+      const p = basePlayer()
+      // Leogane is the nearest town, 1 day from Port Royale
+      p.inventory = { food: 1, water: 100 }
+      expect(tips(p)).not.toContain("NEED_MORE_FOOD")
+
+      p.inventory = { food: 0, water: 100 }
       expect(tips(p)).toContain("NEED_MORE_FOOD")
     })
 
@@ -344,12 +357,59 @@ describe("getAdvisorWarnings", () => {
     })
   })
 
-  describe("NEED_MORE_WATER", () => {
-    it("triggers when water is insufficient for a 5-day journey", () => {
+  describe("LIMITED_SUPPLIES", () => {
+    it("triggers when supplies reach some towns but not all", () => {
       const p = basePlayer()
+      // 5 crew use 1 food and 1 water a day, Leogane is 1 day, Biloxi 5
+      p.inventory = { food: 3, water: 100 }
+      expect(tips(p)).toContain("LIMITED_SUPPLIES")
+      expect(blocking(p)).not.toContain("LIMITED_SUPPLIES")
+    })
+
+    it("does not trigger when every town is in reach", () => {
+      const p = basePlayer()
+      expect(tips(p)).not.toContain("LIMITED_SUPPLIES")
+    })
+
+    it("does not trigger when no town is in reach", () => {
+      const p = basePlayer()
+      p.inventory = { food: 0, water: 100 }
+      expect(tips(p)).not.toContain("LIMITED_SUPPLIES")
+    })
+
+    it("names water when water runs out first", () => {
+      const p = basePlayer()
+      p.inventory = { food: 100, water: 3 }
+      expect(tips(p)).toContain("LIMITED_SUPPLIES")
+      expect(getSuppliesDays(p)).toEqual({ days: 3, limitedBy: "water" })
+    })
+
+    it("does not trigger for a destination", () => {
+      const p = basePlayer()
+      p.inventory = { food: 3, water: 100 }
+      expect(tips(p, "Leogane")).not.toContain("LIMITED_SUPPLIES")
+    })
+  })
+
+  describe("supplies at sea", () => {
+    it("does not warn about supplies mid-voyage", () => {
+      const p = basePlayer()
+      p.character.location = "Sea"
+      p.inventory = { food: 0, water: 0 }
+      expect(tips(p)).not.toContain("NEED_MORE_FOOD")
+      expect(tips(p)).not.toContain("NEED_MORE_WATER")
+      expect(tips(p)).not.toContain("LIMITED_SUPPLIES")
+    })
+  })
+
+  describe("NEED_MORE_WATER", () => {
+    it("triggers when water is insufficient for the destination", () => {
+      const p = basePlayer()
+      // 5 crew drink 1 water a day, Biloxi is 5 days from Port Royale
       p.crewMembers.count = 5
-      p.inventory = { food: 100, water: 1 }
-      expect(tips(p)).toContain("NEED_MORE_WATER")
+      p.inventory = { food: 100, water: 4 }
+      expect(tips(p, "Biloxi")).toContain("NEED_MORE_WATER")
+      expect(tips(p, "Leogane")).not.toContain("NEED_MORE_WATER")
     })
 
     it("does not trigger when water is sufficient", () => {

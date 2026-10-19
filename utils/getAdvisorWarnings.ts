@@ -1,4 +1,9 @@
-import { getDailyConsumption } from "./shop"
+import {
+  getJourneyLength,
+  getJourneySupplies,
+  getLongestJourneyLength,
+  getShortestJourneyLength,
+} from "./journey"
 import { getNewTitle } from "./title"
 import { validateShipCrewRequirements } from "./validateCrew"
 
@@ -7,10 +12,11 @@ export type AdvisorWarningItem = {
   blocksTravel: boolean
 }
 
-export const getAdvisorWarnings = (player?: Player): AdvisorWarningItem[] => {
+export const getAdvisorWarnings = (
+  player?: Player,
+  destination?: Town
+): AdvisorWarningItem[] => {
   if (!player) return []
-
-  const arbitraryJourneyLength = 5
 
   const ships = Object.values(player.ships || {})
   const playerHasShips = ships.length > 0
@@ -34,11 +40,28 @@ export const getAdvisorWarnings = (player?: Player): AdvisorWarningItem[] => {
   const crewBelowMinimum = playerHasShips && player.crewMembers.count < minCrew
   const crewAboveMaximum = playerHasShips && player.crewMembers.count > maxCrew
 
-  const daily = getDailyConsumption(player.crewMembers.count)
-  const neededFood = arbitraryJourneyLength * daily.food
-  const neededWater = arbitraryJourneyLength * daily.water
-  const hasEnoughFood = (player.inventory?.food || 0) >= neededFood
-  const hasEnoughWater = (player.inventory?.water || 0) >= neededWater
+  // Supplies only matter when leaving port, not mid-voyage
+  const isInPort = player.character.location !== "Sea"
+
+  // Without a destination, supplies must at least reach the nearest town
+  const journeyLength = destination
+    ? getJourneyLength(player.character.town, destination)
+    : getShortestJourneyLength(player.character.town)
+  const { hasEnoughFood, hasEnoughWater } = getJourneySupplies(
+    player,
+    journeyLength
+  )
+
+  // Supplies reach some towns but not all of them
+  const longestJourney = getJourneySupplies(
+    player,
+    getLongestJourneyLength(player.character.town)
+  )
+  const hasLimitedSupplies =
+    !destination &&
+    hasEnoughFood &&
+    hasEnoughWater &&
+    !(longestJourney.hasEnoughFood && longestJourney.hasEnoughWater)
 
   const { promotionAvailable } = getNewTitle(player.character)
 
@@ -59,8 +82,9 @@ export const getAdvisorWarnings = (player?: Player): AdvisorWarningItem[] => {
   if (crewMoodIsLow) warn("LOW_CREW_MOOD", false)
   if (crewIsIll) warn("CREW_IS_ILL", true)
   if (crewHealthIsLow) warn("LOW_CREW_HEALTH", false)
-  if (!hasEnoughFood) warn("NEED_MORE_FOOD", true)
-  if (!hasEnoughWater) warn("NEED_MORE_WATER", true)
+  if (isInPort && !hasEnoughFood) warn("NEED_MORE_FOOD", true)
+  if (isInPort && !hasEnoughWater) warn("NEED_MORE_WATER", true)
+  if (isInPort && hasLimitedSupplies) warn("LIMITED_SUPPLIES", false)
   if (hasNoCannons) warn("NO_CANNONS", false)
   if (promotionAvailable) warn("PROMOTION_AVAILABLE", false)
 

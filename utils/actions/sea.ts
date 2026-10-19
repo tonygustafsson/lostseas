@@ -55,7 +55,9 @@ export const startJourney = (
   }
 
   // The advisor explains why the player cannot leave port
-  if (getAdvisorWarnings(player).some((warning) => warning.blocksTravel)) {
+  if (
+    getAdvisorWarnings(player, town).some((warning) => warning.blocksTravel)
+  ) {
     return { blocked: true }
   }
 

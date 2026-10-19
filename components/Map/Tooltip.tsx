@@ -8,6 +8,8 @@ import Flag from "../icons/Flag"
 type Props = {
   currentTown?: Town
   destination?: Town
+  /** How many days the player's food and water lasts */
+  suppliesDays?: number
   show: boolean
   top?: number
   left?: number
@@ -17,6 +19,7 @@ type Props = {
 const Tooltip = ({
   currentTown,
   destination,
+  suppliesDays = Infinity,
   show,
   top = 0,
   left = 0,
@@ -44,6 +47,12 @@ const Tooltip = ({
       <p className="text-sm">Nation: {destinationInfo.nation}</p>
 
       {distance !== 0 && <p className="text-sm">Distance: {distance} days</p>}
+
+      {distance > suppliesDays && (
+        <p className="text-gold text-sm">
+          Out of reach: supplies last {suppliesDays} days
+        </p>
+      )}
     </div>,
     document.body
   )

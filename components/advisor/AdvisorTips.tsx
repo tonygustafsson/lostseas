@@ -23,6 +23,7 @@ type GroupProps = {
   labelClassName: string
   warnings: AdvisorWarningItem[]
   player: Player
+  destination?: Town
 }
 
 const WarningGroup = ({
@@ -30,9 +31,10 @@ const WarningGroup = ({
   labelClassName,
   warnings,
   player,
+  destination,
 }: GroupProps) => {
   const items = warnings.flatMap((warning) => {
-    const content = getWarningContent(warning, player)
+    const content = getWarningContent(warning, player, destination)
 
     return content ? [{ warning, content }] : []
   })
@@ -78,14 +80,15 @@ type Props = {
   heading?: string
   title: string
   showAllClear?: boolean
+  destination?: Town
 }
 
-const AdvisorTips = ({ heading, title, showAllClear }: Props) => {
+const AdvisorTips = ({ heading, title, showAllClear, destination }: Props) => {
   const { data: player } = useGetPlayer()
 
   if (!player) return null
 
-  const warnings = getAdvisorWarnings(player)
+  const warnings = getAdvisorWarnings(player, destination)
   const blocking = warnings.filter(({ blocksTravel }) => blocksTravel)
   const advice = warnings.filter(({ blocksTravel }) => !blocksTravel)
 
@@ -119,6 +122,7 @@ const AdvisorTips = ({ heading, title, showAllClear }: Props) => {
             labelClassName="text-destructive"
             warnings={blocking}
             player={player}
+            destination={destination}
           />
 
           <WarningGroup
@@ -126,6 +130,7 @@ const AdvisorTips = ({ heading, title, showAllClear }: Props) => {
             labelClassName="text-gold"
             warnings={advice}
             player={player}
+            destination={destination}
           />
         </>
       ) : (

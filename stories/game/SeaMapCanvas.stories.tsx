@@ -24,3 +24,12 @@ export const AtSea: Story = {
     },
   },
 }
+
+export const LimitedSupplies: Story = {
+  args: {
+    currentTown: "Havana",
+    selectedTown: "Port Royale",
+    suppliesDays: 2,
+    onSelectTown: fn(),
+  },
+}

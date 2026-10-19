@@ -36,6 +36,7 @@ type AdvisorWarning =
   | "SHIPS_NEED_REPAIRS"
   | "NEED_MORE_FOOD"
   | "NEED_MORE_WATER"
+  | "LIMITED_SUPPLIES"
   | "CREW_IS_ILL"
   | "LOW_CREW_HEALTH"
   | "NO_CREW"

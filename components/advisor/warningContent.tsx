@@ -6,10 +6,12 @@ import { RiBankLine } from "react-icons/ri"
 
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import { AdvisorWarningItem } from "@/utils/getAdvisorWarnings"
+import { getSuppliesDays } from "@/utils/journey"
 
 export const getWarningContent = (
   { tip }: AdvisorWarningItem,
-  player: Player
+  player: Player,
+  destination?: Town
 ): { icon: ReactNode; text: string } | null => {
   switch (tip) {
     case "TOO_MUCH_GOLD":
@@ -75,13 +77,21 @@ export const getWarningContent = (
     case "NEED_MORE_FOOD":
       return {
         icon: <MerchandiseIcon item="food" />,
-        text: "Not enough food to sail. Stock up at the shop.",
+        text: `Not enough food to reach ${destination ?? "any port"}. Stock up at the shop.`,
       }
     case "NEED_MORE_WATER":
       return {
         icon: <MerchandiseIcon item="water" />,
-        text: "Not enough water to sail. Stock up at the shop.",
+        text: `Not enough water to reach ${destination ?? "any port"}. Stock up at the shop.`,
       }
+    case "LIMITED_SUPPLIES": {
+      const { days, limitedBy } = getSuppliesDays(player)
+
+      return {
+        icon: <MerchandiseIcon item={limitedBy} />,
+        text: `Your ${limitedBy} limits you to ${days} ${days === 1 ? "day" : "days"} at sea. Buy more at the shop to reach every port.`,
+      }
+    }
     case "NO_CANNONS":
       return {
         icon: <GiCannon />,

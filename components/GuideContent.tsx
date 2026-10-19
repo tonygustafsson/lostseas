@@ -255,11 +255,14 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mt-4 mb-2 font-serif text-lg">Food and water</h3>
 
         <p className="mb-4">
-          Before leaving port, you need enough food and water for 5 days at sea.
+          Before leaving port, you need enough food and water for every day of
+          the voyage, so distant towns need more supplies than nearby ones.
           Every 10 crew members eat 1 crate of food a day and every 5 crew
           members drink 1 barrel of water a day, rounded to the nearest whole
-          unit. Any crew uses at least 1 crate and 1 barrel a day. This
-          departure requirement is the same for every destination.
+          unit. Any crew uses at least 1 crate and 1 barrel a day. On the map,
+          hovering a town shows whether your supplies can reach it, and the
+          advisor warns you when your supplies cannot reach every port. Picking
+          a town shows the distance and the supplies needed before you confirm.
         </p>
 
         <p className="mb-4">

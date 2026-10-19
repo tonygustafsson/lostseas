@@ -192,12 +192,21 @@ describe("startJourney", () => {
     ["too many crew", { crewMembers: { count: 21 } }],
     ["angry crew", { crewMembers: { mood: 0 } }],
     ["ill crew", { crewMembers: { health: 0 } }],
-    ["too little food", { inventory: { food: 4 } }],
-    ["too little water", { inventory: { water: 9 } }],
+    // Havana is 2 days away: 10 crew need 2 food and 4 water
+    ["too little food", { inventory: { food: 1 } }],
+    ["too little water", { inventory: { water: 3 } }],
   ])("is blocked by %s", (_, overrides) => {
     expect(startJourney(inPort(overrides), { town: "Havana" })).toEqual({
       blocked: true,
     })
+  })
+
+  it("needs supplies for the distance to the destination", () => {
+    // 3 days of food: enough for 1-day Leogane, not for 5-day Biloxi
+    const player = inPort({ inventory: { food: 3 } })
+
+    expectSuccess(startJourney(player, { town: "Leogane" }))
+    expect(startJourney(player, { town: "Biloxi" })).toEqual({ blocked: true })
   })
 })
 

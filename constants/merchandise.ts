@@ -23,7 +23,7 @@ export const MERCHANDISE: Record<
     singleUnit: "crate",
     unit: "crates",
     description:
-      "Salt pork, hard tack and the odd weevil. Every 10 crew eat a crate a day, and no captain leaves port without 5 days' worth.",
+      "Salt pork, hard tack and the odd weevil. Every 10 crew eat a crate a day, and no captain leaves port without enough for the whole voyage.",
     availableAt: "shop",
     isNecessity: true,
   },
