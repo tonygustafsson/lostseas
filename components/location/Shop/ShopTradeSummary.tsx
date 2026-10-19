@@ -80,7 +80,7 @@ const ShopTradeSummary = ({
           icon={<ArrowLeftRight />}
           className={cn(
             tradeGold > 0 && "text-success",
-            tradeGold < 0 && "text-destructive"
+            tradeGold < 0 && "text-accent"
           )}
         >
           {formatSigned(tradeGold)}
@@ -89,7 +89,7 @@ const ShopTradeSummary = ({
         <Tile
           label={isShort ? "Short of gold" : "After trade"}
           icon={<Coins />}
-          className={cn(isShort && "text-destructive")}
+          className={cn(isShort && "text-accent")}
         >
           {goldAfter.toLocaleString("en-US")}
         </Tile>
