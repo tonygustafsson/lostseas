@@ -28,8 +28,8 @@ export const createMeetingShip = (mannedCannons: number, destination: Town) => {
   } as ShipMeetingState
 }
 
-// Tuned so a player who always fires wins about 60% of battles on average
-export const BASE_HIT_CHANCE = 0.345
+// Tuned so a player who always fires wins about 75% of battles on average
+export const BASE_HIT_CHANCE = 0.44
 export const MAX_HIT_CHANCE = 0.95
 
 export const getHitChance = (mannedCannons: number, opponentCannons: number) =>
