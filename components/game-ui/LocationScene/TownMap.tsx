@@ -8,7 +8,8 @@ import {
 } from "@/constants/townMaps"
 import { cn } from "@/lib/utils"
 
-import { useTownMapAmbience } from "./useTownMapAmbience"
+import { createTownMapRenderer } from "./townMapShader"
+import { useAmbienceCanvas } from "./useAmbienceCanvas"
 
 type PictureProps = {
   map: TownMapData
@@ -73,7 +74,13 @@ const TownMap = ({ map, alt, onMove }: Props) => {
   const [highlighted, setHighlighted] = useState<TownMapBuilding | null>(null)
   const [isHovering, setIsHovering] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null)
-  const ambienceRef = useTownMapAmbience(map, imageRef)
+  // Rippling water, drifting clouds and seagulls
+  const ambienceRef = useAmbienceCanvas(
+    imageRef,
+    createTownMapRenderer,
+    [map.desktop.waterMask, map.desktop.skyMask],
+    [map.mobile.waterMask, map.mobile.skyMask]
+  )
 
   const mask = highlighted
     ? `radial-gradient(circle ${highlighted.size / 2}cqw at ${highlighted.x}% ${highlighted.y}%, black 60%, transparent 100%)`

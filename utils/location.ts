@@ -23,3 +23,25 @@ export const getLocationBackground = (
   town: Character["town"],
   location: Character["location"]
 ) => `/img/location/${town && toSlug(town)}/${toSlug(location)}.png`
+
+export type LocationAmbience = {
+  sky: string
+  water: string
+  light: string
+}
+
+// Sky, water and light masks used to animate a building interior
+export const getLocationAmbience = (
+  town: Character["town"],
+  location: Character["location"]
+): LocationAmbience | undefined => {
+  if (!town) return undefined
+
+  const path = `${toSlug(town)}/${toSlug(location)}.png`
+
+  return {
+    sky: `/img/location-sky-masks/${path}`,
+    water: `/img/location-water-masks/${path}`,
+    light: `/img/location-light-masks/${path}`,
+  }
+}

@@ -1,10 +1,12 @@
-import { useAnimate } from "framer-motion"
 import Image from "next/image"
+import { useRef } from "react"
 
-import { getLocationBackground } from "@/utils/location"
+import { getLocationAmbience, getLocationBackground } from "@/utils/location"
 
 import BackToTown from "./BackToTown"
 import BuildingIntro from "./BuildingIntro"
+import { createBuildingSceneRenderer } from "./buildingSceneShader"
+import { useAmbienceCanvas } from "./useAmbienceCanvas"
 
 type Props = {
   town: Character["town"]
@@ -12,33 +14,36 @@ type Props = {
 }
 
 const BuildingScene = ({ town, location }: Props) => {
-  const [scope, animate] = useAnimate()
-
-  const onImageLoad = () => {
-    animate(
-      "img",
-      { objectPosition: "50% 50%", filter: "sepia(0)" },
-      {
-        objectPosition: { duration: 1, delay: 0.2 },
-        filter: { duration: 2, delay: 0.2 },
-      }
-    )
-  }
+  const imageRef = useRef<HTMLImageElement>(null)
+  const ambience = getLocationAmbience(town, location)
+  // Rippling water, drifting clouds, dust and flickering lights
+  const ambienceRef = useAmbienceCanvas(
+    imageRef,
+    createBuildingSceneRenderer,
+    ambience && [ambience.water, ambience.sky, ambience.light]
+  )
 
   return (
     <div className="relative grid min-h-88 place-items-center overflow-hidden rounded-b-xl border bg-slate-950 shadow-2xl lg:max-h-125">
-      <div className="absolute inset-0" ref={scope}>
+      <div className="absolute inset-0 opacity-80">
         <Image
+          ref={imageRef}
           src={getLocationBackground(town, location)}
           fill
           priority
           loading="eager"
           draggable={false}
-          onLoad={onImageLoad}
           alt="Background image"
-          className="object-cover opacity-80 select-none"
-          style={{ objectPosition: "50% 55%", filter: "sepia(1)" }}
+          className="object-cover select-none"
         />
+
+        {ambience && (
+          <div
+            ref={ambienceRef}
+            aria-hidden
+            className="pointer-events-none absolute inset-0 motion-reduce:hidden"
+          />
+        )}
       </div>
 
       <div className="z-20 flex w-full items-center justify-center px-4 py-10 text-center sm:px-6 lg:px-10 lg:py-30">
