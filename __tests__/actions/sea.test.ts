@@ -328,7 +328,7 @@ describe("continueJourney", () => {
       crewHealthLoss: 10,
       shipHealthLoss: 5,
       sunkShip: false,
-      inventoryPercentageLoss: 100,
+      lostMerchandise: {},
     }
     const player = atSea({ justMetAShip: true, attackFailureReport: report })
 
@@ -509,7 +509,7 @@ describe("battleMove", () => {
     expect(result.log).toMatch(/^Won a battle against France/)
   })
 
-  it("loses all carried gold and goods with one ship, but keeps cannons and savings", () => {
+  it("loses all carried gold and up to 3 goods, but keeps cannons and savings", () => {
     rollHigh()
     const player = patchDeep<Player>(
       inBattle({ enemyStrength: 100, playerStrength: 10 }),
@@ -540,7 +540,7 @@ describe("battleMove", () => {
     expect(result.player.locationStates?.sea?.attackFailureReport).toBeDefined()
   })
 
-  it("loses a share of goods based on the number of ships", () => {
+  it("takes all of 3 goods on a high roll, whatever the number of ships", () => {
     rollHigh()
     const player = patchDeep<Player>(
       inBattle({ enemyStrength: 100, playerStrength: 10 }),
@@ -554,16 +554,55 @@ describe("battleMove", () => {
             createdDay: 1,
           },
         },
-        inventory: { food: 50, water: 100 },
+        inventory: { rum: 4, sugar: 6 },
       }
     )
 
     const result = expectSuccess(battleMove(player, { action: "fire" }))
 
-    expect(result.player.inventory).toMatchObject({ food: 25, water: 50 })
+    expect(result.player.inventory).toEqual({
+      food: 50,
+      water: 0,
+      cannons: 5,
+      rum: 0,
+      sugar: 0,
+    })
+    expect(result.data).toMatchObject({
+      lostMerchandise: { water: 100, rum: 4, sugar: 6 },
+    })
   })
 
-  it("loses all goods without crashing when the player has no ships", () => {
+  it("takes all of a single good on a low roll", () => {
+    // Evading succeeds on a low roll, so the draw after the last round loses
+    rollLow()
+    const evade = { action: "evade", hit: true } as BattleRound
+    const player = inBattle({
+      enemyStrength: 100,
+      playerStrength: 100,
+      rounds: Array(BATTLE_MAX_ROUNDS - 1).fill(evade),
+    })
+
+    const result = expectSuccess(battleMove(player, { action: "evade" }))
+
+    expect(result.data.outcome).toBe("defeat")
+    expect(result.player.inventory).toEqual({ food: 0, water: 100, cannons: 5 })
+    expect(result.data).toMatchObject({ lostMerchandise: { food: 50 } })
+  })
+
+  it("takes nothing when the hold only has cannons", () => {
+    rollHigh()
+    const player = patchDeep<Player>(
+      inBattle({ enemyStrength: 100, playerStrength: 10 }),
+      { inventory: { food: 0, water: 0 } }
+    )
+
+    const result = expectSuccess(battleMove(player, { action: "fire" }))
+
+    expect(result.player.inventory).toEqual({ food: 0, water: 0, cannons: 5 })
+    expect(result.data).toMatchObject({ lostMerchandise: {} })
+  })
+
+  it("takes goods without crashing when the player has no ships", () => {
     rollHigh()
     const player = patchDeep<Player>(
       inBattle({ enemyStrength: 100, playerStrength: 10 }),
@@ -573,7 +612,9 @@ describe("battleMove", () => {
     const result = expectSuccess(battleMove(player, { action: "fire" }))
 
     expect(result.player.inventory).toEqual({ food: 0, water: 0, cannons: 5 })
-    expect(result.data).toMatchObject({ inventoryPercentageLoss: 100 })
+    expect(result.data).toMatchObject({
+      lostMerchandise: { food: 50, water: 100 },
+    })
   })
 
   it("can sink one of several ships", () => {

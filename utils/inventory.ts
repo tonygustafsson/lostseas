@@ -28,31 +28,3 @@ export const addToInventory = (
     },
     {} as Record<keyof Inventory, number>
   )
-
-export const removeFromAllInventoryItems = (
-  inventory: Inventory | undefined,
-  percentage: number
-) => {
-  if (!inventory) {
-    return {}
-  }
-
-  return Object.keys(inventory).reduce(
-    (acc, merchandise) => {
-      if (merchandise === "cannons") {
-        // Cannons are not affected by this
-        acc[merchandise as keyof Inventory] =
-          inventory[merchandise as keyof Inventory] || 0
-        return acc
-      }
-
-      acc[merchandise as keyof Inventory] = Math.floor(
-        (inventory[merchandise as keyof Inventory] || 0) *
-          (1 - percentage / 100)
-      )
-
-      return acc
-    },
-    {} as Record<keyof Inventory, number>
-  )
-}

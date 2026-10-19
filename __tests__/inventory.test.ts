@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { addToInventory, removeFromAllInventoryItems } from "@/utils/inventory"
+import { addToInventory } from "@/utils/inventory"
 
 describe("inventory utils", () => {
   it("addToInventory creates full record when inventory is undefined", () => {
@@ -18,25 +18,5 @@ describe("inventory utils", () => {
     // porcelain should not be added when both inventory and newSupplies are falsy
     // implementation may omit keys; ensure existing keys preserved
     expect(res.water).toBe(3)
-  })
-
-  it("removeFromAllInventoryItems reduces non-cannon items by percentage and leaves cannons unchanged", () => {
-    const inventory = { food: 10, water: 10, cannons: 5, porcelain: 4 } as any
-    const res = removeFromAllInventoryItems(inventory, 50) as any
-
-    expect(res.food).toBe(5)
-    expect(res.water).toBe(5)
-    expect(res.porcelain).toBe(2)
-    expect(res.cannons).toBe(5)
-  })
-
-  it("rounds remaining merchandise down to whole units after a loss", () => {
-    const inventory = { food: 9, water: 8, repairKits: 5, cannons: 3 } as any
-    const res = removeFromAllInventoryItems(inventory, 33) as any
-
-    expect(res.food).toBe(6)
-    expect(res.water).toBe(5)
-    expect(res.repairKits).toBe(3)
-    expect(res.cannons).toBe(3)
   })
 })

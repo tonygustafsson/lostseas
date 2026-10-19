@@ -6,8 +6,10 @@ import { getRandomInt } from "@/utils/random"
 import {
   calculateAttackSuccess,
   createMeetingShip,
+  getHitChance,
   getLootedMerchandise,
   getNumberOfRecruits,
+  getStolenMerchandise,
 } from "@/utils/shipMeeting"
 
 vi.mock("@/utils/random", () => ({
@@ -53,16 +55,32 @@ describe("shipMeeting utilities", () => {
     expect(result.crewMembers).toEqual(result.cannons * 2)
   })
 
-  it("calculateAttackSuccess returns true/false based on mocked scores", () => {
+  it("getHitChance is the base chance for an even fight", () => {
+    expect(getHitChance(10, 10)).toBeCloseTo(0.345)
+  })
+
+  it("getHitChance scales with the cannon ratio and is capped", () => {
+    expect(getHitChance(8, 10)).toBeCloseTo(0.276)
+    expect(getHitChance(11, 10)).toBeCloseTo(0.3795)
+    expect(getHitChance(100, 10)).toBe(0.95)
+  })
+
+  it("getHitChance never hits without manned cannons", () => {
+    expect(getHitChance(0, 5)).toBe(0)
+  })
+
+  it("getHitChance treats an opponent without cannons as one cannon", () => {
+    expect(getHitChance(1, 0)).toBeCloseTo(0.345)
+  })
+
+  it("calculateAttackSuccess hits when the roll is below the hit chance", () => {
     ;(getMannedCannons as any).mockReturnValue(10)
 
-    // control randomness: first call for playerScore extra, second for opponentScore extra
-    ;(getRandomInt as any)
-      .mockImplementationOnce(() => 0)
-      .mockImplementationOnce(() => 5)
+    ;(getRandomInt as any).mockReturnValue(34)
+    expect(calculateAttackSuccess(20, 10, 10)).toBe(true)
 
-    const success = calculateAttackSuccess(10, { cannons: 5 } as any, 8)
-    expect(typeof success).toBe("boolean")
+    ;(getRandomInt as any).mockReturnValue(35)
+    expect(calculateAttackSuccess(20, 10, 10)).toBe(false)
   })
 
   it("getNumberOfRecruits uses different percentage ranges based on opponent size", () => {
@@ -92,5 +110,35 @@ describe("shipMeeting utilities", () => {
 
     const looted = getLootedMerchandise()
     expect(typeof looted).toBe("object")
+  })
+
+  it("getStolenMerchandise takes all of the rolled number of carried goods", () => {
+    // 2 goods, then always the last one left
+    ;(getRandomInt as any).mockImplementation((min: number, max: number) =>
+      min === 1 ? 2 : max
+    )
+
+    expect(
+      getStolenMerchandise({ food: 5, water: 0, cannons: 4, rum: 3, silk: 2 })
+    ).toEqual({ rum: 3, silk: 2 })
+  })
+
+  it("getStolenMerchandise takes everything when carrying fewer goods than rolled", () => {
+    ;(getRandomInt as any).mockImplementation((min: number, max: number) =>
+      min === 1 ? 3 : max
+    )
+
+    expect(getStolenMerchandise({ food: 5, cannons: 4 })).toEqual({ food: 5 })
+  })
+
+  it("getStolenMerchandise never takes cannons, repair kits or goods you do not have", () => {
+    ;(getRandomInt as any).mockImplementation((min: number, max: number) =>
+      min === 1 ? 3 : max
+    )
+
+    expect(
+      getStolenMerchandise({ water: 0, cannons: 4, repairKits: 8 })
+    ).toEqual({})
+    expect(getStolenMerchandise(undefined)).toEqual({})
   })
 })

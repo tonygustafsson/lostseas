@@ -114,12 +114,27 @@ describe("seaBattle", () => {
 
     expect(getRandomInt).toHaveBeenCalledWith(10, 25)
     expect(getRandomInt).toHaveBeenCalledWith(3, 8)
-    expect(getRandomInt).toHaveBeenCalledWith(2, 6)
+    expect(getRandomInt).toHaveBeenCalledWith(1, 2)
     expect(result.battle.enemyStrength).toBe(100)
     expect(result.battle.playerStrength).toBe(75)
     expect(result.ships.a.health).toBe(92)
     expect(result.ships.b.health).toBe(0)
-    expect(result.crewHealth).toBe(94)
+    expect(result.crewHealth).toBe(98)
+  })
+
+  it("hurts the crew more the more battle strength you have already lost", () => {
+    mockMove(false)
+
+    // 60% strength lost adds 5 (one per 12%) to the highest roll of 2
+    const result = resolveBattleRound(
+      battle(100, 40),
+      "fire",
+      createPlayer(),
+      8
+    )
+
+    expect(result.battle.rounds?.[0].crewDamage).toBe(7)
+    expect(result.crewHealth).toBe(93)
   })
 
   it("takes no damage when evading successfully and never hurts the enemy", () => {

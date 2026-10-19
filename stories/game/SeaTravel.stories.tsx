@@ -49,8 +49,8 @@ const defeat: Player = {
     food: 90,
     water: 120,
     cannons: 8,
-    medicine: 6,
-    rum: 10,
+    medicine: 0,
+    rum: 0,
     repairKits: 1,
   },
   ships: {
@@ -60,7 +60,7 @@ const defeat: Player = {
     sea: {
       shipMeeting: null,
       attackFailureReport: {
-        inventoryPercentageLoss: 50,
+        lostMerchandise: { rum: 10, medicine: 6 },
         crewHealthLoss: 12,
         shipHealthLoss: 20,
         sunkShip: "Black Pearl",
@@ -75,15 +75,15 @@ const totalLoss: Player = {
     food: 0,
     water: 0,
     cannons: 8,
-    medicine: 0,
+    medicine: 6,
     rum: 0,
-    repairKits: 0,
+    repairKits: 1,
   },
   locationStates: {
     sea: {
       shipMeeting: null,
       attackFailureReport: {
-        inventoryPercentageLoss: 100,
+        lostMerchandise: { food: 40, water: 120, rum: 10 },
         crewHealthLoss: 12,
         shipHealthLoss: 20,
         sunkShip: false,

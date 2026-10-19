@@ -32,7 +32,7 @@ const successReport: AttackSuccessReport = {
 const failureReport: AttackFailureReport = {
   crewHealthLoss: 10,
   sunkShip: false,
-  inventoryPercentageLoss: 100,
+  lostMerchandise: { food: 10 },
   shipHealthLoss: 10,
 }
 

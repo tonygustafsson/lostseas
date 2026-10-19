@@ -15,8 +15,8 @@ export const createMeetingShip = (mannedCannons: number, destination: Town) => {
   const shipTypes: ShipType[] = ["Brig", "Merchantman", "Galleon", "Frigate"]
   const shipType = shipTypes[getRandomInt(0, shipTypes.length - 1)]
 
-  const minCannons = mannedCannons < 1 ? 1 : Math.floor(mannedCannons * 0.8)
-  const maxCannons = mannedCannons < 1 ? 2 : Math.floor(mannedCannons * 1.1)
+  const minCannons = mannedCannons < 1 ? 1 : Math.round(mannedCannons * 0.8)
+  const maxCannons = mannedCannons < 1 ? 2 : Math.round(mannedCannons * 1.1)
   const cannons = getRandomInt(minCannons, maxCannons) || 1
   const crewMembers = cannons * 2
 
@@ -28,28 +28,25 @@ export const createMeetingShip = (mannedCannons: number, destination: Town) => {
   } as ShipMeetingState
 }
 
+// Tuned so a player who always fires wins about 60% of battles on average
+export const BASE_HIT_CHANCE = 0.345
+export const MAX_HIT_CHANCE = 0.95
+
+export const getHitChance = (mannedCannons: number, opponentCannons: number) =>
+  mannedCannons <= 0
+    ? 0
+    : Math.min(
+        MAX_HIT_CHANCE,
+        (BASE_HIT_CHANCE * mannedCannons) / Math.max(1, opponentCannons)
+      )
+
 export const calculateAttackSuccess = (
   crewMembers: CrewMembers["count"],
   cannons: Inventory["cannons"],
   opponentCannons: number
-) => {
-  const mannedCannons = getMannedCannons(crewMembers, cannons)
-
-  let chanceVariation = 0.1
-
-  if (mannedCannons < 6) {
-    chanceVariation = 0.4
-  } else if (mannedCannons < 12) {
-    chanceVariation = 0.2
-  }
-
-  const playerScore =
-    mannedCannons + getRandomInt(0, mannedCannons * chanceVariation)
-  const opponentScore =
-    opponentCannons + getRandomInt(0, opponentCannons * chanceVariation)
-
-  return playerScore >= opponentScore
-}
+) =>
+  getRandomInt(1, 100) <=
+  getHitChance(getMannedCannons(crewMembers, cannons), opponentCannons) * 100
 
 export const getNumberOfRecruits = (opponentCrewMembers: number) => {
   if (opponentCrewMembers <= 10) {
@@ -76,4 +73,23 @@ export const getLootedMerchandise = () => {
   })
 
   return lootedMerchandise
+}
+
+const UNSTEALABLE_ITEMS: (keyof Inventory)[] = ["cannons", "repairKits"]
+
+// After a defeat the enemy takes everything of 1-3 goods you carry. Cannons
+// and repair kits stay aboard, and goods you have none of cannot be taken.
+export const getStolenMerchandise = (inventory: Inventory | undefined) => {
+  const carried = (Object.keys(inventory || {}) as (keyof Inventory)[]).filter(
+    (item) => !UNSTEALABLE_ITEMS.includes(item) && (inventory?.[item] || 0) > 0
+  )
+  const stolenMerchandise: Partial<Record<keyof Inventory, number>> = {}
+  const numberOfGoods = Math.min(getRandomInt(1, 3), carried.length)
+
+  for (let i = 0; i < numberOfGoods; i++) {
+    const [item] = carried.splice(getRandomInt(0, carried.length - 1), 1)
+    stolenMerchandise[item] = inventory?.[item]
+  }
+
+  return stolenMerchandise
 }

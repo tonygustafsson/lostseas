@@ -2,7 +2,7 @@ import { HeartPulse, Smile } from "lucide-react"
 import Image from "next/image"
 import { useMemo } from "react"
 import { FaCoins, FaUsers } from "react-icons/fa"
-import { GiOpenedFoodCan, GiShoonerSailboat } from "react-icons/gi"
+import { GiShoonerSailboat } from "react-icons/gi"
 
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import TreasureIcon from "@/components/TreasureIcon"
@@ -24,9 +24,6 @@ const AttackReport = () => {
   const failureReport = player?.locationStates?.sea?.attackFailureReport
   const report = successReport || failureReport
   const foundTreasure = successReport?.foundTreasure
-  const remainingSupplies = Object.entries(player?.inventory || {}).filter(
-    ([item]) => item !== "cannons"
-  )
 
   const quip = useMemo(
     () => (successReport ? getAttackSuccessQuip() : getAttackFailureQuip()),
@@ -176,35 +173,28 @@ const AttackReport = () => {
               <p>{player.character.account} gold safe in the bank</p>
             </AttackReportItem>
 
-            {remainingSupplies.map(([key, total]) => {
-              const item = key as keyof Inventory
-              const unit =
-                total === 1
-                  ? MERCHANDISE[item].singleUnit
-                  : MERCHANDISE[item].unit
+            {Object.entries(failureReport.lostMerchandise || {}).map(
+              ([key, value]) => {
+                if (!value) return null
 
-              return (
-                <AttackReportItem
-                  variant="error"
-                  key={key}
-                  title={snakeCaseToTitleCase(item)}
-                  change={`−${Number(failureReport.inventoryPercentageLoss.toFixed(1))}%`}
-                  icon={<MerchandiseIcon item={item} />}
-                >
-                  {total} {unit} remaining
-                </AttackReportItem>
-              )
-            })}
+                const item = key as keyof Inventory
+                const unit =
+                  value === 1
+                    ? MERCHANDISE[item].singleUnit
+                    : MERCHANDISE[item].unit
 
-            {!remainingSupplies.length && (
-              <AttackReportItem
-                variant="error"
-                title="Supplies"
-                change={`−${Number(failureReport.inventoryPercentageLoss.toFixed(1))}%`}
-                icon={<GiOpenedFoodCan />}
-              >
-                No supplies remaining
-              </AttackReportItem>
+                return (
+                  <AttackReportItem
+                    variant="error"
+                    key={key}
+                    title={snakeCaseToTitleCase(item)}
+                    change={`−${value} ${unit}`}
+                    icon={<MerchandiseIcon item={item} />}
+                  >
+                    All taken
+                  </AttackReportItem>
+                )
+              }
             )}
 
             {failureReport.sunkShip && (
@@ -246,12 +236,6 @@ const AttackReport = () => {
             </AttackReportItem>
           ))}
       </ul>
-
-      {failureReport && (
-        <p className="text-muted-foreground text-xs">
-          Your cannons and treasures are safe.
-        </p>
-      )}
     </>
   )
 }

@@ -34,5 +34,5 @@ type AttackSuccessReport = AttackReport & {
 
 type AttackFailureReport = AttackReport & {
   sunkShip: string | false
-  inventoryPercentageLoss: number
+  lostMerchandise: Partial<Record<keyof Inventory, number>>
 }

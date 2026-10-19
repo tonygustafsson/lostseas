@@ -1,8 +1,12 @@
 import { createTreasure } from "./createTreasure"
-import { decreaseCrewHealth, increaseCrewMood } from "./crew"
-import { addToInventory, removeFromAllInventoryItems } from "./inventory"
+import { increaseCrewMood } from "./crew"
+import { addToInventory } from "./inventory"
 import { getRandomInt } from "./random"
-import { getLootedMerchandise, getNumberOfRecruits } from "./shipMeeting"
+import {
+  getLootedMerchandise,
+  getNumberOfRecruits,
+  getStolenMerchandise,
+} from "./shipMeeting"
 
 type BattleLosses = { shipHealthLoss: number; crewHealthLoss: number }
 
@@ -16,11 +20,6 @@ export const getVictoryUpdate = (
   const opponentNation = shipMeeting.nation
   const opponentCrewMembers = shipMeeting.crewMembers
 
-  const crewHealthLoss = getRandomInt(1, 10)
-  const newCrewHealth = decreaseCrewHealth(
-    player.crewMembers.health,
-    crewHealthLoss
-  )
   const crewMoodIncrease = 20
   const newCrewMood = increaseCrewMood(
     player.crewMembers.mood,
@@ -36,7 +35,7 @@ export const getVictoryUpdate = (
 
   const report: AttackSuccessReport = {
     crewMoodIncrease,
-    crewHealthLoss: crewHealthLoss + battleLosses.crewHealthLoss,
+    crewHealthLoss: battleLosses.crewHealthLoss,
     crewMemberRecruits,
     lootedGold,
     lootedMerchandise,
@@ -55,7 +54,7 @@ export const getVictoryUpdate = (
     },
     crewMembers: {
       count: player.crewMembers.count + crewMemberRecruits,
-      health: newCrewHealth,
+      health: player.crewMembers.health,
       mood: newCrewMood,
     },
     ships: player.ships,
@@ -90,21 +89,15 @@ export const getDefeatUpdate = (
   const opponentNation = shipMeeting.nation
   const numberOfShips = Object.keys(player.ships).length
 
-  const crewHealthLoss = getRandomInt(10, 30)
-  const newCrewHealth = decreaseCrewHealth(
-    player.crewMembers.health,
-    crewHealthLoss
-  )
+  // A defeat adds no crew damage beyond the battle rounds
 
-  // Without ships everything is lost. Dividing by 0 ships would give Infinity
-  // and turn every inventory item negative.
-  const inventoryPercentageLoss = numberOfShips
-    ? (1 / numberOfShips) * 100
-    : 100
-  const newInventory = removeFromAllInventoryItems(
-    player.inventory,
-    inventoryPercentageLoss
-  )
+  const lostMerchandise = getStolenMerchandise(player.inventory)
+  const newInventory = {
+    ...player.inventory,
+    ...Object.fromEntries(
+      Object.keys(lostMerchandise).map((item) => [item, 0])
+    ),
+  }
 
   const sinkShip = numberOfShips > 1 ? getRandomInt(1, 3) === 1 : false
   const randomShipId = Object.keys(player.ships)[
@@ -112,9 +105,9 @@ export const getDefeatUpdate = (
   ]
 
   const report: AttackFailureReport = {
-    crewHealthLoss: crewHealthLoss + battleLosses.crewHealthLoss,
+    crewHealthLoss: battleLosses.crewHealthLoss,
     sunkShip: sinkShip ? player.ships[randomShipId].name : false,
-    inventoryPercentageLoss,
+    lostMerchandise,
     shipHealthLoss: battleLosses.shipHealthLoss,
   }
 
@@ -128,7 +121,7 @@ export const getDefeatUpdate = (
       } as Character["battles"],
     },
     crewMembers: {
-      health: newCrewHealth,
+      health: player.crewMembers.health,
     },
     ships: {
       ...player.ships,

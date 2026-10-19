@@ -6,6 +6,8 @@ import { calculateAttackSuccess } from "./shipMeeting"
 export const BATTLE_MAX_ROUNDS = 5
 export const BATTLE_STRENGTH = 100
 export const EVADE_CHANCE = 50
+// A lost fire move hurts the crew 1 more for every this much strength lost
+export const CREW_DAMAGE_STRENGTH_STEP = 12
 
 export const startBattle = (): BattleState => ({
   enemyStrength: BATTLE_STRENGTH,
@@ -25,15 +27,24 @@ export const getBattleLosses = (battle: BattleState) =>
   )
 
 // A lost move costs battle strength and a little ship and crew health.
-// Evading halves all of it.
-const getPlayerDamage = (action: BattleAction, hit: boolean) => {
+// Lost fire moves hurt the crew more once the battle is going badly.
+// Evading costs less.
+const getPlayerDamage = (
+  action: BattleAction,
+  hit: boolean,
+  playerStrength: number
+) => {
   if (hit) return { playerDamage: 0, shipDamage: 0, crewDamage: 0 }
 
   return action === "fire"
     ? {
         playerDamage: getRandomInt(10, 25),
         shipDamage: getRandomInt(3, 8),
-        crewDamage: getRandomInt(2, 6),
+        crewDamage:
+          getRandomInt(1, 2) +
+          Math.floor(
+            (BATTLE_STRENGTH - playerStrength) / CREW_DAMAGE_STRENGTH_STEP
+          ),
       }
     : {
         playerDamage: getRandomInt(5, 12),
@@ -71,7 +82,11 @@ export const resolveBattleRound = (
       : getRandomInt(1, 100) <= EVADE_CHANCE
 
   const enemyDamage = action === "fire" && hit ? getRandomInt(30, 50) : 0
-  const { playerDamage, shipDamage, crewDamage } = getPlayerDamage(action, hit)
+  const { playerDamage, shipDamage, crewDamage } = getPlayerDamage(
+    action,
+    hit,
+    battle.playerStrength
+  )
 
   const ships = shipDamage
     ? reduceShipsHealth(player.ships, shipDamage)

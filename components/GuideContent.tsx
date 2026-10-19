@@ -13,7 +13,12 @@ import {
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import { TITLE_INFO } from "@/constants/title"
 import { cn } from "@/lib/utils"
-import { BATTLE_MAX_ROUNDS, EVADE_CHANCE } from "@/utils/seaBattle"
+import {
+  BATTLE_MAX_ROUNDS,
+  CREW_DAMAGE_STRENGTH_STEP,
+  EVADE_CHANCE,
+} from "@/utils/seaBattle"
+import { BASE_HIT_CHANCE } from "@/utils/shipMeeting"
 import { capitalize } from "@/utils/string"
 
 import {
@@ -268,14 +273,6 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           alt="The shipyard"
           className="mx-auto mb-4 aspect-[1.74]"
         />
-
-        <p className="mb-4">
-          Losing a sea battle also costs you a share of every inventory item
-          except cannons, based on how many ships you had before the battle.
-          With three ships, you lose one third of those goods; with one ship,
-          you lose all of them. You lose all gold you carry, but your bank
-          balance and treasures are safe.
-        </p>
 
         <p className="mb-4">
           As a Pirate, you can own up to {TITLE_INFO.Pirate.maxShips} ships.
@@ -816,10 +813,11 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <p className="mb-4">
           You can ignore an encounter to continue sailing without fighting. If
           you attack, the battle is fought over up to {BATTLE_MAX_ROUNDS}{" "}
-          rounds. Each round, choose to fire or evade. Firing compares your
-          manned cannons with the opponent&apos;s cannons, with a random bonus
-          for both sides. You can sometimes beat a slightly stronger ship, but
-          attacking one with more cannons is risky.
+          rounds. Each round, choose to fire or evade. Firing hits more often
+          the more manned cannons you have compared with the opponent. Against a
+          ship with as many cannons as you have manned, about{" "}
+          {Math.round(BASE_HIT_CHANCE * 100)}% of your shots hit. Attacking a
+          ship with more cannons is risky.
         </p>
 
         <ul className="mb-4 list-disc pl-6">
@@ -830,8 +828,11 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           </li>
           <li className="mb-2">
             When you fire and win the move, the enemy loses 30–50% battle
-            strength. When you lose it, you lose 10–25% battle strength, each of
-            your ships loses 3–8% health and your crew loses 2–6% health.
+            strength. When you lose it, you lose 10–25% battle strength and each
+            of your ships loses 3–8% health. Your crew loses 1–2% health, plus
+            1% for every {CREW_DAMAGE_STRENGTH_STEP}% battle strength you have
+            already lost, so missed shots hurt more when the battle is going
+            badly.
           </li>
           <li className="mb-2">
             Evading succeeds {EVADE_CHANCE}% of the time, whatever your cannons.
@@ -854,8 +855,15 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
 
         <p>
           After a battle, a report shows your loot, recruits, damage and any
-          losses. Your crew also loses health when the battle ends, more after a
-          defeat than after a victory.
+          losses. Your crew only loses health during the rounds, not when the
+          battle ends.
+        </p>
+
+        <p className="mt-4">
+          If you lose, the enemy takes all the gold you carry and everything of
+          1–3 goods in your hold. Gold in the bank, treasures, cannons and
+          repair kits are safe. If you have more than one ship, there is a 1 in
+          3 chance that one of them sinks.
         </p>
       </AccordionContent>
     </AccordionItem>

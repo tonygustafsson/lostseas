@@ -141,7 +141,7 @@ describe("battleMove", () => {
 
     expect(await response.json()).toMatchObject({ outcome: "ongoing" })
     expect(mocks.player.ships.a.health).toBe(92)
-    expect(mocks.player.crewMembers.health).toBe(84)
+    expect(mocks.player.crewMembers.health).toBe(88)
     expect(mocks.player.locationStates?.sea?.battle).toEqual({
       enemyStrength: 100,
       playerStrength: 75,
@@ -152,7 +152,7 @@ describe("battleMove", () => {
           enemyDamage: 0,
           playerDamage: 25,
           shipDamage: 8,
-          crewDamage: 6,
+          crewDamage: 2,
         },
       ],
     })
@@ -181,16 +181,41 @@ describe("battleMove", () => {
     expect(await response.json()).toMatchObject({
       outcome: "victory",
       shipHealthLoss: 6,
-      crewHealthLoss: 14,
+      // Only the damage from the rounds, a victory adds none
+      crewHealthLoss: 4,
     })
     expect(sea?.battle).toBeUndefined()
     expect(sea?.shipMeeting).toBeUndefined()
     expect(sea?.justMetAShip).toBe(true)
     expect(sea?.attackSuccessReport?.shipHealthLoss).toBe(6)
     expect(mocks.player.ships.a.health).toBe(94)
-    expect(mocks.player.crewMembers.health).toBe(76)
+    expect(mocks.player.crewMembers.health).toBe(86)
     expect(mocks.player.character.battles?.France?.won).toBe(1)
     expect(mocks.player.character.gold).toBe(1000 + 16 * 100)
+  })
+
+  it("keeps the crew damage from a lost last move in a victory", async () => {
+    vi.mocked(calculateAttackSuccess).mockReturnValue(false)
+    const evade: BattleRound = {
+      action: "evade",
+      hit: true,
+      enemyDamage: 0,
+      playerDamage: 0,
+      shipDamage: 0,
+      crewDamage: 0,
+    }
+    mocks.player = createPlayer({
+      battle: battle(10, 80, [evade, evade, evade, evade]),
+    })
+
+    const response = await move("fire")
+
+    // 2 plus 1 for the 20% strength already lost
+    expect(await response.json()).toMatchObject({
+      outcome: "victory",
+      crewHealthLoss: 3,
+    })
+    expect(mocks.player.crewMembers.health).toBe(87)
   })
 
   it("applies the defeat and ends the battle", async () => {
@@ -203,9 +228,10 @@ describe("battleMove", () => {
     expect(await response.json()).toMatchObject({ outcome: "defeat" })
     expect(sea?.battle).toBeUndefined()
     expect(sea?.attackFailureReport?.shipHealthLoss).toBe(8)
-    expect(sea?.attackFailureReport?.crewHealthLoss).toBe(36)
+    // Only the damage from the round: 2 plus 1 per 12% of the 80% strength lost
+    expect(sea?.attackFailureReport?.crewHealthLoss).toBe(8)
     expect(mocks.player.ships.a.health).toBe(92)
-    expect(mocks.player.crewMembers.health).toBe(54)
+    expect(mocks.player.crewMembers.health).toBe(82)
     expect(mocks.player.character.gold).toBe(0)
     expect(mocks.player.character.battles?.France?.lost).toBe(1)
   })
