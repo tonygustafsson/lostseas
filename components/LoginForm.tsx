@@ -1,6 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { KeyRound } from "lucide-react"
 import { useSearchParams } from "next/navigation"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
@@ -13,13 +14,14 @@ import { loginValidationSchema } from "@/utils/validation"
 import QrScanner from "./QrScanner"
 import TextField from "./TextField"
 import { Button } from "./ui/button"
+import { Separator } from "./ui/separator"
 
 type ValidationSchema = z.infer<typeof loginValidationSchema>
 
 const LoginForm = () => {
   const { data: player } = useGetPlayer()
   const searchParams = useSearchParams()
-  const { login } = usePlayer()
+  const { login, loginWithPasskey, isLoggingInWithPasskey } = usePlayer()
 
   const [apiError, setApiError] = useState<string>()
 
@@ -44,6 +46,22 @@ const LoginForm = () => {
     }
   }
 
+  const onPasskeyLogin = async () => {
+    setApiError(undefined)
+
+    try {
+      const response = await loginWithPasskey()
+
+      if (response?.status === 200) {
+        window.location.reload()
+      } else {
+        setApiError("Could not sign in with that passkey.")
+      }
+    } catch {
+      setApiError("Passkey sign-in was cancelled or is not supported here.")
+    }
+  }
+
   if (player) return null
 
   return (
@@ -53,6 +71,21 @@ const LoginForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-2"
     >
+      <Button
+        type="button"
+        onClick={onPasskeyLogin}
+        disabled={isLoggingInWithPasskey}
+      >
+        <KeyRound />
+        Sign in with passkey
+      </Button>
+
+      <div className="text-muted-foreground my-4 flex items-center gap-4 text-sm">
+        <Separator className="flex-1" />
+        or use your user ID
+        <Separator className="flex-1" />
+      </div>
+
       <TextField
         label="User ID"
         {...register("playerId")}

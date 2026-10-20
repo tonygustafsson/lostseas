@@ -1,11 +1,18 @@
 "use client"
 
+import {
+  sendSignal,
+  startAuthentication,
+  startRegistration,
+} from "@simplewebauthn/browser"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { deleteCookie, getCookie } from "cookies-next/client"
 import { useRouter } from "next/navigation"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import apiRequest from "@/utils/apiRequest"
+
+import { PASSKEYS_QUERY_KEY } from "./usePasskeys"
 
 export const PLAYER_QUERY_KEY = "player"
 
@@ -49,6 +56,65 @@ export const usePlayer = () => {
     onError: (error) => console.error(error),
   })
 
+  const { mutateAsync: loginWithPasskey, isPending: isLoggingInWithPasskey } =
+    useMutation({
+      mutationFn: async () => {
+        const options = await apiRequest(
+          "/api/user/passkey/login-options",
+          {},
+          "POST"
+        )
+
+        if (options?.status !== 200) return options
+
+        const response = await startAuthentication({
+          optionsJSON: options?.data,
+        })
+
+        const result = await apiRequest(
+          "/api/user/passkey/login-verify",
+          response,
+          "POST"
+        )
+
+        // The passkey was removed on the server, so ask the password manager
+        // to stop offering it. Unsupported browsers throw, which is ignored.
+        if (result?.data?.credentialID) {
+          sendSignal({
+            signalName: "unknownCredential",
+            rpID: result.data.rpID,
+            credentialID: result.data.credentialID,
+          }).catch(() => {})
+        }
+
+        return result
+      },
+    })
+
+  const { mutateAsync: addPasskey, isPending: isAddingPasskey } = useMutation({
+    mutationFn: async () => {
+      const options = await apiRequest(
+        "/api/user/passkey/register-options",
+        {},
+        "POST"
+      )
+
+      if (options?.status !== 200) return options
+
+      const response = await startRegistration({ optionsJSON: options?.data })
+
+      return apiRequest("/api/user/passkey/register-verify", response, "POST")
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [PASSKEYS_QUERY_KEY] })
+    },
+  })
+
+  const { mutateAsync: resetGame, isPending: isResettingGame } = useMutation({
+    mutationFn: () => apiRequest("/api/user/reset", {}, "POST"),
+    onError: (error) => console.error(error),
+  })
+
   const { mutateAsync: logout, isPending: isLoggingOut } = useMutation({
     mutationFn: () => apiRequest("/api/user/logout", {}, "POST"),
     onError: (error) => console.error(error),
@@ -67,6 +133,12 @@ export const usePlayer = () => {
   return {
     login,
     isLoggingIn,
+    loginWithPasskey,
+    isLoggingInWithPasskey,
+    addPasskey,
+    isAddingPasskey,
+    resetGame,
+    isResettingGame,
     logout,
     isLoggingOut,
     register,

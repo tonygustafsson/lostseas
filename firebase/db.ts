@@ -2,7 +2,7 @@ import "server-only"
 
 import { adminDb } from "./firebase-admin"
 
-const validatePlayerId = (id: string) => {
+export const validatePlayerId = (id: string) => {
   if (
     typeof id !== "string" ||
     !id ||
@@ -25,21 +25,36 @@ export const getPlayer = async (playerId: Player["id"]) => {
   return snapshot.exists() ? (snapshot.val() as Player) : null
 }
 
-export const savePlayer = async (player: Player, logMessage?: string) => {
+export const savePlayer = async (
+  player: Player,
+  logMessage?: string,
+  { resetHistory = false }: { resetHistory?: boolean } = {}
+) => {
   validatePlayerId(player.id)
   const updates: Record<string, unknown> = {}
 
   updates[`players/${player.id}`] = player
+
+  if (resetHistory) {
+    updates[`logs/${player.id}`] = null
+    updates[`statistics/${player.id}`] = null
+  }
 
   if (logMessage) {
     const pushRef = adminDb.ref(`logs/${player.id}`).push()
     const key = pushRef.key
 
     if (key) {
-      updates[`logs/${player.id}/${key}`] = {
+      const entry: LogEntry = {
         message: logMessage,
         day: player.character.day,
         timestamp: Date.now(),
+      }
+
+      if (resetHistory) {
+        updates[`logs/${player.id}`] = { [key]: entry }
+      } else {
+        updates[`logs/${player.id}/${key}`] = entry
       }
     }
   }

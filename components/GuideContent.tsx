@@ -51,6 +51,7 @@ const SECTIONS = [
   "social-status",
   "economy",
   "traveling",
+  "account",
 ]
 
 type Props = {
@@ -910,6 +911,40 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           1–3 goods in your hold. Gold in the bank, treasures, cannons and
           repair kits are safe. If you have more than one ship, there is a 1 in
           3 chance that one of them sinks.
+        </p>
+      </AccordionContent>
+    </AccordionItem>
+
+    <AccordionItem
+      value="account"
+      className={appearance === "public" ? "py-4" : undefined}
+    >
+      <GuideSectionHeading
+        appearance={appearance}
+        className="font-serif text-xl"
+      >
+        Your account
+      </GuideSectionHeading>
+      <AccordionContent>
+        <h3 className="mb-2 font-serif text-lg">Signing in with a passkey</h3>
+
+        <p className="mb-4">
+          Add a passkey in Settings to sign in with your device&apos;s screen
+          lock, fingerprint or face recognition. You can add more than one
+          passkey and remove them in Settings. Some passkeys sync through your
+          password manager; others only work on the device where you added them.
+          Keep your user ID or QR code safe as another way to sign in.
+        </p>
+
+        <h3 className="mb-2 font-serif text-lg">Starting over</h3>
+
+        <p>
+          Reset game in Settings starts a new game in a random town belonging to
+          your nation. Your name, nationality, gender, age, user ID and passkeys
+          are kept. All game progress is reset, including your gold, bank
+          savings, loans, fleet, crew, inventory, treasures, titles and battle
+          record. Your old journey log and statistics are cleared. This cannot
+          be undone.
         </p>
       </AccordionContent>
     </AccordionItem>

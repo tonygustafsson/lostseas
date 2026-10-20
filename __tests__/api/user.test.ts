@@ -7,6 +7,8 @@ import { GET as getRandomCharacter } from "@/app/api/user/getRandomCharacter/rou
 import { POST as login } from "@/app/api/user/login/route"
 import { POST as logout } from "@/app/api/user/logout/route"
 import { POST as register } from "@/app/api/user/register/route"
+import { POST as reset } from "@/app/api/user/reset/route"
+import { TOWNS } from "@/constants/locations"
 import {
   MUSIC_STATE_COOKIE_NAME,
   PLAYER_ID_COOKIE_NAME,
@@ -47,6 +49,7 @@ vi.mock("@/firebase/db", () => ({
 const request = (body: unknown) =>
   new Request("http://localhost/api/user", {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   })
 
@@ -55,6 +58,7 @@ beforeEach(() => {
   mocks.playerId = PLAYER_ID
   mocks.player = createTestPlayer({ id: PLAYER_ID })
   mocks.savePlayer.mockImplementation(async (player: Player) => player)
+  mocks.saveStatistics.mockResolvedValue(undefined)
 })
 
 describe.each([
@@ -126,6 +130,7 @@ describe("POST /api/user/login", () => {
 
     expect(response.status).toBe(200)
     expect(response.cookies.get(PLAYER_ID_COOKIE_NAME)?.value).toBe(PLAYER_ID)
+    expect(response.cookies.get(PLAYER_ID_COOKIE_NAME)?.sameSite).toBe("lax")
   })
 
   it("returns 401 for an unknown player", async () => {
@@ -222,5 +227,81 @@ describe("POST /api/user/register", () => {
     const response = await register(request(validBody))
 
     expect(response.status).toBe(500)
+  })
+})
+
+describe("POST /api/user/reset", () => {
+  it("returns 401 without a player cookie", async () => {
+    mocks.playerId = undefined
+
+    expect((await reset(request({}))).status).toBe(401)
+    expect(mocks.savePlayer).not.toHaveBeenCalled()
+  })
+
+  it("returns 401 when the player does not exist", async () => {
+    mocks.player = undefined
+
+    expect((await reset(request({}))).status).toBe(401)
+  })
+
+  it("saves the reset player in a town of their nation", async () => {
+    mocks.player = createTestPlayer({
+      id: PLAYER_ID,
+      character: { name: "Anne Bonny", nationality: "Spain", gold: 50000 },
+      crewMembers: { count: 90 },
+    })
+
+    const response = await reset(request({}))
+
+    expect(response.status).toBe(200)
+
+    const [savedPlayer, savedLog] = mocks.savePlayer.mock.calls[0]
+
+    expect(savedPlayer.id).toBe(PLAYER_ID)
+    expect(savedPlayer.character).toMatchObject({
+      name: "Anne Bonny",
+      nationality: "Spain",
+      title: "Pirate",
+      gold: 300,
+      day: 1,
+    })
+    expect(TOWNS[savedPlayer.character.town as Town].nation).toBe("Spain")
+    expect(savedPlayer.crewMembers.count).toBe(4)
+    expect(savedLog).toBe("Started the game over.")
+    expect(mocks.savePlayer.mock.calls[0][2]).toEqual({ resetHistory: true })
+    expect(mocks.saveStatistics).toHaveBeenCalledWith(
+      PLAYER_ID,
+      expect.objectContaining({ day: 1, gold: 300, crewMembers: 4, ships: 1 })
+    )
+  })
+
+  it.each([undefined, "text/plain", "application/x-www-form-urlencoded"])(
+    "rejects a non-JSON reset request (%s) without saving",
+    async (contentType) => {
+      const response = await reset(
+        new Request("http://localhost/api/user/reset", {
+          method: "POST",
+          headers: contentType ? { "Content-Type": contentType } : {},
+        })
+      )
+
+      expect(response.status).toBe(415)
+      expect(mocks.savePlayer).not.toHaveBeenCalled()
+    }
+  )
+
+  it("still resets when saving the new statistics fails", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {})
+    mocks.saveStatistics.mockRejectedValue(new Error("Statistics down"))
+
+    expect((await reset(request({}))).status).toBe(200)
+    expect(mocks.savePlayer.mock.calls[0][2]).toEqual({ resetHistory: true })
+  })
+
+  it("returns 500 when resetting the player and history fails", async () => {
+    mocks.savePlayer.mockRejectedValue(new Error("Database down"))
+
+    expect((await reset(request({}))).status).toBe(500)
+    expect(mocks.saveStatistics).not.toHaveBeenCalled()
   })
 })

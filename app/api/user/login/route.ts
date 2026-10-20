@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 
-import { COOKIE_EXPIRE_TIME, PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer } from "@/utils/db/getPlayer"
+import { setPlayerCookie } from "@/utils/setPlayerCookie"
 import { loginValidationSchema } from "@/utils/validation"
 
 export async function POST(req: Request) {
@@ -15,12 +15,7 @@ export async function POST(req: Request) {
     if (!player)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-    const res = NextResponse.json({ success: true })
-    res.cookies.set(PLAYER_ID_COOKIE_NAME, playerId, {
-      expires: COOKIE_EXPIRE_TIME,
-    })
-
-    return res
+    return setPlayerCookie(NextResponse.json({ success: true }), playerId)
   } catch (error: any) {
     return NextResponse.json({ error }, { status: 400 })
   }

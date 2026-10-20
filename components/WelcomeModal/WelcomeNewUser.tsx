@@ -1,4 +1,5 @@
 import { getCookie } from "cookies-next/client"
+import { AiOutlineQrcode } from "react-icons/ai"
 
 import useDrawer from "@/app/stores/drawer"
 import useSound from "@/app/stores/sound"
@@ -8,6 +9,7 @@ import {
   SOUND_EFFECTS_STATE_COOKIE_NAME,
 } from "@/constants/system"
 
+import AddPasskeyButton from "../settings/AddPasskeyButton"
 import UserIdDisplay from "../settings/UserIdDisplay"
 
 type Props = {
@@ -36,7 +38,7 @@ const WelcomeNewUser = ({ player, onClose }: Props) => {
 
   return (
     <>
-      <p>
+      <p className="text-lg">
         Nice to see you. You are located at{" "}
         <span className="text-success">
           {player.character.town}s {player.character.location}
@@ -44,27 +46,27 @@ const WelcomeNewUser = ({ player, onClose }: Props) => {
         . You can either check out the town, or head out to the open seas.
       </p>
 
-      <UserIdDisplay playerId={player.id} />
+      <div className="mb-8 flex flex-col gap-4">
+        <UserIdDisplay playerId={player.id} />
 
-      <div className="flex flex-col gap-2">
-        <Button
-          size="lg"
-          variant="highlight"
-          className="w-full"
-          onClick={startExploring}
-        >
-          Start exploring
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <AddPasskeyButton size="sm" variant="secondary" />
 
-        <Button
-          variant="secondary"
-          size="lg"
-          className="w-full"
-          onClick={getQrCode}
-        >
-          Get QR code
-        </Button>
+          <Button size="sm" variant="secondary" onClick={getQrCode}>
+            <AiOutlineQrcode />
+            Get QR code
+          </Button>
+        </div>
       </div>
+
+      <Button
+        size="lg"
+        variant="highlight"
+        className="w-full"
+        onClick={startExploring}
+      >
+        Start exploring
+      </Button>
     </>
   )
 }

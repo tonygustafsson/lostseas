@@ -15,6 +15,8 @@
   },
   "dependencies": {
     "@hookform/resolvers": "5.9.1",
+    "@simplewebauthn/browser": "14.0.0",
+    "@simplewebauthn/server": "14.0.3",
     "@tanstack/react-query": "5.104.0",
     "@tanstack/react-query-devtools": "5.104.0",
     "@vercel/analytics": "2.0.1",

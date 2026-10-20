@@ -7,6 +7,8 @@ import SoundControls from "@/components/Sound/Controls"
 import { Separator } from "@/components/ui/separator"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
+import PasskeySettings from "../../settings/PasskeySettings"
+import ResetGame from "../../settings/ResetGame"
 import UserIdDisplay from "../../settings/UserIdDisplay"
 
 const SettingsDrawer = () => {
@@ -41,15 +43,25 @@ const SettingsDrawer = () => {
         <h2 className="font-serif text-2xl">Save your game</h2>
 
         <p>
-          You will login using a user ID that is randomly created for you. This
-          ID is remembered by your browser, but if you clear your browser cache
-          or want to login on another device you should save your ID so that you
-          can login using it.
+          Your browser remembers you, but if you clear your browser cache or
+          want to play on another device you need a way to sign in again. A
+          passkey is the easiest option.
         </p>
 
-        <h3 className="font-serif text-xl">Your ID</h3>
+        <h3 className="mt-4 font-serif text-xl">Passkey</h3>
 
-        <UserIdDisplay playerId={player.id} />
+        <PasskeySettings />
+
+        <h3 className="mt-4 font-serif text-xl">Your ID</h3>
+
+        <p>
+          You can always sign in with your user ID instead. Keep it somewhere
+          safe.
+        </p>
+
+        <div className="mb-4">
+          <UserIdDisplay playerId={player.id} />
+        </div>
 
         <h3 className="font-serif text-xl">QR code</h3>
 
@@ -66,6 +78,12 @@ const SettingsDrawer = () => {
             color: { dark: "#000000", light: "#ffffff" },
           }}
         />
+
+        <Separator className="my-2" />
+
+        <h2 className="font-serif text-2xl">Start over</h2>
+
+        <ResetGame player={player} />
       </div>
     </>
   )

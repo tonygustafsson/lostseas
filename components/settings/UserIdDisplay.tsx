@@ -23,7 +23,7 @@ const UserIdDisplay = ({ playerId }: Props) => {
   }
 
   return (
-    <Alert className="mb-8 bg-gray-800">
+    <Alert className="bg-gray-800">
       <AlertTitle>Copy the ID in order to login again</AlertTitle>
 
       <AlertDescription>{playerId}</AlertDescription>

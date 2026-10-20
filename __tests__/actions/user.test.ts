@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest"
 
 import { NATIONS, TOWNS } from "@/constants/locations"
-import { createNewPlayer } from "@/utils/actions/user"
+import { createNewPlayer, resetGame } from "@/utils/actions/user"
 import { getRandomTown } from "@/utils/location"
 import { validateShipCrewRequirements } from "@/utils/validateCrew"
+
+import { createTestPlayer } from "../helpers/createTestPlayer"
 
 const ship: Ship = {
   id: "ship-1",
@@ -62,4 +64,52 @@ describe("starting town", () => {
       }
     }
   )
+})
+
+describe("resetGame", () => {
+  const veteran = createTestPlayer({
+    id: "player-1",
+    createdDate: 123,
+    character: {
+      name: "Anne",
+      nationality: "France",
+      gender: "Female",
+      age: 41,
+      title: "Duke",
+      gold: 90000,
+      account: 5000,
+      highestRewardedTitle: "Duke",
+      battles: { Pirate: { won: 12 } },
+      loan: 200,
+      day: 400,
+      town: "Tortuga",
+    },
+    inventory: { cannons: 40, rum: 30, sugar: 12, food: 300, water: 500 },
+    crewMembers: { count: 120, health: 40, mood: 10 },
+  })
+
+  it("keeps who the player is and starts everything else over", () => {
+    const result = resetGame(veteran, { startingTown: "Martinique", ship })
+
+    if ("error" in result) throw new Error(result.error)
+
+    expect(result.player).toEqual(
+      createNewPlayer(
+        { name: "Anne", nationality: "France", gender: "Female", age: 41 },
+        {
+          id: "player-1",
+          createdDate: 123,
+          startingTown: "Martinique",
+          ship,
+        }
+      )
+    )
+    expect(result.log).toBe("Started the game over.")
+  })
+
+  it("does not change the original player", () => {
+    resetGame(veteran, { startingTown: "Martinique", ship })
+
+    expect(veteran.character.gold).toBe(90000)
+  })
 })

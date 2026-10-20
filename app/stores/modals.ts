@@ -12,6 +12,8 @@ export type ModalId =
   | "dismissCrewMembers"
   | "screenshot"
   | "departureWarnings"
+  | "removePasskey"
+  | "resetGame"
 
 export type ModalProps = {
   id: ModalId
