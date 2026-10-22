@@ -13,7 +13,11 @@ export const metadata: Metadata = {
     default: "Lost Seas",
     template: "%s - Lost Seas",
   },
-  manifest: "/site.webmanifest",
+  appleWebApp: {
+    capable: true,
+    title: "Lost Seas",
+    statusBarStyle: "black-translucent",
+  },
   icons: {
     apple: "/apple-touch-icon.png",
     icon: [
@@ -42,7 +46,8 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: "#0a0d0f",
+  viewportFit: "cover",
 }
 
 export default async function RootLayout({

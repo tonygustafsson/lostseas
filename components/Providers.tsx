@@ -11,6 +11,7 @@ import React, { useState } from "react"
 
 import Modal from "@/components/Modal"
 import MotionProvider from "@/components/MotionProvider"
+import ServiceWorker from "@/components/ServiceWorker"
 import Sound from "@/components/Sound"
 import Toast from "@/components/Toast"
 import WelcomeModal from "@/components/WelcomeModal"
@@ -49,6 +50,7 @@ export default function Providers({ children, dehydratedState }: Props) {
           <Drawer />
         </MotionProvider>
 
+        <ServiceWorker />
         <ReactQueryDevtools />
       </HydrationBoundary>
     </QueryClientProvider>

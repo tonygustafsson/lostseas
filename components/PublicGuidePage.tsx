@@ -6,7 +6,7 @@ import GuideContent from "@/components/GuideContent"
 import { Button } from "@/components/ui/button"
 
 const PublicGuidePage = () => (
-  <div className="bg-background text-foreground relative isolate min-h-screen overflow-hidden">
+  <div className="bg-background text-foreground relative isolate min-h-dvh overflow-hidden">
     <div className="pointer-events-none fixed inset-0 -z-20">
       <Image
         src="/img/startpage-bg.png"

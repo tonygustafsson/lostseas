@@ -31,7 +31,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
   if (player) return null
 
   return (
-    <div className="bg-background text-foreground relative isolate min-h-screen overflow-hidden">
+    <div className="bg-background text-foreground relative isolate min-h-dvh overflow-hidden">
       <div className="pointer-events-none fixed inset-0 -z-20">
         <Image
           src="/img/startpage-bg.png"

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a0d0f" />
+    <title>Offline - Lost Seas</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        padding: 16px;
+        box-sizing: border-box;
+        background: #0a0d0f;
+        color: #e2e8f0;
+        font-family: Georgia, serif;
+        text-align: center;
+      }
+      img {
+        width: 96px;
+        height: 96px;
+      }
+      button {
+        padding: 8px 16px;
+        border: 1px solid #94a3b8;
+        border-radius: 8px;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="/android-chrome-192x192.png" alt="" />
+    <h1>You are adrift</h1>
+    <p>Lost Seas needs a connection to play. Reconnect to keep sailing.</p>
+    <button onclick="location.reload()">Try again</button>
+    <script>
+      window.addEventListener("online", () => location.reload())
+    </script>
+  </body>
+</html>
