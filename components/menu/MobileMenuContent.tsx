@@ -2,7 +2,6 @@
 
 import { FaBook } from "react-icons/fa"
 import { FiLogOut, FiSettings } from "react-icons/fi"
-import { GiPirateCoat } from "react-icons/gi"
 import { TbHelp } from "react-icons/tb"
 
 import useDrawer, { DrawerId } from "@/app/stores/drawer"
@@ -14,6 +13,12 @@ import { Button } from "../ui/button"
 type Props = {
   onClose: () => void
 }
+
+const rowClassName =
+  "border-gold/30 from-gold/10 justify-start gap-4 rounded-xl border bg-linear-to-r to-neutral-900 text-lg font-normal! transition-transform active:scale-95"
+
+const iconClassName =
+  "border-gold/60 bg-sidebar text-accent box-content size-5 rounded-full border-2 p-2"
 
 const MobileMenuContent = ({ onClose }: Props) => {
   const { open: openDrawer } = useDrawer()
@@ -35,57 +40,47 @@ const MobileMenuContent = ({ onClose }: Props) => {
   return (
     <div className="flex flex-col gap-3">
       <AdvisorDrawerTrigger
-        onClick={() => openDrawer("advisor")}
-        className="justify-start gap-4 bg-neutral-900 text-lg font-normal!"
+        onClick={() => handleOpen("advisor")}
+        className={rowClassName}
       />
 
       <Button
         variant="secondary"
         size="lg"
-        className="justify-start gap-4 bg-neutral-900 text-lg font-normal!"
-        onClick={() => handleOpen("status")}
-      >
-        <GiPirateCoat className="text-accent size-5" />
-        Status
-      </Button>
-
-      <Button
-        variant="secondary"
-        size="lg"
-        className="justify-start gap-4 bg-neutral-900 text-lg font-normal!"
+        className={rowClassName}
         onClick={() => handleOpen("logs")}
       >
-        <FaBook className="text-accent size-5" />
+        <FaBook className={iconClassName} />
         Log book
       </Button>
 
       <Button
         variant="secondary"
         size="lg"
-        className="justify-start gap-4 bg-neutral-900 text-lg font-normal!"
-        onClick={() => handleOpen("settings")}
-      >
-        <FiSettings className="text-accent size-5" />
-        Settings
-      </Button>
-
-      <Button
-        variant="secondary"
-        size="lg"
-        className="justify-start gap-4 bg-neutral-900 text-lg font-normal!"
+        className={rowClassName}
         onClick={() => handleOpen("guide")}
       >
-        <TbHelp className="text-accent size-5" />
+        <TbHelp className={iconClassName} />
         Player guide
       </Button>
 
       <Button
         variant="secondary"
         size="lg"
-        className="justify-start gap-4 bg-neutral-900 text-lg font-normal!"
+        className={rowClassName}
+        onClick={() => handleOpen("settings")}
+      >
+        <FiSettings className={iconClassName} />
+        Settings
+      </Button>
+
+      <Button
+        variant="secondary"
+        size="lg"
+        className={rowClassName}
         onClick={handleLogout}
       >
-        <FiLogOut className="text-accent size-5" />
+        <FiLogOut className={iconClassName} />
         Logout
       </Button>
     </div>

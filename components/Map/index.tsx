@@ -66,7 +66,7 @@ const Map = ({ currentTown }: Props) => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative -mx-6 md:mx-0">
       <SeaMapCanvas
         currentTown={currentTown}
         selectedTown={destination}
