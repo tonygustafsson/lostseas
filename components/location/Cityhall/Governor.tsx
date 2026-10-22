@@ -1,3 +1,5 @@
+import { Award, Handshake } from "lucide-react"
+import { useState } from "react"
 import { GiQuillInk } from "react-icons/gi"
 
 import ActionCard from "@/components/ActionCard"
@@ -91,6 +93,8 @@ const Governor = () => {
   const { data: player } = useGetPlayer()
   const { acceptNewTitle, changeCitizenship } = useCityhall()
 
+  const [hasClaimed, setHasClaimed] = useState(false)
+
   const {
     isHomeNation,
     townWarWith,
@@ -121,29 +125,39 @@ const Governor = () => {
   })
 
   const handleAcceptNewTitle = () => {
-    acceptNewTitle()
+    setHasClaimed(true)
+    acceptNewTitle(undefined, { onError: () => setHasClaimed(false) })
   }
 
   const handleChangeCitizenship = () => {
-    changeCitizenship()
+    setHasClaimed(true)
+    changeCitizenship(undefined, { onError: () => setHasClaimed(false) })
   }
 
-  const cardImage =
-    promotionAvailable || citizenshipChangeAvailable
-      ? "/img/cards/cityhall/governor-excited.png"
-      : "/img/cards/cityhall/governor-neutral.png"
+  const rewardWaiting = promotionAvailable || citizenshipChangeAvailable
+
+  const cardImage = rewardWaiting
+    ? "/img/cards/cityhall/governor-excited.png"
+    : "/img/cards/cityhall/governor-neutral.png"
+
+  const greetingTitle = `${rewardWaiting ? "Thank you" : "Welcome"} ${player?.character.title.toLowerCase()} ${
+    player?.character.name
+  }`
+
+  if (hasClaimed) {
+    return null
+  }
 
   return (
     <ActionCard
-      title={`Welcome ${player?.character.title.toLowerCase()} ${
-        player?.character.name
-      }`}
+      title={greetingTitle}
       message={greeting}
       image={cardImage}
       icon={<GiQuillInk />}
       {...(promotionAvailable && {
         actions: (
           <Button size="lg" variant="highlight" onClick={handleAcceptNewTitle}>
+            <Award className="size-6" />
             Accept new title
           </Button>
         ),
@@ -155,6 +169,7 @@ const Governor = () => {
             variant="highlight"
             onClick={handleChangeCitizenship}
           >
+            <Handshake className="size-6" />
             Change citizenship
           </Button>
         ),
