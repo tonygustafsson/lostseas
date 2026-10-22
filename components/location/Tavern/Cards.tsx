@@ -1,110 +1,32 @@
 import { useMemo, useState } from "react"
-import {
-  GiAcorn,
-  GiAnchor,
-  GiAncientSword,
-  GiBarbedStar,
-  GiBoar,
-  GiBrandyBottle,
-  GiCat,
-  GiCeremonialMask,
-  GiChestnutLeaf,
-  GiChicken,
-  GiCirclingFish,
-  GiCrossedSwords,
-  GiCurvyKnife,
-  GiEel,
-  GiFallingLeaf,
-  GiHarryPotterSkull,
-  GiHeartBottle,
-  GiIbis,
-  GiOwl,
-  GiPirateHat,
-  GiPotionBall,
-  GiSuperMushroom,
-} from "react-icons/gi"
 
 import { Button } from "@/components/ui/button"
-import { ButtonGroup } from "@/components/ui/button-group"
+import { CARDS } from "@/constants/cards"
 import {
   CARDS_PERCENTAGE_DEFAULT_VALUE,
   CARDS_PERCENTAGE_VALUES,
 } from "@/constants/tavern"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useTavern } from "@/hooks/queries/useTavern"
+import { cn } from "@/lib/utils"
 import { getRandomInt } from "@/utils/random"
 import { getCardsBet } from "@/utils/tavern"
 
-const CARDS = [
-  { text: "The Acorn", icon: <GiAcorn className="text-accent size-12!" /> },
-  { text: "The Hat", icon: <GiPirateHat className="text-accent size-12!" /> },
-  { text: "The Anchor", icon: <GiAnchor className="text-accent size-12!" /> },
-  {
-    text: "The Sword",
-    icon: <GiAncientSword className="text-accent size-12!" />,
-  },
-  {
-    text: "The Star",
-    icon: <GiBarbedStar className="text-accent size-12!" />,
-  },
-  { text: "The Boar", icon: <GiBoar className="text-accent size-12!" /> },
-  {
-    text: "The Bottle",
-    icon: <GiBrandyBottle className="text-accent size-12!" />,
-  },
-  { text: "The Cat", icon: <GiCat className="text-accent size-12!" /> },
-  {
-    text: "The Mask",
-    icon: <GiCeremonialMask className="text-accent size-12!" />,
-  },
-  {
-    text: "The Leaf",
-    icon: <GiChestnutLeaf className="text-accent size-12!" />,
-  },
-  {
-    text: "The Chicken",
-    icon: <GiChicken className="text-accent size-12!" />,
-  },
-  {
-    text: "The Fish",
-    icon: <GiCirclingFish className="text-accent size-12!" />,
-  },
-  {
-    text: "The Swords",
-    icon: <GiCrossedSwords className="text-accent size-12!" />,
-  },
-  {
-    text: "The Knife",
-    icon: <GiCurvyKnife className="text-accent size-12!" />,
-  },
-  { text: "The Eel", icon: <GiEel className="text-accent size-12!" /> },
-  {
-    text: "The Leaf",
-    icon: <GiFallingLeaf className="text-accent size-12!" />,
-  },
-  {
-    text: "The Skull",
-    icon: <GiHarryPotterSkull className="text-accent size-12!" />,
-  },
-  {
-    text: "The Bottle",
-    icon: <GiHeartBottle className="text-accent size-12!" />,
-  },
-  { text: "The Bird", icon: <GiIbis className="text-accent size-12!" /> },
-  {
-    text: "The Mushroom",
-    icon: <GiSuperMushroom className="text-accent size-12!" />,
-  },
-  { text: "The Owl", icon: <GiOwl className="text-accent size-12!" /> },
-  {
-    text: "The Potion",
-    icon: <GiPotionBall className="text-accent size-12!" />,
-  },
+const HAND_SIZE = 5
+
+// Fans the hand out like cards held in a hand. On mobile the cards wrap into
+// two rows (3 + 2), so each one tilts outwards from the centre of its row.
+const CARD_ROTATIONS = [
+  "-rotate-6",
+  "rotate-0 xl:-rotate-3",
+  "rotate-6 xl:rotate-0",
+  "-rotate-6 xl:rotate-3",
+  "rotate-6",
 ]
 
 const TavernCards = () => {
   const { data: player } = useGetPlayer()
-  const { playCards } = useTavern()
+  const { playCards, isPlayingCard } = useTavern()
 
   const [betPercentage, setBetPercentage] = useState(
     CARDS_PERCENTAGE_DEFAULT_VALUE
@@ -115,7 +37,7 @@ const TavernCards = () => {
   const activeCardIndexes = useMemo(() => {
     const cards: number[] = []
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < HAND_SIZE; i++) {
       let randomCardIndex = getRandomInt(0, CARDS.length - 1)
 
       while (cards.includes(randomCardIndex)) {
@@ -128,23 +50,19 @@ const TavernCards = () => {
     return cards
   }, [])
 
-  const bet = getCardsBet(betPercentage, player?.character.gold || 0)
-  const potentialProfit = Math.floor(bet * 5)
+  const gold = player?.character.gold || 0
+  const bet = getCardsBet(betPercentage, gold)
+  const potentialProfit = Math.floor(bet * HAND_SIZE)
 
-  const disabled =
-    !bet ||
-    bet > (player?.character.gold || 0) ||
-    typeof selectedCard === "undefined"
+  const hasSelectedCard = typeof selectedCard !== "undefined"
+  const hasResult = typeof correctCard !== "undefined"
+  const hasWon = hasResult && selectedCard === correctCard
 
-  const handleSelectCard = (
-    e: React.MouseEvent<HTMLElement, MouseEvent>,
-    cardIndex: number
-  ) => {
+  const canAfford = bet > 0 && bet <= gold
+  const disabled = !canAfford || !hasSelectedCard || isPlayingCard
+
+  const handleSelectCard = (cardIndex: number) => {
     setSelectedCard(selectedCard === cardIndex ? undefined : cardIndex)
-
-    const element = (e.target as HTMLElement).closest("button")
-    element?.blur()
-
     setCorrectCard(undefined)
   }
 
@@ -153,74 +71,119 @@ const TavernCards = () => {
 
     try {
       const cardsResult = await playCards({ betPercentage, selectedCard })
-      const correctCard = cardsResult?.data?.correctCard
 
-      setCorrectCard(correctCard)
+      setCorrectCard(cardsResult?.data?.correctCard)
     } catch {
       // useTavern displays the request error in its toast handler.
     }
   }
 
+  const getPlayLabel = () => {
+    if (isPlayingCard) return "Shuffling..."
+    if (!canAfford) return "Not enough gold"
+    if (!hasSelectedCard) return "Pick a card to play"
+    return `Bet ${bet} gold`
+  }
+
   const getCardClassNames = (index: number) => {
-    if (index === correctCard)
-      return "bg-green-900 hover:bg-green-800 border-green-700"
+    if (hasResult && index === correctCard)
+      return "border-success bg-success/30 -translate-y-4 scale-105 sm:scale-110 shadow-lg shadow-success/50"
+    if (hasResult && index === selectedCard)
+      return "border-destructive bg-destructive/30 opacity-80"
     if (index === selectedCard)
-      return "bg-pink-900 hover:bg-pink-800 border-pink-700"
-    return "bg-slate-800 hover:bg-slate-700 border-gray-700"
+      return "border-gold bg-gold/20 -translate-y-4 scale-105 sm:scale-110 shadow-lg shadow-gold/40"
+    return "border-border bg-card hover:border-gold-dark hover:-translate-y-2"
   }
 
   return (
-    <div className="flex flex-col items-center">
-      <ButtonGroup className="mt-4 mb-8 grid grid-cols-3 flex-wrap justify-center overflow-hidden rounded-2xl xl:flex">
-        {CARDS_PERCENTAGE_VALUES.map((value, index) => (
-          <Button
-            key={`tavern-cards-bet-${value}`}
-            variant={betPercentage === value ? "default" : "secondary"}
-            onClick={() => setBetPercentage(value)}
-            style={
-              // Hack for disabling border radius on the first and last buttons in the group to create a more connected look when there are multiple rows.
-              index === 0
-                ? ({ ["--radius"]: "0px" } as React.CSSProperties)
-                : undefined
-            }
-          >
-            Bet {value === 100 ? "all" : `${value}%`}
-          </Button>
-        ))}
+    <div className="flex flex-col items-center gap-8 pt-4">
+      <section className="flex flex-col items-center gap-2">
+        <h3 className="font-serif text-lg">Place your bet</h3>
+
+        <div className="flex flex-wrap justify-center gap-2">
+          {CARDS_PERCENTAGE_VALUES.map((value) => (
+            <Button
+              key={`tavern-cards-bet-${value}`}
+              variant={betPercentage === value ? "default" : "secondary"}
+              disabled={isPlayingCard}
+              onClick={() => setBetPercentage(value)}
+            >
+              {value === 100 ? "All in" : `${value}%`}
+            </Button>
+          ))}
+        </div>
+
+        <p className="text-muted-foreground text-sm">
+          You have {gold} gold. Betting {bet}.
+        </p>
+      </section>
+
+      <section className="flex flex-col items-center gap-8">
+        <h3 className="font-serif text-lg">Pick the lucky card</h3>
+
+        <div className="grid max-w-80 grid-cols-6 gap-x-2 gap-y-4 xl:max-w-none xl:grid-cols-5 xl:gap-4">
+          {activeCardIndexes.map((activeCardIndex, index) => {
+            const { Icon, text } = CARDS[activeCardIndex]
+
+            return (
+              <button
+                key={`tavern-card-${activeCardIndex}`}
+                type="button"
+                disabled={isPlayingCard}
+                aria-pressed={index === selectedCard}
+                onClick={() => handleSelectCard(index)}
+                className={cn(
+                  "relative flex h-32 w-24 cursor-pointer flex-col items-center justify-center gap-2 justify-self-center rounded-lg border-2 px-1 transition-all duration-200 hover:z-10 xl:h-44 xl:w-32 xl:gap-4",
+                  index === 3
+                    ? "col-span-2 col-start-2 xl:col-span-1 xl:col-start-auto"
+                    : "col-span-2 xl:col-span-1",
+                  index !== selectedCard && index !== correctCard
+                    ? CARD_ROTATIONS[index]
+                    : "z-10 rotate-0",
+                  getCardClassNames(index)
+                )}
+              >
+                <Icon className="text-gold size-8 xl:size-12" />
+
+                <span className="text-muted-foreground text-center font-serif text-xs xl:text-sm">
+                  {text}
+                </span>
+              </button>
+            )
+          })}
+        </div>
+      </section>
+
+      <section className="flex w-full flex-col items-center gap-2 md:w-auto">
+        <h3 className="font-serif text-lg">Try your luck</h3>
 
         <Button
+          size="lg"
+          variant="highlight"
+          className="w-full md:w-auto"
           disabled={disabled}
-          onClick={() => handlePlayCards()}
-          className="col-span-3 rounded-none!"
-          style={{ ["--radius"]: "0px" } as React.CSSProperties}
+          onClick={handlePlayCards}
         >
-          Play
+          {getPlayLabel()}
         </Button>
-      </ButtonGroup>
 
-      <div className="mt-4 flex flex-wrap justify-center gap-4">
-        {activeCardIndexes.map((activeCardIndex, index) => (
-          <Button
-            key={`tavern-card-${activeCardIndex}`}
-            onClick={(e) => handleSelectCard(e, index)}
-            className={`flex h-38 w-28 items-center justify-center rounded-lg border lg:h-44 lg:w-32 ${getCardClassNames(
-              index
-            )}`}
+        <p className="text-muted-foreground text-sm">
+          One in {HAND_SIZE} chance of winning {potentialProfit} gold.
+        </p>
+
+        {hasResult && (
+          <p
+            className={cn(
+              "mt-2 font-serif text-lg",
+              hasWon ? "text-success" : "text-destructive"
+            )}
           >
-            <div className="flex flex-col items-center gap-3">
-              {CARDS[activeCardIndex].icon}
-
-              <p className="text-gray-400">{CARDS[activeCardIndex].text}</p>
-            </div>
-          </Button>
-        ))}
-      </div>
-
-      <p className="mt-8 font-serif text-lg">You will bet {bet} gold</p>
-
-      <p className="mt-2 text-sm">
-        You have 1/5 change of winning {potentialProfit} gold.
-      </p>
+            {hasWon
+              ? `${CARDS[activeCardIndexes[correctCard]].text} it was! You win!`
+              : `Unlucky! It was ${CARDS[activeCardIndexes[correctCard]].text}.`}
+          </p>
+        )}
+      </section>
     </div>
   )
 }
