@@ -110,7 +110,11 @@ describe.each([
 describe("GET /api/user/getRandomCharacter", () => {
   it("always suggests a character that can be registered", async () => {
     for (let i = 0; i < 100; i++) {
-      const character = await (await getRandomCharacter()).json()
+      const character = await (
+        await getRandomCharacter(
+          new Request("http://localhost/api/user/getRandomCharacter")
+        )
+      ).json()
 
       expect(
         registrationValidationSchema.safeParse({
@@ -121,6 +125,17 @@ describe("GET /api/user/getRandomCharacter", () => {
         JSON.stringify(character)
       ).toBe(true)
     }
+  })
+
+  it("excludes the currently selected character", async () => {
+    const excludedCharacterId = "silas-harrow"
+    const response = await getRandomCharacter(
+      new Request(
+        `http://localhost/api/user/getRandomCharacter?excludeCharacterId=${excludedCharacterId}`
+      )
+    )
+
+    expect((await response.json()).characterId).not.toBe(excludedCharacterId)
   })
 })
 
@@ -164,9 +179,7 @@ describe("POST /api/user/logout", () => {
 describe("POST /api/user/register", () => {
   const validBody = {
     name: "Anne Bonny",
-    nationality: "Holland",
-    gender: "Female",
-    age: 25,
+    characterId: "anne-calloway",
     musicOn: true,
     soundEffectsOn: false,
   }
@@ -182,10 +195,13 @@ describe("POST /api/user/register", () => {
     expect(savedPlayer.id).toBe(playerId)
     expect(savedPlayer.character).toMatchObject({
       name: "Anne Bonny",
-      nationality: "Holland",
+      nationality: "England",
       title: "Pirate",
       gold: 300,
+      characterId: "anne-calloway",
     })
+    expect(savedPlayer.character).not.toHaveProperty("age")
+    expect(savedPlayer.character).not.toHaveProperty("gender")
     expect(savedLog).toBe("Created new character Anne Bonny.")
     expect(mocks.saveStatistics).toHaveBeenCalledWith(
       playerId,
@@ -196,6 +212,14 @@ describe("POST /api/user/register", () => {
     expect(response.cookies.get(SOUND_EFFECTS_STATE_COOKIE_NAME)?.value).toBe(
       "false"
     )
+  })
+
+  it("takes nationality from the picked character, not the request", async () => {
+    await register(request({ ...validBody, nationality: "France" }))
+
+    const [savedPlayer] = mocks.savePlayer.mock.calls[0]
+
+    expect(savedPlayer.character.nationality).toBe("England")
   })
 
   it("still registers when saving statistics fails", async () => {
@@ -209,11 +233,9 @@ describe("POST /api/user/register", () => {
 
   it.each([
     { name: "Al" },
-    { age: 14 },
-    { age: 81 },
-    { nationality: "Portugal" },
-    { gender: "Other" },
     { musicOn: "yes" },
+    { characterId: "nobody" },
+    { characterId: undefined },
   ])("returns 400 and saves nothing for %j", async (invalid) => {
     const response = await register(request({ ...validBody, ...invalid }))
 

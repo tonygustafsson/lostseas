@@ -17,7 +17,7 @@ const ship: Ship = {
 
 const createPlayer = (nationality: Nation = "England") =>
   createNewPlayer(
-    { name: "Anne", nationality, gender: "Female", age: 25 },
+    { name: "Anne", nationality, characterId: "anne-calloway" },
     { id: "player-1", createdDate: 123, startingTown: "Port Royale", ship }
   )
 
@@ -28,10 +28,9 @@ describe("createNewPlayer", () => {
       createdDate: 123,
       character: {
         name: "Anne",
+        characterId: "anne-calloway",
         nationality: "England",
         title: "Pirate",
-        gender: "Female",
-        age: 25,
         town: "Port Royale",
         location: "Harbor",
         gold: 300,
@@ -41,6 +40,19 @@ describe("createNewPlayer", () => {
       ships: { "ship-1": ship },
       crewMembers: { count: 4, health: 100, mood: 100 },
     })
+  })
+
+  it("sets characterId when one is given", () => {
+    const player = createNewPlayer(
+      {
+        name: "Anne",
+        nationality: "England",
+        characterId: "anne-calloway",
+      },
+      { id: "player-1", createdDate: 123, startingTown: "Port Royale", ship }
+    )
+
+    expect(player.character.characterId).toBe("anne-calloway")
   })
 
   it("has a crew that fits the starting ship", () => {
@@ -72,9 +84,8 @@ describe("resetGame", () => {
     createdDate: 123,
     character: {
       name: "Anne",
+      characterId: "anne-calloway",
       nationality: "France",
-      gender: "Female",
-      age: 41,
       title: "Duke",
       gold: 90000,
       account: 5000,
@@ -95,7 +106,7 @@ describe("resetGame", () => {
 
     expect(result.player).toEqual(
       createNewPlayer(
-        { name: "Anne", nationality: "France", gender: "Female", age: 41 },
+        { name: "Anne", nationality: "France", characterId: "anne-calloway" },
         {
           id: "player-1",
           createdDate: 123,
@@ -105,6 +116,18 @@ describe("resetGame", () => {
       )
     )
     expect(result.log).toBe("Started the game over.")
+  })
+
+  it("keeps the portrait the player picked", () => {
+    const withPortrait = createTestPlayer({
+      character: { characterId: "anne-calloway" },
+    })
+
+    const result = resetGame(withPortrait, { startingTown: "Martinique", ship })
+
+    if ("error" in result) throw new Error(result.error)
+
+    expect(result.player.character.characterId).toBe("anne-calloway")
   })
 
   it("does not change the original player", () => {

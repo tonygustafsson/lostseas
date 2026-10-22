@@ -38,7 +38,7 @@ describe("modals store", () => {
     useModal.getState().setModal({ id: "map", title: "a", content: null })
     useModal
       .getState()
-      .setModal({ id: "editCharacter", title: "b", content: null })
+      .setModal({ id: "renameShip", title: "b", content: null })
 
     vi.advanceTimersByTime(0)
     expect(Object.keys(useModal.getState().modals).length).toBe(2)

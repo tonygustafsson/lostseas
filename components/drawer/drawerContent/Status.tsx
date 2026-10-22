@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { AiOutlineCalendar } from "react-icons/ai"
 import { BiFemaleSign, BiMaleSign, BiTime } from "react-icons/bi"
 import { FaChartBar, FaCoins } from "react-icons/fa"
@@ -8,7 +9,6 @@ import {
   GiPiggyBank,
   GiPirateCoat,
   GiProgression,
-  GiQuillInk,
   GiReceiveMoney,
 } from "react-icons/gi"
 
@@ -19,12 +19,13 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
+import { getCharacterById } from "@/constants/characters"
 import { NATIONS } from "@/constants/locations"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { convertDaysToTimeSpan, getCurrentDate } from "@/utils/date"
 import { getScore } from "@/utils/score"
 
-const chipClass = "h-7 gap-2 px-3 text-sm [&>svg]:size-4!"
+const chipClass = "h-6 gap-1 px-2 text-xs [&>svg]:size-3!"
 
 const StatusDrawer = () => {
   const { data: player } = useGetPlayer()
@@ -36,6 +37,7 @@ const StatusDrawer = () => {
 
   const { character } = player
   const enemy = NATIONS[character.nationality].warWith
+  const characterInfo = getCharacterById(character.characterId)
 
   return (
     <>
@@ -52,46 +54,68 @@ const StatusDrawer = () => {
           className="pointer-events-none absolute -top-4 -right-8 rotate-12 opacity-25"
         />
 
-        <div className="relative">
-          <p className="text-accent text-xs tracking-wide uppercase">
-            {character.title}
+        <div className="relative grid grid-cols-[7rem_minmax(0,1fr)] gap-x-4 gap-y-2 md:grid-rows-[auto_1fr]">
+          <div className="bg-muted relative size-28 shrink-0 overflow-hidden rounded-lg md:row-span-2">
+            {characterInfo && (
+              <Image
+                src={characterInfo.image}
+                alt={characterInfo.name}
+                fill
+                sizes="112px"
+                className="object-cover"
+              />
+            )}
+          </div>
+
+          <div className="col-start-2 row-start-1 flex min-w-0 flex-col gap-2">
+            <p className="text-accent text-xs tracking-wide uppercase">
+              {character.title}
+            </p>
+
+            <p className="font-serif text-2xl font-semibold">
+              {character.name}
+            </p>
+          </div>
+
+          <div className="col-span-2 row-start-2 flex flex-wrap gap-1 md:col-span-1 md:col-start-2 md:self-start">
+            {characterInfo && (
+              <>
+                <Badge variant="secondary" className={chipClass}>
+                  <BiTime />
+                  {characterInfo.age} years
+                </Badge>
+
+                <Badge variant="secondary" className={chipClass}>
+                  {characterInfo.gender === "Male" ? (
+                    <BiMaleSign />
+                  ) : (
+                    <BiFemaleSign />
+                  )}
+                  {characterInfo.gender}
+                </Badge>
+              </>
+            )}
+
+            <Badge variant="secondary" className={chipClass}>
+              <Flag nation={character.nationality} size={16} decorative />
+              {character.nationality}
+            </Badge>
+
+            <Badge variant="secondary" className={chipClass}>
+              <GiCrossedSwords />
+              War with {enemy}
+              <Flag nation={enemy} size={16} decorative />
+            </Badge>
+          </div>
+        </div>
+
+        {characterInfo && (
+          <p className="text-muted-foreground relative text-sm">
+            {characterInfo.description}
           </p>
-          <p className="font-serif text-2xl font-semibold">{character.name}</p>
-        </div>
+        )}
 
         <div className="relative flex flex-wrap gap-2">
-          <Badge variant="secondary" className={chipClass}>
-            <BiTime />
-            {character.age} years
-          </Badge>
-
-          <Badge variant="secondary" className={chipClass}>
-            {character.gender === "Male" ? <BiMaleSign /> : <BiFemaleSign />}
-            {character.gender}
-          </Badge>
-
-          <Badge variant="secondary" className={chipClass}>
-            <Flag nation={character.nationality} size={16} decorative />
-            {character.nationality}
-          </Badge>
-
-          <Badge variant="secondary" className={chipClass}>
-            <GiCrossedSwords />
-            At war with {enemy}
-            <Flag nation={enemy} size={16} decorative />
-          </Badge>
-        </div>
-
-        <div className="relative flex flex-wrap gap-2">
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => openDrawer("editCharacter")}
-          >
-            <GiQuillInk />
-            Change character
-          </Button>
-
           <Button
             variant="secondary"
             size="sm"

@@ -13,8 +13,6 @@ const basePlayer = (): Player =>
     createdDate: 0,
     character: {
       name: "Test",
-      age: 30,
-      gender: "Male",
       nationality: "England",
       title: "Pirate",
       town: "Port Royale",

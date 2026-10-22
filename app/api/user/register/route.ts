@@ -1,6 +1,7 @@
 import crypto from "crypto"
 import { NextResponse } from "next/server"
 
+import { getCharacterById } from "@/constants/characters"
 import { STARTING_SHIP_TYPE } from "@/constants/player"
 import {
   COOKIE_EXPIRE_TIME,
@@ -15,17 +16,25 @@ import { createNewShip } from "@/utils/ship"
 import { registrationValidationSchema } from "@/utils/validation"
 
 const createPlayer = async (body: any) => {
-  const { name, nationality, gender, age } = body as Character
+  const { name, characterId } = body
   const { musicOn, soundEffectsOn } = body
+
+  const character = getCharacterById(characterId)
+
+  if (!character) throw new Error("Unknown character")
 
   const playerId: Player["id"] = crypto.randomUUID()
 
   const newPlayer = createNewPlayer(
-    { name, nationality, gender, age },
+    {
+      name,
+      nationality: character.nationality,
+      characterId: character.id,
+    },
     {
       id: playerId,
       createdDate: new Date().getTime(),
-      startingTown: getRandomTown(nationality),
+      startingTown: getRandomTown(character.nationality),
       ship: createNewShip(STARTING_SHIP_TYPE, 0),
     }
   )
@@ -60,7 +69,9 @@ const handleRegister = async (req: Request) => {
 
     return res
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 })
+    const message = error instanceof Error ? error.message : "Unknown error"
+
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }
 

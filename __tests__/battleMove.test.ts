@@ -43,8 +43,7 @@ const createPlayer = (sea: Partial<SeaState> = {}): Player => ({
   createdDate: 0,
   character: {
     name: "Test",
-    age: 30,
-    gender: "Male",
+    characterId: "mateo-salazar",
     nationality: "England",
     title: "Pirate",
     town: undefined,

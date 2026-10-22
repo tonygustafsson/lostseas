@@ -3,7 +3,6 @@ import { MARKET_AVAILABLE_ITEMS, MARKET_MAX_OFFERS } from "@/constants/market"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { patchDeep } from "@/utils/patchDeep"
 import { getRandomInt } from "@/utils/random"
-import { changeCharacterValidationSchema } from "@/utils/validation"
 
 import type { ActionResult, RandomInt } from "./types"
 
@@ -100,26 +99,6 @@ export const moveToLocation = (
       character: { location },
       locationStates,
     }),
-    data: {},
-  }
-}
-
-export const updateCharacter = (
-  player: Player,
-  input: Pick<Character, "name" | "gender" | "age">
-): ActionResult => {
-  const validation = changeCharacterValidationSchema.safeParse(input)
-
-  if (!validation.success) {
-    return {
-      error: validation.error.issues[0]?.message ?? "Invalid character details",
-    }
-  }
-
-  const { name, gender, age } = validation.data
-
-  return {
-    player: patchDeep<Player>(player, { character: { name, gender, age } }),
     data: {},
   }
 }

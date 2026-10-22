@@ -940,7 +940,7 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
 
         <p>
           Reset game in Settings starts a new game in a random town belonging to
-          your nation. Your name, nationality, gender, age, user ID and passkeys
+          your nation. Your character, name, nationality, user ID and passkeys
           are kept. All game progress is reset, including your gold, bank
           savings, loans, fleet, crew, inventory, treasures, titles and battle
           record. Your old journey log and statistics are cleared. This cannot

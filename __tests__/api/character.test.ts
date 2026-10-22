@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 import { POST as move } from "@/app/api/character/move/route"
-import { POST as update } from "@/app/api/character/update/route"
 
 import { createTestPlayer } from "../helpers/createTestPlayer"
 
@@ -36,12 +35,6 @@ const routes = [
     name: "move",
     call: () => move(request({ location: "Tavern" })),
     invalid: () => move(request({ location: "Moon" })),
-  },
-  {
-    name: "update",
-    call: () =>
-      update(request({ name: "Anne Bonny", gender: "Female", age: 25 })),
-    invalid: () => update(request({ name: "A", gender: "Female", age: 25 })),
   },
 ]
 

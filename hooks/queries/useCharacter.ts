@@ -63,44 +63,8 @@ export const useCharacter = () => {
     },
   })
 
-  const { mutate: update, isPending: updateIsLoading } = useMutation({
-    mutationFn: (characterData: Partial<Character>) =>
-      apiRequest("/api/character/update", characterData, "POST"),
-    onMutate: async (characterData: Partial<Character>) => {
-      await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
-
-      const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
-
-      if (previous) {
-        const playerUpdates: DeepPartial<Player> = {
-          character: characterData,
-        }
-
-        const newPlayer = patchDeep(previous, playerUpdates)
-        queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
-      }
-
-      return { previous }
-    },
-    onError: (err, _vars, context) => {
-      handleError("Could not update character", err?.message, context?.previous)
-    },
-    onSuccess: (response, _vars, context) => {
-      const { updatedPlayer, error } = response?.data
-
-      if (error) {
-        handleError("Could not update character", error, context?.previous)
-        return
-      }
-
-      queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
-    },
-  })
-
   return {
     move,
     isMoving,
-    update,
-    updateIsLoading,
   }
 }

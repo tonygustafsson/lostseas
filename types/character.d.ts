@@ -6,9 +6,8 @@ type Journey = {
 }
 
 type Character = {
-  age: number
+  characterId: string
   name: string
-  gender: "Male" | "Female"
   nationality: Nation
   title: Title
   town: Town | undefined
@@ -35,7 +34,4 @@ type Title =
   | "Marquis"
   | "Duke"
 
-type CharacterCreation = Pick<
-  Character,
-  "name" | "nationality" | "gender" | "age"
->
+type CharacterCreation = Pick<Character, "name" | "nationality" | "characterId">

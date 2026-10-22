@@ -5,6 +5,7 @@ import DefaultLayout from "@/components/layouts/default"
 import FullscreenLayout from "@/components/layouts/fullscreen"
 import LoginScreen from "@/components/LoginScreen"
 import { getLoggedInPlayer } from "@/utils/app/getLoggedInPlayer"
+import { getRandomCharacter } from "@/utils/getRandomCharacter"
 
 export async function generateMetadata(): Promise<Metadata> {
   const player = await getLoggedInPlayer()
@@ -34,7 +35,7 @@ export default async function Page() {
   if (!player) {
     return (
       <FullscreenLayout>
-        <LoginScreen />
+        <LoginScreen initialCharacter={getRandomCharacter()} />
       </FullscreenLayout>
     )
   }

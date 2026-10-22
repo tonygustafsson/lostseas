@@ -76,8 +76,8 @@ const ResetGame = ({ player }: Props) => {
   return (
     <div className="flex flex-col items-start gap-2">
       <p>
-        Start the game over with the same name, nationality, gender and age.
-        Your user ID and passkeys are kept. All game progress is reset.
+        Start the game over with the same character, name and nationality. Your
+        user ID and passkeys are kept. All game progress is reset.
       </p>
 
       <Button

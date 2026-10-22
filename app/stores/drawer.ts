@@ -9,7 +9,6 @@ export type DrawerId =
   | "advisor"
   | "logs"
   | "statistics"
-  | "editCharacter"
   | "manageCrew"
 
 type DrawerStore = {

@@ -4,7 +4,6 @@ export type ModalId =
   | "map"
   | "move"
   | "qrScanner"
-  | "editCharacter"
   | "renameShip"
   | "repairShip"
   | "welcome"

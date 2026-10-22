@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { MERCHANDISE } from "@/constants/merchandise"
-import { moveToLocation, updateCharacter } from "@/utils/actions/character"
+import { moveToLocation } from "@/utils/actions/character"
 import type { ActionResult } from "@/utils/actions/types"
 
 import { createTestPlayer, deepFreeze } from "../helpers/createTestPlayer"
@@ -236,50 +236,6 @@ describe("moveToLocation", () => {
 
       expect(result.player.locationStates?.tavern).toEqual(tavern)
     })
-  })
-})
-
-describe("updateCharacter", () => {
-  it("updates name, gender and age only", () => {
-    const player = deepFreeze(createTestPlayer())
-
-    const result = expectSuccess(
-      updateCharacter(player, { name: "Anne Bonny", gender: "Female", age: 25 })
-    )
-
-    expect(result.player.character).toEqual({
-      ...player.character,
-      name: "Anne Bonny",
-      gender: "Female",
-      age: 25,
-    })
-  })
-
-  it("ignores other fields, so gold cannot be changed", () => {
-    const result = expectSuccess(
-      updateCharacter(createTestPlayer(), {
-        name: "Anne Bonny",
-        gender: "Female",
-        age: 25,
-        gold: 1_000_000,
-      } as never)
-    )
-
-    expect(result.player.character.gold).toBe(1000)
-  })
-
-  it.each([
-    { name: "Al", gender: "Male", age: 30 },
-    { name: "Anne", gender: "Other", age: 30 },
-    { name: "Anne", gender: "Female", age: 14 },
-    { name: "Anne", gender: "Female", age: 81 },
-    { name: "Anne", gender: "Female", age: "30" },
-    {},
-  ])("rejects %j with a readable message", (input) => {
-    const result = updateCharacter(createTestPlayer(), input as never)
-
-    expect("error" in result && typeof result.error).toBe("string")
-    expect(result).not.toHaveProperty("player")
   })
 })
 

@@ -7,11 +7,11 @@ import {
 
 import type { ActionResult } from "./types"
 
-type NewPlayerInput = Pick<Character, "name" | "nationality" | "gender" | "age">
+type NewPlayerInput = Pick<Character, "name" | "nationality" | "characterId">
 
 /** The starting state of every new player. */
 export const createNewPlayer = (
-  { name, nationality, gender, age }: NewPlayerInput,
+  { name, nationality, characterId }: NewPlayerInput,
   {
     id,
     createdDate,
@@ -30,8 +30,7 @@ export const createNewPlayer = (
     name,
     nationality,
     title: STARTING_TITLE,
-    gender,
-    age,
+    characterId,
     town: startingTown,
     location: LOCATIONS.harbor,
     gold: STARTING_GOLD,
@@ -53,18 +52,18 @@ export const createNewPlayer = (
 })
 
 /**
- * Starts the game over with the same character. Name, nationality, gender and
- * age are kept, everything else goes back to how a new player starts.
+ * Starts the game over with the same character. Name, nationality and
+ * character are kept, everything else goes back to how a new player starts.
  */
 export const resetGame = (
   player: Player,
   { startingTown, ship }: { startingTown: Town; ship: Ship }
 ): ActionResult => {
-  const { name, nationality, gender, age } = player.character
+  const { name, nationality, characterId } = player.character
 
   return {
     player: createNewPlayer(
-      { name, nationality, gender, age },
+      { name, nationality, characterId },
       {
         id: player.id,
         createdDate: player.createdDate,

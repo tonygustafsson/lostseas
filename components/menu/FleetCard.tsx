@@ -1,12 +1,11 @@
 "use client"
 
-import { GiShoonerSailboat } from "react-icons/gi"
+import { HeartPulse } from "lucide-react"
+import { GiCannon, GiShoonerSailboat } from "react-icons/gi"
 import { MdGroups } from "react-icons/md"
 
-import useDrawer from "@/app/stores/drawer"
-
-import { Button } from "../ui/button"
-import { Card, CardContent, CardHeader } from "../ui/card"
+import { CardContent, CardHeader } from "../ui/card"
+import MenuCard, { MenuCardChevron } from "./MenuCard"
 import { StatCard } from "./StatCard"
 
 type Props = {
@@ -14,30 +13,38 @@ type Props = {
 }
 
 const FleetCard = ({ player }: Props) => {
-  const { open: openDrawer } = useDrawer()
+  const ships = Object.values(player.ships || {})
 
   return (
-    <Card className="gap-2 bg-neutral-900 p-2">
-      <CardHeader className="flex items-center justify-between px-2 font-serif text-lg">
-        Fleet
-        <Button variant="outline" size="xs" onClick={() => openDrawer("fleet")}>
-          More
-        </Button>
+    <MenuCard ariaLabel="Open fleet details" drawerId="fleet">
+      <CardHeader className="flex items-center gap-2 px-2 font-serif text-lg">
+        <span className="min-w-0 flex-1 truncate">Fleet</span>
+        <MenuCardChevron />
       </CardHeader>
 
       <CardContent className="grid grid-cols-2 gap-4 px-2">
         <StatCard
           title="Ships"
-          value={Object.keys(player?.ships || {}).length}
+          value={ships.length}
           Icon={<GiShoonerSailboat />}
         />
         <StatCard
           title="Crew"
-          value={player?.crewMembers?.count}
+          value={player.crewMembers.count}
           Icon={<MdGroups />}
         />
+        <StatCard
+          title="Cannons"
+          value={player.inventory?.cannons ?? 0}
+          Icon={<GiCannon />}
+        />
+        <StatCard
+          title="Crew health"
+          value={`${player.crewMembers.health}%`}
+          Icon={<HeartPulse />}
+        />
       </CardContent>
-    </Card>
+    </MenuCard>
   )
 }
 

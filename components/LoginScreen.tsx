@@ -21,7 +21,11 @@ import Screenshots from "./Screenshots"
 import SocialMedia from "./SocialMedia"
 import { Button } from "./ui/button"
 
-const LoginScreen = () => {
+type Props = {
+  initialCharacter: CharacterCreation
+}
+
+const LoginScreen = ({ initialCharacter }: Props) => {
   const { data: player } = useGetPlayer()
 
   if (player) return null
@@ -141,13 +145,13 @@ const LoginScreen = () => {
               </div>
               <div>
                 <p className="text-accent mb-1 text-xs font-semibold tracking-[0.16em] uppercase">
-                  Join the crew
+                  Start the adventure
                 </p>
                 <h2
                   id="register-title"
                   className="font-serif text-3xl text-amber-50 sm:text-4xl"
                 >
-                  Sign on as a pirate
+                  Your Legend Begins Here
                 </h2>
                 <p className="mt-2 max-w-xl leading-6 text-slate-200/70">
                   Choose who you&apos;ll be. It&apos;s free to play, and you can
@@ -155,7 +159,7 @@ const LoginScreen = () => {
                 </p>
               </div>
             </div>
-            <RegistrationForm />
+            <RegistrationForm initialCharacter={initialCharacter} />
           </section>
 
           <section

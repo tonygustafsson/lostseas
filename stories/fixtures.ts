@@ -2,9 +2,8 @@ export const player = {
   id: "storybook-captain",
   createdDate: 1704067200000,
   character: {
+    characterId: "mateo-salazar",
     name: "Morgan Reed",
-    age: 32,
-    gender: "Female",
     nationality: "England",
     title: "Captain",
     town: "Port Royale",

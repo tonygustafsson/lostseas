@@ -9,10 +9,4 @@ type Player = {
   locationStates?: LocationStates
 }
 
-type CreatePlayerClientRequest = Pick<
-  Character,
-  "name",
-  "gender",
-  "age",
-  "nationality"
->
+type CreatePlayerClientRequest = Pick<Character, "name" | "characterId">

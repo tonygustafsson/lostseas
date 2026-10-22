@@ -53,8 +53,7 @@ const createPlayer = (mood = 50, health = 80): Player => ({
   createdDate: 0,
   character: {
     name: "Test",
-    age: 30,
-    gender: "Male",
+    characterId: "mateo-salazar",
     nationality: "England",
     title: "Pirate",
     town: "Port Royale",
