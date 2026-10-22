@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import { useRef, useState } from "react"
 import { AiOutlineCalendar } from "react-icons/ai"
 import { BiFemaleSign, BiMaleSign, BiTime } from "react-icons/bi"
 import { FaChartBar, FaCoins } from "react-icons/fa"
@@ -13,6 +14,7 @@ import {
 } from "react-icons/gi"
 
 import useDrawer from "@/app/stores/drawer"
+import GodMode from "@/components/godmode"
 import Flag from "@/components/icons/Flag"
 import StatTile from "@/components/StatTile"
 import { Badge } from "@/components/ui/badge"
@@ -27,9 +29,28 @@ import { getScore } from "@/utils/score"
 
 const chipClass = "h-6 gap-1 px-2 text-xs [&>svg]:size-3!"
 
+const GOD_MODE_CLICKS = 3
+const GOD_MODE_MAX_CLICK_GAP_MS = 2000
+
 const StatusDrawer = () => {
   const { data: player } = useGetPlayer()
   const { open: openDrawer } = useDrawer()
+  const [godModeOpen, setGodModeOpen] = useState(false)
+  const titleClicks = useRef({ count: 0, last: 0 })
+
+  const handleTitleClick = () => {
+    const now = Date.now()
+    const clicks = titleClicks.current
+
+    clicks.count =
+      now - clicks.last > GOD_MODE_MAX_CLICK_GAP_MS ? 1 : clicks.count + 1
+    clicks.last = now
+
+    if (clicks.count >= GOD_MODE_CLICKS) {
+      clicks.count = 0
+      setGodModeOpen(true)
+    }
+  }
 
   if (!player) {
     return null
@@ -41,10 +62,15 @@ const StatusDrawer = () => {
 
   return (
     <>
-      <h1 className="mb-6 flex items-center gap-2 font-serif text-2xl">
+      <h1
+        className="mb-6 flex items-center gap-2 font-serif text-2xl select-none"
+        onClick={handleTitleClick}
+      >
         <GiPirateCoat className="text-accent" />
         Status
       </h1>
+
+      <GodMode open={godModeOpen} onOpenChange={setGodModeOpen} />
 
       <Card className="shadow-background/20 relative gap-4 p-6 shadow-lg">
         <Flag
