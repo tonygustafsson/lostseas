@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
-import { formatGold, formatQuantity, getItemChange } from "@/utils/shop"
+import { formatGoldChange, formatQuantity, getItemChange } from "@/utils/shop"
 
 type Props = {
   item: keyof Inventory
@@ -31,7 +31,7 @@ const ShopTradeChange = ({ item, owned, target, className }: Props) => {
 
       <Separator orientation="vertical" />
 
-      <span>{formatGold(gold)}</span>
+      <span>{formatGoldChange(gold)}</span>
     </div>
   )
 }

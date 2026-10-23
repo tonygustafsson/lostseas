@@ -11,6 +11,7 @@ import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_TYPES } from "@/constants/ship"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShipyard } from "@/hooks/queries/useShipyard"
+import { formatGold } from "@/utils/number"
 
 const ShipyardSell = () => {
   const { data: player } = useGetPlayer()
@@ -45,7 +46,7 @@ const ShipyardSell = () => {
                       <ShipHealthBadge health={health} />
 
                       <Badge variant="secondary">
-                        Worth: {shipInfo.sell} gold
+                        Worth: {formatGold(shipInfo.sell)}
                       </Badge>
                     </div>
                   </>

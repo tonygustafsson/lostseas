@@ -9,6 +9,7 @@ import {
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useTavern } from "@/hooks/queries/useTavern"
 import { cn } from "@/lib/utils"
+import { formatGold, formatNumber } from "@/utils/number"
 import { getRandomInt } from "@/utils/random"
 import { getCardsBet } from "@/utils/tavern"
 
@@ -82,7 +83,7 @@ const TavernCards = () => {
     if (isPlayingCard) return "Shuffling..."
     if (!canAfford) return "Not enough gold"
     if (!hasSelectedCard) return "Pick a card to play"
-    return `Bet ${bet} gold`
+    return `Bet ${formatGold(bet)}`
   }
 
   const getCardClassNames = (index: number) => {
@@ -114,7 +115,7 @@ const TavernCards = () => {
         </div>
 
         <p className="text-muted-foreground text-sm">
-          You have {gold} gold. Betting {bet}.
+          You have {formatGold(gold)}. Betting {formatNumber(bet)}.
         </p>
       </section>
 
@@ -168,7 +169,7 @@ const TavernCards = () => {
         </Button>
 
         <p className="text-muted-foreground text-sm">
-          One in {HAND_SIZE} chance of winning {potentialProfit} gold.
+          One in {HAND_SIZE} chance of winning {formatGold(potentialProfit)}.
         </p>
 
         {hasResult && (

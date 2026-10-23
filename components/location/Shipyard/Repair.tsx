@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { SHIP_REPAIR_COST, SHIP_TYPES } from "@/constants/ship"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShipyard } from "@/hooks/queries/useShipyard"
+import { formatGold } from "@/utils/number"
 
 const ShipyardRepair = () => {
   const { data: player } = useGetPlayer()
@@ -33,7 +34,7 @@ const ShipyardRepair = () => {
               body={<ShipHealthBadge health={health} className="mt-2" />}
               actions={
                 <Button size="sm" onClick={() => handleRepairShip(id)}>
-                  Repair for {repairCost} gold
+                  Repair for {formatGold(repairCost)}
                 </Button>
               }
             />

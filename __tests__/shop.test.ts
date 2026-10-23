@@ -5,7 +5,7 @@ import {
   applyTradeChanges,
   describeItems,
   formatAmountChange,
-  formatGold,
+  formatGoldChange,
   formatQuantity,
   formatSigned,
   getAffordableTarget,
@@ -365,12 +365,12 @@ describe("trade text utils", () => {
     })
   })
 
-  it("formatSigned and formatGold show the sign and group thousands", () => {
+  it("formatSigned and formatGoldChange show the sign and group thousands", () => {
     expect(formatSigned(110)).toBe("+110")
     expect(formatSigned(-1250)).toBe("−1,250")
     expect(formatSigned(0)).toBe("0")
-    expect(formatGold(-24)).toBe("−24 gold")
-    expect(formatGold(0)).toBe("0 gold")
+    expect(formatGoldChange(-24)).toBe("−24 gold")
+    expect(formatGoldChange(0)).toBe("0 gold")
   })
 
   it("getTradeToast sums up a mixed trade", () => {

@@ -1,5 +1,7 @@
 import { Coins, Landmark, ScrollText } from "lucide-react"
 
+import { formatGold } from "@/utils/number"
+
 type BalancesProps = {
   gold: number
   account: number
@@ -56,7 +58,7 @@ const Balances = ({ gold, account, loan }: BalancesProps) => {
                 </dt>
 
                 <dd className="text-foreground mt-0.5 text-lg leading-none font-semibold tracking-tight tabular-nums md:text-xl">
-                  {balance.value.toLocaleString("en-US")} gold
+                  {formatGold(balance.value)}
                 </dd>
               </dl>
             </div>

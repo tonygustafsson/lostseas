@@ -1,8 +1,14 @@
 import { LOAN_LIMIT } from "@/constants/bank"
-import { isPositiveSafeInteger } from "@/utils/number"
+import {
+  isVentureId,
+  type VentureOutcome,
+  VENTURES,
+} from "@/constants/ventures"
+import { formatGold, isPositiveSafeInteger } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
+import { getRandomInt } from "@/utils/random"
 
-import type { ActionResult } from "./types"
+import type { ActionResult, RandomInt } from "./types"
 
 type AmountInput = { amount: number }
 
@@ -85,7 +91,9 @@ export const takeLoan = (
   const loan = (player.character.loan || 0) + amount
 
   if (loan > LOAN_LIMIT) {
-    return { error: `You cannot loan more than a total of ${LOAN_LIMIT} gold.` }
+    return {
+      error: `You cannot loan more than a total of ${formatGold(LOAN_LIMIT)}.`,
+    }
   }
 
   const gold = player.character.gold + amount
@@ -125,5 +133,111 @@ export const repayLoan = (
     log: `Repaid ${amount} gold to the bank. Remaining loan: ${loan} gold.`,
     // The client treats null as a fully repaid loan
     data: { amount, gold, loan: loan === 0 ? null : loan },
+  }
+}
+
+type VentureInput = { ventureId: VentureId }
+
+const validateVenture = (player: Player, ventureId: unknown) => {
+  if (player.character.location !== "Bank") {
+    return NOT_AT_BANK
+  }
+
+  if (!isVentureId(ventureId)) {
+    return "Unknown venture"
+  }
+}
+
+export const investInVenture = (
+  player: Player,
+  { ventureId }: VentureInput
+): ActionResult<{ ventureId: VentureId; gold: number; returnDay: number }> => {
+  const error = validateVenture(player, ventureId)
+
+  if (error) {
+    return { error }
+  }
+
+  const venture = VENTURES[ventureId]
+
+  if (player.character.ventures?.[ventureId]) {
+    return { error: "You already hold a share in this venture." }
+  }
+
+  if (player.character.gold < venture.stake) {
+    return { error: "Not enough gold" }
+  }
+
+  const gold = player.character.gold - venture.stake
+  const investedDay = player.character.day
+  const returnDay = investedDay + venture.days
+
+  return {
+    player: patchDeep<Player>(player, {
+      character: {
+        gold,
+        ventures: { [ventureId]: { investedDay, returnDay } },
+      },
+    }),
+    log: `Invested ${venture.stake} gold in ${venture.name}. Expected back on day ${returnDay}.`,
+    data: { ventureId, gold, returnDay },
+  }
+}
+
+/** Rolls a number from 1 to 100 and picks the outcome whose chance range it falls in. */
+const rollOutcome = (
+  outcomes: VentureOutcome[],
+  randomInt: RandomInt
+): VentureOutcome => {
+  const roll = randomInt(1, 100)
+  let total = 0
+
+  for (const outcome of outcomes) {
+    total += outcome.chance
+
+    if (roll <= total) {
+      return outcome
+    }
+  }
+
+  return outcomes[outcomes.length - 1]
+}
+
+export const collectVenture = (
+  player: Player,
+  { ventureId }: VentureInput,
+  randomInt: RandomInt = getRandomInt
+): ActionResult<{
+  ventureId: VentureId
+  returns: number
+  message: string
+  gold: number
+}> => {
+  const error = validateVenture(player, ventureId)
+
+  if (error) {
+    return { error }
+  }
+
+  const share = player.character.ventures?.[ventureId]
+
+  if (!share) {
+    return { error: "You hold no share in this venture." }
+  }
+
+  if (share.returnDay > player.character.day) {
+    return { error: "The party has not yet returned." }
+  }
+
+  const venture = VENTURES[ventureId]
+  const { returns, message } = rollOutcome(venture.outcomes, randomInt)
+  const gold = player.character.gold + returns
+
+  return {
+    player: patchDeep<Player>(player, {
+      character: { gold, ventures: { [ventureId]: null } },
+    }),
+    log: `${venture.name} returned ${returns} gold on a stake of ${venture.stake} gold.`,
+    data: { ventureId, returns, message, gold },
   }
 }

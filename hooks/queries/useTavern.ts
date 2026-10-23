@@ -5,6 +5,7 @@ import { useToasts } from "@/app/stores/toasts"
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import apiRequest from "@/utils/apiRequest"
 import { increaseCrewMood } from "@/utils/crew"
+import { formatGold } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
@@ -88,7 +89,7 @@ export const useTavern = () => {
 
       setToast({
         title: `You chose to ${action} with your crew`,
-        message: `It cost you ${totalPrice} gold and your crew now have the health ${newHealth} and mood ${newMood}`,
+        message: `It cost you ${formatGold(totalPrice)} and your crew now have the health ${newHealth} and mood ${newMood}`,
         variant: "success",
       })
 
@@ -206,7 +207,7 @@ export const useTavern = () => {
       if (success) {
         setToast({
           title: `You fought ${numberOfSailors} sailors sailors and won!`,
-          message: `You got ${loot} gold. Your crew lost ${healthLoss}% health.`,
+          message: `You got ${formatGold(loot)}. Your crew lost ${healthLoss}% health.`,
           variant: "success",
         })
 
@@ -297,9 +298,9 @@ export const useTavern = () => {
       let title = ""
 
       if (cardsResults === "won") {
-        title = `You made a bet of ${bet} gold and won!`
+        title = `You made a bet of ${formatGold(bet)} and won!`
       } else {
-        title = `You made a bet of ${bet} gold and lost`
+        title = `You made a bet of ${formatGold(bet)} and lost`
       }
 
       if (updatedPlayer) {
@@ -308,7 +309,7 @@ export const useTavern = () => {
 
       setToast({
         title,
-        message: `You now have ${gold} gold in total.`,
+        message: `You now have ${formatGold(gold)} in total.`,
         variant: cardsResults === "won" ? "success" : "error",
       })
 

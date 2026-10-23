@@ -5,6 +5,7 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import BankAccount from "./Account"
 import Balances from "./Balances"
 import BankLoan from "./Loan"
+import BankVentures from "./Ventures"
 
 const Bank = () => {
   const { data: player } = useGetPlayer()
@@ -22,6 +23,8 @@ const Bank = () => {
         <BankAccount />
         <BankLoan />
       </div>
+
+      <BankVentures />
     </div>
   )
 }

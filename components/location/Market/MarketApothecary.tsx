@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { APOTHECARY_REMEDIES, type Remedy } from "@/constants/apothecary"
 import { getRemedyResult } from "@/utils/apothecary"
+import { formatGold } from "@/utils/number"
 
 type Props = {
   player: Player
@@ -49,7 +50,7 @@ const MarketApothecary = ({ player, onBuy, isBuying }: Props) => (
                 </p>
 
                 <div className="mt-4 flex flex-wrap items-center gap-2">
-                  <Badge variant="secondary">Price: {price} gold</Badge>
+                  <Badge variant="secondary">Price: {formatGold(price)}</Badge>
 
                   <Badge variant="secondary">+{healthIncrease}% health</Badge>
                 </div>

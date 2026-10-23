@@ -89,8 +89,13 @@ const AdvisorTips = ({ heading, title, showAllClear, destination }: Props) => {
   if (!player) return null
 
   const warnings = getAdvisorWarnings(player, destination)
+  const goodNews = warnings.filter(
+    (warning) => getWarningVariant(warning) === "success"
+  )
   const blocking = warnings.filter(({ blocksTravel }) => blocksTravel)
-  const advice = warnings.filter(({ blocksTravel }) => !blocksTravel)
+  const advice = warnings.filter(
+    (warning) => getWarningVariant(warning) === "warning"
+  )
 
   if (!warnings.length && !showAllClear) return null
 
@@ -117,6 +122,14 @@ const AdvisorTips = ({ heading, title, showAllClear, destination }: Props) => {
 
       {warnings.length ? (
         <>
+          <WarningGroup
+            label="Good news"
+            labelClassName="text-success"
+            warnings={goodNews}
+            player={player}
+            destination={destination}
+          />
+
           <WarningGroup
             label="Before you sail"
             labelClassName="text-destructive"

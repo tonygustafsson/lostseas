@@ -3,6 +3,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 import { POST as deposit } from "@/app/api/bank/deposit/route"
 import { POST as loan } from "@/app/api/bank/loan/route"
 import { POST as repay } from "@/app/api/bank/repay/route"
+import { POST as collect } from "@/app/api/bank/ventures/collect/route"
+import { POST as invest } from "@/app/api/bank/ventures/invest/route"
 import { POST as withdraw } from "@/app/api/bank/withdraw/route"
 
 import { createTestPlayer } from "../helpers/createTestPlayer"
@@ -128,3 +130,67 @@ describe.each(routes)("POST /api/bank/$name", ({ name, route, log, data }) => {
     })
   })
 })
+
+const ventureRoutes = [
+  {
+    name: "invest",
+    route: invest,
+    log: "Invested 500 gold in The Barbados sugar convoy. Expected back on day 15.",
+  },
+  {
+    name: "collect",
+    route: collect,
+    log: /^The Barbados sugar convoy returned (600|450) gold on a stake of 500 gold\.$/,
+  },
+]
+
+describe.each(ventureRoutes)(
+  "POST /api/bank/ventures/$name",
+  ({ name, route, log }) => {
+    beforeEach(() => {
+      mocks.player = createTestPlayer({
+        character: {
+          location: "Bank",
+          day: 1,
+          ventures:
+            name === "collect"
+              ? { sugarConvoy: { investedDay: 1, returnDay: 1 } }
+              : undefined,
+        },
+      })
+    })
+
+    const call = () => route(request({ ventureId: "sugarConvoy" }))
+
+    it("returns 401 without a player cookie", async () => {
+      mocks.playerId = undefined
+
+      expect((await call()).status).toBe(401)
+      expect(mocks.savePlayer).not.toHaveBeenCalled()
+    })
+
+    it("returns 400 with the game error and saves nothing", async () => {
+      const response = await route(request({ ventureId: "unknown" }))
+
+      expect(response.status).toBe(400)
+      expect(await response.json()).toEqual({ error: "Unknown venture" })
+      expect(mocks.savePlayer).not.toHaveBeenCalled()
+    })
+
+    it("saves the new player with a log and returns it", async () => {
+      const response = await call()
+      const body = await response.json()
+
+      expect(response.status).toBe(200)
+
+      const [savedPlayer, savedLog] = mocks.savePlayer.mock.calls[0]
+
+      expect(savedLog).toMatch(log)
+      expect(body).toMatchObject({
+        success: true,
+        updatedPlayer: savedPlayer,
+        ventureId: "sugarConvoy",
+      })
+    })
+  }
+)

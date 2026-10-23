@@ -1,5 +1,4 @@
 "use client"
-
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import { Badge } from "@/components/ui/badge"
@@ -8,6 +7,7 @@ import { Separator } from "@/components/ui/separator"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { useMarket } from "@/hooks/queries/useMarket"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { formatGold } from "@/utils/number"
 import { capitalize } from "@/utils/string"
 
 import MarketApothecary from "./MarketApothecary"
@@ -54,14 +54,14 @@ const Market = () => {
                         {quantity === 1
                           ? MERCHANDISE[inventoryItem].singleUnit
                           : MERCHANDISE[inventoryItem].unit}{" "}
-                        of {item} for <strong>{price} gold</strong>.
+                        of {item} for <strong>{formatGold(price)}</strong>.
                       </p>
 
                       <p>{MERCHANDISE[inventoryItem].description}</p>
 
                       <div className="mt-4 flex flex-wrap items-center gap-2">
                         <Badge variant="secondary">
-                          Price: {price * quantity} gold
+                          Price: {formatGold(price * quantity)}
                         </Badge>
 
                         {discount > 0 && (

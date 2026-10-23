@@ -5,6 +5,7 @@ import { useToasts } from "@/app/stores/toasts"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_REPAIR_COST, SHIP_TYPES } from "@/constants/ship"
 import apiRequest from "@/utils/apiRequest"
+import { formatGold } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
@@ -68,7 +69,7 @@ export const useShipyard = () => {
 
       setToast({
         title: `You bought a ${item}`,
-        message: `It cost you ${totalPrice} gold.`,
+        message: `It cost you ${formatGold(totalPrice)}.`,
         variant: "success",
       })
 
@@ -125,7 +126,7 @@ export const useShipyard = () => {
 
       setToast({
         title: `You sold your ${ship.type} ${ship.name}`,
-        message: `It received ${totalPrice} gold.`,
+        message: `It received ${formatGold(totalPrice)}.`,
         variant: "success",
       })
 
@@ -190,7 +191,7 @@ export const useShipyard = () => {
 
       setToast({
         title: `You bought ${quantity} ${unit} of ${item}`,
-        message: `It cost you ${totalPrice} gold and your now have ${totalQuantity} ${unit} of ${item}`,
+        message: `It cost you ${formatGold(totalPrice)} and your now have ${totalQuantity} ${unit} of ${item}`,
         variant: "success",
       })
 
@@ -260,7 +261,7 @@ export const useShipyard = () => {
 
       setToast({
         title: `You sold ${quantity} ${unit} of ${item}`,
-        message: `It received ${totalPrice} gold and your now have ${totalQuantity} ${unit} of ${item}`,
+        message: `It received ${formatGold(totalPrice)} and your now have ${totalQuantity} ${unit} of ${item}`,
         variant: "success",
       })
     },
@@ -317,7 +318,7 @@ export const useShipyard = () => {
 
       setToast({
         title: `You repaired your ${ship.type} ${ship.name}`,
-        message: `It costed you ${totalPrice} gold.`,
+        message: `It costed you ${formatGold(totalPrice)}.`,
         variant: "success",
       })
     },

@@ -15,6 +15,7 @@ import { SHIP_REPAIR_COST, SHIP_TYPES } from "@/constants/ship"
 import { TITLE_INFO } from "@/constants/title"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShipyard } from "@/hooks/queries/useShipyard"
+import { formatGold } from "@/utils/number"
 
 const ShipyardBuy = () => {
   const { data: player } = useGetPlayer()
@@ -68,7 +69,7 @@ const ShipyardBuy = () => {
                   body={<ShipHealthBadge health={health} className="mt-2" />}
                   actions={
                     <Button size="sm" onClick={() => repairShip({ id })}>
-                      Repair for {repairCost} gold
+                      Repair for {formatGold(repairCost)}
                     </Button>
                   }
                 />
@@ -95,7 +96,7 @@ const ShipyardBuy = () => {
                 <p>{description}</p>
 
                 <Badge variant="secondary" className="mt-4">
-                  Price: {buy} gold
+                  Price: {formatGold(buy)}
                 </Badge>
               </>
             }

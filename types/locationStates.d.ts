@@ -46,6 +46,7 @@ type AdvisorWarning =
   | "LOW_CREW_MOOD"
   | "NO_CANNONS"
   | "PROMOTION_AVAILABLE"
+  | "VENTURE_READY"
 
 type ShipMeetingState = {
   nation: Nation | "Pirate"

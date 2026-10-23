@@ -11,6 +11,7 @@ import {
   STARTING_TITLE,
 } from "@/constants/player"
 import { usePlayer } from "@/hooks/queries/usePlayer"
+import { formatGold } from "@/utils/number"
 
 import { Button } from "../ui/button"
 
@@ -46,7 +47,7 @@ const ResetGame = ({ player }: Props) => {
         <div className="flex flex-col gap-4">
           <p>
             {player.character.name} will start over as a {STARTING_TITLE} with{" "}
-            {STARTING_GOLD} gold, a {STARTING_SHIP_TYPE} and{" "}
+            {formatGold(STARTING_GOLD)}, a {STARTING_SHIP_TYPE} and{" "}
             {STARTING_CREW_COUNT} crew members in a random town in{" "}
             {player.character.nationality}. Your gold, bank account, ships,
             crew, goods, cannons, title, journey log and statistics will be

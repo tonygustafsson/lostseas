@@ -6,6 +6,7 @@ import { APOTHECARY_REMEDIES, type Remedy } from "@/constants/apothecary"
 import { MERCHANDISE } from "@/constants/merchandise"
 import apiRequest from "@/utils/apiRequest"
 import { getRemedyResult } from "@/utils/apothecary"
+import { formatGold } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
 
 import { PLAYER_QUERY_KEY } from "./usePlayer"
@@ -97,7 +98,7 @@ export const useMarket = () => {
 
         setToast({
           title: `You bought ${quantity} ${unit} of ${item}`,
-          message: `It cost you ${totalPrice} gold and your now have ${totalQuantity} ${unit} of ${item}`,
+          message: `It cost you ${formatGold(totalPrice)} and your now have ${totalQuantity} ${unit} of ${item}`,
           variant: "success",
         })
 

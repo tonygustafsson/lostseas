@@ -5,6 +5,7 @@ import { useToasts } from "@/app/stores/toasts"
 import { TOWNS } from "@/constants/locations"
 import { TREASURES } from "@/constants/treasures"
 import apiRequest from "@/utils/apiRequest"
+import { formatGold } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
 import { getNewTitle, getTitleReward } from "@/utils/title"
 
@@ -12,7 +13,7 @@ import { PLAYER_QUERY_KEY } from "./usePlayer"
 
 const getRewardMessage = (reward: number) =>
   reward > 0
-    ? `You also got a reward of ${reward} gold.`
+    ? `You also got a reward of ${formatGold(reward)}.`
     : "You have already been rewarded for this title before."
 
 export const useCityhall = () => {
@@ -213,7 +214,7 @@ export const useCityhall = () => {
 
       setToast({
         title: `You handed over the ${treasure.name} to the cityhall`,
-        message: `You got a reward of ${treasureInfo.value} gold.`,
+        message: `You got a reward of ${formatGold(treasureInfo.value)}.`,
         variant: "success",
       })
     },

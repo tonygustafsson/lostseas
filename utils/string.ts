@@ -2,6 +2,10 @@
 export const capitalize = (str: string) =>
   str.charAt(0).toUpperCase() + str.slice(1)
 
+/** Converts aVarLikeThis to "a-var-like-this" */
+export const camelCaseToKebabCase = (str: string) =>
+  str.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase()
+
 /** Converts aVarLikeThis to "A var like this" */
 export const snakeCaseToTitleCase = (str: string) =>
   str

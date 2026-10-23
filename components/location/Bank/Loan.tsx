@@ -1,10 +1,10 @@
 "use client"
-
 import { BadgeCheck, ScrollText } from "lucide-react"
 
 import { LOAN_LIMIT } from "@/constants/bank"
 import { useBank } from "@/hooks/queries/useBank"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { formatGold } from "@/utils/number"
 
 import BankArea from "./BankArea"
 import QuickAmounts from "./QuickAmounts"
@@ -22,8 +22,8 @@ const BankLoan = () => {
       title="Loans"
       description={
         <>
-          Borrow up to {LOAN_LIMIT.toLocaleString("en-US")} gold with no
-          interest. Repay it in full before you can make deposits.
+          Borrow up to {formatGold(LOAN_LIMIT)} with no interest. Repay it in
+          full before you can make deposits.
         </>
       }
     >

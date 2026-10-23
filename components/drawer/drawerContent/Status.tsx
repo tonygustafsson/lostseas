@@ -1,5 +1,6 @@
 "use client"
 
+import { Anchor, Sailboat } from "lucide-react"
 import Image from "next/image"
 import { AiOutlineCalendar } from "react-icons/ai"
 import { BiFemaleSign, BiMaleSign, BiTime } from "react-icons/bi"
@@ -21,6 +22,7 @@ import { Card } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { getCharacterById } from "@/constants/characters"
 import { NATIONS } from "@/constants/locations"
+import { VENTURES } from "@/constants/ventures"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { convertDaysToTimeSpan, getCurrentDate } from "@/utils/date"
 import { getScore } from "@/utils/score"
@@ -38,6 +40,10 @@ const StatusDrawer = () => {
   const { character } = player
   const enemy = NATIONS[character.nationality].warWith
   const characterInfo = getCharacterById(character.characterId)
+  const ventures = Object.entries(character.ventures || {}) as [
+    VentureId,
+    VentureShare,
+  ][]
 
   return (
     <>
@@ -182,6 +188,35 @@ const StatusDrawer = () => {
           )}
         </div>
       </div>
+
+      {!!ventures.length && (
+        <>
+          <h2 className="mt-8 mb-4 font-serif text-xl">Ventures</h2>
+
+          <div className="@container">
+            <div className="grid grid-cols-1 gap-4 @md:grid-cols-2">
+              {ventures.map(([ventureId, share]) => {
+                const daysLeft = share.returnDay - character.day
+                const hasReturned = daysLeft <= 0
+
+                return (
+                  <StatTile
+                    key={`venture-${ventureId}`}
+                    label={VENTURES[ventureId].name}
+                    value={hasReturned ? "Back in port" : daysLeft}
+                    unit={
+                      hasReturned
+                        ? undefined
+                        : `${daysLeft === 1 ? "day" : "days"} left`
+                    }
+                    icon={hasReturned ? <Anchor /> : <Sailboat />}
+                  />
+                )
+              })}
+            </div>
+          </div>
+        </>
+      )}
 
       {!!Object.keys(character.battles || {}).length && (
         <>

@@ -2,6 +2,7 @@ import type { ReactNode } from "react"
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { formatGold } from "@/utils/number"
 
 const SHARES = [
   { label: "25%", share: 0.25 },
@@ -68,13 +69,13 @@ const QuickAmounts = ({
                     ? "hover:bg-amber-100"
                     : "hover:bg-secondary hover:brightness-125"
                 )}
-                aria-label={`${verb} ${share === 1 ? "all" : label} (${amount} gold)`}
+                aria-label={`${verb} ${share === 1 ? "all" : label} (${formatGold(amount)})`}
                 disabled={disabled}
                 onClick={() => onSelect(amount)}
               >
                 <span className="text-base font-semibold">{label}</span>
                 <span className="text-xs tabular-nums opacity-80">
-                  {amount.toLocaleString("en-US")} gold
+                  {formatGold(amount)}
                 </span>
               </Button>
             )

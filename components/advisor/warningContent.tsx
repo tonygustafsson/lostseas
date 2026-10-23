@@ -7,6 +7,7 @@ import { RiBankLine } from "react-icons/ri"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import { AdvisorWarningItem } from "@/utils/getAdvisorWarnings"
 import { getSuppliesDays } from "@/utils/journey"
+import { formatGold } from "@/utils/number"
 
 export const getWarningContent = (
   { tip }: AdvisorWarningItem,
@@ -17,7 +18,7 @@ export const getWarningContent = (
     case "TOO_MUCH_GOLD":
       return {
         icon: <FaCoins />,
-        text: `Carrying ${player.character.gold} gold. Spend it or bank it to keep it safe from defeat at sea.`,
+        text: `Carrying ${formatGold(player.character.gold)}. Spend it or bank it to keep it safe from defeat at sea.`,
       }
     case "LOAN_BLOCKS_DEPOSIT":
       return {
@@ -102,6 +103,11 @@ export const getWarningContent = (
         icon: <PiMedalFill />,
         text: "Promotion earned! Claim your title and gold at City Hall.",
       }
+    case "VENTURE_READY":
+      return {
+        icon: <RiBankLine />,
+        text: "Word has reached the bank. One of your ventures has returned to port. Collect your share at any bank.",
+      }
     default:
       return null
   }
@@ -112,7 +118,7 @@ export const getWarningVariant = ({
   blocksTravel,
 }: AdvisorWarningItem) => {
   if (blocksTravel) return "error"
-  if (tip === "PROMOTION_AVAILABLE") return "success"
+  if (tip === "PROMOTION_AVAILABLE" || tip === "VENTURE_READY") return "success"
 
   return "warning"
 }

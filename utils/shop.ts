@@ -2,6 +2,7 @@ import {
   isTradeGoodAvailableInTown,
   MERCHANDISE,
 } from "@/constants/merchandise"
+import { formatGold, formatNumber } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
 
 /** One item to trade. A negative quantity sells, a positive one buys. */
@@ -182,10 +183,10 @@ export const getItemChange = (
 
 /** A number with its sign, like "+110", "−24" or "0". */
 export const formatSigned = (value: number) =>
-  `${value > 0 ? "+" : value < 0 ? "−" : ""}${Math.abs(value).toLocaleString("en-US")}`
+  `${value > 0 ? "+" : value < 0 ? "−" : ""}${formatNumber(Math.abs(value))}`
 
 /** A gold amount with its sign, like "+110 gold" or "−24 gold". */
-export const formatGold = (gold: number) => `${formatSigned(gold)} gold`
+export const formatGoldChange = (gold: number) => `${formatSigned(gold)} gold`
 
 /** The player after a trade, used to update the screen before the server answers. */
 export const applyTradeChanges = (player: Player, changes: TradeChange[]) =>
@@ -211,9 +212,9 @@ export const getTradeToast = ({
 }) => ({
   title:
     gold > 0
-      ? `You received ${gold} gold`
+      ? `You received ${formatGold(gold)}`
       : gold < 0
-        ? `You paid ${-gold} gold`
+        ? `You paid ${formatGold(-gold)}`
         : "The trade evened out",
   message: describeTrade(sold, bought),
 })

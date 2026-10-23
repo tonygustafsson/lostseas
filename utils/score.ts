@@ -1,3 +1,5 @@
+import { VENTURES } from "@/constants/ventures"
+
 import { getMannedCannons } from "./crew"
 
 export const getScore = (player: Player) => {
@@ -31,9 +33,15 @@ export const getScore = (player: Player) => {
     score += 450
   }
 
+  // Stakes at sea still belong to the player until the venture is collected
+  const ventureStakes = (
+    Object.keys(player.character.ventures || {}) as VentureId[]
+  ).reduce((sum, ventureId) => sum + VENTURES[ventureId].stake, 0)
+
   const totalGold =
     player.character.gold +
-    (player.character.account || 0) -
+    (player.character.account || 0) +
+    ventureStakes -
     (player.character.loan || 0)
 
   score += Math.floor(totalGold / 500)

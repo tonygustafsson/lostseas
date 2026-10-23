@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import { useTavern } from "@/hooks/queries/useTavern"
+import { formatGold } from "@/utils/number"
 import { canTreatCrew } from "@/utils/tavern"
 
 type Props = {
@@ -37,7 +38,7 @@ const ShopItem = ({ player, item }: Props) => {
           <p>{merchandise.description}</p>
 
           <div className="mt-4 flex flex-wrap items-center gap-2">
-            <Badge variant="secondary">Price: {price} gold</Badge>
+            <Badge variant="secondary">Price: {formatGold(price)}</Badge>
 
             {merchandise.healthIncrease > 0 && (
               <Badge className="bg-success/10 text-success">

@@ -16,8 +16,10 @@ import {
 } from "@/constants/ship"
 import { TAVERN_ITEMS } from "@/constants/tavern"
 import { TITLE_INFO } from "@/constants/title"
+import { VENTURES } from "@/constants/ventures"
 import { cn } from "@/lib/utils"
 import { MEDICINE_HEALTH_PER_BOX } from "@/utils/crew"
+import { formatGold } from "@/utils/number"
 import {
   BATTLE_MAX_ROUNDS,
   CREW_DAMAGE_STRENGTH_STEP,
@@ -146,13 +148,13 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <p className="mb-4">
           The market also has an apothecary that sells remedies for your whole
           crew. Each remedy raises crew health by a fixed number of points,
-          capped at 100%. The price is {APOTHECARY_PRICE_PER_POINT} gold per
-          crew member for every point the remedy gives. You always pay the full
-          price, so any healing past 100% is wasted. Pick the remedy that best
-          fits your crew&apos;s health to get the most for your gold. Used well,
-          the apothecary is the cheapest way to heal your crew in port. A remedy
-          cannot be bought when you have no crew or their health is already at
-          100%.
+          capped at 100%. The price is {formatGold(APOTHECARY_PRICE_PER_POINT)}{" "}
+          per crew member for every point the remedy gives. You always pay the
+          full price, so any healing past 100% is wasted. Pick the remedy that
+          best fits your crew&apos;s health to get the most for your gold. Used
+          well, the apothecary is the cheapest way to heal your crew in port. A
+          remedy cannot be bought when you have no crew or their health is
+          already at 100%.
         </p>
 
         <Table className="mb-6 rounded-xl bg-black/60">
@@ -371,18 +373,21 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           Every ship has a health rating. Your ships take damage every time the
           enemy hits them during a battle, win or lose. A ship at 0% health is
           completely disabled and will block you from leaving port. You can
-          repair ships at the shipyard for {SHIP_REPAIR_COST} gold per 1% of
-          damage. You can also sell any ship you own at the shipyard for half
+          repair ships at the shipyard for {formatGold(SHIP_REPAIR_COST)} per 1%
+          of damage. You can also sell any ship you own at the shipyard for half
           its purchase price, regardless of its health. You must own at least
           one ship to leave port. You can remove a ship from your fleet, but not
           while at sea and not if it is your last ship.
         </p>
 
         <p className="mb-4">
-          Buy repair kits at any shipyard for {MERCHANDISE.repairKits.buy} gold
-          each, or sell them there for {MERCHANDISE.repairKits.sell} gold each.
-          In Crew &amp; Fleet, click Use under Equipment &gt; Repair kits, then
-          choose a damaged ship and how many kits to use. You can use them
+          Buy repair kits at any shipyard for{" "}
+          {formatGold(MERCHANDISE.repairKits.buy)}
+          each, or sell them there for {formatGold(
+            MERCHANDISE.repairKits.sell
+          )}{" "}
+          each. In Crew &amp; Fleet, click Use under Equipment &gt; Repair kits,
+          then choose a damaged ship and how many kits to use. You can use them
           anywhere, including at sea, without paying additional gold. Each kit
           restores up to {REPAIR_KIT_HEALTH} percentage points of health to one
           ship, capped at 100%. Kits can also be found in market offers or
@@ -513,7 +518,7 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
             {Object.entries(TAVERN_ITEMS).map(([key, item]) => (
               <TableRow key={key}>
                 <TableCell className="font-medium">{item.label}</TableCell>
-                <TableCell>{item.price} gold</TableCell>
+                <TableCell>{formatGold(item.price)}</TableCell>
                 <TableCell>
                   {item.healthIncrease > 0 ? `+${item.healthIncrease}` : "–"}
                 </TableCell>
@@ -614,61 +619,61 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
             <TableRow>
               <TableCell>Below 10</TableCell>
               <TableCell>{TITLE_INFO.Pirate.title}</TableCell>
-              <TableCell>{TITLE_INFO.Pirate.reward} gold</TableCell>
+              <TableCell>{formatGold(TITLE_INFO.Pirate.reward)}</TableCell>
               <TableCell>{TITLE_INFO.Pirate.maxShips}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>10-19</TableCell>
               <TableCell>{TITLE_INFO.Ensign.title}</TableCell>
-              <TableCell>{TITLE_INFO.Ensign.reward} gold</TableCell>
+              <TableCell>{formatGold(TITLE_INFO.Ensign.reward)}</TableCell>
               <TableCell>{TITLE_INFO.Ensign.maxShips}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>20-29</TableCell>
               <TableCell>{TITLE_INFO.Captain.title}</TableCell>
-              <TableCell>{TITLE_INFO.Captain.reward} gold</TableCell>
+              <TableCell>{formatGold(TITLE_INFO.Captain.reward)}</TableCell>
               <TableCell>{TITLE_INFO.Captain.maxShips}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>30-39</TableCell>
               <TableCell>{TITLE_INFO.Major.title}</TableCell>
-              <TableCell>{TITLE_INFO.Major.reward} gold</TableCell>
+              <TableCell>{formatGold(TITLE_INFO.Major.reward)}</TableCell>
               <TableCell>{TITLE_INFO.Major.maxShips}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>40-49</TableCell>
               <TableCell>{TITLE_INFO.Colonel.title}</TableCell>
-              <TableCell>{TITLE_INFO.Colonel.reward} gold</TableCell>
+              <TableCell>{formatGold(TITLE_INFO.Colonel.reward)}</TableCell>
               <TableCell>{TITLE_INFO.Colonel.maxShips}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>50-64</TableCell>
               <TableCell>{TITLE_INFO.Admiral.title}</TableCell>
-              <TableCell>{TITLE_INFO.Admiral.reward} gold</TableCell>
+              <TableCell>{formatGold(TITLE_INFO.Admiral.reward)}</TableCell>
               <TableCell>{TITLE_INFO.Admiral.maxShips}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>65-79</TableCell>
               <TableCell>{TITLE_INFO.Baron.title}</TableCell>
-              <TableCell>{TITLE_INFO.Baron.reward} gold</TableCell>
+              <TableCell>{formatGold(TITLE_INFO.Baron.reward)}</TableCell>
               <TableCell>{TITLE_INFO.Baron.maxShips}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>80-99</TableCell>
               <TableCell>{TITLE_INFO.Count.title}</TableCell>
-              <TableCell>{TITLE_INFO.Count.reward} gold</TableCell>
+              <TableCell>{formatGold(TITLE_INFO.Count.reward)}</TableCell>
               <TableCell>{TITLE_INFO.Count.maxShips}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>100-119</TableCell>
               <TableCell>{TITLE_INFO.Marquis.title}</TableCell>
-              <TableCell>{TITLE_INFO.Marquis.reward} gold</TableCell>
+              <TableCell>{formatGold(TITLE_INFO.Marquis.reward)}</TableCell>
               <TableCell>{TITLE_INFO.Marquis.maxShips}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>120+</TableCell>
               <TableCell>{TITLE_INFO.Duke.title}</TableCell>
-              <TableCell>{TITLE_INFO.Duke.reward} gold</TableCell>
+              <TableCell>{formatGold(TITLE_INFO.Duke.reward)}</TableCell>
               <TableCell>{TITLE_INFO.Duke.maxShips}</TableCell>
             </TableRow>
           </TableBody>
@@ -746,11 +751,37 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
 
         <p>
           You can borrow gold at the bank, up to a total outstanding loan of{" "}
-          {LOAN_LIMIT.toLocaleString("en-US")} gold. Loans have no interest or
-          fees. You cannot deposit gold until the loan is fully repaid, but you
-          can still withdraw existing savings. You can repay the loan in smaller
-          amounts or all at once.
+          {formatGold(LOAN_LIMIT)}. Loans have no interest or fees. You cannot
+          deposit gold until the loan is fully repaid, but you can still
+          withdraw existing savings. You can repay the loan in smaller amounts
+          or all at once.
         </p>
+
+        <h3 className="mt-4 mb-2 font-serif text-lg">Ventures</h3>
+
+        <p className="mb-4">
+          The bank also sells shares in famous trading voyages. Pay the stake
+          from the gold you carry, so withdraw savings or take a loan first if
+          you need more. Each party returns after a set number of days, and your
+          advisor tells you when one is back. Collect your share at any bank.
+        </p>
+
+        <p className="mb-4">
+          A larger stake brings a larger reward, but also more risk. Nobody
+          knows how a voyage went until you collect, and a share can return more
+          than you paid, less, or nothing at all. You can hold one share in each
+          venture at a time.
+        </p>
+
+        <ul className="list-disc pl-6">
+          {Object.values(VENTURES).map((venture) => (
+            <li key={venture.name}>
+              {venture.name}, {venture.origin} to {venture.destination}:{" "}
+              {formatGold(venture.stake)} for {venture.days} days,{" "}
+              {venture.risk.toLowerCase()} risk.
+            </li>
+          ))}
+        </ul>
       </AccordionContent>
     </AccordionItem>
 

@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { MERCHANDISE } from "@/constants/merchandise"
+import { formatGold } from "@/utils/number"
 import { formatAmountChange, formatQuantity } from "@/utils/shop"
 import { snakeCaseToTitleCase } from "@/utils/string"
 
@@ -59,8 +60,9 @@ const ShopQuantityDialog = ({
           </DialogTitle>
 
           <DialogDescription>
-            You own {formatQuantity(item, owned)}. Buy {MERCHANDISE[item].buy}{" "}
-            gold, sell {MERCHANDISE[item].sell} gold each.
+            You own {formatQuantity(item, owned)}. Buy{" "}
+            {formatGold(MERCHANDISE[item].buy)}, sell{" "}
+            {formatGold(MERCHANDISE[item].sell)} each.
           </DialogDescription>
         </DialogHeader>
 

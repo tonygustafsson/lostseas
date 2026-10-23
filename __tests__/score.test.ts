@@ -23,4 +23,21 @@ describe("score utils", () => {
     // mannedCannons mocked=3 => +30
     expect(score).toBe(100 + 2 + 20 + 30)
   })
+
+  it("counts stakes held in ventures as gold", () => {
+    ;(getMannedCannons as any).mockReturnValue(0)
+
+    const player = {
+      character: {
+        title: "Pirate",
+        gold: 0,
+        ventures: { silverFleet: { investedDay: 1, returnDay: 43 } },
+      },
+      ships: {},
+      crewMembers: { count: 0 },
+    } as any
+
+    // silverFleet stake = 6000 => + floor(6000/500)=12
+    expect(getScore(player)).toBe(12)
+  })
 })

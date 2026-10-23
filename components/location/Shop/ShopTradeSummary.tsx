@@ -3,6 +3,7 @@ import type { ReactNode } from "react"
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { formatNumber } from "@/utils/number"
 import { formatSigned, getTradeGold, type TradeChange } from "@/utils/shop"
 
 type Props = {
@@ -68,7 +69,7 @@ const ShopTradeSummary = ({
     >
       <dl className="grid flex-1 grid-cols-3 gap-2">
         <Tile label="Gold now" icon={<Coins />}>
-          {gold.toLocaleString("en-US")}
+          {formatNumber(gold)}
         </Tile>
 
         <Tile
@@ -91,7 +92,7 @@ const ShopTradeSummary = ({
           icon={<Coins />}
           className={cn(isShort && "text-accent")}
         >
-          {goldAfter.toLocaleString("en-US")}
+          {formatNumber(goldAfter)}
         </Tile>
       </dl>
 

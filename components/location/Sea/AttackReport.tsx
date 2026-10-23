@@ -14,6 +14,7 @@ import {
   getAttackFailureQuip,
   getAttackSuccessQuip,
 } from "@/utils/getPirateQuip"
+import { formatGold } from "@/utils/number"
 import { snakeCaseToTitleCase } from "@/utils/string"
 
 import AttackReportItem from "./AttackReportItem"
@@ -104,7 +105,7 @@ const AttackReport = () => {
                 change={`+${successReport.lootedGold}`}
                 icon={<FaCoins />}
               >
-                {player.character.gold} gold aboard
+                {formatGold(player.character.gold)} aboard
               </AttackReportItem>
             )}
 
@@ -169,8 +170,8 @@ const AttackReport = () => {
               change="All lost"
               icon={<FaCoins />}
             >
-              <p>{player.character.gold} gold aboard</p>
-              <p>{player.character.account} gold safe in the bank</p>
+              <p>{formatGold(player.character.gold)} aboard</p>
+              <p>{formatGold(player.character.account)} safe in the bank</p>
             </AttackReportItem>
 
             {Object.entries(failureReport.lostMerchandise || {}).map(

@@ -7,6 +7,7 @@ import TreasureIcon from "@/components/TreasureIcon"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { TREASURES } from "@/constants/treasures"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { formatGold } from "@/utils/number"
 
 const InventoryDrawer = () => {
   const { data: player } = useGetPlayer()
@@ -91,7 +92,7 @@ const InventoryDrawer = () => {
                     </div>
                     <p className="mt-2 font-bold">
                       Bring it to the governor of {item.rewarder} for a reward
-                      of {treasureInfo?.value} gold.
+                      of {formatGold(treasureInfo?.value)}.
                     </p>
                   </div>
                 )

@@ -516,3 +516,25 @@ describe("getAdvisorWarnings", () => {
     })
   })
 })
+
+describe("VENTURE_READY", () => {
+  const withVenture = (day: number, returnDay: number) => {
+    const p = basePlayer()
+    p.character.day = day
+    p.character.ventures = { tobaccoRun: { investedDay: 1, returnDay } }
+    return p
+  }
+
+  it("advises a visit to the bank once a party has returned", () => {
+    expect(advisory(withVenture(22, 22))).toContain("VENTURE_READY")
+    expect(advisory(withVenture(30, 22))).toContain("VENTURE_READY")
+  })
+
+  it("stays quiet while the party is still at sea", () => {
+    expect(tips(withVenture(21, 22))).not.toContain("VENTURE_READY")
+  })
+
+  it("stays quiet without ventures", () => {
+    expect(tips(basePlayer())).not.toContain("VENTURE_READY")
+  })
+})

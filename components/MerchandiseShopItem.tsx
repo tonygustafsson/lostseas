@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { cn } from "@/lib/utils"
+import { formatGold } from "@/utils/number"
 import { snakeCaseToTitleCase } from "@/utils/string"
 
 import { Button } from "./ui/button"
@@ -84,13 +85,13 @@ const MerchandiseShopItem = ({ player, item, type, onBuy, onSell }: Props) => {
           <div className="mt-4 flex gap-2">
             {type === "Buy" && (
               <Badge variant="secondary">
-                Price: {MERCHANDISE[item].buy} gold
+                Price: {formatGold(MERCHANDISE[item].buy)}
               </Badge>
             )}
 
             {type === "Sell" && (
               <Badge variant="secondary">
-                Worth: {MERCHANDISE[item].sell} gold
+                Worth: {formatGold(MERCHANDISE[item].sell)}
               </Badge>
             )}
           </div>

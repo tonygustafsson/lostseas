@@ -65,6 +65,10 @@ export const getAdvisorWarnings = (
 
   const { promotionAvailable } = getNewTitle(player.character)
 
+  const ventureReady = Object.values(player.character.ventures || {}).some(
+    (share) => share.returnDay <= player.character.day
+  )
+
   const warnings: AdvisorWarningItem[] = []
 
   const warn = (tip: AdvisorWarning, blocksTravel: boolean) =>
@@ -87,6 +91,7 @@ export const getAdvisorWarnings = (
   if (isInPort && hasLimitedSupplies) warn("LIMITED_SUPPLIES", false)
   if (hasNoCannons) warn("NO_CANNONS", false)
   if (promotionAvailable) warn("PROMOTION_AVAILABLE", false)
+  if (ventureReady) warn("VENTURE_READY", false)
 
   return warnings.sort(
     (a, b) => Number(b.blocksTravel) - Number(a.blocksTravel)

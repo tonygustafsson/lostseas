@@ -8,6 +8,7 @@ import { TOWNS } from "@/constants/locations"
 import { TitleInfo } from "@/constants/title"
 import { useCityhall } from "@/hooks/queries/useCityhall"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { formatGold } from "@/utils/number"
 import { getNewTitle, getTitleReward } from "@/utils/title"
 
 const getGreeting = ({
@@ -45,7 +46,9 @@ const getGreeting = ({
           <p className="mt-2">
             I would like to share my appreciation by giving you the title{" "}
             <strong>{titleInfo.title}</strong>.
-            {reward > 0 && <> You will also get a reward of {reward} gold.</>}
+            {reward > 0 && (
+              <> You will also get a reward of {formatGold(reward)}.</>
+            )}
           </p>
         )}
       </>
@@ -74,7 +77,7 @@ const getGreeting = ({
           citizen of {currentNation} with the title{" "}
           <strong>{titleInfo.title}</strong>.
           {reward > 0 && (
-            <span> You will also get a reward of {reward} gold.</span>
+            <span> You will also get a reward of {formatGold(reward)}.</span>
           )}
         </p>
       </>

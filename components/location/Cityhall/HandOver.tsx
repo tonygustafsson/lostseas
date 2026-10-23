@@ -11,6 +11,7 @@ import {
 import { TREASURES } from "@/constants/treasures"
 import { useCityhall } from "@/hooks/queries/useCityhall"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { formatGold } from "@/utils/number"
 
 const HandOver = () => {
   const { data: player } = useGetPlayer()
@@ -59,7 +60,7 @@ const HandOver = () => {
                 <p>{treasureInfo?.description}</p>
 
                 <Badge className="bg-success/10 text-success mt-4">
-                  Value: {treasureInfo?.value} gold
+                  Value: {formatGold(treasureInfo?.value)}
                 </Badge>
               </CardContent>
 
