@@ -11,6 +11,8 @@ const meta = {
       { item: "food", quantity: -20 },
       { item: "water", quantity: 15 },
     ],
+    cargoAfter: 55,
+    cargoCapacity: 300,
     onReset: fn(),
     onTransfer: fn(),
   },
@@ -43,6 +45,28 @@ export const ShortOfGold: Story = {
     await expect(
       canvas.getByRole("button", { name: "Transfer" })
     ).toBeDisabled()
+  },
+}
+
+export const OverCapacity: Story = {
+  args: {
+    gold: 1000,
+    changes: [{ item: "water", quantity: 50 }],
+    cargoAfter: 320,
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Over capacity")).toBeVisible()
+    await expect(
+      canvas.getByRole("button", { name: "Transfer" })
+    ).toBeDisabled()
+  },
+}
+
+export const OverloadedButSelling: Story = {
+  args: { changes: [{ item: "food", quantity: -20 }], cargoAfter: 320 },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText("Cargo after trade")).toBeVisible()
+    await expect(canvas.getByRole("button", { name: "Transfer" })).toBeEnabled()
   },
 }
 

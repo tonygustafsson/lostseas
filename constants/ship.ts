@@ -1,5 +1,6 @@
 export const SHIP_TYPES = {
   Brig: {
+    cargoCapacity: 300,
     minCrewMembers: 2,
     maxCrewMembers: 20,
     buy: 1500,
@@ -7,6 +8,7 @@ export const SHIP_TYPES = {
     description: "This is a standard ship. Affordable and quite basic.",
   },
   Merchantman: {
+    cargoCapacity: 800,
     minCrewMembers: 1,
     maxCrewMembers: 10,
     buy: 1000,
@@ -15,6 +17,7 @@ export const SHIP_TYPES = {
       "This ship is great for loading a lot of barter goods but is weak in battle.",
   },
   Galleon: {
+    cargoCapacity: 500,
     minCrewMembers: 4,
     maxCrewMembers: 50,
     buy: 4000,
@@ -22,6 +25,7 @@ export const SHIP_TYPES = {
     description: "This is a war ship, great in battle.",
   },
   Frigate: {
+    cargoCapacity: 1000,
     minCrewMembers: 8,
     maxCrewMembers: 100,
     buy: 10000,

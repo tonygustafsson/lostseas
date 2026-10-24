@@ -17,6 +17,7 @@ import { formatGold } from "@/utils/number"
 import { formatAmountChange, formatQuantity } from "@/utils/shop"
 import { snakeCaseToTitleCase } from "@/utils/string"
 
+import ShopBuyLimit, { type BuyLimit } from "./ShopBuyLimit"
 import ShopTradeChange from "./ShopTradeChange"
 import ShopTradeControls from "./ShopTradeControls"
 
@@ -26,8 +27,10 @@ type Props = {
   item: keyof Inventory
   owned: number
   target: number
-  /** The most the player can own with the gold left in this trade. */
-  affordable: number
+  /** The most the player can own with the gold and cargo space left. */
+  max: number
+  /** What stops the player from owning more than max. */
+  limitedBy: BuyLimit
   /** How much the crew uses each day, for food and water. */
   dailyUse?: number
   onChange: (target: number) => void
@@ -37,7 +40,8 @@ const ShopQuantityDialog = ({
   item,
   owned,
   target,
-  affordable,
+  max,
+  limitedBy,
   dailyUse,
   onChange,
 }: Props) => {
@@ -83,10 +87,22 @@ const ShopQuantityDialog = ({
               Lasts {Math.floor(target / dailyUse)} days at sea
             </p>
           )}
+
+          <ShopBuyLimit
+            item={item}
+            max={max}
+            limitedBy={limitedBy}
+            className="text-sm"
+          />
         </div>
 
         <div className="flex justify-center">
-          <ShopTradeControls item={item} target={target} onChange={onChange} />
+          <ShopTradeControls
+            item={item}
+            target={target}
+            max={max}
+            onChange={onChange}
+          />
         </div>
 
         <div className="grid grid-cols-4 gap-2">
@@ -95,8 +111,16 @@ const ShopQuantityDialog = ({
               key={step}
               type="button"
               variant="outline"
-              onClick={() => onChange(Math.max(0, target + step))}
-              disabled={step < 0 && target === 0}
+              onClick={() =>
+                onChange(
+                  step > 0
+                    ? Math.min(target + step, max)
+                    : Math.max(0, target + step)
+                )
+              }
+              disabled={
+                (step < 0 && target === 0) || (step > 0 && target >= max)
+              }
             >
               {step > 0 ? `+${step}` : `−${-step}`}
             </Button>
@@ -116,8 +140,8 @@ const ShopQuantityDialog = ({
           <Button
             type="button"
             variant="secondary"
-            onClick={() => onChange(affordable)}
-            disabled={target === affordable}
+            onClick={() => onChange(max)}
+            disabled={target === max}
           >
             Buy max
           </Button>

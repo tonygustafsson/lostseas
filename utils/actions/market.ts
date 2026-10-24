@@ -5,6 +5,7 @@ import {
 } from "@/constants/apothecary"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { getRemedyResult } from "@/utils/apothecary"
+import { getCargo, isCargo } from "@/utils/cargo"
 import { patchDeep } from "@/utils/patchDeep"
 
 import type { ActionResult } from "./types"
@@ -41,6 +42,10 @@ export const acceptMarketOffer = (
 
   if (player.character.gold < totalPrice) {
     return { error: "Not enough gold" }
+  }
+
+  if (isCargo(item) && quantity > getCargo(player).free) {
+    return { error: "Not enough cargo space" }
   }
 
   const totalQuantity = (player.inventory?.[item] ?? 0) + quantity

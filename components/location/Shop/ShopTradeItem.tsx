@@ -12,6 +12,7 @@ import { MERCHANDISE } from "@/constants/merchandise"
 import { formatAmountChange } from "@/utils/shop"
 import { snakeCaseToTitleCase } from "@/utils/string"
 
+import ShopBuyLimit, { type BuyLimit } from "./ShopBuyLimit"
 import ShopQuantityDialog from "./ShopQuantityDialog"
 import ShopTradeChange from "./ShopTradeChange"
 import ShopTradeControls from "./ShopTradeControls"
@@ -20,9 +21,8 @@ type Props = {
   item: keyof Inventory
   owned: number
   target: number
-  /** The most the player can own with the gold left in this trade. */
-  affordable: number
-  /** How much the crew uses each day, for food and water. */
+  max: number
+  limitedBy: BuyLimit
   dailyUse?: number
   onChange: (target: number) => void
 }
@@ -31,7 +31,8 @@ const ShopTradeItem = ({
   item,
   owned,
   target,
-  affordable,
+  max,
+  limitedBy,
   dailyUse,
   onChange,
 }: Props) => {
@@ -104,16 +105,24 @@ const ShopTradeItem = ({
             target={target}
             className="text-xs"
           />
+
+          <ShopBuyLimit item={item} max={max} limitedBy={limitedBy} />
         </div>
 
         <div className="flex items-center justify-between gap-2">
-          <ShopTradeControls item={item} target={target} onChange={onChange} />
+          <ShopTradeControls
+            item={item}
+            target={target}
+            max={max}
+            onChange={onChange}
+          />
 
           <ShopQuantityDialog
             item={item}
             owned={owned}
             target={target}
-            affordable={affordable}
+            max={max}
+            limitedBy={limitedBy}
             dailyUse={dailyUse}
             onChange={onChange}
           />

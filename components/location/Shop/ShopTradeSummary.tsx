@@ -1,14 +1,18 @@
 import { ArrowLeftRight, Coins } from "lucide-react"
 import type { ReactNode } from "react"
+import { GiCargoCrate } from "react-icons/gi"
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { addsCargo } from "@/utils/cargo"
 import { formatNumber } from "@/utils/number"
 import { formatSigned, getTradeGold, type TradeChange } from "@/utils/shop"
 
 type Props = {
   gold: number
   changes: TradeChange[]
+  cargoAfter: number
+  cargoCapacity: number
   isTrading?: boolean
   onReset: () => void
   onTransfer: () => void
@@ -53,6 +57,8 @@ const Tile = ({
 const ShopTradeSummary = ({
   gold,
   changes,
+  cargoAfter,
+  cargoCapacity,
   isTrading,
   onReset,
   onTransfer,
@@ -61,13 +67,15 @@ const ShopTradeSummary = ({
   const tradeGold = getTradeGold(changes)
   const goldAfter = gold + tradeGold
   const isShort = goldAfter < 0
+  // Selling is always allowed, even when the fleet is already overloaded
+  const isOverCapacity = cargoAfter > cargoCapacity && addsCargo(changes)
 
   return (
     <section
       aria-label="Trade summary"
       className="bg-card flex flex-col gap-4 rounded-2xl border p-4 lg:flex-row lg:items-center"
     >
-      <dl className="grid flex-1 grid-cols-3 gap-2">
+      <dl className="grid flex-1 grid-cols-2 gap-2 sm:grid-cols-4">
         <Tile label="Gold now" icon={<Coins />}>
           {formatNumber(gold)}
         </Tile>
@@ -90,9 +98,17 @@ const ShopTradeSummary = ({
         <Tile
           label={isShort ? "Short of gold" : "After trade"}
           icon={<Coins />}
-          className={cn(isShort && "text-accent")}
+          className={cn(isShort && "text-destructive")}
         >
           {formatNumber(goldAfter)}
+        </Tile>
+
+        <Tile
+          label={isOverCapacity ? "Over capacity" : "Cargo after trade"}
+          icon={<GiCargoCrate />}
+          className={cn(isOverCapacity && "text-destructive")}
+        >
+          {formatNumber(cargoAfter)} / {formatNumber(cargoCapacity)}
         </Tile>
       </dl>
 
@@ -107,7 +123,7 @@ const ShopTradeSummary = ({
 
         <Button
           onClick={onTransfer}
-          disabled={!hasChanges || isShort || isTrading}
+          disabled={!hasChanges || isShort || isOverCapacity || isTrading}
         >
           <ArrowLeftRight aria-hidden="true" />
           Transfer

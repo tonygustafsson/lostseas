@@ -130,35 +130,6 @@ const AttackReport = () => {
                 {player.crewMembers.count} crew aboard
               </AttackReportItem>
             )}
-
-            {Object.entries(successReport.lootedMerchandise || {}).map(
-              ([key, value]) => {
-                if (value <= 0) return null
-
-                const item = key as keyof Inventory
-                const unit =
-                  value === 1
-                    ? MERCHANDISE[item].singleUnit
-                    : MERCHANDISE[item].unit
-                const total = player.inventory?.[item] || 0
-                const totalUnit =
-                  total === 1
-                    ? MERCHANDISE[item].singleUnit
-                    : MERCHANDISE[item].unit
-
-                return (
-                  <AttackReportItem
-                    variant="success"
-                    key={key}
-                    title={item === "repairKits" ? "Repair kits" : item}
-                    change={`+${value} ${unit}`}
-                    icon={<MerchandiseIcon item={item} />}
-                  >
-                    {total} {totalUnit} aboard
-                  </AttackReportItem>
-                )
-              }
-            )}
           </>
         )}
 

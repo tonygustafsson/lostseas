@@ -84,35 +84,38 @@ const ShipyardBuy = () => {
       <h2 className="mb-4 font-serif text-xl">Ships</h2>
 
       <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
-        {Object.entries(SHIP_TYPES).map(([shipType, { description, buy }]) => (
-          <MerchandiseCard
-            key={`shipyard-buy-${shipType}`}
-            title={shipType}
-            image={`/img/cards/shipyard/${shipType.toLowerCase()}.png`}
-            disabled={shipBuyingDisabled(buy)}
-            icon={<MerchandiseIcon item={shipType} />}
-            body={
-              <>
-                <p>{description}</p>
+        {Object.entries(SHIP_TYPES).map(
+          ([shipType, { description, buy, cargoCapacity }]) => (
+            <MerchandiseCard
+              key={`shipyard-buy-${shipType}`}
+              title={shipType}
+              image={`/img/cards/shipyard/${shipType.toLowerCase()}.png`}
+              disabled={shipBuyingDisabled(buy)}
+              icon={<MerchandiseIcon item={shipType} />}
+              body={
+                <>
+                  <p>{description}</p>
 
-                <Badge variant="secondary" className="mt-4">
-                  Price: {formatGold(buy)}
-                </Badge>
-              </>
-            }
-            actions={
-              <Button
-                size="sm"
-                onClick={() =>
-                  handleBuyShip(shipType as keyof typeof SHIP_TYPES)
-                }
-                disabled={shipBuyingDisabled(buy)}
-              >
-                Buy
-              </Button>
-            }
-          />
-        ))}
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <Badge variant="secondary">Price: {formatGold(buy)}</Badge>
+                    <Badge variant="secondary">Cargo: {cargoCapacity}</Badge>
+                  </div>
+                </>
+              }
+              actions={
+                <Button
+                  size="sm"
+                  onClick={() =>
+                    handleBuyShip(shipType as keyof typeof SHIP_TYPES)
+                  }
+                  disabled={shipBuyingDisabled(buy)}
+                >
+                  Buy
+                </Button>
+              }
+            />
+          )
+        )}
       </div>
 
       <Separator className="my-12" />

@@ -2,18 +2,23 @@
 
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { useSea } from "@/hooks/queries/useSea"
 import { cn } from "@/lib/utils"
+import { getCargo } from "@/utils/cargo"
 
 import AttackReport from "./AttackReport"
 import BattleActions from "./BattleActions"
 import BattleContent from "./BattleContent"
+import LootPicker from "./LootPicker"
 import PostAttackActions from "./PostAttackActions"
 import ShipMeetingActions from "./ShipMeetingActions"
 import ShipMeetingContent from "./ShipMeetingContent"
 
 const SeaEventDialog = () => {
   const { data: player } = useGetPlayer()
+  const { takeLoot, isTakingLoot } = useSea()
   const seaState = player?.locationStates?.sea
+  const lootOffer = seaState?.lootOffer
   const shipMeeting = seaState?.shipMeeting
   const battle = seaState?.battle
   const isVictory = !!seaState?.attackSuccessReport
@@ -68,7 +73,18 @@ const SeaEventDialog = () => {
         {hasAttackReport && (
           <>
             <AttackReport />
-            <PostAttackActions />
+
+            {lootOffer ? (
+              <LootPicker
+                offer={lootOffer}
+                load={getCargo(player).load}
+                capacity={getCargo(player).capacity}
+                isTaking={isTakingLoot}
+                onTake={takeLoot}
+              />
+            ) : (
+              <PostAttackActions />
+            )}
           </>
         )}
       </DialogContent>

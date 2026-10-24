@@ -172,6 +172,23 @@ html {
     0 0 32px oklch(from var(--gold) l c h / 20%);
 }
 
+/* Polished gold with diagonal stripes, so even a short bar shows the effect.
+   Only background images are set, so bg-none falls back to a plain colour. */
+@utility gilded-bar {
+  background-image:
+    repeating-linear-gradient(
+      135deg,
+      oklch(1 0 0 / 12%) 0 6px,
+      transparent 6px 12px
+    ),
+    linear-gradient(
+      to bottom,
+      var(--gold),
+      var(--gold-dark) 55%,
+      oklch(from var(--gold-dark) calc(l - 0.15) c h)
+    );
+}
+
 /* Scene transitions between harbour, buildings and sea (see useSceneLocation) */
 ::view-transition-old(scene),
 ::view-transition-new(scene) {

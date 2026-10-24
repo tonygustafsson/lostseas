@@ -108,6 +108,14 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         </p>
 
         <p className="mb-4">
+          Everything sold at the shop takes cargo space, one slot per crate,
+          barrel, box, bolt or bale. Cannons and repair kits take no space. Each
+          item shows how much you can own and whether gold or cargo space is the
+          limit, and the trade summary shows your cargo after the trade. You
+          cannot buy more than fits, but you can always sell.
+        </p>
+
+        <p className="mb-4">
           For each item, set how much you want to own. Going below what you have
           sells the difference at the selling price, and going above it buys at
           the buying price. You can change several items at once, so gold from
@@ -335,6 +343,7 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
               <TableHead>Type</TableHead>
               <TableHead>Min crew members</TableHead>
               <TableHead>Max crew members</TableHead>
+              <TableHead>Cargo</TableHead>
               <TableHead>Price</TableHead>
             </TableRow>
           </TableHeader>
@@ -344,28 +353,43 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
               <TableCell>Merchantman</TableCell>
               <TableCell>{SHIP_TYPES.Merchantman.minCrewMembers}</TableCell>
               <TableCell>{SHIP_TYPES.Merchantman.maxCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Merchantman.cargoCapacity}</TableCell>
               <TableCell>{SHIP_TYPES.Merchantman.buy}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Brig</TableCell>
               <TableCell>{SHIP_TYPES.Brig.minCrewMembers}</TableCell>
               <TableCell>{SHIP_TYPES.Brig.maxCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Brig.cargoCapacity}</TableCell>
               <TableCell>{SHIP_TYPES.Brig.buy}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Galleon</TableCell>
               <TableCell>{SHIP_TYPES.Galleon.minCrewMembers}</TableCell>
               <TableCell>{SHIP_TYPES.Galleon.maxCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Galleon.cargoCapacity}</TableCell>
               <TableCell>{SHIP_TYPES.Galleon.buy}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Frigate</TableCell>
               <TableCell>{SHIP_TYPES.Frigate.minCrewMembers}</TableCell>
               <TableCell>{SHIP_TYPES.Frigate.maxCrewMembers}</TableCell>
+              <TableCell>{SHIP_TYPES.Frigate.cargoCapacity}</TableCell>
               <TableCell>{SHIP_TYPES.Frigate.buy}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
+
+        <h3 className="my-6 font-serif text-lg">Cargo</h3>
+
+        <p className="mb-4">
+          Your fleet can carry the cargo of all your ships added together. Food,
+          water, medicine and barter goods take one slot per unit. Cannons and
+          repair kits take none. Crew &amp; Fleet shows how full your hold is.
+          You cannot leave port while overloaded, so sell goods or buy another
+          ship first. Selling or removing a ship that would leave you overloaded
+          is allowed, but you are warned first.
+        </p>
 
         <h3 className="my-6 font-serif text-lg">Ship health and repairs</h3>
 
@@ -597,10 +621,10 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <p className="mb-4">
           Your level determines the title the governor can offer you at the City
           Hall. Promotions reward you with gold and let you own more ships. More
-          ships let you carry more crew members and man more cannons. Cargo has
-          no capacity limit. Reaching the highest title is one goal you can
-          choose to pursue. Accept promotions in a town belonging to your
-          nation. Your title does not automatically fall if your level drops.
+          ships let you carry more crew members, man more cannons and load more
+          cargo. Reaching the highest title is one goal you can choose to
+          pursue. Accept promotions in a town belonging to your nation. Your
+          title does not automatically fall if your level drops.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">The different titles</h3>
@@ -855,7 +879,8 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           Journeys continue automatically between ship encounters. Sailing
           pauses at an encounter or battle report. Choose Attack or Ignore when
           you meet a ship, fight the battle round by round, and choose Continue
-          journey after the battle to resume sailing.
+          journey after the battle to resume sailing. After a victory with goods
+          to plunder, Take loot and sail on does both at once.
         </p>
 
         <p className="mb-4">
@@ -934,7 +959,11 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <p>
           After a battle, a report shows your loot, recruits, damage and any
           losses. Your crew only loses health during the rounds, not when the
-          battle ends.
+          battle ends. Gold, recruits and treasure are added for you. For goods,
+          slide how much of each to take. Everything that fits is picked by
+          default, food and water first, then the most valuable goods. Anything
+          you leave behind sinks with the enemy ship, and your journey continues
+          right away.
         </p>
 
         <p className="mt-4">

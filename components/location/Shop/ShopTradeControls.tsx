@@ -8,10 +8,11 @@ import { snakeCaseToTitleCase } from "@/utils/string"
 type Props = {
   item: keyof Inventory
   target: number
+  max: number
   onChange: (target: number) => void
 }
 
-const ShopTradeControls = ({ item, target, onChange }: Props) => {
+const ShopTradeControls = ({ item, target, max, onChange }: Props) => {
   const label = snakeCaseToTitleCase(item)
 
   const change = (value: number) => {
@@ -51,6 +52,7 @@ const ShopTradeControls = ({ item, target, onChange }: Props) => {
         size="icon-sm"
         aria-label={`One more ${label}`}
         onClick={() => change(target + 1)}
+        disabled={target >= max}
       >
         <Plus />
       </Button>

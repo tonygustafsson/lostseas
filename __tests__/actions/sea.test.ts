@@ -7,7 +7,10 @@ import {
   continueJourney,
   ignoreShip,
   startJourney,
+  takeLoot,
+  takeLootAndSail,
 } from "@/utils/actions/sea"
+import { getVictoryUpdate } from "@/utils/battleOutcome"
 import { patchDeep } from "@/utils/patchDeep"
 import { BATTLE_MAX_ROUNDS } from "@/utils/seaBattle"
 
@@ -403,6 +406,138 @@ describe("continueJourney", () => {
   })
 })
 
+describe("takeLoot", () => {
+  const report: AttackSuccessReport = {
+    crewMoodIncrease: 20,
+    crewHealthLoss: 0,
+    crewMemberRecruits: 0,
+    lootedGold: 0,
+    lootedMerchandise: { food: 8, rum: 3, cannons: 2 } as never,
+    shipHealthLoss: 0,
+  }
+  const offer = { food: 8, rum: 3, cannons: 2 }
+
+  // The test Brig carries 300 and has 150 aboard
+  const afterVictory = (inventory?: Inventory) =>
+    deepFreeze(
+      patchDeep<Player>(
+        atSea({ attackSuccessReport: report, lootOffer: offer }),
+        inventory ? { inventory } : {}
+      )
+    )
+
+  it("loads the chosen loot and leaves the rest", () => {
+    const result = expectSuccess(
+      takeLoot(afterVictory(), { loot: { food: 8, rum: 1, cannons: 2 } })
+    )
+    const sea = result.player.locationStates?.sea
+
+    expect(result.player.inventory).toEqual({
+      food: 58,
+      water: 100,
+      rum: 1,
+      cannons: 7,
+    })
+    expect(sea?.lootOffer).toBeUndefined()
+    expect(sea?.attackSuccessReport).toEqual(report)
+    expect(result.log).toBe(
+      "Took 8 crates of food, 1 barrel of rum, 2 cannons of cannons as loot."
+    )
+  })
+
+  it("can leave everything behind", () => {
+    const result = expectSuccess(takeLoot(afterVictory(), { loot: {} }))
+
+    expect(result.player.inventory).toEqual(afterVictory().inventory)
+    expect(result.log).toBe("Left the loot behind.")
+  })
+
+  it("does not create a report when there is none", () => {
+    const result = expectSuccess(
+      takeLoot(atSea({ lootOffer: offer }), { loot: { food: 8 } })
+    )
+
+    expect(result.player.locationStates?.sea?.attackSuccessReport).toBe(
+      undefined
+    )
+  })
+
+  it("takes cannons into a full hold", () => {
+    const full = afterVictory({ food: 200, water: 100, cannons: 5 })
+
+    const result = expectSuccess(takeLoot(full, { loot: { cannons: 2 } }))
+
+    expect(result.player.inventory?.cannons).toBe(7)
+  })
+
+  it.each([[{ food: 9 }], [{ silk: 1 }], [{ food: -1 }], [{ food: 1.5 }]])(
+    "rejects taking %o",
+    (loot) => {
+      expectError(
+        takeLoot(afterVictory(), { loot }),
+        "You cannot take more than the loot holds."
+      )
+    }
+  )
+
+  it("rejects loot that does not fit", () => {
+    const nearlyFull = afterVictory({ food: 150, water: 145 })
+
+    expectError(
+      takeLoot(nearlyFull, { loot: { food: 6 } }),
+      "Not enough cargo space"
+    )
+  })
+
+  it("rejects a malformed choice", () => {
+    expectError(
+      takeLoot(afterVictory(), { loot: null as never }),
+      "Not a valid loot choice"
+    )
+  })
+
+  it("rejects taking loot when there is none", () => {
+    expectError(
+      takeLoot(atSea(), { loot: {} }),
+      "There is no loot to take.",
+      409
+    )
+  })
+
+  it("takes the loot and sails on in one go", () => {
+    const result = expectSuccess(
+      takeLootAndSail(afterVictory(), { loot: { food: 8 } }, NO_SHIP)
+    )
+    const sea = result.player.locationStates?.sea
+
+    expect(result.player.inventory?.food).toBe(58)
+    expect(result.player.inventory?.rum).toBeUndefined()
+    expect(sea?.lootOffer).toBeUndefined()
+    expect(sea?.attackSuccessReport).toBeUndefined()
+    expect(result.data.destinationReached).toBe(false)
+    expect(result.log).toBe("Took 8 crates of food as loot.")
+  })
+
+  it("neither loots nor sails when the choice is invalid", () => {
+    expectError(
+      takeLootAndSail(afterVictory(), { loot: { food: 9 } }, NO_SHIP),
+      "You cannot take more than the loot holds."
+    )
+  })
+
+  it("takes what fits when sailing on without choosing", () => {
+    const nearlyFull = afterVictory({ food: 150, water: 145 })
+
+    const result = expectSuccess(continueJourney(nearlyFull, NO_SHIP))
+
+    // 5 free go to food. Cannons take no space and join the 5 aboard
+    expect(result.player.inventory?.food).toBe(155)
+    expect(result.player.inventory?.rum).toBeUndefined()
+    expect(result.player.inventory?.cannons).toBe(7)
+    expect(result.player.locationStates?.sea?.lootOffer).toBeUndefined()
+  })
+})
+
 describe("attackShip", () => {
   it("starts a battle at full strength without resolving it", () => {
     const result = expectSuccess(attackShip(atSea({ shipMeeting })))
@@ -516,6 +651,33 @@ describe("battleMove", () => {
     expect(result.player.character.battles?.France?.won).toBe(1)
     expect(result.player.crewMembers.mood).toBe(70)
     expect(result.log).toMatch(/^Won a battle against France/)
+  })
+
+  it("offers the loot instead of loading it", () => {
+    rollLow()
+    const player = patchDeep<Player>(
+      inBattle({ enemyStrength: 30, playerStrength: 100 }),
+      { locationStates: { sea: { shipMeeting: { cannons: 1 } } } }
+    )
+
+    const result = expectSuccess(battleMove(player, { action: "fire" }))
+    const sea = result.player.locationStates?.sea
+
+    expect(sea?.lootOffer).toEqual(sea?.attackSuccessReport?.lootedMerchandise)
+    expect(Object.keys(sea?.lootOffer ?? {}).length).toBeGreaterThan(0)
+    expect(result.player.inventory).toEqual(player.inventory)
+  })
+
+  it("offers no loot when the enemy carried none", () => {
+    // A high roll loots no merchandise
+    rollHigh()
+
+    const { dbUpdate } = getVictoryUpdate(atSea(), shipMeeting, {
+      shipHealthLoss: 0,
+      crewHealthLoss: 0,
+    })
+
+    expect(dbUpdate.locationStates?.sea?.lootOffer).toBeNull()
   })
 
   it("loses all carried gold and up to 3 goods, but keeps cannons and savings", () => {

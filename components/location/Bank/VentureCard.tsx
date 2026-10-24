@@ -167,7 +167,7 @@ const VentureCard = ({
 
               <Progress
                 value={voyageProgress}
-                className="*:data-[slot=progress-indicator]:bg-gold"
+                variant="gilded"
                 aria-label={`Voyage progress for ${venture.name}`}
               />
             </div>

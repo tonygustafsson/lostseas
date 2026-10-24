@@ -37,6 +37,7 @@ const victory: Player = {
           rewarder: "Havana",
         },
       },
+      lootOffer: { food: 12, water: 8, cannons: 1, repairKits: 2 },
     },
   },
 }

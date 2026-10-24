@@ -15,6 +15,7 @@ type SeaState = {
   attackFailureReport?: AttackFailureReport
   justMetAShip?: boolean | null
   battle?: BattleState | null
+  lootOffer?: Partial<Record<keyof Inventory, number>> | null
 }
 
 type HarborState = {
@@ -42,6 +43,7 @@ type AdvisorWarning =
   | "NO_CREW"
   | "NOT_ENOUGH_CREW"
   | "TOO_MANY_CREW"
+  | "CARGO_OVERLOADED"
   | "ANGRY_CREW"
   | "LOW_CREW_MOOD"
   | "NO_CANNONS"

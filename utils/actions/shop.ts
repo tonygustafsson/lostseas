@@ -2,6 +2,7 @@ import {
   isTradeGoodAvailableInTown,
   MERCHANDISE,
 } from "@/constants/merchandise"
+import { getCargo, isCargo } from "@/utils/cargo"
 import { isPositiveSafeInteger } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
 import { describeTrade, formatQuantity, type TradeChange } from "@/utils/shop"
@@ -66,6 +67,10 @@ export const buyItem = (
 
   if (!Number.isSafeInteger(totalQuantity)) {
     return { error: "Invalid quantity" }
+  }
+
+  if (isCargo(item) && quantity > getCargo(player).free) {
+    return { error: "Not enough cargo space" }
   }
 
   return {

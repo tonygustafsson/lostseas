@@ -1,6 +1,5 @@
 import { createTreasure } from "./createTreasure"
 import { increaseCrewMood } from "./crew"
-import { addToInventory } from "./inventory"
 import { getRandomInt } from "./random"
 import {
   getLootedMerchandise,
@@ -28,8 +27,11 @@ export const getVictoryUpdate = (
   const crewMemberRecruits = getNumberOfRecruits(opponentCrewMembers)
 
   const lootedGold = Math.floor(opponentCrewMembers * getRandomInt(10, 100))
+  // The player picks what to take of the loot, so it is only offered here
   const lootedMerchandise = getLootedMerchandise()
-  const newInventory = addToInventory(player.inventory, lootedMerchandise)
+  const hasLoot = Object.values(lootedMerchandise).some(
+    (amount) => (amount ?? 0) > 0
+  )
 
   const foundTreasure = getRandomInt(1, 20) === 1 ? createTreasure() : false
 
@@ -58,7 +60,6 @@ export const getVictoryUpdate = (
       mood: newCrewMood,
     },
     ships: player.ships,
-    inventory: newInventory,
     ...(foundTreasure && {
       treasures: {
         [foundTreasure.id]: foundTreasure,
@@ -69,6 +70,7 @@ export const getVictoryUpdate = (
         shipMeeting: null,
         battle: null,
         attackSuccessReport: report,
+        lootOffer: hasLoot ? lootedMerchandise : null,
         justMetAShip: true,
       },
     },

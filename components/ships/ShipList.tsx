@@ -3,6 +3,7 @@
 import ShipCard from "@/components/ships/ShipCard"
 import { SHIP_TYPES } from "@/constants/ship"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { getShipRemovalCargoWarning } from "@/utils/cargo"
 import { getRemoveShipBlocker } from "@/utils/ship"
 
 export default function ShipList() {
@@ -30,6 +31,7 @@ export default function ShipList() {
             key={`ships-${ship.id}`}
             ship={ship}
             removeBlocker={removeShipBlocker}
+            removeWarning={getShipRemovalCargoWarning(player, ship.id)}
           />
         ))}
       </div>

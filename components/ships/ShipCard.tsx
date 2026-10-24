@@ -12,9 +12,15 @@ type Props = {
   ship: Ship
   /** Why the ship cannot be removed right now, if anything */
   removeBlocker?: string
+  /** What removing the ship would cause, like leaving the fleet overloaded */
+  removeWarning?: string
 }
 
-export default function ShipCard({ ship, removeBlocker }: Props) {
+export default function ShipCard({
+  ship,
+  removeBlocker,
+  removeWarning,
+}: Props) {
   const shipInfo = SHIP_TYPES[ship.type]
 
   return (
@@ -53,6 +59,8 @@ export default function ShipCard({ ship, removeBlocker }: Props) {
       <div className="relative flex flex-wrap gap-2">
         <ShipHealthBadge health={ship.health} />
 
+        <Badge variant="secondary">Cargo {shipInfo.cargoCapacity}</Badge>
+
         <Badge variant="secondary">
           Built {getCurrentDate(ship.createdDay)}
         </Badge>
@@ -64,6 +72,7 @@ export default function ShipCard({ ship, removeBlocker }: Props) {
           shipName={ship.name}
           shipType={ship.type}
           removeBlocker={removeBlocker}
+          removeWarning={removeWarning}
         />
       </div>
     </Card>

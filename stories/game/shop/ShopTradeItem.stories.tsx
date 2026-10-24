@@ -10,7 +10,8 @@ const meta = {
     item: "food",
     owned: 40,
     target: 40,
-    affordable: 196,
+    max: 196,
+    limitedBy: "gold",
     dailyUse: 4,
     onChange: fn(),
   },
@@ -46,8 +47,25 @@ export const NothingOwned: Story = {
     item: "porcelain",
     owned: 0,
     target: 0,
-    affordable: 71,
+    max: 71,
     dailyUse: undefined,
+  },
+}
+
+export const LimitedByCargo: Story = {
+  args: { max: 60, limitedBy: "cargo" },
+  play: async ({ canvas, userEvent }) => {
+    await expect(
+      canvas.getByText("Up to 60 crates, limited by cargo space")
+    ).toBeVisible()
+
+    await userEvent.click(canvas.getByRole("button", { name: "Adjust" }))
+    await userEvent.click(await screen.findByRole("button", { name: "+50" }))
+
+    await expect(screen.getByRole("button", { name: "+10" })).toBeDisabled()
+    await expect(
+      screen.getAllByRole("button", { name: "One more Food" }).at(-1)
+    ).toBeDisabled()
   },
 }
 

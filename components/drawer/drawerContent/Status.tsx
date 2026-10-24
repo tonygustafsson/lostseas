@@ -255,6 +255,7 @@ const StatusDrawer = () => {
 
                     <Progress
                       value={won + lost ? (won / (won + lost)) * 100 : 0}
+                      variant="gilded"
                       className="relative h-1 w-2/3"
                       aria-label={`Win rate against ${nation}`}
                     />

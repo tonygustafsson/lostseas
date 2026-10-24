@@ -447,6 +447,55 @@ describe("shop rules across all items and towns", () => {
   )
 })
 
+describe("cargo space", () => {
+  // The test Brig carries 300 and starts with 30 aboard
+  const rich = (inventory: Inventory = { food: 10, water: 20 }) =>
+    deepFreeze(createTestPlayer({ character: { gold: 100_000 }, inventory }))
+
+  it("buys up to the last free slot", () => {
+    const result = expectSuccess(
+      buyItem(rich(), { item: "water", quantity: 270 })
+    )
+
+    expect(result.player.inventory?.water).toBe(290)
+  })
+
+  it("rejects buying more than fits", () => {
+    expectError(
+      buyItem(rich(), { item: "water", quantity: 271 }),
+      "Not enough cargo space"
+    )
+  })
+
+  it("frees space with sales in the same trade", () => {
+    const result = expectSuccess(
+      tradeItems(rich(), {
+        changes: [
+          { item: "food", quantity: -10 },
+          { item: "rum", quantity: 280 },
+        ],
+      })
+    )
+
+    expect(result.player.inventory).toMatchObject({ food: 0, rum: 280 })
+  })
+
+  it("lets an overloaded fleet sell but not buy", () => {
+    const overloaded = rich({ food: 200, water: 200 })
+
+    expectSuccess(sellItem(overloaded, { item: "food", quantity: 50 }))
+    expectError(
+      tradeItems(overloaded, {
+        changes: [
+          { item: "food", quantity: -50 },
+          { item: "rum", quantity: 1 },
+        ],
+      }),
+      "Not enough cargo space"
+    )
+  })
+})
+
 describe("random shop play", () => {
   const ITEMS: unknown[] = [...SHOP_ITEMS, "cannons", "gold", undefined]
   const QUANTITIES: unknown[] = [1, 2, 5, 10, 50, 0, -3, 2.5, "4", 1e20]

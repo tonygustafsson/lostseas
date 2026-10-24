@@ -1,10 +1,16 @@
 import { ReactNode } from "react"
 import { FaCoins } from "react-icons/fa"
-import { GiBandana, GiCannon, GiShoonerSailboat } from "react-icons/gi"
+import {
+  GiBandana,
+  GiCannon,
+  GiCargoCrate,
+  GiShoonerSailboat,
+} from "react-icons/gi"
 import { PiMedalFill } from "react-icons/pi"
 import { RiBankLine } from "react-icons/ri"
 
 import MerchandiseIcon from "@/components/MerchandiseIcon"
+import { getCargo } from "@/utils/cargo"
 import { AdvisorWarningItem } from "@/utils/getAdvisorWarnings"
 import { getSuppliesDays } from "@/utils/journey"
 import { formatGold } from "@/utils/number"
@@ -54,6 +60,11 @@ export const getWarningContent = (
       return {
         icon: <GiBandana />,
         text: "Too many crew to sail. Buy a ship at the shipyard or dismiss crew.",
+      }
+    case "CARGO_OVERLOADED":
+      return {
+        icon: <GiCargoCrate />,
+        text: `Overloaded by ${getCargo(player).overload}. Sell goods at the shop or buy a ship at the shipyard before sailing.`,
       }
     case "ANGRY_CREW":
       return {

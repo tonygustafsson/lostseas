@@ -23,5 +23,5 @@ export const player = {
     },
   },
   crewMembers: { count: 40, health: 85, mood: 75 },
-  inventory: { food: 180, water: 240, cannons: 8, medicine: 12, rum: 20 },
+  inventory: { food: 100, water: 160, cannons: 8, medicine: 12, rum: 20 },
 } satisfies Player

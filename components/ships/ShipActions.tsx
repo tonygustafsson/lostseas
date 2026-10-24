@@ -12,9 +12,17 @@ type Props = {
   shipType: Ship["type"]
   /** Why the ship cannot be removed right now, if anything */
   removeBlocker?: string
+  /** What removing the ship would cause, like leaving the fleet overloaded */
+  removeWarning?: string
 }
 
-const ShipActions = ({ shipId, shipName, shipType, removeBlocker }: Props) => {
+const ShipActions = ({
+  shipId,
+  shipName,
+  shipType,
+  removeBlocker,
+  removeWarning,
+}: Props) => {
   const { remove, isRemoving } = useShips()
   const { setModal, removeModal } = useModal()
 
@@ -45,6 +53,10 @@ const ShipActions = ({ shipId, shipName, shipType, removeBlocker }: Props) => {
             Do you really want to remove your {shipType.toLowerCase()}{" "}
             {shipName}?
           </p>
+
+          {removeWarning && (
+            <p className="text-destructive text-sm">{removeWarning}</p>
+          )}
 
           <div className="flex gap-2">
             <Button size="sm" onClick={handleRemoveShip} disabled={isRemoving}>

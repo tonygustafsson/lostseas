@@ -24,28 +24,31 @@ export const useSea = () => {
     onError: (error) => console.error(error),
   })
 
+  // Sailing on, with or without taking loot first, plays what happens next
+  const onSailed = async (response: Awaited<ReturnType<typeof apiRequest>>) => {
+    const {
+      destinationReached,
+      shipMeetingState,
+    }: {
+      destinationReached: boolean
+      shipMeetingState: ShipMeetingState | null
+    } = response?.data
+
+    await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+    if (shipMeetingState) {
+      playSoundEffect("sailho")
+    } else if (destinationReached) {
+      playSoundEffect("landho")
+    } else {
+      playSoundEffect("journey")
+    }
+  }
+
   const { mutate: continueJourney, isPending: isContinueingJourney } =
     useMutation({
       mutationFn: () => apiRequest("/api/sea/continueJourney", null, "POST"),
-      onSuccess: async (response) => {
-        const {
-          destinationReached,
-          shipMeetingState,
-        }: {
-          destinationReached: boolean
-          shipMeetingState: ShipMeetingState | null
-        } = response?.data
-
-        await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
-
-        if (shipMeetingState) {
-          playSoundEffect("sailho")
-        } else if (destinationReached) {
-          playSoundEffect("landho")
-        } else {
-          playSoundEffect("journey")
-        }
-      },
+      onSuccess: onSailed,
       onError: (error) => console.error(error),
     })
 
@@ -76,6 +79,13 @@ export const useSea = () => {
     onError: (error) => console.error(error),
   })
 
+  const { mutate: takeLoot, isPending: isTakingLoot } = useMutation({
+    mutationFn: (loot: Partial<Record<keyof Inventory, number>>) =>
+      apiRequest("/api/sea/takeLoot", { loot }, "POST"),
+    onSuccess: onSailed,
+    onError: (error) => console.error(error),
+  })
+
   const { mutate: ignoreShip, isPending: isIgnoringShip } = useMutation({
     mutationFn: () => apiRequest("/api/sea/ignoreShip", null, "POST"),
     onSuccess: () => {
@@ -97,5 +107,7 @@ export const useSea = () => {
     isMakingBattleMove,
     ignoreShip,
     isIgnoringShip,
+    takeLoot,
+    isTakingLoot,
   }
 }

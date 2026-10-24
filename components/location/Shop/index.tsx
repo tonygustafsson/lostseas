@@ -7,6 +7,12 @@ import { Button } from "@/components/ui/button"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShop } from "@/hooks/queries/useShop"
 import {
+  getCargoAfterTrade,
+  getCargoCapacity,
+  getCargoLeftForItem,
+  getStorableTarget,
+} from "@/utils/cargo"
+import {
   getAffordableTarget,
   getDailyConsumption,
   getGoldLeftForItem,
@@ -36,6 +42,8 @@ const Shop = () => {
   const crewMembers = player.crewMembers.count || 0
   const changes = getTradeChanges(inventory, targets)
   const dailyUse = getDailyConsumption(crewMembers)
+  const cargoCapacity = getCargoCapacity(player.ships)
+  const cargoAfter = getCargoAfterTrade(inventory, changes)
 
   const applyTargets = (newTargets: TradeTargets) => {
     setTargets((prev) => ({ ...prev, ...newTargets }))
@@ -45,6 +53,8 @@ const Shop = () => {
     <ShopTradeSummary
       gold={player.character.gold}
       changes={changes}
+      cargoAfter={cargoAfter}
+      cargoCapacity={cargoCapacity}
       isTrading={isTrading}
       onReset={() => setTargets({})}
       onTransfer={() => trade(changes, { onSuccess: () => setTargets({}) })}
@@ -54,6 +64,12 @@ const Shop = () => {
   const renderItem = (item: keyof Inventory) => {
     const owned = inventory?.[item] ?? 0
     const goldLeft = getGoldLeftForItem(player.character.gold, changes, item)
+    const affordable = getAffordableTarget(item, owned, goldLeft)
+    const storable = getStorableTarget(
+      item,
+      owned,
+      getCargoLeftForItem(player, changes, item)
+    )
 
     return (
       <ShopTradeItem
@@ -61,7 +77,8 @@ const Shop = () => {
         item={item}
         owned={owned}
         target={getPlannedAmount(inventory, targets, item)}
-        affordable={getAffordableTarget(item, owned, goldLeft)}
+        max={Math.min(affordable, storable)}
+        limitedBy={storable < affordable ? "cargo" : "gold"}
         dailyUse={
           item === "food" || item === "water" ? dailyUse[item] : undefined
         }
@@ -92,6 +109,7 @@ const Shop = () => {
             crewMembers={crewMembers}
             food={getPlannedAmount(inventory, targets, "food")}
             water={getPlannedAmount(inventory, targets, "water")}
+            freeCargo={cargoCapacity - cargoAfter}
             onApply={applyTargets}
           />
         </div>

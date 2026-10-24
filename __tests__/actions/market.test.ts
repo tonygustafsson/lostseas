@@ -46,6 +46,34 @@ const expectError = (result: ActionResult, error: string) => {
 }
 
 describe("acceptMarketOffer", () => {
+  it("rejects a batch that does not fit in the hold", () => {
+    // The test Brig carries 300 and has 30 aboard
+    const player = atMarket({ rum: { quantity: 271, price: 1 } })
+
+    expectError(
+      acceptMarketOffer(player, { item: "rum" }),
+      "Not enough cargo space"
+    )
+  })
+
+  it("buys a batch that fills the hold exactly", () => {
+    const player = atMarket({ rum: { quantity: 270, price: 1 } })
+
+    expect(
+      expectSuccess(acceptMarketOffer(player, { item: "rum" })).player.inventory
+        ?.rum
+    ).toBe(270)
+  })
+
+  it("buys cannons whatever the cargo", () => {
+    const player = atMarket(
+      { cannons: { quantity: 5, price: 1 } },
+      { inventory: { food: 400 } }
+    )
+
+    expectSuccess(acceptMarketOffer(player, { item: "cannons" }))
+  })
+
   it.each(ALL_ITEMS)("buys the whole %s batch", (item) => {
     const player = atMarket(
       { [item]: { quantity: 4, price: 10 } },

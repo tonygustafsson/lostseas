@@ -210,6 +210,31 @@ describe("getAdvisorWarnings", () => {
     })
   })
 
+  describe("CARGO_OVERLOADED", () => {
+    const overloaded = () => {
+      const p = basePlayer()
+      // Brig carries 300
+      p.inventory = { ...p.inventory, rum: 400 }
+      return p
+    }
+
+    it("blocks travel when the hold is overloaded", () => {
+      expect(blocking(overloaded())).toContain("CARGO_OVERLOADED")
+    })
+
+    it("does not count cannons and repair kits", () => {
+      const p = basePlayer()
+      p.inventory = { ...p.inventory, cannons: 400, repairKits: 400 }
+      expect(tips(p)).not.toContain("CARGO_OVERLOADED")
+    })
+
+    it("does not block mid-voyage", () => {
+      const p = overloaded()
+      p.character.location = "Sea"
+      expect(tips(p)).not.toContain("CARGO_OVERLOADED")
+    })
+  })
+
   describe("TOO_MANY_CREW", () => {
     it("triggers when crew exceeds ship maximum", () => {
       const p = basePlayer()

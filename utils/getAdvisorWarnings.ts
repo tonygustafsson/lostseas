@@ -1,3 +1,4 @@
+import { isOverloaded } from "./cargo"
 import {
   getJourneyLength,
   getJourneySupplies,
@@ -40,8 +41,9 @@ export const getAdvisorWarnings = (
   const crewBelowMinimum = playerHasShips && player.crewMembers.count < minCrew
   const crewAboveMaximum = playerHasShips && player.crewMembers.count > maxCrew
 
-  // Supplies only matter when leaving port, not mid-voyage
+  // Supplies and cargo only matter when leaving port, not mid-voyage
   const isInPort = player.character.location !== "Sea"
+  const cargoIsOverloaded = playerHasShips && isOverloaded(player)
 
   // Without a destination, supplies must at least reach the nearest town
   const journeyLength = destination
@@ -82,6 +84,7 @@ export const getAdvisorWarnings = (
   if (!playerHasCrew) warn("NO_CREW", false)
   if (crewBelowMinimum) warn("NOT_ENOUGH_CREW", true)
   if (crewAboveMaximum) warn("TOO_MANY_CREW", true)
+  if (isInPort && cargoIsOverloaded) warn("CARGO_OVERLOADED", true)
   if (crewIsAngry) warn("ANGRY_CREW", true)
   if (crewMoodIsLow) warn("LOW_CREW_MOOD", false)
   if (crewIsIll) warn("CREW_IS_ILL", true)

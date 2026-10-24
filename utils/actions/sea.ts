@@ -1,7 +1,9 @@
 import { TOWNS } from "@/constants/locations"
 import { getDefeatUpdate, getVictoryUpdate } from "@/utils/battleOutcome"
+import { getCargo, getCargoLoad, getLootPreset } from "@/utils/cargo"
 import { getMannedCannons } from "@/utils/crew"
 import { getAdvisorWarnings } from "@/utils/getAdvisorWarnings"
+import { addToInventory } from "@/utils/inventory"
 import { patchDeep } from "@/utils/patchDeep"
 import {
   getBattleLosses,
@@ -9,7 +11,11 @@ import {
   startBattle,
 } from "@/utils/seaBattle"
 import { createMeetingShip } from "@/utils/shipMeeting"
-import { getDailyConsumption } from "@/utils/shop"
+import {
+  describeItems,
+  getDailyConsumption,
+  type TradeChange,
+} from "@/utils/shop"
 
 import type { ActionResult } from "./types"
 
@@ -86,6 +92,57 @@ export const startJourney = (
   }
 }
 
+type Loot = Partial<Record<keyof Inventory, number>>
+
+/** Loads the chosen loot and removes the offer. */
+const applyLoot = (player: Player, loot: Loot) =>
+  patchDeep<Player>(player, {
+    inventory: addToInventory(player.inventory, loot),
+    locationStates: { sea: { lootOffer: null } },
+  })
+
+/** Takes the chosen amounts of the loot from a won battle. The rest is lost. */
+export const takeLoot = (
+  player: Player,
+  { loot }: { loot: Loot }
+): ActionResult<{ taken: Loot }> => {
+  const offer = player.locationStates?.sea?.lootOffer
+
+  if (!offer) {
+    return conflict("There is no loot to take.")
+  }
+
+  if (typeof loot !== "object" || loot === null || Array.isArray(loot)) {
+    return badRequest("Not a valid loot choice")
+  }
+
+  const isValidAmount = ([item, amount]: [string, unknown]) =>
+    Object.hasOwn(offer, item) &&
+    Number.isSafeInteger(amount) &&
+    (amount as number) >= 0 &&
+    (amount as number) <= (offer[item as keyof Inventory] ?? 0)
+
+  if (!Object.entries(loot).every(isValidAmount)) {
+    return badRequest("You cannot take more than the loot holds.")
+  }
+
+  if (getCargoLoad(loot) > getCargo(player).free) {
+    return badRequest("Not enough cargo space")
+  }
+
+  const taken = (Object.entries(loot) as [keyof Inventory, number][])
+    .filter(([, quantity]) => quantity > 0)
+    .map(([item, quantity]): TradeChange => ({ item, quantity }))
+
+  return {
+    player: applyLoot(player, loot),
+    log: taken.length
+      ? `Took ${describeItems(taken)} as loot.`
+      : "Left the loot behind.",
+    data: { taken: loot },
+  }
+}
+
 export const continueJourney = (
   player: Player,
   random: Random = Math.random
@@ -118,6 +175,14 @@ export const continueJourney = (
   // Sailing pauses at an encounter until the player attacks or ignores the ship
   if (sea?.shipMeeting) {
     return conflict("Attack or ignore the ship before sailing on.")
+  }
+
+  // Sailing on without choosing takes as much of the loot as fits
+  if (sea?.lootOffer) {
+    player = applyLoot(
+      player,
+      getLootPreset(sea.lootOffer, getCargo(player).free)
+    )
   }
 
   const destinationReached = journey.day === journey.totalDays
@@ -203,6 +268,30 @@ export const continueJourney = (
       }),
     }),
     data: { ...journeyData, day, destinationReached, shipMeetingState },
+  }
+}
+
+/** Takes the chosen loot and sails on, so no report is shown in between. */
+export const takeLootAndSail = (
+  player: Player,
+  { loot }: { loot: Loot },
+  random: Random = Math.random
+): ReturnType<typeof continueJourney> => {
+  const taken = takeLoot(player, { loot })
+
+  if ("error" in taken) {
+    return taken
+  }
+
+  const sailed = continueJourney(taken.player, random)
+
+  if ("error" in sailed) {
+    return sailed
+  }
+
+  return {
+    ...sailed,
+    log: [taken.log, sailed.log].filter(Boolean).join(" "),
   }
 }
 

@@ -11,6 +11,7 @@ import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_TYPES } from "@/constants/ship"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShipyard } from "@/hooks/queries/useShipyard"
+import { getShipRemovalCargoWarning } from "@/utils/cargo"
 import { formatGold } from "@/utils/number"
 
 const ShipyardSell = () => {
@@ -30,7 +31,9 @@ const ShipyardSell = () => {
           ([id, { name, type, health }]) => {
             const shipInfo = SHIP_TYPES[type as keyof typeof SHIP_TYPES]
 
-            if (!shipInfo) return null
+            if (!shipInfo || !player) return null
+
+            const cargoWarning = getShipRemovalCargoWarning(player, id)
 
             return (
               <MerchandiseCard
@@ -48,7 +51,17 @@ const ShipyardSell = () => {
                       <Badge variant="secondary">
                         Worth: {formatGold(shipInfo.sell)}
                       </Badge>
+
+                      <Badge variant="secondary">
+                        Cargo: {shipInfo.cargoCapacity}
+                      </Badge>
                     </div>
+
+                    {cargoWarning && (
+                      <p className="text-destructive mt-4 text-sm">
+                        {cargoWarning}
+                      </p>
+                    )}
                   </>
                 }
                 actions={
