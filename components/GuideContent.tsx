@@ -908,8 +908,9 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         />
 
         <p className="mb-4">
-          You can encounter ships from any nation, as well as pirates. Ships
-          from your destination&apos;s nation are more common, so sail towards
+          You can encounter ships from any nation, as well as pirates. On the
+          open sea, every nation is as likely. On the last day of a journey,
+          most ships come from your destination&apos;s nation, so sail towards
           one of its towns if you want to find that nation&apos;s ships.
         </p>
 

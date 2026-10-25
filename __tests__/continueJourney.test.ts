@@ -126,7 +126,7 @@ describe("continue journey after a final-day encounter", () => {
     await expectResumedFinalDay()
   })
 
-  it("resumes sailing after ignoring the ship", async () => {
+  it("arrives straight after ignoring the ship", async () => {
     mocks.player!.locationStates!.sea!.shipMeeting = {
       nation: "Spain",
       shipType: "Brig",
@@ -135,7 +135,12 @@ describe("continue journey after a final-day encounter", () => {
     }
 
     expect((await ignoreShip()).status).toBe(200)
-    await expectResumedFinalDay()
+
+    const response = await continueJourney()
+
+    expect((await response.json()).destinationReached).toBe(true)
+    expect(mocks.player?.character.location).toBe("Harbor")
+    expect(mocks.player?.locationStates?.sea).toEqual({})
   })
 
   it("still arrives normally when there is no encounter to resume", async () => {

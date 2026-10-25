@@ -36,23 +36,50 @@ describe("shipMeeting utilities", () => {
     mathRandomSpy.mockRestore()
   })
 
-  it("createMeetingShip returns expected structure and uses destination nation when Math.random > 0.5", () => {
-    ;(getTownsNationality as any).mockReturnValue("Pirate")
-    mathRandomSpy.mockReturnValue(0.8)
+  it("createMeetingShip returns expected structure and uses destination nation on the last day", () => {
+    ;(getTownsNationality as any).mockReturnValue("Spain")
+    mathRandomSpy.mockReturnValue(0.79)
 
     // shipType index, cannons value
     ;(getRandomInt as any)
       .mockImplementationOnce(() => 1)
       .mockImplementationOnce(() => 3)
 
-    const result = createMeetingShip(5, "PortRoyal" as any)
+    const result = createMeetingShip(5, "PortRoyal" as any, true)
 
-    expect(result).toHaveProperty("nation", "Pirate")
+    expect(result).toHaveProperty("nation", "Spain")
     expect(result).toHaveProperty("shipType")
     expect(result).toHaveProperty("crewMembers")
     expect(result).toHaveProperty("cannons")
     expect(result.cannons).toBeGreaterThanOrEqual(1)
     expect(result.crewMembers).toEqual(result.cannons * 2)
+  })
+
+  it("createMeetingShip picks another nation on the last day when Math.random is 0.8 or more", () => {
+    ;(getTownsNationality as any).mockReturnValue("Spain")
+    mathRandomSpy.mockReturnValue(0.8)
+    ;(getRandomInt as any).mockImplementation(
+      (_min: number, max: number) => max
+    )
+
+    const result = createMeetingShip(5, "PortRoyal" as any, true)
+
+    // Four nations and pirates, minus the destination's nation
+    expect(getRandomInt).toHaveBeenNthCalledWith(1, 0, 3)
+    expect(result.nation).not.toBe("Spain")
+  })
+
+  it("createMeetingShip picks any nation or pirates before the last day", () => {
+    ;(getTownsNationality as any).mockReturnValue("Spain")
+    mathRandomSpy.mockReturnValue(0)
+    ;(getRandomInt as any).mockImplementation(
+      (_min: number, max: number) => max
+    )
+
+    const result = createMeetingShip(5, "PortRoyal" as any)
+
+    expect(getRandomInt).toHaveBeenNthCalledWith(1, 0, 4)
+    expect(result.nation).toBe("Pirate")
   })
 
   it("getHitChance is the base chance for an even fight", () => {

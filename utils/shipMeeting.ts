@@ -5,13 +5,30 @@ import { getMannedCannons } from "./crew"
 import { getTownsNationality } from "./location"
 import { getRandomInt } from "./random"
 
-export const createMeetingShip = (mannedCannons: number, destination: Town) => {
+const DESTINATION_NATION_CHANCE = 0.8
+
+const pickNation = (nations: (Nation | "Pirate")[]) =>
+  nations[getRandomInt(0, nations.length - 1)]
+
+// Near the destination, most ships come from its nation. Elsewhere any nation is as likely.
+export const createMeetingShip = (
+  mannedCannons: number,
+  destination: Town,
+  isLastDay = false
+) => {
   const destinationNation = getTownsNationality(destination)
-  const nations = [...Object.keys(NATIONS), "Pirate"]
-  const nation =
-    Math.random() > 0.5
+  const nations = [...Object.keys(NATIONS), "Pirate"] as (Nation | "Pirate")[]
+  const otherNations = nations.filter((nation) => nation !== destinationNation)
+
+  const getNation = () => {
+    if (!isLastDay) return pickNation(nations)
+
+    return Math.random() < DESTINATION_NATION_CHANCE
       ? destinationNation
-      : (nations[getRandomInt(0, nations.length - 1)] as Nation | "Pirate")
+      : pickNation(otherNations)
+  }
+
+  const nation = getNation()
   const shipTypes: ShipType[] = ["Brig", "Merchantman", "Galleon", "Frigate"]
   const shipType = shipTypes[getRandomInt(0, shipTypes.length - 1)]
 

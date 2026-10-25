@@ -88,10 +88,9 @@ export const useSea = () => {
 
   const { mutate: ignoreShip, isPending: isIgnoringShip } = useMutation({
     mutationFn: () => apiRequest("/api/sea/ignoreShip", null, "POST"),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
-
-      continueJourney()
+    // The sea timer sails on, so the ship moves at its usual pace
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
     },
     onError: (error) => console.error(error),
   })

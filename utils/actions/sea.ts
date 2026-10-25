@@ -196,9 +196,9 @@ export const continueJourney = (
   }
 
   // A ship met on the last day of sailing already moved journey.day to totalDays.
-  // Clear the meeting/attack state first and keep the player at sea, so the
-  // outcome is shown before the player arrives. The next call does the arrival.
-  if (destinationReached && (hasPendingAttackReport || sea?.justMetAShip)) {
+  // Clear the attack report first and keep the player at sea, so the outcome
+  // is shown before the player arrives. The next call does the arrival.
+  if (destinationReached && hasPendingAttackReport) {
     return {
       player: patchDeep<Player>(player, {
         locationStates: { sea: clearedSeaState },
@@ -246,7 +246,8 @@ export const continueJourney = (
   const shipMeetingState = shouldMeetAShip
     ? createMeetingShip(
         getMannedCannons(player.crewMembers.count, player.inventory?.cannons),
-        journey.destination
+        journey.destination,
+        journey.day + 1 === journey.totalDays
       )
     : null
 

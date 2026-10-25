@@ -357,7 +357,13 @@ describe("continueJourney", () => {
   })
 
   it("shows a final-day battle report before arriving", () => {
-    const player = atSea({ justMetAShip: true }, 7)
+    const report: AttackFailureReport = {
+      crewHealthLoss: 10,
+      shipHealthLoss: 5,
+      sunkShip: false,
+      lostMerchandise: {},
+    }
+    const player = atSea({ justMetAShip: true, attackFailureReport: report }, 7)
 
     const resumed = expectSuccess(continueJourney(player, NO_SHIP))
 
