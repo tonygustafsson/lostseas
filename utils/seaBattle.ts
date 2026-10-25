@@ -6,6 +6,10 @@ import { calculateAttackSuccess } from "./shipMeeting"
 export const BATTLE_MAX_ROUNDS = 5
 export const BATTLE_STRENGTH = 100
 export const EVADE_CHANCE = 50
+
+export const MIN_HIT_DAMAGE = 20
+export const MAX_HIT_DAMAGE = 35
+
 // A lost fire move hurts the crew 1 more for every this much strength lost
 export const CREW_DAMAGE_STRENGTH_STEP = 12
 
@@ -38,7 +42,7 @@ const getPlayerDamage = (
 
   return action === "fire"
     ? {
-        playerDamage: getRandomInt(10, 25),
+        playerDamage: getRandomInt(MIN_HIT_DAMAGE, MAX_HIT_DAMAGE),
         shipDamage: getRandomInt(3, 8),
         crewDamage:
           getRandomInt(1, 2) +
@@ -81,7 +85,8 @@ export const resolveBattleRound = (
         )
       : getRandomInt(1, 100) <= EVADE_CHANCE
 
-  const enemyDamage = action === "fire" && hit ? getRandomInt(30, 50) : 0
+  const enemyDamage =
+    action === "fire" && hit ? getRandomInt(MIN_HIT_DAMAGE, MAX_HIT_DAMAGE) : 0
   const { playerDamage, shipDamage, crewDamage } = getPlayerDamage(
     action,
     hit,

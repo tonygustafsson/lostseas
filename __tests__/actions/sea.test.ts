@@ -641,7 +641,7 @@ describe("battleMove", () => {
     // A low roll always hits with 5 cannons against 1
     rollLow()
     const player = patchDeep<Player>(
-      inBattle({ enemyStrength: 30, playerStrength: 100 }),
+      inBattle({ enemyStrength: 20, playerStrength: 100 }),
       { locationStates: { sea: { shipMeeting: { cannons: 1 } } } }
     )
 
@@ -662,7 +662,7 @@ describe("battleMove", () => {
   it("offers the loot instead of loading it", () => {
     rollLow()
     const player = patchDeep<Player>(
-      inBattle({ enemyStrength: 30, playerStrength: 100 }),
+      inBattle({ enemyStrength: 20, playerStrength: 100 }),
       { locationStates: { sea: { shipMeeting: { cannons: 1 } } } }
     )
 

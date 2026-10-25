@@ -143,13 +143,13 @@ describe("battleMove", () => {
     expect(mocks.player.crewMembers.health).toBe(88)
     expect(mocks.player.locationStates?.sea?.battle).toEqual({
       enemyStrength: 100,
-      playerStrength: 75,
+      playerStrength: 65,
       rounds: [
         {
           action: "fire",
           hit: false,
           enemyDamage: 0,
-          playerDamage: 25,
+          playerDamage: 35,
           shipDamage: 8,
           crewDamage: 2,
         },
@@ -160,7 +160,7 @@ describe("battleMove", () => {
   it("applies the victory and ends the battle", async () => {
     vi.mocked(calculateAttackSuccess).mockReturnValue(true)
     mocks.player = createPlayer({
-      battle: battle(40, 80, [
+      battle: battle(35, 80, [
         {
           action: "fire",
           hit: false,

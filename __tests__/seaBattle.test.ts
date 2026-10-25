@@ -85,8 +85,8 @@ describe("seaBattle", () => {
     const result = resolveBattleRound(startBattle(), "fire", player, 8)
 
     expect(calculateAttackSuccess).toHaveBeenCalledWith(20, 10, 8)
-    expect(getRandomInt).toHaveBeenCalledWith(30, 50)
-    expect(result.battle.enemyStrength).toBe(50)
+    expect(getRandomInt).toHaveBeenCalledWith(20, 35)
+    expect(result.battle.enemyStrength).toBe(65)
     expect(result.battle.playerStrength).toBe(100)
     expect(result.ships).toBe(player.ships)
     expect(result.outcome).toBe("ongoing")
@@ -94,7 +94,7 @@ describe("seaBattle", () => {
       {
         action: "fire",
         hit: true,
-        enemyDamage: 50,
+        enemyDamage: 35,
         playerDamage: 0,
         shipDamage: 0,
         crewDamage: 0,
@@ -112,11 +112,11 @@ describe("seaBattle", () => {
       8
     )
 
-    expect(getRandomInt).toHaveBeenCalledWith(10, 25)
+    expect(getRandomInt).toHaveBeenCalledWith(20, 35)
     expect(getRandomInt).toHaveBeenCalledWith(3, 8)
     expect(getRandomInt).toHaveBeenCalledWith(1, 2)
     expect(result.battle.enemyStrength).toBe(100)
-    expect(result.battle.playerStrength).toBe(75)
+    expect(result.battle.playerStrength).toBe(65)
     expect(result.ships.a.health).toBe(92)
     expect(result.ships.b.health).toBe(0)
     expect(result.crewHealth).toBe(98)
@@ -195,7 +195,7 @@ describe("seaBattle", () => {
     mockMove(true)
 
     const result = resolveBattleRound(
-      battle(40, 100, 1),
+      battle(35, 100, 1),
       "fire",
       createPlayer(),
       8

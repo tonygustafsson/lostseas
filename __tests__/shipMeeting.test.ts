@@ -83,12 +83,12 @@ describe("shipMeeting utilities", () => {
   })
 
   it("getHitChance is the base chance for an even fight", () => {
-    expect(getHitChance(10, 10)).toBeCloseTo(0.44)
+    expect(getHitChance(10, 10)).toBeCloseTo(0.61)
   })
 
   it("getHitChance scales with the cannon ratio and is capped", () => {
-    expect(getHitChance(8, 10)).toBeCloseTo(0.352)
-    expect(getHitChance(11, 10)).toBeCloseTo(0.484)
+    expect(getHitChance(8, 10)).toBeCloseTo(0.488)
+    expect(getHitChance(11, 10)).toBeCloseTo(0.671)
     expect(getHitChance(100, 10)).toBe(0.95)
   })
 
@@ -97,16 +97,16 @@ describe("shipMeeting utilities", () => {
   })
 
   it("getHitChance treats an opponent without cannons as one cannon", () => {
-    expect(getHitChance(1, 0)).toBeCloseTo(0.44)
+    expect(getHitChance(1, 0)).toBeCloseTo(0.61)
   })
 
   it("calculateAttackSuccess hits when the roll is below the hit chance", () => {
     ;(getMannedCannons as any).mockReturnValue(10)
 
-    ;(getRandomInt as any).mockReturnValue(44)
+    ;(getRandomInt as any).mockReturnValue(61)
     expect(calculateAttackSuccess(20, 10, 10)).toBe(true)
 
-    ;(getRandomInt as any).mockReturnValue(45)
+    ;(getRandomInt as any).mockReturnValue(62)
     expect(calculateAttackSuccess(20, 10, 10)).toBe(false)
   })
 

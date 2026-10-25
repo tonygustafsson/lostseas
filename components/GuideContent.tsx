@@ -24,6 +24,8 @@ import {
   BATTLE_MAX_ROUNDS,
   CREW_DAMAGE_STRENGTH_STEP,
   EVADE_CHANCE,
+  MAX_HIT_DAMAGE,
+  MIN_HIT_DAMAGE,
 } from "@/utils/seaBattle"
 import { BASE_HIT_CHANCE } from "@/utils/shipMeeting"
 import { capitalize, snakeCaseToTitleCase } from "@/utils/string"
@@ -931,12 +933,13 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
             health.
           </li>
           <li className="mb-2">
-            When you fire and win the move, the enemy loses 30–50% battle
-            strength. When you lose it, you lose 10–25% battle strength and each
-            of your ships loses 3–8% health. Your crew loses 1–2% health, plus
-            1% for every {CREW_DAMAGE_STRENGTH_STEP}% battle strength you have
-            already lost, so missed shots hurt more when the battle is going
-            badly.
+            A broadside does the same damage whichever side fires it. When you
+            fire and win the move, the enemy loses {MIN_HIT_DAMAGE}–
+            {MAX_HIT_DAMAGE}% battle strength. When you lose it, you lose{" "}
+            {MIN_HIT_DAMAGE}–{MAX_HIT_DAMAGE}% battle strength and each of your
+            ships loses 3–8% health. Your crew loses 1–2% health, plus 1% for
+            every {CREW_DAMAGE_STRENGTH_STEP}% battle strength you have already
+            lost, so missed shots hurt more when the battle is going badly.
           </li>
           <li className="mb-2">
             Evading succeeds {EVADE_CHANCE}% of the time, whatever your cannons.
