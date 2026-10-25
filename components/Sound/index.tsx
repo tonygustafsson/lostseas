@@ -18,13 +18,14 @@ const seaSongs = Array.from(
   (_, i) => `music/sea/song${i + 1}.opus`
 )
 
+const isSongForLocation = (src: string | undefined, location?: string) =>
+  Boolean(src?.includes(location === "Sea" ? "/music/sea/" : "/music/town/"))
+
 const Sound = () => {
   const { data: player } = useGetPlayer()
+  const location = player?.character?.location
   const { musicOn, soundEffectsOn, soundEffect, setMusic, setSoundEffects } =
     useSound()
-
-  const musicCookieValue = getCookie(MUSIC_STATE_COOKIE_NAME)
-  const soundEffectsCookieValue = getCookie(SOUND_EFFECTS_STATE_COOKIE_NAME)
 
   const musicPlayer = useRef(typeof Audio !== "undefined" ? new Audio() : null)
 
@@ -67,7 +68,7 @@ const Sound = () => {
 
     await fadeOutMusic()
 
-    const songs = player?.character?.location === "Sea" ? seaSongs : townSongs
+    const songs = location === "Sea" ? seaSongs : townSongs
     const otherSongs = songs.filter((song) => song !== musicPlayer.current?.src)
     const randomSong = otherSongs[Math.floor(Math.random() * otherSongs.length)]
 
@@ -77,7 +78,7 @@ const Sound = () => {
     }
 
     playMusic()
-  }, [musicPlayer, player?.character?.location, playMusic])
+  }, [musicPlayer, location, playMusic])
 
   useEffect(() => {
     if (!musicPlayer.current) return
@@ -92,31 +93,17 @@ const Sound = () => {
   }, [musicOn, musicPlayer, playRandomSong])
 
   useEffect(() => {
-    // Change music track if you are going out to sea or coming in to harbor
-    if (!musicPlayer || !musicOn) return
-
-    if (
-      (player?.character?.location === "Sea" &&
-        musicPlayer.current?.src.includes("/music/town/")) ||
-      (player?.character?.location !== "Sea" &&
-        musicPlayer.current?.src.includes("/music/sea/"))
-    ) {
-      playRandomSong()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [player?.character?.location])
-
-  useEffect(() => {
     if (!musicPlayer) return
 
-    if (musicOn && !musicPlayer.current?.src) {
-      playRandomSong()
-    } else if (musicOn && musicPlayer.current?.src) {
+    if (!musicOn) {
+      musicPlayer.current?.pause()
+    } else if (isSongForLocation(musicPlayer.current?.src, location)) {
       playMusic()
     } else {
-      musicPlayer.current?.pause()
+      // No song yet, or going out to sea / coming in to harbor
+      playRandomSong()
     }
-  }, [musicOn, musicPlayer, playRandomSong, playMusic])
+  }, [musicOn, musicPlayer, location, playRandomSong, playMusic])
 
   useEffect(() => {
     if (!soundEffectsOn || !soundEffect) return
@@ -157,7 +144,7 @@ const Sound = () => {
     const handleClick = () => {
       if (!musicPlayer.current?.paused) return
 
-      if (musicPlayer.current?.src) {
+      if (isSongForLocation(musicPlayer.current?.src, location)) {
         playMusic()
       } else {
         playRandomSong()
@@ -168,12 +155,15 @@ const Sound = () => {
     return () => {
       document.removeEventListener("click", handleClick)
     }
-  }, [musicOn, musicPlayer, playRandomSong, playMusic])
+  }, [musicOn, musicPlayer, location, playRandomSong, playMusic])
+
+  const hasPlayer = Boolean(player)
 
   useEffect(() => {
-    if (!player) {
-      return
-    }
+    if (!hasPlayer) return
+
+    const musicCookieValue = getCookie(MUSIC_STATE_COOKIE_NAME)
+    const soundEffectsCookieValue = getCookie(SOUND_EFFECTS_STATE_COOKIE_NAME)
 
     setMusic(
       typeof musicCookieValue !== "undefined"
@@ -185,13 +175,7 @@ const Sound = () => {
         ? soundEffectsCookieValue === "true"
         : true
     )
-  }, [
-    player,
-    setMusic,
-    setSoundEffects,
-    musicCookieValue,
-    soundEffectsCookieValue,
-  ])
+  }, [hasPlayer, setMusic, setSoundEffects])
 
   return null
 }
