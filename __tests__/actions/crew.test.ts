@@ -40,7 +40,10 @@ describe("dismissCrew", () => {
     )
 
     expect(result.player.crewMembers.count).toBe(15)
-    expect(result.log).toBe("Dismissed 5 crew members. New crew count is 15.")
+    expect(result.log).toMatchObject({
+      type: "crew",
+      message: "Dismissed 5 crew members. New crew count is 15.",
+    })
     expect(result.data).toEqual({ count: 5, newCount: 15 })
   })
 

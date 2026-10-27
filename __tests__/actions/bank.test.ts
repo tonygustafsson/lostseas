@@ -86,9 +86,11 @@ describe("deposit", () => {
 
     expect(result.player.character).toMatchObject({ gold: 600, account: 400 })
     expect(result.data).toEqual({ amount: 400, gold: 600 })
-    expect(result.log).toBe(
-      "Deposited 400 gold into the bank. Current account balance: 400 gold."
-    )
+    expect(result.log).toMatchObject({
+      type: "bank",
+      message:
+        "Deposited 400 gold into the bank. Current account balance: 400 gold.",
+    })
   })
 
   it("adds to existing savings", () => {
@@ -189,9 +191,10 @@ describe("repayLoan", () => {
 
     expect(result.player.character.loan).toBe(0)
     expect(result.data.loan).toBeNull()
-    expect(result.log).toBe(
-      "Repaid 600 gold to the bank. Remaining loan: 0 gold."
-    )
+    expect(result.log).toMatchObject({
+      type: "bank",
+      message: "Repaid 600 gold to the bank. Remaining loan: 0 gold.",
+    })
   })
 
   it("rejects repaying more than owed", () => {
@@ -308,9 +311,11 @@ describe("investInVenture", () => {
       gold: 500,
       returnDay: 28,
     })
-    expect(result.log).toBe(
-      "Invested 1500 gold in The Havana tobacco run. Expected back on day 28."
-    )
+    expect(result.log).toMatchObject({
+      type: "bank",
+      message:
+        "Invested 1500 gold in The Havana tobacco run. Expected back on day 28.",
+    })
   })
 
   it("never touches the bank account", () => {
@@ -428,9 +433,11 @@ describe("collectVenture", () => {
     )
 
     expect(result.data.message).toBe(VENTURES.tobaccoRun.outcomes[2].message)
-    expect(result.log).toBe(
-      "The Havana tobacco run returned 0 gold on a stake of 1500 gold."
-    )
+    expect(result.log).toMatchObject({
+      type: "bank",
+      message:
+        "The Havana tobacco run returned 0 gold on a stake of 1500 gold.",
+    })
   })
 
   it("keeps the other ventures", () => {

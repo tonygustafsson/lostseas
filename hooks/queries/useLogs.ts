@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 
+import type { LogEntry } from "@/firebase/db"
+
 export const LOGS_QUERY_KEY = "logs"
 
 const fetchLogsForPlayer = async (playerId?: Player["id"]) => {
@@ -12,11 +14,11 @@ const fetchLogsForPlayer = async (playerId?: Player["id"]) => {
     throw new Error(body || `Failed to fetch logs for ${playerId}`)
   }
 
-  return (await res.json()) as any[]
+  return (await res.json()) as LogEntry[]
 }
 
 export const useGetLogs = (playerId?: Player["id"], enabled = true) =>
-  useQuery<any[], Error>({
+  useQuery<LogEntry[], Error>({
     queryKey: [LOGS_QUERY_KEY, playerId],
     queryFn: () => fetchLogsForPlayer(playerId),
     enabled: !!playerId && enabled,

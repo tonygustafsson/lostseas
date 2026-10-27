@@ -91,9 +91,10 @@ describe("acceptMarketOffer", () => {
       totalQuantity: 7,
       totalPrice: 40,
     })
-    expect(result.log).toBe(
-      `Bought 4 ${MERCHANDISE[item].unit} of ${item} in the market for 40 gold.`
-    )
+    expect(result.log).toMatchObject({
+      type: "trade",
+      message: `Bought 4 ${MERCHANDISE[item].unit} of ${item} in the market for 40 gold.`,
+    })
   })
 
   it("keeps the other offers", () => {
@@ -319,9 +320,11 @@ describe("buyRemedy", () => {
       newHealth: 85,
       totalPrice: 750,
     })
-    expect(result.log).toBe(
-      "Bought Willow bark tea at the apothecary for 750 gold. Crew health is now 85%."
-    )
+    expect(result.log).toMatchObject({
+      type: "crew",
+      message:
+        "Bought Willow bark tea at the apothecary for 750 gold. Crew health is now 85%.",
+    })
   })
 
   it("charges the full price even when healing past 100% is wasted", () => {

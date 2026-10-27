@@ -2,42 +2,59 @@
 
 import { FaBook } from "react-icons/fa"
 
+import LogBookEntry from "@/components/LogBookEntry"
 import { useGetLogs } from "@/hooks/queries/useLogs"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-import { toDateTime } from "@/utils/date"
+import { getCurrentDate } from "@/utils/date"
+import { groupLogsByDay } from "@/utils/logs"
 
 const LogsDrawer = () => {
   const { data: player } = useGetPlayer()
 
-  const { data: logs } = useGetLogs(player?.id)
+  const { data: logs = [] } = useGetLogs(player?.id)
+
+  const days = groupLogsByDay(logs)
 
   return (
     <>
-      <h1 className="mb-4 flex items-center gap-2 font-serif text-2xl">
+      <h1 className="flex items-center gap-2 font-serif text-2xl">
         <FaBook className="text-accent" />
         Log Book
       </h1>
 
-      {!logs?.length ? (
-        <div className="text-muted-foreground">No logs available.</div>
-      ) : (
-        <div className="flex flex-col gap-3">
-          {logs.map((entry: any, idx: number) => (
-            <div
-              key={`log-${entry.timestamp}-${idx}`}
-              className="rounded-lg bg-neutral-900 p-4 shadow-md"
-            >
-              <div className="flex items-center justify-between">
-                <div className="text-muted-foreground text-sm">
-                  Day {entry.day}
-                </div>
-                <div className="text-muted-foreground text-xs">
-                  {toDateTime(new Date(entry.timestamp))}
-                </div>
-              </div>
+      {player && (
+        <p className="text-muted-foreground mb-8 font-serif italic">
+          The journal of {player.character.title} {player.character.name}
+        </p>
+      )}
 
-              <div className="mt-2 text-sm">{entry.message}</div>
-            </div>
+      {!days.length ? (
+        <p className="text-muted-foreground font-serif italic">
+          The pages are still blank, Captain.
+        </p>
+      ) : (
+        <div className="flex flex-col gap-8 pb-8">
+          {days.map(({ day, entries }) => (
+            <section key={day}>
+              <header className="border-gold/30 mb-4 flex items-baseline justify-between gap-4 border-b pb-1">
+                <h2 className="text-gold font-serif text-lg">
+                  {getCurrentDate(day)}
+                </h2>
+
+                <span className="text-muted-foreground text-xs tracking-wide uppercase">
+                  Day {day}
+                </span>
+              </header>
+
+              <ol className="border-border ml-4 flex flex-col gap-4 border-l py-1 pl-8">
+                {entries.map((entry) => (
+                  <LogBookEntry
+                    key={`log-${entry.timestamp}-${entry.message}`}
+                    entry={entry}
+                  />
+                ))}
+              </ol>
+            </section>
           ))}
         </div>
       )}

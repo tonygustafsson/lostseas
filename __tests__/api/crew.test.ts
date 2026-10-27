@@ -98,7 +98,7 @@ describe.each(routes)("POST /api/crew/$name", ({ call, log, data }) => {
 
     const [savedPlayer, savedLog] = mocks.savePlayer.mock.calls[0]
 
-    expect(savedLog).toBe(log)
+    expect(savedLog?.message).toBe(log)
     expect(body).toEqual({ success: true, updatedPlayer: savedPlayer, ...data })
   })
 

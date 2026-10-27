@@ -182,7 +182,7 @@ describe.each(routes)(
       const [savedPlayer, savedLog] = mocks.savePlayer.mock.calls[0]
 
       expect(savedPlayer).not.toEqual(mocks.player)
-      expect(savedLog).toEqual(log)
+      expect(savedLog?.message).toEqual(log)
     })
 
     it("returns 500 when saving fails", async () => {

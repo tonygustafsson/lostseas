@@ -78,7 +78,10 @@ export const buyItem = (
       character: { gold: player.character.gold - totalPrice },
       inventory: { [item]: totalQuantity },
     }),
-    log: `Bought ${formatQuantity(item, quantity)} of ${item} for ${totalPrice} gold.`,
+    log: {
+      type: "trade",
+      message: `Bought ${formatQuantity(item, quantity)} of ${item} for ${totalPrice} gold.`,
+    },
     data: { item, quantity, totalQuantity, totalPrice },
   }
 }
@@ -107,7 +110,10 @@ export const sellItem = (
       character: { gold: player.character.gold + totalPrice },
       inventory: { [item]: totalQuantity },
     }),
-    log: `Sold ${formatQuantity(item, quantity)} of ${item} for ${totalPrice} gold.`,
+    log: {
+      type: "trade",
+      message: `Sold ${formatQuantity(item, quantity)} of ${item} for ${totalPrice} gold.`,
+    },
     data: { item, quantity, totalQuantity, totalPrice },
   }
 }
@@ -173,11 +179,11 @@ export const tradeItems = (
   }
 
   const gold = current.character.gold - player.character.gold
-  const log = `${describeTrade(sold, bought)} ${gold < 0 ? "Paid" : "Received"} ${Math.abs(gold)} gold.`
+  const message = `${describeTrade(sold, bought)} ${gold < 0 ? "Paid" : "Received"} ${Math.abs(gold)} gold.`
 
   return {
     player: current,
-    log,
+    log: { type: "trade", message },
     data: { sold, bought, gold },
   }
 }

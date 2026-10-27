@@ -87,7 +87,10 @@ export const startJourney = (
       },
       locationStates: null,
     }),
-    log: `Started journey to ${town}. Expected arrival in ${distance} days.`,
+    log: {
+      type: "voyage",
+      message: `Started journey to ${town}. Expected arrival in ${distance} days.`,
+    },
     data: { distance },
   }
 }
@@ -136,9 +139,12 @@ export const takeLoot = (
 
   return {
     player: applyLoot(player, loot),
-    log: taken.length
-      ? `Took ${describeItems(taken)} as loot.`
-      : "Left the loot behind.",
+    log: {
+      type: "loot",
+      message: taken.length
+        ? `Took ${describeItems(taken)} as loot.`
+        : "Left the loot behind.",
+    },
     data: { taken: loot },
   }
 }
@@ -231,7 +237,10 @@ export const continueJourney = (
           sea: clearedSeaState,
         },
       }),
-      log: `Arrived at destination ${journey.destination}.`,
+      log: {
+        type: "voyage",
+        message: `Arrived at destination ${journey.destination}.`,
+      },
       data: {
         ...journeyData,
         day: journey.day + 1,
@@ -292,7 +301,8 @@ export const takeLootAndSail = (
 
   return {
     ...sailed,
-    log: [taken.log, sailed.log].filter(Boolean).join(" "),
+    // Sailing on with a battle report pending never arrives or logs, so the loot is the entry
+    log: taken.log,
   }
 }
 
@@ -315,7 +325,10 @@ export const attackShip = (
     player: patchDeep<Player>(player, {
       locationStates: { sea: { battle } },
     }),
-    log: `Attacked a ship from ${sea.shipMeeting.nation}.`,
+    log: {
+      type: "attack",
+      message: `Attacked a ship from ${sea.shipMeeting.nation}.`,
+    },
     data: { battle },
   }
 }
@@ -375,7 +388,7 @@ export const battleMove = (
   const getUpdate =
     result.outcome === "victory" ? getVictoryUpdate : getDefeatUpdate
 
-  const { dbUpdate, report, logMessage } = getUpdate(
+  const { dbUpdate, report, log } = getUpdate(
     {
       ...player,
       ships: result.ships,
@@ -387,7 +400,7 @@ export const battleMove = (
 
   return {
     player: patchDeep<Player>(player, dbUpdate),
-    log: logMessage,
+    log,
     data: { outcome: result.outcome, round, ...report },
   }
 }

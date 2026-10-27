@@ -61,7 +61,10 @@ describe("buyItem", () => {
 
     expect(result.player.character.gold).toBe(1000 - 16 * 10)
     expect(result.player.inventory?.food).toBe(20)
-    expect(result.log).toBe("Bought 10 crates of food for 160 gold.")
+    expect(result.log).toMatchObject({
+      type: "trade",
+      message: "Bought 10 crates of food for 160 gold.",
+    })
     expect(result.data).toEqual({
       item: "food",
       quantity: 10,
@@ -168,7 +171,10 @@ describe("sellItem", () => {
 
     expect(result.player.character.gold).toBe(1000 + 11 * 4)
     expect(result.player.inventory?.food).toBe(6)
-    expect(result.log).toBe("Sold 4 crates of food for 44 gold.")
+    expect(result.log).toMatchObject({
+      type: "trade",
+      message: "Sold 4 crates of food for 44 gold.",
+    })
     expect(result.data).toEqual({
       item: "food",
       quantity: 4,
@@ -276,9 +282,11 @@ describe("tradeItems", () => {
     expect(result.data.bought).toEqual([
       { item: "water", quantity: 5, totalQuantity: 25, totalPrice: 60 },
     ])
-    expect(result.log).toBe(
-      "Sold 4 crates of food. Bought 5 barrels of water. Paid 16 gold."
-    )
+    expect(result.log).toMatchObject({
+      type: "trade",
+      message:
+        "Sold 4 crates of food. Bought 5 barrels of water. Paid 16 gold.",
+    })
   })
 
   it("uses gold from sales to pay for purchases", () => {
@@ -295,9 +303,11 @@ describe("tradeItems", () => {
     )
 
     expect(result.player.character.gold).toBe(110 - 9 * 12)
-    expect(result.log).toBe(
-      "Sold 10 crates of food. Bought 9 barrels of water. Received 2 gold."
-    )
+    expect(result.log).toMatchObject({
+      type: "trade",
+      message:
+        "Sold 10 crates of food. Bought 9 barrels of water. Received 2 gold.",
+    })
   })
 
   it("trades nothing when one part fails", () => {

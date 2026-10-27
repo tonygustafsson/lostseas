@@ -202,7 +202,7 @@ describe("POST /api/user/register", () => {
     })
     expect(savedPlayer.character).not.toHaveProperty("age")
     expect(savedPlayer.character).not.toHaveProperty("gender")
-    expect(savedLog).toBe("Created new character Anne Bonny.")
+    expect(savedLog?.message).toBe("Created new character Anne Bonny.")
     expect(mocks.saveStatistics).toHaveBeenCalledWith(
       playerId,
       expect.objectContaining({ day: 1, netWorth: 300, battlesWon: 0 })
@@ -289,7 +289,7 @@ describe("POST /api/user/reset", () => {
     })
     expect(TOWNS[savedPlayer.character.town as Town].nation).toBe("Spain")
     expect(savedPlayer.crewMembers.count).toBe(4)
-    expect(savedLog).toBe("Started the game over.")
+    expect(savedLog?.message).toBe("Started the game over.")
     expect(mocks.savePlayer.mock.calls[0][2]).toEqual({ resetHistory: true })
     expect(mocks.saveStatistics).toHaveBeenCalledWith(
       PLAYER_ID,

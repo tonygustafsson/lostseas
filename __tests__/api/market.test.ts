@@ -86,7 +86,9 @@ describe("POST /api/market/accept", () => {
 
     const [savedPlayer, savedLog] = mocks.savePlayer.mock.calls[0]
 
-    expect(savedLog).toBe("Bought 2 barrels of rum in the market for 160 gold.")
+    expect(savedLog?.message).toBe(
+      "Bought 2 barrels of rum in the market for 160 gold."
+    )
     expect(body).toEqual({
       success: true,
       updatedPlayer: savedPlayer,
@@ -156,7 +158,7 @@ describe("POST /api/market/remedy", () => {
 
     const [savedPlayer, savedLog] = mocks.savePlayer.mock.calls[0]
 
-    expect(savedLog).toBe(
+    expect(savedLog?.message).toBe(
       "Bought Willow bark tea at the apothecary for 750 gold. Crew health is now 85%."
     )
     expect(body).toEqual({

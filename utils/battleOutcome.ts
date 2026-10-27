@@ -79,7 +79,10 @@ export const getVictoryUpdate = (
   return {
     dbUpdate,
     report,
-    logMessage: `Won a battle against ${opponentNation}; looted ${lootedGold} gold.`,
+    log: {
+      type: "victory",
+      message: `Won a battle against ${opponentNation}; looted ${lootedGold} gold.`,
+    } satisfies GameLog,
   }
 }
 
@@ -145,6 +148,9 @@ export const getDefeatUpdate = (
   return {
     dbUpdate,
     report,
-    logMessage: `Lost a battle against ${opponentNation}; crew health loss ${report.crewHealthLoss}.`,
+    log: {
+      type: "defeat",
+      message: `Lost a battle against ${opponentNation}; crew health loss ${report.crewHealthLoss}.`,
+    } satisfies GameLog,
   }
 }

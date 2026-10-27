@@ -158,7 +158,10 @@ describe("acceptSailors", () => {
 
     expect(result.player.crewMembers.count).toBe(23)
     expect(result.player.locationStates?.tavern?.noOfSailors).toBe(0)
-    expect(result.log).toBe("Accepted 3 new crew members.")
+    expect(result.log).toMatchObject({
+      type: "crew",
+      message: "Accepted 3 new crew members.",
+    })
     expect(result.data).toEqual({ numberOfSailors: 3, isHostile: false })
   })
 

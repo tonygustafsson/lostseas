@@ -62,7 +62,10 @@ export const treatCrew = (
       character: { gold: player.character.gold - totalPrice },
       crewMembers: { mood: newMood, health: newHealth },
     }),
-    log: `Tavern action "${label}" cost ${totalPrice} gold. New mood: ${newMood}, new health: ${newHealth}.`,
+    log: {
+      type: "crew",
+      message: `Tavern action "${label}" cost ${totalPrice} gold. New mood: ${newMood}, new health: ${newHealth}.`,
+    },
     data: { item, newMood, newHealth, totalPrice },
   }
 }
@@ -85,7 +88,10 @@ export const acceptSailors = (
       ...clearSailors,
       crewMembers: { count: player.crewMembers.count + numberOfSailors },
     }),
-    log: `Accepted ${numberOfSailors} new crew members.`,
+    log: {
+      type: "crew",
+      message: `Accepted ${numberOfSailors} new crew members.`,
+    },
     data: { numberOfSailors, isHostile },
   }
 }
@@ -121,7 +127,10 @@ export const fightSailors = (
         ...clearSailors,
         crewMembers: { health },
       }),
-      log: `Fought sailors and lost; health loss ${healthLoss}.`,
+      log: {
+        type: "defeat",
+        message: `Fought sailors and lost; health loss ${healthLoss}.`,
+      },
       data: { won, numberOfSailors, healthLoss },
     }
   }
@@ -134,7 +143,10 @@ export const fightSailors = (
       character: { gold: player.character.gold + loot },
       crewMembers: { health },
     }),
-    log: `Fought sailors and won; loot ${loot}, health loss ${healthLoss}.`,
+    log: {
+      type: "victory",
+      message: `Fought sailors and won; loot ${loot}, health loss ${healthLoss}.`,
+    },
     data: { won, numberOfSailors, healthLoss, loot },
   }
 }
@@ -204,7 +216,10 @@ export const playCards = (
 
   return {
     player: patchDeep<Player>(player, { character: { gold } }),
-    log: `Played cards: bet ${bet}, result ${cardsResults}. Gold change: ${cardsReturns}. New gold total: ${gold}.`,
+    log: {
+      type: "cards",
+      message: `Played cards: bet ${bet}, result ${cardsResults}. Gold change: ${cardsReturns}. New gold total: ${gold}.`,
+    },
     data: {
       bet,
       cardsResults,

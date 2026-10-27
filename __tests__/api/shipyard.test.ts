@@ -117,7 +117,7 @@ describe.each(routes)("POST /api/shipyard/$name", ({ call, fields }) => {
     const [savedPlayer, savedLog] = mocks.savePlayer.mock.calls[0]
 
     expect(savedPlayer).not.toEqual(mocks.player)
-    expect(typeof savedLog).toBe("string")
+    expect(typeof savedLog?.message).toBe("string")
     expect(body.success).toBe(true)
     expect(body.updatedPlayer).toEqual(savedPlayer)
     fields.forEach((field) => expect(body).toHaveProperty(field))

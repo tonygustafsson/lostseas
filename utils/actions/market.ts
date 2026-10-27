@@ -56,7 +56,10 @@ export const acceptMarketOffer = (
       inventory: { [item]: totalQuantity },
       locationStates: { market: { items: { [item]: null } } },
     }),
-    log: `Bought ${quantity} ${MERCHANDISE[item].unit} of ${item} in the market for ${totalPrice} gold.`,
+    log: {
+      type: "trade",
+      message: `Bought ${quantity} ${MERCHANDISE[item].unit} of ${item} in the market for ${totalPrice} gold.`,
+    },
     data: { item, quantity, totalQuantity, totalPrice },
   }
 }
@@ -103,7 +106,10 @@ export const buyRemedy = (
       character: { gold: player.character.gold - totalPrice },
       crewMembers: { health: newHealth },
     }),
-    log: `Bought ${APOTHECARY_REMEDIES[remedy].label} at the apothecary for ${totalPrice} gold. Crew health is now ${newHealth}%.`,
+    log: {
+      type: "crew",
+      message: `Bought ${APOTHECARY_REMEDIES[remedy].label} at the apothecary for ${totalPrice} gold. Crew health is now ${newHealth}%.`,
+    },
     data: { remedy, healed, newHealth, totalPrice },
   }
 }

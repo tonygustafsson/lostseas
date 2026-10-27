@@ -47,7 +47,10 @@ export const deposit = (
 
   return {
     player: patchDeep<Player>(player, { character: { gold, account } }),
-    log: `Deposited ${amount} gold into the bank. Current account balance: ${account} gold.`,
+    log: {
+      type: "bank",
+      message: `Deposited ${amount} gold into the bank. Current account balance: ${account} gold.`,
+    },
     data: { amount, gold },
   }
 }
@@ -73,7 +76,10 @@ export const withdraw = (
 
   return {
     player: patchDeep<Player>(player, { character: { gold, account } }),
-    log: `Withdrew ${amount} gold from the bank. Current account balance: ${account} gold.`,
+    log: {
+      type: "bank",
+      message: `Withdrew ${amount} gold from the bank. Current account balance: ${account} gold.`,
+    },
     data: { amount, gold },
   }
 }
@@ -100,7 +106,7 @@ export const takeLoan = (
 
   return {
     player: patchDeep<Player>(player, { character: { gold, loan } }),
-    log: `Took a bank loan of ${amount} gold.`,
+    log: { type: "bank", message: `Took a bank loan of ${amount} gold.` },
     data: { amount, gold, loan },
   }
 }
@@ -130,7 +136,10 @@ export const repayLoan = (
 
   return {
     player: patchDeep<Player>(player, { character: { gold, loan } }),
-    log: `Repaid ${amount} gold to the bank. Remaining loan: ${loan} gold.`,
+    log: {
+      type: "bank",
+      message: `Repaid ${amount} gold to the bank. Remaining loan: ${loan} gold.`,
+    },
     // The client treats null as a fully repaid loan
     data: { amount, gold, loan: loan === 0 ? null : loan },
   }
@@ -179,7 +188,10 @@ export const investInVenture = (
         ventures: { [ventureId]: { investedDay, returnDay } },
       },
     }),
-    log: `Invested ${venture.stake} gold in ${venture.name}. Expected back on day ${returnDay}.`,
+    log: {
+      type: "bank",
+      message: `Invested ${venture.stake} gold in ${venture.name}. Expected back on day ${returnDay}.`,
+    },
     data: { ventureId, gold, returnDay },
   }
 }
@@ -237,7 +249,10 @@ export const collectVenture = (
     player: patchDeep<Player>(player, {
       character: { gold, ventures: { [ventureId]: null } },
     }),
-    log: `${venture.name} returned ${returns} gold on a stake of ${venture.stake} gold.`,
+    log: {
+      type: "bank",
+      message: `${venture.name} returned ${returns} gold on a stake of ${venture.stake} gold.`,
+    },
     data: { ventureId, returns, message, gold },
   }
 }

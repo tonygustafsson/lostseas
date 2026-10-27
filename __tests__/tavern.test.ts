@@ -88,10 +88,10 @@ const treatCrew = async (
     expect(data.totalPrice).toBe(
       TAVERN_ITEMS[item].price * player.crewMembers.count
     )
-    expect(mocks.savePlayer).toHaveBeenCalledWith(
-      data.updatedPlayer,
-      expect.any(String)
-    )
+    expect(mocks.savePlayer).toHaveBeenCalledWith(data.updatedPlayer, {
+      type: "crew",
+      message: expect.any(String),
+    })
 
     return data.updatedPlayer
   }

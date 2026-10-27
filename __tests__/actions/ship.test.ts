@@ -62,7 +62,10 @@ describe("removeShip", () => {
     )
 
     expect(Object.keys(result.player.ships)).toEqual([OTHER_SHIP_ID])
-    expect(result.log).toBe("Removed ship Black Pearl.")
+    expect(result.log).toMatchObject({
+      type: "ship",
+      message: "Removed ship Black Pearl.",
+    })
   })
 
   it.each(["unknown", "", "constructor", "toString", "__proto__"])(
@@ -114,7 +117,10 @@ describe("renameShip", () => {
 
     expect(result.player.ships[SHIP_ID].name).toBe("Queen Anne")
     expect(result.player.ships[OTHER_SHIP_ID].name).toBe("Swift")
-    expect(result.log).toBe("Renamed ship Black Pearl to Queen Anne.")
+    expect(result.log).toMatchObject({
+      type: "ship",
+      message: "Renamed ship Black Pearl to Queen Anne.",
+    })
     expect(result.data).toEqual({
       name: "Queen Anne",
       ship: player.ships[SHIP_ID],

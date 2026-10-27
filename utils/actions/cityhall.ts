@@ -45,7 +45,10 @@ export const acceptNewTitle = (
         highestRewardedTitle,
       },
     }),
-    log: `Accepted new title ${titleInfo.title} from the governor of ${player.character.town}.`,
+    log: {
+      type: "honour",
+      message: `Accepted new title ${titleInfo.title} from the governor of ${player.character.town}.`,
+    },
     // titleInfo.reward is the reward actually paid. title is the previous title.
     data: { titleInfo: { ...titleInfo, reward }, title: currentTitle },
   }
@@ -86,7 +89,10 @@ export const changeCitizenship = (
         highestRewardedTitle,
       },
     }),
-    log: `Changed citizenship from ${player.character.nationality} to ${newNationality}.`,
+    log: {
+      type: "honour",
+      message: `Changed citizenship from ${player.character.nationality} to ${newNationality}.`,
+    },
     // titleInfo.reward is the reward actually paid. title is the previous title.
     data: {
       titleInfo: { ...titleInfo, reward },
@@ -130,7 +136,10 @@ export const handOverTreasure = (
       character: { gold: player.character.gold + treasureInfo.value },
       treasures: { [key]: null },
     }),
-    log: `Handed over ${treasure.name} to the town of ${town}.`,
+    log: {
+      type: "honour",
+      message: `Handed over ${treasure.name} to the town of ${town}.`,
+    },
     data: { treasure, treasureInfo },
   }
 }

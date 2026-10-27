@@ -26,7 +26,7 @@ export const removeShip = (
 
   return {
     player: patchDeep<Player>(player, { ships: { [id]: null } }),
-    log: `Removed ship ${ship.name}.`,
+    log: { type: "ship", message: `Removed ship ${ship.name}.` },
     data: {},
   }
 }
@@ -49,7 +49,7 @@ export const renameShip = (
 
   return {
     player: patchDeep<Player>(player, { ships: { [id]: { name } } }),
-    log: `Renamed ship ${ship.name} to ${name}.`,
+    log: { type: "ship", message: `Renamed ship ${ship.name} to ${name}.` },
     data: { name, ship },
   }
 }
@@ -91,7 +91,10 @@ export const repairShipWithKits = (
       },
       inventory: { repairKits: repairKits - quantity },
     }),
-    log: `Used ${quantity} repair kits on ship ${id}.`,
+    log: {
+      type: "ship",
+      message: `Used ${quantity} repair kits on ship ${id}.`,
+    },
     data: { quantity },
   }
 }

@@ -3,7 +3,7 @@ import { getStatisticsSnapshot } from "@/utils/statistics"
 
 export const savePlayerWithStatistics = async (
   player: Player,
-  log?: string,
+  log?: GameLog,
   options?: { resetHistory?: boolean }
 ) => {
   const updatedPlayer = await savePlayer(player, log, options)

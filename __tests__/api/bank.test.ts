@@ -114,7 +114,7 @@ describe.each(routes)("POST /api/bank/$name", ({ name, route, log, data }) => {
 
     const [savedPlayer, savedLog] = mocks.savePlayer.mock.calls[0]
 
-    expect(savedLog).toBe(log)
+    expect(savedLog?.message).toBe(log)
     expect(body).toEqual({ success: true, updatedPlayer: savedPlayer, ...data })
   })
 
@@ -185,7 +185,7 @@ describe.each(ventureRoutes)(
 
       const [savedPlayer, savedLog] = mocks.savePlayer.mock.calls[0]
 
-      expect(savedLog).toMatch(log)
+      expect(savedLog?.message).toMatch(log)
       expect(body).toMatchObject({
         success: true,
         updatedPlayer: savedPlayer,

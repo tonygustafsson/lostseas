@@ -114,7 +114,7 @@ describe.each(routes)(
       const [savedPlayer, savedLog] = mocks.savePlayer.mock.calls[0]
 
       expect(savedPlayer).not.toEqual(mocks.player)
-      expect(typeof savedLog).toBe("string")
+      expect(typeof savedLog?.message).toBe("string")
       expect(body).toMatchObject({ success: true, updatedPlayer: savedPlayer })
       fields.forEach((field) => expect(body).toHaveProperty(field))
     })

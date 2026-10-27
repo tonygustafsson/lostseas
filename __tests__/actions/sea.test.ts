@@ -79,7 +79,7 @@ const MEET_SHIP = always(0)
 type Result =
   | { error: string; status?: number }
   | { blocked: true }
-  | { player: Player; log?: string; data: object }
+  | { player: Player; log?: GameLog; data: object }
 
 const expectSuccess = <T extends Result>(result: T) => {
   if ("error" in result) {
@@ -120,9 +120,10 @@ describe("startJourney", () => {
       },
     })
     expect(result.player.character.town).toBeUndefined()
-    expect(result.log).toBe(
-      `Started journey to Havana. Expected arrival in ${distance} days.`
-    )
+    expect(result.log).toMatchObject({
+      type: "voyage",
+      message: `Started journey to Havana. Expected arrival in ${distance} days.`,
+    })
   })
 
   it("clears town events like tavern sailors and market offers", () => {
@@ -328,7 +329,10 @@ describe("continueJourney", () => {
     expect(result.player.inventory).toMatchObject({ food: 49, water: 98 })
     // Arrival does not lower mood
     expect(result.player.crewMembers.mood).toBe(50)
-    expect(result.log).toBe("Arrived at destination Havana.")
+    expect(result.log).toMatchObject({
+      type: "voyage",
+      message: "Arrived at destination Havana.",
+    })
     expect(result.data).toMatchObject({
       destinationReached: true,
       shipMeetingState: null,
@@ -446,16 +450,21 @@ describe("takeLoot", () => {
     })
     expect(sea?.lootOffer).toBeUndefined()
     expect(sea?.attackSuccessReport).toEqual(report)
-    expect(result.log).toBe(
-      "Took 8 crates of food, 1 barrel of rum, 2 cannons of cannons as loot."
-    )
+    expect(result.log).toMatchObject({
+      type: "loot",
+      message:
+        "Took 8 crates of food, 1 barrel of rum, 2 cannons of cannons as loot.",
+    })
   })
 
   it("can leave everything behind", () => {
     const result = expectSuccess(takeLoot(afterVictory(), { loot: {} }))
 
     expect(result.player.inventory).toEqual(afterVictory().inventory)
-    expect(result.log).toBe("Left the loot behind.")
+    expect(result.log).toMatchObject({
+      type: "loot",
+      message: "Left the loot behind.",
+    })
   })
 
   it("does not create a report when there is none", () => {
@@ -521,7 +530,26 @@ describe("takeLoot", () => {
     expect(sea?.lootOffer).toBeUndefined()
     expect(sea?.attackSuccessReport).toBeUndefined()
     expect(result.data.destinationReached).toBe(false)
-    expect(result.log).toBe("Took 8 crates of food as loot.")
+    expect(result.log).toEqual({
+      type: "loot",
+      message: "Took 8 crates of food as loot.",
+    })
+  })
+
+  it("logs only the loot on the last day, arriving on the next step", () => {
+    const lastDay = deepFreeze(
+      atSea({ attackSuccessReport: report, lootOffer: offer }, 7)
+    )
+
+    const result = expectSuccess(
+      takeLootAndSail(lastDay, { loot: { food: 8 } }, NO_SHIP)
+    )
+
+    expect(result.data.destinationReached).toBe(false)
+    expect(result.log).toEqual({
+      type: "loot",
+      message: "Took 8 crates of food as loot.",
+    })
   })
 
   it("neither loots nor sails when the choice is invalid", () => {
@@ -554,7 +582,10 @@ describe("attackShip", () => {
       rounds: [],
     })
     expect(result.player.locationStates?.sea?.shipMeeting).toEqual(shipMeeting)
-    expect(result.log).toBe("Attacked a ship from France.")
+    expect(result.log).toMatchObject({
+      type: "attack",
+      message: "Attacked a ship from France.",
+    })
   })
 
   it("rejects attacking without a ship", () => {
@@ -656,7 +687,10 @@ describe("battleMove", () => {
     expect(sea?.attackSuccessReport).toBeDefined()
     expect(result.player.character.battles?.France?.won).toBe(1)
     expect(result.player.crewMembers.mood).toBe(70)
-    expect(result.log).toMatch(/^Won a battle against France/)
+    expect(result.log).toMatchObject({
+      type: "victory",
+      message: expect.stringMatching(/^Won a battle against France/),
+    })
   })
 
   it("offers the loot instead of loading it", () => {

@@ -12,10 +12,12 @@ export const validatePlayerId = (id: string) => {
   }
 }
 
-type LogEntry = {
+export type LogEntry = {
   timestamp: number
   day: number
   message: string
+  /** Missing on entries saved before log types existed */
+  type?: LogType
 }
 
 export const getPlayer = async (playerId: Player["id"]) => {
@@ -27,7 +29,7 @@ export const getPlayer = async (playerId: Player["id"]) => {
 
 export const savePlayer = async (
   player: Player,
-  logMessage?: string,
+  log?: GameLog,
   { resetHistory = false }: { resetHistory?: boolean } = {}
 ) => {
   validatePlayerId(player.id)
@@ -40,13 +42,14 @@ export const savePlayer = async (
     updates[`statistics/${player.id}`] = null
   }
 
-  if (logMessage) {
+  if (log) {
     const pushRef = adminDb.ref(`logs/${player.id}`).push()
     const key = pushRef.key
 
     if (key) {
       const entry: LogEntry = {
-        message: logMessage,
+        type: log.type,
+        message: log.message,
         day: player.character.day,
         timestamp: Date.now(),
       }

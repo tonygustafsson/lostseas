@@ -58,9 +58,10 @@ describe("acceptNewTitle", () => {
       titleInfo: TITLE_INFO.Ensign,
       title: "Pirate",
     })
-    expect(result.log).toBe(
-      "Accepted new title Ensign from the governor of Port Royale."
-    )
+    expect(result.log).toMatchObject({
+      type: "honour",
+      message: "Accepted new title Ensign from the governor of Port Royale.",
+    })
   })
 
   it.each([
@@ -309,7 +310,10 @@ describe("handOverTreasure", () => {
     const result = expectSuccess(handOverTreasure(player, { id: "a" }))
 
     expect(Object.keys(result.player.treasures ?? {})).toEqual(["b"])
-    expect(result.log).toBe("Handed over Inca mask to the town of Port Royale.")
+    expect(result.log).toMatchObject({
+      type: "honour",
+      message: "Handed over Inca mask to the town of Port Royale.",
+    })
   })
 
   it("rejects a treasure belonging to another town, as the guide says", () => {

@@ -106,10 +106,10 @@ const expectResumedFinalDay = async () => {
   })
   expect(mocks.player?.crewMembers).toEqual(previous.crewMembers)
   expect(mocks.saveStatistics).toHaveBeenCalledOnce()
-  expect(mocks.savePlayer).toHaveBeenLastCalledWith(
-    mocks.player,
-    "Arrived at destination Villa Hermosa."
-  )
+  expect(mocks.savePlayer).toHaveBeenLastCalledWith(mocks.player, {
+    type: "voyage",
+    message: "Arrived at destination Villa Hermosa.",
+  })
 }
 
 describe("continue journey after a final-day encounter", () => {

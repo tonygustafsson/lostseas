@@ -25,15 +25,18 @@ describe("reset persistence", () => {
   it("atomically replaces the player and log, clears old statistics, then saves the new baseline", async () => {
     const player = createTestPlayer({ character: { day: 1, gold: 300 } })
 
-    await savePlayerWithStatistics(player, "Started the game over.", {
-      resetHistory: true,
-    })
+    await savePlayerWithStatistics(
+      player,
+      { type: "beginning", message: "Started the game over." },
+      { resetHistory: true }
+    )
 
     expect(mocks.update).toHaveBeenCalledTimes(2)
     expect(mocks.update.mock.calls[0][0]).toEqual({
       [`players/${player.id}`]: player,
       [`logs/${player.id}`]: {
         "new-entry": {
+          type: "beginning",
           message: "Started the game over.",
           day: 1,
           timestamp: expect.any(Number),
@@ -52,11 +55,15 @@ describe("reset persistence", () => {
   it("keeps history when saving a player normally", async () => {
     const player = createTestPlayer()
 
-    await savePlayerWithStatistics(player, "New entry")
+    await savePlayerWithStatistics(player, {
+      type: "trade",
+      message: "New entry",
+    })
 
     expect(mocks.update.mock.calls[0][0]).toEqual({
       [`players/${player.id}`]: player,
       [`logs/${player.id}/new-entry`]: expect.objectContaining({
+        type: "trade",
         message: "New entry",
       }),
     })
@@ -66,9 +73,11 @@ describe("reset persistence", () => {
     mocks.update.mockRejectedValue(new Error("Database down"))
 
     await expect(
-      savePlayerWithStatistics(createTestPlayer(), "Reset", {
-        resetHistory: true,
-      })
+      savePlayerWithStatistics(
+        createTestPlayer(),
+        { type: "beginning", message: "Reset" },
+        { resetHistory: true }
+      )
     ).rejects.toThrow("Database down")
     expect(mocks.update).toHaveBeenCalledTimes(1)
   })

@@ -71,7 +71,7 @@ export const resetGame = (
         ship,
       }
     ),
-    log: "Started the game over.",
+    log: { type: "beginning", message: "Started the game over." },
     data: {},
   }
 }

@@ -98,7 +98,7 @@ describe("POST /api/shop/trade", () => {
 
     const [savedPlayer, savedLog] = mocks.savePlayer.mock.calls[0]
 
-    expect(savedLog).toBe(
+    expect(savedLog?.message).toBe(
       "Sold 2 crates of food. Bought 1 barrel of water. Received 10 gold."
     )
     expect(savedPlayer.inventory).toMatchObject({ food: 8, water: 21 })

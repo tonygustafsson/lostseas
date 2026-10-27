@@ -39,7 +39,10 @@ const createPlayer = async (body: any) => {
     }
   )
 
-  await savePlayerWithStatistics(newPlayer, `Created new character ${name}.`)
+  await savePlayerWithStatistics(newPlayer, {
+    type: "beginning",
+    message: `Created new character ${name}.`,
+  })
 
   return { playerId, musicOn, soundEffectsOn }
 }

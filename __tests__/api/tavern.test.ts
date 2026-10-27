@@ -133,7 +133,7 @@ describe.each(routes)(
       fields.forEach((field) => expect(body).toHaveProperty(field))
 
       // Ignoring sailors is the only action that is not logged
-      expect(typeof savedLog).toBe(
+      expect(typeof savedLog?.message).toBe(
         name === "ignoreSailors" ? "undefined" : "string"
       )
     })

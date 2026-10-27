@@ -30,7 +30,10 @@ export const dismissCrew = (
 
   return {
     player: patchDeep<Player>(player, { crewMembers: { count: newCount } }),
-    log: `Dismissed ${count} crew members. New crew count is ${newCount}.`,
+    log: {
+      type: "crew",
+      message: `Dismissed ${count} crew members. New crew count is ${newCount}.`,
+    },
     data: { count, newCount },
   }
 }
@@ -68,7 +71,10 @@ export const giveGold = (
       character: { gold: (player.character.gold || 0) - gold },
       crewMembers: { mood: newMood },
     }),
-    log: `Gave ${gold} gold to crew members, increasing their mood to ${newMood}.`,
+    log: {
+      type: "crew",
+      message: `Gave ${gold} gold to crew members, increasing their mood to ${newMood}.`,
+    },
     data: { gold, newMood },
   }
 }
@@ -108,7 +114,10 @@ export const giveMedicine = (
       inventory: { medicine: currentMedicine - medicine },
       crewMembers: { health: newHealth },
     }),
-    log: `Gave ${medicine} medicine to crew, increasing their health to ${newHealth}.`,
+    log: {
+      type: "crew",
+      message: `Gave ${medicine} medicine to crew, increasing their health to ${newHealth}.`,
+    },
     data: { medicine, newHealth },
   }
 }

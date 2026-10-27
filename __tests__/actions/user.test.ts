@@ -115,7 +115,10 @@ describe("resetGame", () => {
         }
       )
     )
-    expect(result.log).toBe("Started the game over.")
+    expect(result.log).toMatchObject({
+      type: "beginning",
+      message: "Started the game over.",
+    })
   })
 
   it("keeps the portrait the player picked", () => {

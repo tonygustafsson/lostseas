@@ -93,7 +93,10 @@ describe("buyFittings", () => {
       buyFittings(atShipyard(), { item, quantity: 1 })
     )
 
-    expect(result.log).toMatch(`Bought 1 ${LOG_NAMES[item].single} for`)
+    expect(result.log).toMatchObject({
+      type: "trade",
+      message: expect.stringMatching(`Bought 1 ${LOG_NAMES[item].single} for`),
+    })
   })
 
   it.each(FITTINGS)("buys %s for the buy price", (item) => {
@@ -105,9 +108,10 @@ describe("buyFittings", () => {
 
     expect(result.player.character.gold).toBe(20_000 - totalPrice)
     expect(result.player.inventory?.[item]).toBe(5)
-    expect(result.log).toBe(
-      `Bought 3 ${LOG_NAMES[item].plural} for ${totalPrice} gold.`
-    )
+    expect(result.log).toMatchObject({
+      type: "trade",
+      message: `Bought 3 ${LOG_NAMES[item].plural} for ${totalPrice} gold.`,
+    })
     expect(result.data).toEqual({
       item,
       quantity: 3,
@@ -209,9 +213,10 @@ describe("sellFittings", () => {
 
     expect(result.player.character.gold).toBe(20_000 + totalPrice)
     expect(result.player.inventory?.[item]).toBe(3)
-    expect(result.log).toBe(
-      `Sold 2 ${LOG_NAMES[item].plural} for ${totalPrice} gold.`
-    )
+    expect(result.log).toMatchObject({
+      type: "trade",
+      message: `Sold 2 ${LOG_NAMES[item].plural} for ${totalPrice} gold.`,
+    })
     expect(result.data).toEqual({
       item,
       quantity: 2,
@@ -307,9 +312,10 @@ describe("buyShip", () => {
       item: type,
       totalPrice: SHIP_TYPES[type].buy,
     })
-    expect(result.log).toBe(
-      `Bought ship ${type} named ${newShips[0].name} for ${SHIP_TYPES[type].buy} gold.`
-    )
+    expect(result.log).toMatchObject({
+      type: "ship",
+      message: `Bought ship ${type} named ${newShips[0].name} for ${SHIP_TYPES[type].buy} gold.`,
+    })
   })
 
   it("can buy a first ship without any ships", () => {
@@ -397,9 +403,10 @@ describe("sellShip", () => {
         ship: player.ships["ship-1"],
         totalPrice: SHIP_TYPES[type].sell,
       })
-      expect(result.log).toBe(
-        `Sold ship Test Brig for ${SHIP_TYPES[type].sell} gold.`
-      )
+      expect(result.log).toMatchObject({
+        type: "ship",
+        message: `Sold ship Test Brig for ${SHIP_TYPES[type].sell} gold.`,
+      })
     }
   )
 
@@ -429,7 +436,10 @@ describe("repairShip", () => {
     expect(result.player.ships["ship-1"].health).toBe(100)
     expect(result.player.character.gold).toBe(20_000 - totalPrice)
     expect(result.data).toEqual({ ship: player.ships["ship-1"], totalPrice })
-    expect(result.log).toBe(`Repaired ship Test Brig for ${totalPrice} gold.`)
+    expect(result.log).toMatchObject({
+      type: "ship",
+      message: `Repaired ship Test Brig for ${totalPrice} gold.`,
+    })
   })
 
   it("only repairs the chosen ship", () => {

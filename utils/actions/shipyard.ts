@@ -88,7 +88,10 @@ export const buyFittings = (
       character: { gold: player.character.gold - totalPrice },
       inventory: { [item]: totalQuantity },
     }),
-    log: `Bought ${describeFittings(item, quantity)} for ${totalPrice} gold.`,
+    log: {
+      type: "trade",
+      message: `Bought ${describeFittings(item, quantity)} for ${totalPrice} gold.`,
+    },
     data: { item, quantity, totalQuantity, totalPrice },
   }
 }
@@ -117,7 +120,10 @@ export const sellFittings = (
       character: { gold: player.character.gold + totalPrice },
       inventory: { [item]: totalQuantity },
     }),
-    log: `Sold ${describeFittings(item, quantity)} for ${totalPrice} gold.`,
+    log: {
+      type: "trade",
+      message: `Sold ${describeFittings(item, quantity)} for ${totalPrice} gold.`,
+    },
     data: { item, quantity, totalQuantity, totalPrice },
   }
 }
@@ -154,7 +160,10 @@ export const buyShip = (
       character: { gold: player.character.gold - totalPrice },
       ships: { [newShip.id]: newShip },
     }),
-    log: `Bought ship ${item} named ${newShip.name} for ${totalPrice} gold.`,
+    log: {
+      type: "ship",
+      message: `Bought ship ${item} named ${newShip.name} for ${totalPrice} gold.`,
+    },
     data: { item, totalPrice },
   }
 }
@@ -181,7 +190,10 @@ export const sellShip = (
       character: { gold: player.character.gold + totalPrice },
       ships: { [id]: null },
     }),
-    log: `Sold ship ${ship.name} for ${totalPrice} gold.`,
+    log: {
+      type: "ship",
+      message: `Sold ship ${ship.name} for ${totalPrice} gold.`,
+    },
     data: { ship, totalPrice },
   }
 }
@@ -215,7 +227,10 @@ export const repairShip = (
       character: { gold: player.character.gold - totalPrice },
       ships: { [id]: { health: 100 } },
     }),
-    log: `Repaired ship ${ship.name} for ${totalPrice} gold.`,
+    log: {
+      type: "ship",
+      message: `Repaired ship ${ship.name} for ${totalPrice} gold.`,
+    },
     data: { ship, totalPrice },
   }
 }
