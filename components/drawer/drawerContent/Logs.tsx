@@ -3,6 +3,7 @@
 import { FaBook } from "react-icons/fa"
 
 import LogBookEntry from "@/components/LogBookEntry"
+import { Button } from "@/components/ui/button"
 import { useGetLogs } from "@/hooks/queries/useLogs"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getCurrentDate } from "@/utils/date"
@@ -11,9 +12,13 @@ import { groupLogsByDay } from "@/utils/logs"
 const LogsDrawer = () => {
   const { data: player } = useGetPlayer()
 
-  const { data: logs = [] } = useGetLogs(player?.id)
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetLogs(
+    player?.id
+  )
 
-  const days = groupLogsByDay(logs)
+  const days = groupLogsByDay(
+    data?.pages.flatMap(({ entries }) => entries) ?? []
+  )
 
   return (
     <>
@@ -48,14 +53,22 @@ const LogsDrawer = () => {
 
               <ol className="border-border ml-4 flex flex-col gap-4 border-l py-1 pl-8">
                 {entries.map((entry) => (
-                  <LogBookEntry
-                    key={`log-${entry.timestamp}-${entry.message}`}
-                    entry={entry}
-                  />
+                  <LogBookEntry key={entry.id} entry={entry} />
                 ))}
               </ol>
             </section>
           ))}
+
+          {hasNextPage && (
+            <Button
+              variant="outline"
+              className="w-full"
+              disabled={isFetchingNextPage}
+              onClick={() => fetchNextPage()}
+            >
+              {isFetchingNextPage ? "Loading..." : "Load more"}
+            </Button>
+          )}
         </div>
       )}
     </>

@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
+import { getLog, LOG_PAGE_SIZE, type LogEntry } from "@/firebase/db"
 import { savePlayerWithStatistics } from "@/utils/db/savePlayerWithStatistics"
 
 import { createTestPlayer } from "../helpers/createTestPlayer"
@@ -80,5 +81,71 @@ describe("reset persistence", () => {
       )
     ).rejects.toThrow("Database down")
     expect(mocks.update).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe("log book paging", () => {
+  const storedLogs = (count: number) =>
+    Object.fromEntries(
+      Array.from({ length: count }, (_, index) => [
+        `key-${index}`,
+        { day: 1, timestamp: index, message: `Entry ${index}` },
+      ])
+    )
+
+  const mockQuery = (logs: Record<string, LogEntry>) => {
+    const query = {
+      orderByChild: vi.fn(),
+      endBefore: vi.fn(),
+      limitToLast: vi.fn(),
+      get: vi.fn().mockResolvedValue({
+        exists: () => Object.keys(logs).length > 0,
+        val: () => logs,
+      }),
+    }
+    query.orderByChild.mockReturnValue(query)
+    query.endBefore.mockReturnValue(query)
+    query.limitToLast.mockReturnValue(query)
+    mocks.ref.mockReturnValue(query)
+
+    return query
+  }
+
+  it("returns the newest page oldest first, with keys as ids", async () => {
+    mockQuery(storedLogs(3))
+
+    const page = await getLog("player-1")
+
+    expect(page.hasMore).toBe(false)
+    expect(page.entries.map(({ id }) => id)).toEqual([
+      "key-0",
+      "key-1",
+      "key-2",
+    ])
+  })
+
+  it("reports more when the extra entry comes back, and leaves it out", async () => {
+    const query = mockQuery(storedLogs(LOG_PAGE_SIZE + 1))
+
+    const page = await getLog("player-1")
+
+    expect(query.limitToLast).toHaveBeenCalledWith(LOG_PAGE_SIZE + 1)
+    expect(page.hasMore).toBe(true)
+    expect(page.entries).toHaveLength(LOG_PAGE_SIZE)
+    expect(page.entries[0].id).toBe("key-1")
+  })
+
+  it("loads entries older than the cursor", async () => {
+    const query = mockQuery(storedLogs(2))
+
+    await getLog("player-1", { timestamp: 50, id: "key-50" })
+
+    expect(query.endBefore).toHaveBeenCalledWith(50, "key-50")
+  })
+
+  it("returns an empty page when nothing is stored", async () => {
+    mockQuery({})
+
+    expect(await getLog("player-1")).toEqual({ entries: [], hasMore: false })
   })
 })

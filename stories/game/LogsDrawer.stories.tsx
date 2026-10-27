@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import LogsDrawer from "@/components/drawer/drawerContent/Logs"
-import type { LogEntry } from "@/firebase/db"
+import type { LogRecord } from "@/firebase/db"
 
 import { player } from "../fixtures"
 import PlayerPreview from "../PlayerPreview"
@@ -33,7 +33,8 @@ const voyage: [number, LogType, string][] = [
   [12, "honour", "Handed over Inca mask to the town of Tortuga."],
 ]
 
-const logs: LogEntry[] = voyage.map(([day, type, message], index) => ({
+const logs: LogRecord[] = voyage.map(([day, type, message], index) => ({
+  id: `log-${index}`,
   day,
   type,
   message,
@@ -50,6 +51,7 @@ const meta = {
         key={context.id}
         data={player}
         logs={context.parameters.logs}
+        hasMoreLogs={context.parameters.hasMoreLogs}
       >
         <div className="max-w-lg">
           <Story />
@@ -66,6 +68,9 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {}
 
 export const Empty: Story = { parameters: { logs: [] } }
+
+/** Older entries than the first page exist, so the button shows */
+export const MoreToLoad: Story = { parameters: { hasMoreLogs: true } }
 
 /** Entries saved before log types existed fall back to a quill */
 export const Untyped: Story = {

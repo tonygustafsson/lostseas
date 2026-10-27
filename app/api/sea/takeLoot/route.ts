@@ -2,8 +2,9 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { getPlayer, savePlayer } from "@/firebase/db"
+import { getPlayer, savePlayer, saveStatistics } from "@/firebase/db"
 import { takeLootAndSail } from "@/utils/actions/sea"
+import { getStatisticsSnapshot } from "@/utils/statistics"
 
 export async function POST(req: Request) {
   const cookieStore = await cookies()
@@ -31,7 +32,15 @@ export async function POST(req: Request) {
   }
 
   try {
-    await savePlayer(result.player, result.log)
+    const updatedPlayer = await savePlayer(result.player, result.log)
+
+    if (result.data.destinationReached) {
+      try {
+        await saveStatistics(playerId, getStatisticsSnapshot(updatedPlayer))
+      } catch (error) {
+        console.error("Failed to save player statistics", error)
+      }
+    }
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 })
   }

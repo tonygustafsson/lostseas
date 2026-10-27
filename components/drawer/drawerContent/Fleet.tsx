@@ -135,7 +135,7 @@ const FleetDrawer = () => {
         </p>
       </div>
 
-      {cargo.load > 0 && (
+      {cargo.load > 0 && cargo.capacity > 0 && (
         <div className="mt-4 rounded-md bg-neutral-900 p-4">
           <HoldChart ships={player.ships} inventory={player.inventory} />
         </div>

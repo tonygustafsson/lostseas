@@ -53,7 +53,10 @@ const StatisticsSeriesChart = ({
     }))
   )
 
-  const mark = stacked
+  // A negative layer (wealth when in debt) cannot stack honestly, so draw lines
+  const canStack = stacked && rows.every(({ value }) => value >= 0)
+
+  const mark = canStack
     ? areaY(rows, {
         x: "day",
         y: "value",

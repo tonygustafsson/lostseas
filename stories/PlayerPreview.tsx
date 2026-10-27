@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactNode, useState } from "react"
 
-import type { LogEntry, StatisticsEntry } from "@/firebase/db"
+import type { LogRecord, StatisticsEntry } from "@/firebase/db"
 import { LOGS_QUERY_KEY } from "@/hooks/queries/useLogs"
 import { PLAYER_QUERY_KEY } from "@/hooks/queries/usePlayer"
 import { STATISTICS_QUERY_KEY } from "@/hooks/queries/useStatistics"
@@ -9,11 +9,19 @@ import { STATISTICS_QUERY_KEY } from "@/hooks/queries/useStatistics"
 type Props = {
   data: Player
   statistics?: StatisticsEntry[]
-  logs?: LogEntry[]
+  logs?: LogRecord[]
+  /** Shows the Log Book's "Load more" button */
+  hasMoreLogs?: boolean
   children: ReactNode
 }
 
-const PlayerPreview = ({ data, statistics, logs, children }: Props) => {
+const PlayerPreview = ({
+  data,
+  statistics,
+  logs,
+  hasMoreLogs = false,
+  children,
+}: Props) => {
   const [queryClient] = useState(() => {
     const client = new QueryClient({
       defaultOptions: { queries: { retry: false, staleTime: Infinity } },
@@ -23,7 +31,10 @@ const PlayerPreview = ({ data, statistics, logs, children }: Props) => {
       client.setQueryData([STATISTICS_QUERY_KEY, data.id], statistics)
     }
     if (logs) {
-      client.setQueryData([LOGS_QUERY_KEY, data.id], logs)
+      client.setQueryData([LOGS_QUERY_KEY, data.id], {
+        pages: [{ entries: logs, hasMore: hasMoreLogs }],
+        pageParams: [undefined],
+      })
     }
     return client
   })

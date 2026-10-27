@@ -4,6 +4,7 @@ import { areaY, defineChart, lineY } from "@tanstack/charts"
 import { decorative } from "@tanstack/charts/mark/decorative"
 import { Chart } from "@tanstack/charts/react/core"
 import { tooltip } from "@tanstack/charts/tooltip"
+import { useId } from "react"
 
 import type { StatisticsEntry } from "@/firebase/db"
 import { toDateTime } from "@/utils/date"
@@ -29,9 +30,9 @@ const color = "var(--gold)"
 const colorDark = "var(--gold-dark)"
 
 const StatisticsAreaChart = ({ metric, label, entries, delay = 0 }: Props) => {
-  if (!entries.length) return null
+  const gradientId = `grad-${useId()}`
 
-  const gradientId = `grad-${metric}`
+  if (!entries.length) return null
   const y = (entry: StatisticsEntry) => entry[metric] ?? 0
 
   const definition = defineChart({

@@ -63,7 +63,11 @@ beforeEach(() => {
 
 describe.each([
   { name: "user/get", call: getUser, empty: undefined },
-  { name: "logs/get", call: getLogs, empty: [] },
+  {
+    name: "logs/get",
+    call: () => getLogs(new Request("http://localhost/api/logs/get")),
+    empty: { entries: [], hasMore: false },
+  },
   { name: "statistics/get", call: getStatistics, empty: [] },
 ])("GET /api/$name", ({ name, call, empty }) => {
   it("returns 401 without a player cookie", async () => {
@@ -73,7 +77,7 @@ describe.each([
   })
 
   it("is never cached", async () => {
-    mocks.getLog.mockResolvedValue([])
+    mocks.getLog.mockResolvedValue({ entries: [], hasMore: false })
     mocks.getStatistics.mockResolvedValue([])
 
     const response = await call()
@@ -105,6 +109,29 @@ describe.each([
       })
     })
   }
+})
+
+describe("GET /api/logs/get paging", () => {
+  it("passes the cursor on to load older entries", async () => {
+    mocks.getLog.mockResolvedValue({ entries: [], hasMore: false })
+
+    await getLogs(
+      new Request("http://localhost/api/logs/get?before=1700&beforeId=abc")
+    )
+
+    expect(mocks.getLog).toHaveBeenCalledWith(PLAYER_ID, {
+      timestamp: 1700,
+      id: "abc",
+    })
+  })
+
+  it("loads the newest page without a full cursor", async () => {
+    mocks.getLog.mockResolvedValue({ entries: [], hasMore: false })
+
+    await getLogs(new Request("http://localhost/api/logs/get?before=1700"))
+
+    expect(mocks.getLog).toHaveBeenCalledWith(PLAYER_ID, undefined)
+  })
 })
 
 describe("GET /api/user/getRandomCharacter", () => {

@@ -301,8 +301,12 @@ export const takeLootAndSail = (
 
   return {
     ...sailed,
-    // Sailing on with a battle report pending never arrives or logs, so the loot is the entry
-    log: taken.log,
+    log: sailed.log
+      ? {
+          ...sailed.log,
+          message: `${taken.log?.message} ${sailed.log.message}`,
+        }
+      : taken.log,
   }
 }
 

@@ -20,6 +20,15 @@ export type LogEntry = {
   type?: LogType
 }
 
+export type LogRecord = LogEntry & { id: string }
+
+/** Where the next page of older entries starts, the oldest entry shown so far */
+export type LogCursor = Pick<LogRecord, "timestamp" | "id">
+
+export type LogPage = { entries: LogRecord[]; hasMore: boolean }
+
+export const LOG_PAGE_SIZE = 100
+
 export const getPlayer = async (playerId: Player["id"]) => {
   validatePlayerId(playerId)
   const snapshot = await adminDb.ref(`players/${playerId}`).get()
@@ -67,19 +76,33 @@ export const savePlayer = async (
   return player
 }
 
-export const getLog = async (playerId: Player["id"]) => {
+/** The newest page of entries, or the page just older than the cursor */
+export const getLog = async (
+  playerId: Player["id"],
+  before?: LogCursor
+): Promise<LogPage> => {
   validatePlayerId(playerId)
-  const snapshot = await adminDb
-    .ref(`logs/${playerId}`)
-    .orderByChild("timestamp")
-    .limitToLast(100)
+  const ordered = adminDb.ref(`logs/${playerId}`).orderByChild("timestamp")
+
+  // One extra entry tells whether there is anything older than this page
+  const snapshot = await (
+    before ? ordered.endBefore(before.timestamp, before.id) : ordered
+  )
+    .limitToLast(LOG_PAGE_SIZE + 1)
     .get()
 
-  if (!snapshot.exists()) return []
+  if (!snapshot.exists()) return { entries: [], hasMore: false }
 
   const logs = snapshot.val() as Record<string, LogEntry>
 
-  return Object.values(logs).sort((a, b) => a.timestamp - b.timestamp)
+  const entries = Object.entries(logs)
+    .map(([id, entry]): LogRecord => ({ ...entry, id }))
+    .sort((a, b) => a.timestamp - b.timestamp)
+
+  return {
+    entries: entries.slice(-LOG_PAGE_SIZE),
+    hasMore: entries.length > LOG_PAGE_SIZE,
+  }
 }
 
 /**

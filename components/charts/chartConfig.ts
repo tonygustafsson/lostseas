@@ -25,8 +25,8 @@ export const formatDay = (day: number) => `Day ${day}`
 export const dayScale = (days: number[]) => ({
   scale: scaleLinear,
   axis: {
-    ticks: { values: days, format: formatDay },
-    tickLabels: { fontSize: 12 },
+    ticks: { values: [...new Set(days)], format: formatDay },
+    tickLabels: { fontSize: 12, thin: { priority: "ends" as const } },
   },
 })
 

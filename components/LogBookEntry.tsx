@@ -44,7 +44,6 @@ const TYPE_STYLE: Record<LogType, EntryStyle> = {
   cards: { icon: <GiCardRandom />, color: "text-muted-foreground" },
 }
 
-// Older entries were saved without a type
 const UNTYPED_STYLE: EntryStyle = {
   icon: <GiQuillInk />,
   color: "text-muted-foreground",
@@ -55,9 +54,8 @@ type Props = {
 }
 
 export default function LogBookEntry({ entry }: Props) {
-  const { icon, color, notable } = entry.type
-    ? TYPE_STYLE[entry.type]
-    : UNTYPED_STYLE
+  const { icon, color, notable } =
+    (entry.type && TYPE_STYLE[entry.type]) || UNTYPED_STYLE
 
   return (
     <li className="relative">
