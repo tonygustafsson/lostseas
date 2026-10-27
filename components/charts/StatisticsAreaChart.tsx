@@ -1,11 +1,14 @@
 "use client"
 
-import { Area, AreaChart, Legend, Tooltip, XAxis, YAxis } from "recharts"
+import { areaY, defineChart, lineY } from "@tanstack/charts"
+import { decorative } from "@tanstack/charts/mark/decorative"
+import { Chart } from "@tanstack/charts/react"
+import { scaleLinear } from "@tanstack/charts/scales/linear"
+import { tooltip } from "@tanstack/charts/tooltip"
 
 import type { StatisticsEntry } from "@/firebase/db"
+import { toDateTime } from "@/utils/date"
 import { snakeCaseToTitleCase } from "@/utils/string"
-
-import CustomTooltip from "./CustomTooltip"
 
 export type ChartDataPoint = Pick<
   StatisticsEntry,
@@ -17,49 +20,93 @@ type Props = {
   data: ChartDataPoint[]
 }
 
+const color = "var(--gold)"
+const colorDark = "var(--gold-dark)"
+
 const StatisticsAreaChart = ({ metric, data }: Props) => {
   if (!data.length) return null
 
-  const color = "var(--chart-1)"
+  const label = snakeCaseToTitleCase(metric)
+  const gradientId = `grad-${metric}`
+  const y = (entry: ChartDataPoint) => Number(entry[metric])
+
+  const definition = defineChart({
+    marks: [
+      decorative(
+        areaY(data, {
+          x: "day",
+          y,
+          fill: `url(#${gradientId})`,
+          fillOpacity: 1,
+        })
+      ),
+      lineY(data, { x: "day", y, stroke: color, strokeWidth: 2 }),
+    ],
+    scales: {
+      x: {
+        scale: scaleLinear,
+        axis: {
+          ticks: {
+            values: data.map((entry) => entry.day),
+            format: (day) => `Day ${day}`,
+          },
+          tickLabels: { fontSize: 12 },
+        },
+      },
+      y: {
+        scale: scaleLinear,
+        nice: true,
+        axis: { tickLabels: { fontSize: 12 } },
+      },
+    },
+    gradients: [
+      {
+        id: gradientId,
+        x1: 0,
+        y1: 0,
+        x2: 0,
+        y2: 1,
+        stops: [
+          { offset: 0, color, opacity: 0.8 },
+          { offset: 1, color: colorDark, opacity: 0.5 },
+        ],
+      },
+    ],
+    focus: "nearest-x",
+    tooltip: {
+      use: tooltip,
+      content: ([point]) => ({
+        title: `Day ${point?.datum.day}`,
+        rows: point
+          ? [
+              {
+                label,
+                value: point.yValue.toLocaleString(),
+                color,
+              },
+              {
+                label: "Time",
+                value: toDateTime(new Date(point.datum.timestamp)),
+              },
+            ]
+          : [],
+      }),
+    },
+  })
 
   return (
-    <div className="h-60 w-full [&_.recharts-legend-item]:mr-0!">
-      <AreaChart
-        data={data}
-        margin={{ top: 0, right: 12, left: -32, bottom: 0 }}
-        style={{ width: "100%", height: "100%" }}
-        responsive
-      >
-        <defs>
-          <linearGradient id={`grad-${metric}`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor={color} stopOpacity={0.6} />
-            <stop offset="95%" stopColor={color} stopOpacity={0.08} />
-          </linearGradient>
-        </defs>
+    <div>
+      <div className="mb-2 flex items-center justify-center gap-2 text-sm">
+        <span className="bg-gold size-3 rounded-sm" />
+        {label}
+      </div>
 
-        <XAxis
-          dataKey="day"
-          tick={{ fontSize: 12 }}
-          tickFormatter={(tick) =>
-            typeof tick === "number" ? `Day ${tick}` : String(tick)
-          }
-        />
-        <YAxis tick={{ fontSize: 12 }} />
-
-        <Tooltip content={(props) => <CustomTooltip {...props} />} />
-
-        <Legend position="top" height={36} wrapperStyle={{ marginRight: 0 }} />
-
-        <Area
-          name={snakeCaseToTitleCase(metric)}
-          type="linear"
-          dataKey={metric}
-          isAnimationActive={false}
-          stroke={color}
-          fill={`url(#grad-${metric})`}
-          strokeWidth={2}
-        />
-      </AreaChart>
+      <Chart
+        definition={definition}
+        height={240}
+        ariaLabel={`${label} per day`}
+        className="text-muted-foreground"
+      />
     </div>
   )
 }

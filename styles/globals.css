@@ -202,3 +202,17 @@ html {
     animation: none;
   }
 }
+
+/* TanStack Charts: series palette and tooltip from the theme */
+.ts-chart-host {
+  --ts-chart-1: var(--chart-1);
+  --ts-chart-2: var(--chart-2);
+  --ts-chart-3: var(--chart-3);
+  --ts-chart-4: var(--chart-4);
+  --ts-chart-5: var(--chart-5);
+  --ts-chart-tooltip-background: var(--popover);
+  --ts-chart-tooltip-color: var(--popover-foreground);
+  --ts-chart-tooltip-border: 1px solid var(--border);
+  --ts-chart-tooltip-border-radius: var(--radius);
+  --ts-chart-tooltip-font: 0.75rem var(--font-sans);
+}
