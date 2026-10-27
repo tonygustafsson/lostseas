@@ -2,7 +2,8 @@
 
 import { areaY, defineChart, lineY } from "@tanstack/charts"
 import { decorative } from "@tanstack/charts/mark/decorative"
-import { Chart } from "@tanstack/charts/react"
+import { motion } from "@tanstack/charts/motion"
+import { Chart } from "@tanstack/charts/react/core"
 import { scaleLinear } from "@tanstack/charts/scales/linear"
 import { tooltip } from "@tanstack/charts/tooltip"
 
@@ -18,12 +19,19 @@ export type ChartDataPoint = Pick<
 type Props = {
   metric: keyof StatisticsEntry
   data: ChartDataPoint[]
+  /** Entrance delay in ms, used to stagger several charts */
+  delay?: number
 }
 
 const color = "var(--gold)"
 const colorDark = "var(--gold-dark)"
 
-const StatisticsAreaChart = ({ metric, data }: Props) => {
+const renderer = motion({
+  initial: "always",
+  transition: { type: "spring", stiffness: 170, damping: 18, mass: 1 },
+})
+
+const StatisticsAreaChart = ({ metric, data, delay = 0 }: Props) => {
   if (!data.length) return null
 
   const label = snakeCaseToTitleCase(metric)
@@ -31,6 +39,7 @@ const StatisticsAreaChart = ({ metric, data }: Props) => {
   const y = (entry: ChartDataPoint) => Number(entry[metric])
 
   const definition = defineChart({
+    motion: (context) => (context.phase === "enter" ? { delay } : undefined),
     marks: [
       decorative(
         areaY(data, {
@@ -103,6 +112,7 @@ const StatisticsAreaChart = ({ metric, data }: Props) => {
 
       <Chart
         definition={definition}
+        renderer={renderer}
         height={240}
         ariaLabel={`${label} per day`}
         className="text-muted-foreground"

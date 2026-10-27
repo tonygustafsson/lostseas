@@ -25,5 +25,6 @@ export default meta
 type Story = StoryObj<typeof meta>
 export const Gold: Story = {}
 export const Score: Story = { args: { metric: "score" } }
+export const Delayed: Story = { args: { delay: 600 } }
 export const SingleEntry: Story = { args: { data: data.slice(0, 1) } }
 export const Empty: Story = { args: { data: [] } }

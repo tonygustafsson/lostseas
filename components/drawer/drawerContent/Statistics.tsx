@@ -50,7 +50,7 @@ const StatisticsDrawer = () => {
       ) : (
         <div>
           <div className="space-y-6">
-            {availableMetrics.map((metric) => (
+            {availableMetrics.map((metric, index) => (
               <StatisticsAreaChart
                 key={metric}
                 data={Object.values(stats).reduce((acc, entry) => {
@@ -63,6 +63,7 @@ const StatisticsDrawer = () => {
                   return acc
                 }, [] as ChartDataPoint[])}
                 metric={metric}
+                delay={index * 50}
               />
             ))}
           </div>
