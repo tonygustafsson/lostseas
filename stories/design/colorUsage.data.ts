@@ -36,13 +36,13 @@ export const colorUsage: ColorUsage[] = [
     "name": "muted-foreground",
     "token": "--color-muted-foreground",
     "css": "var(--color-muted-foreground)",
-    "count": 78,
+    "count": 77,
     "variants": {
       "/10": 1,
       "/15": 1
     },
     "utilities": {
-      "text": 76,
+      "text": 75,
       "bg": 2
     },
     "files": {
@@ -52,12 +52,13 @@ export const colorUsage: ColorUsage[] = [
       "components/character/CharacterOption.tsx": 2,
       "components/character/SelectedCharacter.tsx": 1,
       "components/charts/BattleRecordChart.tsx": 1,
+      "components/charts/ChartCard.tsx": 1,
       "components/charts/HoldChart.tsx": 1,
       "components/charts/StatisticsAreaChart.tsx": 1,
       "components/charts/StatisticsSeriesChart.tsx": 1,
       "components/drawer/drawerContent/Fleet.tsx": 5,
       "components/drawer/drawerContent/Logs.tsx": 3,
-      "components/drawer/drawerContent/Status.tsx": 3,
+      "components/drawer/drawerContent/Status.tsx": 1,
       "components/game-ui/LocationScene/HarborScene.tsx": 1,
       "components/GuideContent.tsx": 3,
       "components/location/Bank/Balances.tsx": 2,
@@ -101,7 +102,7 @@ export const colorUsage: ColorUsage[] = [
     "name": "destructive",
     "token": "--color-destructive",
     "css": "var(--color-destructive)",
-    "count": 70,
+    "count": 69,
     "variants": {
       "/15": 2,
       "/40": 12,
@@ -115,7 +116,6 @@ export const colorUsage: ColorUsage[] = [
     "utilities": {
       "bg": 16,
       "text": 23,
-      "var()": 1,
       "border": 15,
       "shadow": 1,
       "ring": 14
@@ -123,7 +123,6 @@ export const colorUsage: ColorUsage[] = [
     "files": {
       "components/advisor/AdvisorTips.tsx": 3,
       "components/CargoMeter.tsx": 2,
-      "components/charts/BattleRecordChart.tsx": 1,
       "components/drawer/drawerContent/Fleet.tsx": 1,
       "components/location/Bank/VentureCard.tsx": 1,
       "components/location/Sea/AttackReport.tsx": 3,
@@ -151,7 +150,7 @@ export const colorUsage: ColorUsage[] = [
     "name": "accent",
     "token": "--color-accent",
     "css": "var(--color-accent)",
-    "count": 65,
+    "count": 66,
     "variants": {
       "/30": 1,
       "/10": 1,
@@ -162,7 +161,7 @@ export const colorUsage: ColorUsage[] = [
     "utilities": {
       "border": 8,
       "bg": 4,
-      "text": 52,
+      "text": 53,
       "ring": 1
     },
     "files": {
@@ -170,6 +169,7 @@ export const colorUsage: ColorUsage[] = [
       "components/advisor/AdvisorTips.tsx": 2,
       "components/CargoMeter.tsx": 2,
       "components/character/CharacterOption.tsx": 1,
+      "components/charts/ChartCard.tsx": 1,
       "components/crew/DismissCrewMembers.tsx": 1,
       "components/crew/GiveGold.tsx": 1,
       "components/drawer/drawerContent/Fleet.tsx": 2,
@@ -211,9 +211,9 @@ export const colorUsage: ColorUsage[] = [
     "name": "background",
     "token": "--color-background",
     "css": "var(--color-background)",
-    "count": 48,
+    "count": 49,
     "variants": {
-      "/20": 8,
+      "/20": 9,
       "/50": 1,
       "/60": 2,
       "/80": 3,
@@ -223,7 +223,7 @@ export const colorUsage: ColorUsage[] = [
       "/90": 1
     },
     "utilities": {
-      "shadow": 6,
+      "shadow": 7,
       "bg": 26,
       "text-shadow": 1,
       "from": 2,
@@ -235,6 +235,7 @@ export const colorUsage: ColorUsage[] = [
     "files": {
       "components/ActionCard.tsx": 1,
       "components/advisor/AdvisorTips.tsx": 1,
+      "components/charts/ChartCard.tsx": 1,
       "components/drawer/drawerContent/Status.tsx": 1,
       "components/layouts/default.tsx": 1,
       "components/location/Bank/QuickAmounts.tsx": 1,
@@ -348,46 +349,6 @@ export const colorUsage: ColorUsage[] = [
   },
   {
     "kind": "token",
-    "name": "success",
-    "token": "--color-success",
-    "css": "var(--color-success)",
-    "count": 37,
-    "variants": {
-      "/15": 2,
-      "/10": 7,
-      "/40": 4,
-      "/25": 1,
-      "/20": 1,
-      "/30": 1,
-      "/50": 1
-    },
-    "utilities": {
-      "bg": 12,
-      "text": 17,
-      "var()": 1,
-      "border": 5,
-      "shadow": 2
-    },
-    "files": {
-      "components/advisor/AdvisorTips.tsx": 4,
-      "components/charts/BattleRecordChart.tsx": 1,
-      "components/location/Cityhall/HandOver.tsx": 2,
-      "components/location/Market/index.tsx": 2,
-      "components/location/Sea/AttackReport.tsx": 3,
-      "components/location/Sea/AttackReportItem.tsx": 3,
-      "components/location/Sea/BattleContent.tsx": 4,
-      "components/location/Sea/SeaEventDialog.tsx": 1,
-      "components/location/Sea/ShipMeetingContent.tsx": 5,
-      "components/location/Shop/ShopTradeChange.tsx": 1,
-      "components/location/Shop/ShopTradeSummary.tsx": 1,
-      "components/location/Tavern/Cards.tsx": 4,
-      "components/location/Tavern/ShopItem.tsx": 4,
-      "components/settings/AddPasskeyButton.tsx": 1,
-      "components/WelcomeModal/WelcomeNewUser.tsx": 1
-    }
-  },
-  {
-    "kind": "token",
     "name": "foreground",
     "token": "--color-foreground",
     "css": "var(--color-foreground)",
@@ -427,6 +388,44 @@ export const colorUsage: ColorUsage[] = [
       "components/ui/tabs.tsx": 6,
       "components/ui/tooltip.tsx": 3,
       "styles/globals.css": 1
+    }
+  },
+  {
+    "kind": "token",
+    "name": "success",
+    "token": "--color-success",
+    "css": "var(--color-success)",
+    "count": 36,
+    "variants": {
+      "/15": 2,
+      "/10": 7,
+      "/40": 4,
+      "/25": 1,
+      "/20": 1,
+      "/30": 1,
+      "/50": 1
+    },
+    "utilities": {
+      "bg": 12,
+      "text": 17,
+      "border": 5,
+      "shadow": 2
+    },
+    "files": {
+      "components/advisor/AdvisorTips.tsx": 4,
+      "components/location/Cityhall/HandOver.tsx": 2,
+      "components/location/Market/index.tsx": 2,
+      "components/location/Sea/AttackReport.tsx": 3,
+      "components/location/Sea/AttackReportItem.tsx": 3,
+      "components/location/Sea/BattleContent.tsx": 4,
+      "components/location/Sea/SeaEventDialog.tsx": 1,
+      "components/location/Sea/ShipMeetingContent.tsx": 5,
+      "components/location/Shop/ShopTradeChange.tsx": 1,
+      "components/location/Shop/ShopTradeSummary.tsx": 1,
+      "components/location/Tavern/Cards.tsx": 4,
+      "components/location/Tavern/ShopItem.tsx": 4,
+      "components/settings/AddPasskeyButton.tsx": 1,
+      "components/WelcomeModal/WelcomeNewUser.tsx": 1
     }
   },
   {
@@ -720,15 +719,15 @@ export const colorUsage: ColorUsage[] = [
     "name": "neutral-900",
     "token": "--color-neutral-900",
     "css": "var(--color-neutral-900)",
-    "count": 13,
+    "count": 14,
     "variants": {},
     "utilities": {
-      "bg": 10,
+      "bg": 11,
       "border": 2,
       "to": 1
     },
     "files": {
-      "components/drawer/drawerContent/Fleet.tsx": 5,
+      "components/drawer/drawerContent/Fleet.tsx": 6,
       "components/drawer/drawerContent/Logs.tsx": 1,
       "components/DrawerBottom.tsx": 1,
       "components/DrawerPanel.tsx": 1,
@@ -1222,6 +1221,36 @@ export const colorUsage: ColorUsage[] = [
     }
   },
   {
+    "kind": "token",
+    "name": "chart-4",
+    "token": "--color-chart-4",
+    "css": "var(--chart-4)",
+    "count": 2,
+    "variants": {},
+    "utilities": {
+      "var()": 2
+    },
+    "files": {
+      "components/charts/BattleRecordChart.tsx": 1,
+      "components/drawer/drawerContent/Status.tsx": 1
+    }
+  },
+  {
+    "kind": "token",
+    "name": "chart-3",
+    "token": "--color-chart-3",
+    "css": "var(--chart-3)",
+    "count": 2,
+    "variants": {},
+    "utilities": {
+      "var()": 2
+    },
+    "files": {
+      "components/charts/BattleRecordChart.tsx": 1,
+      "components/drawer/drawerContent/Status.tsx": 1
+    }
+  },
+  {
     "kind": "literal",
     "name": "rgba(0, 0, 0, 0.45)",
     "token": "Function literal",
@@ -1409,34 +1438,6 @@ export const colorUsage: ColorUsage[] = [
     "name": "chart-2",
     "token": "--color-chart-2",
     "css": "var(--chart-2)",
-    "count": 1,
-    "variants": {},
-    "utilities": {
-      "var()": 1
-    },
-    "files": {
-      "components/drawer/drawerContent/Status.tsx": 1
-    }
-  },
-  {
-    "kind": "token",
-    "name": "chart-3",
-    "token": "--color-chart-3",
-    "css": "var(--chart-3)",
-    "count": 1,
-    "variants": {},
-    "utilities": {
-      "var()": 1
-    },
-    "files": {
-      "components/drawer/drawerContent/Status.tsx": 1
-    }
-  },
-  {
-    "kind": "token",
-    "name": "chart-4",
-    "token": "--color-chart-4",
-    "css": "var(--chart-4)",
     "count": 1,
     "variants": {},
     "utilities": {

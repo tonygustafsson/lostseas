@@ -80,7 +80,7 @@ html {
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.56 0.021 213.5);
-  --chart-1: var(--color-sky-500);
+  --chart-1: var(--color-sky-700);
   --chart-2: var(--color-amber-400);
   --chart-3: var(--color-red-800);
   --chart-4: var(--color-emerald-800);

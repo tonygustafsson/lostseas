@@ -17,8 +17,8 @@ type Props = {
   delay?: number
 }
 
-const wonColor = "var(--success)"
-const lostColor = "var(--destructive)"
+const wonColor = "var(--chart-4)"
+const lostColor = "var(--chart-3)"
 
 const nationLabel = (nation: Nation | "Pirate") =>
   nation === "Pirate" ? "Pirates" : nation

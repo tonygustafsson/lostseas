@@ -1,21 +1,20 @@
 "use client"
 
-import { Anchor, Sailboat } from "lucide-react"
+import { Anchor, Coins, Landmark, Sailboat, ScrollText } from "lucide-react"
 import Image from "next/image"
 import { AiOutlineCalendar } from "react-icons/ai"
 import { BiFemaleSign, BiMaleSign, BiTime } from "react-icons/bi"
 import {
   GiCrossedSwords,
   GiLaurelsTrophy,
-  GiPiggyBank,
   GiPirateCoat,
   GiProgression,
-  GiReceiveMoney,
   GiSinkingShip,
   GiTwoCoins,
 } from "react-icons/gi"
 
 import BattleRecordChart from "@/components/charts/BattleRecordChart"
+import ChartCard from "@/components/charts/ChartCard"
 import {
   metricsOf,
   type StatisticsSeries,
@@ -32,6 +31,7 @@ import { VENTURES } from "@/constants/ventures"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useGetStatistics } from "@/hooks/queries/useStatistics"
 import { convertDaysToTimeSpan, getCurrentDate } from "@/utils/date"
+import { formatGold } from "@/utils/number"
 import { getScore } from "@/utils/score"
 import { getBattleTotals, withMetrics } from "@/utils/statistics"
 
@@ -167,15 +167,15 @@ const StatusDrawer = () => {
       </div>
 
       {scoreEntries.length >= 2 && (
-        <div className="mt-6">
-          <p className="text-muted-foreground mb-2 text-sm">Score over time</p>
-
-          <StatisticsSeriesChart
-            title="Score"
-            series={scoreSeries}
-            entries={scoreEntries}
-            stacked
-          />
+        <div className="mt-4">
+          <ChartCard label="Score over time" icon={<GiProgression />}>
+            <StatisticsSeriesChart
+              title="Score"
+              series={scoreSeries}
+              entries={scoreEntries}
+              stacked
+            />
+          </ChartCard>
         </div>
       )}
 
@@ -185,38 +185,33 @@ const StatusDrawer = () => {
         <div className="grid grid-cols-1 gap-4 @md:grid-cols-3">
           <StatTile
             label="Gold"
-            value={character.gold}
-            unit="gold"
-            icon={<GiTwoCoins />}
+            value={formatGold(character.gold)}
+            icon={<Coins />}
           />
 
           <StatTile
             label="Account"
-            value={character.account || 0}
-            unit="gold"
-            icon={<GiPiggyBank />}
+            value={formatGold(character.account)}
+            icon={<Landmark />}
           />
 
           <StatTile
             label="Loan"
-            value={character.loan || 0}
-            unit="gold"
-            icon={<GiReceiveMoney />}
+            value={formatGold(character.loan)}
+            icon={<ScrollText />}
           />
         </div>
       </div>
 
       {netWorthEntries.length >= 2 && (
-        <div className="mt-6">
-          <p className="text-muted-foreground mb-2 text-sm">
-            Net worth over time
-          </p>
-
-          <StatisticsAreaChart
-            metric="netWorth"
-            label="Net worth"
-            entries={netWorthEntries}
-          />
+        <div className="mt-4">
+          <ChartCard label="Net worth over time" icon={<GiTwoCoins />}>
+            <StatisticsAreaChart
+              metric="netWorth"
+              label="Net worth"
+              entries={netWorthEntries}
+            />
+          </ChartCard>
         </div>
       )}
 
@@ -275,8 +270,10 @@ const StatusDrawer = () => {
             </div>
           </div>
 
-          <div className="mt-6">
-            <BattleRecordChart battles={character.battles} />
+          <div className="mt-4">
+            <ChartCard label="Battles by nation" icon={<GiCrossedSwords />}>
+              <BattleRecordChart battles={character.battles} />
+            </ChartCard>
           </div>
         </>
       )}
