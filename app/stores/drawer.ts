@@ -8,7 +8,6 @@ export type DrawerId =
   | "guide"
   | "advisor"
   | "logs"
-  | "statistics"
   | "manageCrew"
 
 type DrawerStore = {

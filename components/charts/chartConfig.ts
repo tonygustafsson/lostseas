@@ -39,3 +39,6 @@ export const valueScale = {
 /** Delays only the entrance, so several charts can rise one after another */
 export const enterDelay = (delay: number) => (context: ChartMotionContext) =>
   context.phase === "enter" ? { delay } : undefined
+
+export const metricsOf = (series: StatisticsSeries[]) =>
+  series.map(({ metric }) => metric)

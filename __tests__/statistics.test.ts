@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import type { StatisticsEntry } from "@/firebase/db"
 import {
+  getBattleRecordByNation,
   getBattleTotals,
   getStatisticsSnapshot,
   withMetrics,
@@ -22,6 +23,25 @@ describe("getBattleTotals", () => {
 
   it("counts no battles as zero", () => {
     expect(getBattleTotals(undefined)).toEqual({ won: 0, lost: 0 })
+  })
+})
+
+describe("getBattleRecordByNation", () => {
+  it("lists each nation fought with its wins and losses", () => {
+    expect(
+      getBattleRecordByNation({
+        Spain: { won: 4, lost: 1 },
+        Pirate: { lost: 2 },
+        France: {},
+      } as Character["battles"])
+    ).toEqual([
+      { nation: "Spain", won: 4, lost: 1 },
+      { nation: "Pirate", won: 0, lost: 2 },
+    ])
+  })
+
+  it("is empty before the first battle", () => {
+    expect(getBattleRecordByNation(undefined)).toEqual([])
   })
 })
 

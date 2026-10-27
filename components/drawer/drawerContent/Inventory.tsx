@@ -3,11 +3,9 @@
 import { GiOpenedFoodCan } from "react-icons/gi"
 
 import InventoryItemCard from "@/components/InventoryItemCard"
-import TreasureIcon from "@/components/TreasureIcon"
+import TreasureCard from "@/components/TreasureCard"
 import { MERCHANDISE } from "@/constants/merchandise"
-import { TREASURES } from "@/constants/treasures"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-import { formatGold } from "@/utils/number"
 
 const InventoryDrawer = () => {
   const { data: player } = useGetPlayer()
@@ -66,37 +64,14 @@ const InventoryDrawer = () => {
         {!!Object.keys(player?.treasures || {}).length && (
           <>
             <h2 className="mt-8 mb-4 font-serif text-xl">Treasures</h2>
-            <div className="flex flex-wrap gap-4">
-              {Object.values(player?.treasures || {}).map((item) => {
-                const treasureInfo = TREASURES.find(
-                  (treasure) => treasure.name === item.name
-                )
 
-                return (
-                  <div
-                    className="flex w-full flex-col gap-3 rounded-lg bg-gray-800 p-4 shadow-md hover:shadow-lg"
-                    key={`inventory-${item.id}`}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <p className="text-xl font-semibold">{item.name}</p>
-                        <p className="mt-2 text-sm">
-                          {treasureInfo?.description}
-                        </p>
-                      </div>
-                      <TreasureIcon
-                        size="lg"
-                        item={item.name}
-                        className="text-accent ml-4"
-                      />
-                    </div>
-                    <p className="mt-2 font-bold">
-                      Bring it to the governor of {item.rewarder} for a reward
-                      of {formatGold(treasureInfo?.value)}.
-                    </p>
-                  </div>
-                )
-              })}
+            <div className="flex flex-col gap-4">
+              {Object.values(player?.treasures || {}).map((treasure) => (
+                <TreasureCard
+                  key={`inventory-${treasure.id}`}
+                  treasure={treasure}
+                />
+              ))}
             </div>
           </>
         )}

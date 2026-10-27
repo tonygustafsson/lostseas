@@ -10,6 +10,8 @@ import {
   GiSkeletonKey,
 } from "react-icons/gi"
 
+import { cn } from "@/lib/utils"
+
 type Props = {
   item: TreasureName
   size?: "xs" | "sm" | "md" | "lg" | "xl"
@@ -35,7 +37,7 @@ const getSizeClass = (size: string) => {
 
 const TreasureIcon = ({ item, size = "md", className = "" }: Props) => {
   const sizeClass = getSizeClass(size)
-  const iconClass = `${sizeClass} text-accent ${className}`
+  const iconClass = cn(sizeClass, "text-accent", className)
 
   switch (item) {
     case "Inca mask":

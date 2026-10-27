@@ -33,6 +33,18 @@
   --chart-3: var(--color-red-900);
   --chart-4: var(--color-emerald-800);
   --chart-5: var(--color-violet-600);
+  /* One colour per good in the hold chart */
+  --cargo-food: var(--color-amber-700);
+  --cargo-water: var(--color-sky-500);
+  --cargo-porcelain: var(--color-blue-200);
+  --cargo-spices: var(--color-orange-500);
+  --cargo-medicine: var(--color-rose-400);
+  --cargo-tobacco: var(--color-amber-900);
+  --cargo-rum: var(--color-red-800);
+  --cargo-sugar: var(--color-yellow-100);
+  --cargo-silk: var(--color-fuchsia-500);
+  --cargo-tea: var(--color-lime-600);
+  --cargo-cotton: var(--color-stone-300);
   --radius: 0.45rem;
   --sidebar: oklch(0.987 0.002 197.1);
   --sidebar-foreground: oklch(0.148 0.004 228.8);

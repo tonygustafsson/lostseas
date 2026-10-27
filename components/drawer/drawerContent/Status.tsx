@@ -4,34 +4,49 @@ import { Anchor, Sailboat } from "lucide-react"
 import Image from "next/image"
 import { AiOutlineCalendar } from "react-icons/ai"
 import { BiFemaleSign, BiMaleSign, BiTime } from "react-icons/bi"
-import { FaChartBar, FaCoins } from "react-icons/fa"
 import {
   GiCrossedSwords,
+  GiLaurelsTrophy,
   GiPiggyBank,
   GiPirateCoat,
   GiProgression,
   GiReceiveMoney,
+  GiSinkingShip,
+  GiTwoCoins,
 } from "react-icons/gi"
 
-import useDrawer from "@/app/stores/drawer"
+import BattleRecordChart from "@/components/charts/BattleRecordChart"
+import {
+  metricsOf,
+  type StatisticsSeries,
+} from "@/components/charts/chartConfig"
+import StatisticsAreaChart from "@/components/charts/StatisticsAreaChart"
+import StatisticsSeriesChart from "@/components/charts/StatisticsSeriesChart"
 import Flag from "@/components/icons/Flag"
 import StatTile from "@/components/StatTile"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
 import { getCharacterById } from "@/constants/characters"
 import { NATIONS } from "@/constants/locations"
 import { VENTURES } from "@/constants/ventures"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { useGetStatistics } from "@/hooks/queries/useStatistics"
 import { convertDaysToTimeSpan, getCurrentDate } from "@/utils/date"
 import { getScore } from "@/utils/score"
+import { getBattleTotals, withMetrics } from "@/utils/statistics"
 
 const chipClass = "h-6 gap-1 px-2 text-xs [&>svg]:size-3!"
 
+const scoreSeries: StatisticsSeries[] = [
+  { metric: "scoreTitle", label: "Title", color: "var(--chart-1)" },
+  { metric: "scoreWealth", label: "Wealth", color: "var(--chart-2)" },
+  { metric: "scoreShips", label: "Ships", color: "var(--chart-3)" },
+  { metric: "scoreCannons", label: "Cannons", color: "var(--chart-4)" },
+]
+
 const StatusDrawer = () => {
   const { data: player } = useGetPlayer()
-  const { open: openDrawer } = useDrawer()
+  const { data: stats = [] } = useGetStatistics(player?.id)
 
   if (!player) {
     return null
@@ -39,6 +54,11 @@ const StatusDrawer = () => {
 
   const { character } = player
   const enemy = NATIONS[character.nationality].warWith
+  const battles = getBattleTotals(character.battles)
+
+  // A chart needs at least two snapshots to draw a line
+  const scoreEntries = withMetrics(stats, metricsOf(scoreSeries))
+  const netWorthEntries = withMetrics(stats, ["netWorth"])
   const characterInfo = getCharacterById(character.characterId)
   const ventures = Object.entries(character.ventures || {}) as [
     VentureId,
@@ -120,18 +140,6 @@ const StatusDrawer = () => {
             {characterInfo.description}
           </p>
         )}
-
-        <div className="relative flex flex-wrap gap-2">
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => openDrawer("statistics")}
-            title="Open statistics"
-          >
-            <FaChartBar />
-            Statistics
-          </Button>
-        </div>
       </Card>
 
       <div className="@container mt-4">
@@ -158,6 +166,19 @@ const StatusDrawer = () => {
         </div>
       </div>
 
+      {scoreEntries.length >= 2 && (
+        <div className="mt-6">
+          <p className="text-muted-foreground mb-2 text-sm">Score over time</p>
+
+          <StatisticsSeriesChart
+            title="Score"
+            series={scoreSeries}
+            entries={scoreEntries}
+            stacked
+          />
+        </div>
+      )}
+
       <h2 className="mt-8 mb-4 font-serif text-xl">Economy</h2>
 
       <div className="@container">
@@ -166,28 +187,38 @@ const StatusDrawer = () => {
             label="Gold"
             value={character.gold}
             unit="gold"
-            icon={<FaCoins />}
+            icon={<GiTwoCoins />}
           />
 
-          {!!character.account && (
-            <StatTile
-              label="Account"
-              value={character.account}
-              unit="gold"
-              icon={<GiPiggyBank />}
-            />
-          )}
+          <StatTile
+            label="Account"
+            value={character.account || 0}
+            unit="gold"
+            icon={<GiPiggyBank />}
+          />
 
-          {!!character.loan && (
-            <StatTile
-              label="Loan"
-              value={character.loan}
-              unit="gold"
-              icon={<GiReceiveMoney />}
-            />
-          )}
+          <StatTile
+            label="Loan"
+            value={character.loan || 0}
+            unit="gold"
+            icon={<GiReceiveMoney />}
+          />
         </div>
       </div>
+
+      {netWorthEntries.length >= 2 && (
+        <div className="mt-6">
+          <p className="text-muted-foreground mb-2 text-sm">
+            Net worth over time
+          </p>
+
+          <StatisticsAreaChart
+            metric="netWorth"
+            label="Net worth"
+            entries={netWorthEntries}
+          />
+        </div>
+      )}
 
       {!!ventures.length && (
         <>
@@ -218,51 +249,34 @@ const StatusDrawer = () => {
         </>
       )}
 
-      {!!Object.keys(character.battles || {}).length && (
+      {battles.won + battles.lost > 0 && (
         <>
           <h2 className="mt-8 mb-4 font-serif text-xl">Battles</h2>
 
           <div className="@container">
-            <div className="grid grid-cols-1 gap-4 @md:grid-cols-2">
-              {Object.entries(character.battles || {}).map(
-                ([nation, { won = 0, lost = 0 }]) => (
-                  <Card
-                    key={`battles-${nation}`}
-                    className="shadow-background/20 relative gap-2 p-4 shadow-lg"
-                  >
-                    <Flag
-                      decorative
-                      nation={nation as Nation}
-                      size={64}
-                      className="pointer-events-none absolute -right-2 -bottom-2 -rotate-12 opacity-25"
-                    />
+            <div className="grid grid-cols-1 gap-4 @md:grid-cols-3">
+              <StatTile
+                label="Won"
+                value={battles.won}
+                icon={<GiLaurelsTrophy />}
+              />
 
-                    <p className="text-muted-foreground relative flex items-center gap-2 text-xs tracking-wide uppercase">
-                      <Flag nation={nation as Nation} size={16} decorative />
-                      {nation === "Pirate" ? "Pirates" : nation}
-                    </p>
+              <StatTile
+                label="Lost"
+                value={battles.lost}
+                icon={<GiSinkingShip />}
+              />
 
-                    <p className="relative font-serif text-lg font-semibold">
-                      {won}
-                      <span className="text-muted-foreground mx-1 text-sm font-normal">
-                        won
-                      </span>
-                      {lost}
-                      <span className="text-muted-foreground ml-1 text-sm font-normal">
-                        lost
-                      </span>
-                    </p>
-
-                    <Progress
-                      value={won + lost ? (won / (won + lost)) * 100 : 0}
-                      variant="gilded"
-                      className="relative h-1 w-2/3"
-                      aria-label={`Win rate against ${nation}`}
-                    />
-                  </Card>
-                )
-              )}
+              <StatTile
+                label="Win rate"
+                value={`${Math.round((battles.won / (battles.won + battles.lost)) * 100)}%`}
+                icon={<GiCrossedSwords />}
+              />
             </div>
+          </div>
+
+          <div className="mt-6">
+            <BattleRecordChart battles={character.battles} />
           </div>
         </>
       )}

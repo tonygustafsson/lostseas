@@ -10,7 +10,6 @@ import InventoryDrawer from "./drawerContent/Inventory"
 import LogsDrawer from "./drawerContent/Logs"
 import ManageCrewDrawer from "./drawerContent/ManageCrew"
 import SettingsDrawer from "./drawerContent/Settings"
-import StatisticsDrawer from "./drawerContent/Statistics"
 import StatusDrawer from "./drawerContent/Status"
 
 const ComponentMap: Record<DrawerId, React.FC> = {
@@ -21,7 +20,6 @@ const ComponentMap: Record<DrawerId, React.FC> = {
   guide: GuideDrawer,
   advisor: AdvisorDrawer,
   logs: LogsDrawer,
-  statistics: StatisticsDrawer,
   manageCrew: ManageCrewDrawer,
 }
 

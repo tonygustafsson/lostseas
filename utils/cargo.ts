@@ -146,3 +146,10 @@ export const getLootItemMax = (
 
   return Math.max(0, Math.min(offered, freeCargo - otherCargo))
 }
+
+/** Cargo aboard, one entry per good, most units first. Cannons and repair kits are not cargo. */
+export const getHoldContents = (inventory: Inventory | undefined) =>
+  (Object.entries(inventory || {}) as [keyof Inventory, number][])
+    .filter(([item, amount]) => isCargo(item) && amount > 0)
+    .map(([item, amount]) => ({ item, amount }))
+    .sort((a, b) => b.amount - a.amount)

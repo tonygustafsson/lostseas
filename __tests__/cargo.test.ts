@@ -8,6 +8,7 @@ import {
   getCargoCapacity,
   getCargoLeftForItem,
   getCargoLoad,
+  getHoldContents,
   getLootItemMax,
   getLootPreset,
   getShipRemovalCargoWarning,
@@ -165,5 +166,21 @@ describe("removing a ship", () => {
       "This leaves you overloaded by 120. You cannot leave port until you sell goods or buy another ship."
     )
     expect(getShipRemovalCargoWarning(player, "brig")).toBeUndefined()
+  })
+})
+
+describe("getHoldContents", () => {
+  it("lists goods aboard by amount, leaving out empty goods and non-cargo", () => {
+    expect(
+      getHoldContents({ food: 10, water: 30, rum: 0, cannons: 8, silk: 5 })
+    ).toEqual([
+      { item: "water", amount: 30 },
+      { item: "food", amount: 10 },
+      { item: "silk", amount: 5 },
+    ])
+  })
+
+  it("is empty with no inventory", () => {
+    expect(getHoldContents(undefined)).toEqual([])
   })
 })

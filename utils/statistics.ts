@@ -12,6 +12,21 @@ export const getBattleTotals = (battles: Character["battles"]) =>
     { won: 0, lost: 0 }
   )
 
+/** Wins and losses against each nation and the pirates you have fought */
+export const getBattleRecordByNation = (battles: Character["battles"]) =>
+  (
+    Object.entries(battles || {}) as [
+      Nation | "Pirate",
+      { won?: number; lost?: number },
+    ][]
+  )
+    .map(([nation, record]) => ({
+      nation,
+      won: record?.won || 0,
+      lost: record?.lost || 0,
+    }))
+    .filter(({ won, lost }) => won + lost > 0)
+
 /** Entries that recorded all the given metrics. Older entries lack newer metrics. */
 export const withMetrics = (
   entries: StatisticsEntry[],
