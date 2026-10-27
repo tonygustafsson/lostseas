@@ -4,7 +4,7 @@ import { NextResponse } from "next/server"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import { getPlayer, savePlayer, saveStatistics } from "@/firebase/db"
 import { continueJourney } from "@/utils/actions/sea"
-import { getScore } from "@/utils/score"
+import { getStatisticsSnapshot } from "@/utils/statistics"
 
 export async function POST() {
   const cookieStore = await cookies()
@@ -33,13 +33,7 @@ export async function POST() {
 
     if (result.data.destinationReached) {
       try {
-        await saveStatistics(playerId, {
-          day: updatedPlayer.character.day,
-          gold: updatedPlayer.character.gold || 0,
-          score: getScore(updatedPlayer),
-          crewMembers: updatedPlayer.crewMembers.count || 0,
-          ships: Object.keys(updatedPlayer.ships || {}).length,
-        })
+        await saveStatistics(playerId, getStatisticsSnapshot(updatedPlayer))
       } catch (error) {
         console.error("Failed to save player statistics", error)
       }

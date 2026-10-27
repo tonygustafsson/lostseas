@@ -205,7 +205,7 @@ describe("POST /api/user/register", () => {
     expect(savedLog).toBe("Created new character Anne Bonny.")
     expect(mocks.saveStatistics).toHaveBeenCalledWith(
       playerId,
-      expect.objectContaining({ day: 1, gold: 300, crewMembers: 4, ships: 1 })
+      expect.objectContaining({ day: 1, netWorth: 300, battlesWon: 0 })
     )
     expect(response.cookies.get(PLAYER_ID_COOKIE_NAME)?.value).toBe(playerId)
     expect(response.cookies.get(MUSIC_STATE_COOKIE_NAME)?.value).toBe("true")
@@ -293,7 +293,7 @@ describe("POST /api/user/reset", () => {
     expect(mocks.savePlayer.mock.calls[0][2]).toEqual({ resetHistory: true })
     expect(mocks.saveStatistics).toHaveBeenCalledWith(
       PLAYER_ID,
-      expect.objectContaining({ day: 1, gold: 300, crewMembers: 4, ships: 1 })
+      expect.objectContaining({ day: 1, netWorth: 300, battlesWon: 0 })
     )
   })
 

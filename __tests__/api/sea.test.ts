@@ -219,7 +219,10 @@ describe("POST /api/sea/continueJourney", () => {
     expect(mocks.saveStatistics).toHaveBeenCalledOnce()
     expect(mocks.saveStatistics).toHaveBeenCalledWith(
       "test-player",
-      expect.objectContaining({ ships: 1, crewMembers: 10 })
+      expect.objectContaining({
+        netWorth: expect.any(Number),
+        mannedCannons: expect.any(Number),
+      })
     )
 
     vi.clearAllMocks()

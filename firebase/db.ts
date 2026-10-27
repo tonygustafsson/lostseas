@@ -79,13 +79,23 @@ export const getLog = async (playerId: Player["id"]) => {
   return Object.values(logs).sort((a, b) => a.timestamp - b.timestamp)
 }
 
+/**
+ * One snapshot of the player's progress. Fields other than timestamp, day and
+ * score are missing on entries saved before they were collected.
+ */
 export type StatisticsEntry = {
   timestamp: number
   day: number
-  gold: number
   score: number
-  crewMembers: number
-  ships: number
+  netWorth?: number
+  scoreTitle?: number
+  scoreWealth?: number
+  scoreShips?: number
+  scoreCannons?: number
+  mannedCannons?: number
+  cannons?: number
+  battlesWon?: number
+  battlesLost?: number
 }
 
 export const getStatistics = async (playerId: Player["id"]) => {

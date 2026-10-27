@@ -44,7 +44,7 @@ describe("reset persistence", () => {
     expect(mocks.update.mock.calls[1][0]).toEqual({
       [`statistics/${player.id}/new-entry`]: expect.objectContaining({
         day: 1,
-        gold: 300,
+        netWorth: 300,
       }),
     })
   })

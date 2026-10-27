@@ -1,5 +1,5 @@
 import { savePlayer, saveStatistics } from "@/firebase/db"
-import { getScore } from "@/utils/score"
+import { getStatisticsSnapshot } from "@/utils/statistics"
 
 export const savePlayerWithStatistics = async (
   player: Player,
@@ -9,13 +9,7 @@ export const savePlayerWithStatistics = async (
   const updatedPlayer = await savePlayer(player, log, options)
 
   try {
-    await saveStatistics(updatedPlayer.id, {
-      day: updatedPlayer.character.day,
-      gold: updatedPlayer.character.gold || 0,
-      score: getScore(updatedPlayer),
-      crewMembers: updatedPlayer.crewMembers.count || 0,
-      ships: Object.keys(updatedPlayer.ships || {}).length,
-    })
+    await saveStatistics(updatedPlayer.id, getStatisticsSnapshot(updatedPlayer))
   } catch (error) {
     console.error("Failed to save player statistics", error)
   }

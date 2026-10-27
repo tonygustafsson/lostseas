@@ -2,23 +2,25 @@
 
 import { areaY, defineChart, lineY } from "@tanstack/charts"
 import { decorative } from "@tanstack/charts/mark/decorative"
-import { motion } from "@tanstack/charts/motion"
 import { Chart } from "@tanstack/charts/react/core"
-import { scaleLinear } from "@tanstack/charts/scales/linear"
 import { tooltip } from "@tanstack/charts/tooltip"
 
 import type { StatisticsEntry } from "@/firebase/db"
 import { toDateTime } from "@/utils/date"
-import { snakeCaseToTitleCase } from "@/utils/string"
 
-export type ChartDataPoint = Pick<
-  StatisticsEntry,
-  "day" | "timestamp" | keyof StatisticsEntry
->
+import {
+  chartRenderer,
+  dayScale,
+  enterDelay,
+  formatDay,
+  type StatisticsMetric,
+  valueScale,
+} from "./chartConfig"
 
 type Props = {
-  metric: keyof StatisticsEntry
-  data: ChartDataPoint[]
+  metric: StatisticsMetric
+  label: string
+  entries: StatisticsEntry[]
   /** Entrance delay in ms, used to stagger several charts */
   delay?: number
 }
@@ -26,47 +28,28 @@ type Props = {
 const color = "var(--gold)"
 const colorDark = "var(--gold-dark)"
 
-const renderer = motion({
-  initial: "always",
-  transition: { type: "spring", stiffness: 170, damping: 18, mass: 1 },
-})
+const StatisticsAreaChart = ({ metric, label, entries, delay = 0 }: Props) => {
+  if (!entries.length) return null
 
-const StatisticsAreaChart = ({ metric, data, delay = 0 }: Props) => {
-  if (!data.length) return null
-
-  const label = snakeCaseToTitleCase(metric)
   const gradientId = `grad-${metric}`
-  const y = (entry: ChartDataPoint) => Number(entry[metric])
+  const y = (entry: StatisticsEntry) => entry[metric] ?? 0
 
   const definition = defineChart({
-    motion: (context) => (context.phase === "enter" ? { delay } : undefined),
+    motion: enterDelay(delay),
     marks: [
       decorative(
-        areaY(data, {
+        areaY(entries, {
           x: "day",
           y,
           fill: `url(#${gradientId})`,
           fillOpacity: 1,
         })
       ),
-      lineY(data, { x: "day", y, stroke: color, strokeWidth: 2 }),
+      lineY(entries, { x: "day", y, stroke: color, strokeWidth: 2 }),
     ],
     scales: {
-      x: {
-        scale: scaleLinear,
-        axis: {
-          ticks: {
-            values: data.map((entry) => entry.day),
-            format: (day) => `Day ${day}`,
-          },
-          tickLabels: { fontSize: 12 },
-        },
-      },
-      y: {
-        scale: scaleLinear,
-        nice: true,
-        axis: { tickLabels: { fontSize: 12 } },
-      },
+      x: dayScale(entries.map((entry) => entry.day)),
+      y: valueScale,
     },
     gradients: [
       {
@@ -85,14 +68,10 @@ const StatisticsAreaChart = ({ metric, data, delay = 0 }: Props) => {
     tooltip: {
       use: tooltip,
       content: ([point]) => ({
-        title: `Day ${point?.datum.day}`,
+        title: point ? formatDay(point.datum.day) : "",
         rows: point
           ? [
-              {
-                label,
-                value: point.yValue.toLocaleString(),
-                color,
-              },
+              { label, value: point.yValue.toLocaleString(), color },
               {
                 label: "Time",
                 value: toDateTime(new Date(point.datum.timestamp)),
@@ -104,20 +83,13 @@ const StatisticsAreaChart = ({ metric, data, delay = 0 }: Props) => {
   })
 
   return (
-    <div>
-      <div className="mb-2 flex items-center justify-center gap-2 text-sm">
-        <span className="bg-gold size-3 rounded-sm" />
-        {label}
-      </div>
-
-      <Chart
-        definition={definition}
-        renderer={renderer}
-        height={240}
-        ariaLabel={`${label} per day`}
-        className="text-muted-foreground"
-      />
-    </div>
+    <Chart
+      definition={definition}
+      renderer={chartRenderer}
+      height={240}
+      ariaLabel={`${label} per day`}
+      className="text-muted-foreground"
+    />
   )
 }
 
