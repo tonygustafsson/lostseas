@@ -46,7 +46,7 @@ export const Battles: Story = {
     title: "Battles",
     series: [
       { metric: "battlesWon", label: "Won", color: "var(--success)" },
-      { metric: "battlesLost", label: "Lost", color: "var(--destructive)" },
+      { metric: "battlesLost", label: "Lost", color: "var(--error)" },
     ],
   },
 }

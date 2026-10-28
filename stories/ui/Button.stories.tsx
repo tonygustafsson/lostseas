@@ -5,6 +5,20 @@ import { expect, fn } from "storybook/test"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
 
+const VARIANTS = [
+  "default",
+  "highlight",
+  "secondary",
+  "outline",
+  "ghost",
+  "destructive",
+  "success",
+  "error",
+  "warning",
+  "info",
+  "link",
+] as const
+
 const meta = {
   component: Button,
   args: {
@@ -16,15 +30,7 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: [
-        "default",
-        "highlight",
-        "secondary",
-        "outline",
-        "ghost",
-        "destructive",
-        "link",
-      ],
+      options: VARIANTS,
     },
     size: {
       control: "select",
@@ -48,17 +54,7 @@ export const Default: Story = {}
 export const Variants: Story = {
   render: (args) => (
     <div className="flex flex-wrap gap-4">
-      {(
-        [
-          "default",
-          "highlight",
-          "secondary",
-          "outline",
-          "ghost",
-          "destructive",
-          "link",
-        ] as const
-      ).map((variant) => (
+      {VARIANTS.map((variant) => (
         <Button {...args} key={variant} variant={variant}>
           {variant}
         </Button>

@@ -42,7 +42,7 @@ const SeaEventDialog = () => {
           hasAttackReport &&
             (isVictory
               ? "shadow-success/25 shadow-2xl"
-              : "shadow-destructive/25 shadow-2xl")
+              : "shadow-error/25 shadow-2xl")
         )}
       >
         {!shipMeeting && (

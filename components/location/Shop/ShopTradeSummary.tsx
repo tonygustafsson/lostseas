@@ -98,7 +98,7 @@ const ShopTradeSummary = ({
         <Tile
           label={isShort ? "Short of gold" : "After trade"}
           icon={<Coins />}
-          className={cn(isShort && "text-destructive")}
+          className={cn(isShort && "text-error")}
         >
           {formatNumber(goldAfter)}
         </Tile>
@@ -106,7 +106,7 @@ const ShopTradeSummary = ({
         <Tile
           label={isOverCapacity ? "Over capacity" : "Cargo after trade"}
           icon={<GiCargoCrate />}
-          className={cn(isOverCapacity && "text-destructive")}
+          className={cn(isOverCapacity && "text-error")}
         >
           {formatNumber(cargoAfter)} / {formatNumber(cargoCapacity)}
         </Tile>

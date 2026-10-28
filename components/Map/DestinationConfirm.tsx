@@ -61,7 +61,7 @@ const DestinationConfirm = ({
             key={item}
             className={cn(
               "col-span-3 grid grid-cols-subgrid items-center",
-              onBoard < needed && "text-destructive"
+              onBoard < needed && "text-error"
             )}
           >
             <span className="flex items-center gap-2 capitalize">
@@ -76,7 +76,7 @@ const DestinationConfirm = ({
       </div>
 
       {!hasEnoughSupplies && (
-        <p className="text-destructive text-sm">
+        <p className="text-error text-sm">
           Buy{" "}
           {shortages
             .map(

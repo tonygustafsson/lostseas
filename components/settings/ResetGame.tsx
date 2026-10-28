@@ -91,9 +91,7 @@ const ResetGame = ({ player }: Props) => {
       </Button>
 
       {failed && (
-        <p className="text-destructive">
-          The game could not be reset. Try again.
-        </p>
+        <p className="text-error">The game could not be reset. Try again.</p>
       )}
     </div>
   )

@@ -58,13 +58,13 @@ const AddPasskeyButton = ({ className, ...buttonProps }: Props) => {
       )}
 
       {status === "exists" && (
-        <p className="text-accent w-full">
+        <p className="text-warning w-full">
           This device already has a passkey for this character.
         </p>
       )}
 
       {status === "failed" && (
-        <p className="text-destructive w-full">
+        <p className="text-error w-full">
           The passkey was not added. It may have been cancelled, or this device
           does not support passkeys.
         </p>

@@ -29,7 +29,7 @@ const TYPE_STYLE: Record<LogType, EntryStyle> = {
   },
   defeat: {
     icon: <GiSinkingShip />,
-    color: "text-destructive",
+    color: "text-error",
     notable: true,
   },
   honour: { icon: <GiLaurelsTrophy />, color: "text-gold", notable: true },

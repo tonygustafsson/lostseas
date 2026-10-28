@@ -23,23 +23,23 @@ const meta = {
         >
           Message
         </Button>
-        <Button onClick={() => toast.success("Supplies purchased")}>
+        <Button
+          variant="success"
+          onClick={() => toast.success("Supplies purchased")}
+        >
           Success
         </Button>
-        <Button
-          variant="destructive"
-          onClick={() => toast.error("Not enough gold")}
-        >
+        <Button variant="error" onClick={() => toast.error("Not enough gold")}>
           Error
         </Button>
         <Button
-          variant="outline"
+          variant="warning"
           onClick={() => toast.warning("Supplies are running low")}
         >
           Warning
         </Button>
         <Button
-          variant="secondary"
+          variant="info"
           onClick={() => toast.info("A ship has been spotted")}
         >
           Info

@@ -55,7 +55,7 @@ const ShipActions = ({
           </p>
 
           {removeWarning && (
-            <p className="text-destructive text-sm">{removeWarning}</p>
+            <p className="text-error text-sm">{removeWarning}</p>
           )}
 
           <div className="flex gap-2">

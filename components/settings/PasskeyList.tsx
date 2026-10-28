@@ -100,7 +100,7 @@ const PasskeyList = () => {
       })}
 
       {removed && (
-        <p className="text-accent">
+        <p className="text-warning">
           Passkey removed. Also remove it from your password manager so it is no
           longer offered when you sign in.
         </p>

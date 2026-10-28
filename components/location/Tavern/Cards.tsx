@@ -90,7 +90,7 @@ const TavernCards = () => {
     if (hasResult && index === correctCard)
       return "border-success bg-success/30 -translate-y-4 scale-105 sm:scale-110 shadow-lg shadow-success/50"
     if (hasResult && index === selectedCard)
-      return "border-destructive bg-destructive/30 opacity-80"
+      return "border-error bg-error/30 opacity-80"
     if (index === selectedCard)
       return "border-gold bg-gold/20 -translate-y-4 scale-105 sm:scale-110 shadow-lg shadow-gold/40"
     return "border-border bg-card hover:border-gold-dark hover:-translate-y-2"
@@ -176,7 +176,7 @@ const TavernCards = () => {
           <p
             className={cn(
               "mt-2 font-serif text-lg",
-              hasWon ? "text-success" : "text-destructive"
+              hasWon ? "text-success" : "text-error"
             )}
           >
             {hasWon

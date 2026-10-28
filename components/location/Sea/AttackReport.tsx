@@ -40,7 +40,7 @@ const AttackReport = () => {
           "flex items-center gap-4 rounded-lg border p-4",
           successReport
             ? "border-success/40 bg-success/15"
-            : "border-destructive/40 bg-destructive/15"
+            : "border-error/40 bg-error/15"
         )}
       >
         <Image
@@ -56,7 +56,7 @@ const AttackReport = () => {
           <h2
             className={cn(
               "font-serif text-2xl font-bold",
-              successReport ? "text-success" : "text-destructive"
+              successReport ? "text-success" : "text-error"
             )}
           >
             {successReport ? "Victory!" : "Defeat at sea"}

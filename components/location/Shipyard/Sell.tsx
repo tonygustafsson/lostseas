@@ -58,9 +58,7 @@ const ShipyardSell = () => {
                     </div>
 
                     {cargoWarning && (
-                      <p className="text-destructive mt-4 text-sm">
-                        {cargoWarning}
-                      </p>
+                      <p className="text-error mt-4 text-sm">{cargoWarning}</p>
                     )}
                   </>
                 }

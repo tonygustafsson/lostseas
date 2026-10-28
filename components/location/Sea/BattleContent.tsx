@@ -38,7 +38,7 @@ const BattleContent = ({ battle }: Props) => {
         <StrengthBar
           label="Enemy battle strength"
           value={battle.enemyStrength}
-          className="*:bg-destructive"
+          className="*:bg-error"
         />
 
         <StrengthBar
@@ -54,11 +54,11 @@ const BattleContent = ({ battle }: Props) => {
           "rounded-md border px-4 py-2 text-sm",
           !lastRound
             ? battle.failedToFlee
-              ? "border-destructive/40 bg-destructive/10 text-destructive"
+              ? "border-error/40 bg-error/10 text-error"
               : "border-border bg-muted"
             : lastRound.hit
               ? "border-success/40 bg-success/10 text-success"
-              : "border-destructive/40 bg-destructive/10 text-destructive"
+              : "border-error/40 bg-error/10 text-error"
         )}
       >
         {lastRound ? getRoundText(lastRound) : getOpeningText(battle)}

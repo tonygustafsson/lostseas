@@ -24,7 +24,7 @@ const RELATIONS: Record<
   enemy: {
     label: "Enemy",
     hint: "A victory raises your level",
-    className: "bg-destructive/20 text-destructive",
+    className: "bg-error/20 text-error",
   },
   allied: {
     label: "Allied",
@@ -85,7 +85,7 @@ const getOdds = (difference: number) => {
   return {
     label: "Risky",
     detail: `They out-gun you by ${Math.abs(difference)} ${cannons}`,
-    className: "border-destructive/40 bg-destructive/10 text-destructive",
+    className: "border-error/40 bg-error/10 text-error",
   }
 }
 
@@ -117,7 +117,7 @@ const ShipMeetingContent = ({
             </Badge>
 
             {shipMeeting.isAggressive && (
-              <Badge variant="destructive">
+              <Badge className="bg-error/10 text-error dark:bg-error/20">
                 <GiCrossedSwords data-icon="inline-start" />
                 Hostile
               </Badge>

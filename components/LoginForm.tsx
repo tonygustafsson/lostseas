@@ -92,8 +92,8 @@ const LoginForm = () => {
         error={errors.playerId?.message}
       />
 
-      {error && <p className="text-red-500">{error}</p>}
-      {apiError && <p className="text-red-500">{apiError}</p>}
+      {error && <p className="text-error">{error}</p>}
+      {apiError && <p className="text-error">{apiError}</p>}
 
       <div className="mt-3 flex flex-col gap-2 md:flex-row">
         <Button

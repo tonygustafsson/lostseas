@@ -13,8 +13,8 @@ import {
 import { getWarningContent, getWarningVariant } from "./warningContent"
 
 const iconClass = {
-  error: "bg-destructive/15 text-destructive",
-  warning: "bg-accent/15 text-accent",
+  error: "bg-error/15 text-error",
+  warning: "bg-warning/15 text-warning",
   success: "bg-success/15 text-success",
 }
 
@@ -132,7 +132,7 @@ const AdvisorTips = ({ heading, title, showAllClear, destination }: Props) => {
 
           <WarningGroup
             label="Before you sail"
-            labelClassName="text-destructive"
+            labelClassName="text-error"
             warnings={blocking}
             player={player}
             destination={destination}

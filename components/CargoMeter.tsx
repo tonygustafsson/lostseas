@@ -30,8 +30,8 @@ const CargoMeter = ({ load, capacity, label = "Cargo", className }: Props) => {
         <span
           className={cn(
             "font-semibold tabular-nums",
-            isOverloaded && "text-destructive",
-            isNearlyFull && "text-accent"
+            isOverloaded && "text-error",
+            isNearlyFull && "text-warning"
           )}
         >
           {formatNumber(load)} / {formatNumber(capacity)}
@@ -42,7 +42,7 @@ const CargoMeter = ({ load, capacity, label = "Cargo", className }: Props) => {
         value={percentage}
         aria-label={`${label}: ${load} of ${capacity}`}
         variant={isOverloaded ? "default" : "gilded"}
-        className={cn(isOverloaded && "*:bg-destructive")}
+        className={cn(isOverloaded && "*:bg-error")}
       />
     </div>
   )

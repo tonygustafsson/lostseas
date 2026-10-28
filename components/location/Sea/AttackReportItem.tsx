@@ -26,7 +26,7 @@ const AttackReportItem = ({
         "h-full gap-1 rounded-md border p-2 ring-0",
         variant === "success"
           ? "border-success/40 bg-success/10"
-          : "border-destructive/40 bg-destructive/10"
+          : "border-error/40 bg-error/10"
       )}
     >
       <div className="flex items-center gap-2">
@@ -42,7 +42,7 @@ const AttackReportItem = ({
       <p
         className={cn(
           "text-lg font-bold tabular-nums",
-          variant === "success" ? "text-success" : "text-destructive"
+          variant === "success" ? "text-success" : "text-error"
         )}
       >
         {change}

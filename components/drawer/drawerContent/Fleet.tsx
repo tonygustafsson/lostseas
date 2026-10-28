@@ -126,7 +126,7 @@ const FleetDrawer = () => {
         <p
           className={cn(
             "text-sm",
-            cargo.overload ? "text-destructive" : "text-muted-foreground"
+            cargo.overload ? "text-error" : "text-muted-foreground"
           )}
         >
           {cargo.overload

@@ -89,7 +89,7 @@ const VentureCard = ({
           variant="outline"
           className={cn(
             "bg-background/80 absolute top-2 right-2 backdrop-blur-sm",
-            isRisky && "text-destructive"
+            isRisky && "text-error"
           )}
         >
           {venture.risk} risk
