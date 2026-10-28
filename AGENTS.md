@@ -35,6 +35,7 @@
   - Keep components and hooks compliant with the Rules of React.
   - When updating component, also look for Storybook stories and tests and update them as well.
 - Code should have enough white space and air - have line breaks between components if it makes sense. Specially if they are visibly separate.
+- Feel free to add valuable comments in the codebase, but don't overdo it. A comment should explain behaviour, not the code. Also avoid making the code look AI generated.
 
 ## Components
 
