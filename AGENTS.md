@@ -3,8 +3,12 @@
 ## Way of working
 
 - Keep communication short and concise. Avoid unnecessarily long explanations and code examples.
+- Do not lightly introduce more complexity, instead ask questions to be sure on how to proceed if you predict that the complexity will increase during the task.
 - Prefer existing project patterns, components, hooks, and utilities before introducing new abstractions.
 - When a task is complete, run linting and formatting.
+- Make the smallest change that meets the request, but suggest optimizations and abstractions if you see it would benefit the project.
+- Don't forget to create a Storybook story for new features, and see that all properties can be tested in the story.
+- This project doesn't have any active users so feel free to change the database queries and add data, see it as required and assumed it will be there instead of handling fallbacks, errors or batch fixing the database.
 - Never commit, stage, stash or push anything in GIT, that will always be handled by a human.
 
 ## Project
@@ -20,7 +24,7 @@
   - `npm run lint`
   - `npm test`
   - `npm run build`
-  - `npm run storybook`
+  - `npm run storybook` — Storybook on port 6010 (http://localhost:6010). The port is fixed and the command fails if 6010 is taken. Check whether Storybook is already running before starting another instance, and read story IDs from the stories file instead of guessing them.
   - `npm run storybook:build`
 - Do not install new NPM packages without approval.
 - The project uses React Compiler. Write idiomatic React that the compiler can optimize:
@@ -54,6 +58,6 @@
 ## Verification
 
 - Run relevant Vitest tests after changing game logic or behavior.
-- Run linting and formatting after code changes.
+- Run linting and formatting after code changes on touched files.
 - Run `npm run build` after significant changes involving routing, rendering, configuration, or production behavior.
 - Do not consider a task complete if the changes introduce lint, formatting, TypeScript, build, or test errors.

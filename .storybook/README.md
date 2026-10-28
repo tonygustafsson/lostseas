@@ -1,6 +1,6 @@
 # Storybook
 
-Run `npm run storybook` and open http://localhost:6006. Build a static catalog with `npm run storybook:build` (output: `storybook-static/`). Run `npm test` for the game's Vitest tests.
+Run `npm run storybook` and open http://localhost:6010. Build a static catalog with `npm run storybook:build` (output: `storybook-static/`). Run `npm test` for the game's Vitest tests.
 
 Stories live in the root `stories/` folder as `*.stories.tsx`. Storybook derives its navigation from folder and file names, so omit `meta.title`:
 
