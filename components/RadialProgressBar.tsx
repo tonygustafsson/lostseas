@@ -1,133 +1,112 @@
 "use client"
 
-import { animate, m as motion } from "framer-motion"
-import { useEffect, useRef } from "react"
+import { defineChart } from "@tanstack/charts"
+import { polar, radialArc } from "@tanstack/charts/polar"
+import { Chart } from "@tanstack/charts/react/core"
+import { animate, useMotionValue, useMotionValueEvent } from "framer-motion"
+import { useEffect, useState } from "react"
+
+import { chartRenderer } from "@/components/charts/chartConfig"
+import { cn } from "@/lib/utils"
 
 type Props = {
   percentage: number
-  strokeWidth?: number
   autoStrokeColor?: boolean
   showLabel?: boolean
   startPercentage?: number
   className?: string
 }
 
-const WIDTH = 80
-const HEIGHT = 80
-const RADIAL = 30
-const CX = WIDTH / 2
-const CY = HEIGHT / 2
-const CIRCUMFERENCE = RADIAL * 2 * Math.PI
-const CIRCLE_ANIMATION_TIME = 1
-const TEXT_ANIMATION_TIME = 0.5
+const FULL_TURN = Math.PI * 2
+const ANIMATION_TIME = 1
 
 const getStrokeColor = (percentage: number) => {
   if (percentage > 65) {
-    return "text-success"
+    return "var(--success)"
   }
 
   if (percentage > 40) {
-    return "text-warning"
+    return "var(--warning)"
   }
 
-  return "text-error"
-}
-
-const getFontPosition = (percentage: number) => {
-  if (percentage.toString().length === 1) {
-    return { x: CX - 8, y: CY + 5 }
-  }
-
-  if (percentage.toString().length === 3) {
-    return { x: CX - 19, y: CY + 5 }
-  }
-
-  return { x: CX - 14, y: CY + 5 }
+  return "var(--error)"
 }
 
 const RadialProgressBar = ({
   percentage,
-  strokeWidth = 8,
   showLabel = true,
   autoStrokeColor = true,
   startPercentage,
   className,
 }: Props) => {
-  const circleRef = useRef<SVGCircleElement>(null)
-  const textRef = useRef<SVGTextElement>(null)
+  const progress = useMotionValue(startPercentage ?? 0)
+  const [shownPercentage, setShownPercentage] = useState(progress.get())
 
-  const strokeStartDashoffset = startPercentage
-    ? CIRCUMFERENCE - (startPercentage / 100) * CIRCUMFERENCE
-    : CIRCUMFERENCE
-  const strokeEndDashoffset = CIRCUMFERENCE - (percentage / 100) * CIRCUMFERENCE
+  useMotionValueEvent(progress, "change", setShownPercentage)
+
+  // The chart morphs arcs as raw path strings, which breaks when an arc
+  // crosses half a turn, so the sweep is animated here instead
+  useEffect(() => {
+    const controls = animate(progress, percentage, {
+      duration: ANIMATION_TIME,
+    })
+
+    return () => controls.stop()
+  }, [progress, percentage])
+
   const strokeColor = autoStrokeColor
     ? getStrokeColor(percentage)
     : "currentColor"
 
-  useEffect(() => {
-    const circle = circleRef.current
+  // The track is drawn first so the progress arc sits on top of it
+  const arcs = [
+    {
+      key: "track",
+      endAngle: FULL_TURN,
+      color: "var(--muted-foreground)",
+    },
+    {
+      key: "progress",
+      endAngle: (shownPercentage / 100) * FULL_TURN,
+      color: strokeColor,
+    },
+  ]
 
-    if (!circle) return
-
-    const controls = animate(strokeStartDashoffset, strokeEndDashoffset, {
-      duration: CIRCLE_ANIMATION_TIME,
-      onUpdate(value) {
-        circle.setAttribute("stroke-dashoffset", value.toString())
-      },
-    })
-
-    return () => controls.stop()
-  }, [percentage, strokeEndDashoffset, circleRef, strokeStartDashoffset])
-
-  useEffect(() => {
-    const text = textRef.current
-    if (!text) return
-
-    const controls = animate(0, percentage, {
-      duration: TEXT_ANIMATION_TIME,
-      onUpdate(value) {
-        const fontPosition = getFontPosition(value)
-
-        text.textContent = `${Math.round(value).toString()}%`
-        text.setAttribute("x", fontPosition.x.toString())
-        text.setAttribute("y", fontPosition.y.toString())
-      },
-    })
-
-    return () => controls.stop()
-  }, [percentage, strokeEndDashoffset, circleRef])
+  const definition = defineChart({
+    marks: [
+      polar({
+        marks: [
+          radialArc(arcs, {
+            startAngle: () => 0,
+            endAngle: "endAngle",
+            innerRadius: ({ radius }) => radius * 0.76,
+            cornerRadius: ({ radius }) => radius * 0.12,
+            fill: (arc) => arc.color,
+            key: "key",
+            motion: false,
+          }),
+        ],
+        scales: { angle: null, radius: null },
+      }),
+    ],
+    scales: { x: null, y: null },
+  })
 
   return (
-    <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className={className}>
-      <circle
-        className="text-muted-foreground"
-        strokeWidth={strokeWidth}
-        stroke="currentColor"
-        fill="transparent"
-        r={RADIAL}
-        cx={CX}
-        cy={CY}
-      />
-
-      <motion.circle
-        strokeWidth={strokeWidth}
-        strokeDasharray={CIRCUMFERENCE}
-        strokeDashoffset={strokeStartDashoffset}
-        strokeLinecap="round"
-        stroke="currentColor"
-        fill="transparent"
-        r={RADIAL}
-        cx={CX}
-        cy={CY}
-        className={strokeColor}
-        style={{ rotate: "-85deg", transformOrigin: "50% 50%" }}
-        ref={circleRef}
+    <div className={cn("relative", className)}>
+      <Chart
+        definition={definition}
+        renderer={chartRenderer}
+        aspectRatio={1}
+        ariaLabel={`${Math.round(percentage)}%`}
       />
 
       {showLabel && (
-        <motion.text ref={textRef} fontSize={15} className="fill-white" />
+        <span className="text-foreground absolute inset-0 flex items-center justify-center text-xs">
+          {Math.round(percentage)}%
+        </span>
       )}
-    </svg>
+    </div>
   )
 }
 
