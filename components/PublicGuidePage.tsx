@@ -78,7 +78,7 @@ const PublicGuidePage = () => (
 
       <footer className="bg-card/80 mt-8 flex flex-col gap-5 rounded-3xl border border-amber-200/15 p-5 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:p-7">
         <div>
-          <p className="text-xs font-semibold tracking-[0.16em] text-amber-300 uppercase">
+          <p className="text-accent text-xs font-semibold tracking-[0.16em] uppercase">
             Ready to set sail?
           </p>
           <p className="mt-1 font-serif text-2xl text-amber-50">

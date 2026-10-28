@@ -16,9 +16,9 @@ export const StatCard = ({ title, value, Icon }: Props) => {
 
     previousValue.current = value
     controls.start({
-      scale: [1, 1.3, 1],
-      color: ["#fff", "#fbbf24", "#fff"],
-      transition: { duration: 0.25 },
+      scale: [1, 1.35, 1],
+      color: ["#fff", "var(--color-accent)", "#fff"],
+      transition: { duration: 0.5 },
     })
   }, [controls, value])
 

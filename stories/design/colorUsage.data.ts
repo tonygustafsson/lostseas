@@ -105,7 +105,7 @@ export const colorUsage: ColorUsage[] = [
     "name": "accent",
     "token": "--color-accent",
     "css": "var(--color-accent)",
-    "count": 63,
+    "count": 65,
     "variants": {
       "/30": 1,
       "/10": 1,
@@ -115,8 +115,9 @@ export const colorUsage: ColorUsage[] = [
     "utilities": {
       "border": 8,
       "bg": 3,
-      "text": 51,
-      "ring": 1
+      "text": 52,
+      "ring": 1,
+      "var()": 1
     },
     "files": {
       "components/ActionCard.tsx": 3,
@@ -148,10 +149,11 @@ export const colorUsage: ColorUsage[] = [
       "components/menu/MenuCard.tsx": 3,
       "components/menu/MobileBottomNav.tsx": 5,
       "components/menu/MobileMenuContent.tsx": 1,
-      "components/menu/StatCard.tsx": 1,
+      "components/menu/StatCard.tsx": 2,
       "components/menu/WeatherCard.tsx": 1,
       "components/MerchandiseCard.tsx": 2,
       "components/MerchandiseIcon.tsx": 1,
+      "components/PublicGuidePage.tsx": 1,
       "components/settings/PasskeyList.tsx": 1,
       "components/ships/FittingsList.tsx": 1,
       "components/ships/ShipCard.tsx": 2,
@@ -955,31 +957,6 @@ export const colorUsage: ColorUsage[] = [
     }
   },
   {
-    "kind": "palette",
-    "name": "neutral-950",
-    "token": "--color-neutral-950",
-    "css": "var(--color-neutral-950)",
-    "count": 9,
-    "variants": {
-      "/90": 1
-    },
-    "utilities": {
-      "bg": 8,
-      "text": 1
-    },
-    "files": {
-      "components/DrawerBottom.tsx": 1,
-      "components/DrawerPanel.tsx": 1,
-      "components/game-ui/LocationScene/BuildingScene.tsx": 1,
-      "components/game-ui/LocationScene/HarborScene.tsx": 1,
-      "components/layouts/fullscreen.tsx": 1,
-      "components/location/Sea/index.tsx": 1,
-      "components/Select.tsx": 1,
-      "components/TextField.tsx": 1,
-      "components/ui/button.tsx": 1
-    }
-  },
-  {
     "kind": "token",
     "name": "gold-light",
     "token": "--color-gold-light",
@@ -996,6 +973,29 @@ export const colorUsage: ColorUsage[] = [
       "components/menu/MobileBottomNav.tsx": 5,
       "components/menu/MobileTopBar.tsx": 1,
       "styles/globals.css": 2
+    }
+  },
+  {
+    "kind": "palette",
+    "name": "neutral-950",
+    "token": "--color-neutral-950",
+    "css": "var(--color-neutral-950)",
+    "count": 8,
+    "variants": {
+      "/90": 1
+    },
+    "utilities": {
+      "bg": 8
+    },
+    "files": {
+      "components/DrawerBottom.tsx": 1,
+      "components/DrawerPanel.tsx": 1,
+      "components/game-ui/LocationScene/BuildingScene.tsx": 1,
+      "components/game-ui/LocationScene/HarborScene.tsx": 1,
+      "components/layouts/fullscreen.tsx": 1,
+      "components/location/Sea/index.tsx": 1,
+      "components/Select.tsx": 1,
+      "components/TextField.tsx": 1
     }
   },
   {
@@ -1310,22 +1310,6 @@ export const colorUsage: ColorUsage[] = [
     }
   },
   {
-    "kind": "palette",
-    "name": "amber-300",
-    "token": "--color-amber-300",
-    "css": "var(--color-amber-300)",
-    "count": 2,
-    "variants": {},
-    "utilities": {
-      "text": 1,
-      "bg": 1
-    },
-    "files": {
-      "components/PublicGuidePage.tsx": 1,
-      "components/ui/button.tsx": 1
-    }
-  },
-  {
     "kind": "token",
     "name": "card-foreground",
     "token": "--color-card-foreground",
@@ -1559,15 +1543,31 @@ export const colorUsage: ColorUsage[] = [
     }
   },
   {
-    "kind": "literal",
-    "name": "#fbbf24",
-    "token": "Hex literal",
-    "css": "#fbbf24",
+    "kind": "palette",
+    "name": "amber-300",
+    "token": "--color-amber-300",
+    "css": "var(--color-amber-300)",
     "count": 1,
     "variants": {},
-    "utilities": {},
+    "utilities": {
+      "bg": 1
+    },
     "files": {
-      "components/menu/StatCard.tsx": 1
+      "components/ui/button.tsx": 1
+    }
+  },
+  {
+    "kind": "palette",
+    "name": "slate-950",
+    "token": "--color-slate-950",
+    "css": "var(--color-slate-950)",
+    "count": 1,
+    "variants": {},
+    "utilities": {
+      "text": 1
+    },
+    "files": {
+      "components/ui/button.tsx": 1
     }
   },
   {
