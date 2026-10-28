@@ -23,14 +23,14 @@ const TEXT_ANIMATION_TIME = 0.5
 
 const getStrokeColor = (percentage: number) => {
   if (percentage > 65) {
-    return "text-green-500"
+    return "text-success"
   }
 
   if (percentage > 40) {
-    return "text-yellow-500"
+    return "text-warning"
   }
 
-  return "text-red-500"
+  return "text-error"
 }
 
 const getFontPosition = (percentage: number) => {
@@ -100,7 +100,7 @@ const RadialProgressBar = ({
   return (
     <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className={className}>
       <circle
-        className="text-gray-400"
+        className="text-muted-foreground"
         strokeWidth={strokeWidth}
         stroke="currentColor"
         fill="transparent"
@@ -124,7 +124,9 @@ const RadialProgressBar = ({
         ref={circleRef}
       />
 
-      {showLabel && <motion.text ref={textRef} fontSize={15} fill="white" />}
+      {showLabel && (
+        <motion.text ref={textRef} fontSize={15} className="fill-white" />
+      )}
     </svg>
   )
 }

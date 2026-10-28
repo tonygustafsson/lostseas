@@ -8,11 +8,11 @@ type Props = {
 
 export default function ShipHealthBadge({ health, className }: Props) {
   const color =
-    health > 75 ? "bg-green-700" : health > 30 ? "bg-amber-600" : "bg-red-600"
+    health > 75
+      ? "bg-success/10 text-success"
+      : health > 30
+        ? "bg-warning/10 text-warning"
+        : "bg-error/10 text-error"
 
-  return (
-    <Badge className={cn("text-white", color, className)}>
-      Health: {health}%
-    </Badge>
-  )
+  return <Badge className={cn(color, className)}>Health: {health}%</Badge>
 }

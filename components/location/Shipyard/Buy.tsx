@@ -39,7 +39,7 @@ const ShipyardBuy = () => {
   return (
     <>
       {maxShipsReached && (
-        <Alert className="mb-8 bg-gray-800">
+        <Alert className="mb-8 bg-neutral-900">
           <AlertTriangleIcon />
           <AlertTitle>Max ships reached</AlertTitle>
           <AlertDescription>

@@ -14,7 +14,7 @@ export default function FullscreenLayout({
       <DesktopMenu className="hidden lg:block" />
 
       <main
-        className={`${almendra.variable} ${crimsonText.variable} flex min-h-dvh w-full flex-col bg-slate-950`}
+        className={`${almendra.variable} ${crimsonText.variable} flex min-h-dvh w-full flex-col bg-neutral-950`}
       >
         {children}
       </main>

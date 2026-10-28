@@ -74,7 +74,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
         </header>
 
         <section aria-labelledby="page-title" className="max-w-5xl py-12">
-          <div className="bg-card/70 mb-6 inline-flex items-center gap-2 rounded-full border border-amber-100/20 px-3.5 py-1.5 text-xs font-semibold tracking-[0.16em] text-amber-200 uppercase shadow-lg shadow-black/20 backdrop-blur">
+          <div className="bg-card/70 mb-6 inline-flex items-center gap-2 rounded-full border border-amber-200/20 px-3.5 py-1.5 text-xs font-semibold tracking-[0.16em] text-amber-200 uppercase shadow-lg shadow-black/20 backdrop-blur">
             <Waves className="size-4" aria-hidden="true" />
             The Caribbean, 1640
           </div>
@@ -91,42 +91,45 @@ const LoginScreen = ({ initialCharacter }: Props) => {
           </p>
           <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             <article className="bg-card/75 border-border rounded-2xl border p-4 backdrop-blur">
-              <Compass className="text-accent mb-3 size-5" aria-hidden="true" />
+              <Compass
+                className="mb-3 size-5 text-amber-200"
+                aria-hidden="true"
+              />
               <h2 className="font-serif text-lg text-amber-50">
                 Four rival nations
               </h2>
-              <p className="mt-1 text-sm leading-5 text-slate-200/65">
+              <p className="mt-1 text-sm leading-5 text-slate-100/65">
                 Explore 16 ports across England, France, Spain, and Holland.
               </p>
             </article>
             <article className="bg-card/75 border-border rounded-2xl border p-4 backdrop-blur">
-              <Ship className="mb-3 size-5 text-sky-200" aria-hidden="true" />
+              <Ship className="mb-3 size-5 text-amber-200" aria-hidden="true" />
               <h2 className="font-serif text-lg text-amber-50">
                 Ships &amp; crew
               </h2>
-              <p className="mt-1 text-sm leading-5 text-slate-200/65">
+              <p className="mt-1 text-sm leading-5 text-slate-100/65">
                 Build your fleet, recruit sailors, and take on ships at sea.
               </p>
             </article>
             <article className="bg-card/75 border-border rounded-2xl border p-4 backdrop-blur">
               <Sparkles
-                className="mb-3 size-5 text-violet-200"
+                className="mb-3 size-5 text-amber-200"
                 aria-hidden="true"
               />
               <h2 className="font-serif text-lg text-amber-50">
                 Make your name
               </h2>
-              <p className="mt-1 text-sm leading-5 text-slate-200/65">
+              <p className="mt-1 text-sm leading-5 text-slate-100/65">
                 Earn new titles, grow your wealth, and rise through the ranks.
               </p>
             </article>
             <article className="bg-card/75 border-border rounded-2xl border p-4 backdrop-blur">
               <ShieldCheck
-                className="mb-3 size-5 text-emerald-200"
+                className="mb-3 size-5 text-amber-200"
                 aria-hidden="true"
               />
               <h2 className="font-serif text-lg text-amber-50">Free to play</h2>
-              <p className="mt-1 text-sm leading-5 text-slate-200/65">
+              <p className="mt-1 text-sm leading-5 text-slate-100/65">
                 No ads, purchases, email address, or real name required.
               </p>
             </article>
@@ -153,7 +156,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
                 >
                   Your Legend Begins Here
                 </h2>
-                <p className="mt-2 max-w-xl leading-6 text-slate-200/70">
+                <p className="mt-2 max-w-xl leading-6 text-slate-100/70">
                   Choose who you&apos;ll be. It&apos;s free to play, and you can
                   begin without sharing an email address.
                 </p>
@@ -168,7 +171,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
             className="bg-card/85 border-border scroll-mt-8 rounded-3xl border p-5 shadow-xl shadow-black/20 backdrop-blur-xl sm:p-8"
           >
             <div className="mb-5">
-              <p className="mb-1 text-xs font-semibold tracking-[0.16em] text-sky-200 uppercase">
+              <p className="text-accent mb-1 text-xs font-semibold tracking-[0.16em] uppercase">
                 Already have a character?
               </p>
               <h2
@@ -210,31 +213,31 @@ const LoginScreen = ({ initialCharacter }: Props) => {
                 <Compass className="size-5" aria-hidden="true" />
               </div>
               <h3 className="font-serif text-xl text-amber-50">Four nations</h3>
-              <p className="mt-2 leading-6 text-slate-200/70">
+              <p className="mt-2 leading-6 text-slate-100/70">
                 Explore the ports and waters claimed by England, France, Spain,
                 and Holland.
               </p>
             </article>
             <article className="bg-card/80 border-border rounded-2xl border p-5 backdrop-blur">
-              <div className="mb-4 flex size-10 items-center justify-center rounded-xl bg-sky-200/10 text-sky-200">
+              <div className="mb-4 flex size-10 items-center justify-center rounded-xl bg-amber-200/10 text-amber-200">
                 <Ship className="size-5" aria-hidden="true" />
               </div>
               <h3 className="font-serif text-xl text-amber-50">
                 Build your name
               </h3>
-              <p className="mt-2 leading-6 text-slate-200/70">
+              <p className="mt-2 leading-6 text-slate-100/70">
                 Earn better titles, grow your crew, find stronger ships, and
                 build your fortune.
               </p>
             </article>
             <article className="bg-card/80 border-border rounded-2xl border p-5 backdrop-blur">
-              <div className="mb-4 flex size-10 items-center justify-center rounded-xl bg-emerald-200/10 text-emerald-200">
+              <div className="mb-4 flex size-10 items-center justify-center rounded-xl bg-amber-200/10 text-amber-200">
                 <Sparkles className="size-5" aria-hidden="true" />
               </div>
               <h3 className="font-serif text-xl text-amber-50">
                 Made to explore
               </h3>
-              <p className="mt-2 leading-6 text-slate-200/70">
+              <p className="mt-2 leading-6 text-slate-100/70">
                 Discover AI-created scenes, royalty-free music, and sound
                 effects that shift as your voyage unfolds.
               </p>
@@ -253,7 +256,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
                 <h3 className="font-serif text-2xl text-amber-50 sm:text-3xl">
                   Get your bearings with the Player Guide
                 </h3>
-                <p className="mt-2 leading-6 text-slate-200/75">
+                <p className="mt-2 leading-6 text-slate-100/75">
                   Learn the ropes of sailing, supplies, ships, crew, and life in
                   the Caribbean.
                 </p>

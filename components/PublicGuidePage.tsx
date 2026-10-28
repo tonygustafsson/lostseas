@@ -48,7 +48,7 @@ const PublicGuidePage = () => (
       <Button
         asChild
         variant="outline"
-        className="bg-card/75 hover:bg-muted rounded-full border-white/15 text-amber-50 hover:text-amber-100"
+        className="bg-card/75 hover:bg-muted rounded-full border-white/15 text-amber-50 hover:text-amber-200"
       >
         <Link href="/">
           <ArrowLeft aria-hidden="true" />

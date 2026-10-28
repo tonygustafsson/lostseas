@@ -34,7 +34,7 @@ const HarborScene = ({ town }: Props) => {
   return (
     <div className="bg-card overflow-hidden rounded-xl border shadow-2xl">
       {map && (
-        <div className="border-gold/40 border-b bg-slate-950">
+        <div className="border-gold/40 border-b bg-neutral-950">
           <TownMap map={map} alt={`Map of ${town}`} onMove={handleMove} />
         </div>
       )}
@@ -45,7 +45,7 @@ const HarborScene = ({ town }: Props) => {
             The Harbor
           </p>
 
-          <h1 className="flex items-center gap-4 font-serif text-4xl tracking-wide text-stone-200 lg:text-5xl">
+          <h1 className="flex items-center gap-4 font-serif text-4xl tracking-wide lg:text-5xl">
             <Flag nation={nation} className="size-8 opacity-80 lg:size-10" />
             {town}
           </h1>

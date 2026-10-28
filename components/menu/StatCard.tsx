@@ -29,7 +29,7 @@ export const StatCard = ({ title, value, Icon }: Props) => {
   return (
     <div className="flex items-center justify-between">
       <div>
-        <p className="text-xs text-gray-400">{title}</p>
+        <p className="text-muted-foreground text-xs">{title}</p>
         <motion.p
           initial={false}
           animate={controls}

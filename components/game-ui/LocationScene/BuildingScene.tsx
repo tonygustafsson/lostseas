@@ -24,7 +24,7 @@ const BuildingScene = ({ town, location }: Props) => {
   )
 
   return (
-    <div className="relative grid min-h-88 place-items-center overflow-hidden rounded-xl border bg-slate-950">
+    <div className="relative grid min-h-88 place-items-center overflow-hidden rounded-xl border bg-neutral-950">
       <div className="absolute inset-0 opacity-80">
         <Image
           ref={imageRef}

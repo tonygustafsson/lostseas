@@ -15,13 +15,13 @@ const JourneyProgress = ({ journey, day }: Props) => {
   const percentage = (journey.day / journey.totalDays) * 100
 
   return (
-    <div className="flex items-center gap-3 text-base text-stone-100">
+    <div className="flex items-center gap-3 text-base text-stone-300">
       <RadialProgressBar
         startPercentage={startPercentage}
         percentage={percentage}
         showLabel={false}
         autoStrokeColor={false}
-        className="size-12 shrink-0 text-sky-300"
+        className="text-info size-12 shrink-0"
       />
 
       <div className="min-w-0">
@@ -32,7 +32,7 @@ const JourneyProgress = ({ journey, day }: Props) => {
 
         <div className="mt-1 flex items-center gap-2 text-base">
           <span>{currentDate}</span>
-          <WeatherIcon className="size-5 shrink-0 text-sky-300" />
+          <WeatherIcon className="text-info size-5 shrink-0" />
         </div>
       </div>
     </div>

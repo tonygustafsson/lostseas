@@ -65,9 +65,7 @@ const QuickAmounts = ({
                 variant={share === 1 ? "highlight" : "secondary"}
                 className={cn(
                   "h-auto flex-col gap-0 py-2 font-serif",
-                  share === 1
-                    ? "hover:bg-amber-100"
-                    : "hover:bg-secondary hover:brightness-125"
+                  share !== 1 && "hover:bg-secondary hover:brightness-125"
                 )}
                 aria-label={`${verb} ${share === 1 ? "all" : label} (${formatGold(amount)})`}
                 disabled={disabled}
