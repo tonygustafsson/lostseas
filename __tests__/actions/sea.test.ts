@@ -5,6 +5,7 @@ import {
   attackShip,
   battleMove,
   continueJourney,
+  fleeShip,
   ignoreShip,
   startJourney,
   takeLoot,
@@ -61,6 +62,8 @@ const atSea = (sea: Partial<SeaState> = {}, journeyDay = 3) =>
       { locationStates: { sea: { shipMeeting: null, ...sea } } }
     )
   )
+
+const aggressiveShip: ShipMeetingState = { ...shipMeeting, isAggressive: true }
 
 const inBattle = (battle: BattleState = startBattle()) =>
   atSea({ shipMeeting, battle })
@@ -253,6 +256,44 @@ describe("continueJourney", () => {
     expect(result.player.locationStates?.sea?.shipMeeting).toEqual(meeting)
   })
 
+  it.each([
+    ["England", 0.99, false],
+    ["France", 0.66, true],
+    ["France", 0.67, false],
+    ["Pirate", 0.66, true],
+    ["Spain", 0.32, true],
+    ["Spain", 0.34, false],
+  ] as const)(
+    "makes a ship from %s aggressive on a roll of %d: %s",
+    (nation, roll, isAggressive) => {
+      vi.spyOn(Math, "random").mockReturnValue(
+        // createMeetingShip picks the nation from England, France, Spain, Holland, Pirate
+        ["England", "France", "Spain", "Holland", "Pirate"].indexOf(nation) /
+          5 +
+          0.01
+      )
+      // The first roll meets a ship, the second decides aggression
+      const rolls = [0, roll]
+      const random = () => rolls.shift() ?? 0
+
+      const meeting = expectSuccess(continueJourney(atSea(), random)).data
+        .shipMeetingState
+
+      expect(meeting?.nation).toBe(nation)
+      expect(meeting?.isAggressive).toBe(isAggressive)
+    }
+  )
+
+  it("never makes an allied ship aggressive", () => {
+    vi.spyOn(Math, "random").mockReturnValue(0)
+
+    const meeting = expectSuccess(continueJourney(atSea(), MEET_SHIP)).data
+      .shipMeetingState
+
+    expect(meeting?.nation).toBe("England")
+    expect(meeting?.isAggressive).toBe(false)
+  })
+
   it("never meets another ship right after one", () => {
     const result = expectSuccess(
       continueJourney(atSea({ justMetAShip: true }), MEET_SHIP)
@@ -391,7 +432,7 @@ describe("continueJourney", () => {
   it("rejects sailing on past a ship without attacking or ignoring it", () => {
     expectError(
       continueJourney(atSea({ shipMeeting })),
-      "Attack or ignore the ship before sailing on.",
+      "Deal with the ship before sailing on.",
       409
     )
   })
@@ -613,6 +654,72 @@ describe("ignoreShip", () => {
     expectError(
       ignoreShip(inBattle()),
       "You cannot ignore a ship during a battle",
+      409
+    )
+  })
+
+  it("rejects ignoring an aggressive ship", () => {
+    expectError(
+      ignoreShip(atSea({ shipMeeting: aggressiveShip })),
+      "You must flee or attack.",
+      409
+    )
+  })
+})
+
+describe("fleeShip", () => {
+  it("escapes two times out of three and remembers the ship", () => {
+    const result = expectSuccess(
+      fleeShip(atSea({ shipMeeting: aggressiveShip }), always(0.66))
+    )
+
+    expect(result.data).toEqual({ escaped: true })
+    expect(result.player.locationStates?.sea?.shipMeeting).toBeUndefined()
+    expect(result.player.locationStates?.sea?.justMetAShip).toBe(true)
+    expect(result.player.locationStates?.sea?.battle).toBeUndefined()
+    expect(result.log).toMatchObject({
+      type: "voyage",
+      message: "Escaped a ship from France.",
+    })
+  })
+
+  it("starts the battle when the escape fails", () => {
+    const result = expectSuccess(
+      fleeShip(atSea({ shipMeeting: aggressiveShip }), always(0.67))
+    )
+
+    expect(result.data).toEqual({ escaped: false })
+    expect(result.player.locationStates?.sea?.shipMeeting).toEqual(
+      aggressiveShip
+    )
+    expect(result.player.locationStates?.sea?.battle).toEqual({
+      enemyStrength: 100,
+      playerStrength: 100,
+      rounds: [],
+      failedToFlee: true,
+    })
+    expect(result.log).toMatchObject({
+      type: "attack",
+      message: "Failed to escape a ship from France.",
+    })
+  })
+
+  it("rejects fleeing without a ship", () => {
+    expectError(fleeShip(atSea()), "You are not currently meeting a ship")
+  })
+
+  it("rejects fleeing from a friendly ship", () => {
+    expectError(
+      fleeShip(atSea({ shipMeeting })),
+      "This ship is not hostile.",
+      409
+    )
+  })
+
+  it("rejects fleeing during a battle", () => {
+    expectError(
+      fleeShip(atSea({ shipMeeting: aggressiveShip, battle: startBattle() })),
+      "You cannot flee during a battle",
       409
     )
   })
@@ -918,6 +1025,7 @@ describe("random voyages", () => {
     "continue",
     "attack",
     "ignore",
+    "flee",
     "fire",
     "evade",
   ] as const
@@ -938,7 +1046,7 @@ describe("random voyages", () => {
         character: { gold: random.int(0, 5000) },
       })
 
-      for (let step = 0; step < 1000; step++) {
+      for (let step = 0; step < 2000; step++) {
         // Back in port, restock and heal so the next voyage can start
         if (player.character.location !== "Sea") {
           player = patchDeep<Player>(player, {
@@ -974,7 +1082,9 @@ describe("random voyages", () => {
                 ? attackShip(before)
                 : action === "ignore"
                   ? ignoreShip(before)
-                  : battleMove(before, { action })
+                  : action === "flee"
+                    ? fleeShip(before, random.next)
+                    : battleMove(before, { action })
 
         if ("error" in result || "blocked" in result) {
           continue
@@ -1032,7 +1142,7 @@ describe("random voyages", () => {
         player = after
       }
 
-      // Guards against random play that only ever hits errors
+      expect([...succeededActions].sort()).toEqual([...ACTIONS].sort())
       expect(succeededActions.size).toBe(ACTIONS.length)
     }
   )

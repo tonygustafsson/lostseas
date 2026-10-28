@@ -95,6 +95,18 @@ export const useSea = () => {
     onError: (error) => console.error(error),
   })
 
+  const { mutate: fleeShip, isPending: isFleeingShip } = useMutation({
+    mutationFn: () => apiRequest("/api/sea/fleeShip", null, "POST"),
+    onSuccess: async (response) => {
+      const { escaped }: { escaped?: boolean } = response?.data ?? {}
+
+      await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+      playSoundEffect(escaped ? "journey" : "cannons")
+    },
+    onError: (error) => console.error(error),
+  })
+
   return {
     startJourney,
     isStartingJourney,
@@ -106,6 +118,8 @@ export const useSea = () => {
     isMakingBattleMove,
     ignoreShip,
     isIgnoringShip,
+    fleeShip,
+    isFleeingShip,
     takeLoot,
     isTakingLoot,
   }

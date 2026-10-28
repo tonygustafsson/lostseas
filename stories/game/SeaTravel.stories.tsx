@@ -8,7 +8,9 @@ import { SHIP_TYPES } from "@/constants/ship"
 import { player } from "../fixtures"
 import PlayerPreview from "../PlayerPreview"
 
-type SeaTravelArgs = Partial<Pick<ShipMeetingState, "nation" | "shipType">>
+type SeaTravelArgs = Partial<
+  Pick<ShipMeetingState, "nation" | "shipType" | "isAggressive">
+>
 
 const victory: Player = {
   ...player,
@@ -146,6 +148,12 @@ const inBattle = (battle: BattleState): Player => ({
 
 const battleStart = inBattle({ enemyStrength: 100, playerStrength: 100 })
 
+const battleAfterFailedFlee = inBattle({
+  enemyStrength: 100,
+  playerStrength: 100,
+  failedToFlee: true,
+})
+
 const battleMidway = inBattle({
   enemyStrength: 58,
   playerStrength: 82,
@@ -225,6 +233,11 @@ const meta = {
       options: Object.keys(SHIP_TYPES),
       if: { arg: "shipType", exists: true },
     },
+    isAggressive: {
+      name: "Aggressive",
+      control: "boolean",
+      if: { arg: "isAggressive", exists: true },
+    },
   },
   beforeEach() {
     useModal.setState(useModal.getInitialState(), true)
@@ -236,7 +249,7 @@ const meta = {
 
       return (
         <PlayerPreview
-          key={`${context.id}-${context.args.nation}-${context.args.shipType}`}
+          key={`${context.id}-${context.args.nation}-${context.args.shipType}-${context.args.isAggressive}`}
           data={
             shipMeeting
               ? {
@@ -248,6 +261,8 @@ const meta = {
                         ...shipMeeting,
                         nation: context.args.nation ?? shipMeeting.nation,
                         shipType: context.args.shipType ?? shipMeeting.shipType,
+                        isAggressive:
+                          context.args.isAggressive ?? shipMeeting.isAggressive,
                       },
                     },
                   },
@@ -270,7 +285,11 @@ export const Defeat: Story = { parameters: { player: defeat } }
 export const TotalLoss: Story = { parameters: { player: totalLoss } }
 export const FleetVictory: Story = { parameters: { player: fleetVictory } }
 export const EnemyShip: Story = {
-  args: { nation: "France", shipType: "Galleon" },
+  args: { nation: "France", shipType: "Galleon", isAggressive: false },
+  parameters: { player: enemyShip },
+}
+export const AggressiveEnemyShip: Story = {
+  args: { nation: "France", shipType: "Galleon", isAggressive: true },
   parameters: { player: enemyShip },
 }
 export const AlliedShip: Story = {
@@ -278,13 +297,21 @@ export const AlliedShip: Story = {
   parameters: { player: alliedShip },
 }
 export const PirateShip: Story = {
-  args: { nation: "Pirate", shipType: "Brig" },
+  args: { nation: "Pirate", shipType: "Brig", isAggressive: false },
+  parameters: { player: pirateShip },
+}
+export const AggressivePirateShip: Story = {
+  args: { nation: "Pirate", shipType: "Brig", isAggressive: true },
   parameters: { player: pirateShip },
 }
 
 export const BattleStart: Story = {
   args: { nation: "France", shipType: "Galleon" },
   parameters: { player: battleStart },
+}
+export const BattleAfterFailedFlee: Story = {
+  args: { nation: "France", shipType: "Galleon", isAggressive: true },
+  parameters: { player: battleAfterFailedFlee },
 }
 export const BattleMidway: Story = {
   args: { nation: "France", shipType: "Galleon" },

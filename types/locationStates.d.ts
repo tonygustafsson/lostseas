@@ -55,6 +55,8 @@ type ShipMeetingState = {
   shipType: ShipType
   crewMembers: number
   cannons: number
+  // An aggressive ship cannot be ignored, only fled from or attacked
+  isAggressive?: boolean
 }
 
 type LocationStateMarketItems = Record<

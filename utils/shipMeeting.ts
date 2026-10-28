@@ -7,6 +7,29 @@ import { getRandomInt } from "./random"
 
 const DESTINATION_NATION_CHANCE = 0.8
 
+export type Relation = "enemy" | "allied" | "neutral" | "pirate"
+
+export const getRelation = (
+  nation: ShipMeetingState["nation"],
+  nationality: Character["nationality"]
+): Relation => {
+  if (nation === "Pirate") return "pirate"
+  if (NATIONS[nationality]?.warWith === nation) return "enemy"
+  if (nation === nationality) return "allied"
+
+  return "neutral"
+}
+
+// Chance that a met ship attacks, so the player must flee or fight
+export const AGGRESSION_CHANCE: Record<Relation, number> = {
+  allied: 0,
+  neutral: 1 / 3,
+  enemy: 2 / 3,
+  pirate: 2 / 3,
+}
+
+export const FLEE_CHANCE = 2 / 3
+
 const pickNation = (nations: (Nation | "Pirate")[]) =>
   nations[getRandomInt(0, nations.length - 1)]
 

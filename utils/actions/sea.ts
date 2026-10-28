@@ -10,7 +10,12 @@ import {
   resolveBattleRound,
   startBattle,
 } from "@/utils/seaBattle"
-import { createMeetingShip } from "@/utils/shipMeeting"
+import {
+  AGGRESSION_CHANCE,
+  createMeetingShip,
+  FLEE_CHANCE,
+  getRelation,
+} from "@/utils/shipMeeting"
 import {
   describeItems,
   getDailyConsumption,
@@ -178,9 +183,9 @@ export const continueJourney = (
     return conflict("You cannot sail on during a battle.")
   }
 
-  // Sailing pauses at an encounter until the player attacks or ignores the ship
+  // Sailing pauses at an encounter until the player attacks, ignores or flees
   if (sea?.shipMeeting) {
-    return conflict("Attack or ignore the ship before sailing on.")
+    return conflict("Deal with the ship before sailing on.")
   }
 
   // Sailing on without choosing takes as much of the loot as fits
@@ -252,13 +257,22 @@ export const continueJourney = (
 
   const shouldMeetAShip = !sea?.justMetAShip && random() < MEETING_CHANCE
 
-  const shipMeetingState = shouldMeetAShip
+  const meetingShip = shouldMeetAShip
     ? createMeetingShip(
         getMannedCannons(player.crewMembers.count, player.inventory?.cannons),
         journey.destination,
         journey.day + 1 === journey.totalDays
       )
     : null
+
+  const shipMeetingState = meetingShip && {
+    ...meetingShip,
+    isAggressive:
+      random() <
+      AGGRESSION_CHANCE[
+        getRelation(meetingShip.nation, player.character.nationality)
+      ],
+  }
 
   // Continuing after a battle report does not advance the date
   const day = hasPendingAttackReport ? journey.day : journey.day + 1
@@ -348,11 +362,57 @@ export const ignoreShip = (player: Player): ActionResult<object> => {
     return conflict("You cannot ignore a ship during a battle")
   }
 
+  if (sea.shipMeeting.isAggressive) {
+    return conflict("You must flee or attack.")
+  }
+
   return {
     player: patchDeep<Player>(player, {
       locationStates: { sea: { shipMeeting: null, justMetAShip: true } },
     }),
     data: {},
+  }
+}
+
+/** Tries to escape an aggressive ship. A failed escape starts the battle. */
+export const fleeShip = (
+  player: Player,
+  random: Random = Math.random
+): ActionResult<{ escaped: boolean }> => {
+  const sea = player.locationStates?.sea
+
+  if (!sea?.shipMeeting) {
+    return badRequest("You are not currently meeting a ship")
+  }
+
+  if (sea.battle) {
+    return conflict("You cannot flee during a battle")
+  }
+
+  if (!sea.shipMeeting.isAggressive) {
+    return conflict("This ship is not hostile.")
+  }
+
+  const { nation } = sea.shipMeeting
+
+  if (random() < FLEE_CHANCE) {
+    return {
+      player: patchDeep<Player>(player, {
+        locationStates: { sea: { shipMeeting: null, justMetAShip: true } },
+      }),
+      log: { type: "voyage", message: `Escaped a ship from ${nation}.` },
+      data: { escaped: true },
+    }
+  }
+
+  return {
+    player: patchDeep<Player>(player, {
+      locationStates: {
+        sea: { battle: { ...startBattle(), failedToFlee: true } },
+      },
+    }),
+    log: { type: "attack", message: `Failed to escape a ship from ${nation}.` },
+    data: { escaped: false },
   }
 }
 

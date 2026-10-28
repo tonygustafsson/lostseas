@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 import { POST as attackShip } from "@/app/api/sea/attackShip/route"
 import { POST as battleMove } from "@/app/api/sea/battleMove/route"
 import { POST as continueJourney } from "@/app/api/sea/continueJourney/route"
+import { POST as fleeShip } from "@/app/api/sea/fleeShip/route"
 import { POST as ignoreShip } from "@/app/api/sea/ignoreShip/route"
 import { POST as startJourney } from "@/app/api/sea/startJourney/route"
 import { patchDeep } from "@/utils/patchDeep"
@@ -80,7 +81,7 @@ const routes = [
     call: () => continueJourney(),
     player: () => atSea({ justMetAShip: true }),
     invalid: () => atSea({ shipMeeting }),
-    error: "Attack or ignore the ship before sailing on.",
+    error: "Deal with the ship before sailing on.",
     status: 409,
     log: undefined,
     body: {
@@ -114,6 +115,22 @@ const routes = [
     status: 400,
     log: undefined,
     body: { success: true },
+  },
+  {
+    name: "fleeShip",
+    call: () => {
+      // The one roll in fleeShip succeeds
+      vi.spyOn(Math, "random").mockReturnValueOnce(0)
+
+      return fleeShip()
+    },
+    player: () =>
+      atSea({ shipMeeting: { ...shipMeeting, isAggressive: true } }),
+    invalid: () => atSea(),
+    error: "You are not currently meeting a ship",
+    status: 400,
+    log: "Escaped a ship from Spain.",
+    body: { success: true, escaped: true },
   },
   {
     name: "battleMove",

@@ -20,14 +20,7 @@ import { VENTURES } from "@/constants/ventures"
 import { cn } from "@/lib/utils"
 import { MEDICINE_HEALTH_PER_BOX } from "@/utils/crew"
 import { formatGold } from "@/utils/number"
-import {
-  BATTLE_MAX_ROUNDS,
-  CREW_DAMAGE_STRENGTH_STEP,
-  EVADE_CHANCE,
-  MAX_HIT_DAMAGE,
-  MIN_HIT_DAMAGE,
-} from "@/utils/seaBattle"
-import { BASE_HIT_CHANCE } from "@/utils/shipMeeting"
+import { BATTLE_MAX_ROUNDS } from "@/utils/seaBattle"
 import { capitalize, snakeCaseToTitleCase } from "@/utils/string"
 
 import {
@@ -104,27 +97,27 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mb-2 font-serif text-lg">Buying and selling</h3>
 
         <p className="mb-4">
-          At the shop you can buy and sell food, water, medicine and barter
-          goods. Stock up on food and water for your journeys, sell loot for
-          gold, and buy medicine to restore your crew&apos;s health.
+          The shop is where you buy and sell food, water, medicine and barter
+          goods. Stock up before a voyage, sell your loot, and pick up medicine
+          when your crew is in bad shape.
         </p>
 
         <p className="mb-4">
-          Everything sold at the shop takes cargo space, one slot per crate,
-          barrel, box, bolt or bale. Cannons and repair kits take no space. Each
-          item shows how much you can own and whether gold or cargo space is the
-          limit, and the trade summary shows your cargo after the trade. You
-          cannot buy more than fits, but you can always sell.
+          Every crate, barrel, box, bolt or bale takes one slot in your hold.
+          Cannons and repair kits take no space at all. Each item tells you how
+          much you can own and whether gold or cargo space is holding you back,
+          and the trade summary shows how full your hold will be afterwards. You
+          can always sell, but you can only buy what fits.
         </p>
 
         <p className="mb-4">
-          For each item, set how much you want to own. Going below what you have
-          sells the difference at the selling price, and going above it buys at
-          the buying price. You can change several items at once, so gold from
-          selling one item can pay for another. Nothing is traded until you
-          press Transfer, and the whole trade either goes through or nothing
-          changes. The day buttons top up food and water to last that many days,
-          taking your existing supplies into account.
+          Trading works by setting how much of each item you want to own. Set it
+          lower than what you have and you sell the rest. Set it higher and you
+          buy the difference. You can change several items in one go, so the
+          gold from one sale can pay for another purchase. Nothing happens until
+          you press Transfer, and then either the whole trade goes through or
+          none of it does. The day buttons top up food and water for that many
+          days, counting what you already carry.
         </p>
 
         <Image
@@ -136,13 +129,12 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         />
 
         <p className="mb-4">
-          The market offers fixed batches of goods, often at a discount. You
-          must buy the whole batch and have enough gold to cover its total
-          price. Compare the offer with the shop&apos;s selling price before
-          buying goods to resell, and check that a shop in your current town
-          accepts them. Market offers can include goods that the local shop does
-          not trade, as well as cannons and repair kits, which are traded at the
-          shipyard.
+          The market sells fixed batches of goods, often cheaply. You buy the
+          whole batch or nothing, so you need gold for all of it. If you plan to
+          resell, compare the offer with what the shop pays and check that a
+          shop in town actually accepts those goods. Offers can include goods
+          the local shop doesn&apos;t trade, and sometimes cannons or repair
+          kits, which normally come from the shipyard.
         </p>
 
         <Image
@@ -156,15 +148,13 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mt-8 mb-4 font-serif text-lg">Apothecary</h3>
 
         <p className="mb-4">
-          The market also has an apothecary that sells remedies for your whole
-          crew. Each remedy raises crew health by a fixed number of points,
-          capped at 100%. The price is {formatGold(APOTHECARY_PRICE_PER_POINT)}{" "}
-          per crew member for every point the remedy gives. You always pay the
-          full price, so any healing past 100% is wasted. Pick the remedy that
-          best fits your crew&apos;s health to get the most for your gold. Used
-          well, the apothecary is the cheapest way to heal your crew in port. A
-          remedy cannot be bought when you have no crew or their health is
-          already at 100%.
+          The apothecary in the market sells remedies that heal your whole crew
+          at once. Each remedy restores a fixed amount of health and costs{" "}
+          {formatGold(APOTHECARY_PRICE_PER_POINT)} per crew member for every
+          point it gives. You pay full price even if your crew only needs a
+          little, so choose the remedy that matches how hurt they are. Picked
+          well, it&apos;s the cheapest way to heal in port. You can&apos;t buy a
+          remedy without a crew, or when they&apos;re already in full health.
         </p>
 
         <Table className="mb-6 rounded-xl bg-black/60">
@@ -180,7 +170,7 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
             {Object.entries(APOTHECARY_REMEDIES).map(([key, remedy]) => (
               <TableRow key={key}>
                 <TableCell className="font-medium">{remedy.label}</TableCell>
-                <TableCell>+{remedy.healthIncrease}%</TableCell>
+                <TableCell>+{remedy.healthIncrease}</TableCell>
                 <TableCell className="whitespace-normal">
                   {remedy.description}
                 </TableCell>
@@ -268,38 +258,34 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mt-4 mb-2 font-serif text-lg">Food and water</h3>
 
         <p className="mb-4">
-          Before leaving port, you need enough food and water for every day of
-          the voyage, so distant towns need more supplies than nearby ones.
-          Every 10 crew members eat 1 crate of food a day and every 5 crew
-          members drink 1 barrel of water a day, rounded to the nearest whole
-          unit. Any crew uses at least 1 crate and 1 barrel a day. On the map,
-          hovering a town shows whether your supplies can reach it, and the
-          advisor warns you when your supplies cannot reach every port. Picking
-          a town shows the distance and the supplies needed before you confirm.
+          You need enough food and water for every day at sea, so far-off towns
+          need bigger stores. Every 10 crew members eat a crate of food a day,
+          and every 5 drink a barrel of water, rounded to whole units. Even a
+          tiny crew gets through at least one of each. Hover a town on the map
+          to see whether your supplies will get you there, and your advisor
+          warns you when some ports are out of reach. When you pick a town, you
+          see the distance and what you need before you confirm.
         </p>
 
         <p className="mb-4">
-          Each time your journey continues, one day of food and water is
-          subtracted from your supplies, using the same daily amounts. Supplies
-          stop at zero. Running out does not interrupt a journey already
-          underway, but you will need to restock before your next departure.
+          Every day at sea eats into your food and water. If you run out, the
+          voyage still carries on, but you&apos;ll have to restock before you
+          can sail again.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Barter goods</h3>
 
         <p className="mb-4">
-          Barter goods include {BARTER_GOODS.join(", ")}. You can loot them in
-          sea battles or buy them at the market, then sell them at a shop that
-          accepts them. They are used for trading; tavern actions cost gold and
-          do not consume the food, tobacco or rum in your inventory.
+          Barter goods are {BARTER_GOODS.join(", ")}. Loot them in battle or buy
+          them at the market, then sell them where a shop wants them. They exist
+          to be traded. The tavern charges gold for its food, tobacco and rum,
+          so it never touches what&apos;s in your hold.
         </p>
 
         <p className="mb-4">
-          Shops trade tobacco and rum in every town. The other barter goods can
-          only be bought and sold at shops in the towns listed in the
-          merchandise reference above. Sell all barter goods sets every barter
-          good the local shop accepts to zero and leaves the rest in your
-          inventory.
+          Every shop trades tobacco and rum. The rest only sell in the towns
+          listed in the merchandise reference above. Sell all barter goods sells
+          everything the local shop accepts and keeps the rest aboard.
         </p>
       </AccordionContent>
     </AccordionItem>
@@ -316,11 +302,10 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
       </GuideSectionHeading>
       <AccordionContent>
         <p className="mb-4">
-          If you lose a sea battle, one of your ships may sink. Your last ship
-          cannot be sunk in battle, but it can still be damaged. A larger fleet
-          lets you support more crew members, who can man more cannons. The
-          number of manned cannons determines the strength of the ships you
-          encounter; stronger opponents can carry more gold.
+          Lose a sea battle and one of your ships may go down, though never your
+          last one. That one only takes damage. A bigger fleet holds a bigger
+          crew, and a bigger crew mans more cannons. The ships you meet grow
+          stronger along with you, and stronger ships tend to carry more gold.
         </p>
 
         <Image
@@ -332,9 +317,8 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         />
 
         <p className="mb-4">
-          As a Pirate, you can own up to {TITLE_INFO.Pirate.maxShips} ships.
-          Higher titles increase this limit, up to {TITLE_INFO.Duke.maxShips}{" "}
-          ships as a Duke.
+          A Pirate can own {TITLE_INFO.Pirate.maxShips} ships. Every promotion
+          raises the limit, and a Duke can command {TITLE_INFO.Duke.maxShips}.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Different ship types</h3>
@@ -385,57 +369,51 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="my-6 font-serif text-lg">Cargo</h3>
 
         <p className="mb-4">
-          Your fleet can carry the cargo of all your ships added together. Food,
-          water, medicine and barter goods take one slot per unit. Cannons and
-          repair kits take none. Crew &amp; Fleet shows how full your hold is.
-          You cannot leave port while overloaded, so sell goods or buy another
-          ship first. Selling or removing a ship that would leave you overloaded
-          is allowed, but you are warned first.
+          Your hold is the cargo space of all your ships added together. Food,
+          water, medicine and barter goods take one slot each, while cannons and
+          repair kits take none. Crew &amp; Fleet shows how full you are. An
+          overloaded fleet can&apos;t leave port, so sell some goods or buy
+          another ship. You can still sell or remove a ship that leaves you
+          overloaded, but the game warns you first.
         </p>
 
         <h3 className="my-6 font-serif text-lg">Ship health and repairs</h3>
 
         <p className="mb-4">
-          Every ship has a health rating. Your ships take damage every time the
-          enemy hits them during a battle, win or lose. A ship at 0% health is
-          completely disabled and will block you from leaving port. You can
-          repair ships at the shipyard for {formatGold(SHIP_REPAIR_COST)} per 1%
-          of damage. You can also sell any ship you own at the shipyard for half
-          its purchase price, regardless of its health. You must own at least
-          one ship to leave port. You can remove a ship from your fleet, but not
-          while at sea and not if it is your last ship.
+          Your ships take damage whenever the enemy lands a hit, whether you win
+          the battle or not. A ship with no health left is disabled, and you
+          can&apos;t leave port until it&apos;s fixed. The shipyard repairs
+          ships for {formatGold(SHIP_REPAIR_COST)} per point of damage. It also
+          buys any ship for half what it cost new, however battered it is. You
+          need at least one ship to sail. You can remove ships from your fleet,
+          just not while at sea and not your last one.
         </p>
 
         <p className="mb-4">
-          Buy repair kits at any shipyard for{" "}
-          {formatGold(MERCHANDISE.repairKits.buy)}
-          each, or sell them there for {formatGold(
-            MERCHANDISE.repairKits.sell
-          )}{" "}
-          each. In Crew &amp; Fleet, click Use under Equipment &gt; Repair kits,
-          then choose a damaged ship and how many kits to use. You can use them
-          anywhere, including at sea, without paying additional gold. Each kit
-          restores up to {REPAIR_KIT_HEALTH} percentage points of health to one
-          ship, capped at 100%. Kits can also be found in market offers or
-          battle loot and are lost like other supplies when you lose a battle,
-          with remaining kits rounded down to a whole number.
+          Repair kits let you patch up a ship anywhere, even in the middle of a
+          voyage. Shipyards sell them for{" "}
+          {formatGold(MERCHANDISE.repairKits.buy)} and buy them back for{" "}
+          {formatGold(MERCHANDISE.repairKits.sell)}. To use one, open Crew &amp;
+          Fleet, click Use under Equipment &gt; Repair kits, and pick a ship and
+          how many kits to spend. Each kit restores up to {REPAIR_KIT_HEALTH}{" "}
+          health. You can also find kits in market offers and battle loot.
         </p>
 
         <p className="mb-4">
-          A ship at 50% health needs five kits; two such ships need ten. Use
-          fewer kits for a partial repair. At normal prices, kits cost 20% more
-          than shipyard repairs for ten points of health. Smaller repairs still
-          consume a whole kit.
+          A half-wrecked ship needs five kits, and two of them need ten. Fewer
+          kits give a partial repair, but a small repair still uses up a whole
+          kit. Kits cost a little more than the shipyard does for the same
+          repair, so they&apos;re best saved for when you&apos;re at sea.
         </p>
 
         <h3 className="my-6 font-serif text-lg">Cannons</h3>
 
         <p>
-          Manned cannons determine your fighting strength and the strength of
-          the ships you encounter. Each cannon needs two crew members, so 20
-          cannons and 30 crew members give you 15 manned cannons. Unmanned
-          cannons do not help in battle. You can buy and sell cannons at the
-          shipyard; owning cannons is not required to leave port.
+          Your manned cannons decide how hard you hit, and how strong the ships
+          you meet will be. Each cannon needs two crew members, so 20 cannons
+          and 30 crew give you 15 manned cannons. Cannons without a crew do
+          nothing in battle. The shipyard buys and sells them, and you&apos;re
+          allowed to sail without any.
         </p>
       </AccordionContent>
     </AccordionItem>
@@ -454,35 +432,30 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mb-2 font-serif text-lg">Purpose of crew members</h3>
 
         <p className="mb-4">
-          Crew members sail your ships and man your cannons. To leave port, your
-          crew count must be between the combined minimum and maximum
-          requirements of all your ships. You need two crew members to fire one
-          cannon.
+          Your crew sails the ships and mans the cannons, two sailors to a gun.
+          To leave port, you need at least as many crew as your ships require
+          together, and no more than they can hold.
         </p>
 
         <p className="mb-4">
-          Your crew loses 1 mood each time you continue a journey, except on
-          arrival. Winning a sea battle increases mood by 20, up to a maximum of
-          100. Mood never drops below 0. If their mood is 0, they will refuse to
-          leave port.
+          Long voyages wear sailors down. Their mood drops a little every day at
+          sea, and a win in battle lifts it a lot. If their mood hits rock
+          bottom, they refuse to leave port.
         </p>
 
         <p className="mb-4">
-          Improve their mood with tavern actions or use Give gold in Manage
-          Crew. The more crew members you have, the more gold you need for the
-          same improvement.
+          Cheer them up at the tavern, or hand out gold with Give gold in Manage
+          Crew. A bigger crew costs more gold to please.
         </p>
 
         <p className="mb-4">
-          Sea battles and tavern fights reduce your crew&apos;s health. At 0%
-          health, they do not die, but you cannot start another journey. Use
-          Give medicine in Manage Crew to restore health, buy a remedy at the
-          apothecary in the market, or Serve supper at the tavern. Each box of
-          medicine restores {MEDICINE_HEALTH_PER_BOX} health points spread
-          across the crew, so larger crews need more medicine for the same
-          improvement. Health and mood increases are capped at 100%. Give gold
-          and Give medicine need at least one crew member, and cannot be used
-          when mood or health is already at 100%.
+          Sea battles and tavern brawls cost your crew health. Nobody dies, but
+          an exhausted crew won&apos;t start a new journey. Heal them with Give
+          medicine in Manage Crew, a remedy from the apothecary, or Serve supper
+          at the tavern. Each box of medicine gives {MEDICINE_HEALTH_PER_BOX}{" "}
+          health, shared across the whole crew, so a large crew needs more
+          boxes. Give gold and Give medicine need a crew, and do nothing once
+          mood or health is full.
         </p>
 
         <Image
@@ -496,11 +469,10 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mb-2 font-serif text-lg">Getting more crew members</h3>
 
         <p>
-          Winning sea battles can automatically add recruits from the opposing
-          crew. Friendly sailors at the tavern may also join for free if you
-          accept their offer. New recruits can take you above your fleet&apos;s
-          maximum crew size, so buy more ships or dismiss crew members before
-          your next departure if needed.
+          After a victory, some of the beaten crew may sign on with you.
+          Friendly sailors at the tavern sometimes offer to join for free, too.
+          New recruits can push you over what your fleet can hold, so buy
+          another ship or dismiss a few before you sail.
         </p>
       </AccordionContent>
     </AccordionItem>
@@ -521,13 +493,11 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         </h3>
 
         <p className="mb-4">
-          The tavern is one of the most important stops in any town. You can
-          serve supper, smoke tobacco, pour the wine or pass the rum to improve
-          your crew&apos;s mood. Serve supper also restores health. Each action
-          costs gold for every crew member. The increases below are percentage
-          points, capped at 100% health or mood. You need at least one crew
-          member, and an action is unavailable when it would not raise your
-          crew&apos;s health or mood any further.
+          A happy crew starts at the tavern. Serve supper, smoke tobacco, pour
+          the wine or pass the rum to lift their mood, and supper heals them as
+          well. You pay for every crew member. You can&apos;t order a round
+          without a crew, or when it wouldn&apos;t make them any happier or
+          healthier.
         </p>
 
         <Table className="mb-6 rounded-xl bg-black/60">
@@ -559,22 +529,19 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mb-2 font-serif text-lg">Sailors</h3>
 
         <p className="mb-4">
-          Sometimes you will find sailors at the tavern willing to join your
-          crew for free. On other occasions the sailors you meet are hostile. If
-          you fight them and win, you gain a small amount of gold. Your crew
-          loses health whether you win or lose. You can also ignore the sailors
-          to avoid the fight.
+          Some sailors at the tavern are happy to join your crew for free.
+          Others are spoiling for a fight. Beat them and you pocket a little
+          gold, but your crew gets hurt either way. You can always ignore them
+          and walk away.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Cards</h3>
 
         <p>
-          Choose a percentage of your gold to bet, then pick one of five cards.
-          A correct choice adds five times your bet to your gold; a wrong choice
-          costs your bet. For example, if you have 100 gold and bet all of it, a
-          win leaves you with 600 gold and a loss leaves you with 0. You have a
-          one-in-five chance of winning. Your bet must be at least 1 gold, and
-          bank savings are not used.
+          Pick how much of your gold to bet, then choose one of five cards. Pick
+          the right one and you win five times your bet. Pick wrong and you lose
+          it. Bet all of 100 gold and you walk away with 600 or nothing. The bet
+          is at least 1 gold and only comes from what you carry, never the bank.
         </p>
       </AccordionContent>
     </AccordionItem>
@@ -592,22 +559,20 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
       <AccordionContent>
         <h3 className="mb-2 font-serif text-lg">Nations</h3>
         <p className="mb-4">
-          Lost Seas is set in the Caribbean in the 17th century. Its nations are{" "}
-          {Object.keys(NATIONS).join(", ")}. England is at war with{" "}
-          {NATIONS.England.warWith}, and Spain is at war with{" "}
+          Lost Seas takes place in the 17th century Caribbean, where{" "}
+          {Object.keys(NATIONS).join(", ")} fight over the islands. England is
+          at war with {NATIONS.England.warWith}, and Spain with{" "}
           {NATIONS.Spain.warWith}.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Levels</h3>
 
         <p className="mb-4">
-          Your level for a nation is your number of victories against its enemy,
-          minus all battles you fought against that nation, whether you won or
-          lost. Each enemy victory adds 1 level, and each battle against your
-          own nation subtracts 1. Battles against neutral nations and pirates
-          leave this level unchanged, but victories can still reward you with
-          gold. Losing a battle against your nation&apos;s enemy does not lower
-          your level.
+          Your nation rewards you for beating its enemy. Every victory against
+          the enemy raises your level by one, and losing to them costs you
+          nothing. Attacking your own nation&apos;s ships lowers your level by
+          one, win or lose. Neutral nations and pirates don&apos;t affect your
+          level at all, but beating them still pays in gold.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Titles</h3>
@@ -621,12 +586,12 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         />
 
         <p className="mb-4">
-          Your level determines the title the governor can offer you at the City
-          Hall. Promotions reward you with gold and let you own more ships. More
-          ships let you carry more crew members, man more cannons and load more
-          cargo. Reaching the highest title is one goal you can choose to
-          pursue. Accept promotions in a town belonging to your nation. Your
-          title does not automatically fall if your level drops.
+          The higher your level, the better the title the governor offers you at
+          the City Hall. Visit a town of your own nation to accept a promotion.
+          Each one pays gold and lets you own more ships, which means more crew,
+          more cannons and more cargo. Once you have a title you keep it, even
+          if your level drops later. Working your way up to Duke is one goal
+          worth chasing.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">The different titles</h3>
@@ -708,21 +673,19 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mb-2 font-serif text-lg">Changing nation</h3>
 
         <p className="mb-4">
-          You can change nationality at the City Hall of a town belonging to
-          your desired nation. You qualify when your victories against that
-          nation&apos;s enemy outnumber all battles you have fought against the
-          desired nation, including defeats. Your new title depends on this
-          difference. Changing citizenship can give you a lower title than the
-          one you previously held. Each title&apos;s gold reward is only paid
-          once: you only receive a reward for a title higher than any you have
-          been rewarded for before, whether through promotion or a change of
-          citizenship.
+          You can switch sides at the City Hall of any town belonging to the
+          nation you want to join. They&apos;ll take you if you&apos;ve beaten
+          their enemy more often than you&apos;ve fought them, counting your
+          defeats too. The difference sets your new title, which may be lower
+          than the one you have now. Title rewards are only paid once, so you
+          only get gold for a title higher than any you&apos;ve been paid for
+          before.
         </p>
 
         <p>
-          For example, if you are a Spanish citizen with 50 victories against
-          French ships and have never attacked an English ship, you qualify for
-          English citizenship with the title of Admiral.
+          Say you&apos;re Spanish with 50 wins against French ships and
+          you&apos;ve never attacked an English ship. England will welcome you
+          as an Admiral.
         </p>
       </AccordionContent>
     </AccordionItem>
@@ -741,60 +704,55 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mb-2 font-serif text-lg">Getting some gold</h3>
 
         <p className="mb-4">
-          Gold is the game&apos;s currency. You earn it by looting ships at sea,
-          selling goods or ships, collecting title rewards, winning at cards, or
-          winning tavern fights.
+          You earn gold by plundering ships, selling goods or ships, collecting
+          title rewards, and winning at cards or in tavern brawls.
         </p>
 
         <p className="mb-4">
-          Winning a sea battle can also reveal a valuable treasure. Each
-          treasure is tied to a specific town — you must bring it to that
-          town&apos;s City Hall to collect the reward. The reward is paid
-          directly in gold.
+          Now and then a won battle turns up a treasure. Each one belongs to a
+          particular town, and that town&apos;s City Hall pays you gold for it.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Saving money</h3>
 
         <p className="mb-4">
-          The bank keeps your savings safe. Losing a sea battle takes all gold
-          you carry, regardless of the size of your fleet, but does not affect
-          your bank balance.
+          Lose a sea battle and the enemy takes every coin you carry, however
+          big your fleet. Gold in the bank stays safe.
         </p>
 
         <p className="mb-4">
-          Your bank account is shared across all towns and nations. Deposit 100
-          gold at the bank in Panama, and you can withdraw it at the bank in
-          Port Royale.
+          Every bank shares the same account, whatever the town or nation.
+          Deposit 100 gold in Panama and you can take it out again in Port
+          Royale.
         </p>
 
         <p className="mb-4">
-          Keep enough gold for purchases in town and deposit the rest before
-          leaving port. Repay any outstanding loan first so you can make
-          deposits.
+          Before you sail, keep what you need for shopping and bank the rest. If
+          you have a loan, pay it off first, because you can&apos;t deposit
+          until you do.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Loans</h3>
 
         <p>
-          You can borrow gold at the bank, up to a total outstanding loan of{" "}
-          {formatGold(LOAN_LIMIT)}. Loans have no interest or fees. You cannot
-          deposit gold until the loan is fully repaid, but you can still
-          withdraw existing savings. You can repay the loan in smaller amounts
-          or all at once.
+          The bank lends you up to {formatGold(LOAN_LIMIT)} in total, with no
+          interest or fees. Until it&apos;s fully repaid you can&apos;t deposit,
+          but you can still withdraw your savings. Pay it back bit by bit or all
+          at once.
         </p>
 
         <h3 className="mt-4 mb-2 font-serif text-lg">Ventures</h3>
 
         <p className="mb-4">
-          The bank also sells shares in famous trading voyages. Pay the stake
-          from the gold you carry, so withdraw savings or take a loan first if
-          you need more. Each party returns after a set number of days, and your
-          advisor tells you when one is back. Collect your share at any bank.
+          The bank also sells shares in famous trading voyages. You pay the
+          stake from the gold you carry, so withdraw savings or take a loan if
+          you&apos;re short. Each voyage comes back after a set number of days,
+          your advisor lets you know, and you collect your share at any bank.
         </p>
 
         <p className="mb-4">
-          A larger stake brings a larger reward, but also more risk. Nobody
-          knows how a voyage went until you collect, and a share can return more
+          Bigger stakes pay better, and they&apos;re riskier too. You won&apos;t
+          know how the voyage went until you collect. A share can return more
           than you paid, less, or nothing at all. You can hold one share in each
           venture at a time.
         </p>
@@ -833,8 +791,7 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         />
 
         <p className="mb-4">
-          Each town belongs to one of the game&apos;s four nations. The list
-          below shows their nationalities in Lost Seas.
+          Every town flies the flag of one of the four nations.
         </p>
 
         {Object.keys(NATIONS).map((nation, i, arr) => (
@@ -848,55 +805,51 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         ))}
 
         <p className="mb-4">
-          When you arrive in a town you start at the harbor, where you can see
-          the whole town. Click a building to go inside, and choose Back to town
-          to return to the harbor. Each town has its own named shop, tavern,
-          bank, market, shipyard and city hall, but they all offer the same
-          services.
+          You arrive at the harbor, with the whole town laid out in front of
+          you. Click a building to step inside, and Back to town takes you to
+          the harbor again. Every town has its own shop, tavern, bank, market,
+          shipyard and city hall. The names differ but they all work the same.
         </p>
 
         <p className="mb-4">
-          The harbor also shows your advisor. Problems listed under Before you
-          sail stop you from leaving port, while those under Worth a look are
-          only advice. When nothing needs your attention, the advisor tells you
-          that you are ready to set sail. Open the map with the Set sail button
-          at the harbor, or with Travel in the bottom menu on mobile.
+          Your advisor waits at the harbor. Anything under Before you sail has
+          to be sorted out before you can leave. Worth a look is just friendly
+          advice. When all is well, the advisor says you&apos;re ready to set
+          sail. Open the map with Set sail at the harbor, or Travel in the
+          bottom menu on mobile.
         </p>
 
         <p className="mb-4">
-          You can visit any town regardless of your nationality. Choose another
-          town on the map to start a journey. If you cannot leave port, the
-          advisor explains which problems you need to resolve in a popup. You
-          stay at your current location until you are ready to sail. While at
-          sea, the map shows your ship sailing one day at a time along its
-          route, stopping whenever you encounter another ship.
+          You&apos;re welcome in every town, whatever your nationality. Pick one
+          on the map to set off. If something is stopping you, the advisor pops
+          up to explain, and you stay put until it&apos;s fixed. At sea, the map
+          follows your ship one day at a time and stops whenever another ship
+          comes into view.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Time</h3>
 
         <p className="mb-4">
-          Time is measured in days in Lost Seas. Each normal journey step
-          advances one day, including arrival at your destination. Starting a
-          journey and visiting locations in town do not advance the calendar.
-          Journeys continue automatically between ship encounters. Sailing
-          pauses at an encounter or battle report. Choose Attack or Ignore when
-          you meet a ship, fight the battle round by round, and choose Continue
-          journey after the battle to resume sailing. After a victory with goods
-          to plunder, Take loot and sail on does both at once.
+          Time passes in days. Each day of sailing moves the calendar on by one,
+          and so does arriving. Setting off and walking around town take no time
+          at all. Your ship sails on by itself until it meets another ship or a
+          battle ends. When you meet a ship, choose what to do, fight the battle
+          round by round if it comes to that, and press Continue journey
+          afterwards. After a victory with goods to plunder, Take loot and sail
+          on does both at once.
         </p>
 
         <p className="mb-4">
-          Continuing after a battle report does not advance the date. It uses
-          supplies unless you are on the final travel day. On that day, your
-          ship finishes sailing to town before arrival advances the date and
-          uses supplies.
+          Sailing on after a battle doesn&apos;t cost a day or any supplies. If
+          the battle happened on the final day, your ship sails into town next,
+          and arriving uses the day and the supplies as usual.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Weather</h3>
 
         <p className="mb-4">
-          The weather shown depends on the current game day. It does not affect
-          travel, supply consumption or battles.
+          The weather changes from day to day, but it&apos;s only for show. It
+          doesn&apos;t affect sailing, supplies or battles.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Battles at sea</h3>
@@ -910,105 +863,72 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         />
 
         <p className="mb-4">
-          You can encounter ships from any nation, as well as pirates. On the
-          open sea, every nation is as likely. On the last day of a journey,
-          most ships come from your destination&apos;s nation, so sail towards
-          one of its towns if you want to find that nation&apos;s ships.
+          You&apos;ll run into ships from every nation, and pirates too. Out on
+          the open sea any flag is as likely as the next. On the last day of a
+          voyage, most ships come from your destination&apos;s nation, so head
+          for one of its towns if you&apos;re hunting its ships.
         </p>
 
         <p className="mb-4">
-          You can ignore an encounter to continue sailing without fighting. If
-          you attack, the battle is fought over up to {BATTLE_MAX_ROUNDS}{" "}
-          rounds. Each round, choose to fire or evade. Firing hits more often
-          the more manned cannons you have compared with the opponent. Against a
-          ship with as many cannons as you have manned, about{" "}
-          {Math.round(BASE_HIT_CHANCE * 100)}% of your shots hit. Attacking a
-          ship with more cannons is risky.
+          Most ships let you choose: attack, or ignore them and sail on. Some
+          come at you instead. Your own nation&apos;s ships never do, but your
+          enemy&apos;s ships and pirates often will, and other nations now and
+          then. You can&apos;t ignore a ship that&apos;s attacking you. Fight
+          back, or try to flee. Fleeing usually works, and when it doesn&apos;t,
+          the battle starts anyway.
+        </p>
+
+        <p className="mb-4">
+          A battle lasts up to {BATTLE_MAX_ROUNDS} rounds, and each round you
+          either fire or evade. The more manned cannons you have compared with
+          your opponent, the more often your shots hit. Against an equal ship,
+          most of them land. Taking on a ship with more cannons than you is a
+          gamble.
         </p>
 
         <ul className="mb-4 list-disc pl-6">
           <li className="mb-2">
-            Both sides start the battle with 100% battle strength. It only
-            exists during the battle and is separate from your ships&apos;
-            health.
+            Both sides start at full battle strength. It only counts during the
+            fight and has nothing to do with your ships&apos; health.
           </li>
           <li className="mb-2">
-            A broadside does the same damage whichever side fires it. When you
-            fire and win the move, the enemy loses {MIN_HIT_DAMAGE}–
-            {MAX_HIT_DAMAGE}% battle strength. When you lose it, you lose{" "}
-            {MIN_HIT_DAMAGE}–{MAX_HIT_DAMAGE}% battle strength and each of your
-            ships loses 3–8% health. Your crew loses 1–2% health, plus 1% for
-            every {CREW_DAMAGE_STRENGTH_STEP}% battle strength you have already
-            lost, so missed shots hurt more when the battle is going badly.
+            When you fire, one side wins the exchange. If it&apos;s you, the
+            enemy loses battle strength. If it&apos;s them, you lose battle
+            strength, your ships get hit and your crew gets hurt. The worse the
+            battle is going, the more your crew suffers.
           </li>
           <li className="mb-2">
-            Evading succeeds {EVADE_CHANCE}% of the time, whatever your cannons.
-            If it succeeds, you take no damage. If it fails, you lose 5–12%
-            battle strength, each of your ships loses 1–4% health and your crew
-            loses 1–3% health. Evading never damages the enemy.
+            Evading is a coin toss, however many cannons you have. Get it right
+            and nothing hits you. Get it wrong and you take a lighter hit than a
+            lost exchange of fire. Evading never hurts the enemy.
           </li>
           <li>
-            The side whose battle strength reaches 0% loses. After the last
-            round, the side with the most battle strength left wins, and a draw
-            counts as a defeat.
+            Whoever runs out of battle strength loses. If both are still afloat
+            after the last round, the side with more strength left wins, and a
+            draw counts as your defeat.
           </li>
         </ul>
 
         <p className="mb-4">
-          Each move is saved as you make it, so you can come back to a battle at
-          any time. You cannot ignore the ship or sail on until the battle is
-          over.
+          Every move is saved, so you can leave and come back to a battle
+          whenever you like. Once it starts, you have to see it through before
+          you can sail on.
         </p>
 
         <p>
-          After a battle, a report shows your loot, recruits, damage and any
-          losses. Your crew only loses health during the rounds, not when the
-          battle ends. Gold, recruits and treasure are added for you. For goods,
-          slide how much of each to take. Everything that fits is picked by
-          default, food and water first, then the most valuable goods. Anything
-          you leave behind sinks with the enemy ship, and your journey continues
-          right away.
+          Afterwards, a report shows your loot, recruits, damage and losses.
+          Gold, recruits and treasure go straight to you. For goods, use the
+          sliders to choose how much of each to take. Whatever fits is picked
+          for you, food and water first and then the most valuable goods.
+          Anything you leave behind goes down with the enemy ship, and your
+          voyage carries on.
         </p>
 
         <p className="mt-4">
-          If you lose, the enemy takes all the gold you carry and everything of
-          1–3 goods in your hold. Gold in the bank, treasures, cannons and
-          repair kits are safe. If you have more than one ship, there is a 1 in
-          3 chance that one of them sinks.
-        </p>
-      </AccordionContent>
-    </AccordionItem>
-
-    <AccordionItem
-      value="account"
-      className={appearance === "public" ? "py-4" : undefined}
-    >
-      <GuideSectionHeading
-        appearance={appearance}
-        className="font-serif text-xl"
-      >
-        Your account
-      </GuideSectionHeading>
-      <AccordionContent>
-        <h3 className="mb-2 font-serif text-lg">Signing in with a passkey</h3>
-
-        <p className="mb-4">
-          Add a passkey in Settings to sign in with your device&apos;s screen
-          lock, fingerprint or face recognition. You can add more than one
-          passkey and remove them in Settings. Some passkeys sync through your
-          password manager; others only work on the device where you added them.
-          Keep your user ID or QR code safe as another way to sign in.
-        </p>
-
-        <h3 className="mb-2 font-serif text-lg">Starting over</h3>
-
-        <p>
-          Reset game in Settings starts a new game in a random town belonging to
-          your nation. Your character, name, nationality, user ID and passkeys
-          are kept. All game progress is reset, including your gold, bank
-          savings, loans, fleet, crew, inventory, treasures, titles and battle
-          record. Your old journey log and statistics are cleared. This cannot
-          be undone.
+          If you lose, the enemy takes all the gold you carry and every last
+          unit of one to three of your goods. Your bank savings, treasures,
+          cannons and repair kits are safe. With more than one ship, you might
+          also lose one to the sea.
         </p>
       </AccordionContent>
     </AccordionItem>

@@ -18,6 +18,11 @@ const getRoundText = (round: BattleRound) => {
     : `Their shots grazed you. You lost ${round.playerDamage}% battle strength, your ships lost ${round.shipDamage}% health and your crew lost ${round.crewDamage}% health.`
 }
 
+const getOpeningText = (battle: BattleState) =>
+  battle.failedToFlee
+    ? "They caught you before you could escape! Fire your cannons or evade their broadside."
+    : "Battle stations! Fire your cannons or evade their broadside."
+
 const BattleContent = ({ battle }: Props) => {
   const rounds = getBattleRounds(battle)
   const lastRound = rounds.at(-1)
@@ -48,15 +53,15 @@ const BattleContent = ({ battle }: Props) => {
         className={cn(
           "rounded-md border px-4 py-2 text-sm",
           !lastRound
-            ? "border-border bg-muted"
+            ? battle.failedToFlee
+              ? "border-destructive/40 bg-destructive/10 text-destructive"
+              : "border-border bg-muted"
             : lastRound.hit
               ? "border-success/40 bg-success/10 text-success"
               : "border-destructive/40 bg-destructive/10 text-destructive"
         )}
       >
-        {lastRound
-          ? getRoundText(lastRound)
-          : "Battle stations! Fire your cannons or evade their broadside."}
+        {lastRound ? getRoundText(lastRound) : getOpeningText(battle)}
       </p>
     </div>
   )

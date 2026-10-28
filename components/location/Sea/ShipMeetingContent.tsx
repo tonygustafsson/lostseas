@@ -6,9 +6,9 @@ import { GiCannon, GiCrossedSwords } from "react-icons/gi"
 import Flag from "@/components/icons/Flag"
 import { Badge } from "@/components/ui/badge"
 import { DialogTitle } from "@/components/ui/dialog"
-import { NATIONS } from "@/constants/locations"
 import { cn } from "@/lib/utils"
 import { getMannedCannons } from "@/utils/crew"
+import { getRelation, type Relation } from "@/utils/shipMeeting"
 
 type Props = {
   shipMeeting: ShipMeetingState
@@ -16,8 +16,6 @@ type Props = {
   cannons: Inventory["cannons"]
   nationality: Character["nationality"]
 }
-
-type Relation = "enemy" | "allied" | "neutral" | "pirate"
 
 const RELATIONS: Record<
   Relation,
@@ -45,18 +43,13 @@ const RELATIONS: Record<
   },
 }
 
-const getRelation = (
-  nation: ShipMeetingState["nation"],
-  nationality: Character["nationality"]
-): Relation => {
-  if (nation === "Pirate") return "pirate"
-  if (NATIONS[nationality]?.warWith === nation) return "enemy"
-  if (nation === nationality) return "allied"
-
-  return "neutral"
-}
-
 const getTitle = (shipMeeting: ShipMeetingState, relation: Relation) => {
+  if (shipMeeting.isAggressive) {
+    return relation === "pirate"
+      ? `A Pirate ${shipMeeting.shipType} is closing in!`
+      : `A ${shipMeeting.shipType} from ${shipMeeting.nation} is closing in!`
+  }
+
   if (relation === "pirate") return `You meet a Pirate ${shipMeeting.shipType}`
 
   const adjective =
@@ -123,10 +116,17 @@ const ShipMeetingContent = ({
               {RELATIONS[relation].label}
             </Badge>
 
-            <span className="text-muted-foreground text-sm">
-              {RELATIONS[relation].hint}
-            </span>
+            {shipMeeting.isAggressive && (
+              <Badge variant="destructive">
+                <GiCrossedSwords data-icon="inline-start" />
+                Hostile
+              </Badge>
+            )}
           </div>
+
+          <span className="text-muted-foreground text-sm">
+            {RELATIONS[relation].hint}
+          </span>
         </div>
 
         <Image

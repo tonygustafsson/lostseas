@@ -20,6 +20,8 @@ type BattleState = {
   playerStrength: number
   // Firebase drops empty arrays, so a fresh battle has no rounds stored
   rounds?: BattleRound[]
+  // Set when the battle started because fleeing from an aggressive ship failed
+  failedToFlee?: boolean
 }
 
 type BattleOutcome = "ongoing" | "victory" | "defeat"

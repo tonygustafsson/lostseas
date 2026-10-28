@@ -5,6 +5,7 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useSea } from "@/hooks/queries/useSea"
 import { cn } from "@/lib/utils"
 import { getCargo } from "@/utils/cargo"
+import { getRelation } from "@/utils/shipMeeting"
 
 import AttackReport from "./AttackReport"
 import BattleActions from "./BattleActions"
@@ -65,7 +66,15 @@ const SeaEventDialog = () => {
                 <BattleActions />
               </>
             ) : (
-              <ShipMeetingActions />
+              <ShipMeetingActions
+                isAggressive={shipMeeting.isAggressive}
+                isAllied={
+                  getRelation(
+                    shipMeeting.nation,
+                    player.character.nationality
+                  ) === "allied"
+                }
+              />
             )}
           </>
         )}
