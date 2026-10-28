@@ -54,6 +54,7 @@
 - Keep gameplay behavior and player-facing guidance consistent.
 - When game rules change, update `GuideContent.tsx` when necessary so the guide remains accurate.
 - Do not add new town buildings. Each one needs map hotspots and interior art for all 16 towns. Put new features in existing buildings.
+- When you change game mechanics, don't forget to see if you also need to change the Log book or Statistics.
 
 ## Verification
 
