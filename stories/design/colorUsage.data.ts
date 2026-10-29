@@ -21,7 +21,7 @@ export const elementOpacity: Record<string, number> = {
   "25": 3,
   "50": 19,
   "60": 2,
-  "75": 1,
+  "75": 2,
   "80": 7,
   "85": 1,
   "90": 2,
@@ -261,7 +261,7 @@ export const colorUsage: ColorUsage[] = [
     "name": "background",
     "token": "--color-background",
     "css": "var(--color-background)",
-    "count": 47,
+    "count": 48,
     "variants": {
       "/20": 9,
       "/50": 1,
@@ -279,6 +279,7 @@ export const colorUsage: ColorUsage[] = [
       "from": 2,
       "via": 4,
       "to": 6,
+      "var()": 1,
       "text": 1
     },
     "files": {
@@ -291,7 +292,7 @@ export const colorUsage: ColorUsage[] = [
       "components/location/Bank/VentureCard.tsx": 2,
       "components/location/Sea/LootPicker.tsx": 1,
       "components/location/Shop/ShopTradeItem.tsx": 6,
-      "components/LoginScreen.tsx": 8,
+      "components/LoginScreen.tsx": 9,
       "components/Map/DestinationConfirm.tsx": 1,
       "components/menu/MobileMenuItem.tsx": 1,
       "components/MerchandiseCard.tsx": 2,
@@ -361,13 +362,13 @@ export const colorUsage: ColorUsage[] = [
     "css": "var(--color-card)",
     "count": 39,
     "variants": {
-      "/90": 3,
+      "/90": 7,
       "/50": 1,
       "/70": 3,
-      "/75": 5,
       "/85": 1,
       "/80": 4,
       "/10": 1,
+      "/75": 1,
       "/30": 1
     },
     "utilities": {
@@ -550,33 +551,6 @@ export const colorUsage: ColorUsage[] = [
     }
   },
   {
-    "kind": "palette",
-    "name": "amber-200",
-    "token": "--color-amber-200",
-    "css": "var(--color-amber-200)",
-    "count": 29,
-    "variants": {
-      "/20": 4,
-      "/10": 6,
-      "/25": 1,
-      "/15": 1,
-      "/50": 1
-    },
-    "utilities": {
-      "border": 7,
-      "text": 14,
-      "bg": 7,
-      "ring": 1
-    },
-    "files": {
-      "components/LoginScreen.tsx": 19,
-      "components/PublicGuidePage.tsx": 5,
-      "components/Screenshots.tsx": 2,
-      "components/SocialMedia.tsx": 2,
-      "components/ui/button.tsx": 1
-    }
-  },
-  {
     "kind": "token",
     "name": "muted",
     "token": "--color-muted",
@@ -611,6 +585,33 @@ export const colorUsage: ColorUsage[] = [
       "components/ui/slider.tsx": 1,
       "components/ui/table.tsx": 3,
       "components/ui/tabs.tsx": 1
+    }
+  },
+  {
+    "kind": "palette",
+    "name": "amber-200",
+    "token": "--color-amber-200",
+    "css": "var(--color-amber-200)",
+    "count": 28,
+    "variants": {
+      "/20": 3,
+      "/10": 6,
+      "/25": 1,
+      "/15": 1,
+      "/50": 1
+    },
+    "utilities": {
+      "border": 6,
+      "text": 14,
+      "bg": 7,
+      "ring": 1
+    },
+    "files": {
+      "components/LoginScreen.tsx": 18,
+      "components/PublicGuidePage.tsx": 5,
+      "components/Screenshots.tsx": 2,
+      "components/SocialMedia.tsx": 2,
+      "components/ui/button.tsx": 1
     }
   },
   {
@@ -720,36 +721,31 @@ export const colorUsage: ColorUsage[] = [
   },
   {
     "kind": "palette",
-    "name": "black",
-    "token": "black",
-    "css": "var(--color-black)",
+    "name": "white",
+    "token": "white",
+    "css": "var(--color-white)",
     "count": 17,
     "variants": {
-      "/50": 1,
-      "/55": 1,
-      "/60": 5,
-      "/20": 2,
-      "/40": 1,
-      "/30": 2,
-      "/25": 1,
-      "/80": 2
+      "/15": 3,
+      "/5": 7
     },
     "utilities": {
-      "bg": 12,
-      "shadow": 5
+      "text": 7,
+      "border": 3,
+      "bg": 6,
+      "divide": 1
     },
     "files": {
       "components/character/SelectedCharacter.tsx": 1,
-      "components/DrawerBottom.tsx": 1,
-      "components/DrawerPanel.tsx": 1,
-      "components/game-ui/LocationScene/BuildingScene.tsx": 1,
-      "components/GuideContent.tsx": 5,
+      "components/location/Sea/index.tsx": 1,
       "components/LoginScreen.tsx": 2,
-      "components/menu/MobileTopBar.tsx": 1,
-      "components/Screenshots.tsx": 2,
-      "components/ui/button.tsx": 1,
-      "components/ui/dialog.tsx": 1,
-      "components/ui/sheet.tsx": 1
+      "components/Map/SeaMapTowns.tsx": 1,
+      "components/Map/Tooltip.tsx": 1,
+      "components/menu/MobileBottomNav.tsx": 5,
+      "components/menu/MobileMenuContent.tsx": 1,
+      "components/menu/MobileMenuItem.tsx": 2,
+      "components/PublicGuidePage.tsx": 1,
+      "components/ui/select.tsx": 2
     }
   },
   {
@@ -793,31 +789,34 @@ export const colorUsage: ColorUsage[] = [
   },
   {
     "kind": "palette",
-    "name": "white",
-    "token": "white",
-    "css": "var(--color-white)",
+    "name": "black",
+    "token": "black",
+    "css": "var(--color-black)",
     "count": 15,
     "variants": {
-      "/15": 3,
-      "/5": 7
+      "/50": 1,
+      "/55": 1,
+      "/60": 5,
+      "/40": 1,
+      "/30": 2,
+      "/25": 1,
+      "/80": 2
     },
     "utilities": {
-      "text": 5,
-      "border": 3,
-      "bg": 6,
-      "divide": 1
+      "bg": 12,
+      "shadow": 3
     },
     "files": {
       "components/character/SelectedCharacter.tsx": 1,
-      "components/location/Sea/index.tsx": 1,
-      "components/LoginScreen.tsx": 1,
-      "components/Map/SeaMapTowns.tsx": 1,
-      "components/Map/Tooltip.tsx": 1,
-      "components/menu/MobileBottomNav.tsx": 5,
-      "components/menu/MobileMenuContent.tsx": 1,
-      "components/menu/MobileMenuItem.tsx": 1,
-      "components/PublicGuidePage.tsx": 1,
-      "components/ui/select.tsx": 2
+      "components/DrawerBottom.tsx": 1,
+      "components/DrawerPanel.tsx": 1,
+      "components/game-ui/LocationScene/BuildingScene.tsx": 1,
+      "components/GuideContent.tsx": 5,
+      "components/menu/MobileTopBar.tsx": 1,
+      "components/Screenshots.tsx": 2,
+      "components/ui/button.tsx": 1,
+      "components/ui/dialog.tsx": 1,
+      "components/ui/sheet.tsx": 1
     }
   },
   {
@@ -1017,23 +1016,6 @@ export const colorUsage: ColorUsage[] = [
       "components/menu/MobileTopBar.tsx": 1,
       "components/ui/progress.tsx": 1,
       "components/ui/slider.tsx": 1
-    }
-  },
-  {
-    "kind": "palette",
-    "name": "slate-300",
-    "token": "--color-slate-300",
-    "css": "var(--color-slate-300)",
-    "count": 6,
-    "variants": {
-      "/70": 1
-    },
-    "utilities": {
-      "text": 6
-    },
-    "files": {
-      "components/LoginScreen.tsx": 1,
-      "components/menu/MobileBottomNav.tsx": 5
     }
   },
   {
@@ -1254,21 +1236,6 @@ export const colorUsage: ColorUsage[] = [
     }
   },
   {
-    "kind": "literal",
-    "name": "rgba(0, 0, 0, 0.42)",
-    "token": "Function literal",
-    "css": "rgba(0, 0, 0, 0.42)",
-    "count": 2,
-    "variants": {
-      "/42": 2
-    },
-    "utilities": {},
-    "files": {
-      "components/GuideContent.tsx": 1,
-      "components/LoginScreen.tsx": 1
-    }
-  },
-  {
     "kind": "token",
     "name": "accent-foreground",
     "token": "--color-accent-foreground",
@@ -1362,62 +1329,6 @@ export const colorUsage: ColorUsage[] = [
     }
   },
   {
-    "kind": "literal",
-    "name": "rgba(87, 56, 27, 0.48)",
-    "token": "Function literal",
-    "css": "rgba(87, 56, 27, 0.48)",
-    "count": 1,
-    "variants": {
-      "/48": 1
-    },
-    "utilities": {},
-    "files": {
-      "components/LoginScreen.tsx": 1
-    }
-  },
-  {
-    "kind": "literal",
-    "name": "rgba(9, 21, 27, 0.94)",
-    "token": "Function literal",
-    "css": "rgba(9, 21, 27, 0.94)",
-    "count": 1,
-    "variants": {
-      "/94": 1
-    },
-    "utilities": {},
-    "files": {
-      "components/LoginScreen.tsx": 1
-    }
-  },
-  {
-    "kind": "literal",
-    "name": "rgba(0, 0, 0, 0.24)",
-    "token": "Function literal",
-    "css": "rgba(0, 0, 0, 0.24)",
-    "count": 1,
-    "variants": {
-      "/24": 1
-    },
-    "utilities": {},
-    "files": {
-      "components/LoginScreen.tsx": 1
-    }
-  },
-  {
-    "kind": "palette",
-    "name": "slate-200",
-    "token": "--color-slate-200",
-    "css": "var(--color-slate-200)",
-    "count": 1,
-    "variants": {},
-    "utilities": {
-      "text": 1
-    },
-    "files": {
-      "components/menu/MobileMenuItem.tsx": 1
-    }
-  },
-  {
     "kind": "palette",
     "name": "amber-300",
     "token": "--color-amber-300",
@@ -1443,30 +1354,6 @@ export const colorUsage: ColorUsage[] = [
     },
     "files": {
       "components/ui/button.tsx": 1
-    }
-  },
-  {
-    "kind": "derived",
-    "name": "hsl(var(--sidebar-border))",
-    "token": "Derived from token",
-    "css": "hsl(var(--sidebar-border))",
-    "count": 1,
-    "variants": {},
-    "utilities": {},
-    "files": {
-      "components/ui/sidebar.tsx": 1
-    }
-  },
-  {
-    "kind": "derived",
-    "name": "hsl(var(--sidebar-accent))",
-    "token": "Derived from token",
-    "css": "hsl(var(--sidebar-accent))",
-    "count": 1,
-    "variants": {},
-    "utilities": {},
-    "files": {
-      "components/ui/sidebar.tsx": 1
     }
   }
 ]

@@ -27,7 +27,7 @@ const MobileMenuItem = ({
       variant="ghost"
       onClick={onClick}
       className={cn(
-        "h-auto w-full justify-start gap-4 px-2 py-2 text-base text-slate-200 transition-transform hover:bg-white/5 active:scale-95",
+        "h-auto w-full justify-start gap-4 px-2 py-2 text-base text-white transition-transform hover:bg-white/5 active:scale-95",
         isDanger && "text-destructive hover:text-destructive"
       )}
     >

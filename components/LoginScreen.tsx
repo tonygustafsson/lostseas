@@ -74,7 +74,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
         </header>
 
         <section aria-labelledby="page-title" className="max-w-5xl py-12">
-          <div className="bg-card/70 mb-6 inline-flex items-center gap-2 rounded-full border border-amber-200/20 px-3.5 py-1.5 text-xs font-semibold tracking-[0.16em] text-amber-200 uppercase shadow-lg shadow-black/20 backdrop-blur">
+          <div className="bg-card/70 mb-6 inline-flex items-center gap-2 rounded-full border border-amber-200/20 px-3.5 py-1.5 text-xs font-semibold tracking-[0.16em] text-amber-200 uppercase">
             <Waves className="size-4" aria-hidden="true" />
             The Caribbean, 1640
           </div>
@@ -90,7 +90,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
             make your fortune across the open seas.
           </p>
           <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <article className="bg-card/75 border-border rounded-2xl border p-4 backdrop-blur">
+            <article className="bg-card/90 border-border rounded-2xl border p-4">
               <Compass
                 className="mb-3 size-5 text-amber-200"
                 aria-hidden="true"
@@ -102,7 +102,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
                 Explore 16 ports across England, France, Spain, and Holland.
               </p>
             </article>
-            <article className="bg-card/75 border-border rounded-2xl border p-4 backdrop-blur">
+            <article className="bg-card/90 border-border rounded-2xl border p-4">
               <Ship className="mb-3 size-5 text-amber-200" aria-hidden="true" />
               <h2 className="font-serif text-lg text-amber-50">
                 Ships &amp; crew
@@ -111,7 +111,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
                 Build your fleet, recruit sailors, and take on ships at sea.
               </p>
             </article>
-            <article className="bg-card/75 border-border rounded-2xl border p-4 backdrop-blur">
+            <article className="bg-card/90 border-border rounded-2xl border p-4">
               <Sparkles
                 className="mb-3 size-5 text-amber-200"
                 aria-hidden="true"
@@ -123,7 +123,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
                 Earn new titles, grow your wealth, and rise through the ranks.
               </p>
             </article>
-            <article className="bg-card/75 border-border rounded-2xl border p-4 backdrop-blur">
+            <article className="bg-card/90 border-border rounded-2xl border p-4">
               <ShieldCheck
                 className="mb-3 size-5 text-amber-200"
                 aria-hidden="true"
@@ -140,7 +140,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
           <section
             id="register"
             aria-labelledby="register-title"
-            className="bg-card/90 scroll-mt-8 rounded-3xl border border-white/15 p-5 shadow-[0_24px_90px_rgba(0,0,0,0.42)] backdrop-blur-xl sm:p-8 lg:p-10"
+            className="bg-card/90 scroll-mt-8 rounded-3xl border border-white/15 p-5 sm:p-8 lg:p-10"
           >
             <div className="mb-7 flex items-start gap-6">
               <div className="hidden size-12 shrink-0 items-center justify-center rounded-2xl border border-amber-200/20 bg-amber-200/10 text-amber-200 sm:flex">
@@ -168,7 +168,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
           <section
             id="sign-in"
             aria-labelledby="sign-in-title"
-            className="bg-card/85 border-border scroll-mt-8 rounded-3xl border p-5 shadow-xl shadow-black/20 backdrop-blur-xl sm:p-8"
+            className="bg-card/85 border-border scroll-mt-8 rounded-3xl border p-5 backdrop-blur-xl sm:p-8"
           >
             <div className="mb-5">
               <p className="text-accent mb-1 text-xs font-semibold tracking-[0.16em] uppercase">
@@ -244,7 +244,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
             </article>
           </div>
 
-          <div className="mt-10 rounded-3xl border border-amber-200/20 bg-[linear-gradient(115deg,rgba(87,56,27,0.48),rgba(9,21,27,0.94)_58%)] p-5 shadow-[0_20px_70px_rgba(0,0,0,0.24)] sm:p-7">
+          <div className="mt-10 rounded-3xl border bg-[linear-gradient(115deg,var(--color-background),var(--color-neutral-800))] p-5 sm:p-7">
             <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-6">
               <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl border border-amber-200/25 bg-amber-200/10 text-amber-200">
                 <BookOpenText className="size-7" aria-hidden="true" />
@@ -286,7 +286,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
           <Screenshots />
 
           <footer className="border-border mt-10 border-t pt-5">
-            <SocialMedia className="my-0 text-slate-300/70" />
+            <SocialMedia className="my-0 text-white opacity-75" />
           </footer>
         </section>
       </div>
