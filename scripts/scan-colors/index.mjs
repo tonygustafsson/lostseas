@@ -14,7 +14,6 @@ const SOURCES = [
   "constants",
   "lib",
   "types",
-  "styles",
   "fonts.ts",
 ]
 const EXTENSIONS = [".ts", ".tsx", ".css"]
@@ -180,16 +179,12 @@ const normaliseHex = (hex) => {
   return `#${[...value].map((char) => char + char).join("")}`
 }
 
-const stripDeclarations = (text, file) => {
-  if (!file.endsWith("globals.css")) return text
-
-  // Token definitions and @theme mappings are not usages
-  return text.replace(/^\s*--[\w-]+:[^;]*;/gm, "")
-}
+// Inline SVG artwork (like flags) uses its own fixed colours, not the theme
+const stripSvg = (text) => text.replace(/<svg\b[\s\S]*?<\/svg>/g, "")
 
 const scanFile = (path) => {
   const file = relative(ROOT, path).replaceAll("\\", "/")
-  const text = stripDeclarations(readFileSync(path, "utf8"), file)
+  const text = stripSvg(readFileSync(path, "utf8"))
 
   for (const match of text.matchAll(classRegex)) {
     const [, utility, color, opacity] = match

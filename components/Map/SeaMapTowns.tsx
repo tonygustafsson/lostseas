@@ -5,7 +5,7 @@ import Image from "next/image"
 import { TOWNS } from "@/constants/locations"
 import { cn } from "@/lib/utils"
 
-import { MAP_ZOOM, mapColors, TOWN_ANCHOR_SIZE } from "./constants"
+import { MAP_ZOOM, mapColorVariables, TOWN_ANCHOR_SIZE } from "./constants"
 
 const TOWN_SIZE = 12
 const TOWN_HIT_PADDING = 6
@@ -78,7 +78,7 @@ const SeaMapTowns = ({
         />
 
         <span
-          className={`pointer-events-none absolute font-mono whitespace-nowrap ${isOutOfReach ? "text-gold" : "text-white"}`}
+          className="pointer-events-none absolute font-mono whitespace-nowrap text-white"
           style={{
             left:
               TOWN_HIT_PADDING +
@@ -88,9 +88,13 @@ const SeaMapTowns = ({
             top: TOWN_HIT_PADDING + (textAlign === "right" ? 6 : 25) / MAP_ZOOM,
             fontSize: 10 / MAP_ZOOM,
             lineHeight: `${12 / MAP_ZOOM}px`,
-            backgroundColor: isCurrentTown
-              ? mapColors.darkBlue
-              : mapColors.black,
+            backgroundColor: `var(${
+              isCurrentTown
+                ? mapColorVariables.currentTownLabel
+                : isOutOfReach
+                  ? mapColorVariables.outOfReachTownLabel
+                  : mapColorVariables.townLabel
+            })`,
             opacity: isCurrentTown ? 0.9 : 0.8,
           }}
         >

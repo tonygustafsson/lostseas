@@ -10,7 +10,7 @@ import {
   MAP_HEIGHT,
   MAP_WIDTH,
   MAP_ZOOM,
-  mapColors as colors,
+  mapColorVariables,
   TOWN_ANCHOR_SIZE,
 } from "./constants"
 import SeaMapTowns from "./SeaMapTowns"
@@ -118,6 +118,12 @@ const SeaMapCanvas = ({
     const toProgress = isPaused ? fromProgress : targetProgress
     const startTime = performance.now()
     const shipImage = getCachedImage("/img/logo.svg")
+    const styles = getComputedStyle(canvas)
+    const readColor = (name: keyof typeof mapColorVariables) =>
+      styles.getPropertyValue(mapColorVariables[name]).trim()
+    const shipGlowColor = readColor("shipGlow")
+    const trailColor = readColor("trail")
+    const trailTravelledColor = readColor("trailTravelled")
     let previousTransform = ""
 
     // Align the DOM background and transparent canvas to the same camera.
@@ -188,14 +194,16 @@ const SeaMapCanvas = ({
       const width = isAtSea ? SEA_SHIP_WIDTH : SHIP_WIDTH
       const radius = width * 1.25
       const glow = context.createRadialGradient(x, y, 0, x, y, radius)
-      glow.addColorStop(0, colors.shipGlow)
+      glow.addColorStop(0, shipGlowColor)
       glow.addColorStop(1, "transparent")
 
       context.save()
+      context.globalAlpha = 0.65
       context.fillStyle = glow
       context.beginPath()
       context.arc(x, y, radius, 0, Math.PI * 2)
       context.fill()
+      context.globalAlpha = 1
 
       if (shipImage.complete && shipImage.naturalWidth > 0) {
         const height = width * SHIP_ASPECT_RATIO
@@ -231,12 +239,12 @@ const SeaMapCanvas = ({
         isAtSea ? (routeProgress?.position ?? MAP_CENTER) : undefined
       )
 
-      if (previewRoute) drawDashedRoute(previewRoute, colors.trailTravelled)
+      if (previewRoute) drawDashedRoute(previewRoute, trailColor)
 
       if (route && routeProgress) {
         animation.current.progress = progress
-        drawDashedRoute(route, colors.trail)
-        drawDashedRoute(routeProgress.travelledRoute, colors.trailTravelled)
+        drawDashedRoute(route, trailColor)
+        drawDashedRoute(routeProgress.travelledRoute, trailTravelledColor)
         drawShip(routeProgress.position, now, routeProgress.heading.x < 0)
       } else if (currentTown && !isAtSea) {
         const { x, y } = TOWNS[currentTown].map

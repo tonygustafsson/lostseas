@@ -3,10 +3,13 @@ export const MAP_HEIGHT = 540
 export const MAP_ZOOM = 1.5
 export const TOWN_ANCHOR_SIZE = 20
 
-export const mapColors = {
-  shipGlow: "rgb(0 0 0 / 0.65)",
-  darkBlue: "#00435c",
-  black: "#000",
-  trail: "oklch(0.577 0.245 27.325 / 0.6)",
-  trailTravelled: "oklch(0.577 0.245 27.325)",
+// Names of CSS variables. The canvas can't resolve var(), so it reads these
+// from the page when drawing.
+export const mapColorVariables = {
+  shipGlow: "--color-black",
+  currentTownLabel: "--color-sky-900",
+  townLabel: "--color-black",
+  outOfReachTownLabel: "--color-gold-dark",
+  trail: "--destructive",
+  trailTravelled: "--color-neutral-700",
 }
