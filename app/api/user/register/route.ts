@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 import { getCharacterById } from "@/constants/characters"
 import { STARTING_SHIP_TYPE } from "@/constants/player"
 import {
+  AMBIENCE_STATE_COOKIE_NAME,
   COOKIE_EXPIRE_TIME,
   MUSIC_STATE_COOKIE_NAME,
   SOUND_EFFECTS_STATE_COOKIE_NAME,
@@ -17,7 +18,7 @@ import { registrationValidationSchema } from "@/utils/validation"
 
 const createPlayer = async (body: any) => {
   const { name, characterId } = body
-  const { musicOn, soundEffectsOn } = body
+  const { musicOn, ambienceOn, soundEffectsOn } = body
 
   const character = getCharacterById(characterId)
 
@@ -44,7 +45,7 @@ const createPlayer = async (body: any) => {
     message: `Created new character ${name}.`,
   })
 
-  return { playerId, musicOn, soundEffectsOn }
+  return { playerId, musicOn, ambienceOn, soundEffectsOn }
 }
 
 const handleRegister = async (req: Request) => {
@@ -57,13 +58,21 @@ const handleRegister = async (req: Request) => {
   }
 
   try {
-    const { playerId, musicOn, soundEffectsOn } = await createPlayer(body)
+    const { playerId, musicOn, ambienceOn, soundEffectsOn } =
+      await createPlayer(body)
 
     const res = setPlayerCookie(NextResponse.json(playerId), playerId)
 
     res.cookies.set(MUSIC_STATE_COOKIE_NAME, Boolean(musicOn).toString(), {
       expires: COOKIE_EXPIRE_TIME,
     })
+    res.cookies.set(
+      AMBIENCE_STATE_COOKIE_NAME,
+      Boolean(ambienceOn).toString(),
+      {
+        expires: COOKIE_EXPIRE_TIME,
+      }
+    )
     res.cookies.set(
       SOUND_EFFECTS_STATE_COOKIE_NAME,
       Boolean(soundEffectsOn).toString(),

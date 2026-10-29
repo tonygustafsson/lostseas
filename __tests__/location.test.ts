@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 import { TOWNS } from "@/constants/locations"
 import {
   getLocationAmbience,
+  getLocationAmbienceSounds,
   getLocationBackground,
   getRandomTown,
   getTownsNationality,
@@ -34,5 +35,39 @@ describe("location utils", () => {
 
   it("getLocationAmbience returns undefined without a town", () => {
     expect(getLocationAmbience(undefined, "Shop")).toBeUndefined()
+  })
+
+  it("getLocationAmbienceSounds returns the harbor sounds in the harbor", () => {
+    expect(getLocationAmbienceSounds("Harbor")).toEqual([
+      "ambience/harbor/harbor1.opus",
+    ])
+  })
+
+  it("getLocationAmbienceSounds returns the market sounds in the market", () => {
+    expect(getLocationAmbienceSounds("Market")).toEqual([
+      "ambience/market/market1.opus",
+    ])
+  })
+
+  it("getLocationAmbienceSounds returns all tavern sounds in the tavern", () => {
+    expect(getLocationAmbienceSounds("Tavern")).toEqual([
+      "ambience/tavern/tavern1.opus",
+      "ambience/tavern/tavern2.opus",
+      "ambience/tavern/tavern3.opus",
+      "ambience/tavern/tavern4.opus",
+    ])
+  })
+
+  it("getLocationAmbienceSounds returns all shipyard sounds in the shipyard", () => {
+    expect(getLocationAmbienceSounds("Shipyard")).toEqual([
+      "ambience/shipyard/shipyard1.opus",
+      "ambience/shipyard/shipyard2.opus",
+    ])
+  })
+
+  it("getLocationAmbienceSounds returns undefined for locations without a sound", () => {
+    expect(getLocationAmbienceSounds("Shop")).toBeUndefined()
+    expect(getLocationAmbienceSounds("Sea")).toBeUndefined()
+    expect(getLocationAmbienceSounds(undefined)).toBeUndefined()
   })
 })

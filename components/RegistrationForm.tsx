@@ -104,6 +104,22 @@ const RegistrationForm = ({ initialCharacter }: Props) => {
 
         <Controller
           control={control}
+          name="ambienceOn"
+          defaultValue={true}
+          render={({ field }) => (
+            <div className="flex items-center gap-4">
+              <Switch
+                id="toggleAmbience"
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+              <label htmlFor="toggleAmbience">Ambience</label>
+            </div>
+          )}
+        />
+
+        <Controller
+          control={control}
           name="soundEffectsOn"
           defaultValue={true}
           render={({ field }) => (

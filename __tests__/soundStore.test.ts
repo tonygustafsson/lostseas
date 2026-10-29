@@ -6,6 +6,7 @@ import { setCookie } from "cookies-next"
 
 import useSound from "@/app/stores/sound"
 import {
+  AMBIENCE_STATE_COOKIE_NAME,
   COOKIE_EXPIRE_TIME,
   MUSIC_STATE_COOKIE_NAME,
   SOUND_EFFECTS_STATE_COOKIE_NAME,
@@ -16,8 +17,11 @@ describe("sound store", () => {
     // reset store state
     useSound.setState({
       musicOn: false,
+      ambienceOn: false,
       soundEffectsOn: false,
       soundEffect: undefined,
+      nextTrackRequest: 0,
+      changingTrack: false,
     })
     vi.useFakeTimers()
   })
@@ -50,6 +54,31 @@ describe("sound store", () => {
       true,
       { expires: COOKIE_EXPIRE_TIME }
     )
+  })
+
+  it("sets ambience and writes cookie", () => {
+    useSound.getState().setAmbience(true)
+
+    const state = useSound.getState()
+    expect(state.ambienceOn).toBe(true)
+    expect(setCookie).toHaveBeenCalledWith(AMBIENCE_STATE_COOKIE_NAME, true, {
+      expires: COOKIE_EXPIRE_TIME,
+    })
+  })
+
+  it("requests the next track", () => {
+    useSound.getState().nextTrack()
+    useSound.getState().nextTrack()
+
+    expect(useSound.getState().nextTrackRequest).toBe(2)
+  })
+
+  it("tracks when the music is changing track", () => {
+    useSound.getState().setChangingTrack(true)
+    expect(useSound.getState().changingTrack).toBe(true)
+
+    useSound.getState().setChangingTrack(false)
+    expect(useSound.getState().changingTrack).toBe(false)
   })
 
   it("plays and then resets soundEffect", () => {

@@ -13,6 +13,7 @@ export type ModalId =
   | "departureWarnings"
   | "removePasskey"
   | "resetGame"
+  | "sound"
 
 export type ModalProps = {
   id: ModalId

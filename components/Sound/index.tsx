@@ -3,10 +3,12 @@ import { useCallback, useEffect, useRef } from "react"
 
 import useSound from "@/app/stores/sound"
 import {
+  AMBIENCE_STATE_COOKIE_NAME,
   MUSIC_STATE_COOKIE_NAME,
   SOUND_EFFECTS_STATE_COOKIE_NAME,
 } from "@/constants/system"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { getLocationAmbienceSounds } from "@/utils/location"
 import { getRandomInt } from "@/utils/random"
 
 const townSongs = Array.from(
@@ -21,11 +23,48 @@ const seaSongs = Array.from(
 const isSongForLocation = (src: string | undefined, location?: string) =>
   Boolean(src?.includes(location === "Sea" ? "/music/sea/" : "/music/town/"))
 
+const LOCATION_SOUND_VOLUME = 0.75
+
+const fadeIntervals = new WeakMap<HTMLAudioElement, NodeJS.Timeout>()
+
+const fadeTo = (
+  audio: HTMLAudioElement,
+  target: number,
+  onDone?: () => void
+) => {
+  clearInterval(fadeIntervals.get(audio))
+
+  const step = target > audio.volume ? 0.05 : -0.05
+
+  const interval = setInterval(() => {
+    const next = audio.volume + step
+
+    if (step > 0 ? next >= target : next <= target) {
+      audio.volume = target
+      clearInterval(interval)
+      onDone?.()
+    } else {
+      audio.volume = next
+    }
+  }, 100)
+
+  fadeIntervals.set(audio, interval)
+}
+
 const Sound = () => {
   const { data: player } = useGetPlayer()
   const location = player?.character?.location
-  const { musicOn, soundEffectsOn, soundEffect, setMusic, setSoundEffects } =
-    useSound()
+  const {
+    musicOn,
+    ambienceOn,
+    soundEffectsOn,
+    soundEffect,
+    nextTrackRequest,
+    setMusic,
+    setAmbience,
+    setSoundEffects,
+    setChangingTrack,
+  } = useSound()
 
   const musicPlayer = useRef(typeof Audio !== "undefined" ? new Audio() : null)
 
@@ -66,10 +105,14 @@ const Sound = () => {
   const playRandomSong = useCallback(async () => {
     if (!musicPlayer.current) return
 
+    setChangingTrack(true)
     await fadeOutMusic()
+    setChangingTrack(false)
 
     const songs = location === "Sea" ? seaSongs : townSongs
-    const otherSongs = songs.filter((song) => song !== musicPlayer.current?.src)
+    const otherSongs = songs.filter(
+      (song) => !musicPlayer.current?.src.endsWith(song)
+    )
     const randomSong = otherSongs[Math.floor(Math.random() * otherSongs.length)]
 
     if (musicPlayer.current) {
@@ -78,7 +121,7 @@ const Sound = () => {
     }
 
     playMusic()
-  }, [musicPlayer, location, playMusic])
+  }, [musicPlayer, location, playMusic, setChangingTrack])
 
   useEffect(() => {
     if (!musicPlayer.current) return
@@ -104,6 +147,16 @@ const Sound = () => {
       playRandomSong()
     }
   }, [musicOn, musicPlayer, location, playRandomSong, playMusic])
+
+  const handledTrackRequest = useRef(nextTrackRequest)
+
+  useEffect(() => {
+    if (nextTrackRequest === handledTrackRequest.current) return
+
+    handledTrackRequest.current = nextTrackRequest
+
+    if (musicOn) playRandomSong()
+  }, [nextTrackRequest, musicOn, playRandomSong])
 
   useEffect(() => {
     if (!soundEffectsOn || !soundEffect) return
@@ -157,12 +210,47 @@ const Sound = () => {
     }
   }, [musicOn, musicPlayer, location, playRandomSong, playMusic])
 
+  const locationSounds = ambienceOn
+    ? getLocationAmbienceSounds(location)
+    : undefined
+
+  // Changing location fades out the old sound while the new one fades in
+  useEffect(() => {
+    if (!locationSounds) return
+
+    const audio = new Audio(
+      locationSounds[Math.floor(Math.random() * locationSounds.length)]
+    )
+    audio.loop = true
+    audio.volume = 0
+
+    const play = () =>
+      audio.play().catch(() => {
+        // Autoplay blocked — will resume on first user interaction
+      })
+
+    play()
+    fadeTo(audio, LOCATION_SOUND_VOLUME)
+
+    const handleClick = () => {
+      if (audio.paused) play()
+    }
+
+    document.addEventListener("click", handleClick, { once: true })
+
+    return () => {
+      document.removeEventListener("click", handleClick)
+      fadeTo(audio, 0, () => audio.pause())
+    }
+  }, [locationSounds])
+
   const hasPlayer = Boolean(player)
 
   useEffect(() => {
     if (!hasPlayer) return
 
     const musicCookieValue = getCookie(MUSIC_STATE_COOKIE_NAME)
+    const ambienceCookieValue = getCookie(AMBIENCE_STATE_COOKIE_NAME)
     const soundEffectsCookieValue = getCookie(SOUND_EFFECTS_STATE_COOKIE_NAME)
 
     setMusic(
@@ -170,12 +258,17 @@ const Sound = () => {
         ? musicCookieValue === "true"
         : true
     )
+    setAmbience(
+      typeof ambienceCookieValue !== "undefined"
+        ? ambienceCookieValue === "true"
+        : true
+    )
     setSoundEffects(
       typeof soundEffectsCookieValue !== "undefined"
         ? soundEffectsCookieValue === "true"
         : true
     )
-  }, [hasPlayer, setMusic, setSoundEffects])
+  }, [hasPlayer, setMusic, setAmbience, setSoundEffects])
 
   return null
 }

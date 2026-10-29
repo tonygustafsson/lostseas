@@ -5,6 +5,7 @@ import useDrawer from "@/app/stores/drawer"
 import useSound from "@/app/stores/sound"
 import { Button } from "@/components/ui/button"
 import {
+  AMBIENCE_STATE_COOKIE_NAME,
   MUSIC_STATE_COOKIE_NAME,
   SOUND_EFFECTS_STATE_COOKIE_NAME,
 } from "@/constants/system"
@@ -18,15 +19,13 @@ type Props = {
 }
 
 const WelcomeNewUser = ({ player, onClose }: Props) => {
-  const { setMusic, setSoundEffects } = useSound()
+  const { setMusic, setAmbience, setSoundEffects } = useSound()
   const { open: openDrawer } = useDrawer()
 
   const startExploring = () => {
-    const musicOn = Boolean(getCookie(MUSIC_STATE_COOKIE_NAME))
-    const soundEffectsOn = Boolean(getCookie(SOUND_EFFECTS_STATE_COOKIE_NAME))
-
-    setMusic(musicOn)
-    setSoundEffects(soundEffectsOn)
+    setMusic(getCookie(MUSIC_STATE_COOKIE_NAME) === "true")
+    setAmbience(getCookie(AMBIENCE_STATE_COOKIE_NAME) === "true")
+    setSoundEffects(getCookie(SOUND_EFFECTS_STATE_COOKIE_NAME) === "true")
 
     onClose()
   }

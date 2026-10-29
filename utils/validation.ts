@@ -17,6 +17,7 @@ const registrationValidationSchema = z.object({
   name: validationRules.character.name,
   characterId: z.enum(CHARACTER_IDS),
   musicOn: z.boolean(),
+  ambienceOn: z.boolean(),
   soundEffectsOn: z.boolean(),
 })
 

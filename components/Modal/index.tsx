@@ -23,7 +23,7 @@ const Modal = () => {
                 modal.fullWidth,
             })}
           >
-            <DialogTitle className="mb-6 text-center font-serif text-xl font-bold">
+            <DialogTitle className="mb-2 text-center font-serif text-xl font-bold">
               {modal.title}
             </DialogTitle>
 

@@ -10,6 +10,7 @@ import { POST as register } from "@/app/api/user/register/route"
 import { POST as reset } from "@/app/api/user/reset/route"
 import { TOWNS } from "@/constants/locations"
 import {
+  AMBIENCE_STATE_COOKIE_NAME,
   MUSIC_STATE_COOKIE_NAME,
   PLAYER_ID_COOKIE_NAME,
   SOUND_EFFECTS_STATE_COOKIE_NAME,
@@ -147,6 +148,7 @@ describe("GET /api/user/getRandomCharacter", () => {
         registrationValidationSchema.safeParse({
           ...character,
           musicOn: true,
+          ambienceOn: true,
           soundEffectsOn: true,
         }).success,
         JSON.stringify(character)
@@ -208,6 +210,7 @@ describe("POST /api/user/register", () => {
     name: "Anne Bonny",
     characterId: "anne-calloway",
     musicOn: true,
+    ambienceOn: false,
     soundEffectsOn: false,
   }
 
@@ -236,6 +239,9 @@ describe("POST /api/user/register", () => {
     )
     expect(response.cookies.get(PLAYER_ID_COOKIE_NAME)?.value).toBe(playerId)
     expect(response.cookies.get(MUSIC_STATE_COOKIE_NAME)?.value).toBe("true")
+    expect(response.cookies.get(AMBIENCE_STATE_COOKIE_NAME)?.value).toBe(
+      "false"
+    )
     expect(response.cookies.get(SOUND_EFFECTS_STATE_COOKIE_NAME)?.value).toBe(
       "false"
     )
@@ -261,6 +267,7 @@ describe("POST /api/user/register", () => {
   it.each([
     { name: "Al" },
     { musicOn: "yes" },
+    { ambienceOn: "yes" },
     { characterId: "nobody" },
     { characterId: undefined },
   ])("returns 400 and saves nothing for %j", async (invalid) => {

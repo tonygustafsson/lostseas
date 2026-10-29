@@ -154,6 +154,18 @@ html {
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  --animate-equalizer: equalizer 1s ease-in-out infinite;
+
+  @keyframes equalizer {
+    0%,
+    100% {
+      transform: scaleY(0.3);
+    }
+    50% {
+      transform: scaleY(1);
+    }
+  }
 }
 
 @layer base {

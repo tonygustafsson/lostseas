@@ -5,7 +5,7 @@ import { almendra } from "@/fonts"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import SocialMedia from "../SocialMedia"
-import SoundControls from "../Sound/Controls"
+import SoundButton from "../Sound/SoundButton"
 import { Sidebar, SidebarContent, SidebarGroup } from "../ui/sidebar"
 import CharacterCard from "./CharacterCard"
 import FleetCard from "./FleetCard"
@@ -53,7 +53,7 @@ const DesktopMenu = ({ className }: Props) => {
 
           <div className="mb-4 flex flex-col gap-8">
             <QuickButtonMenu />
-            <SoundControls />
+            <SoundButton />
           </div>
           <SocialMedia />
         </SidebarGroup>

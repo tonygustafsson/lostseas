@@ -45,3 +45,23 @@ export const getLocationAmbience = (
     light: `/img/location-light-masks/${path}`,
   }
 }
+
+// Looping sounds played on top of the music while in a building. One of them
+// is picked at random on every visit.
+const LOCATION_AMBIENCE_SOUNDS: Partial<
+  Record<Character["location"], string[]>
+> = {
+  Harbor: ["ambience/harbor/harbor1.opus"],
+  Market: ["ambience/market/market1.opus"],
+  Tavern: Array.from(
+    { length: 4 },
+    (_, i) => `ambience/tavern/tavern${i + 1}.opus`
+  ),
+  Shipyard: Array.from(
+    { length: 2 },
+    (_, i) => `ambience/shipyard/shipyard${i + 1}.opus`
+  ),
+}
+
+export const getLocationAmbienceSounds = (location?: Character["location"]) =>
+  location ? LOCATION_AMBIENCE_SOUNDS[location] : undefined
