@@ -395,6 +395,7 @@ const SeaMapCanvas = ({
 
         <SeaMapTowns
           currentTown={currentTown}
+          suppliesDays={suppliesDays}
           canSelectTowns={!!onSelectTown && !isAtSea}
           onHoverTown={showTownTooltip}
           onLeaveTown={hideTownTooltip}

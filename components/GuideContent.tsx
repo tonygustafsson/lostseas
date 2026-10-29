@@ -261,8 +261,8 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           You need enough food and water for every day at sea, so far-off towns
           need bigger stores. Every 10 crew members eat a crate of food a day,
           and every 5 drink a barrel of water, rounded to whole units. Even a
-          tiny crew gets through at least one of each. Hover a town on the map
-          to see whether your supplies will get you there, and your advisor
+          tiny crew gets through at least one of each. Towns your supplies
+          won&apos;t get you to have yellow names on the map, and your advisor
           warns you when some ports are out of reach. When you pick a town, you
           see the distance and what you need before you confirm.
         </p>

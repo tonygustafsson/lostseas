@@ -3,6 +3,7 @@
 import Image from "next/image"
 
 import { TOWNS } from "@/constants/locations"
+import { cn } from "@/lib/utils"
 
 import { MAP_ZOOM, mapColors, TOWN_ANCHOR_SIZE } from "./constants"
 
@@ -13,6 +14,7 @@ const towns = Object.keys(TOWNS) as Town[]
 
 type Props = {
   currentTown?: Town
+  suppliesDays?: number
   canSelectTowns: boolean
   onHoverTown: (
     town: Town,
@@ -26,6 +28,7 @@ type Props = {
 // Kept separate so journey updates don't re-render every town marker.
 const SeaMapTowns = ({
   currentTown,
+  suppliesDays = Infinity,
   canSelectTowns,
   onHoverTown,
   onLeaveTown,
@@ -36,6 +39,10 @@ const SeaMapTowns = ({
     const { x, y, textAlign } = TOWNS[town].map
     const isCurrentTown = town === currentTown
     const canSelectTown = canSelectTowns && !isCurrentTown
+    const distance = currentTown
+      ? TOWNS[currentTown].map.distanceTo[town] || 0
+      : 0
+    const isOutOfReach = distance > suppliesDays
 
     return (
       <button
@@ -63,15 +70,15 @@ const SeaMapTowns = ({
           height={TOWN_SIZE}
           style={{ width: TOWN_SIZE, height: TOWN_SIZE }}
           draggable={false}
-          className={
-            canSelectTown
-              ? "group-hover:scale-110 group-focus-visible:scale-110"
-              : undefined
-          }
+          className={cn(
+            canSelectTown &&
+              "group-hover:scale-110 group-focus-visible:scale-110",
+            isOutOfReach && "grayscale"
+          )}
         />
 
         <span
-          className="pointer-events-none absolute font-mono whitespace-nowrap text-white"
+          className={`pointer-events-none absolute font-mono whitespace-nowrap ${isOutOfReach ? "text-gold" : "text-white"}`}
           style={{
             left:
               TOWN_HIT_PADDING +
