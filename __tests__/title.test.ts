@@ -17,13 +17,6 @@ describe("title utils", () => {
     expect(getTitleInfoByScore(200)).toEqual(TITLE_INFO.Duke)
   })
 
-  it("getNewTitle handles undefined character", () => {
-    const res = getNewTitle(undefined)
-    expect(res.titleInfo.title).toBe("Pirate")
-    expect(res.promotionAvailable).toBe(false)
-    expect(res.citizenshipChangeAvailable).toBe(false)
-  })
-
   it("getNewTitle computes promotion and citizenship scenarios", () => {
     const character = {
       title: "Pirate",

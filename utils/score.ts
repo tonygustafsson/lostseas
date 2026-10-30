@@ -31,7 +31,7 @@ export const getNetWorth = (player: Player) => {
 }
 
 export const getScoreBreakdown = (player: Player) => ({
-  title: TITLE_SCORE[player.character.title] ?? 0,
+  title: TITLE_SCORE[player.character.title],
   wealth: Math.floor(getNetWorth(player) / 500),
   ships: Object.keys(player.ships || {}).length * 10,
   cannons:

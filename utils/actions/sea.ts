@@ -46,8 +46,7 @@ const clearedSeaState: DeepPartial<SeaState> = {
 
 export const startJourney = (
   player: Player,
-  { town }: { town: Town },
-  random: Random = Math.random
+  { town }: { town: Town }
 ): ActionResult<{ distance: number }> | { blocked: true } => {
   if (typeof town !== "string" || !Object.hasOwn(TOWNS, town)) {
     return badRequest("Invalid destination")
@@ -72,11 +71,7 @@ export const startJourney = (
     return { blocked: true }
   }
 
-  const currentTown = player.character.town && TOWNS[player.character.town]
-
-  // Without a known distance, the journey takes 3 to 8 days
-  const distance =
-    currentTown?.map.distanceTo[town] || Math.floor(random() * 6) + 3
+  const distance = TOWNS[player.character.town!].map.distanceTo[town]
 
   return {
     player: patchDeep<Player>(player, {
@@ -84,7 +79,7 @@ export const startJourney = (
         town: null,
         location: "Sea",
         journey: {
-          ...(player.character.town && { origin: player.character.town }),
+          origin: player.character.town,
           destination: town,
           day: 1,
           totalDays: distance,

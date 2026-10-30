@@ -11,7 +11,7 @@ const BattleActions = () => {
       <Button
         size="lg"
         variant="highlight"
-        className="w-full min-w-32 rounded-full px-5 text-base md:w-auto"
+        className="w-full min-w-32 rounded-full px-6 text-base md:w-auto"
         disabled={isMakingBattleMove}
         onClick={() => battleMove("fire")}
       >
@@ -22,7 +22,7 @@ const BattleActions = () => {
       <Button
         size="lg"
         variant="secondary"
-        className="w-full min-w-32 rounded-full px-5 text-base md:w-auto"
+        className="w-full min-w-32 rounded-full px-6 text-base md:w-auto"
         disabled={isMakingBattleMove}
         onClick={() => battleMove("evade")}
       >

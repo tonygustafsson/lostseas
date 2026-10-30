@@ -9,6 +9,12 @@ const meta = {
   component: ShipCard,
   args: {
     ship: player.ships.endeavour,
+    removeBlocker: undefined,
+    removeWarning: undefined,
+  },
+  argTypes: {
+    removeBlocker: { control: "text" },
+    removeWarning: { control: "text" },
   },
   decorators: [
     (Story) => (
@@ -38,4 +44,11 @@ export const Merchantman: Story = {
 
 export const RemoveBlocked: Story = {
   args: { removeBlocker: "You cannot remove your last ship" },
+}
+
+export const RemoveWarning: Story = {
+  args: {
+    removeWarning:
+      "This leaves you overloaded by 120. You cannot leave port until you sell goods or buy another ship.",
+  },
 }

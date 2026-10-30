@@ -33,7 +33,7 @@ const MobileBottomNav = ({ className }: Props) => {
   return (
     <>
       <div
-        className={`bg-sidebar/95 fixed inset-x-0 bottom-0 z-20 overflow-hidden px-3 pt-2 shadow-[0_-12px_32px_rgba(0,0,0,0.45)] backdrop-blur-md [view-transition-name:bottom-nav] lg:hidden ${className}`}
+        className={`bg-sidebar/95 fixed inset-x-0 bottom-0 z-20 overflow-hidden px-4 pt-2 shadow-[0_-12px_32px_rgba(0,0,0,0.45)] backdrop-blur-md [view-transition-name:bottom-nav] lg:hidden ${className}`}
       >
         <div className="via-gold/70 absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent to-transparent" />
 
@@ -44,7 +44,7 @@ const MobileBottomNav = ({ className }: Props) => {
             variant="ghost"
             onClick={showMap}
             disabled={!canTravel}
-            className="hover:text-gold-light [&_svg]:text-accent h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-[0.65rem] leading-none font-semibold transition-all hover:bg-white/5 active:scale-90"
+            className="hover:text-gold-light [&_svg]:text-accent h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-xs leading-none font-semibold transition-all hover:bg-white/5 active:scale-90"
           >
             <RiTreasureMapLine className="h-5 w-5" />
             Travel
@@ -53,7 +53,7 @@ const MobileBottomNav = ({ className }: Props) => {
           <Button
             variant="ghost"
             onClick={() => openDrawer("status")}
-            className="hover:text-gold-light [&_svg]:text-accent h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-[0.65rem] leading-none font-semibold transition-all hover:bg-white/5 active:scale-90"
+            className="hover:text-gold-light [&_svg]:text-accent h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-xs leading-none font-semibold transition-all hover:bg-white/5 active:scale-90"
           >
             <GiPirateCoat className="h-5 w-5" />
             Status
@@ -62,7 +62,7 @@ const MobileBottomNav = ({ className }: Props) => {
           <Button
             variant="ghost"
             onClick={() => openDrawer("fleet")}
-            className="hover:text-gold-light [&_svg]:text-accent h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-[0.65rem] leading-none font-semibold transition-all hover:bg-white/5 active:scale-90"
+            className="hover:text-gold-light [&_svg]:text-accent h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-xs leading-none font-semibold transition-all hover:bg-white/5 active:scale-90"
           >
             <GiShoonerSailboat className="h-5 w-5" />
             Fleet
@@ -71,7 +71,7 @@ const MobileBottomNav = ({ className }: Props) => {
           <Button
             variant="ghost"
             onClick={() => openDrawer("inventory")}
-            className="hover:text-gold-light [&_svg]:text-accent h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-[0.65rem] leading-none font-semibold transition-all hover:bg-white/5 active:scale-90"
+            className="hover:text-gold-light [&_svg]:text-accent h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-xs leading-none font-semibold transition-all hover:bg-white/5 active:scale-90"
           >
             <GiOpenedFoodCan className="h-5 w-5" />
             Inventory
@@ -80,7 +80,7 @@ const MobileBottomNav = ({ className }: Props) => {
           <Button
             variant="ghost"
             onClick={() => setIsMenuOpen(true)}
-            className="hover:text-gold-light [&_svg]:text-accent h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-[0.65rem] leading-none font-semibold transition-all hover:bg-white/5 active:scale-90"
+            className="hover:text-gold-light [&_svg]:text-accent h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-xs leading-none font-semibold transition-all hover:bg-white/5 active:scale-90"
           >
             <FiMenu className="h-5 w-5" />
             Menu

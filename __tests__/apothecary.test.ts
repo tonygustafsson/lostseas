@@ -61,7 +61,7 @@ describe("apothecary utils", () => {
     })
   })
 
-  it.each([undefined, NaN, 0, -5])(
+  it.each([0, -5])(
     "getRemedyResult has no crew and no price when the count is %s",
     (count) => {
       expect(
@@ -70,18 +70,6 @@ describe("apothecary utils", () => {
           "willow-bark-tea"
         )
       ).toMatchObject({ hasCrew: false, price: 0 })
-    }
-  )
-
-  it.each([undefined, NaN])(
-    "getRemedyResult heals nothing when health is %s",
-    (health) => {
-      expect(
-        getRemedyResult(
-          { count: 50, health: health as never },
-          "willow-bark-tea"
-        )
-      ).toMatchObject({ healed: 0 })
     }
   )
 })

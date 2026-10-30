@@ -57,16 +57,10 @@ const LoginScreen = ({ initialCharacter }: Props) => {
         <header className="border-border flex min-h-20 items-center gap-4 border-b">
           <Link
             href="/"
-            className="flex items-center gap-3"
+            className="flex items-center gap-4"
             aria-label="Lost Seas home"
           >
-            <Image
-              src="/img/logo.svg"
-              alt=""
-              width={42}
-              height={34}
-              className="h-8 w-auto"
-            />
+            <Image src="/img/logo.svg" alt="" width={48} height={37} />
             <span className="font-serif text-2xl tracking-wide text-amber-50 sm:text-3xl">
               Lost Seas
             </span>
@@ -74,13 +68,13 @@ const LoginScreen = ({ initialCharacter }: Props) => {
         </header>
 
         <section aria-labelledby="page-title" className="max-w-5xl py-12">
-          <div className="bg-card/70 mb-6 inline-flex items-center gap-2 rounded-full border border-amber-200/20 px-3.5 py-1.5 text-xs font-semibold tracking-[0.16em] text-amber-200 uppercase">
+          <div className="bg-card/70 mb-6 inline-flex items-center gap-2 rounded-full border border-amber-200/20 px-4 py-2 text-xs font-semibold tracking-widest text-amber-200 uppercase">
             <Waves className="size-4" aria-hidden="true" />
             The Caribbean, 1640
           </div>
           <h1
             id="page-title"
-            className="max-w-3xl font-serif text-5xl leading-[1.04] tracking-tight text-amber-50 sm:text-6xl lg:text-7xl"
+            className="max-w-3xl font-serif text-5xl leading-none tracking-tight text-amber-50 sm:text-6xl lg:text-7xl"
           >
             Your story begins <span className="text-accent">at sea.</span>
           </h1>
@@ -89,10 +83,10 @@ const LoginScreen = ({ initialCharacter }: Props) => {
             pirate, then earn your reputation, build a crew, command ships, and
             make your fortune across the open seas.
           </p>
-          <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <article className="bg-card/90 border-border rounded-2xl border p-4">
               <Compass
-                className="mb-3 size-5 text-amber-200"
+                className="mb-4 size-5 text-amber-200"
                 aria-hidden="true"
               />
               <h2 className="font-serif text-lg text-amber-50">
@@ -103,7 +97,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
               </p>
             </article>
             <article className="bg-card/90 border-border rounded-2xl border p-4">
-              <Ship className="mb-3 size-5 text-amber-200" aria-hidden="true" />
+              <Ship className="mb-4 size-5 text-amber-200" aria-hidden="true" />
               <h2 className="font-serif text-lg text-amber-50">
                 Ships &amp; crew
               </h2>
@@ -113,7 +107,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
             </article>
             <article className="bg-card/90 border-border rounded-2xl border p-4">
               <Sparkles
-                className="mb-3 size-5 text-amber-200"
+                className="mb-4 size-5 text-amber-200"
                 aria-hidden="true"
               />
               <h2 className="font-serif text-lg text-amber-50">
@@ -125,7 +119,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
             </article>
             <article className="bg-card/90 border-border rounded-2xl border p-4">
               <ShieldCheck
-                className="mb-3 size-5 text-amber-200"
+                className="mb-4 size-5 text-amber-200"
                 aria-hidden="true"
               />
               <h2 className="font-serif text-lg text-amber-50">Free to play</h2>
@@ -140,14 +134,14 @@ const LoginScreen = ({ initialCharacter }: Props) => {
           <section
             id="register"
             aria-labelledby="register-title"
-            className="bg-card/90 scroll-mt-8 rounded-3xl border border-white/15 p-5 sm:p-8 lg:p-10"
+            className="bg-card/90 scroll-mt-8 rounded-3xl border border-white/15 p-6 sm:p-8 lg:p-12"
           >
-            <div className="mb-7 flex items-start gap-6">
+            <div className="mb-8 flex items-start gap-6">
               <div className="hidden size-12 shrink-0 items-center justify-center rounded-2xl border border-amber-200/20 bg-amber-200/10 text-amber-200 sm:flex">
                 <Anchor className="size-6" aria-hidden="true" />
               </div>
               <div>
-                <p className="text-accent mb-1 text-xs font-semibold tracking-[0.16em] uppercase">
+                <p className="text-accent mb-1 text-xs font-semibold tracking-widest uppercase">
                   Start the adventure
                 </p>
                 <h2
@@ -168,10 +162,10 @@ const LoginScreen = ({ initialCharacter }: Props) => {
           <section
             id="sign-in"
             aria-labelledby="sign-in-title"
-            className="bg-card/85 border-border scroll-mt-8 rounded-3xl border p-5 backdrop-blur-xl sm:p-8"
+            className="bg-card/85 border-border scroll-mt-8 rounded-3xl border p-6 backdrop-blur-xl sm:p-8"
           >
-            <div className="mb-5">
-              <p className="text-accent mb-1 text-xs font-semibold tracking-[0.16em] uppercase">
+            <div className="mb-4">
+              <p className="text-accent mb-1 text-xs font-semibold tracking-widest uppercase">
                 Already have a character?
               </p>
               <h2
@@ -188,10 +182,10 @@ const LoginScreen = ({ initialCharacter }: Props) => {
         <section
           id="more"
           aria-labelledby="more-title"
-          className="border-border mt-20 border-t pt-12 sm:mt-24 sm:pt-16"
+          className="border-border mt-16 border-t pt-12 sm:mt-32 sm:pt-16"
         >
           <div className="max-w-3xl">
-            <p className="text-accent mb-2 text-xs font-semibold tracking-[0.16em] uppercase">
+            <p className="text-accent mb-2 text-xs font-semibold tracking-widest uppercase">
               The world beyond the horizon
             </p>
             <h2
@@ -207,8 +201,8 @@ const LoginScreen = ({ initialCharacter }: Props) => {
             </p>
           </div>
 
-          <div className="mt-8 grid gap-3 md:grid-cols-3">
-            <article className="bg-card/80 border-border rounded-2xl border p-5 backdrop-blur">
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            <article className="bg-card/80 border-border rounded-2xl border p-6 backdrop-blur">
               <div className="mb-4 flex size-10 items-center justify-center rounded-xl bg-amber-200/10 text-amber-200">
                 <Compass className="size-5" aria-hidden="true" />
               </div>
@@ -218,7 +212,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
                 and Holland.
               </p>
             </article>
-            <article className="bg-card/80 border-border rounded-2xl border p-5 backdrop-blur">
+            <article className="bg-card/80 border-border rounded-2xl border p-6 backdrop-blur">
               <div className="mb-4 flex size-10 items-center justify-center rounded-xl bg-amber-200/10 text-amber-200">
                 <Ship className="size-5" aria-hidden="true" />
               </div>
@@ -230,7 +224,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
                 build your fortune.
               </p>
             </article>
-            <article className="bg-card/80 border-border rounded-2xl border p-5 backdrop-blur">
+            <article className="bg-card/80 border-border rounded-2xl border p-6 backdrop-blur">
               <div className="mb-4 flex size-10 items-center justify-center rounded-xl bg-amber-200/10 text-amber-200">
                 <Sparkles className="size-5" aria-hidden="true" />
               </div>
@@ -244,13 +238,13 @@ const LoginScreen = ({ initialCharacter }: Props) => {
             </article>
           </div>
 
-          <div className="mt-10 rounded-3xl border bg-[linear-gradient(115deg,var(--color-background),var(--color-neutral-800))] p-5 sm:p-7">
-            <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-6">
+          <div className="mt-12 rounded-3xl border bg-[linear-gradient(115deg,var(--color-background),var(--color-neutral-800))] p-6 sm:p-8">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
               <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl border border-amber-200/25 bg-amber-200/10 text-amber-200">
                 <BookOpenText className="size-7" aria-hidden="true" />
               </div>
               <div className="flex-1">
-                <p className="text-accent mb-1 text-xs font-semibold tracking-[0.16em] uppercase">
+                <p className="text-accent mb-1 text-xs font-semibold tracking-widest uppercase">
                   New to Lost Seas?
                 </p>
                 <h3 className="font-serif text-2xl text-amber-50 sm:text-3xl">
@@ -275,8 +269,8 @@ const LoginScreen = ({ initialCharacter }: Props) => {
             </div>
           </div>
 
-          <div className="mt-12 mb-5 sm:mt-16">
-            <p className="text-accent mb-1 text-xs font-semibold tracking-[0.16em] uppercase">
+          <div className="mt-12 mb-4 sm:mt-16">
+            <p className="text-accent mb-1 text-xs font-semibold tracking-widest uppercase">
               A glimpse of the voyage
             </p>
             <h2 className="font-serif text-3xl text-amber-50 sm:text-4xl">
@@ -285,7 +279,7 @@ const LoginScreen = ({ initialCharacter }: Props) => {
           </div>
           <Screenshots />
 
-          <footer className="border-border mt-10 border-t pt-5">
+          <footer className="border-border mt-12 border-t pt-6">
             <SocialMedia className="my-0 text-white opacity-75" />
           </footer>
         </section>

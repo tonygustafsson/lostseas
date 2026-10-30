@@ -23,7 +23,7 @@ export async function GET(req: Request) {
 
   const page = await getLog(playerId, getCursor(req.url))
 
-  const res = NextResponse.json(page ?? { entries: [], hasMore: false })
+  const res = NextResponse.json(page)
   res.headers.set("Cache-Control", "no-cache")
 
   return res

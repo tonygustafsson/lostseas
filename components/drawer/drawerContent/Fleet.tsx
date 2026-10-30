@@ -63,7 +63,7 @@ const FleetDrawer = () => {
       <FittingsList />
 
       {cannonEntries.length >= 2 && (
-        <div className="mt-4 flex flex-col gap-4 rounded-lg bg-neutral-900 p-4 shadow-md">
+        <div className="mt-4 flex flex-col gap-4 rounded-lg bg-neutral-900 p-4">
           <p className="text-muted-foreground text-sm">Cannons over time</p>
 
           <StatisticsSeriesChart

@@ -36,7 +36,7 @@ const Sea = () => {
       <div className="relative overflow-hidden rounded-xl border border-neutral-700 bg-neutral-700">
         <SeaMapCanvas journey={journey} isPaused={isPaused} />
 
-        <div className="absolute top-3 left-3 z-10 max-w-[calc(100%-1.5rem)] rounded-lg border border-white/15 bg-neutral-950/90 px-3 py-2 shadow-lg backdrop-blur-sm">
+        <div className="absolute top-4 left-4 z-10 max-w-[calc(100%-2rem)] rounded-lg border border-white/15 bg-neutral-950/90 px-4 py-2 shadow-lg backdrop-blur-sm">
           <JourneyProgress journey={journey} day={player.character.day} />
         </div>
       </div>

@@ -34,14 +34,18 @@ const entries = [1, 3, 6, 8, 11, 14].map((day, index) => ({
 
 const meta = {
   component: StatisticsAreaChart,
-  args: { metric: "netWorth", label: "Net worth", entries },
+  args: { metric: "netWorth", label: "", entries, delay: 0 },
   argTypes: {
     metric: { control: "radio", options: metrics },
-    label: { control: false },
+    label: { control: "text" },
+    delay: { control: { type: "number", min: 0, step: 100 } },
   },
-  // The label follows the chosen metric
+  // An empty label follows the chosen metric
   render: (args) => (
-    <StatisticsAreaChart {...args} label={snakeCaseToTitleCase(args.metric)} />
+    <StatisticsAreaChart
+      {...args}
+      label={args.label || snakeCaseToTitleCase(args.metric)}
+    />
   ),
   decorators: [
     (Story) => (
@@ -57,6 +61,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {}
+export const CustomLabel: Story = { args: { label: "Fortune" } }
 export const Delayed: Story = { args: { delay: 600 } }
 export const SingleEntry: Story = { args: { entries: entries.slice(0, 1) } }
 export const Empty: Story = { args: { entries: [] } }

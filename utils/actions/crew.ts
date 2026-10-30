@@ -56,7 +56,7 @@ export const giveGold = (
     return { error: "Your crew's mood is already at 100%." }
   }
 
-  if ((player.character.gold || 0) < gold) {
+  if (player.character.gold < gold) {
     return { error: "Not enough gold" }
   }
 
@@ -68,7 +68,7 @@ export const giveGold = (
 
   return {
     player: patchDeep<Player>(player, {
-      character: { gold: (player.character.gold || 0) - gold },
+      character: { gold: player.character.gold - gold },
       crewMembers: { mood: newMood },
     }),
     log: {

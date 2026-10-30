@@ -5,7 +5,7 @@ import TextField from "@/components/TextField"
 
 const meta = {
   component: TextField,
-  args: { label: "Captain name", placeholder: "Morgan Reed" },
+  args: { label: "Captain name", placeholder: "Morgan Reed", fullWidth: true },
   decorators: [
     (Story) => (
       <div className="max-w-sm">
@@ -23,6 +23,7 @@ export const Error: Story = {
 export const Disabled: Story = {
   args: { disabled: true, defaultValue: "Morgan Reed" },
 }
+export const AutoWidth: Story = { args: { fullWidth: false } }
 export const Number: Story = {
   args: {
     label: "Quantity",

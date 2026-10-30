@@ -6,11 +6,6 @@ import {
 
 /** Health points a remedy heals, capped at 100%. */
 export const getRemedyHealing = (health: number, remedy: Remedy) => {
-  // Broken saved data heals nothing rather than charging NaN gold
-  if (!Number.isFinite(health)) {
-    return 0
-  }
-
   const currentHealth = Math.min(Math.max(health, 0), 100)
 
   return Math.min(
@@ -29,17 +24,14 @@ export const getRemedyPrice = (crewCount: number, remedy: Remedy) =>
 
 /**
  * Everything a remedy would do for the crew, shared by the server action and the UI
- * so they always agree. Broken saved data (missing or NaN values) gives no crew or
- * no healing rather than NaN.
+ * so they always agree.
  */
 export const getRemedyResult = (
   { count, health }: Pick<CrewMembers, "count" | "health">,
   remedy: Remedy
 ) => {
-  const hasCrew = Number.isFinite(count) && count > 0
-  const currentHealth = Number.isFinite(health)
-    ? Math.min(Math.max(health, 0), 100)
-    : 0
+  const hasCrew = count > 0
+  const currentHealth = Math.min(Math.max(health, 0), 100)
   const healed = getRemedyHealing(health, remedy)
 
   return {

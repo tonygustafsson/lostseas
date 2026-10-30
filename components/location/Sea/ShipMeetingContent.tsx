@@ -136,7 +136,7 @@ const ShipMeetingContent = ({
           height={162}
           sizes="(min-width: 640px) 144px, 120px"
           draggable={false}
-          className="border-accent aspect-square w-30 max-w-3/8 shrink-0 rounded-full border-4 object-cover object-right shadow-lg select-none sm:w-36"
+          className="border-accent aspect-square w-30 max-w-3/8 shrink-0 rounded-full border-4 object-cover object-right select-none sm:w-36"
         />
       </div>
 

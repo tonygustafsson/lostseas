@@ -70,7 +70,7 @@ const VentureCard = ({
   return (
     <article
       className={cn(
-        "bg-card flex flex-col overflow-hidden rounded-xl border shadow-lg",
+        "bg-card flex flex-col overflow-hidden rounded-xl border",
         hasReturned && "border-gold ring-gold/40 ring-2"
       )}
     >

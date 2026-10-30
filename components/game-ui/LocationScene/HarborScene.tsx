@@ -32,7 +32,7 @@ const HarborScene = ({ town }: Props) => {
   const handleMove = (location: TownLocation) => move({ location })
 
   return (
-    <div className="bg-card overflow-hidden rounded-xl border shadow-2xl">
+    <div className="bg-card overflow-hidden rounded-xl border">
       {map && (
         <div className="border-gold/40 border-b bg-neutral-950">
           <TownMap map={map} alt={`Map of ${town}`} onMove={handleMove} />
@@ -65,7 +65,7 @@ const HarborScene = ({ town }: Props) => {
             size="lg"
             onClick={showMap}
             disabled={!canTravel}
-            className="mt-8 w-full px-6 font-serif text-lg sm:h-11 sm:w-auto sm:px-14 lg:text-xl"
+            className="mt-8 w-full px-6 font-serif text-lg sm:h-11 sm:w-auto sm:px-16 lg:text-xl"
           >
             <RiTreasureMapLine className="size-5!" />
             Set sail

@@ -54,7 +54,7 @@ const CharacterPickerDialog = ({
               variant={nation === nationality ? "default" : "secondary"}
               aria-pressed={nation === nationality}
               onClick={() => setNationality(nation)}
-              className="h-12 gap-2 text-sm sm:h-16 sm:gap-3 sm:text-lg"
+              className="h-12 gap-2 text-sm sm:h-16 sm:gap-4 sm:text-lg"
             >
               <Flag nation={nation} className="size-6 sm:size-8" decorative />
               {nation}

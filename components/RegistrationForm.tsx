@@ -11,6 +11,7 @@ import { useRandomCharacter } from "@/hooks/queries/useRandomCharacter"
 import { registrationValidationSchema } from "@/utils/validation"
 
 import { Button } from "./ui/button"
+import { Label } from "./ui/label"
 import { Switch } from "./ui/switch"
 
 type ValidationSchema = z.infer<typeof registrationValidationSchema>
@@ -63,7 +64,7 @@ const RegistrationForm = ({ initialCharacter }: Props) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       <SelectedCharacter
         characterId={characterId}
         onChangeClick={() => setPickerOpen(true)}
@@ -97,7 +98,7 @@ const RegistrationForm = ({ initialCharacter }: Props) => {
                 checked={field.value}
                 onCheckedChange={field.onChange}
               />
-              <label htmlFor="toggleMusic">Music</label>
+              <Label htmlFor="toggleMusic">Music</Label>
             </div>
           )}
         />
@@ -113,7 +114,7 @@ const RegistrationForm = ({ initialCharacter }: Props) => {
                 checked={field.value}
                 onCheckedChange={field.onChange}
               />
-              <label htmlFor="soundEffects">Sound effects</label>
+              <Label htmlFor="soundEffects">Sound effects</Label>
             </div>
           )}
         />

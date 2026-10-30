@@ -8,7 +8,7 @@ type Props = {
   isAllied?: boolean
 }
 
-const BUTTON_CLASS = "w-full min-w-32 rounded-full px-5 text-base md:w-auto"
+const BUTTON_CLASS = "w-full min-w-32 rounded-full px-6 text-base md:w-auto"
 
 const ShipMeetingActions = ({
   isAggressive = false,

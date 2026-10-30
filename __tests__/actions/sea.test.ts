@@ -141,24 +141,6 @@ describe("startJourney", () => {
     expect(result.player.locationStates).toBeUndefined()
   })
 
-  it.each([
-    [0, 3],
-    [0.5, 6],
-    [0.99, 8],
-  ])(
-    "takes 3 to 8 days without a known distance (random %d gives %i)",
-    (roll, days) => {
-      const player = inPort({ character: { town: null } })
-
-      const result = expectSuccess(
-        startJourney(player, { town: "Havana" }, always(roll))
-      )
-
-      expect(result.player.character.journey?.totalDays).toBe(days)
-      expect(result.player.character.journey?.origin).toBeUndefined()
-    }
-  )
-
   it.each(["Atlantis", "", undefined, 5, "constructor"])(
     "rejects destination %s",
     (town) => {
@@ -1111,11 +1093,7 @@ describe("random voyages", () => {
 
         const result =
           action === "start"
-            ? startJourney(
-                before,
-                { town: random.pick(ALL_TOWNS) },
-                random.next
-              )
+            ? startJourney(before, { town: random.pick(ALL_TOWNS) })
             : action === "continue"
               ? continueJourney(before, random.next)
               : action === "attack"

@@ -13,7 +13,7 @@ export default function TreasureCard({ treasure }: Props) {
   const treasureInfo = TREASURES.find(({ name }) => name === treasure.name)
 
   return (
-    <Card className="shadow-background/20 ring-gold/40 relative gap-2 p-4 pt-6 shadow-lg">
+    <Card className="ring-gold/40 relative gap-2 p-4 pt-6">
       {/* A strip of polished gold marks it as something special */}
       <span
         aria-hidden="true"
