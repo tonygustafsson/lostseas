@@ -28,7 +28,7 @@ const Balances = ({ gold, account, loan }: BalancesProps) => {
   ]
 
   return (
-    <section className="bg-card grid w-full gap-4 rounded-2xl border p-4 md:p-5 lg:grid-cols-4 lg:items-center">
+    <section className="bg-card grid w-full gap-4 rounded-2xl border p-4 md:p-6 lg:grid-cols-4 lg:items-center">
       <div className="flex flex-col gap-2 px-1 py-1 lg:px-2">
         <h2 className="text-accent font-serif text-xl font-semibold">
           Your Finances
@@ -38,14 +38,14 @@ const Balances = ({ gold, account, loan }: BalancesProps) => {
         </p>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:col-span-3 xl:grid-cols-3">
+      <div className="grid gap-2 sm:grid-cols-2 lg:col-span-3 xl:grid-cols-3">
         {balances.map((balance) => {
           const Icon = balance.icon
 
           return (
             <div
               key={balance.label}
-              className="bg-muted flex items-center gap-4 rounded-xl border px-4 py-3"
+              className="bg-muted flex items-center gap-4 rounded-xl border p-4"
             >
               <Icon
                 aria-hidden="true"
@@ -57,7 +57,7 @@ const Balances = ({ gold, account, loan }: BalancesProps) => {
                   {balance.label}
                 </dt>
 
-                <dd className="text-foreground mt-0.5 text-lg leading-none font-semibold tracking-tight tabular-nums md:text-xl">
+                <dd className="text-foreground mt-1 text-lg leading-none font-semibold tracking-tight tabular-nums md:text-xl">
                   {formatGold(balance.value)}
                 </dd>
               </dl>

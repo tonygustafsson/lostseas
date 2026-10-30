@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import AdvisorTips from "@/components/advisor/AdvisorTips"
+import { TOWNS } from "@/constants/locations"
 
 import { player } from "../fixtures"
 import PlayerPreview from "../PlayerPreview"
@@ -23,7 +24,16 @@ const meta = {
   title: "game/AdvisorTips",
   component: AdvisorTips,
   parameters: { player: warnings },
-  args: { title: "Arrr, a word in yer ear, Cap'n." },
+  args: {
+    title: "Arrr, a word in yer ear, Cap'n.",
+    heading: undefined,
+    showAllClear: false,
+    destination: undefined,
+  },
+  argTypes: {
+    heading: { control: "text" },
+    destination: { control: "select", options: Object.keys(TOWNS) },
+  },
   decorators: [
     (Story, context) => (
       <PlayerPreview key={context.id} data={context.parameters.player}>
@@ -40,6 +50,8 @@ type Story = StoryObj<typeof meta>
 
 export const Warnings: Story = {}
 export const WithHeading: Story = { args: { heading: "Land ho!" } }
+// Supplies are checked against the voyage length to the destination
+export const WithDestination: Story = { args: { destination: "Tortuga" } }
 export const AllClear: Story = {
   args: { showAllClear: true },
   parameters: { player: allClear },

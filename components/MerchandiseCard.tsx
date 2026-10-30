@@ -28,7 +28,7 @@ const MerchandiseCard = ({
 }: Props) => (
   <Card
     className={cn(
-      "shadow-background/20 @container relative w-full gap-0 py-0 shadow-lg transition-shadow duration-300 motion-reduce:transition-none",
+      "@container relative w-full gap-0 py-0",
       !fullWidth && "max-w-sm",
       disabled && "cursor-not-allowed opacity-50"
     )}
@@ -56,15 +56,15 @@ const MerchandiseCard = ({
 
     <CardHeader
       className={cn(
-        "relative z-10 flex-1 gap-2 rounded-t-2xl px-4 pt-4 pb-3",
+        "relative z-10 flex-1 gap-2 rounded-t-2xl px-4 py-4",
         image && "-mt-12"
       )}
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         {icon && (
           <span
             aria-hidden="true"
-            className="border-accent/60 bg-background text-accent flex size-11 shrink-0 items-center justify-center rounded-full border shadow-md @max-[250px]:size-9 [&_svg]:size-6 @max-[250px]:[&_svg]:size-5"
+            className="border-accent/60 bg-background text-accent flex size-11 shrink-0 items-center justify-center rounded-full border @max-[250px]:size-9 [&_svg]:size-6 @max-[250px]:[&_svg]:size-5"
           >
             {icon}
           </span>

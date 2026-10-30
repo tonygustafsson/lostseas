@@ -8,7 +8,7 @@ type Props = {
 
 const MobileTopBar = ({ className }: Props) => (
   <header
-    className={`${almendra.variable} bg-sidebar relative mb-2 overflow-hidden shadow-lg shadow-black/40 ${className}`}
+    className={`${almendra.variable} bg-sidebar relative mb-2 overflow-hidden ${className}`}
   >
     <div className="bg-gold/10 absolute inset-x-0 -top-16 mx-auto h-24 w-64 rounded-full blur-2xl" />
 

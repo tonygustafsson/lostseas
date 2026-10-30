@@ -43,18 +43,7 @@ export const getTitleInfoByScore = (score = 0) => {
   return titleInfo
 }
 
-export const getNewTitle = (character: Character | undefined) => {
-  if (!character) {
-    // TODO: Should never happen, just handling character that can be undefined, make better solution
-    return {
-      isHomeNation: false,
-      townWarWith: null,
-      titleInfo: TITLE_INFO.Pirate,
-      promotionAvailable: false,
-      citizenshipChangeAvailable: false,
-    }
-  }
-
+export const getNewTitle = (character: Character) => {
   const townNation = character.town ? TOWNS[character.town]?.nation : null
   const townWarWith = townNation ? NATIONS[townNation].warWith : null
   const friendlyAttacks = townNation

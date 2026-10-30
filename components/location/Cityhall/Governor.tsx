@@ -98,26 +98,26 @@ const Governor = () => {
 
   const [hasClaimed, setHasClaimed] = useState(false)
 
+  if (!player) return null
+
   const {
     isHomeNation,
     townWarWith,
     titleInfo,
     promotionAvailable,
     citizenshipChangeAvailable,
-  } = getNewTitle(player?.character)
+  } = getNewTitle(player.character)
 
-  const { reward } = player
-    ? getTitleReward(player.character, titleInfo)
-    : { reward: 0 }
+  const { reward } = getTitleReward(player.character, titleInfo)
 
   const enemyWins = townWarWith
-    ? player?.character.battles?.[townWarWith]?.won || 0
+    ? player.character.battles?.[townWarWith]?.won || 0
     : 0
 
   const greeting = getGreeting({
     isHomeNation,
-    currentNation: player?.character.town
-      ? TOWNS[player?.character.town].nation
+    currentNation: player.character.town
+      ? TOWNS[player.character.town].nation
       : undefined,
     townWarWith,
     promotionAvailable,
@@ -143,8 +143,8 @@ const Governor = () => {
     ? "/img/cards/cityhall/governor-excited.png"
     : "/img/cards/cityhall/governor-neutral.png"
 
-  const greetingTitle = `${rewardWaiting ? "Thank you" : "Welcome"} ${player?.character.title.toLowerCase()} ${
-    player?.character.name
+  const greetingTitle = `${rewardWaiting ? "Thank you" : "Welcome"} ${player.character.title.toLowerCase()} ${
+    player.character.name
   }`
 
   if (hasClaimed) {

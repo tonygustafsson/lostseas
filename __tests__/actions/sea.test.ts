@@ -141,24 +141,6 @@ describe("startJourney", () => {
     expect(result.player.locationStates).toBeUndefined()
   })
 
-  it.each([
-    [0, 3],
-    [0.5, 6],
-    [0.99, 8],
-  ])(
-    "takes 3 to 8 days without a known distance (random %d gives %i)",
-    (roll, days) => {
-      const player = inPort({ character: { town: null } })
-
-      const result = expectSuccess(
-        startJourney(player, { town: "Havana" }, always(roll))
-      )
-
-      expect(result.player.character.journey?.totalDays).toBe(days)
-      expect(result.player.character.journey?.origin).toBeUndefined()
-    }
-  )
-
   it.each(["Atlantis", "", undefined, 5, "constructor"])(
     "rejects destination %s",
     (town) => {
@@ -827,6 +809,46 @@ describe("battleMove", () => {
     expect(dbUpdate.locationStates?.sea?.lootOffer).toBeNull()
   })
 
+  it("captures a wanted pirate from a pirate ship on a lucky roll", () => {
+    rollLow()
+
+    const { dbUpdate, report, log } = getVictoryUpdate(
+      atSea(),
+      { ...shipMeeting, nation: "Pirate" },
+      { shipHealthLoss: 0, crewHealthLoss: 0 }
+    )
+
+    const pirate = report.capturedPirate as WantedPirate
+
+    expect(pirate).toBeTruthy()
+    expect(dbUpdate.wantedPirates).toEqual({ [pirate.id]: pirate })
+    expect(log.message).toContain(`captured the wanted pirate ${pirate.name}`)
+  })
+
+  it("never captures a wanted pirate from a nation's ship", () => {
+    rollLow()
+
+    const { dbUpdate, report } = getVictoryUpdate(atSea(), shipMeeting, {
+      shipHealthLoss: 0,
+      crewHealthLoss: 0,
+    })
+
+    expect(report.capturedPirate).toBe(false)
+    expect(dbUpdate.wantedPirates).toBeUndefined()
+  })
+
+  it("captures no wanted pirate on an unlucky roll", () => {
+    rollHigh()
+
+    const { report } = getVictoryUpdate(
+      atSea(),
+      { ...shipMeeting, nation: "Pirate" },
+      { shipHealthLoss: 0, crewHealthLoss: 0 }
+    )
+
+    expect(report.capturedPirate).toBe(false)
+  })
+
   it("loses all carried gold and up to 3 goods, but keeps cannons and savings", () => {
     rollHigh()
     const player = patchDeep<Player>(
@@ -1071,11 +1093,7 @@ describe("random voyages", () => {
 
         const result =
           action === "start"
-            ? startJourney(
-                before,
-                { town: random.pick(ALL_TOWNS) },
-                random.next
-              )
+            ? startJourney(before, { town: random.pick(ALL_TOWNS) })
             : action === "continue"
               ? continueJourney(before, random.next)
               : action === "attack"

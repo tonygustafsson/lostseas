@@ -11,13 +11,13 @@ export type ColorUsage = {
   files: Record<string, number>
 }
 
-export const scannedAt = "2026-10-29"
+export const scannedAt = "2026-10-30"
 
 // Opacity applied to whole elements (opacity-* classes and inline styles)
 // prettier-ignore
 export const elementOpacity: Record<string, number> = {
   "0": 5,
-  "15": 1,
+  "15": 2,
   "25": 3,
   "50": 19,
   "60": 2,
@@ -36,13 +36,13 @@ export const colorUsage: ColorUsage[] = [
     "name": "muted-foreground",
     "token": "--color-muted-foreground",
     "css": "var(--color-muted-foreground)",
-    "count": 87,
+    "count": 88,
     "variants": {
       "/10": 1,
       "/15": 1
     },
     "utilities": {
-      "text": 84,
+      "text": 85,
       "bg": 2,
       "var()": 1
     },
@@ -99,7 +99,8 @@ export const colorUsage: ColorUsage[] = [
       "components/ui/select.tsx": 3,
       "components/ui/sheet.tsx": 1,
       "components/ui/table.tsx": 1,
-      "components/ui/tabs.tsx": 2
+      "components/ui/tabs.tsx": 2,
+      "components/WantedPirateCard.tsx": 1
     }
   },
   {
@@ -107,7 +108,7 @@ export const colorUsage: ColorUsage[] = [
     "name": "accent",
     "token": "--color-accent",
     "css": "var(--color-accent)",
-    "count": 65,
+    "count": 67,
     "variants": {
       "/30": 1,
       "/10": 1,
@@ -117,7 +118,7 @@ export const colorUsage: ColorUsage[] = [
     "utilities": {
       "border": 8,
       "bg": 3,
-      "text": 52,
+      "text": 54,
       "ring": 1,
       "var()": 1
     },
@@ -139,6 +140,7 @@ export const colorUsage: ColorUsage[] = [
       "components/location/Bank/Balances.tsx": 2,
       "components/location/Bank/BankArea.tsx": 1,
       "components/location/Bank/QuickAmounts.tsx": 2,
+      "components/location/Cityhall/HandOverCard.tsx": 2,
       "components/location/Sea/AttackReportItem.tsx": 1,
       "components/location/Sea/ShipMeetingContent.tsx": 1,
       "components/location/Shop/ShopBuyLimit.tsx": 2,
@@ -236,7 +238,7 @@ export const colorUsage: ColorUsage[] = [
     },
     "files": {
       "components/advisor/AdvisorTips.tsx": 4,
-      "components/location/Cityhall/HandOver.tsx": 2,
+      "components/location/Cityhall/HandOverCard.tsx": 2,
       "components/location/Market/index.tsx": 2,
       "components/location/Sea/AttackReport.tsx": 3,
       "components/location/Sea/AttackReportItem.tsx": 3,
@@ -313,7 +315,7 @@ export const colorUsage: ColorUsage[] = [
     "name": "gold",
     "token": "--color-gold",
     "css": "var(--color-gold)",
-    "count": 45,
+    "count": 46,
     "variants": {
       "/30": 1,
       "/40": 4,
@@ -324,7 +326,7 @@ export const colorUsage: ColorUsage[] = [
       "/70": 3
     },
     "utilities": {
-      "text": 18,
+      "text": 19,
       "var()": 2,
       "border": 7,
       "via": 6,
@@ -352,7 +354,8 @@ export const colorUsage: ColorUsage[] = [
       "components/menu/MobileTopBar.tsx": 5,
       "components/TreasureCard.tsx": 4,
       "components/ui/dialog.tsx": 3,
-      "components/ui/slider.tsx": 1
+      "components/ui/slider.tsx": 1,
+      "components/WantedPirateCard.tsx": 1
     }
   },
   {
@@ -619,20 +622,20 @@ export const colorUsage: ColorUsage[] = [
     "name": "warning",
     "token": "--color-warning",
     "css": "var(--color-warning)",
-    "count": 19,
+    "count": 23,
     "variants": {
       "/15": 1,
       "/20": 4,
       "/10": 2,
-      "/40": 2,
+      "/40": 3,
       "/30": 1
     },
     "utilities": {
-      "bg": 7,
-      "text": 8,
+      "bg": 8,
+      "text": 10,
       "var()": 1,
       "border": 1,
-      "ring": 2
+      "ring": 3
     },
     "files": {
       "components/advisor/AdvisorTips.tsx": 2,
@@ -643,7 +646,8 @@ export const colorUsage: ColorUsage[] = [
       "components/settings/PasskeyList.tsx": 1,
       "components/ships/ShipHealthBadge.tsx": 2,
       "components/ui/button.tsx": 8,
-      "components/ui/sonner.tsx": 1
+      "components/ui/sonner.tsx": 1,
+      "components/WantedPirateCard.tsx": 4
     }
   },
   {

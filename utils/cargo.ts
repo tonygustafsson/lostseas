@@ -10,7 +10,7 @@ export const isCargo = (item: keyof Inventory) =>
 /** How many units of cargo the whole fleet can carry. */
 export const getCargoCapacity = (ships: Player["ships"] | undefined) =>
   Object.values(ships || {}).reduce(
-    (sum, ship) => sum + (SHIP_TYPES[ship.type]?.cargoCapacity ?? 0),
+    (sum, ship) => sum + SHIP_TYPES[ship.type].cargoCapacity,
     0
   )
 

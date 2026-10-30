@@ -1,4 +1,5 @@
 import { createTreasure } from "./createTreasure"
+import { createWantedPirate } from "./createWantedPirate"
 import { increaseCrewMood } from "./crew"
 import { getRandomInt } from "./random"
 import {
@@ -35,6 +36,12 @@ export const getVictoryUpdate = (
 
   const foundTreasure = getRandomInt(1, 20) === 1 ? createTreasure() : false
 
+  // Only pirate ships carry famous pirates worth a bounty
+  const capturedPirate =
+    opponentNation === "Pirate" && getRandomInt(1, 8) === 1
+      ? createWantedPirate()
+      : false
+
   const report: AttackSuccessReport = {
     crewMoodIncrease,
     crewHealthLoss: battleLosses.crewHealthLoss,
@@ -43,6 +50,7 @@ export const getVictoryUpdate = (
     lootedMerchandise,
     shipHealthLoss: battleLosses.shipHealthLoss,
     foundTreasure,
+    capturedPirate,
   }
 
   const dbUpdate: DeepPartial<Player> = {
@@ -65,6 +73,11 @@ export const getVictoryUpdate = (
         [foundTreasure.id]: foundTreasure,
       },
     }),
+    ...(capturedPirate && {
+      wantedPirates: {
+        [capturedPirate.id]: capturedPirate,
+      },
+    }),
     locationStates: {
       sea: {
         shipMeeting: null,
@@ -81,7 +94,9 @@ export const getVictoryUpdate = (
     report,
     log: {
       type: "victory",
-      message: `Won a battle against ${opponentNation}; looted ${lootedGold} gold.`,
+      message: capturedPirate
+        ? `Won a battle against ${opponentNation}; looted ${lootedGold} gold and captured the wanted pirate ${capturedPirate.name}.`
+        : `Won a battle against ${opponentNation}; looted ${lootedGold} gold.`,
     } satisfies GameLog,
   }
 }

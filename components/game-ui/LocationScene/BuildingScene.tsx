@@ -46,8 +46,8 @@ const BuildingScene = ({ town, location }: Props) => {
         )}
       </div>
 
-      <div className="z-20 flex w-full items-center justify-center px-4 py-12 text-center sm:px-6 lg:px-10 lg:py-30">
-        <div className="border-border w-full max-w-3xl rounded-[2rem] border bg-black/55 px-6 py-12 shadow-[0_24px_60px_rgba(0,0,0,0.45)] backdrop-blur-[2px] sm:px-8 lg:min-w-150 lg:px-14 lg:py-6">
+      <div className="z-20 flex w-full items-center justify-center px-4 py-12 text-center sm:px-6 lg:px-12 lg:py-32">
+        <div className="border-border w-full max-w-3xl rounded-3xl border bg-black/55 px-6 py-12 backdrop-blur-xs sm:px-8 lg:min-w-150 lg:px-16 lg:py-6">
           <BuildingIntro town={town} location={location} />
 
           <BackToTown />

@@ -5,7 +5,7 @@ import Flag from "@/components/icons/Flag"
 const nations = ["England", "France", "Spain", "Holland", "Pirate"] as const
 const meta = {
   component: Flag,
-  args: { nation: "England", size: 48 },
+  args: { nation: "England", size: 48, decorative: false },
   argTypes: { nation: { control: "select", options: nations } },
 } satisfies Meta<typeof Flag>
 export default meta
@@ -23,4 +23,5 @@ export const AllNations: Story = {
     </div>
   ),
 }
+export const Decorative: Story = { args: { decorative: true } }
 export const NoNation: Story = { args: { nation: undefined } }

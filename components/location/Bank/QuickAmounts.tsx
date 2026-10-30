@@ -34,10 +34,10 @@ const QuickAmounts = ({
 }: Props) => (
   <div className="bg-card rounded-xl border">
     <div className="flex flex-col gap-4 p-4">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         <span
           aria-hidden="true"
-          className="border-accent/60 bg-background text-accent flex size-11 shrink-0 items-center justify-center rounded-full border shadow-md [&_svg]:size-6"
+          className="border-accent/60 bg-background text-accent flex size-11 shrink-0 items-center justify-center rounded-full border [&_svg]:size-6"
         >
           {icon}
         </span>

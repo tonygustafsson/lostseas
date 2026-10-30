@@ -15,7 +15,7 @@ const JourneyProgress = ({ journey, day }: Props) => {
   const percentage = (journey.day / journey.totalDays) * 100
 
   return (
-    <div className="flex items-center gap-3 text-base text-stone-300">
+    <div className="flex items-center gap-2 text-base text-stone-300">
       <RadialProgressBar
         startPercentage={startPercentage}
         percentage={percentage}

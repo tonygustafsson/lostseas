@@ -66,7 +66,7 @@ const GuideSectionHeading = ({
   children: React.ReactNode
 }) =>
   appearance === "public" ? (
-    <h2 className={cn(className, "text-accent px-5 pt-6 text-2xl sm:text-3xl")}>
+    <h2 className={cn(className, "text-accent px-4 pt-6 text-2xl sm:text-3xl")}>
       {children}
     </h2>
   ) : (
@@ -711,6 +711,13 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <p className="mb-4">
           Now and then a won battle turns up a treasure. Each one belongs to a
           particular town, and that town&apos;s City Hall pays you gold for it.
+        </p>
+
+        <p className="mb-4">
+          Beat a pirate ship and you might capture a famous wanted pirate. Each
+          one is wanted by a particular town, and that town&apos;s City Hall
+          pays a bounty that depends on the crimes they committed. You can see
+          your prisoners in the Crew & Fleet drawer.
         </p>
 
         <h3 className="mb-2 font-serif text-lg">Saving money</h3>

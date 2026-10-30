@@ -25,7 +25,10 @@ const meta = {
       { metric: "mannedCannons", label: "Manned", color: "var(--gold)" },
       { metric: "cannons", label: "Owned", color: "var(--muted-foreground)" },
     ],
+    stacked: false,
+    delay: 0,
   },
+  argTypes: { delay: { control: { type: "number", min: 0, step: 100 } } },
   decorators: [
     (Story) => (
       <div className="max-w-3xl">
@@ -63,5 +66,7 @@ export const StackedScore: Story = {
     ],
   },
 }
+
+export const Delayed: Story = { args: { delay: 600 } }
 
 export const Empty: Story = { args: { entries: [] } }

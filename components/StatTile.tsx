@@ -19,12 +19,7 @@ export default function StatTile({
   className,
 }: Props) {
   return (
-    <Card
-      className={cn(
-        "shadow-background/20 relative min-w-0 gap-1 p-4 shadow-lg",
-        className
-      )}
-    >
+    <Card className={cn("relative min-w-0 gap-1 p-4", className)}>
       <span
         aria-hidden="true"
         className="text-accent pointer-events-none absolute -right-2 -bottom-2 -rotate-12 opacity-25 [&_svg]:size-16"

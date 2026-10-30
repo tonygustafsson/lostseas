@@ -2,9 +2,9 @@ import { describe, expect, it, vi } from "vitest"
 
 import { TOWNS } from "@/constants/locations"
 import { createTreasure } from "@/utils/createTreasure"
-import { getRandomInt } from "@/utils/random"
+import { pickRandom } from "@/utils/random"
 
-vi.mock("@/utils/random", () => ({ getRandomInt: vi.fn() }))
+vi.mock("@/utils/random", () => ({ pickRandom: vi.fn() }))
 
 describe("createTreasure", () => {
   it("creates treasure with deterministic selection when random is mocked", () => {
@@ -12,9 +12,7 @@ describe("createTreasure", () => {
       .spyOn(globalThis.crypto, "randomUUID")
       .mockReturnValue("test-uuid")
 
-    ;(getRandomInt as any)
-      .mockImplementationOnce(() => 0)
-      .mockImplementationOnce(() => 0)
+    vi.mocked(pickRandom).mockImplementation((list) => list[0])
 
     const treasure = createTreasure()
     expect(treasure.id).toBe("test-uuid")

@@ -198,7 +198,7 @@ export const playCards = (
     return { error: NOT_AT_TAVERN }
   }
 
-  const bet = getCardsBet(betPercentage, player.character.gold || 0)
+  const bet = getCardsBet(betPercentage, player.character.gold)
 
   if (!Number.isSafeInteger(bet) || bet < 1) {
     return { error: "Bet must be at least 1 gold" }

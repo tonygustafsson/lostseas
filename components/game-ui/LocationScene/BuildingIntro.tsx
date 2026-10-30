@@ -18,8 +18,8 @@ const BuildingIntro = ({ town, location }: Props) => {
         {building?.name ?? `The ${location}`}
       </h1>
 
-      <h2 className="mb-5 flex items-center justify-center gap-3 font-serif text-xl text-stone-300 lg:text-2xl">
-        <Flag nation={nation} className="h-5 w-5 opacity-[0.8] lg:h-7 lg:w-7" />
+      <h2 className="mb-4 flex items-center justify-center gap-2 font-serif text-xl text-stone-300 lg:text-2xl">
+        <Flag nation={nation} className="h-5 w-5 opacity-80 lg:h-7 lg:w-7" />
         {town}, {nation}
       </h2>
 

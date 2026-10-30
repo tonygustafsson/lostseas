@@ -63,14 +63,13 @@ beforeEach(() => {
 })
 
 describe.each([
-  { name: "user/get", call: getUser, empty: undefined },
+  { name: "user/get", call: getUser },
   {
     name: "logs/get",
     call: () => getLogs(new Request("http://localhost/api/logs/get")),
-    empty: { entries: [], hasMore: false },
   },
-  { name: "statistics/get", call: getStatistics, empty: [] },
-])("GET /api/$name", ({ name, call, empty }) => {
+  { name: "statistics/get", call: getStatistics },
+])("GET /api/$name", ({ name, call }) => {
   it("returns 401 without a player cookie", async () => {
     mocks.playerId = undefined
 
@@ -86,15 +85,6 @@ describe.each([
     expect(response.status).toBe(200)
     expect(response.headers.get("Cache-Control")).toBe("no-cache")
   })
-
-  if (empty) {
-    it("returns an empty list when nothing is stored", async () => {
-      mocks.getLog.mockResolvedValue(null)
-      mocks.getStatistics.mockResolvedValue(null)
-
-      expect(await (await call()).json()).toEqual(empty)
-    })
-  }
 
   if (name === "user/get") {
     it("returns 401 when the player does not exist", async () => {

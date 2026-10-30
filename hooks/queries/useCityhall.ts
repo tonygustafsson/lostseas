@@ -5,6 +5,7 @@ import { useToasts } from "@/app/stores/toasts"
 import { TOWNS } from "@/constants/locations"
 import { TREASURES } from "@/constants/treasures"
 import apiRequest from "@/utils/apiRequest"
+import { getPirateCrime } from "@/utils/createWantedPirate"
 import { formatGold } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
 import { getNewTitle, getTitleReward } from "@/utils/title"
@@ -220,6 +221,67 @@ export const useCityhall = () => {
     },
   })
 
+  const { mutate: handOverPirate, isPending: isHandingOverPirate } =
+    useMutation({
+      mutationFn: (id: WantedPirate["id"]) =>
+        apiRequest("/api/cityhall/handoverPirate", { id }, "POST"),
+      onMutate: async (id: WantedPirate["id"]) => {
+        await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+        const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
+
+        if (previous) {
+          const pirate = previous.wantedPirates?.[id]
+          const bounty = pirate ? getPirateCrime(pirate)?.bounty || 0 : 0
+
+          const dbUpdate: DeepPartial<Player> = {
+            character: {
+              gold: previous.character.gold + bounty,
+            },
+            wantedPirates: {
+              [id]: null,
+            },
+          }
+
+          const newPlayer = patchDeep(previous, dbUpdate)
+          queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
+        }
+
+        return { previous }
+      },
+      onError: (err, _, context) => {
+        handleError(
+          `Could not hand over the pirate`,
+          (err as any)?.message,
+          context?.previous
+        )
+      },
+      onSuccess: (response, _, context) => {
+        const { updatedPlayer, error, pirate, crime } = response?.data
+
+        if (error) {
+          handleError(
+            "Could not hand over the pirate",
+            error,
+            context?.previous
+          )
+          return
+        }
+
+        if (updatedPlayer) {
+          queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
+        }
+
+        playSoundEffect("coins")
+
+        setToast({
+          title: `You handed over ${pirate.name} to the governor`,
+          message: `You got a bounty of ${formatGold(crime.bounty)}.`,
+          variant: "success",
+        })
+      },
+    })
+
   return {
     acceptNewTitle,
     isAcceptingNewTitle,
@@ -227,5 +289,7 @@ export const useCityhall = () => {
     isChangingCitizenship,
     handOver,
     isHandingOver,
+    handOverPirate,
+    isHandingOverPirate,
   }
 }

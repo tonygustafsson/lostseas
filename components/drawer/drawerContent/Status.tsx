@@ -72,7 +72,7 @@ const StatusDrawer = () => {
         Status
       </h1>
 
-      <Card className="shadow-background/20 relative gap-4 p-6 shadow-lg">
+      <Card className="relative gap-4 p-6">
         <Flag
           decorative
           nation={character.nationality}

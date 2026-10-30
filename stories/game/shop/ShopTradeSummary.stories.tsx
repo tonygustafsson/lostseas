@@ -4,6 +4,7 @@ import { expect, fn } from "storybook/test"
 import ShopTradeSummary from "@/components/location/Shop/ShopTradeSummary"
 
 const meta = {
+  title: "game/Shop/ShopTradeSummary",
   component: ShopTradeSummary,
   args: {
     gold: 100,

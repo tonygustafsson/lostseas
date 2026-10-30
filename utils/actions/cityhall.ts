@@ -1,6 +1,8 @@
 import { TOWNS } from "@/constants/locations"
 import type { TitleInfo } from "@/constants/title"
 import { TREASURES } from "@/constants/treasures"
+import type { PIRATE_CRIMES } from "@/constants/wantedPirates"
+import { getPirateCrime } from "@/utils/createWantedPirate"
 import { patchDeep } from "@/utils/patchDeep"
 import { getNewTitle, getTitleReward } from "@/utils/title"
 
@@ -141,5 +143,47 @@ export const handOverTreasure = (
       message: `Handed over ${treasure.name} to the town of ${town}.`,
     },
     data: { treasure, treasureInfo },
+  }
+}
+
+export const handOverPirate = (
+  player: Player,
+  { id }: { id: WantedPirate["id"] }
+): ActionResult<{
+  pirate: WantedPirate
+  crime: (typeof PIRATE_CRIMES)[number]
+}> => {
+  if (player.character.location !== "City hall") {
+    return { error: NOT_AT_CITY_HALL }
+  }
+
+  const town = player.character.town
+
+  // Like treasures, a pirate is only wanted in one town
+  const [key, pirate] =
+    Object.entries(player.wantedPirates || {}).find(
+      ([, pirate]) => pirate.id === id && pirate.rewarder === town
+    ) ?? []
+
+  if (!key || !pirate) {
+    return { error: "You don't have this pirate aboard" }
+  }
+
+  const crime = getPirateCrime(pirate)
+
+  if (!crime) {
+    return { error: "This pirate is not wanted and cannot be handed over." }
+  }
+
+  return {
+    player: patchDeep<Player>(player, {
+      character: { gold: player.character.gold + crime.bounty },
+      wantedPirates: { [key]: null },
+    }),
+    log: {
+      type: "honour",
+      message: `Handed over the wanted pirate ${pirate.name} to the governor of ${town}.`,
+    },
+    data: { pirate, crime },
   }
 }

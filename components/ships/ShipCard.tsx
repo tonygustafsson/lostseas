@@ -24,7 +24,7 @@ export default function ShipCard({
   const shipInfo = SHIP_TYPES[ship.type]
 
   return (
-    <Card className="shadow-background/20 relative min-w-0 gap-4 p-4 shadow-lg">
+    <Card className="relative min-w-0 gap-4 p-4">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-3/4 select-none">
         <Image
           src={`/img/cards/shipyard/${ship.type.toLowerCase()}.png`}
@@ -39,7 +39,7 @@ export default function ShipCard({
       <div className="relative flex items-center gap-2">
         <span
           aria-hidden="true"
-          className="border-accent/60 bg-background text-accent flex size-9 shrink-0 items-center justify-center rounded-full border shadow-md [&_svg]:size-5"
+          className="border-accent/60 bg-background text-accent flex size-9 shrink-0 items-center justify-center rounded-full border [&_svg]:size-5"
         >
           <MerchandiseIcon item={ship.type} />
         </span>

@@ -4,6 +4,7 @@ import { fn } from "storybook/test"
 import VentureCard from "@/components/location/Bank/VentureCard"
 
 const meta = {
+  title: "game/Bank/VentureCard",
   component: VentureCard,
   args: {
     ventureId: "tobaccoRun",

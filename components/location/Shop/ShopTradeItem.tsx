@@ -3,6 +3,7 @@ import Image from "next/image"
 
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
   Popover,
   PopoverContent,
@@ -56,7 +57,7 @@ const ShopTradeItem = ({
         <div className="flex flex-1 items-center gap-4">
           <span
             aria-hidden="true"
-            className="border-accent/60 bg-background flex size-12 shrink-0 items-center justify-center rounded-full border shadow-md"
+            className="border-accent/60 bg-background flex size-12 shrink-0 items-center justify-center rounded-full border"
           >
             <MerchandiseIcon item={item} size="sm" />
           </span>
@@ -69,13 +70,14 @@ const ShopTradeItem = ({
 
               <Popover>
                 <PopoverTrigger asChild>
-                  <button
-                    type="button"
+                  <Button
+                    size="icon-xs"
+                    variant="outline"
                     aria-label={`About ${title}`}
-                    className="bg-background text-accent border-accent/60 hover:bg-muted rounded-full border p-1"
+                    className="bg-background text-accent border-accent/60 hover:bg-muted rounded-full"
                   >
-                    <Info className="size-3" />
-                  </button>
+                    <Info />
+                  </Button>
                 </PopoverTrigger>
 
                 <PopoverContent>{MERCHANDISE[item].description}</PopoverContent>

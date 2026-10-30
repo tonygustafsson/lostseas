@@ -28,7 +28,7 @@ export default function FittingsList() {
         return (
           <div
             key={item}
-            className="flex items-center justify-between gap-2 rounded-lg bg-neutral-900 p-4 shadow-md"
+            className="flex items-center justify-between gap-2 rounded-lg bg-neutral-900 p-4"
           >
             <div>
               <div className="text-muted-foreground text-sm">

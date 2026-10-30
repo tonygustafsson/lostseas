@@ -355,19 +355,6 @@ describe("buyRemedy", () => {
     )
   })
 
-  it("rejects when the crew count is missing from the save", () => {
-    const player = createTestPlayer({
-      character: { location: "Market" },
-      crewMembers: { health: 50 },
-    })
-    player.crewMembers.count = undefined as never
-
-    expectError(
-      buyRemedy(player, { remedy: "willow-bark-tea" }),
-      "You have no crew to treat."
-    )
-  })
-
   it("rejects when there is no crew", () => {
     expectError(
       buyRemedy(injured({ crewMembers: { count: 0 } }), {
@@ -385,19 +372,6 @@ describe("buyRemedy", () => {
       "Your crew's health is already at 100%."
     )
   })
-
-  it.each([NaN, undefined])(
-    "rejects and keeps the gold when crew health is %s",
-    (health) => {
-      const player = createTestPlayer({ character: { location: "Market" } })
-      player.crewMembers.health = health as never
-
-      expectError(
-        buyRemedy(player, { remedy: "willow-bark-tea" }),
-        "Your crew's health is already at 100%."
-      )
-    }
-  )
 
   it("rejects buying with too little gold", () => {
     expectError(

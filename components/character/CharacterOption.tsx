@@ -33,7 +33,7 @@ const CharacterOption = ({ character, selected, onSelect }: Props) => (
       type="button"
       aria-pressed={selected}
       onClick={() => onSelect(character)}
-      className="focus-visible:ring-ring flex w-full min-w-0 cursor-pointer items-start gap-3 rounded-md p-2 text-left focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:flex-col md:gap-2"
+      className="focus-visible:ring-ring flex w-full min-w-0 cursor-pointer items-start gap-2 rounded-md p-2 text-left focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:flex-col md:gap-2"
     >
       <div className="relative aspect-square w-16 shrink-0 overflow-hidden rounded-md md:w-full">
         <Image
@@ -46,7 +46,7 @@ const CharacterOption = ({ character, selected, onSelect }: Props) => (
       </div>
 
       <span className="flex min-w-0 flex-1 flex-col gap-2">
-        <span className="pr-7 font-serif text-lg md:pr-0">
+        <span className="pr-8 font-serif text-lg md:pr-0">
           {character.name}
         </span>
 
@@ -70,7 +70,7 @@ const CharacterOption = ({ character, selected, onSelect }: Props) => (
           variant="secondary"
           size="icon-sm"
           aria-label={`Description for ${character.name}`}
-          className="absolute top-3 right-3 rounded-full"
+          className="absolute top-4 right-4 rounded-full"
         >
           <CircleHelp className="size-4" />
         </Button>

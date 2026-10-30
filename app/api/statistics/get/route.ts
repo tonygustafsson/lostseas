@@ -14,7 +14,7 @@ export async function GET() {
 
   const stats = await getStatistics(playerId)
 
-  const res = NextResponse.json(stats ?? [])
+  const res = NextResponse.json(stats)
   res.headers.set("Cache-Control", "no-cache")
 
   return res

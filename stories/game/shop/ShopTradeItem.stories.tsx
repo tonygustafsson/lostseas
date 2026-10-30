@@ -5,6 +5,7 @@ import { expect, fn, screen } from "storybook/test"
 import ShopTradeItem from "@/components/location/Shop/ShopTradeItem"
 
 const meta = {
+  title: "game/Shop/ShopTradeItem",
   component: ShopTradeItem,
   args: {
     item: "food",
