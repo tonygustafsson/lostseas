@@ -37,15 +37,22 @@ describe("location utils", () => {
     expect(getLocationAmbience(undefined, "Shop")).toBeUndefined()
   })
 
-  it("getLocationAmbienceSounds returns the harbor sounds in the harbor", () => {
+  it("getLocationAmbienceSounds returns all harbor sounds in the harbor", () => {
     expect(getLocationAmbienceSounds("Harbor")).toEqual([
       "ambience/harbor/harbor1.opus",
+      "ambience/harbor/harbor2.opus",
+      "ambience/harbor/harbor3.opus",
+      "ambience/harbor/harbor4.opus",
+      "ambience/harbor/harbor5.opus",
+      "ambience/harbor/harbor6.opus",
     ])
   })
 
-  it("getLocationAmbienceSounds returns the market sounds in the market", () => {
+  it("getLocationAmbienceSounds returns all market sounds in the market", () => {
     expect(getLocationAmbienceSounds("Market")).toEqual([
       "ambience/market/market1.opus",
+      "ambience/market/market2.opus",
+      "ambience/market/market3.opus",
     ])
   })
 
@@ -62,6 +69,7 @@ describe("location utils", () => {
     expect(getLocationAmbienceSounds("Shipyard")).toEqual([
       "ambience/shipyard/shipyard1.opus",
       "ambience/shipyard/shipyard2.opus",
+      "ambience/shipyard/shipyard3.opus",
     ])
   })
 

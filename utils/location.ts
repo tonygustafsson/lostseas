@@ -51,14 +51,20 @@ export const getLocationAmbience = (
 const LOCATION_AMBIENCE_SOUNDS: Partial<
   Record<Character["location"], string[]>
 > = {
-  Harbor: ["ambience/harbor/harbor1.opus"],
-  Market: ["ambience/market/market1.opus"],
+  Harbor: Array.from(
+    { length: 6 },
+    (_, i) => `ambience/harbor/harbor${i + 1}.opus`
+  ),
+  Market: Array.from(
+    { length: 3 },
+    (_, i) => `ambience/market/market${i + 1}.opus`
+  ),
   Tavern: Array.from(
     { length: 4 },
     (_, i) => `ambience/tavern/tavern${i + 1}.opus`
   ),
   Shipyard: Array.from(
-    { length: 2 },
+    { length: 3 },
     (_, i) => `ambience/shipyard/shipyard${i + 1}.opus`
   ),
 }
