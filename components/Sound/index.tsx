@@ -66,8 +66,11 @@ const Sound = () => {
     setChangingTrack,
   } = useSound()
 
-  const musicPlayer = useRef(typeof Audio !== "undefined" ? new Audio() : null)
+  const musicPlayer = useRef<HTMLAudioElement | null>(null)
 
+  if (musicPlayer.current === null) {
+    musicPlayer.current = typeof Audio !== "undefined" ? new Audio() : null
+  }
   const playMusic = useCallback(() => {
     if (!musicPlayer) return
 
@@ -108,6 +111,7 @@ const Sound = () => {
     setChangingTrack(true)
     await fadeOutMusic()
     setChangingTrack(false)
+    if (!useSound.getState().musicOn) return
 
     const songs = location === "Sea" ? seaSongs : townSongs
     const otherSongs = songs.filter(
@@ -181,14 +185,14 @@ const Sound = () => {
           ]
 
         const soundEffectPlayer = new Audio(additionalAudioFile)
-        soundEffectPlayer.play()
+        soundEffectPlayer.play().catch(console.error)
       }
     } else {
       audioFile = `soundfx/${soundEffect}.opus`
     }
 
     const soundEffectPlayer = new Audio(audioFile)
-    soundEffectPlayer.play()
+    soundEffectPlayer.play().catch(console.error)
   }, [soundEffect, soundEffectsOn])
 
   useEffect(() => {
@@ -210,19 +214,23 @@ const Sound = () => {
     }
   }, [musicOn, musicPlayer, location, playRandomSong, playMusic])
 
-  const locationSounds = ambienceOn
+  const locationAmbienceSounds = ambienceOn
     ? getLocationAmbienceSounds(location)
     : undefined
 
   // Changing location fades out the old sound while the new one fades in
   useEffect(() => {
-    if (!locationSounds) return
+    if (!locationAmbienceSounds) return
 
     const audio = new Audio(
-      locationSounds[Math.floor(Math.random() * locationSounds.length)]
+      `/${locationAmbienceSounds[Math.floor(Math.random() * locationAmbienceSounds.length)]}`
     )
     audio.loop = true
     audio.volume = 0
+    audio.onplaying = () => {
+      fadeTo(audio, LOCATION_SOUND_VOLUME)
+      document.removeEventListener("click", handleClick)
+    }
 
     const play = () =>
       audio.play().catch(() => {
@@ -230,19 +238,19 @@ const Sound = () => {
       })
 
     play()
-    fadeTo(audio, LOCATION_SOUND_VOLUME)
 
     const handleClick = () => {
       if (audio.paused) play()
     }
 
-    document.addEventListener("click", handleClick, { once: true })
+    document.addEventListener("click", handleClick)
 
     return () => {
+      audio.onplaying = null
       document.removeEventListener("click", handleClick)
       fadeTo(audio, 0, () => audio.pause())
     }
-  }, [locationSounds])
+  }, [locationAmbienceSounds])
 
   const hasPlayer = Boolean(player)
 

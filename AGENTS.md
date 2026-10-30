@@ -4,6 +4,7 @@
 
 - Keep communication short and concise. Avoid unnecessarily long explanations and code examples.
 - Do not lightly introduce more complexity, instead ask questions to be sure on how to proceed if you predict that the complexity will increase during the task.
+- Make code changes small and concise. Bug fixes should be done with a few lines if possible.
 - Prefer existing project patterns, components, hooks, and utilities before introducing new abstractions.
 - When a task is complete, run linting and formatting.
 - Make the smallest change that meets the request, but suggest optimizations and abstractions if you see it would benefit the project.
@@ -33,7 +34,7 @@
   - Prefer event handlers for user-driven side effects.
   - Avoid manual memoization such as `useMemo` and `useCallback` unless there is a demonstrated need.
   - Keep components and hooks compliant with the Rules of React.
-  - When updating component, also look for Storybook stories and tests and update them as well.
+  - When updating component that changes the UI, also look for Storybook stories and tests and update them as well.
 - Code should have enough white space and air - have line breaks between components if it makes sense. Specially if they are visibly separate.
 - Feel free to add valuable comments in the codebase, but don't overdo it. A comment should explain behaviour, not the code. Also avoid making the code look AI generated.
 
