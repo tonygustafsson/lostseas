@@ -713,6 +713,13 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           particular town, and that town&apos;s City Hall pays you gold for it.
         </p>
 
+        <p className="mb-4">
+          Beat a pirate ship and you might capture a famous wanted pirate. Each
+          one is wanted by a particular town, and that town&apos;s City Hall
+          pays a bounty that depends on the crimes they committed. You can see
+          your prisoners in the Crew & Fleet drawer.
+        </p>
+
         <h3 className="mb-2 font-serif text-lg">Saving money</h3>
 
         <p className="mb-4">

@@ -41,7 +41,8 @@
 
 - Prefer existing shadcn components in `components/ui/` when building interfaces.
 - Use icons from `lucide-react` and `react-icons` only.
-- Use colors defined by the theme in `styles/globals.css`. Do not introduce colors outside the theme.
+- Use color palette defined by the theme in `styles/globals.css`. Do not introduce colors outside the theme. Really try to use tokens instead of specific Tailwind colors.
+- Do not add shadows to things if it doesn't really benefit from it, meaning it needs to stand out.
 - Prefer existing theme and Tailwind values over arbitrary values such as `w-[137px]`, `mt-[7px]`, or custom colors.
 - Prefer spacing values from this scale where practical: `1`, `2`, `4`, `6`, `8`, `12`, `16`, `32`, `64`.
 - Keep Tailwind class lists reasonably simple and readable.

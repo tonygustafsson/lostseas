@@ -3,9 +3,11 @@ import { describe, expect, it } from "vitest"
 import { NATIONS, TOWNS } from "@/constants/locations"
 import { TITLE_INFO } from "@/constants/title"
 import { TREASURES } from "@/constants/treasures"
+import { PIRATE_CRIMES } from "@/constants/wantedPirates"
 import {
   acceptNewTitle,
   changeCitizenship,
+  handOverPirate,
   handOverTreasure,
 } from "@/utils/actions/cityhall"
 import type { ActionResult } from "@/utils/actions/types"
@@ -361,6 +363,78 @@ describe("handOverTreasure", () => {
   })
 })
 
+describe("handOverPirate", () => {
+  const pirate = (
+    id: string,
+    crimeId: string,
+    rewarder: Town = "Port Royale"
+  ): WantedPirate => ({ id, name: 'Jack "Mad" Flint', crimeId, rewarder })
+
+  it.each(PIRATE_CRIMES)(
+    "pays a bounty of $bounty gold for $id",
+    ({ id, bounty }) => {
+      const player = atCityHall({ wantedPirates: { a: pirate("a", id) } })
+
+      const result = expectSuccess(handOverPirate(player, { id: "a" }))
+
+      expect(result.player.character.gold).toBe(1000 + bounty)
+      expect(result.player.wantedPirates).toEqual({})
+      expect(result.data.crime.bounty).toBe(bounty)
+    }
+  )
+
+  it("keeps the other prisoners and logs the hand-over", () => {
+    const player = atCityHall({
+      wantedPirates: {
+        a: pirate("a", "jailbreak"),
+        b: pirate("b", "mail-ship"),
+      },
+    })
+
+    const result = expectSuccess(handOverPirate(player, { id: "a" }))
+
+    expect(Object.keys(result.player.wantedPirates ?? {})).toEqual(["b"])
+    expect(result.log).toMatchObject({
+      type: "honour",
+      message:
+        'Handed over the wanted pirate Jack "Mad" Flint to the governor of Port Royale.',
+    })
+  })
+
+  it("rejects a pirate wanted by another town", () => {
+    const player = atCityHall({
+      wantedPirates: { a: pirate("a", "jailbreak", "Havana") },
+    })
+
+    expectError(
+      handOverPirate(player, { id: "a" }),
+      "You don't have this pirate aboard"
+    )
+  })
+
+  it("rejects a pirate with an unknown crime", () => {
+    const player = atCityHall({
+      wantedPirates: { a: pirate("a", "jaywalking") },
+    })
+
+    expectError(
+      handOverPirate(player, { id: "a" }),
+      "This pirate is not wanted and cannot be handed over."
+    )
+  })
+
+  it("rejects outside the city hall", () => {
+    const player = createTestPlayer({
+      wantedPirates: { a: pirate("a", "jailbreak") },
+    })
+
+    expectError(
+      handOverPirate(player, { id: "a" }),
+      "You must be at City hall to do this."
+    )
+  })
+})
+
 describe("random city hall play", () => {
   const NATION_KEYS = Object.keys(NATIONS) as Nation[]
   const LOCATIONS: TownLocation[] = ["City hall", "City hall", "Bank"]
@@ -384,6 +458,7 @@ describe("random city hall play", () => {
             : random.pick(NATION_KEYS)
         const battles = player.character.battles?.[battleNation] ?? {}
         const treasureId = `t${step}`
+        const pirateId = `p${step}`
 
         player = patchDeep<Player>(player, {
           character: {
@@ -405,11 +480,23 @@ describe("random city hall play", () => {
               },
             },
           }),
+          ...(random.int(0, 4) === 0 && {
+            wantedPirates: {
+              [pirateId]: {
+                id: pirateId,
+                name: 'Jack "Mad" Flint',
+                crimeId: random.pick(PIRATE_CRIMES).id,
+                rewarder: random.pick(ALL_TOWNS),
+              },
+            },
+          }),
         })
 
         const before = deepFreeze(structuredClone(player))
-        const action = random.int(0, 2)
-        const ownedIds = Object.keys(before.treasures ?? {})
+        const action = random.int(0, 3)
+        const ownedIds = Object.keys(
+          (action === 3 ? before.wantedPirates : before.treasures) ?? {}
+        )
         const id = ownedIds.length ? random.pick(ownedIds) : "none"
         const context = `seed ${seed}, step ${step}, action ${action}`
 
@@ -418,7 +505,9 @@ describe("random city hall play", () => {
             ? acceptNewTitle(before)
             : action === 1
               ? changeCitizenship(before)
-              : handOverTreasure(before, { id })
+              : action === 2
+                ? handOverTreasure(before, { id })
+                : handOverPirate(before, { id })
 
         if ("error" in result) {
           expect(result.error, context).toBeTruthy()
@@ -474,11 +563,24 @@ describe("random city hall play", () => {
           )
         }
 
+        if (action === 3) {
+          const handed = before.wantedPirates![id]
+
+          expect(handed.rewarder, context).toBe(before.character.town)
+          expect(after.wantedPirates?.[id], context).toBeUndefined()
+          expect(Object.keys(after.wantedPirates ?? {}), context).toHaveLength(
+            ownedIds.length - 1
+          )
+          expect(goldEarned, context).toBe(
+            PIRATE_CRIMES.find(({ id }) => id === handed.crimeId)?.bounty
+          )
+        }
+
         player = after
       }
 
       // Guards against random play that only ever hits errors
-      expect(succeededActions.size).toBe(3)
+      expect(succeededActions.size).toBe(4)
     }
   )
 })

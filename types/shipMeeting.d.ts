@@ -32,6 +32,7 @@ type AttackSuccessReport = AttackReport & {
   lootedGold: number
   lootedMerchandise: Record<InventoryItem, number>
   foundTreasure?: Treasure | false
+  capturedPirate?: WantedPirate | false
 }
 
 type AttackFailureReport = AttackReport & {

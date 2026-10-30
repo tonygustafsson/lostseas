@@ -2,7 +2,7 @@ import { HeartPulse, Smile } from "lucide-react"
 import Image from "next/image"
 import { useMemo } from "react"
 import { FaCoins, FaUsers } from "react-icons/fa"
-import { GiShoonerSailboat } from "react-icons/gi"
+import { GiHandcuffs, GiShoonerSailboat } from "react-icons/gi"
 
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import TreasureIcon from "@/components/TreasureIcon"
@@ -10,6 +10,7 @@ import { MERCHANDISE } from "@/constants/merchandise"
 import { TREASURES } from "@/constants/treasures"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { cn } from "@/lib/utils"
+import { getPirateCrime } from "@/utils/createWantedPirate"
 import {
   getAttackFailureQuip,
   getAttackSuccessQuip,
@@ -25,6 +26,10 @@ const AttackReport = () => {
   const failureReport = player?.locationStates?.sea?.attackFailureReport
   const report = successReport || failureReport
   const foundTreasure = successReport?.foundTreasure
+  const capturedPirate = successReport?.capturedPirate
+  const capturedPirateCrime = capturedPirate
+    ? getPirateCrime(capturedPirate)
+    : undefined
 
   const quip = useMemo(
     () => (successReport ? getAttackSuccessQuip() : getAttackFailureQuip()),
@@ -95,6 +100,22 @@ const AttackReport = () => {
                   aboard
                 </p>
                 <p>Bring it to the governor of {foundTreasure.rewarder}.</p>
+              </AttackReportItem>
+            )}
+
+            {capturedPirate && (
+              <AttackReportItem
+                variant="success"
+                title={capturedPirate.name}
+                change="Captured"
+                icon={<GiHandcuffs />}
+                className="col-span-2 sm:col-span-3"
+              >
+                <p>{capturedPirateCrime?.description}</p>
+                <p>
+                  Bring them to the governor of {capturedPirate.rewarder} for a
+                  bounty of {formatGold(capturedPirateCrime?.bounty)}.
+                </p>
               </AttackReportItem>
             )}
 

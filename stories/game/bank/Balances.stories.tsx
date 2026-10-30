@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import Balances from "@/components/location/Bank/Balances"
 
 const meta = {
+  title: "game/Bank/Balances",
   component: Balances,
   args: { gold: 2500, account: 1200, loan: 0 },
 } satisfies Meta<typeof Balances>

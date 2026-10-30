@@ -16,6 +16,7 @@ import FittingsList from "@/components/ships/FittingsList"
 import ShipList from "@/components/ships/ShipList"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import WantedPirateCard from "@/components/WantedPirateCard"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useGetStatistics } from "@/hooks/queries/useStatistics"
 import { cn } from "@/lib/utils"
@@ -39,6 +40,7 @@ const FleetDrawer = () => {
   }
 
   const cargo = getCargo(player)
+  const wantedPirates = Object.values(player.wantedPirates || {})
 
   // A chart needs at least two snapshots to draw a line
   const cannonEntries = withMetrics(stats, metricsOf(cannonSeries))
@@ -115,6 +117,20 @@ const FleetDrawer = () => {
       >
         Manage Crew
       </Button>
+
+      {wantedPirates.length > 0 && (
+        <>
+          <Separator className="my-8" />
+
+          <h2 className="mt-8 mb-4 font-serif text-xl">Prisoners</h2>
+
+          <div className="flex flex-col gap-4">
+            {wantedPirates.map((pirate) => (
+              <WantedPirateCard key={`fleet-${pirate.id}`} pirate={pirate} />
+            ))}
+          </div>
+        </>
+      )}
 
       <Separator className="my-8" />
 

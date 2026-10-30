@@ -827,6 +827,46 @@ describe("battleMove", () => {
     expect(dbUpdate.locationStates?.sea?.lootOffer).toBeNull()
   })
 
+  it("captures a wanted pirate from a pirate ship on a lucky roll", () => {
+    rollLow()
+
+    const { dbUpdate, report, log } = getVictoryUpdate(
+      atSea(),
+      { ...shipMeeting, nation: "Pirate" },
+      { shipHealthLoss: 0, crewHealthLoss: 0 }
+    )
+
+    const pirate = report.capturedPirate as WantedPirate
+
+    expect(pirate).toBeTruthy()
+    expect(dbUpdate.wantedPirates).toEqual({ [pirate.id]: pirate })
+    expect(log.message).toContain(`captured the wanted pirate ${pirate.name}`)
+  })
+
+  it("never captures a wanted pirate from a nation's ship", () => {
+    rollLow()
+
+    const { dbUpdate, report } = getVictoryUpdate(atSea(), shipMeeting, {
+      shipHealthLoss: 0,
+      crewHealthLoss: 0,
+    })
+
+    expect(report.capturedPirate).toBe(false)
+    expect(dbUpdate.wantedPirates).toBeUndefined()
+  })
+
+  it("captures no wanted pirate on an unlucky roll", () => {
+    rollHigh()
+
+    const { report } = getVictoryUpdate(
+      atSea(),
+      { ...shipMeeting, nation: "Pirate" },
+      { shipHealthLoss: 0, crewHealthLoss: 0 }
+    )
+
+    expect(report.capturedPirate).toBe(false)
+  })
+
   it("loses all carried gold and up to 3 goods, but keeps cannons and savings", () => {
     rollHigh()
     const player = patchDeep<Player>(

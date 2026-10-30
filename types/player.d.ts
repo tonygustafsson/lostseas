@@ -6,6 +6,7 @@ type Player = {
   crewMembers: CrewMembers
   inventory?: Inventory
   treasures?: Record<string, Treasure>
+  wantedPirates?: Record<string, WantedPirate>
   locationStates?: LocationStates
 }
 

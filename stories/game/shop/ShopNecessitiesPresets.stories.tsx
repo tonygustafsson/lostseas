@@ -5,6 +5,7 @@ import ShopNecessitiesPresets from "@/components/location/Shop/ShopNecessitiesPr
 
 // 40 crew use 4 food and 8 water a day
 const meta = {
+  title: "game/Shop/ShopNecessitiesPresets",
   component: ShopNecessitiesPresets,
   args: {
     crewMembers: 40,

@@ -11,6 +11,7 @@ const withCrew = (health: number, gold = player.character.gold) => ({
 })
 
 const meta = {
+  title: "game/Market/MarketApothecary",
   component: MarketApothecary,
   args: {
     player: withCrew(40),

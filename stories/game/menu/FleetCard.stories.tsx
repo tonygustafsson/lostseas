@@ -4,6 +4,7 @@ import FleetCard from "@/components/menu/FleetCard"
 import { player } from "@/stories/fixtures"
 
 const meta = {
+  title: "game/Menu/FleetCard",
   component: FleetCard,
   args: { player },
   decorators: [

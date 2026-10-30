@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 import { POST as acceptNewTitle } from "@/app/api/cityhall/acceptNewTitle/route"
 import { POST as changeCitizenship } from "@/app/api/cityhall/changeCitizenship/route"
 import { POST as handover } from "@/app/api/cityhall/handover/route"
+import { POST as handoverPirate } from "@/app/api/cityhall/handoverPirate/route"
 import { patchDeep } from "@/utils/patchDeep"
 
 import { createTestPlayer } from "../helpers/createTestPlayer"
@@ -56,6 +57,21 @@ const routes = [
       treasures: { a: { id: "a", name: "Inca mask", rewarder: "Port Royale" } },
     },
     fields: ["treasure", "treasureInfo"],
+  },
+  {
+    name: "handoverPirate",
+    call: () => handoverPirate(request({ id: "a" })),
+    player: {
+      wantedPirates: {
+        a: {
+          id: "a",
+          name: 'Jack "Mad" Flint',
+          crimeId: "jailbreak",
+          rewarder: "Port Royale",
+        },
+      },
+    },
+    fields: ["pirate", "crime"],
   },
 ] as const
 

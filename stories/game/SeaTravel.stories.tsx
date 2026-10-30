@@ -109,6 +109,29 @@ const fleetVictory: Player = {
   },
 }
 
+const capturedPirate: WantedPirate = {
+  id: "story-pirate",
+  name: 'Anne "Black-eyed" Rourke',
+  crimeId: "kidnapped-bishop",
+  rewarder: "Tortuga",
+}
+
+const pirateVictory: Player = {
+  ...victory,
+  treasures: {},
+  wantedPirates: { [capturedPirate.id]: capturedPirate },
+  locationStates: {
+    sea: {
+      ...victory.locationStates!.sea!,
+      attackSuccessReport: {
+        ...victory.locationStates!.sea!.attackSuccessReport!,
+        foundTreasure: false,
+        capturedPirate,
+      },
+    },
+  },
+}
+
 const meeting = (shipMeeting: ShipMeetingState): Player => ({
   ...player,
   character: { ...player.character, location: "Sea", town: undefined },
@@ -284,6 +307,7 @@ export const Victory: Story = { parameters: { player: victory } }
 export const Defeat: Story = { parameters: { player: defeat } }
 export const TotalLoss: Story = { parameters: { player: totalLoss } }
 export const FleetVictory: Story = { parameters: { player: fleetVictory } }
+export const PirateVictory: Story = { parameters: { player: pirateVictory } }
 export const EnemyShip: Story = {
   args: { nation: "France", shipType: "Galleon", isAggressive: false },
   parameters: { player: enemyShip },

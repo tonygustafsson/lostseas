@@ -4,6 +4,7 @@ import { Coins, Users } from "lucide-react"
 import { StatCard } from "@/components/menu/StatCard"
 
 const meta = {
+  title: "game/Menu/StatCard",
   component: StatCard,
   args: { title: "Gold", value: 2500, Icon: <Coins /> },
   argTypes: { Icon: { control: false } },

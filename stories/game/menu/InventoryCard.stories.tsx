@@ -4,6 +4,7 @@ import InventoryCard from "@/components/menu/InventoryCard"
 import { player } from "@/stories/fixtures"
 
 const meta = {
+  title: "game/Menu/InventoryCard",
   component: InventoryCard,
   args: { player },
   decorators: [
