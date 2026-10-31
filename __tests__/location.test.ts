@@ -73,9 +73,14 @@ describe("location utils", () => {
     ])
   })
 
+  it("getLocationAmbienceSounds returns all sea sounds at sea", () => {
+    expect(getLocationAmbienceSounds("Sea")).toEqual(
+      Array.from({ length: 9 }, (_, i) => `ambience/sea/sea${i + 1}.opus`)
+    )
+  })
+
   it("getLocationAmbienceSounds returns undefined for locations without a sound", () => {
     expect(getLocationAmbienceSounds("Shop")).toBeUndefined()
-    expect(getLocationAmbienceSounds("Sea")).toBeUndefined()
     expect(getLocationAmbienceSounds(undefined)).toBeUndefined()
   })
 })

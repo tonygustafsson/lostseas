@@ -12,14 +12,8 @@ export const useSea = () => {
   const { mutate: startJourney, isPending: isStartingJourney } = useMutation({
     mutationFn: (data: { town: Town }) =>
       apiRequest("/api/sea/startJourney", data, "POST"),
-    onSuccess: async (response) => {
-      const { success } = response?.data ?? {}
-
+    onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
-
-      if (success) {
-        playSoundEffect("journey")
-      }
     },
     onError: (error) => console.error(error),
   })
@@ -40,8 +34,6 @@ export const useSea = () => {
       playSoundEffect("sailho")
     } else if (destinationReached) {
       playSoundEffect("landho")
-    } else {
-      playSoundEffect("journey")
     }
   }
 
@@ -102,7 +94,7 @@ export const useSea = () => {
 
       await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
-      playSoundEffect(escaped ? "journey" : "cannons")
+      if (!escaped) playSoundEffect("cannons")
     },
     onError: (error) => console.error(error),
   })

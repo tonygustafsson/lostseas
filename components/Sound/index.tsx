@@ -9,7 +9,6 @@ import {
 } from "@/constants/system"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getLocationAmbienceSounds } from "@/utils/location"
-import { getRandomInt } from "@/utils/random"
 
 const townSongs = Array.from(
   { length: 10 },
@@ -165,33 +164,7 @@ const Sound = () => {
   useEffect(() => {
     if (!soundEffectsOn || !soundEffect) return
 
-    let audioFile: string
-
-    if (soundEffect === "journey") {
-      const wavesSoundEffects = ["soundfx/waves1.opus", "soundfx/waves2.opus"]
-
-      audioFile =
-        wavesSoundEffects[Math.floor(Math.random() * wavesSoundEffects.length)]
-
-      if (getRandomInt(1, 2) === 1) {
-        const journeyAdditionalSoundEffects = [
-          "soundfx/creak.opus",
-          "soundfx/seagulls.opus",
-        ]
-
-        const additionalAudioFile =
-          journeyAdditionalSoundEffects[
-            Math.floor(Math.random() * journeyAdditionalSoundEffects.length)
-          ]
-
-        const soundEffectPlayer = new Audio(additionalAudioFile)
-        soundEffectPlayer.play().catch(console.error)
-      }
-    } else {
-      audioFile = `soundfx/${soundEffect}.opus`
-    }
-
-    const soundEffectPlayer = new Audio(audioFile)
+    const soundEffectPlayer = new Audio(`soundfx/${soundEffect}.opus`)
     soundEffectPlayer.play().catch(console.error)
   }, [soundEffect, soundEffectsOn])
 

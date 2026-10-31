@@ -67,6 +67,7 @@ const LOCATION_AMBIENCE_SOUNDS: Partial<
     { length: 3 },
     (_, i) => `ambience/shipyard/shipyard${i + 1}.opus`
   ),
+  Sea: Array.from({ length: 9 }, (_, i) => `ambience/sea/sea${i + 1}.opus`),
 }
 
 export const getLocationAmbienceSounds = (location?: Character["location"]) =>
