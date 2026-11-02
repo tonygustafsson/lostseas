@@ -14,6 +14,8 @@ export const useSea = () => {
       apiRequest("/api/sea/startJourney", data, "POST"),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+      playSoundEffect("leave-port")
     },
     onError: (error) => console.error(error),
   })
@@ -33,7 +35,7 @@ export const useSea = () => {
     if (shipMeetingState) {
       playSoundEffect("sailho")
     } else if (destinationReached) {
-      playSoundEffect("landho")
+      playSoundEffect("arrive-port")
     }
   }
 

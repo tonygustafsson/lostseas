@@ -1,7 +1,7 @@
 import { getCookie } from "cookies-next"
 import { useCallback, useEffect, useRef } from "react"
 
-import useSound from "@/app/stores/sound"
+import useSound, { type SoundEffect } from "@/app/stores/sound"
 import {
   AMBIENCE_STATE_COOKIE_NAME,
   MUSIC_STATE_COOKIE_NAME,
@@ -18,6 +18,21 @@ const seaSongs = Array.from(
   { length: 8 },
   (_, i) => `music/sea/song${i + 1}.opus`
 )
+
+// Effects with several recordings, one is picked at random each time
+const soundEffectVariants: Partial<Record<SoundEffect, number>> = {
+  "arrive-port": 18,
+  "leave-port": 21,
+}
+
+const getSoundEffectSrc = (soundEffect: SoundEffect) => {
+  const variants = soundEffectVariants[soundEffect]
+
+  if (!variants) return `soundfx/${soundEffect}.opus`
+
+  const variant = Math.floor(Math.random() * variants) + 1
+  return `soundfx/${soundEffect}/${soundEffect}${variant}.ogg`
+}
 
 const isSongForLocation = (src: string | undefined, location?: string) =>
   Boolean(src?.includes(location === "Sea" ? "/music/sea/" : "/music/town/"))
@@ -164,7 +179,7 @@ const Sound = () => {
   useEffect(() => {
     if (!soundEffectsOn || !soundEffect) return
 
-    const soundEffectPlayer = new Audio(`soundfx/${soundEffect}.opus`)
+    const soundEffectPlayer = new Audio(getSoundEffectSrc(soundEffect))
     soundEffectPlayer.play().catch(console.error)
   }, [soundEffect, soundEffectsOn])
 

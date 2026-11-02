@@ -16,7 +16,8 @@ export type SoundEffect =
   | "drink"
   | "tools"
   | "sailho"
-  | "landho"
+  | "arrive-port"
+  | "leave-port"
   | "cannons"
   | "fanfare"
 
