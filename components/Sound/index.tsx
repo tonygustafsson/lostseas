@@ -23,6 +23,7 @@ const seaSongs = Array.from(
 const soundEffectVariants: Partial<Record<SoundEffect, number>> = {
   "arrive-port": 18,
   "leave-port": 21,
+  "ship-meeting": 16,
 }
 
 const getSoundEffectSrc = (soundEffect: SoundEffect) => {

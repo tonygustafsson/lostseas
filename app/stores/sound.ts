@@ -15,7 +15,7 @@ export type SoundEffect =
   | "frustration"
   | "drink"
   | "tools"
-  | "sailho"
+  | "ship-meeting"
   | "arrive-port"
   | "leave-port"
   | "cannons"

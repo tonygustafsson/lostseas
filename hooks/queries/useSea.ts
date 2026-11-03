@@ -32,7 +32,7 @@ export const useSea = () => {
     await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
     if (shipMeetingState) {
-      playSoundEffect("sailho")
+      playSoundEffect("ship-meeting")
     } else if (destinationReached) {
       playSoundEffect("arrive-port")
     }
