@@ -1,6 +1,6 @@
 import { dehydrate, QueryClient } from "@tanstack/react-query"
 
-import { PLAYER_QUERY_KEY } from "@/hooks/queries/usePlayer"
+import { PLAYER_QUERY_KEY } from "@/constants/system"
 
 import { getLoggedInPlayer } from "./getLoggedInPlayer"
 

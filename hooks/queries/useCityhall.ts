@@ -3,14 +3,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
 import { TOWNS } from "@/constants/locations"
+import { PLAYER_QUERY_KEY } from "@/constants/system"
 import { TREASURES } from "@/constants/treasures"
 import apiRequest from "@/utils/apiRequest"
 import { getPirateCrime } from "@/utils/createWantedPirate"
 import { formatGold } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
 import { getNewTitle, getTitleReward } from "@/utils/title"
-
-import { PLAYER_QUERY_KEY } from "./usePlayer"
 
 const getRewardMessage = (reward: number) =>
   reward > 0

@@ -39,8 +39,6 @@ vi.mock("@/app/stores/toasts", () => ({
   useToasts: () => vi.fn(),
 }))
 
-vi.mock("@/hooks/queries/usePlayer", () => ({ PLAYER_QUERY_KEY: "player" }))
-
 type TavernItem = keyof typeof TAVERN_ITEMS
 
 const TavernMutationTest = () => {

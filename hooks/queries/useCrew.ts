@@ -2,11 +2,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
+import { PLAYER_QUERY_KEY } from "@/constants/system"
 import apiRequest from "@/utils/apiRequest"
 import { getGoldEffectiveness, getMedicineEffectiveness } from "@/utils/crew"
 import { patchDeep } from "@/utils/patchDeep"
-
-import { PLAYER_QUERY_KEY } from "./usePlayer"
 
 export const useCrew = () => {
   const queryClient = useQueryClient()

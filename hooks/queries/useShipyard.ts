@@ -4,11 +4,10 @@ import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_REPAIR_COST, SHIP_TYPES } from "@/constants/ship"
+import { PLAYER_QUERY_KEY } from "@/constants/system"
 import apiRequest from "@/utils/apiRequest"
 import { formatGold } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
-
-import { PLAYER_QUERY_KEY } from "./usePlayer"
 
 export const useShipyard = () => {
   const queryClient = useQueryClient()

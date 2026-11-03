@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { RiTreasureMapLine } from "react-icons/ri"
 
 import AdvisorTips from "@/components/advisor/AdvisorTips"
@@ -22,8 +21,9 @@ const HarborScene = ({ town }: Props) => {
   const { move } = useCharacter()
   const { data: player } = useGetPlayer()
   const { showMap, canTravel } = useMapModal()
-  const [arrivedQuip] = useState(getHarborArrivedQuip)
-  const [townQuip] = useState(getHarborTownQuip)
+  const day = player?.character.day ?? 0
+  const arrivedQuip = getHarborArrivedQuip(day)
+  const townQuip = getHarborTownQuip(day)
   const map = getTownMap(town)
   const nation = getTownsNationality(town)
   const hasArrived =

@@ -7,7 +7,11 @@ function getWeatherType(day: number): WeatherType {
   return "sunny"
 }
 
-function pickRandom<T>(arr: T[]): T {
+// A seed (like the game day) gives the same pick on the server and the
+// client, so server rendered quips don't cause hydration mismatches
+function pickRandom<T>(arr: T[], seed?: number): T {
+  if (seed !== undefined) return arr[seed % arr.length]
+
   return arr[Math.floor(Math.random() * arr.length)]
 }
 
@@ -189,12 +193,12 @@ export function getAttackFailureQuip() {
   return pickRandom(attackFailureQuips)
 }
 
-export function getHarborArrivedQuip() {
-  return pickRandom(harborArrivedQuips)
+export function getHarborArrivedQuip(seed?: number) {
+  return pickRandom(harborArrivedQuips, seed)
 }
 
-export function getHarborTownQuip() {
-  return pickRandom(harborTownQuips)
+export function getHarborTownQuip(seed?: number) {
+  return pickRandom(harborTownQuips, seed)
 }
 
 export function getHarborBlockedQuip() {

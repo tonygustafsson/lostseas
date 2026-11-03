@@ -4,12 +4,11 @@ import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
 import { APOTHECARY_REMEDIES, type Remedy } from "@/constants/apothecary"
 import { MERCHANDISE } from "@/constants/merchandise"
+import { PLAYER_QUERY_KEY } from "@/constants/system"
 import apiRequest from "@/utils/apiRequest"
 import { getRemedyResult } from "@/utils/apothecary"
 import { formatGold } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
-
-import { PLAYER_QUERY_KEY } from "./usePlayer"
 
 export const useMarket = () => {
   const queryClient = useQueryClient()
