@@ -15,9 +15,9 @@ import Link from "next/link"
 
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
-import LoginForm from "./LoginForm"
 import RegistrationForm from "./RegistrationForm"
 import Screenshots from "./Screenshots"
+import SignInOptions from "./SignInOptions"
 import SocialMedia from "./SocialMedia"
 import { Button } from "./ui/button"
 
@@ -25,7 +25,7 @@ type Props = {
   initialCharacter: CharacterCreation
 }
 
-const LoginScreen = ({ initialCharacter }: Props) => {
+const StartPageScreen = ({ initialCharacter }: Props) => {
   const { data: player } = useGetPlayer()
 
   if (player) return null
@@ -175,7 +175,8 @@ const LoginScreen = ({ initialCharacter }: Props) => {
                 Back aboard
               </h2>
             </div>
-            <LoginForm />
+
+            <SignInOptions />
           </section>
         </div>
 
@@ -288,4 +289,4 @@ const LoginScreen = ({ initialCharacter }: Props) => {
   )
 }
 
-export default LoginScreen
+export default StartPageScreen

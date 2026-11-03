@@ -3,7 +3,7 @@ import { Metadata } from "next"
 import GameUI from "@/components/game-ui"
 import DefaultLayout from "@/components/layouts/default"
 import FullscreenLayout from "@/components/layouts/fullscreen"
-import LoginScreen from "@/components/LoginScreen"
+import StartPageScreen from "@/components/StartPageScreen"
 import { getLoggedInPlayer } from "@/utils/app/getLoggedInPlayer"
 import { getRandomCharacter } from "@/utils/getRandomCharacter"
 
@@ -35,7 +35,7 @@ export default async function Page() {
   if (!player) {
     return (
       <FullscreenLayout>
-        <LoginScreen initialCharacter={getRandomCharacter()} />
+        <StartPageScreen initialCharacter={getRandomCharacter()} />
       </FullscreenLayout>
     )
   }

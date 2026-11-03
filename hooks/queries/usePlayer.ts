@@ -11,10 +11,23 @@ import { useRouter } from "next/navigation"
 
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
 import apiRequest from "@/utils/apiRequest"
+import { rememberAccount } from "@/utils/rememberedAccounts"
 
-import { PASSKEYS_QUERY_KEY } from "./usePasskeys"
+import {
+  fetchPasskeys,
+  PASSKEYS_QUERY_KEY,
+  syncRememberedPasskeys,
+} from "./usePasskeys"
 
 export const PLAYER_QUERY_KEY = "player"
+
+const rememberSignedInAccount = async (
+  result: Awaited<ReturnType<typeof apiRequest>>
+) => {
+  if (result?.status === 200) {
+    await rememberAccount(result.data.account)
+  }
+}
 
 export const useGetPlayer = () => {
   const router = useRouter()
@@ -35,8 +48,7 @@ export const useGetPlayer = () => {
           return
         }
 
-        const data = (await res.json()) as Player
-        return data
+        return (await res.json()) as Player
       } catch (error) {
         if (!signal.aborted) console.error(error)
       }
@@ -53,15 +65,17 @@ export const usePlayer = () => {
   const { mutateAsync: login, isPending: isLoggingIn } = useMutation({
     mutationFn: (playerId: Player["id"]) =>
       apiRequest("/api/user/login", { playerId }, "POST"),
+    onSuccess: rememberSignedInAccount,
     onError: (error) => console.error(error),
   })
 
   const { mutateAsync: loginWithPasskey, isPending: isLoggingInWithPasskey } =
     useMutation({
-      mutationFn: async () => {
+      // Credential IDs limit the prompt to one remembered account's passkeys
+      mutationFn: async (credentialIds?: string[]) => {
         const options = await apiRequest(
           "/api/user/passkey/login-options",
-          {},
+          credentialIds ? { credentialIds } : {},
           "POST"
         )
 
@@ -89,6 +103,7 @@ export const usePlayer = () => {
 
         return result
       },
+      onSuccess: rememberSignedInAccount,
     })
 
   const { mutateAsync: addPasskey, isPending: isAddingPasskey } = useMutation({
@@ -105,8 +120,16 @@ export const usePlayer = () => {
 
       return apiRequest("/api/user/passkey/register-verify", response, "POST")
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [PASSKEYS_QUERY_KEY] })
+    onSuccess: async () => {
+      // A cached list from before the passkey was added would keep the
+      // remembered account signing in with its ID
+      const list = await queryClient.fetchQuery({
+        queryKey: [PASSKEYS_QUERY_KEY],
+        queryFn: fetchPasskeys,
+        staleTime: 0,
+      })
+
+      await syncRememberedPasskeys(list)
     },
   })
 
@@ -124,7 +147,16 @@ export const usePlayer = () => {
     useMutation({
       mutationFn: (userData: CreatePlayerClientRequest) =>
         apiRequest("/api/user/register", userData, "POST"),
-      onSuccess: () => {
+      onSuccess: async (result, { name, characterId }) => {
+        if (result?.status === 200) {
+          await rememberAccount({
+            playerId: result.data,
+            name,
+            characterId,
+            credentialIds: [],
+          })
+        }
+
         queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
       },
       onError: (error) => console.error(error),

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 
 import { getPlayer } from "@/utils/db/getPlayer"
+import { getAccountSummary } from "@/utils/getAccountSummary"
 import { setPlayerCookie } from "@/utils/setPlayerCookie"
 import { loginValidationSchema } from "@/utils/validation"
 
@@ -15,7 +16,13 @@ export async function POST(req: Request) {
     if (!player)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-    return setPlayerCookie(NextResponse.json({ success: true }), playerId)
+    return setPlayerCookie(
+      NextResponse.json({
+        success: true,
+        account: await getAccountSummary(player),
+      }),
+      playerId
+    )
   } catch (error: any) {
     return NextResponse.json({ error }, { status: 400 })
   }

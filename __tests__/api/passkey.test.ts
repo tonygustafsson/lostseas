@@ -173,6 +173,47 @@ describe.each([
   })
 })
 
+describe("passkey sign-in options", () => {
+  const optionsRequest = (body: unknown) =>
+    new Request("https://game.example/api/user/passkey/login-options", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    })
+
+  it("offers any passkey when no account is picked", async () => {
+    const response = await loginOptions(optionsRequest({}))
+
+    expect(response.status).toBe(200)
+    expect(
+      mocks.generateAuthenticationOptions.mock.calls[0][0].allowCredentials
+    ).toBeUndefined()
+  })
+
+  it("limits the prompt to a remembered account's passkeys", async () => {
+    const response = await loginOptions(
+      optionsRequest({ credentialIds: ["credential-1", "credential-2"] })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mocks.generateAuthenticationOptions).toHaveBeenCalledWith(
+      expect.objectContaining({
+        allowCredentials: [{ id: "credential-1" }, { id: "credential-2" }],
+      })
+    )
+  })
+
+  it.each([{ credentialIds: [] }, { credentialIds: "credential-1" }])(
+    "rejects invalid credential IDs (%j)",
+    async (body) => {
+      const response = await loginOptions(optionsRequest(body))
+
+      expect(response.status).toBe(400)
+      expect(mocks.saveChallenge).not.toHaveBeenCalled()
+    }
+  )
+})
+
 describe("passkey registration", () => {
   it("saves the verified credential for the player", async () => {
     const response = await registerVerify(request())

@@ -939,6 +939,32 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         </p>
       </AccordionContent>
     </AccordionItem>
+
+    <AccordionItem
+      value="account"
+      className={appearance === "public" ? "py-4" : undefined}
+    >
+      <GuideSectionHeading
+        appearance={appearance}
+        className="font-serif text-xl"
+      >
+        Account
+      </GuideSectionHeading>
+      <AccordionContent>
+        <p className="mb-4">
+          Your user ID is the key to your character. Find it under Settings,
+          where you can also add a passkey to sign in without it.
+        </p>
+
+        <p className="mb-4">
+          Every character you play is remembered on this device. When you sign
+          out, it stays on the start page with its portrait and name, so you can
+          switch between characters with one tap. Characters with a passkey ask
+          for it before you&apos;re let back in. Forget a character to remove it
+          from this device. The character itself is not deleted.
+        </p>
+      </AccordionContent>
+    </AccordionItem>
   </Accordion>
 )
 
