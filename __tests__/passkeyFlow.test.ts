@@ -9,6 +9,8 @@ const mocks = vi.hoisted(() => ({
   startAuthentication: vi.fn(),
   startRegistration: vi.fn(),
   useMutation: vi.fn(),
+  fetchQuery: vi.fn(),
+  updateAccountPasskeys: vi.fn(),
 }))
 
 vi.mock("@/utils/apiRequest", () => ({ default: mocks.apiRequest }))
@@ -19,7 +21,18 @@ vi.mock("@simplewebauthn/browser", () => ({
 }))
 vi.mock("@tanstack/react-query", () => ({
   useMutation: mocks.useMutation,
-  useQueryClient: () => ({ invalidateQueries: vi.fn() }),
+  useQueryClient: () => ({
+    invalidateQueries: vi.fn(),
+    fetchQuery: mocks.fetchQuery,
+  }),
+}))
+vi.mock("cookies-next/client", () => ({
+  getCookie: () => "player-1",
+  deleteCookie: vi.fn(),
+}))
+vi.mock("@/utils/rememberedAccounts", () => ({
+  rememberAccount: vi.fn(),
+  updateAccountPasskeys: mocks.updateAccountPasskeys,
 }))
 
 const PasskeyFlowTest = () => {
@@ -82,5 +95,42 @@ describe.each([
       credential,
       "POST"
     )
+  })
+})
+
+describe("passkey sign-in for a remembered account", () => {
+  it("asks only for that account's passkeys", async () => {
+    renderToStaticMarkup(createElement(PasskeyFlowTest))
+    const signIn = mocks.useMutation.mock.calls[1][0].mutationFn as (
+      credentialIds?: string[]
+    ) => Promise<unknown>
+    mocks.apiRequest.mockResolvedValue(undefined)
+
+    await signIn(["credential-1"])
+
+    expect(mocks.apiRequest).toHaveBeenCalledWith(
+      "/api/user/passkey/login-options",
+      { credentialIds: ["credential-1"] },
+      "POST"
+    )
+  })
+})
+
+describe("adding a passkey", () => {
+  it("switches the remembered account to its passkey even with a cached list", async () => {
+    // Mimics the app's query cache, which hands back the list fetched at
+    // registration unless a fresh one is asked for
+    mocks.fetchQuery.mockImplementation(async ({ staleTime }) => ({
+      passkeys: staleTime === 0 ? [{ id: "new-credential" }] : [],
+    }))
+
+    renderToStaticMarkup(createElement(PasskeyFlowTest))
+    const { onSuccess } = mocks.useMutation.mock.calls[2][0]
+
+    await onSuccess()
+
+    expect(mocks.updateAccountPasskeys).toHaveBeenCalledWith("player-1", [
+      "new-credential",
+    ])
   })
 })

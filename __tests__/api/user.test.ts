@@ -46,6 +46,10 @@ vi.mock("@/firebase/db", () => ({
   getStatistics: mocks.getStatistics,
 }))
 
+vi.mock("@/firebase/passkeys-db", () => ({
+  getPlayerPasskeys: async () => [{ id: "credential-1" }],
+}))
+
 const request = (body: unknown) =>
   new Request("http://localhost/api/user", {
     method: "POST",
@@ -163,6 +167,18 @@ describe("POST /api/user/login", () => {
     expect(response.status).toBe(200)
     expect(response.cookies.get(PLAYER_ID_COOKIE_NAME)?.value).toBe(PLAYER_ID)
     expect(response.cookies.get(PLAYER_ID_COOKIE_NAME)?.sameSite).toBe("lax")
+  })
+
+  it("returns the account so the device can remember it", async () => {
+    const response = await login(request({ playerId: PLAYER_ID }))
+    const { character } = mocks.player!
+
+    expect((await response.json()).account).toEqual({
+      playerId: PLAYER_ID,
+      name: character.name,
+      characterId: character.characterId,
+      credentialIds: ["credential-1"],
+    })
   })
 
   it("returns 401 for an unknown player", async () => {

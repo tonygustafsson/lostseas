@@ -1,6 +1,6 @@
 import jsQR from "jsqr"
+import { ScanQrCode } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
-import { AiOutlineQrcode } from "react-icons/ai"
 
 import useModal from "@/app/stores/modals"
 import { usePlayer } from "@/hooks/queries/usePlayer"
@@ -164,11 +164,13 @@ const QrScanner = () => {
     <Button
       type="button"
       variant="secondary"
+      size="icon"
+      aria-label="Scan QR code"
+      title="Scan QR code"
       onClick={openQrScannerModal}
-      className="md:flex-1"
+      className="shrink-0"
     >
-      <AiOutlineQrcode size={24} />
-      Scan QR Code
+      <ScanQrCode />
     </Button>
   )
 }

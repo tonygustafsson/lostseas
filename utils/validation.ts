@@ -24,6 +24,10 @@ const loginValidationSchema = z.object({
   playerId: validationRules.playerId,
 })
 
+const passkeyLoginOptionsValidationSchema = z.object({
+  credentialIds: z.array(z.string().min(1).max(1024)).min(1).max(20).optional(),
+})
+
 const renameShipValidationSchema = z.object({
   id: validationRules.ship.id,
   name: validationRules.ship.name,
@@ -31,6 +35,7 @@ const renameShipValidationSchema = z.object({
 
 export {
   loginValidationSchema,
+  passkeyLoginOptionsValidationSchema,
   registrationValidationSchema,
   renameShipValidationSchema,
 }

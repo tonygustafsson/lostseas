@@ -9,6 +9,7 @@ import {
   recordPasskeyUse,
 } from "@/firebase/passkeys-db"
 import { getPlayer } from "@/utils/db/getPlayer"
+import { getAccountSummary } from "@/utils/getAccountSummary"
 import { getRelyingParty, passkeyError } from "@/utils/passkey"
 import { requireJsonRequest } from "@/utils/requireJsonRequest"
 import { setPlayerCookie } from "@/utils/setPlayerCookie"
@@ -63,7 +64,10 @@ export async function POST(req: Request) {
     if (!player) return passkeyError("Unauthorized", 401)
 
     const res = setPlayerCookie(
-      NextResponse.json({ success: true }),
+      NextResponse.json({
+        success: true,
+        account: await getAccountSummary(player),
+      }),
       passkey.playerId
     )
     res.cookies.delete(PASSKEY_CHALLENGE_COOKIE_NAME)

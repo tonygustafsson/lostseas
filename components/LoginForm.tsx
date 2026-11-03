@@ -86,27 +86,22 @@ const LoginForm = () => {
         <Separator className="flex-1" />
       </div>
 
-      <TextField
-        label="User ID"
-        {...register("playerId")}
-        error={errors.playerId?.message}
-      />
-
-      {error && <p className="text-error">{error}</p>}
-      {apiError && <p className="text-error">{apiError}</p>}
-
-      <div className="mt-4 flex flex-col gap-2 md:flex-row">
-        <Button
-          type="submit"
-          className="md:flex-1"
-          disabled={!isValid && isDirty}
-        >
-          <FiLogIn size={22} />
-          Sign in
-        </Button>
+      <div className="flex items-end gap-2">
+        <TextField label="User ID" {...register("playerId")} />
 
         <QrScanner />
       </div>
+
+      {errors.playerId?.message && (
+        <p className="text-error text-sm">{errors.playerId.message}</p>
+      )}
+      {error && <p className="text-error">{error}</p>}
+      {apiError && <p className="text-error">{apiError}</p>}
+
+      <Button type="submit" className="mt-4" disabled={!isValid && isDirty}>
+        <FiLogIn size={22} />
+        Sign in with ID
+      </Button>
     </form>
   )
 }
