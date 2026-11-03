@@ -1,11 +1,4 @@
-type WeatherType = "rainy" | "partlySunny" | "cloudy" | "sunny"
-
-function getWeatherType(day: number): WeatherType {
-  if (day % 5 === 2) return "rainy"
-  if (day % 4 === 0 || day % 3 === 0) return "partlySunny"
-  if (day % 3 === 1) return "cloudy"
-  return "sunny"
-}
+import { getWeatherType, type WeatherType } from "./weather"
 
 // A seed (like the game day) gives the same pick on the server and the
 // client, so server rendered quips don't cause hydration mismatches

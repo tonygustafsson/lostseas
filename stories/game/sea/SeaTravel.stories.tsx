@@ -5,8 +5,8 @@ import SeaEventDialog from "@/components/location/Sea/SeaEventDialog"
 import { NATIONS } from "@/constants/locations"
 import { SHIP_TYPES } from "@/constants/ship"
 
-import { player } from "../fixtures"
-import PlayerPreview from "../PlayerPreview"
+import { player } from "../../fixtures"
+import PlayerPreview from "../../PlayerPreview"
 
 type SeaTravelArgs = Partial<
   Pick<ShipMeetingState, "nation" | "shipType" | "isAggressive">
@@ -240,7 +240,7 @@ const battleLastRound = inBattle({
 })
 
 const meta = {
-  title: "game/SeaTravel",
+  title: "game/Sea/SeaTravel",
   component: SeaEventDialog,
   parameters: { player },
   argTypes: {

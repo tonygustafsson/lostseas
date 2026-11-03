@@ -4,7 +4,7 @@ import { fn } from "storybook/test"
 import DestinationConfirm from "@/components/Map/DestinationConfirm"
 import { TOWNS } from "@/constants/locations"
 
-import { player } from "../fixtures"
+import { player } from "../../fixtures"
 
 // The fixture player is English and sails from Port Royale.
 // Havana (Spain) is 2 days away and needs 8 food and 16 water.
@@ -15,6 +15,7 @@ const withSupplies = (food: number, water: number) => ({
 })
 
 const meta = {
+  title: "game/Sea/DestinationConfirm",
   component: DestinationConfirm,
   decorators: [
     (Story) => (

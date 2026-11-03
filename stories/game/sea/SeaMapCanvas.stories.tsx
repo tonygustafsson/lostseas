@@ -7,7 +7,7 @@ import SeaMapCanvas from "@/components/Map/SeaMapCanvas"
 import { TOWNS } from "@/constants/locations"
 import { getSuppliesDays } from "@/utils/journey"
 
-import { player } from "../fixtures"
+import { player } from "../../fixtures"
 
 const towns = Object.keys(TOWNS)
 
@@ -43,6 +43,7 @@ const MapWithConfirm = ({
 }
 
 const meta = {
+  title: "game/Sea/SeaMapCanvas",
   component: SeaMapCanvas,
   args: { isPaused: false },
   argTypes: {
