@@ -2,14 +2,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
+import { PLAYER_QUERY_KEY } from "@/constants/system"
 import apiRequest from "@/utils/apiRequest"
 import {
   applyTradeChanges,
   getTradeToast,
   type TradeChange,
 } from "@/utils/shop"
-
-import { PLAYER_QUERY_KEY } from "./usePlayer"
 
 export const useShop = () => {
   const queryClient = useQueryClient()

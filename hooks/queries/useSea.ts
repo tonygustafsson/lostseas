@@ -1,9 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 import useSound from "@/app/stores/sound"
+import { PLAYER_QUERY_KEY } from "@/constants/system"
 import apiRequest from "@/utils/apiRequest"
-
-import { PLAYER_QUERY_KEY } from "./usePlayer"
 
 export const useSea = () => {
   const queryClient = useQueryClient()

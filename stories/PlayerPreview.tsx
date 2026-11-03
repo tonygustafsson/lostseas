@@ -1,9 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactNode, useState } from "react"
 
+import { PLAYER_QUERY_KEY } from "@/constants/system"
 import type { LogRecord, StatisticsEntry } from "@/firebase/db"
 import { LOGS_QUERY_KEY } from "@/hooks/queries/useLogs"
-import { PLAYER_QUERY_KEY } from "@/hooks/queries/usePlayer"
 import { STATISTICS_QUERY_KEY } from "@/hooks/queries/useStatistics"
 
 type Props = {

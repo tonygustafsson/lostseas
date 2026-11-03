@@ -9,7 +9,7 @@ const mocks = vi.hoisted(() => ({
   startAuthentication: vi.fn(),
   startRegistration: vi.fn(),
   useMutation: vi.fn(),
-  fetchQuery: vi.fn(),
+  query: vi.fn(),
   updateAccountPasskeys: vi.fn(),
 }))
 
@@ -23,7 +23,7 @@ vi.mock("@tanstack/react-query", () => ({
   useMutation: mocks.useMutation,
   useQueryClient: () => ({
     invalidateQueries: vi.fn(),
-    fetchQuery: mocks.fetchQuery,
+    query: mocks.query,
   }),
 }))
 vi.mock("cookies-next/client", () => ({
@@ -120,7 +120,7 @@ describe("adding a passkey", () => {
   it("switches the remembered account to its passkey even with a cached list", async () => {
     // Mimics the app's query cache, which hands back the list fetched at
     // registration unless a fresh one is asked for
-    mocks.fetchQuery.mockImplementation(async ({ staleTime }) => ({
+    mocks.query.mockImplementation(async ({ staleTime }) => ({
       passkeys: staleTime === 0 ? [{ id: "new-credential" }] : [],
     }))
 

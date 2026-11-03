@@ -1,10 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 import { useToasts } from "@/app/stores/toasts"
+import { PLAYER_QUERY_KEY } from "@/constants/system"
 import apiRequest from "@/utils/apiRequest"
 import { patchDeep } from "@/utils/patchDeep"
-
-import { PLAYER_QUERY_KEY } from "./usePlayer"
 
 export const useCharacter = () => {
   const queryClient = useQueryClient()

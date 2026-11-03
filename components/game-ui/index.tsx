@@ -1,13 +1,9 @@
 "use client"
 
-import dynamic from "next/dynamic"
-
 import { useSceneLocation } from "@/hooks/useSceneLocation"
 
-const LocationScene = dynamic(() => import("./LocationScene"), { ssr: false })
-const LocationActions = dynamic(() => import("./LocationActions"), {
-  ssr: false,
-})
+import LocationActions from "./LocationActions"
+import LocationScene from "./LocationScene"
 
 const GameUI = () => {
   const { town, location } = useSceneLocation()

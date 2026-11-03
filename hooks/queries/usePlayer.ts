@@ -9,7 +9,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { deleteCookie, getCookie } from "cookies-next/client"
 import { useRouter } from "next/navigation"
 
-import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
+import { PLAYER_ID_COOKIE_NAME, PLAYER_QUERY_KEY } from "@/constants/system"
 import apiRequest from "@/utils/apiRequest"
 import { rememberAccount } from "@/utils/rememberedAccounts"
 
@@ -18,8 +18,6 @@ import {
   PASSKEYS_QUERY_KEY,
   syncRememberedPasskeys,
 } from "./usePasskeys"
-
-export const PLAYER_QUERY_KEY = "player"
 
 const rememberSignedInAccount = async (
   result: Awaited<ReturnType<typeof apiRequest>>
@@ -123,7 +121,7 @@ export const usePlayer = () => {
     onSuccess: async () => {
       // A cached list from before the passkey was added would keep the
       // remembered account signing in with its ID
-      const list = await queryClient.fetchQuery({
+      const list = await queryClient.query({
         queryKey: [PASSKEYS_QUERY_KEY],
         queryFn: fetchPasskeys,
         staleTime: 0,

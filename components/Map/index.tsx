@@ -76,6 +76,7 @@ const Map = ({ currentTown }: Props) => {
 
       {player && destination && (
         <DestinationConfirm
+          key={destination}
           player={player}
           destination={destination}
           isPending={isStartingJourney}

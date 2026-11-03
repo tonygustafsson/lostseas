@@ -1,6 +1,6 @@
 import { dehydrate, QueryClient } from "@tanstack/react-query"
 
-import { PLAYER_QUERY_KEY } from "@/hooks/queries/usePlayer"
+import { PLAYER_QUERY_KEY } from "@/constants/system"
 
 import { getLoggedInPlayer } from "./getLoggedInPlayer"
 
@@ -9,10 +9,7 @@ export const getDehydratedPlayerState = async () => {
   const player = await getLoggedInPlayer()
 
   if (player) {
-    await queryClient.prefetchQuery({
-      queryKey: [PLAYER_QUERY_KEY],
-      queryFn: async () => player,
-    })
+    queryClient.setQueryData([PLAYER_QUERY_KEY], player)
   }
 
   return dehydrate(queryClient)
