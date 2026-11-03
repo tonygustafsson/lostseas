@@ -18,7 +18,35 @@ const preview: Preview = {
       matchers: { color: /^(backgroundColor|color)$/i, date: /Date$/i },
     },
     viewport: { options: INITIAL_VIEWPORTS },
-    options: { storySort: { order: ["game", "components", "ui"] } },
+    options: {
+      storySort: {
+        // Game groups follow the order a player meets them, not the alphabet
+        order: [
+          "game",
+          [
+            "Sea",
+            "Harbor",
+            "Town",
+            "Shop",
+            "Tavern",
+            "Bank",
+            "City hall",
+            "Market",
+            "Shipyard",
+            "Menu",
+            "Inventory",
+            "Fleet",
+            "Status",
+            "Log book",
+            "Statistics",
+            "Guide",
+          ],
+          "components",
+          "ui",
+          "design",
+        ],
+      },
+    },
   },
   beforeEach() {
     useDrawer.setState(useDrawer.getInitialState(), true)
