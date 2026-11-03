@@ -123,7 +123,7 @@ export const usePlayer = () => {
     onSuccess: async () => {
       // A cached list from before the passkey was added would keep the
       // remembered account signing in with its ID
-      const list = await queryClient.fetchQuery({
+      const list = await queryClient.query({
         queryKey: [PASSKEYS_QUERY_KEY],
         queryFn: fetchPasskeys,
         staleTime: 0,

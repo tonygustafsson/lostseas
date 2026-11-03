@@ -9,10 +9,7 @@ export const getDehydratedPlayerState = async () => {
   const player = await getLoggedInPlayer()
 
   if (player) {
-    await queryClient.prefetchQuery({
-      queryKey: [PLAYER_QUERY_KEY],
-      queryFn: async () => player,
-    })
+    queryClient.setQueryData([PLAYER_QUERY_KEY], player)
   }
 
   return dehydrate(queryClient)
