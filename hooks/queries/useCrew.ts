@@ -72,7 +72,7 @@ export const useCrew = () => {
         queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
       }
 
-      playSoundEffect("drink")
+      playSoundEffect("drinking")
     },
     onError: (err: unknown, _variables, context) => {
       handleError(`Could not give medicine`, String(err), context?.previous)

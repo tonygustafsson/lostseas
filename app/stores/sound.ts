@@ -13,7 +13,7 @@ export const SOUND_EFFECTS = [
   "cheers",
   "hurt",
   "frustration",
-  "drink",
+  "drinking",
   "tools",
   "ship-meeting",
   "arrive-port",
