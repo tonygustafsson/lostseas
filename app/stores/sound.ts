@@ -8,18 +8,25 @@ import {
   SOUND_EFFECTS_STATE_COOKIE_NAME,
 } from "@/constants/system"
 
-export type SoundEffect =
-  | "coins"
-  | "cheers"
-  | "hurt"
-  | "frustration"
-  | "drink"
-  | "tools"
-  | "ship-meeting"
-  | "arrive-port"
-  | "leave-port"
-  | "cannons"
-  | "fanfare"
+export const SOUND_EFFECTS = [
+  "coins",
+  "cheers",
+  "hurt",
+  "frustration",
+  "drink",
+  "tools",
+  "ship-meeting",
+  "arrive-port",
+  "leave-port",
+  "cannons",
+  "fanfare",
+  "victory",
+  "victory-talk",
+  "defeat",
+  "defeat-talk",
+] as const
+
+export type SoundEffect = (typeof SOUND_EFFECTS)[number]
 
 export interface SoundState {
   musicOn: boolean

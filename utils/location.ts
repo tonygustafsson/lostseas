@@ -48,7 +48,7 @@ export const getLocationAmbience = (
 
 // Looping sounds played on top of the music while in a building. One of them
 // is picked at random on every visit.
-const LOCATION_AMBIENCE_SOUNDS: Partial<
+export const LOCATION_AMBIENCE_SOUNDS: Partial<
   Record<Character["location"], string[]>
 > = {
   Harbor: Array.from(

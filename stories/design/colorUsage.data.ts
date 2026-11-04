@@ -673,34 +673,6 @@ export const colorUsage: ColorUsage[] = [
   },
   {
     "kind": "token",
-    "name": "ring",
-    "token": "--color-ring",
-    "css": "var(--color-ring)",
-    "count": 18,
-    "variants": {
-      "/50": 6
-    },
-    "utilities": {
-      "ring": 11,
-      "border": 6,
-      "outline": 1
-    },
-    "files": {
-      "components/character/CharacterOption.tsx": 1,
-      "components/character/SelectedCharacter.tsx": 1,
-      "components/game-ui/LocationScene/TownMap.tsx": 1,
-      "components/menu/MenuCard.tsx": 1,
-      "components/RememberedAccountList.tsx": 1,
-      "components/ui/badge.tsx": 2,
-      "components/ui/button.tsx": 2,
-      "components/ui/input.tsx": 2,
-      "components/ui/select.tsx": 2,
-      "components/ui/switch.tsx": 2,
-      "components/ui/tabs.tsx": 3
-    }
-  },
-  {
-    "kind": "token",
     "name": "input",
     "token": "--color-input",
     "css": "var(--color-input)",
@@ -727,6 +699,63 @@ export const colorUsage: ColorUsage[] = [
       "components/ui/select.tsx": 3,
       "components/ui/switch.tsx": 2,
       "components/ui/tabs.tsx": 2
+    }
+  },
+  {
+    "kind": "token",
+    "name": "sea",
+    "token": "--color-sea",
+    "css": "var(--color-sea)",
+    "count": 17,
+    "variants": {
+      "/40": 1,
+      "/30": 2,
+      "/5": 3,
+      "/15": 2,
+      "/20": 1,
+      "/50": 1
+    },
+    "utilities": {
+      "border": 5,
+      "text": 4,
+      "bg": 6,
+      "from": 1,
+      "ring": 1
+    },
+    "files": {
+      "components/location/Sea/JourneyProgress.tsx": 3,
+      "components/Sound/Equalizer.tsx": 1,
+      "components/Sound/SoundChannel.tsx": 5,
+      "components/Sound/SoundToggle.tsx": 4,
+      "components/ui/button.tsx": 1,
+      "components/ui/switch.tsx": 3
+    }
+  },
+  {
+    "kind": "token",
+    "name": "ring",
+    "token": "--color-ring",
+    "css": "var(--color-ring)",
+    "count": 16,
+    "variants": {
+      "/50": 5
+    },
+    "utilities": {
+      "ring": 10,
+      "border": 5,
+      "outline": 1
+    },
+    "files": {
+      "components/character/CharacterOption.tsx": 1,
+      "components/character/SelectedCharacter.tsx": 1,
+      "components/game-ui/LocationScene/TownMap.tsx": 1,
+      "components/menu/MenuCard.tsx": 1,
+      "components/RememberedAccountList.tsx": 1,
+      "components/ui/badge.tsx": 2,
+      "components/ui/button.tsx": 2,
+      "components/ui/input.tsx": 2,
+      "components/ui/select.tsx": 2,
+      "components/ui/tabs.tsx": 3
     }
   },
   {
@@ -768,34 +797,6 @@ export const colorUsage: ColorUsage[] = [
       "components/menu/MobileMenuItem.tsx": 2,
       "components/StartPageScreen.tsx": 2,
       "components/ui/select.tsx": 2
-    }
-  },
-  {
-    "kind": "token",
-    "name": "sea",
-    "token": "--color-sea",
-    "css": "var(--color-sea)",
-    "count": 15,
-    "variants": {
-      "/40": 1,
-      "/30": 2,
-      "/5": 3,
-      "/15": 2,
-      "/20": 1
-    },
-    "utilities": {
-      "border": 4,
-      "text": 4,
-      "bg": 6,
-      "from": 1
-    },
-    "files": {
-      "components/location/Sea/JourneyProgress.tsx": 3,
-      "components/Sound/Equalizer.tsx": 1,
-      "components/Sound/SoundChannel.tsx": 5,
-      "components/Sound/SoundToggle.tsx": 4,
-      "components/ui/button.tsx": 1,
-      "components/ui/switch.tsx": 1
     }
   },
   {
