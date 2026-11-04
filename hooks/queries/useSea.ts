@@ -70,7 +70,7 @@ export const useSea = () => {
       } else if (outcome === "defeat") {
         playSoundEffect("defeat")
       } else if (action === "fire") {
-        playSoundEffect("cannons")
+        playSoundEffect("cannons-firing")
       }
     },
     onError: (error) => console.error(error),
@@ -99,7 +99,7 @@ export const useSea = () => {
 
       await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
-      if (!escaped) playSoundEffect("cannons")
+      if (!escaped) playSoundEffect("cannons-firing")
     },
     onError: (error) => console.error(error),
   })

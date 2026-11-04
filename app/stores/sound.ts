@@ -18,7 +18,7 @@ export const SOUND_EFFECTS = [
   "ship-meeting",
   "arrive-port",
   "leave-port",
-  "cannons",
+  "cannons-firing",
   "fanfare",
   "victory",
   "victory-talk",
