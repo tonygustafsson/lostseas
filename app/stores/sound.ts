@@ -14,7 +14,7 @@ export const SOUND_EFFECTS = [
   "hurt",
   "frustration",
   "drinking",
-  "tools",
+  "hammer",
   "ship-meeting",
   "arrive-port",
   "leave-port",

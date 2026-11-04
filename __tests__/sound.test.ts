@@ -12,7 +12,7 @@ const sequence =
 
 describe("sound utils", () => {
   it("lists a single file for effects without variants", () => {
-    expect(getSoundEffectFiles("tools")).toEqual(["soundfx/tools.opus"])
+    expect(getSoundEffectFiles("fanfare")).toEqual(["soundfx/fanfare.opus"])
   })
 
   it("lists every variant of an effect", () => {

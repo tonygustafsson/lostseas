@@ -72,7 +72,7 @@ export const useShipyard = () => {
         variant: "success",
       })
 
-      playSoundEffect("tools")
+      playSoundEffect("hammer")
     },
     onError: (err, variables, context: { previous?: Player } | undefined) => {
       handleError(
@@ -320,6 +320,8 @@ export const useShipyard = () => {
         message: `It costed you ${formatGold(totalPrice)}.`,
         variant: "success",
       })
+
+      playSoundEffect("hammer")
     },
     onError: (err, variables, context: { previous?: Player } | undefined) => {
       handleError(`Could not repair your ship`, String(err), context?.previous)
