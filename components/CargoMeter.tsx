@@ -23,7 +23,7 @@ const CargoMeter = ({ load, capacity, label = "Cargo", className }: Props) => {
     <div className={cn("flex flex-col gap-2", className)}>
       <div className="flex items-center justify-between gap-2 text-sm">
         <span className="text-muted-foreground flex items-center gap-2">
-          <GiCargoCrate aria-hidden="true" className="text-accent size-4" />
+          <GiCargoCrate aria-hidden="true" className="text-gold size-4" />
           {label}
         </span>
 
@@ -41,8 +41,7 @@ const CargoMeter = ({ load, capacity, label = "Cargo", className }: Props) => {
       <Progress
         value={percentage}
         aria-label={`${label}: ${load} of ${capacity}`}
-        variant={isOverloaded ? "default" : "gilded"}
-        className={cn(isOverloaded && "*:bg-error")}
+        variant={isOverloaded ? "error" : isNearlyFull ? "warning" : "default"}
       />
     </div>
   )

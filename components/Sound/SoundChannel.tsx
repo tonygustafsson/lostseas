@@ -24,17 +24,15 @@ const SoundChannel = ({
     className={cn(
       "rounded-xl border p-4 transition-all",
       checked
-        ? "border-gold/60 bg-gold/5 shadow-gold/10 shadow-lg"
+        ? "border-sea/30 bg-sea/5"
         : "border-border bg-muted/30 opacity-70"
     )}
   >
     <label htmlFor={id} className="flex cursor-pointer items-center gap-4">
       <span
         className={cn(
-          "flex size-12 shrink-0 items-center justify-center rounded-full border-2 transition-colors",
-          checked
-            ? "border-gold bg-gold/10 text-gold"
-            : "border-muted-foreground/40 text-muted-foreground"
+          "flex size-12 shrink-0 items-center justify-center rounded-full transition-colors",
+          checked ? "bg-sea/15 text-sea" : "bg-muted text-muted-foreground"
         )}
       >
         <Icon className="size-6" />
@@ -52,7 +50,7 @@ const SoundChannel = ({
     </label>
 
     {checked && children && (
-      <div className="border-gold/20 mt-4 flex items-center justify-between gap-4 border-t pt-4">
+      <div className="border-sea/20 mt-4 flex items-center justify-between gap-4 border-t pt-4">
         {children}
       </div>
     )}

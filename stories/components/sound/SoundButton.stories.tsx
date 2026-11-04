@@ -58,12 +58,10 @@ export const OpenModal: Story = {
     const body = within(document.body)
     const ambience = await body.findByRole("switch", { name: /Ambience/ })
 
-    await expect(body.getByText("Harbor sounds")).toBeInTheDocument()
     await expect(body.getByText("Playing town tunes")).toBeInTheDocument()
 
     await userEvent.click(ambience)
     await expect(ambience).not.toBeChecked()
-    await expect(body.queryByText("Harbor sounds")).not.toBeInTheDocument()
 
     await userEvent.click(body.getByRole("button", { name: "Next track" }))
     await expect(useSound.getState().nextTrackRequest).toBe(1)

@@ -34,7 +34,7 @@ const HarborScene = ({ town }: Props) => {
   return (
     <div className="bg-card overflow-hidden rounded-xl border">
       {map && (
-        <div className="border-gold/40 border-b bg-neutral-950">
+        <div className="border-gold/40 bg-background border-b">
           <TownMap map={map} alt={`Map of ${town}`} onMove={handleMove} />
         </div>
       )}
@@ -56,12 +56,11 @@ const HarborScene = ({ town }: Props) => {
 
           <div className="via-gold/50 lg:from-gold/50 my-6 h-px w-32 bg-linear-to-r from-transparent to-transparent" />
 
-          <p className="max-w-prose leading-relaxed text-stone-300">
+          <p className="text-parchment/80 max-w-prose leading-relaxed">
             {town && TOWNS[town].harborDescription}
           </p>
 
           <Button
-            variant="highlight"
             size="lg"
             onClick={showMap}
             disabled={!canTravel}

@@ -159,7 +159,7 @@ const Governor = () => {
       icon={<GiQuillInk />}
       {...(promotionAvailable && {
         actions: (
-          <Button size="lg" variant="highlight" onClick={handleAcceptNewTitle}>
+          <Button size="lg" onClick={handleAcceptNewTitle}>
             <Award className="size-6" />
             Accept new title
           </Button>
@@ -169,7 +169,7 @@ const Governor = () => {
         actions: (
           <Button
             size="lg"
-            variant="highlight"
+
             onClick={handleChangeCitizenship}
           >
             <Handshake className="size-6" />

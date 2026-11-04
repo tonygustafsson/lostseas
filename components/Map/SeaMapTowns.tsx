@@ -78,7 +78,11 @@ const SeaMapTowns = ({
         />
 
         <span
-          className="pointer-events-none absolute font-mono whitespace-nowrap text-white"
+          className={cn(
+            "pointer-events-none absolute font-mono whitespace-nowrap text-white",
+            // Dark text, since white is hard to read on the light grey label
+            isOutOfReach && !isCurrentTown && "text-background"
+          )}
           style={{
             left:
               TOWN_HIT_PADDING +

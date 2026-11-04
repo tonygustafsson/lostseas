@@ -20,7 +20,7 @@ const SettingsDrawer = () => {
   return (
     <>
       <h1 className="mb-6 flex items-center gap-2 font-serif text-2xl">
-        <FiSettings className="text-accent" />
+        <FiSettings className="text-gold" />
         Settings
       </h1>
 

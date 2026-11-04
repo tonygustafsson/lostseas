@@ -3,6 +3,7 @@
 import { Slider as SliderPrimitive } from "radix-ui"
 import * as React from "react"
 
+import { barColors, type BarVariant } from "@/components/ui/bar"
 import { cn } from "@/lib/utils"
 
 function Slider({
@@ -11,8 +12,11 @@ function Slider({
   value,
   min = 0,
   max = 100,
+  variant = "default",
   ...props
-}: React.ComponentProps<typeof SliderPrimitive.Root>) {
+}: React.ComponentProps<typeof SliderPrimitive.Root> & {
+  variant?: BarVariant
+}) {
   const _values = Array.isArray(value)
     ? value
     : Array.isArray(defaultValue)
@@ -28,6 +32,7 @@ function Slider({
       max={max}
       className={cn(
         "relative flex w-full touch-none items-center select-none data-disabled:opacity-50",
+        barColors[variant],
         className
       )}
       {...props}
@@ -38,7 +43,7 @@ function Slider({
       >
         <SliderPrimitive.Range
           data-slot="slider-range"
-          className="bg-gold-dark gilded-bar absolute h-full"
+          className="striped-bar absolute h-full"
         />
       </SliderPrimitive.Track>
 
@@ -46,7 +51,7 @@ function Slider({
         <SliderPrimitive.Thumb
           data-slot="slider-thumb"
           key={index}
-          className="border-gold bg-background ring-ring/50 block size-4 shrink-0 rounded-full border shadow-sm transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
+          className="bg-parchment block size-4 shrink-0 rounded-full border border-(--bar) shadow-sm ring-(--bar)/50 transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
         />
       ))}
     </SliderPrimitive.Root>

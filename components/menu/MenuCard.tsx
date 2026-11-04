@@ -31,7 +31,7 @@ const MenuCard = ({ ariaLabel, drawerId, children }: Props) => {
       aria-label={ariaLabel}
       onClick={open}
       onKeyDown={handleKeyDown}
-      className="group/menu-card hover:bg-card hover:ring-accent/50 focus-visible:ring-ring w-full cursor-pointer gap-2 bg-neutral-900 p-2 text-left transition-colors focus-visible:ring-2 focus-visible:outline-none"
+      className="group/menu-card hover:bg-card hover:ring-gold/50 focus-visible:ring-ring bg-card w-full cursor-pointer gap-2 p-2 text-left transition-colors focus-visible:ring-2 focus-visible:outline-none"
     >
       {children}
     </Card>
@@ -39,7 +39,7 @@ const MenuCard = ({ ariaLabel, drawerId, children }: Props) => {
 }
 
 export const MenuCardChevron = () => (
-  <span className="bg-muted text-muted-foreground group-hover/menu-card:bg-accent group-hover/menu-card:text-accent-foreground group-focus-visible/menu-card:bg-accent group-focus-visible/menu-card:text-accent-foreground inline-flex size-6 shrink-0 items-center justify-center rounded-full transition-colors">
+  <span className="bg-muted text-muted-foreground group-hover/menu-card:bg-gold group-hover/menu-card:text-primary-foreground group-focus-visible/menu-card:bg-gold group-focus-visible/menu-card:text-primary-foreground inline-flex size-6 shrink-0 items-center justify-center rounded-full transition-colors">
     <ChevronRight className="size-3" />
   </span>
 )

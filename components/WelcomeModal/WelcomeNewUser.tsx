@@ -60,7 +60,7 @@ const WelcomeNewUser = ({ player, onClose }: Props) => {
 
       <Button
         size="lg"
-        variant="highlight"
+
         className="w-full"
         onClick={startExploring}
       >

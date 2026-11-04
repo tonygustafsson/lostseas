@@ -120,8 +120,7 @@ const DestinationConfirm = ({
                       ? `${item}: ${-leftOnArrival} short for the voyage`
                       : `${item}: ${leftOnArrival} of ${onBoard} left on arrival`
                   }
-                  variant={isShort ? "default" : "gilded"}
-                  className={cn(isShort && "*:bg-error")}
+                  variant={isShort ? "error" : "default"}
                 />
               </div>
             )
@@ -141,7 +140,7 @@ const DestinationConfirm = ({
           </p>
         )}
 
-        <div className="flex justify-end gap-2">
+        <div className="mt-4 flex justify-end gap-2">
           <Button size="sm" variant="outline" onClick={onCancel}>
             Cancel
           </Button>

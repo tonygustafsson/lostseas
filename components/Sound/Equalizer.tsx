@@ -5,7 +5,7 @@ const Equalizer = () => (
     {BAR_DELAYS.map((delay) => (
       <span
         key={delay}
-        className="bg-gold animate-equalizer h-full w-1 origin-bottom rounded-full motion-reduce:animate-none"
+        className="bg-sea animate-equalizer h-full w-1 origin-bottom rounded-full motion-reduce:animate-none"
         style={{ animationDelay: delay }}
       />
     ))}

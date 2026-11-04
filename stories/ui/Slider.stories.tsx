@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { expect, fn } from "storybook/test"
 
+import { barColors, type BarVariant } from "@/components/ui/bar"
 import { Slider } from "@/components/ui/slider"
+
+const VARIANTS = Object.keys(barColors) as BarVariant[]
 
 const meta = {
   component: Slider,
@@ -11,7 +14,9 @@ const meta = {
     step: 1,
     "aria-label": "Rum to take",
     onValueChange: fn(),
+    variant: "default",
   },
+  argTypes: { variant: { control: "select", options: VARIANTS } },
   decorators: [
     (Story) => (
       <div className="w-80">
@@ -25,6 +30,21 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {}
+
+export const Variants: Story = {
+  render: (args) => (
+    <div className="flex flex-col gap-6">
+      {VARIANTS.map((variant) => (
+        <Slider
+          {...args}
+          key={variant}
+          variant={variant}
+          aria-label={variant}
+        />
+      ))}
+    </div>
+  ),
+}
 
 export const Empty: Story = { args: { defaultValue: [0] } }
 

@@ -30,7 +30,7 @@ const Balances = ({ gold, account, loan }: BalancesProps) => {
   return (
     <section className="bg-card grid w-full gap-4 rounded-2xl border p-4 md:p-6 lg:grid-cols-4 lg:items-center">
       <div className="flex flex-col gap-2 px-1 py-1 lg:px-2">
-        <h2 className="text-accent font-serif text-xl font-semibold">
+        <h2 className="text-parchment font-serif text-xl font-semibold">
           Your Finances
         </h2>
         <p className="text-muted-foreground max-w-xs text-sm leading-relaxed">
@@ -47,10 +47,7 @@ const Balances = ({ gold, account, loan }: BalancesProps) => {
               key={balance.label}
               className="bg-muted flex items-center gap-4 rounded-xl border p-4"
             >
-              <Icon
-                aria-hidden="true"
-                className="text-accent size-8 shrink-0"
-              />
+              <Icon aria-hidden="true" className="text-gold size-8 shrink-0" />
 
               <dl>
                 <dt className="text-muted-foreground font-serif text-sm">

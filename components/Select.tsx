@@ -34,7 +34,7 @@ function Select({ id, label, name, value, options, onChange }: Props) {
       <ShadSelect name={name} value={value} onValueChange={onChange}>
         <SelectTrigger
           id={selectId}
-          className="w-full bg-neutral-950 hover:bg-neutral-900!"
+          className="bg-background hover:bg-card! w-full"
         >
           <SelectValue />
         </SelectTrigger>

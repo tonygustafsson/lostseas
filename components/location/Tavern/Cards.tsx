@@ -160,7 +160,7 @@ const TavernCards = () => {
 
         <Button
           size="lg"
-          variant="highlight"
+
           className="w-full md:w-auto"
           disabled={disabled}
           onClick={handlePlayCards}

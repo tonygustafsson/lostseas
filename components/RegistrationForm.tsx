@@ -139,7 +139,7 @@ const RegistrationForm = ({ initialCharacter }: Props) => {
       <Button
         size="lg"
         type="submit"
-        variant="highlight"
+
         className="w-full"
         disabled={!isValid || registrationIsLoading}
       >

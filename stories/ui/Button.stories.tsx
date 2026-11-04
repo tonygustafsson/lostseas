@@ -7,7 +7,6 @@ import { Spinner } from "@/components/ui/spinner"
 
 const VARIANTS = [
   "default",
-  "highlight",
   "secondary",
   "outline",
   "ghost",

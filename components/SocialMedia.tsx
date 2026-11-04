@@ -12,7 +12,7 @@ const SocialMedia = ({ className }: Props) => (
       href="https://github.com/tonygustafsson/lostseas"
       title="Look us up on Github"
       aria-label="Lost Seas on GitHub"
-      className="transition-colors hover:text-amber-200"
+      className="hover:text-gold-light transition-colors"
     >
       <BsGithub className="h-8 w-8" />
     </a>
@@ -21,7 +21,7 @@ const SocialMedia = ({ className }: Props) => (
       href="https://www.facebook.com/lostseas"
       title="Look us up on Facebook"
       aria-label="Lost Seas on Facebook"
-      className="transition-colors hover:text-amber-200"
+      className="hover:text-gold-light transition-colors"
     >
       <BsFacebook className="h-8 w-8" />
     </a>

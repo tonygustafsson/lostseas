@@ -32,7 +32,9 @@ const BankArea = ({ image, title, description, children }: Props) => (
     )}
 
     <header className="relative z-10 flex flex-col gap-2">
-      <h2 className="text-accent font-serif text-2xl font-semibold">{title}</h2>
+      <h2 className="text-parchment font-serif text-2xl font-semibold">
+        {title}
+      </h2>
 
       <p className="text-foreground text-sm leading-relaxed">{description}</p>
     </header>

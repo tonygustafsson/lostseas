@@ -22,13 +22,13 @@ export default function StatTile({
     <Card className={cn("relative min-w-0 gap-1 p-4", className)}>
       <span
         aria-hidden="true"
-        className="text-accent pointer-events-none absolute -right-2 -bottom-2 -rotate-12 opacity-25 [&_svg]:size-16"
+        className="text-gold pointer-events-none absolute -right-2 -bottom-2 -rotate-12 opacity-25 [&_svg]:size-16"
       >
         {icon}
       </span>
 
       <p className="text-muted-foreground relative flex items-center gap-2 text-xs tracking-wide uppercase">
-        <span aria-hidden="true" className="text-accent [&_svg]:size-4">
+        <span aria-hidden="true" className="text-gold [&_svg]:size-4">
           {icon}
         </span>
         <span className="truncate">{label}</span>

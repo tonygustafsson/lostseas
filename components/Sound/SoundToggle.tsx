@@ -23,16 +23,14 @@ const SoundToggle = ({
     className={cn(
       "flex min-w-0 cursor-pointer items-center gap-2 rounded-xl border px-4 py-2 transition-all",
       checked
-        ? "border-gold/60 bg-gold/5"
+        ? "border-sea/30 bg-sea/5"
         : "border-border bg-muted/30 opacity-70"
     )}
   >
     <span
       className={cn(
-        "flex size-8 shrink-0 items-center justify-center rounded-full border-2 transition-colors",
-        checked
-          ? "border-gold bg-gold/10 text-gold"
-          : "border-muted-foreground/40 text-muted-foreground"
+        "flex size-8 shrink-0 items-center justify-center rounded-full transition-colors",
+        checked ? "bg-sea/15 text-sea" : "bg-muted text-muted-foreground"
       )}
     >
       <Icon className="size-4" />

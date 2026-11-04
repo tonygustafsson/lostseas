@@ -33,14 +33,14 @@ const HandOverCard = ({
   <Card className="relative">
     <span
       aria-hidden="true"
-      className="text-accent pointer-events-none absolute -right-2 -bottom-2 -rotate-12 opacity-25 [&_svg]:size-32"
+      className="text-gold pointer-events-none absolute -right-2 -bottom-2 -rotate-12 opacity-25 [&_svg]:size-32"
     >
       {icon}
     </span>
 
     <CardHeader className="relative">
       <CardTitle className="flex items-center gap-2 font-serif text-2xl font-semibold">
-        <span className="text-accent [&_svg]:size-11 [&_svg]:shrink-0">
+        <span className="text-gold [&_svg]:size-11 [&_svg]:shrink-0">
           {icon}
         </span>
 

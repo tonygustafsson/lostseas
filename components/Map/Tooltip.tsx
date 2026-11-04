@@ -33,7 +33,7 @@ const Tooltip = ({
 
   return createPortal(
     <div
-      className={`fixed z-50 flex flex-col items-start rounded bg-neutral-900 px-4 py-1 text-white opacity-90 ${className}`}
+      className={`bg-popover text-popover-foreground fixed z-50 flex flex-col items-start rounded px-4 py-1 opacity-90 ${className}`}
       style={{
         top,
         left,

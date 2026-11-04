@@ -41,11 +41,7 @@ const Tavern = () => {
             icon={<GiPirateCaptain />}
             actions={
               <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
-                <Button
-                  variant="highlight"
-                  size="lg"
-                  onClick={handleAcceptNewCrewMembers}
-                >
+                <Button size="lg" onClick={handleAcceptNewCrewMembers}>
                   Take them in
                 </Button>
                 <Button
@@ -69,11 +65,7 @@ const Tavern = () => {
             icon={<GiPirateCaptain />}
             actions={
               <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
-                <Button
-                  variant="highlight"
-                  size="lg"
-                  onClick={handleFightSailors}
-                >
+                <Button size="lg" onClick={handleFightSailors}>
                   Fight them
                 </Button>
                 <Button

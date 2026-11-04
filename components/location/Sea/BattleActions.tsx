@@ -10,7 +10,7 @@ const BattleActions = () => {
     <div className="flex w-full flex-wrap justify-center gap-4 pt-2">
       <Button
         size="lg"
-        variant="highlight"
+
         className="w-full min-w-32 rounded-full px-6 text-base md:w-auto"
         disabled={isMakingBattleMove}
         onClick={() => battleMove("fire")}

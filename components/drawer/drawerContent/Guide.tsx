@@ -7,7 +7,7 @@ import GuideContent from "@/components/GuideContent"
 const GuideDrawer = () => (
   <>
     <h1 className="mb-2 flex items-center gap-2 font-serif text-2xl">
-      <TbHelp className="text-accent" />
+      <TbHelp className="text-gold" />
       Player Guide
     </h1>
 

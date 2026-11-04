@@ -30,7 +30,7 @@ const AttackReportItem = ({
       )}
     >
       <div className="flex items-center gap-2">
-        <span aria-hidden="true" className="text-accent shrink-0 *:size-5">
+        <span aria-hidden="true" className="text-gold shrink-0 *:size-5">
           {icon}
         </span>
 

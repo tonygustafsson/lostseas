@@ -39,7 +39,7 @@ export default function ShipCard({
       <div className="relative flex items-center gap-2">
         <span
           aria-hidden="true"
-          className="border-accent/60 bg-background text-accent flex size-9 shrink-0 items-center justify-center rounded-full border [&_svg]:size-5"
+          className="border-gold/60 bg-background text-gold flex size-9 shrink-0 items-center justify-center rounded-full border [&_svg]:size-5"
         >
           <MerchandiseIcon item={ship.type} />
         </span>

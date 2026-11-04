@@ -17,7 +17,7 @@ export default function TreasureCard({ treasure }: Props) {
       {/* A strip of polished gold marks it as something special */}
       <span
         aria-hidden="true"
-        className="gilded-bar absolute inset-x-0 top-0 h-1"
+        className="striped-bar bar-gold absolute inset-x-0 top-0 h-1"
       />
 
       <span

@@ -41,14 +41,26 @@
 ## Components
 
 - Prefer existing shadcn components in `components/ui/` when building interfaces.
+- Avoid overly configurable components. If adding more props or variants makes a component difficult to understand, prefer creating a separate focused component.
+- Keep components focused on a clear responsibility rather than combining unrelated UI or behavior.
+
+## Design
+
 - Use icons from `lucide-react` and `react-icons` only.
 - Use color palette defined by the theme in `styles/globals.css`. Do not introduce colors outside the theme. Really try to use tokens instead of specific Tailwind colors.
+- The game is dark only. There are no light theme values, so don't add `dark:` overrides for colours.
+- See the `design/Colours` Storybook story (`stories/design/Colors.stories.tsx`) for every token, its hex value and a guide on where to use it. Keep that guide in sync when tokens change, and run `npm run scan:colors` to refresh the colour usage data.
+- The palette is sea and gold:
+  - Sea (`background`, `card`, `secondary`, `muted`, `sea`, `sea-dark`) is the world. Use it for surfaces, secondary buttons and anything that measures, like progress bars, sliders and journey progress.
+  - Gold (`primary`, `gold`, `gold-light`, `gold-dark`) is the treasure. Use it only for the one main action on a screen (the default `Button`), money and value, and gilded frames. Use at most one gold button per view.
+  - `parchment` is for headings and text on top of scene art. `foreground` is for body text and `muted-foreground` for supporting text.
+  - `success`, `error`, `warning` and `info` only mean status, never decoration. Warning is orange so it never reads as gold.
+  - Forms are sea: switches, sliders and selected options use sea, inputs stay on `input` and `border`, and only the submit button is gold.
+  - `chart-*` and `cargo-*` are only for data series.
+- Progress and Slider are always striped. Pick the colour with `variant` (`default` is sea, or `success`, `error`, `warning`, `info`) instead of overriding the indicator with classes.
 - Do not add shadows to things if it doesn't really benefit from it, meaning it needs to stand out.
 - Prefer existing theme and Tailwind values over arbitrary values such as `w-[137px]`, `mt-[7px]`, or custom colors.
 - Prefer spacing values from this scale where practical: `1`, `2`, `4`, `6`, `8`, `12`, `16`, `32`, `64`.
-- Keep Tailwind class lists reasonably simple and readable.
-- Avoid overly configurable components. If adding more props or variants makes a component difficult to understand, prefer creating a separate focused component.
-- Keep components focused on a clear responsibility rather than combining unrelated UI or behavior.
 
 ## Game mechanics
 

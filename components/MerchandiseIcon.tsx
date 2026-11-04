@@ -48,7 +48,7 @@ const getSizeClass = (size: string) => {
 
 const MerchandiseIcon = ({ item, size = "md", className = "" }: Props) => {
   const sizeClass = getSizeClass(size)
-  const iconClass = `${sizeClass} text-accent ${className}`
+  const iconClass = `${sizeClass} text-gold ${className}`
 
   switch (item) {
     case "food":

@@ -39,7 +39,7 @@ const ShipMeetingActions = ({
   const attackButton = (
     <Button
       size="lg"
-      variant={isAllied ? "secondary" : "highlight"}
+      variant={isAllied ? "secondary" : "default"}
       className={BUTTON_CLASS}
       disabled={isPending}
       onClick={handleAttack}
@@ -63,7 +63,7 @@ const ShipMeetingActions = ({
   ) : (
     <Button
       size="lg"
-      variant={isAllied ? "highlight" : "secondary"}
+      variant={isAllied ? "default" : "secondary"}
       className={BUTTON_CLASS}
       disabled={isPending}
       onClick={handleIgnore}

@@ -21,7 +21,7 @@ const ShopTradeChange = ({ item, owned, target, className }: Props) => {
     <div
       className={cn(
         "flex items-center gap-2 font-semibold whitespace-nowrap",
-        gold > 0 ? "text-success" : "text-accent",
+        gold > 0 ? "text-success" : "text-gold",
         className
       )}
     >

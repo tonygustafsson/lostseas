@@ -7,9 +7,9 @@ export const TOWN_ANCHOR_SIZE = 20
 // from the page when drawing.
 export const mapColorVariables = {
   shipGlow: "--color-black",
-  currentTownLabel: "--color-sky-900",
+  currentTownLabel: "--sea-dark",
   townLabel: "--color-black",
-  outOfReachTownLabel: "--color-gold-dark",
+  outOfReachTownLabel: "--muted-foreground",
   trail: "--destructive",
   trailTravelled: "--color-neutral-700",
 }

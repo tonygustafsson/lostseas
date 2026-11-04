@@ -46,14 +46,14 @@ export default async function Page() {
             height={34}
             className="h-8 w-auto"
           />
-          <span className="font-serif text-2xl tracking-wide text-amber-50 sm:text-3xl">
+          <span className="text-parchment font-serif text-2xl tracking-wide sm:text-3xl">
             Lost Seas
           </span>
         </Link>
         <Button
           asChild
           variant="outline"
-          className="bg-card/75 hover:bg-muted rounded-full border-white/15 text-amber-50 hover:text-amber-200"
+          className="bg-card/75 hover:bg-muted text-parchment hover:text-gold-light rounded-full border-white/15"
         >
           <Link href="/">
             <ArrowLeft aria-hidden="true" />
@@ -65,14 +65,14 @@ export default async function Page() {
 
       <main className="mx-auto max-w-5xl px-4 pb-16 sm:px-6 lg:px-8">
         <section className="flex max-w-3xl items-start gap-6 py-12 sm:py-16">
-          <div className="hidden size-14 shrink-0 items-center justify-center rounded-2xl border border-amber-200/20 bg-amber-200/10 text-amber-200 sm:flex">
+          <div className="border-gold/20 bg-gold/10 text-gold-light hidden size-14 shrink-0 items-center justify-center rounded-2xl border sm:flex">
             <BookOpenText className="size-7" aria-hidden="true" />
           </div>
           <div>
-            <h1 className="font-serif text-4xl leading-tight text-amber-50 sm:text-5xl lg:text-6xl">
+            <h1 className="text-parchment font-serif text-4xl leading-tight sm:text-5xl lg:text-6xl">
               Player Guide
             </h1>
-            <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-100/75">
+            <p className="text-foreground/75 mt-4 max-w-2xl text-lg leading-8">
               New to the open seas? Learn how to provision your ship, grow your
               crew, earn your standing, and make the most of every voyage.
             </p>
@@ -81,16 +81,16 @@ export default async function Page() {
 
         <GuideContent appearance="public" />
 
-        <footer className="bg-card/80 mt-8 flex flex-col gap-4 rounded-3xl border border-amber-200/15 p-6 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:p-8">
+        <footer className="bg-card/80 border-gold/15 mt-8 flex flex-col gap-4 rounded-3xl border p-6 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:p-8">
           <div>
-            <p className="text-accent text-xs font-semibold tracking-widest uppercase">
+            <p className="text-gold text-xs font-semibold tracking-widest uppercase">
               Ready to set sail?
             </p>
-            <p className="mt-1 font-serif text-2xl text-amber-50">
+            <p className="text-parchment mt-1 font-serif text-2xl">
               Your story starts in Lost Seas.
             </p>
           </div>
-          <Button asChild size="lg" variant="highlight">
+          <Button asChild size="lg">
             <Link href="/">Back to Lost Seas</Link>
           </Button>
         </footer>

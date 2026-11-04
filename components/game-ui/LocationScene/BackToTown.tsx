@@ -9,7 +9,6 @@ const BackToTown = () => {
   return (
     <div className="mt-6 flex justify-center">
       <Button
-        variant="highlight"
         size="lg"
         className="w-full gap-2 px-6 font-serif text-lg font-normal! sm:w-auto!"
         onClick={() => move({ location: "Harbor" })}

@@ -73,6 +73,7 @@ const LoginForm = () => {
     >
       <Button
         type="button"
+        variant="secondary"
         onClick={onPasskeyLogin}
         disabled={isLoggingInWithPasskey}
       >
@@ -98,7 +99,12 @@ const LoginForm = () => {
       {error && <p className="text-error">{error}</p>}
       {apiError && <p className="text-error">{apiError}</p>}
 
-      <Button type="submit" className="mt-4" disabled={!isValid && isDirty}>
+      <Button
+        type="submit"
+        variant="secondary"
+        className="mt-4"
+        disabled={!isValid && isDirty}
+      >
         <FiLogIn size={22} />
         Sign in with ID
       </Button>

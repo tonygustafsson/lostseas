@@ -66,7 +66,9 @@ const GuideSectionHeading = ({
   children: React.ReactNode
 }) =>
   appearance === "public" ? (
-    <h2 className={cn(className, "text-accent px-4 pt-6 text-2xl sm:text-3xl")}>
+    <h2
+      className={cn(className, "text-parchment px-4 pt-6 text-2xl sm:text-3xl")}
+    >
       {children}
     </h2>
   ) : (
@@ -262,7 +264,7 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           need bigger stores. Every 10 crew members eat a crate of food a day,
           and every 5 drink a barrel of water, rounded to whole units. Even a
           tiny crew gets through at least one of each. Towns your supplies
-          won&apos;t get you to have yellow labels on the map, and your advisor
+          won&apos;t get you to have grey labels on the map, and your advisor
           warns you when some ports are out of reach. When you pick a town, you
           see the distance and what you need before you confirm.
         </p>

@@ -15,7 +15,7 @@ const ManageCrewDrawer = () => {
   return (
     <>
       <h1 className="mb-2 flex items-center gap-2 font-serif text-2xl">
-        <MdGroups className="text-accent" />
+        <MdGroups className="text-gold" />
         Manage Crew
       </h1>
 
