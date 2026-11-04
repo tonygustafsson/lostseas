@@ -82,8 +82,8 @@ describe("sound store", () => {
   })
 
   it("plays and then resets soundEffect", () => {
-    useSound.getState().playSoundEffect("coins")
-    expect(useSound.getState().soundEffect).toBe("coins")
+    useSound.getState().playSoundEffect("transaction")
+    expect(useSound.getState().soundEffect).toBe("transaction")
 
     vi.advanceTimersByTime(150)
     expect(useSound.getState().soundEffect).toBeUndefined()

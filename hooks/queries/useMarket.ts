@@ -101,7 +101,7 @@ export const useMarket = () => {
           variant: "success",
         })
 
-        playSoundEffect("coins")
+        playSoundEffect("transaction")
       },
       onError: (error, variables, context) => {
         handleError(
@@ -157,7 +157,7 @@ export const useMarket = () => {
         variant: "success",
       })
 
-      playSoundEffect("coins")
+      playSoundEffect("transaction")
     },
     onError: (error, _, context) => {
       handleError("Could not buy the remedy", String(error), context?.previous)

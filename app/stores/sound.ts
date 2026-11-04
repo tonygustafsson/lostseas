@@ -9,7 +9,7 @@ import {
 } from "@/constants/system"
 
 export const SOUND_EFFECTS = [
-  "coins",
+  "transaction",
   "cheers",
   "hurt",
   "frustration",

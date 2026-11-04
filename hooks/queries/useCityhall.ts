@@ -210,7 +210,7 @@ export const useCityhall = () => {
         queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
       }
 
-      playSoundEffect("coins")
+      playSoundEffect("transaction")
 
       setToast({
         title: `You handed over the ${treasure.name} to the cityhall`,
@@ -271,7 +271,7 @@ export const useCityhall = () => {
           queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
         }
 
-        playSoundEffect("coins")
+        playSoundEffect("transaction")
 
         setToast({
           title: `You handed over ${pirate.name} to the governor`,

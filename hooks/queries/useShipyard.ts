@@ -129,7 +129,7 @@ export const useShipyard = () => {
         variant: "success",
       })
 
-      playSoundEffect("coins")
+      playSoundEffect("transaction")
     },
     onError: (err, variables, context: { previous?: Player } | undefined) => {
       handleError(`Could not sell your ship`, String(err), context?.previous)
@@ -194,7 +194,7 @@ export const useShipyard = () => {
         variant: "success",
       })
 
-      playSoundEffect("coins")
+      playSoundEffect("transaction")
     },
     onError: (err, variables, context: { previous?: Player } | undefined) => {
       handleError(

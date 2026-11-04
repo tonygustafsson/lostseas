@@ -73,7 +73,7 @@ export const useBank = () => {
         variant: "success",
       })
 
-      playSoundEffect("coins")
+      playSoundEffect("transaction")
     },
   })
 
@@ -122,7 +122,7 @@ export const useBank = () => {
         variant: "success",
       })
 
-      playSoundEffect("coins")
+      playSoundEffect("transaction")
     },
   })
 
@@ -175,7 +175,7 @@ export const useBank = () => {
         variant: "success",
       })
 
-      playSoundEffect("coins")
+      playSoundEffect("transaction")
     },
   })
 
@@ -230,7 +230,7 @@ export const useBank = () => {
         variant: "success",
       })
 
-      playSoundEffect("coins")
+      playSoundEffect("transaction")
     },
   })
 
@@ -284,7 +284,7 @@ export const useBank = () => {
         variant: "success",
       })
 
-      playSoundEffect("coins")
+      playSoundEffect("transaction")
     },
   })
 
@@ -314,7 +314,7 @@ export const useBank = () => {
       })
 
       if (returns > 0) {
-        playSoundEffect("coins")
+        playSoundEffect("transaction")
       }
     },
   })

@@ -58,7 +58,7 @@ export const useShop = () => {
 
       setToast({ ...getTradeToast(data), variant: "success" })
 
-      playSoundEffect("coins")
+      playSoundEffect("transaction")
     },
   })
 
