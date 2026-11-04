@@ -32,7 +32,7 @@ const getSoundEffectSrc = (soundEffect: SoundEffect) => {
   if (!variants) return `soundfx/${soundEffect}.opus`
 
   const variant = Math.floor(Math.random() * variants) + 1
-  return `soundfx/${soundEffect}/${soundEffect}${variant}.ogg`
+  return `soundfx/${soundEffect}/${soundEffect}${variant}.opus`
 }
 
 const isSongForLocation = (src: string | undefined, location?: string) =>
@@ -120,11 +120,18 @@ const Sound = () => {
       }
     })
 
+  const latestSongRequest = useRef(0)
+
   const playRandomSong = useCallback(async () => {
     if (!musicPlayer.current) return
 
+    // A newer request (like changing location mid-fade) takes over this one
+    const request = ++latestSongRequest.current
+
     setChangingTrack(true)
     await fadeOutMusic()
+    if (request !== latestSongRequest.current) return
+
     setChangingTrack(false)
     if (!useSound.getState().musicOn) return
 

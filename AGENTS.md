@@ -11,6 +11,7 @@
 - Don't forget to create a Storybook story for new features, and see that all properties can be tested in the story.
 - This project doesn't have any active users so feel free to change the database queries and add data, see it as required and assumed it will be there instead of handling fallbacks, errors or batch fixing the database.
 - Never commit, stage, stash or push anything in GIT, that will always be handled by a human.
+- Avoid single lines without brackets, such as if (true) return, go for if (true) { return }.
 
 ## Project
 
