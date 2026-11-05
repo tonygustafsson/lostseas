@@ -16,6 +16,8 @@ export const SOUND_EFFECT_VARIANTS: Partial<Record<SoundEffect, number>> = {
   "leave-port": 21,
   "ship-meeting": 16,
   "cannons-firing": 8,
+  "evade-ship": 12,
+  "war-drums": 7,
   transaction: 8,
   frustration: 8,
   drinking: 8,

@@ -52,6 +52,8 @@ export const useSea = () => {
     mutationFn: () => apiRequest("/api/sea/attackShip", null, "POST"),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+      playSoundEffect("war-drums")
     },
     onError: (error) => console.error(error),
   })
@@ -70,6 +72,8 @@ export const useSea = () => {
         playSoundEffect("defeat-with-speech")
       } else if (action === "fire") {
         playSoundEffect("cannons-firing")
+      } else {
+        playSoundEffect("evade-ship")
       }
     },
     onError: (error) => console.error(error),
@@ -78,7 +82,10 @@ export const useSea = () => {
   const { mutate: takeLoot, isPending: isTakingLoot } = useMutation({
     mutationFn: (loot: Partial<Record<keyof Inventory, number>>) =>
       apiRequest("/api/sea/takeLoot", { loot }, "POST"),
-    onSuccess: onSailed,
+    onSuccess: (response) => {
+      playSoundEffect("transaction")
+      return onSailed(response)
+    },
     onError: (error) => console.error(error),
   })
 
@@ -98,7 +105,7 @@ export const useSea = () => {
 
       await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
-      if (!escaped) playSoundEffect("cannons-firing")
+      playSoundEffect(escaped ? "evade-ship" : "cannons-firing")
     },
     onError: (error) => console.error(error),
   })
