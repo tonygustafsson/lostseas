@@ -262,6 +262,8 @@ export const useShipyard = () => {
         message: `It received ${formatGold(totalPrice)} and your now have ${totalQuantity} ${unit} of ${item}`,
         variant: "success",
       })
+
+      playSoundEffect("transaction")
     },
     onError: (err, variables, context: { previous?: Player } | undefined) => {
       handleError(

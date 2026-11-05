@@ -5,6 +5,7 @@ import { useToasts } from "@/app/stores/toasts"
 import { PLAYER_QUERY_KEY } from "@/constants/system"
 import apiRequest from "@/utils/apiRequest"
 import { patchDeep } from "@/utils/patchDeep"
+import { playSoundEffect } from "@/utils/sound"
 
 export const useShips = () => {
   const queryClient = useQueryClient()
@@ -137,6 +138,8 @@ export const useShips = () => {
         message: `Used ${quantity} repair ${quantity === 1 ? "kit" : "kits"}.`,
         variant: "success",
       })
+
+      playSoundEffect("hammer")
     },
     onError: (error) => {
       handleError("Could not repair your ship", String(error), undefined)
