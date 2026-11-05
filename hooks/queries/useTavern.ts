@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
 import { PLAYER_QUERY_KEY } from "@/constants/system"
 import { TAVERN_ITEMS } from "@/constants/tavern"
@@ -8,11 +7,11 @@ import apiRequest from "@/utils/apiRequest"
 import { increaseCrewMood } from "@/utils/crew"
 import { formatGold } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
+import { playSoundEffect } from "@/utils/sound"
 
 export const useTavern = () => {
   const queryClient = useQueryClient()
   const setToast = useToasts((s) => s.setToast)
-  const { playSoundEffect } = useSound()
 
   const handleError = (
     title: string,
@@ -92,7 +91,7 @@ export const useTavern = () => {
         variant: "success",
       })
 
-      playSoundEffect("cheers")
+      playSoundEffect("victory")
     },
     onError: (err: any, { item }, context: any) => {
       handleError(
@@ -155,7 +154,7 @@ export const useTavern = () => {
           variant: "success",
         })
 
-        playSoundEffect("cheers")
+        playSoundEffect("victory")
       },
       onError: (err: any, _, context: any) => {
         handleError(`Could not accept new crew members`, err, context?.previous)
@@ -210,7 +209,7 @@ export const useTavern = () => {
           variant: "success",
         })
 
-        playSoundEffect("cheers")
+        playSoundEffect("victory")
       } else {
         setToast({
           title: `You fought ${numberOfSailors} sailors and lost`,
@@ -218,7 +217,7 @@ export const useTavern = () => {
           variant: "error",
         })
 
-        playSoundEffect("hurt")
+        playSoundEffect("defeat")
       }
     },
     onError: (err: any, _, context: any) => {
@@ -313,7 +312,7 @@ export const useTavern = () => {
       })
 
       if (cardsResults === "won") {
-        playSoundEffect("cheers")
+        playSoundEffect("victory")
       } else {
         playSoundEffect("frustration")
       }

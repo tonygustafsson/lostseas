@@ -1,16 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
 import { PLAYER_QUERY_KEY } from "@/constants/system"
 import { VENTURES } from "@/constants/ventures"
 import apiRequest from "@/utils/apiRequest"
 import { formatGold, formatNumber } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
+import { playSoundEffect } from "@/utils/sound"
 
 export const useBank = () => {
   const queryClient = useQueryClient()
-  const { playSoundEffect } = useSound()
   const setToast = useToasts((s) => s.setToast)
 
   const handleError = (
@@ -73,7 +72,7 @@ export const useBank = () => {
         variant: "success",
       })
 
-      playSoundEffect("coins")
+      playSoundEffect("transaction")
     },
   })
 
@@ -122,7 +121,7 @@ export const useBank = () => {
         variant: "success",
       })
 
-      playSoundEffect("coins")
+      playSoundEffect("transaction")
     },
   })
 
@@ -175,7 +174,7 @@ export const useBank = () => {
         variant: "success",
       })
 
-      playSoundEffect("coins")
+      playSoundEffect("transaction")
     },
   })
 
@@ -230,7 +229,7 @@ export const useBank = () => {
         variant: "success",
       })
 
-      playSoundEffect("coins")
+      playSoundEffect("transaction")
     },
   })
 
@@ -284,7 +283,7 @@ export const useBank = () => {
         variant: "success",
       })
 
-      playSoundEffect("coins")
+      playSoundEffect("transaction")
     },
   })
 
@@ -314,7 +313,7 @@ export const useBank = () => {
       })
 
       if (returns > 0) {
-        playSoundEffect("coins")
+        playSoundEffect("transaction")
       }
     },
   })

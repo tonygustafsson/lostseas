@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
 import { TOWNS } from "@/constants/locations"
 import { PLAYER_QUERY_KEY } from "@/constants/system"
@@ -9,6 +8,7 @@ import apiRequest from "@/utils/apiRequest"
 import { getPirateCrime } from "@/utils/createWantedPirate"
 import { formatGold } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
+import { playSoundEffect } from "@/utils/sound"
 import { getNewTitle, getTitleReward } from "@/utils/title"
 
 const getRewardMessage = (reward: number) =>
@@ -18,7 +18,6 @@ const getRewardMessage = (reward: number) =>
 
 export const useCityhall = () => {
   const queryClient = useQueryClient()
-  const { playSoundEffect } = useSound()
 
   const setToast = useToasts((s) => s.setToast)
 
@@ -210,7 +209,7 @@ export const useCityhall = () => {
         queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
       }
 
-      playSoundEffect("coins")
+      playSoundEffect("transaction")
 
       setToast({
         title: `You handed over the ${treasure.name} to the cityhall`,
@@ -271,7 +270,7 @@ export const useCityhall = () => {
           queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
         }
 
-        playSoundEffect("coins")
+        playSoundEffect("transaction")
 
         setToast({
           title: `You handed over ${pirate.name} to the governor`,

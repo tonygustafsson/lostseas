@@ -1,3 +1,4 @@
+import { type BarVariant } from "@/components/ui/bar"
 import { Progress } from "@/components/ui/progress"
 import { cn } from "@/lib/utils"
 import { BATTLE_MAX_ROUNDS, getBattleRounds } from "@/utils/seaBattle"
@@ -38,13 +39,13 @@ const BattleContent = ({ battle }: Props) => {
         <StrengthBar
           label="Enemy battle strength"
           value={battle.enemyStrength}
-          className="*:bg-error"
+          variant="error"
         />
 
         <StrengthBar
           label="Your battle strength"
           value={battle.playerStrength}
-          className="*:bg-success"
+          variant="success"
         />
       </div>
 
@@ -70,17 +71,17 @@ const BattleContent = ({ battle }: Props) => {
 type StrengthBarProps = {
   label: string
   value: number
-  className: string
+  variant: BarVariant
 }
 
-const StrengthBar = ({ label, value, className }: StrengthBarProps) => (
+const StrengthBar = ({ label, value, variant }: StrengthBarProps) => (
   <div className="flex flex-col gap-1">
     <div className="flex justify-between text-sm">
       <span>{label}</span>
       <span className="font-bold tabular-nums">{value}%</span>
     </div>
 
-    <Progress value={value} aria-label={label} className={className} />
+    <Progress value={value} variant={variant} aria-label={label} />
   </div>
 )
 

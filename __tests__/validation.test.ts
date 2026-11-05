@@ -6,12 +6,21 @@ const base = {
   name: "Mateo Salazar",
   characterId: "mateo-salazar",
   musicOn: true,
+  ambienceOn: true,
   soundEffectsOn: true,
 }
 
 describe("registrationValidationSchema", () => {
   it("accepts a known characterId", () => {
     expect(registrationValidationSchema.safeParse(base).success).toBe(true)
+  })
+
+  it("requires the ambience setting", () => {
+    const { ambienceOn: _, ...withoutAmbience } = base
+
+    expect(
+      registrationValidationSchema.safeParse(withoutAmbience).success
+    ).toBe(false)
   })
 
   it("rejects a missing or unknown characterId", () => {

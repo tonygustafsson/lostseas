@@ -37,7 +37,7 @@ const TextField = ({
         id={inputId}
         type={type}
         className={cn(
-          "bg-neutral-950",
+          "bg-background",
           {
             "h-7 px-2 text-xs": size === "xs",
             "h-8 px-3 text-sm": size === "sm",

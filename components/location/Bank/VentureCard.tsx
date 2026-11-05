@@ -140,7 +140,6 @@ const VentureCard = ({
               </p>
 
               <Button
-                variant="highlight"
                 className="w-full font-serif"
                 disabled={disabled}
                 onClick={onCollect}
@@ -167,7 +166,6 @@ const VentureCard = ({
 
               <Progress
                 value={voyageProgress}
-                variant="gilded"
                 aria-label={`Voyage progress for ${venture.name}`}
               />
             </div>

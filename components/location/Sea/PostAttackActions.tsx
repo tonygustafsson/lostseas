@@ -12,7 +12,6 @@ const PostAttackActions = () => {
 
   return (
     <Button
-      variant="highlight"
       size="lg"
       className="my-2 w-full"
       disabled={isContinueingJourney}

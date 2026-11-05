@@ -37,7 +37,7 @@ const QuickAmounts = ({
       <div className="flex items-center gap-2">
         <span
           aria-hidden="true"
-          className="border-accent/60 bg-background text-accent flex size-11 shrink-0 items-center justify-center rounded-full border [&_svg]:size-6"
+          className="border-gold/60 bg-background text-gold flex size-11 shrink-0 items-center justify-center rounded-full border [&_svg]:size-6"
         >
           {icon}
         </span>
@@ -62,7 +62,7 @@ const QuickAmounts = ({
             return (
               <Button
                 key={label}
-                variant={share === 1 ? "highlight" : "secondary"}
+                variant={share === 1 ? "default" : "secondary"}
                 className={cn(
                   "h-auto flex-col gap-0 py-2 font-serif",
                   share !== 1 && "hover:bg-secondary hover:brightness-125"

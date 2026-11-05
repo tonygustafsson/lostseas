@@ -16,7 +16,7 @@ const meta = {
     icon: <Anchor />,
     image: "/img/location/port-royale/shop.png",
     actions: (
-      <Button variant="highlight" size="lg" onClick={onContinue}>
+      <Button size="lg" onClick={onContinue}>
         Continue
       </Button>
     ),
@@ -46,7 +46,7 @@ export const MultipleActions: Story = {
     icon: <Ship />,
     actions: (
       <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
-        <Button variant="highlight" size="lg" onClick={fn()}>
+        <Button size="lg" onClick={fn()}>
           Set sail
         </Button>
         <Button variant="secondary" size="lg" onClick={fn()}>

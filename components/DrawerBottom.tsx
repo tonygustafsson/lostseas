@@ -50,7 +50,7 @@ const DrawerBottom = ({ isOpen, onClose, children, className }: Props) => {
             whileDrag={{ opacity: 0.95, transition: { duration: 0.1 } }}
             onDrag={(_, info) => handleDrag(info)}
             className={cn(
-              "fixed bottom-0 left-0 z-50 max-h-[80vh] w-full overflow-y-auto border-neutral-900 bg-neutral-950 px-6 pt-12 pb-6 shadow-2xl sm:border-l-2 md:py-10",
+              "border-border bg-background fixed bottom-0 left-0 z-50 max-h-[80vh] w-full overflow-y-auto px-6 pt-12 pb-6 shadow-2xl sm:border-l-2 md:py-10",
               className
             )}
           >

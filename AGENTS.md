@@ -4,12 +4,14 @@
 
 - Keep communication short and concise. Avoid unnecessarily long explanations and code examples.
 - Do not lightly introduce more complexity, instead ask questions to be sure on how to proceed if you predict that the complexity will increase during the task.
+- Make code changes small and concise. Bug fixes should be done with a few lines if possible.
 - Prefer existing project patterns, components, hooks, and utilities before introducing new abstractions.
 - When a task is complete, run linting and formatting.
 - Make the smallest change that meets the request, but suggest optimizations and abstractions if you see it would benefit the project.
 - Don't forget to create a Storybook story for new features, and see that all properties can be tested in the story.
 - This project doesn't have any active users so feel free to change the database queries and add data, see it as required and assumed it will be there instead of handling fallbacks, errors or batch fixing the database.
 - Never commit, stage, stash or push anything in GIT, that will always be handled by a human.
+- Avoid single lines without brackets, such as if (true) return, go for if (true) { return }.
 
 ## Project
 
@@ -33,21 +35,33 @@
   - Prefer event handlers for user-driven side effects.
   - Avoid manual memoization such as `useMemo` and `useCallback` unless there is a demonstrated need.
   - Keep components and hooks compliant with the Rules of React.
-  - When updating component, also look for Storybook stories and tests and update them as well.
+  - When updating component that changes the UI, also look for Storybook stories and tests and update them as well.
 - Code should have enough white space and air - have line breaks between components if it makes sense. Specially if they are visibly separate.
 - Feel free to add valuable comments in the codebase, but don't overdo it. A comment should explain behaviour, not the code. Also avoid making the code look AI generated.
 
 ## Components
 
 - Prefer existing shadcn components in `components/ui/` when building interfaces.
+- Avoid overly configurable components. If adding more props or variants makes a component difficult to understand, prefer creating a separate focused component.
+- Keep components focused on a clear responsibility rather than combining unrelated UI or behavior.
+
+## Design
+
 - Use icons from `lucide-react` and `react-icons` only.
 - Use color palette defined by the theme in `styles/globals.css`. Do not introduce colors outside the theme. Really try to use tokens instead of specific Tailwind colors.
+- The game is dark only. There are no light theme values, so don't add `dark:` overrides for colours.
+- See the `design/Colours` Storybook story (`stories/design/Colors.stories.tsx`) for every token, its hex value and a guide on where to use it. Keep that guide in sync when tokens change, and run `npm run scan:colors` to refresh the colour usage data.
+- The palette is sea and gold:
+  - Sea (`background`, `card`, `secondary`, `muted`, `sea`, `sea-dark`) is the world. Use it for surfaces, secondary buttons and anything that measures, like progress bars, sliders and journey progress.
+  - Gold (`primary`, `gold`, `gold-light`, `gold-dark`) is the treasure. Use it only for the one main action on a screen (the default `Button`), money and value, and gilded frames. Use at most one gold button per view.
+  - `parchment` is for headings and text on top of scene art. `foreground` is for body text and `muted-foreground` for supporting text.
+  - `success`, `error`, `warning` and `info` only mean status, never decoration. Warning is orange so it never reads as gold.
+  - Forms are sea: switches, sliders and selected options use sea, inputs stay on `input` and `border`, and only the submit button is gold.
+  - `chart-*` and `cargo-*` are only for data series.
+- Progress and Slider are always striped. Pick the colour with `variant` (`default` is sea, or `success`, `error`, `warning`, `info`) instead of overriding the indicator with classes.
 - Do not add shadows to things if it doesn't really benefit from it, meaning it needs to stand out.
 - Prefer existing theme and Tailwind values over arbitrary values such as `w-[137px]`, `mt-[7px]`, or custom colors.
 - Prefer spacing values from this scale where practical: `1`, `2`, `4`, `6`, `8`, `12`, `16`, `32`, `64`.
-- Keep Tailwind class lists reasonably simple and readable.
-- Avoid overly configurable components. If adding more props or variants makes a component difficult to understand, prefer creating a separate focused component.
-- Keep components focused on a clear responsibility rather than combining unrelated UI or behavior.
 
 ## Game mechanics
 

@@ -25,7 +25,7 @@ import { withMetrics } from "@/utils/statistics"
 
 const cannonSeries: StatisticsSeries[] = [
   { metric: "mannedCannons", label: "Manned", color: "var(--gold)" },
-  { metric: "cannons", label: "Owned", color: "var(--primary)" },
+  { metric: "cannons", label: "Owned", color: "var(--chart-1)" },
 ]
 
 const FleetDrawer = () => {
@@ -48,7 +48,7 @@ const FleetDrawer = () => {
   return (
     <>
       <h1 className="mb-6 flex items-center gap-2 font-serif text-2xl">
-        <GiShoonerSailboat className="text-accent" />
+        <GiShoonerSailboat className="text-gold" />
         Crew & Fleet
       </h1>
 
@@ -63,7 +63,7 @@ const FleetDrawer = () => {
       <FittingsList />
 
       {cannonEntries.length >= 2 && (
-        <div className="mt-4 flex flex-col gap-4 rounded-lg bg-neutral-900 p-4">
+        <div className="bg-card mt-4 flex flex-col gap-4 rounded-lg p-4">
           <p className="text-muted-foreground text-sm">Cannons over time</p>
 
           <StatisticsSeriesChart
@@ -79,15 +79,15 @@ const FleetDrawer = () => {
       <span className="my-4 block font-serif text-xl">Crew members</span>
 
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
+        <div className="bg-card flex items-center justify-between rounded-md p-4">
           <div>
             <div className="text-muted-foreground text-sm">Members</div>
             <div>{player?.crewMembers.count}</div>
           </div>
-          <MdGroups className="text-accent h-11 w-11" />
+          <MdGroups className="text-gold h-11 w-11" />
         </div>
 
-        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
+        <div className="bg-card flex items-center justify-between rounded-md p-4">
           <div>
             <div className="text-muted-foreground text-sm">Health</div>
             <div>{player?.crewMembers.health}%</div>
@@ -98,7 +98,7 @@ const FleetDrawer = () => {
           />
         </div>
 
-        <div className="flex items-center justify-between rounded-md bg-neutral-900 p-4">
+        <div className="bg-card flex items-center justify-between rounded-md p-4">
           <div>
             <div className="text-muted-foreground text-sm">Mood</div>
             <div>{player?.crewMembers.mood}%</div>
@@ -136,7 +136,7 @@ const FleetDrawer = () => {
 
       <h2 className="mt-8 mb-4 font-serif text-xl">Cargo</h2>
 
-      <div className="flex flex-col gap-2 rounded-md bg-neutral-900 p-4">
+      <div className="bg-card flex flex-col gap-2 rounded-md p-4">
         <CargoMeter load={cargo.load} capacity={cargo.capacity} />
 
         <p
@@ -152,7 +152,7 @@ const FleetDrawer = () => {
       </div>
 
       {cargo.load > 0 && cargo.capacity > 0 && (
-        <div className="mt-4 rounded-md bg-neutral-900 p-4">
+        <div className="bg-card mt-4 rounded-md p-4">
           <HoldChart ships={player.ships} inventory={player.inventory} />
         </div>
       )}

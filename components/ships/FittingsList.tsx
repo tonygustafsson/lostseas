@@ -28,7 +28,7 @@ export default function FittingsList() {
         return (
           <div
             key={item}
-            className="flex items-center justify-between gap-2 rounded-lg bg-neutral-900 p-4"
+            className="bg-card flex items-center justify-between gap-2 rounded-lg p-4"
           >
             <div>
               <div className="text-muted-foreground text-sm">
@@ -66,7 +66,7 @@ export default function FittingsList() {
             <MerchandiseIcon
               size="lg"
               item={item}
-              className="text-accent shrink-0"
+              className="text-gold shrink-0"
             />
           </div>
         )

@@ -1,6 +1,5 @@
 import "@/styles/globals.css"
 
-import { withThemeByClassName } from "@storybook/addon-themes"
 import type { Preview } from "@storybook/nextjs-vite"
 import { INITIAL_VIEWPORTS } from "storybook/viewport"
 
@@ -10,7 +9,6 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 import { almendra, crimsonText } from "@/fonts"
 
 const preview: Preview = {
-  initialGlobals: { theme: "dark" },
   parameters: {
     layout: "padded",
     nextjs: { appDirectory: true },
@@ -51,6 +49,7 @@ const preview: Preview = {
   beforeEach() {
     useDrawer.setState(useDrawer.getInitialState(), true)
     document.documentElement.classList.add(
+      "dark",
       almendra.variable,
       crimsonText.variable
     )
@@ -62,10 +61,6 @@ const preview: Preview = {
     }
   },
   decorators: [
-    withThemeByClassName({
-      themes: { dark: "dark", light: "light" },
-      defaultTheme: "dark",
-    }),
     (Story) => (
       <MotionProvider>
         <TooltipProvider>

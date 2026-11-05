@@ -1,12 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import useSound from "@/app/stores/sound"
 import { PLAYER_QUERY_KEY } from "@/constants/system"
 import apiRequest from "@/utils/apiRequest"
+import { playSoundEffect } from "@/utils/sound"
 
 export const useSea = () => {
   const queryClient = useQueryClient()
-  const { playSoundEffect } = useSound()
 
   const { mutate: startJourney, isPending: isStartingJourney } = useMutation({
     mutationFn: (data: { town: Town }) =>
@@ -17,7 +16,7 @@ export const useSea = () => {
       await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
       if (success) {
-        playSoundEffect("journey")
+        playSoundEffect("leave-port")
       }
     },
     onError: (error) => console.error(error),
@@ -36,11 +35,9 @@ export const useSea = () => {
     await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
     if (shipMeetingState) {
-      playSoundEffect("sailho")
+      playSoundEffect("ship-meeting")
     } else if (destinationReached) {
-      playSoundEffect("landho")
-    } else {
-      playSoundEffect("journey")
+      playSoundEffect("arrive-port")
     }
   }
 
@@ -55,6 +52,8 @@ export const useSea = () => {
     mutationFn: () => apiRequest("/api/sea/attackShip", null, "POST"),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+      playSoundEffect("war-drums")
     },
     onError: (error) => console.error(error),
   })
@@ -68,11 +67,13 @@ export const useSea = () => {
       await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
       if (outcome === "victory") {
-        playSoundEffect("cheers")
+        playSoundEffect("victory-with-speech")
       } else if (outcome === "defeat") {
-        playSoundEffect("frustration")
+        playSoundEffect("defeat-with-speech")
       } else if (action === "fire") {
-        playSoundEffect("cannons")
+        playSoundEffect("cannons-firing")
+      } else {
+        playSoundEffect("evade-ship")
       }
     },
     onError: (error) => console.error(error),
@@ -81,7 +82,10 @@ export const useSea = () => {
   const { mutate: takeLoot, isPending: isTakingLoot } = useMutation({
     mutationFn: (loot: Partial<Record<keyof Inventory, number>>) =>
       apiRequest("/api/sea/takeLoot", { loot }, "POST"),
-    onSuccess: onSailed,
+    onSuccess: (response) => {
+      playSoundEffect("transaction")
+      return onSailed(response)
+    },
     onError: (error) => console.error(error),
   })
 
@@ -101,7 +105,7 @@ export const useSea = () => {
 
       await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
-      playSoundEffect(escaped ? "journey" : "cannons")
+      playSoundEffect(escaped ? "evade-ship" : "cannons-firing")
     },
     onError: (error) => console.error(error),
   })

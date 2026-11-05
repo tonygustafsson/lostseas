@@ -7,12 +7,9 @@ import { Toaster } from "@/components/ui/sonner"
 const meta = {
   component: Toaster,
   beforeEach: () => () => toast.dismiss(),
-  render: (args, context) => (
+  render: (args) => (
     <>
-      <Toaster
-        {...args}
-        theme={context.globals.theme === "light" ? "light" : "dark"}
-      />
+      <Toaster {...args} theme="dark" />
       <div className="flex flex-wrap gap-4">
         <Button
           onClick={() =>

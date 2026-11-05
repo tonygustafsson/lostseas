@@ -10,6 +10,7 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useMapModal } from "@/hooks/useMapModal"
 import { getHarborArrivedQuip, getHarborTownQuip } from "@/utils/getPirateQuip"
 import { getTownsNationality } from "@/utils/location"
+import { playSoundEffect } from "@/utils/sound"
 
 import TownMap from "./TownMap"
 
@@ -29,12 +30,15 @@ const HarborScene = ({ town }: Props) => {
   const hasArrived =
     player?.locationStates?.harbor?.lastHarborReason === "arrived"
 
-  const handleMove = (location: TownLocation) => move({ location })
+  const handleMove = (location: TownLocation) => {
+    playSoundEffect("building-entry")
+    move({ location })
+  }
 
   return (
     <div className="bg-card overflow-hidden rounded-xl border">
       {map && (
-        <div className="border-gold/40 border-b bg-neutral-950">
+        <div className="border-gold/40 bg-background border-b">
           <TownMap map={map} alt={`Map of ${town}`} onMove={handleMove} />
         </div>
       )}
@@ -56,12 +60,11 @@ const HarborScene = ({ town }: Props) => {
 
           <div className="via-gold/50 lg:from-gold/50 my-6 h-px w-32 bg-linear-to-r from-transparent to-transparent" />
 
-          <p className="max-w-prose leading-relaxed text-stone-300">
+          <p className="text-parchment/80 max-w-prose leading-relaxed">
             {town && TOWNS[town].harborDescription}
           </p>
 
           <Button
-            variant="highlight"
             size="lg"
             onClick={showMap}
             disabled={!canTravel}

@@ -57,7 +57,7 @@ const ShopTradeItem = ({
         <div className="flex flex-1 items-center gap-4">
           <span
             aria-hidden="true"
-            className="border-accent/60 bg-background flex size-12 shrink-0 items-center justify-center rounded-full border"
+            className="border-gold/60 bg-background flex size-12 shrink-0 items-center justify-center rounded-full border"
           >
             <MerchandiseIcon item={item} size="sm" />
           </span>
@@ -74,7 +74,7 @@ const ShopTradeItem = ({
                     size="icon-xs"
                     variant="outline"
                     aria-label={`About ${title}`}
-                    className="bg-background text-accent border-accent/60 hover:bg-muted rounded-full"
+                    className="bg-background text-gold border-gold/60 hover:bg-muted rounded-full"
                   >
                     <Info />
                   </Button>

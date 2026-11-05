@@ -14,7 +14,7 @@ type Props = {
 
 const ActionCard = ({ title, message, actions, icon, image }: Props) => (
   <div className="@container mb-8 w-full">
-    <Card className="border-accent/30 relative w-full gap-0 border py-0 @3xl:flex-row">
+    <Card className="border-gold/30 relative w-full gap-0 border py-0 @3xl:flex-row">
       {image && (
         <div className="pointer-events-none relative h-48 shrink-0 select-none @3xl:h-auto @3xl:w-2/5">
           <Image
@@ -38,7 +38,7 @@ const ActionCard = ({ title, message, actions, icon, image }: Props) => (
           {icon && (
             <span
               aria-hidden="true"
-              className="bg-accent/10 text-accent flex size-12 shrink-0 items-center justify-center rounded-xl [&_svg]:size-6"
+              className="bg-gold/10 text-gold flex size-12 shrink-0 items-center justify-center rounded-xl [&_svg]:size-6"
             >
               {icon}
             </span>

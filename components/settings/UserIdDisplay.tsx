@@ -23,13 +23,17 @@ const UserIdDisplay = ({ playerId }: Props) => {
   }
 
   return (
-    <Alert className="bg-neutral-900">
+    <Alert className="bg-card">
       <AlertTitle>Copy the ID in order to login again</AlertTitle>
 
       <AlertDescription>{playerId}</AlertDescription>
 
       <AlertAction>
-        <Button onClick={copyIdToClipboard} title="Copy User ID to clipboard">
+        <Button
+          variant="secondary"
+          onClick={copyIdToClipboard}
+          title="Copy User ID to clipboard"
+        >
           {copiedToClipboard ? (
             <span className="text-sm">Copied!</span>
           ) : (

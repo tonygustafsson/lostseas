@@ -33,7 +33,7 @@ const ActionButtons = ({
   className,
 }: ActionButtonsProps) => (
   <div className={className}>
-    <Button type="button" variant="default" size="sm" onClick={onChangeClick}>
+    <Button type="button" variant="secondary" size="sm" onClick={onChangeClick}>
       <FaPen className="size-3" />
       Change
     </Button>

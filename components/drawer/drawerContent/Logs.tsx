@@ -23,7 +23,7 @@ const LogsDrawer = () => {
   return (
     <>
       <h1 className="flex items-center gap-2 font-serif text-2xl">
-        <FaBook className="text-accent" />
+        <FaBook className="text-gold" />
         Log Book
       </h1>
 
@@ -42,7 +42,7 @@ const LogsDrawer = () => {
           {days.map(({ day, entries }) => (
             <section key={day}>
               <header className="border-gold/30 mb-4 flex items-baseline justify-between gap-4 border-b pb-1">
-                <h2 className="text-gold font-serif text-lg">
+                <h2 className="text-parchment font-serif text-lg">
                   {getCurrentDate(day)}
                 </h2>
 

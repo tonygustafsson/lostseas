@@ -36,7 +36,7 @@ const MobileMenuItem = ({
           "bg-background grid size-10 shrink-0 place-items-center rounded-full border [&_svg]:size-5!",
           isDanger
             ? "border-destructive/50 text-destructive"
-            : "border-gold/50 text-accent"
+            : "border-gold/50 text-gold"
         )}
       >
         {icon}

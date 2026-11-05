@@ -16,14 +16,14 @@ const JourneyProgress = ({ journey, day }: Props) => {
   const percentage = (journey.day / journey.totalDays) * 100
 
   return (
-    <div className="border-gold/40 bg-background/90 flex items-center gap-4 rounded-lg border px-4 py-2 backdrop-blur-sm">
+    <div className="border-sea/40 bg-background/90 flex items-center gap-4 rounded-lg border px-4 py-2 backdrop-blur-sm">
       <div className="relative size-12 shrink-0">
         <RadialProgressBar
           startPercentage={startPercentage}
           percentage={percentage}
           showLabel={false}
           autoStrokeColor={false}
-          className="text-gold size-12"
+          className="text-sea size-12"
         />
 
         <Flag
@@ -49,7 +49,7 @@ const JourneyProgress = ({ journey, day }: Props) => {
 
         <p className="text-muted-foreground flex items-center gap-2 font-serif text-sm italic">
           {getLogDate(day)}
-          <WeatherIcon className="text-gold size-4 shrink-0" />
+          <WeatherIcon className="text-sea size-4 shrink-0" />
         </p>
       </div>
     </div>

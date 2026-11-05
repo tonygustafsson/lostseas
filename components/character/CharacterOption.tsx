@@ -26,7 +26,7 @@ const CharacterOption = ({ character, selected, onSelect }: Props) => (
   <div
     className={cn(
       "bg-muted-foreground/10 hover:bg-muted-foreground/15 relative flex min-w-0 flex-col rounded-lg border-2 border-transparent transition-colors",
-      selected && "bg-secondary border-accent"
+      selected && "bg-secondary border-gold"
     )}
   >
     <button

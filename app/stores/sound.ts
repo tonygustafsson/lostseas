@@ -2,41 +2,69 @@ import { setCookie } from "cookies-next"
 import { create } from "zustand"
 
 import {
+  AMBIENCE_STATE_COOKIE_NAME,
   COOKIE_EXPIRE_TIME,
   MUSIC_STATE_COOKIE_NAME,
   SOUND_EFFECTS_STATE_COOKIE_NAME,
 } from "@/constants/system"
 
-export type SoundEffect =
-  | "coins"
-  | "cheers"
-  | "hurt"
-  | "frustration"
-  | "drink"
-  | "tools"
-  | "journey"
-  | "sailho"
-  | "landho"
-  | "cannons"
-  | "fanfare"
+export const SOUND_EFFECTS = [
+  "transaction",
+  "frustration",
+  "drinking",
+  "hammer",
+  "ship-meeting",
+  "arrive-port",
+  "leave-port",
+  "cannons-firing",
+  "evade-ship",
+  "war-drums",
+  "fanfare",
+  "parrot",
+  "building-entry",
+  "open-map",
+  "victory",
+  "victory-with-speech",
+  "victory-speech",
+  "defeat",
+  "defeat-with-speech",
+  "defeat-speech",
+] as const
+
+export type SoundEffect = (typeof SOUND_EFFECTS)[number]
 
 export interface SoundState {
   musicOn: boolean
+  ambienceOn: boolean
   soundEffectsOn: boolean
-  soundEffect?: SoundEffect
+  /** Increases every time the player asks for the next music track */
+  nextTrackRequest: number
+  /** True while the current track fades out before the next one starts */
+  changingTrack: boolean
   setMusic: (musicOn: boolean) => void
+  setAmbience: (ambienceOn: boolean) => void
   setSoundEffects: (soundEffectsOn: boolean) => void
-  playSoundEffect: (soundEffect?: SoundEffect) => void
+  nextTrack: () => void
+  setChangingTrack: (changingTrack: boolean) => void
 }
 
 const useSound = create<SoundState>((set) => ({
   musicOn: false,
+  ambienceOn: false,
   soundEffectsOn: false,
-  soundEffect: undefined,
+  nextTrackRequest: 0,
+  changingTrack: false,
 
   setMusic: (musicOn: boolean) => {
     set({ musicOn })
     setCookie(MUSIC_STATE_COOKIE_NAME, musicOn, { expires: COOKIE_EXPIRE_TIME })
+  },
+
+  setAmbience: (ambienceOn: boolean) => {
+    set({ ambienceOn })
+    setCookie(AMBIENCE_STATE_COOKIE_NAME, ambienceOn, {
+      expires: COOKIE_EXPIRE_TIME,
+    })
   },
 
   setSoundEffects: (soundEffectsOn: boolean) => {
@@ -46,12 +74,10 @@ const useSound = create<SoundState>((set) => ({
     })
   },
 
-  playSoundEffect: (soundEffect?: SoundEffect) => {
-    set({ soundEffect })
+  nextTrack: () =>
+    set((state) => ({ nextTrackRequest: state.nextTrackRequest + 1 })),
 
-    // Reset so the same sound can be played again shortly after
-    setTimeout(() => set({ soundEffect: undefined }), 100)
-  },
+  setChangingTrack: (changingTrack: boolean) => set({ changingTrack }),
 }))
 
 export default useSound

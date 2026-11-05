@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_REPAIR_COST, SHIP_TYPES } from "@/constants/ship"
@@ -8,11 +7,11 @@ import { PLAYER_QUERY_KEY } from "@/constants/system"
 import apiRequest from "@/utils/apiRequest"
 import { formatGold } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
+import { playSoundEffect } from "@/utils/sound"
 
 export const useShipyard = () => {
   const queryClient = useQueryClient()
   const setToast = useToasts((s) => s.setToast)
-  const { playSoundEffect } = useSound()
 
   const handleError = (
     title: string,
@@ -72,7 +71,7 @@ export const useShipyard = () => {
         variant: "success",
       })
 
-      playSoundEffect("tools")
+      playSoundEffect("hammer")
     },
     onError: (err, variables, context: { previous?: Player } | undefined) => {
       handleError(
@@ -129,7 +128,7 @@ export const useShipyard = () => {
         variant: "success",
       })
 
-      playSoundEffect("coins")
+      playSoundEffect("transaction")
     },
     onError: (err, variables, context: { previous?: Player } | undefined) => {
       handleError(`Could not sell your ship`, String(err), context?.previous)
@@ -194,7 +193,7 @@ export const useShipyard = () => {
         variant: "success",
       })
 
-      playSoundEffect("coins")
+      playSoundEffect("transaction")
     },
     onError: (err, variables, context: { previous?: Player } | undefined) => {
       handleError(
@@ -263,6 +262,8 @@ export const useShipyard = () => {
         message: `It received ${formatGold(totalPrice)} and your now have ${totalQuantity} ${unit} of ${item}`,
         variant: "success",
       })
+
+      playSoundEffect("transaction")
     },
     onError: (err, variables, context: { previous?: Player } | undefined) => {
       handleError(
@@ -320,6 +321,8 @@ export const useShipyard = () => {
         message: `It costed you ${formatGold(totalPrice)}.`,
         variant: "success",
       })
+
+      playSoundEffect("hammer")
     },
     onError: (err, variables, context: { previous?: Player } | undefined) => {
       handleError(`Could not repair your ship`, String(err), context?.previous)

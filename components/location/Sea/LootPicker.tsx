@@ -89,7 +89,6 @@ const LootPicker = ({ offer, load, capacity, isTaking, onTake }: Props) => {
       </ul>
 
       <Button
-        variant="highlight"
         size="lg"
         className="w-full"
         disabled={isTaking}

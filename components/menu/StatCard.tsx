@@ -23,7 +23,7 @@ export const StatCard = ({ title, value, Icon }: Props) => {
   }, [controls, value])
 
   const CustomIcon = cloneElement(Icon, {
-    className: "text-accent size-5",
+    className: "text-gold size-5",
   } as any)
 
   return (

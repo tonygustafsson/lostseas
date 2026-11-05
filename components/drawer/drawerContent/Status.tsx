@@ -68,7 +68,7 @@ const StatusDrawer = () => {
   return (
     <>
       <h1 className="mb-6 flex items-center gap-2 font-serif text-2xl">
-        <GiPirateCoat className="text-accent" />
+        <GiPirateCoat className="text-gold" />
         Status
       </h1>
 
@@ -94,7 +94,7 @@ const StatusDrawer = () => {
           </div>
 
           <div className="col-start-2 row-start-1 flex min-w-0 flex-col gap-2">
-            <p className="text-accent text-xs tracking-wide uppercase">
+            <p className="text-gold text-xs tracking-wide uppercase">
               {character.title}
             </p>
 

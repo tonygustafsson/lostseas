@@ -32,7 +32,7 @@ const Tile = ({
   <div className="bg-muted flex flex-col items-start gap-1 rounded-xl border px-2 py-2 sm:flex-row sm:items-center sm:gap-4 sm:px-4">
     <span
       aria-hidden="true"
-      className="text-accent [&_svg]:size-5 sm:[&_svg]:size-8"
+      className="text-gold [&_svg]:size-5 sm:[&_svg]:size-8"
     >
       {icon}
     </span>
@@ -89,7 +89,7 @@ const ShopTradeSummary = ({
           icon={<ArrowLeftRight />}
           className={cn(
             tradeGold > 0 && "text-success",
-            tradeGold < 0 && "text-accent"
+            tradeGold < 0 && "text-gold"
           )}
         >
           {formatSigned(tradeGold)}

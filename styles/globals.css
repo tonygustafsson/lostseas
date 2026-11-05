@@ -4,38 +4,48 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* The game is dark only. The html element keeps the dark class so the
+   dark: variants in the shadcn components still apply. */
 :root {
   --btn-text-case: none;
   --gold: oklch(0.78 0.13 85);
   --gold-light: oklch(0.93 0.09 95);
   --gold-dark: oklch(0.48 0.09 70);
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.148 0.004 228.8);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.148 0.004 228.8);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.148 0.004 228.8);
-  --primary: oklch(0.5 0.134 242.749);
-  --primary-foreground: oklch(0.977 0.013 236.62);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
-  --muted: oklch(0.963 0.002 197.1);
-  --muted-foreground: oklch(0.56 0.021 213.5);
-  --accent: oklch(0.963 0.002 197.1);
-  --accent-foreground: oklch(0.218 0.008 223.9);
-  --destructive: oklch(0.577 0.245 27.325);
-  --success: oklch(0.527 0.154 150.069);
+  /* Sea glass for bars that measure things, so gold stays free for actions */
+  --sea: oklch(0.72 0.09 210);
+  --sea-dark: oklch(0.45 0.07 225);
+  /* Warm off-white for headings and text on top of scene art */
+  --parchment: oklch(0.94 0.035 85);
+  --background: oklch(0.148 0.004 228.8);
+  --foreground: oklch(0.987 0.002 197.1);
+  --card: oklch(0.218 0.008 223.9);
+  --card-foreground: oklch(0.987 0.002 197.1);
+  --popover: oklch(0.218 0.008 223.9);
+  --popover-foreground: oklch(0.987 0.002 197.1);
+  /* Sea and gold: the sea-tinted surfaces are the world, gold is reserved
+     for the main action, money and gilded frames */
+  --primary: oklch(0.86 0.15 88);
+  --primary-foreground: oklch(0.2 0.03 70);
+  --secondary: oklch(0.26 0.03 230);
+  --secondary-foreground: oklch(0.96 0.01 220);
+  --muted: oklch(0.275 0.011 216.9);
+  --muted-foreground: oklch(0.723 0.014 214.4);
+  --accent: oklch(0.275 0.011 216.9);
+  --accent-foreground: oklch(0.987 0.002 197.1);
+  --destructive: oklch(0.704 0.191 22.216);
+  --success: oklch(0.792 0.209 151.711);
   --error: var(--destructive);
-  --warning: var(--color-amber-600);
-  --info: var(--color-sky-600);
-  --border: oklch(0.925 0.005 214.3);
-  --input: oklch(0.925 0.005 214.3);
-  --ring: oklch(0.723 0.014 214.4);
+  /* Orange, not amber, so a warning never reads as gold */
+  --warning: var(--color-orange-400);
+  --info: var(--color-sky-400);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.7 0.11 82);
   --chart-1: var(--color-sky-700);
-  --chart-2: var(--color-amber-500);
-  --chart-3: var(--color-red-900);
+  --chart-2: var(--color-amber-400);
+  --chart-3: var(--color-red-800);
   --chart-4: var(--color-emerald-800);
-  --chart-5: var(--color-violet-600);
+  --chart-5: var(--color-violet-400);
   /* One colour per good in the hold chart */
   --cargo-food: var(--color-amber-700);
   --cargo-water: var(--color-sky-500);
@@ -49,48 +59,6 @@
   --cargo-tea: var(--color-lime-600);
   --cargo-cotton: var(--color-stone-300);
   --radius: 0.45rem;
-  --sidebar: oklch(0.987 0.002 197.1);
-  --sidebar-foreground: oklch(0.148 0.004 228.8);
-  --sidebar-primary: oklch(0.588 0.158 241.966);
-  --sidebar-primary-foreground: oklch(0.977 0.013 236.62);
-  --sidebar-accent: oklch(0.963 0.002 197.1);
-  --sidebar-accent-foreground: oklch(0.218 0.008 223.9);
-  --sidebar-border: oklch(0.925 0.005 214.3);
-  --sidebar-ring: oklch(0.723 0.014 214.4);
-}
-
-html {
-  font-size: 18px;
-}
-
-.dark {
-  --background: oklch(0.148 0.004 228.8);
-  --foreground: oklch(0.987 0.002 197.1);
-  --card: oklch(0.218 0.008 223.9);
-  --card-foreground: oklch(0.987 0.002 197.1);
-  --popover: oklch(0.218 0.008 223.9);
-  --popover-foreground: oklch(0.987 0.002 197.1);
-  --primary: oklch(0.4 0.11 271);
-  --primary-foreground: oklch(0.977 0.013 236.62);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.275 0.011 216.9);
-  --muted-foreground: oklch(0.723 0.014 214.4);
-  --accent: oklch(0.889 0.187 99);
-  --accent-foreground: oklch(0% 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --success: oklch(0.792 0.209 151.711);
-  --error: var(--destructive);
-  --warning: var(--color-amber-400);
-  --info: var(--color-sky-400);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.56 0.021 213.5);
-  --chart-1: var(--color-sky-700);
-  --chart-2: var(--color-amber-400);
-  --chart-3: var(--color-red-800);
-  --chart-4: var(--color-emerald-800);
-  --chart-5: var(--color-violet-400);
   --sidebar: oklch(0.218 0.008 223.9);
   --sidebar-foreground: oklch(0.987 0.002 197.1);
   --sidebar-primary: oklch(0.685 0.169 237.323);
@@ -99,6 +67,10 @@ html {
   --sidebar-accent-foreground: oklch(0.987 0.002 197.1);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.56 0.021 213.5);
+}
+
+html {
+  font-size: 18px;
 }
 
 @theme inline {
@@ -133,6 +105,9 @@ html {
   --color-gold: var(--gold);
   --color-gold-light: var(--gold-light);
   --color-gold-dark: var(--gold-dark);
+  --color-parchment: var(--parchment);
+  --color-sea: var(--sea);
+  --color-sea-dark: var(--sea-dark);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -154,6 +129,18 @@ html {
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  --animate-equalizer: equalizer 1s ease-in-out infinite;
+
+  @keyframes equalizer {
+    0%,
+    100% {
+      transform: scaleY(0.3);
+    }
+    50% {
+      transform: scaleY(1);
+    }
+  }
 }
 
 @layer base {
@@ -193,9 +180,10 @@ html {
     0 0 32px oklch(from var(--gold) l c h / 20%);
 }
 
-/* Polished gold with diagonal stripes, so even a short bar shows the effect.
-   Only background images are set, so bg-none falls back to a plain colour. */
-@utility gilded-bar {
+/* Polished bar with diagonal stripes, so even a short bar shows the effect.
+   The colour comes from --bar (sea by default), set with bar-gold,
+   bar-success, bar-error and so on. */
+@utility striped-bar {
   background-image:
     repeating-linear-gradient(
       135deg,
@@ -204,10 +192,14 @@ html {
     ),
     linear-gradient(
       to bottom,
-      var(--gold),
-      var(--gold-dark) 55%,
-      oklch(from var(--gold-dark) calc(l - 0.15) c h)
+      var(--bar, var(--sea)),
+      oklch(from var(--bar, var(--sea)) calc(l - 0.25) c h) 55%,
+      oklch(from var(--bar, var(--sea)) calc(l - 0.38) c h)
     );
+}
+
+@utility bar-* {
+  --bar: --value(--color-*);
 }
 
 /* Scene transitions between harbour, buildings and sea (see useSceneLocation) */

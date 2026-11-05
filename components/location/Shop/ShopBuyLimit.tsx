@@ -23,9 +23,9 @@ const ShopBuyLimit = ({ item, max, limitedBy, className }: Props) => (
     )}
   >
     {limitedBy === "gold" ? (
-      <Coins aria-hidden="true" className="text-accent size-3" />
+      <Coins aria-hidden="true" className="text-gold size-3" />
     ) : (
-      <GiCargoCrate aria-hidden="true" className="text-accent size-3" />
+      <GiCargoCrate aria-hidden="true" className="text-gold size-3" />
     )}
     Up to {formatQuantity(item, max)}, limited by{" "}
     {limitedBy === "gold" ? "gold" : "cargo space"}

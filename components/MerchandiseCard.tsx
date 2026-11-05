@@ -64,7 +64,7 @@ const MerchandiseCard = ({
         {icon && (
           <span
             aria-hidden="true"
-            className="border-accent/60 bg-background text-accent flex size-11 shrink-0 items-center justify-center rounded-full border @max-[250px]:size-9 [&_svg]:size-6 @max-[250px]:[&_svg]:size-5"
+            className="border-gold/60 bg-background text-gold flex size-11 shrink-0 items-center justify-center rounded-full border @max-[250px]:size-9 [&_svg]:size-6 @max-[250px]:[&_svg]:size-5"
           >
             {icon}
           </span>

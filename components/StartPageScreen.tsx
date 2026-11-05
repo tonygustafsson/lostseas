@@ -61,24 +61,24 @@ const StartPageScreen = ({ initialCharacter }: Props) => {
             aria-label="Lost Seas home"
           >
             <Image src="/img/logo.svg" alt="" width={48} height={37} />
-            <span className="font-serif text-2xl tracking-wide text-amber-50 sm:text-3xl">
+            <span className="text-parchment font-serif text-2xl tracking-wide sm:text-3xl">
               Lost Seas
             </span>
           </Link>
         </header>
 
         <section aria-labelledby="page-title" className="max-w-5xl py-12">
-          <div className="bg-card/70 mb-6 inline-flex items-center gap-2 rounded-full border border-amber-200/20 px-4 py-2 text-xs font-semibold tracking-widest text-amber-200 uppercase">
+          <div className="bg-card/70 border-gold/20 text-gold-light mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold tracking-widest uppercase">
             <Waves className="size-4" aria-hidden="true" />
             The Caribbean, 1640
           </div>
           <h1
             id="page-title"
-            className="max-w-3xl font-serif text-5xl leading-none tracking-tight text-amber-50 sm:text-6xl lg:text-7xl"
+            className="text-parchment max-w-3xl font-serif text-5xl leading-none tracking-tight sm:text-6xl lg:text-7xl"
           >
-            Your story begins <span className="text-accent">at sea.</span>
+            Your story begins <span className="text-gold">at sea.</span>
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-100/80 sm:text-xl">
+          <p className="text-foreground/80 mt-6 max-w-2xl text-lg leading-8 sm:text-xl">
             Lost Seas is a free browser game set in 1640. Start as a simple
             pirate, then earn your reputation, build a crew, command ships, and
             make your fortune across the open seas.
@@ -86,44 +86,49 @@ const StartPageScreen = ({ initialCharacter }: Props) => {
           <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <article className="bg-card/90 border-border rounded-2xl border p-4">
               <Compass
-                className="mb-4 size-5 text-amber-200"
+                className="text-gold-light mb-4 size-5"
                 aria-hidden="true"
               />
-              <h2 className="font-serif text-lg text-amber-50">
+              <h2 className="text-parchment font-serif text-lg">
                 Four rival nations
               </h2>
-              <p className="mt-1 text-sm leading-5 text-slate-100/65">
+              <p className="text-foreground/65 mt-1 text-sm leading-5">
                 Explore 16 ports across England, France, Spain, and Holland.
               </p>
             </article>
             <article className="bg-card/90 border-border rounded-2xl border p-4">
-              <Ship className="mb-4 size-5 text-amber-200" aria-hidden="true" />
-              <h2 className="font-serif text-lg text-amber-50">
+              <Ship
+                className="text-gold-light mb-4 size-5"
+                aria-hidden="true"
+              />
+              <h2 className="text-parchment font-serif text-lg">
                 Ships &amp; crew
               </h2>
-              <p className="mt-1 text-sm leading-5 text-slate-100/65">
+              <p className="text-foreground/65 mt-1 text-sm leading-5">
                 Build your fleet, recruit sailors, and take on ships at sea.
               </p>
             </article>
             <article className="bg-card/90 border-border rounded-2xl border p-4">
               <Sparkles
-                className="mb-4 size-5 text-amber-200"
+                className="text-gold-light mb-4 size-5"
                 aria-hidden="true"
               />
-              <h2 className="font-serif text-lg text-amber-50">
+              <h2 className="text-parchment font-serif text-lg">
                 Make your name
               </h2>
-              <p className="mt-1 text-sm leading-5 text-slate-100/65">
+              <p className="text-foreground/65 mt-1 text-sm leading-5">
                 Earn new titles, grow your wealth, and rise through the ranks.
               </p>
             </article>
             <article className="bg-card/90 border-border rounded-2xl border p-4">
               <ShieldCheck
-                className="mb-4 size-5 text-amber-200"
+                className="text-gold-light mb-4 size-5"
                 aria-hidden="true"
               />
-              <h2 className="font-serif text-lg text-amber-50">Free to play</h2>
-              <p className="mt-1 text-sm leading-5 text-slate-100/65">
+              <h2 className="text-parchment font-serif text-lg">
+                Free to play
+              </h2>
+              <p className="text-foreground/65 mt-1 text-sm leading-5">
                 No ads, purchases, email address, or real name required.
               </p>
             </article>
@@ -137,20 +142,20 @@ const StartPageScreen = ({ initialCharacter }: Props) => {
             className="bg-card/90 scroll-mt-8 rounded-3xl border border-white/15 p-6 sm:p-8 lg:p-12"
           >
             <div className="mb-8 flex items-start gap-6">
-              <div className="hidden size-12 shrink-0 items-center justify-center rounded-2xl border border-amber-200/20 bg-amber-200/10 text-amber-200 sm:flex">
+              <div className="border-gold/20 bg-gold/10 text-gold-light hidden size-12 shrink-0 items-center justify-center rounded-2xl border sm:flex">
                 <Anchor className="size-6" aria-hidden="true" />
               </div>
               <div>
-                <p className="text-accent mb-1 text-xs font-semibold tracking-widest uppercase">
+                <p className="text-gold mb-1 text-xs font-semibold tracking-widest uppercase">
                   Start the adventure
                 </p>
                 <h2
                   id="register-title"
-                  className="font-serif text-3xl text-amber-50 sm:text-4xl"
+                  className="text-parchment font-serif text-3xl sm:text-4xl"
                 >
                   Your Legend Begins Here
                 </h2>
-                <p className="mt-2 max-w-xl leading-6 text-slate-100/70">
+                <p className="text-foreground/70 mt-2 max-w-xl leading-6">
                   Choose who you&apos;ll be. It&apos;s free to play, and you can
                   begin without sharing an email address.
                 </p>
@@ -165,12 +170,12 @@ const StartPageScreen = ({ initialCharacter }: Props) => {
             className="bg-card/85 border-border scroll-mt-8 rounded-3xl border p-6 backdrop-blur-xl sm:p-8"
           >
             <div className="mb-4">
-              <p className="text-accent mb-1 text-xs font-semibold tracking-widest uppercase">
+              <p className="text-gold mb-1 text-xs font-semibold tracking-widest uppercase">
                 Already have a character?
               </p>
               <h2
                 id="sign-in-title"
-                className="font-serif text-2xl text-amber-50 sm:text-3xl"
+                className="text-parchment font-serif text-2xl sm:text-3xl"
               >
                 Back aboard
               </h2>
@@ -186,16 +191,16 @@ const StartPageScreen = ({ initialCharacter }: Props) => {
           className="border-border mt-16 border-t pt-12 sm:mt-32 sm:pt-16"
         >
           <div className="max-w-3xl">
-            <p className="text-accent mb-2 text-xs font-semibold tracking-widest uppercase">
+            <p className="text-gold mb-2 text-xs font-semibold tracking-widest uppercase">
               The world beyond the horizon
             </p>
             <h2
               id="more-title"
-              className="font-serif text-3xl text-amber-50 sm:text-4xl"
+              className="text-parchment font-serif text-3xl sm:text-4xl"
             >
               A new life on the open seas
             </h2>
-            <p className="mt-4 text-lg leading-8 text-slate-100/75">
+            <p className="text-foreground/75 mt-4 text-lg leading-8">
               Sail between towns, hunt for treasure, trade, and take on rival
               ships. England, France, Spain, and Holland each hold four ports to
               discover, with their own atmosphere and imagery.
@@ -204,54 +209,56 @@ const StartPageScreen = ({ initialCharacter }: Props) => {
 
           <div className="mt-8 grid gap-4 md:grid-cols-3">
             <article className="bg-card/80 border-border rounded-2xl border p-6 backdrop-blur">
-              <div className="mb-4 flex size-10 items-center justify-center rounded-xl bg-amber-200/10 text-amber-200">
+              <div className="bg-gold/10 text-gold-light mb-4 flex size-10 items-center justify-center rounded-xl">
                 <Compass className="size-5" aria-hidden="true" />
               </div>
-              <h3 className="font-serif text-xl text-amber-50">Four nations</h3>
-              <p className="mt-2 leading-6 text-slate-100/70">
+              <h3 className="text-parchment font-serif text-xl">
+                Four nations
+              </h3>
+              <p className="text-foreground/70 mt-2 leading-6">
                 Explore the ports and waters claimed by England, France, Spain,
                 and Holland.
               </p>
             </article>
             <article className="bg-card/80 border-border rounded-2xl border p-6 backdrop-blur">
-              <div className="mb-4 flex size-10 items-center justify-center rounded-xl bg-amber-200/10 text-amber-200">
+              <div className="bg-gold/10 text-gold-light mb-4 flex size-10 items-center justify-center rounded-xl">
                 <Ship className="size-5" aria-hidden="true" />
               </div>
-              <h3 className="font-serif text-xl text-amber-50">
+              <h3 className="text-parchment font-serif text-xl">
                 Build your name
               </h3>
-              <p className="mt-2 leading-6 text-slate-100/70">
+              <p className="text-foreground/70 mt-2 leading-6">
                 Earn better titles, grow your crew, find stronger ships, and
                 build your fortune.
               </p>
             </article>
             <article className="bg-card/80 border-border rounded-2xl border p-6 backdrop-blur">
-              <div className="mb-4 flex size-10 items-center justify-center rounded-xl bg-amber-200/10 text-amber-200">
+              <div className="bg-gold/10 text-gold-light mb-4 flex size-10 items-center justify-center rounded-xl">
                 <Sparkles className="size-5" aria-hidden="true" />
               </div>
-              <h3 className="font-serif text-xl text-amber-50">
+              <h3 className="text-parchment font-serif text-xl">
                 Made to explore
               </h3>
-              <p className="mt-2 leading-6 text-slate-100/70">
+              <p className="text-foreground/70 mt-2 leading-6">
                 Discover AI-created scenes, royalty-free music, and sound
                 effects that shift as your voyage unfolds.
               </p>
             </article>
           </div>
 
-          <div className="mt-12 rounded-3xl border bg-[linear-gradient(115deg,var(--color-background),var(--color-neutral-800))] p-6 sm:p-8">
+          <div className="from-background to-secondary mt-12 rounded-3xl border bg-linear-115 p-6 sm:p-8">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
-              <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl border border-amber-200/25 bg-amber-200/10 text-amber-200">
+              <div className="border-gold/25 bg-gold/10 text-gold-light flex size-14 shrink-0 items-center justify-center rounded-2xl border">
                 <BookOpenText className="size-7" aria-hidden="true" />
               </div>
               <div className="flex-1">
-                <p className="text-accent mb-1 text-xs font-semibold tracking-widest uppercase">
+                <p className="text-gold mb-1 text-xs font-semibold tracking-widest uppercase">
                   New to Lost Seas?
                 </p>
-                <h3 className="font-serif text-2xl text-amber-50 sm:text-3xl">
+                <h3 className="text-parchment font-serif text-2xl sm:text-3xl">
                   Get your bearings with the Player Guide
                 </h3>
-                <p className="mt-2 leading-6 text-slate-100/75">
+                <p className="text-foreground/75 mt-2 leading-6">
                   Learn the ropes of sailing, supplies, ships, crew, and life in
                   the Caribbean.
                 </p>
@@ -259,7 +266,7 @@ const StartPageScreen = ({ initialCharacter }: Props) => {
               <Button
                 asChild
                 size="lg"
-                variant="highlight"
+
                 className="shrink-0"
               >
                 <Link href="/guide">
@@ -271,10 +278,10 @@ const StartPageScreen = ({ initialCharacter }: Props) => {
           </div>
 
           <div className="mt-12 mb-4 sm:mt-16">
-            <p className="text-accent mb-1 text-xs font-semibold tracking-widest uppercase">
+            <p className="text-gold mb-1 text-xs font-semibold tracking-widest uppercase">
               A glimpse of the voyage
             </p>
-            <h2 className="font-serif text-3xl text-amber-50 sm:text-4xl">
+            <h2 className="text-parchment font-serif text-3xl sm:text-4xl">
               Screenshots
             </h2>
           </div>

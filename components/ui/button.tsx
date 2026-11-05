@@ -9,12 +9,14 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/80",
-        highlight: "bg-amber-300 text-slate-950 hover:bg-amber-200",
+        // A minted coin: the one main action on a screen
+        default:
+          "bg-linear-to-b from-primary to-gold text-primary-foreground hover:brightness-110",
         outline:
           "border-border bg-input/30 hover:bg-input/50 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground",
+        // Calm water: a faint sea sheen on top so it doesn't look flat next to gold
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
+          "bg-secondary bg-linear-to-b from-sea/5 to-transparent text-secondary-foreground hover:brightness-110 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
         ghost:
           "hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
         destructive:
@@ -26,7 +28,7 @@ const buttonVariants = cva(
         warning:
           "bg-warning/10 text-warning hover:bg-warning/20 focus-visible:border-warning/40 focus-visible:ring-warning/20 dark:bg-warning/20 dark:hover:bg-warning/30 dark:focus-visible:ring-warning/40",
         info: "bg-info/10 text-info hover:bg-info/20 focus-visible:border-info/40 focus-visible:ring-info/20 dark:bg-info/20 dark:hover:bg-info/30 dark:focus-visible:ring-info/40",
-        link: "text-primary underline-offset-4 hover:underline",
+        link: "text-gold underline-offset-4 hover:underline",
       },
       size: {
         default:

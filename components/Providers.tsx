@@ -14,6 +14,7 @@ import MotionProvider from "@/components/MotionProvider"
 import ServiceWorker from "@/components/ServiceWorker"
 import Sound from "@/components/Sound"
 import Toast from "@/components/Toast"
+import { TooltipProvider } from "@/components/ui/tooltip"
 import WelcomeModal from "@/components/WelcomeModal"
 
 import Drawer from "./drawer"
@@ -41,13 +42,15 @@ export default function Providers({ children, dehydratedState }: Props) {
     <QueryClientProvider client={queryClient}>
       <HydrationBoundary state={dehydratedState}>
         <MotionProvider>
-          {children}
+          <TooltipProvider>
+            {children}
 
-          <Toast />
-          <Modal />
-          <Sound />
-          <WelcomeModal />
-          <Drawer />
+            <Toast />
+            <Modal />
+            <Sound />
+            <WelcomeModal />
+            <Drawer />
+          </TooltipProvider>
         </MotionProvider>
 
         <ServiceWorker />

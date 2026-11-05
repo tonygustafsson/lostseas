@@ -28,7 +28,7 @@ const LocationTabs = <T extends string>({
           key={`location-tab-${id}`}
           value={id}
           className={cn("px-6 font-serif text-xl font-bold", {
-            "text-accent!": id === currentTab,
+            "text-gold!": id === currentTab,
           })}
         >
           {label}

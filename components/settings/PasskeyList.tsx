@@ -74,7 +74,7 @@ const PasskeyList = () => {
             key={passkey.id}
             className="border-border flex items-center gap-4 rounded-lg border p-2"
           >
-            <Icon className="text-accent size-5 shrink-0" />
+            <Icon className="text-gold size-5 shrink-0" />
 
             <div className="flex-1">
               <p>{passkey.backedUp ? "Synced passkey" : "This device only"}</p>
