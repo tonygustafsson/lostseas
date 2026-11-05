@@ -4,10 +4,10 @@ import { useRef, useState } from "react"
 import { SOUND_EFFECTS, type SoundEffect } from "@/app/stores/sound"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { LOCATION_AMBIENCE_SOUNDS } from "@/utils/location"
 import {
   getSoundEffectFiles,
   getSoundEffectSrcs,
+  LOCATION_AMBIENCE_SOUNDS,
   SEA_SONGS,
   TOWN_SONGS,
 } from "@/utils/sound"

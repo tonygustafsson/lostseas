@@ -8,8 +8,7 @@ import {
   SOUND_EFFECTS_STATE_COOKIE_NAME,
 } from "@/constants/system"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-import { getLocationAmbienceSounds } from "@/utils/location"
-import { SEA_SONGS, TOWN_SONGS } from "@/utils/sound"
+import { getLocationAmbienceSounds, SEA_SONGS, TOWN_SONGS } from "@/utils/sound"
 
 const isSongForLocation = (src: string | undefined, location?: string) =>
   Boolean(src?.includes(location === "Sea" ? "/music/sea/" : "/music/town/"))

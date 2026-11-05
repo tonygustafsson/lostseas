@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest"
 
 import useSound from "@/app/stores/sound"
 import {
+  getLocationAmbienceSounds,
   getSoundEffectFiles,
   getSoundEffectSrcs,
   playSoundEffect,
@@ -87,5 +88,68 @@ describe("playSoundEffect", () => {
     playSoundEffect("transaction")
 
     expect(Audio).not.toHaveBeenCalled()
+  })
+})
+
+describe("ambience sounds", () => {
+  it("getLocationAmbienceSounds returns all harbor sounds in the harbor", () => {
+    expect(getLocationAmbienceSounds("Harbor")).toEqual([
+      "/ambience/harbor/harbor1.opus",
+      "/ambience/harbor/harbor2.opus",
+      "/ambience/harbor/harbor3.opus",
+      "/ambience/harbor/harbor4.opus",
+      "/ambience/harbor/harbor5.opus",
+      "/ambience/harbor/harbor6.opus",
+    ])
+  })
+
+  it("getLocationAmbienceSounds returns all market sounds in the market", () => {
+    expect(getLocationAmbienceSounds("Market")).toEqual([
+      "/ambience/market/market1.opus",
+      "/ambience/market/market2.opus",
+      "/ambience/market/market3.opus",
+      "/ambience/market/market4.opus",
+      "/ambience/market/market5.opus",
+      "/ambience/market/market6.opus",
+      "/ambience/market/market7.opus",
+      "/ambience/market/market8.opus",
+      "/ambience/market/market9.opus",
+      "/ambience/market/market10.opus",
+      "/ambience/market/market11.opus",
+      "/ambience/market/market12.opus",
+      "/ambience/market/market13.opus",
+    ])
+  })
+
+  it("getLocationAmbienceSounds returns all tavern sounds in the tavern", () => {
+    expect(getLocationAmbienceSounds("Tavern")).toEqual([
+      "/ambience/tavern/tavern1.opus",
+      "/ambience/tavern/tavern2.opus",
+      "/ambience/tavern/tavern3.opus",
+      "/ambience/tavern/tavern4.opus",
+    ])
+  })
+
+  it("getLocationAmbienceSounds returns all shipyard sounds in the shipyard", () => {
+    expect(getLocationAmbienceSounds("Shipyard")).toEqual([
+      "/ambience/shipyard/shipyard1.opus",
+      "/ambience/shipyard/shipyard2.opus",
+      "/ambience/shipyard/shipyard3.opus",
+      "/ambience/shipyard/shipyard4.opus",
+      "/ambience/shipyard/shipyard5.opus",
+      "/ambience/shipyard/shipyard6.opus",
+      "/ambience/shipyard/shipyard7.opus",
+    ])
+  })
+
+  it("getLocationAmbienceSounds returns all sea sounds at sea", () => {
+    expect(getLocationAmbienceSounds("Sea")).toEqual(
+      Array.from({ length: 9 }, (_, i) => `/ambience/sea/sea${i + 1}.opus`)
+    )
+  })
+
+  it("getLocationAmbienceSounds returns undefined for locations without a sound", () => {
+    expect(getLocationAmbienceSounds("Shop")).toBeUndefined()
+    expect(getLocationAmbienceSounds(undefined)).toBeUndefined()
   })
 })
