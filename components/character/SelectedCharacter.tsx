@@ -71,13 +71,13 @@ const SelectedCharacter = ({
           type="button"
           aria-label="Change character"
           onClick={onChangeClick}
-          className="bg-secondary group focus-visible:ring-ring relative aspect-square w-full shrink-0 cursor-pointer overflow-hidden rounded-xl focus-visible:ring-2 focus-visible:outline-none sm:size-52"
+          className="bg-secondary group focus-visible:ring-ring relative aspect-square w-full max-w-64 shrink-0 cursor-pointer overflow-hidden rounded-xl focus-visible:ring-2 focus-visible:outline-none sm:size-52"
         >
           <Image
             src={character.image}
             alt=""
             fill
-            sizes="(min-width: 640px) 208px, 100vw"
+            sizes="(min-width: 640px) 208px, 256px"
             className="object-cover"
           />
 

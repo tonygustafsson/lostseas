@@ -13,8 +13,10 @@ import {
 import Image from "next/image"
 import Link from "next/link"
 
+import type { LeaderboardEntry } from "@/firebase/db"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
+import Leaderboard from "./Leaderboard"
 import RegistrationForm from "./RegistrationForm"
 import Screenshots from "./Screenshots"
 import SignInOptions from "./SignInOptions"
@@ -23,9 +25,10 @@ import { Button } from "./ui/button"
 
 type Props = {
   initialCharacter: CharacterCreation
+  leaderboard: LeaderboardEntry[]
 }
 
-const StartPageScreen = ({ initialCharacter }: Props) => {
+const StartPageScreen = ({ initialCharacter, leaderboard }: Props) => {
   const { data: player } = useGetPlayer()
 
   if (player) return null
@@ -83,59 +86,9 @@ const StartPageScreen = ({ initialCharacter }: Props) => {
             pirate, then earn your reputation, build a crew, command ships, and
             make your fortune across the open seas.
           </p>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            <article className="bg-card/90 border-border rounded-2xl border p-4">
-              <Compass
-                className="text-gold-light mb-4 size-5"
-                aria-hidden="true"
-              />
-              <h2 className="text-parchment font-serif text-lg">
-                Four rival nations
-              </h2>
-              <p className="text-foreground/65 mt-1 text-sm leading-5">
-                Explore 16 ports across England, France, Spain, and Holland.
-              </p>
-            </article>
-            <article className="bg-card/90 border-border rounded-2xl border p-4">
-              <Ship
-                className="text-gold-light mb-4 size-5"
-                aria-hidden="true"
-              />
-              <h2 className="text-parchment font-serif text-lg">
-                Ships &amp; crew
-              </h2>
-              <p className="text-foreground/65 mt-1 text-sm leading-5">
-                Build your fleet, recruit sailors, and take on ships at sea.
-              </p>
-            </article>
-            <article className="bg-card/90 border-border rounded-2xl border p-4">
-              <Sparkles
-                className="text-gold-light mb-4 size-5"
-                aria-hidden="true"
-              />
-              <h2 className="text-parchment font-serif text-lg">
-                Make your name
-              </h2>
-              <p className="text-foreground/65 mt-1 text-sm leading-5">
-                Earn new titles, grow your wealth, and rise through the ranks.
-              </p>
-            </article>
-            <article className="bg-card/90 border-border rounded-2xl border p-4">
-              <ShieldCheck
-                className="text-gold-light mb-4 size-5"
-                aria-hidden="true"
-              />
-              <h2 className="text-parchment font-serif text-lg">
-                Free to play
-              </h2>
-              <p className="text-foreground/65 mt-1 text-sm leading-5">
-                No ads, purchases, email address, or real name required.
-              </p>
-            </article>
-          </div>
         </section>
 
-        <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.9fr)]">
+        <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.9fr)]">
           <section
             id="register"
             aria-labelledby="register-title"
@@ -185,10 +138,30 @@ const StartPageScreen = ({ initialCharacter }: Props) => {
           </section>
         </div>
 
+        {leaderboard.length > 0 && (
+          <section
+            id="leaderboard"
+            aria-labelledby="leaderboard-title"
+            className="border-border mt-16 border-t pt-12 sm:pt-16"
+          >
+            <p className="text-gold mb-1 text-xs font-semibold tracking-widest uppercase">
+              Hall of fame
+            </p>
+            <h2
+              id="leaderboard-title"
+              className="text-parchment mb-6 font-serif text-3xl sm:text-4xl"
+            >
+              Captains of the Caribbean
+            </h2>
+
+            <Leaderboard entries={leaderboard} />
+          </section>
+        )}
+
         <section
           id="more"
           aria-labelledby="more-title"
-          className="border-border mt-16 border-t pt-12 sm:mt-32 sm:pt-16"
+          className="border-border mt-16 border-t pt-12 sm:pt-16"
         >
           <div className="max-w-3xl">
             <p className="text-gold mb-2 text-xs font-semibold tracking-widest uppercase">
@@ -202,36 +175,37 @@ const StartPageScreen = ({ initialCharacter }: Props) => {
             </h2>
             <p className="text-foreground/75 mt-4 text-lg leading-8">
               Sail between towns, hunt for treasure, trade, and take on rival
-              ships. England, France, Spain, and Holland each hold four ports to
-              discover, with their own atmosphere and imagery.
+              ships.
             </p>
           </div>
 
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <article className="bg-card/80 border-border rounded-2xl border p-6 backdrop-blur">
               <div className="bg-gold/10 text-gold-light mb-4 flex size-10 items-center justify-center rounded-xl">
                 <Compass className="size-5" aria-hidden="true" />
               </div>
               <h3 className="text-parchment font-serif text-xl">
-                Four nations
+                Four rival nations
               </h3>
               <p className="text-foreground/70 mt-2 leading-6">
-                Explore the ports and waters claimed by England, France, Spain,
-                and Holland.
+                Explore 16 ports across England, France, Spain and Holland, each
+                with its own atmosphere and imagery.
               </p>
             </article>
+
             <article className="bg-card/80 border-border rounded-2xl border p-6 backdrop-blur">
               <div className="bg-gold/10 text-gold-light mb-4 flex size-10 items-center justify-center rounded-xl">
                 <Ship className="size-5" aria-hidden="true" />
               </div>
               <h3 className="text-parchment font-serif text-xl">
-                Build your name
+                Ships, crew &amp; fame
               </h3>
               <p className="text-foreground/70 mt-2 leading-6">
-                Earn better titles, grow your crew, find stronger ships, and
-                build your fortune.
+                Recruit sailors, build your fleet, take on rival ships and rise
+                through the titles from pirate to duke.
               </p>
             </article>
+
             <article className="bg-card/80 border-border rounded-2xl border p-6 backdrop-blur">
               <div className="bg-gold/10 text-gold-light mb-4 flex size-10 items-center justify-center rounded-xl">
                 <Sparkles className="size-5" aria-hidden="true" />
@@ -240,8 +214,21 @@ const StartPageScreen = ({ initialCharacter }: Props) => {
                 Made to explore
               </h3>
               <p className="text-foreground/70 mt-2 leading-6">
-                Discover AI-created scenes, royalty-free music, and sound
-                effects that shift as your voyage unfolds.
+                AI-created scenes, royalty-free music and sound effects that
+                shift as your voyage unfolds.
+              </p>
+            </article>
+
+            <article className="bg-card/80 border-border rounded-2xl border p-6 backdrop-blur">
+              <div className="bg-gold/10 text-gold-light mb-4 flex size-10 items-center justify-center rounded-xl">
+                <ShieldCheck className="size-5" aria-hidden="true" />
+              </div>
+              <h3 className="text-parchment font-serif text-xl">
+                Free to play
+              </h3>
+              <p className="text-foreground/70 mt-2 leading-6">
+                No ads, no purchases, and no email address or real name
+                required.
               </p>
             </article>
           </div>

@@ -4,6 +4,7 @@ import GameUI from "@/components/game-ui"
 import DefaultLayout from "@/components/layouts/default"
 import FullscreenLayout from "@/components/layouts/fullscreen"
 import StartPageScreen from "@/components/StartPageScreen"
+import { getLeaderboard } from "@/firebase/db"
 import { getLoggedInPlayer } from "@/utils/app/getLoggedInPlayer"
 import { getRandomCharacter } from "@/utils/getRandomCharacter"
 
@@ -35,7 +36,10 @@ export default async function Page() {
   if (!player) {
     return (
       <FullscreenLayout>
-        <StartPageScreen initialCharacter={getRandomCharacter()} />
+        <StartPageScreen
+          initialCharacter={getRandomCharacter()}
+          leaderboard={await getLeaderboard()}
+        />
       </FullscreenLayout>
     )
   }

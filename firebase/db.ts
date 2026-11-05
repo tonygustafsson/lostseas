@@ -1,5 +1,7 @@
 import "server-only"
 
+import { getLeaderboardEntry } from "@/utils/statistics"
+
 import { adminDb } from "./firebase-admin"
 
 export const validatePlayerId = (id: string) => {
@@ -45,6 +47,7 @@ export const savePlayer = async (
   const updates: Record<string, unknown> = {}
 
   updates[`players/${player.id}`] = player
+  updates[`leaderboard/${player.id}`] = getLeaderboardEntry(player)
 
   if (resetHistory) {
     updates[`logs/${player.id}`] = null
@@ -160,4 +163,33 @@ export const saveStatistics = async (
   await adminDb.ref().update(updates)
 
   return { ...statistics, timestamp }
+}
+
+/** The public part of a player shown on the start page leaderboard */
+export type LeaderboardEntry = {
+  name: Character["name"]
+  characterId: Character["characterId"]
+  title: Title
+  nationality: Nation
+  score: number
+  day: number
+}
+
+export const LEADERBOARD_SIZE = 10
+
+/** The highest scoring captains, best first. Player ids sign players in, so they are left out. */
+export const getLeaderboard = async () => {
+  const snapshot = await adminDb
+    .ref("leaderboard")
+    .orderByChild("score")
+    .limitToLast(LEADERBOARD_SIZE)
+    .get()
+
+  if (!snapshot.exists()) {
+    return []
+  }
+
+  const entries = snapshot.val() as Record<string, LeaderboardEntry>
+
+  return Object.values(entries).sort((a, b) => b.score - a.score)
 }

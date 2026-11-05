@@ -1,6 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
-import { getLog, LOG_PAGE_SIZE, type LogEntry } from "@/firebase/db"
+import {
+  getLeaderboard,
+  getLog,
+  LEADERBOARD_SIZE,
+  LOG_PAGE_SIZE,
+  type LogEntry,
+} from "@/firebase/db"
 import { savePlayerWithStatistics } from "@/utils/db/savePlayerWithStatistics"
 
 import { createTestPlayer } from "../helpers/createTestPlayer"
@@ -35,6 +41,7 @@ describe("reset persistence", () => {
     expect(mocks.update).toHaveBeenCalledTimes(2)
     expect(mocks.update.mock.calls[0][0]).toEqual({
       [`players/${player.id}`]: player,
+      [`leaderboard/${player.id}`]: expect.objectContaining({ day: 1 }),
       [`logs/${player.id}`]: {
         "new-entry": {
           type: "beginning",
@@ -63,6 +70,7 @@ describe("reset persistence", () => {
 
     expect(mocks.update.mock.calls[0][0]).toEqual({
       [`players/${player.id}`]: player,
+      [`leaderboard/${player.id}`]: expect.any(Object),
       [`logs/${player.id}/new-entry`]: expect.objectContaining({
         type: "trade",
         message: "New entry",
@@ -147,5 +155,50 @@ describe("log book paging", () => {
     mockQuery({})
 
     expect(await getLog("player-1")).toEqual({ entries: [], hasMore: false })
+  })
+})
+
+describe("leaderboard", () => {
+  it("saves only public fields with the player", async () => {
+    const player = createTestPlayer({
+      character: { name: "Anne", title: "Captain", day: 12 },
+    })
+
+    await savePlayerWithStatistics(player)
+
+    expect(mocks.update.mock.calls[0][0][`leaderboard/${player.id}`]).toEqual({
+      name: "Anne",
+      characterId: player.character.characterId,
+      title: "Captain",
+      nationality: player.character.nationality,
+      score: expect.any(Number),
+      day: 12,
+    })
+  })
+
+  it("returns the top captains best first, without player ids", async () => {
+    const query = {
+      orderByChild: vi.fn(),
+      limitToLast: vi.fn(),
+      get: vi.fn().mockResolvedValue({
+        exists: () => true,
+        val: () => ({
+          "player-1": { name: "Low", score: 5 },
+          "player-2": { name: "High", score: 50 },
+        }),
+      }),
+    }
+    query.orderByChild.mockReturnValue(query)
+    query.limitToLast.mockReturnValue(query)
+    mocks.ref.mockReturnValue(query)
+
+    const entries = await getLeaderboard()
+
+    expect(query.orderByChild).toHaveBeenCalledWith("score")
+    expect(query.limitToLast).toHaveBeenCalledWith(LEADERBOARD_SIZE)
+    expect(entries).toEqual([
+      { name: "High", score: 50 },
+      { name: "Low", score: 5 },
+    ])
   })
 })

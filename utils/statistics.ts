@@ -1,4 +1,4 @@
-import type { StatisticsEntry } from "@/firebase/db"
+import type { LeaderboardEntry, StatisticsEntry } from "@/firebase/db"
 
 import { getMannedCannons } from "./crew"
 import { getNetWorth, getScore, getScoreBreakdown } from "./score"
@@ -54,3 +54,12 @@ export const getStatisticsSnapshot = (
     battlesLost: battles.lost,
   }
 }
+
+export const getLeaderboardEntry = (player: Player): LeaderboardEntry => ({
+  name: player.character.name,
+  characterId: player.character.characterId,
+  title: player.character.title,
+  nationality: player.character.nationality,
+  score: getScore(player),
+  day: player.character.day,
+})
