@@ -53,6 +53,16 @@ describe("location utils", () => {
       "ambience/market/market1.opus",
       "ambience/market/market2.opus",
       "ambience/market/market3.opus",
+      "ambience/market/market4.opus",
+      "ambience/market/market5.opus",
+      "ambience/market/market6.opus",
+      "ambience/market/market7.opus",
+      "ambience/market/market8.opus",
+      "ambience/market/market9.opus",
+      "ambience/market/market10.opus",
+      "ambience/market/market11.opus",
+      "ambience/market/market12.opus",
+      "ambience/market/market13.opus",
     ])
   })
 
@@ -70,6 +80,10 @@ describe("location utils", () => {
       "ambience/shipyard/shipyard1.opus",
       "ambience/shipyard/shipyard2.opus",
       "ambience/shipyard/shipyard3.opus",
+      "ambience/shipyard/shipyard4.opus",
+      "ambience/shipyard/shipyard5.opus",
+      "ambience/shipyard/shipyard6.opus",
+      "ambience/shipyard/shipyard7.opus",
     ])
   })
 

@@ -56,7 +56,7 @@ export const LOCATION_AMBIENCE_SOUNDS: Partial<
     (_, i) => `ambience/harbor/harbor${i + 1}.opus`
   ),
   Market: Array.from(
-    { length: 3 },
+    { length: 13 },
     (_, i) => `ambience/market/market${i + 1}.opus`
   ),
   Tavern: Array.from(
@@ -64,7 +64,7 @@ export const LOCATION_AMBIENCE_SOUNDS: Partial<
     (_, i) => `ambience/tavern/tavern${i + 1}.opus`
   ),
   Shipyard: Array.from(
-    { length: 3 },
+    { length: 7 },
     (_, i) => `ambience/shipyard/shipyard${i + 1}.opus`
   ),
   Sea: Array.from({ length: 9 }, (_, i) => `ambience/sea/sea${i + 1}.opus`),
