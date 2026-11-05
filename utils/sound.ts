@@ -20,6 +20,7 @@ export const SOUND_EFFECT_VARIANTS: Partial<Record<SoundEffect, number>> = {
   frustration: 8,
   drinking: 8,
   hammer: 9,
+  fanfare: 8,
   victory: 14,
   "victory-talk": 14,
   defeat: 11,
