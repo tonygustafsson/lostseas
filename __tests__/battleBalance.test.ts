@@ -50,19 +50,19 @@ describe("sea battle balance", () => {
     vi.restoreAllMocks()
   })
 
-  it("wins about 75% of battles on average when always firing", () => {
+  it("wins about 83% of battles on average when always firing", () => {
     const rates = [...winRates.values()]
     const average = rates.reduce((a, b) => a + b) / rates.length
 
-    expect(average).toBeGreaterThan(0.72)
-    expect(average).toBeLessThan(0.78)
+    expect(average).toBeGreaterThan(0.8)
+    expect(average).toBeLessThan(0.86)
   })
 
   it.each(LEVELS)(
-    "keeps %i manned cannons between 68% and 88% wins",
+    "keeps %i manned cannons between 75% and 93% wins",
     (level) => {
-      expect(winRates.get(level)).toBeGreaterThan(0.68)
-      expect(winRates.get(level)).toBeLessThan(0.88)
+      expect(winRates.get(level)).toBeGreaterThan(0.75)
+      expect(winRates.get(level)).toBeLessThan(0.93)
     }
   )
 })
