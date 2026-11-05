@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
 import { APOTHECARY_REMEDIES, type Remedy } from "@/constants/apothecary"
 import { MERCHANDISE } from "@/constants/merchandise"
@@ -9,11 +8,11 @@ import apiRequest from "@/utils/apiRequest"
 import { getRemedyResult } from "@/utils/apothecary"
 import { formatGold } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
+import { playSoundEffect } from "@/utils/sound"
 
 export const useMarket = () => {
   const queryClient = useQueryClient()
   const setToast = useToasts((s) => s.setToast)
-  const { playSoundEffect } = useSound()
 
   const handleError = (
     title: string,

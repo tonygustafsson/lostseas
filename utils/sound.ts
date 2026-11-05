@@ -1,4 +1,4 @@
-import type { SoundEffect } from "@/app/stores/sound"
+import useSound, { type SoundEffect } from "@/app/stores/sound"
 
 export const TOWN_SONGS = Array.from(
   { length: 10 },
@@ -65,4 +65,14 @@ export const getSoundEffectSrcs = (
   }
 
   return srcs
+}
+
+export const playSoundEffect = (soundEffect: SoundEffect) => {
+  if (!useSound.getState().soundEffectsOn) {
+    return
+  }
+
+  getSoundEffectSrcs(soundEffect).forEach((src) => {
+    new Audio(src).play().catch(console.error)
+  })
 }

@@ -32,7 +32,6 @@ export interface SoundState {
   musicOn: boolean
   ambienceOn: boolean
   soundEffectsOn: boolean
-  soundEffect?: SoundEffect
   /** Increases every time the player asks for the next music track */
   nextTrackRequest: number
   /** True while the current track fades out before the next one starts */
@@ -40,7 +39,6 @@ export interface SoundState {
   setMusic: (musicOn: boolean) => void
   setAmbience: (ambienceOn: boolean) => void
   setSoundEffects: (soundEffectsOn: boolean) => void
-  playSoundEffect: (soundEffect?: SoundEffect) => void
   nextTrack: () => void
   setChangingTrack: (changingTrack: boolean) => void
 }
@@ -49,7 +47,6 @@ const useSound = create<SoundState>((set) => ({
   musicOn: false,
   ambienceOn: false,
   soundEffectsOn: false,
-  soundEffect: undefined,
   nextTrackRequest: 0,
   changingTrack: false,
 
@@ -70,13 +67,6 @@ const useSound = create<SoundState>((set) => ({
     setCookie(SOUND_EFFECTS_STATE_COOKIE_NAME, soundEffectsOn, {
       expires: COOKIE_EXPIRE_TIME,
     })
-  },
-
-  playSoundEffect: (soundEffect?: SoundEffect) => {
-    set({ soundEffect })
-
-    // Reset so the same sound can be played again shortly after
-    setTimeout(() => set({ soundEffect: undefined }), 100)
   },
 
   nextTrack: () =>

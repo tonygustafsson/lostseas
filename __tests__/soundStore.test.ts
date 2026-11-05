@@ -19,15 +19,12 @@ describe("sound store", () => {
       musicOn: false,
       ambienceOn: false,
       soundEffectsOn: false,
-      soundEffect: undefined,
       nextTrackRequest: 0,
       changingTrack: false,
     })
-    vi.useFakeTimers()
   })
 
   afterEach(() => {
-    vi.useRealTimers()
     vi.clearAllMocks()
   })
 
@@ -79,13 +76,5 @@ describe("sound store", () => {
 
     useSound.getState().setChangingTrack(false)
     expect(useSound.getState().changingTrack).toBe(false)
-  })
-
-  it("plays and then resets soundEffect", () => {
-    useSound.getState().playSoundEffect("transaction")
-    expect(useSound.getState().soundEffect).toBe("transaction")
-
-    vi.advanceTimersByTime(150)
-    expect(useSound.getState().soundEffect).toBeUndefined()
   })
 })

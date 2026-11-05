@@ -31,8 +31,8 @@ vi.mock("@tanstack/react-query", () => ({
   useQueryClient: () => mocks.queryClient,
 }))
 
-vi.mock("@/app/stores/sound", () => ({
-  default: () => ({ playSoundEffect: vi.fn() }),
+vi.mock("@/utils/sound", () => ({
+  playSoundEffect: vi.fn(),
 }))
 
 vi.mock("@/app/stores/toasts", () => ({

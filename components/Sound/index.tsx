@@ -9,7 +9,7 @@ import {
 } from "@/constants/system"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getLocationAmbienceSounds } from "@/utils/location"
-import { getSoundEffectSrcs, SEA_SONGS, TOWN_SONGS } from "@/utils/sound"
+import { SEA_SONGS, TOWN_SONGS } from "@/utils/sound"
 
 const isSongForLocation = (src: string | undefined, location?: string) =>
   Boolean(src?.includes(location === "Sea" ? "/music/sea/" : "/music/town/"))
@@ -48,8 +48,6 @@ const Sound = () => {
   const {
     musicOn,
     ambienceOn,
-    soundEffectsOn,
-    soundEffect,
     nextTrackRequest,
     setMusic,
     setAmbience,
@@ -159,14 +157,6 @@ const Sound = () => {
 
     if (musicOn) playRandomSong()
   }, [nextTrackRequest, musicOn, playRandomSong])
-
-  useEffect(() => {
-    if (!soundEffectsOn || !soundEffect) return
-
-    getSoundEffectSrcs(soundEffect).forEach((src) => {
-      new Audio(src).play().catch(console.error)
-    })
-  }, [soundEffect, soundEffectsOn])
 
   useEffect(() => {
     if (!musicPlayer || !musicOn) return

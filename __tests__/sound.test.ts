@@ -1,6 +1,11 @@
-import { describe, expect, it } from "vitest"
+import { afterEach, describe, expect, it, vi } from "vitest"
 
-import { getSoundEffectFiles, getSoundEffectSrcs } from "@/utils/sound"
+import useSound from "@/app/stores/sound"
+import {
+  getSoundEffectFiles,
+  getSoundEffectSrcs,
+  playSoundEffect,
+} from "@/utils/sound"
 
 import { createSeededRandom } from "./helpers/seededRandom"
 
@@ -52,5 +57,39 @@ describe("sound utils", () => {
     ).filter(Boolean).length
 
     expect(withTalk / rolls).toBeCloseTo(1 / 3, 1)
+  })
+})
+
+describe("playSoundEffect", () => {
+  const play = vi.fn(() => Promise.resolve())
+
+  vi.stubGlobal(
+    "Audio",
+    vi.fn(function () {
+      return { play }
+    })
+  )
+
+  afterEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it("plays every effect when called back to back", () => {
+    useSound.setState({ soundEffectsOn: true })
+
+    playSoundEffect("cheers")
+    playSoundEffect("cheers")
+    playSoundEffect("hurt")
+
+    expect(Audio).toHaveBeenCalledTimes(3)
+    expect(play).toHaveBeenCalledTimes(3)
+  })
+
+  it("stays silent when sound effects are off", () => {
+    useSound.setState({ soundEffectsOn: false })
+
+    playSoundEffect("cheers")
+
+    expect(Audio).not.toHaveBeenCalled()
   })
 })

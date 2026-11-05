@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
 import { PLAYER_QUERY_KEY } from "@/constants/system"
 import { TAVERN_ITEMS } from "@/constants/tavern"
@@ -8,11 +7,11 @@ import apiRequest from "@/utils/apiRequest"
 import { increaseCrewMood } from "@/utils/crew"
 import { formatGold } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
+import { playSoundEffect } from "@/utils/sound"
 
 export const useTavern = () => {
   const queryClient = useQueryClient()
   const setToast = useToasts((s) => s.setToast)
-  const { playSoundEffect } = useSound()
 
   const handleError = (
     title: string,

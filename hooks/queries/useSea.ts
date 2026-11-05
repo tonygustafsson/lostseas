@@ -1,12 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import useSound from "@/app/stores/sound"
 import { PLAYER_QUERY_KEY } from "@/constants/system"
 import apiRequest from "@/utils/apiRequest"
+import { playSoundEffect } from "@/utils/sound"
 
 export const useSea = () => {
   const queryClient = useQueryClient()
-  const { playSoundEffect } = useSound()
 
   const { mutate: startJourney, isPending: isStartingJourney } = useMutation({
     mutationFn: (data: { town: Town }) =>

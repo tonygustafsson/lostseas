@@ -1,15 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import useSound from "@/app/stores/sound"
 import { useToasts } from "@/app/stores/toasts"
 import { PLAYER_QUERY_KEY } from "@/constants/system"
 import apiRequest from "@/utils/apiRequest"
 import { getGoldEffectiveness, getMedicineEffectiveness } from "@/utils/crew"
 import { patchDeep } from "@/utils/patchDeep"
+import { playSoundEffect } from "@/utils/sound"
 
 export const useCrew = () => {
   const queryClient = useQueryClient()
-  const { playSoundEffect } = useSound()
   const setToast = useToasts((s) => s.setToast)
 
   const handleError = (
