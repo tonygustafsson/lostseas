@@ -52,7 +52,7 @@ const SoundButton = () => {
                 key={name}
                 className={cn(
                   "size-2 rounded-full transition-colors",
-                  on ? "bg-green-300" : "bg-red-300"
+                  on ? "bg-success" : "bg-error"
                 )}
               />
             ))}

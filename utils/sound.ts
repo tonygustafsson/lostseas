@@ -2,12 +2,12 @@ import useSound, { type SoundEffect } from "@/app/stores/sound"
 
 export const TOWN_SONGS = Array.from(
   { length: 10 },
-  (_, i) => `music/town/song${i + 1}.opus`
+  (_, i) => `/music/town/song${i + 1}.opus`
 )
 
 export const SEA_SONGS = Array.from(
   { length: 8 },
-  (_, i) => `music/sea/song${i + 1}.opus`
+  (_, i) => `/music/sea/song${i + 1}.opus`
 )
 
 // Effects with several recordings, one is picked at random each time
@@ -36,12 +36,12 @@ export const getSoundEffectFiles = (soundEffect: SoundEffect) => {
   const variants = SOUND_EFFECT_VARIANTS[soundEffect]
 
   if (!variants) {
-    return [`soundfx/${soundEffect}.opus`]
+    return [`/soundfx/${soundEffect}.opus`]
   }
 
   return Array.from(
     { length: variants },
-    (_, i) => `soundfx/${soundEffect}/${soundEffect}${i + 1}.opus`
+    (_, i) => `/soundfx/${soundEffect}/${soundEffect}${i + 1}.opus`
   )
 }
 

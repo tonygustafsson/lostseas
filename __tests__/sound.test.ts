@@ -18,13 +18,13 @@ describe("sound utils", () => {
     const files = getSoundEffectFiles("victory")
 
     expect(files).toHaveLength(14)
-    expect(files[0]).toBe("soundfx/victory/victory1.opus")
-    expect(files[13]).toBe("soundfx/victory/victory14.opus")
+    expect(files[0]).toBe("/soundfx/victory/victory1.opus")
+    expect(files[13]).toBe("/soundfx/victory/victory14.opus")
   })
 
   it("plays one file for most effects", () => {
     expect(getSoundEffectSrcs("ship-meeting", sequence(0))).toEqual([
-      "soundfx/ship-meeting/ship-meeting1.opus",
+      "/soundfx/ship-meeting/ship-meeting1.opus",
     ])
   })
 
@@ -32,26 +32,26 @@ describe("sound utils", () => {
     expect(
       getSoundEffectSrcs("victory-with-speech", sequence(0, 0.99))
     ).toEqual([
-      "soundfx/victory/victory1.opus",
-      "soundfx/victory-speech/victory-speech14.opus",
+      "/soundfx/victory/victory1.opus",
+      "/soundfx/victory-speech/victory-speech14.opus",
     ])
   })
 
   it("plays the crew and the captain's line together for defeat with speech", () => {
     expect(getSoundEffectSrcs("defeat-with-speech", sequence(0.99, 0))).toEqual(
       [
-        "soundfx/defeat/defeat11.opus",
-        "soundfx/defeat-speech/defeat-speech1.opus",
+        "/soundfx/defeat/defeat11.opus",
+        "/soundfx/defeat-speech/defeat-speech1.opus",
       ]
     )
   })
 
   it("never adds the captain's line to a plain victory or defeat", () => {
     expect(getSoundEffectSrcs("victory", sequence(0, 0))).toEqual([
-      "soundfx/victory/victory1.opus",
+      "/soundfx/victory/victory1.opus",
     ])
     expect(getSoundEffectSrcs("defeat", sequence(0, 0))).toEqual([
-      "soundfx/defeat/defeat1.opus",
+      "/soundfx/defeat/defeat1.opus",
     ])
   })
 })

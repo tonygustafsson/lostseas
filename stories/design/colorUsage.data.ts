@@ -11,7 +11,7 @@ export type ColorUsage = {
   files: Record<string, number>
 }
 
-export const scannedAt = "2026-11-04"
+export const scannedAt = "2026-11-05"
 
 // Opacity applied to whole elements (opacity-* classes and inline styles)
 // prettier-ignore
@@ -199,7 +199,7 @@ export const colorUsage: ColorUsage[] = [
     "name": "error",
     "token": "--color-error",
     "css": "var(--color-error)",
-    "count": 56,
+    "count": 57,
     "variants": {
       "/15": 2,
       "/40": 7,
@@ -209,7 +209,7 @@ export const colorUsage: ColorUsage[] = [
       "/30": 2
     },
     "utilities": {
-      "bg": 15,
+      "bg": 16,
       "text": 30,
       "border": 7,
       "shadow": 1,
@@ -238,6 +238,7 @@ export const colorUsage: ColorUsage[] = [
       "components/settings/ResetGame.tsx": 1,
       "components/ships/ShipActions.tsx": 1,
       "components/ships/ShipHealthBadge.tsx": 2,
+      "components/Sound/SoundButton.tsx": 1,
       "components/TextField.tsx": 1,
       "components/ui/button.tsx": 8,
       "components/ui/sonner.tsx": 1
@@ -299,7 +300,7 @@ export const colorUsage: ColorUsage[] = [
     "name": "success",
     "token": "--color-success",
     "css": "var(--color-success)",
-    "count": 50,
+    "count": 51,
     "variants": {
       "/15": 2,
       "/10": 10,
@@ -310,7 +311,7 @@ export const colorUsage: ColorUsage[] = [
       "/50": 1
     },
     "utilities": {
-      "bg": 17,
+      "bg": 18,
       "text": 22,
       "border": 6,
       "shadow": 2,
@@ -335,6 +336,7 @@ export const colorUsage: ColorUsage[] = [
       "components/RadialProgressBar.tsx": 1,
       "components/settings/AddPasskeyButton.tsx": 1,
       "components/ships/ShipHealthBadge.tsx": 2,
+      "components/Sound/SoundButton.tsx": 1,
       "components/ui/button.tsx": 8,
       "components/ui/sonner.tsx": 1,
       "components/WelcomeModal/WelcomeNewUser.tsx": 1
@@ -1254,34 +1256,6 @@ export const colorUsage: ColorUsage[] = [
     },
     "files": {
       "components/menu/StatCard.tsx": 1
-    }
-  },
-  {
-    "kind": "palette",
-    "name": "green-300",
-    "token": "--color-green-300",
-    "css": "var(--color-green-300)",
-    "count": 1,
-    "variants": {},
-    "utilities": {
-      "bg": 1
-    },
-    "files": {
-      "components/Sound/SoundButton.tsx": 1
-    }
-  },
-  {
-    "kind": "palette",
-    "name": "red-300",
-    "token": "--color-red-300",
-    "css": "var(--color-red-300)",
-    "count": 1,
-    "variants": {},
-    "utilities": {
-      "bg": 1
-    },
-    "files": {
-      "components/Sound/SoundButton.tsx": 1
     }
   },
   {

@@ -14,6 +14,7 @@ import { SEA_SONGS, TOWN_SONGS } from "@/utils/sound"
 const isSongForLocation = (src: string | undefined, location?: string) =>
   Boolean(src?.includes(location === "Sea" ? "/music/sea/" : "/music/town/"))
 
+const MUSIC_VOLUME = 0.8
 const LOCATION_SOUND_VOLUME = 0.75
 
 const fadeIntervals = new WeakMap<HTMLAudioElement, NodeJS.Timeout>()
@@ -61,70 +62,64 @@ const Sound = () => {
     musicPlayer.current = typeof Audio !== "undefined" ? new Audio() : null
   }
   const playMusic = useCallback(() => {
-    if (!musicPlayer) return
-
     musicPlayer.current?.play().catch(() => {
       // Autoplay blocked — will resume on first user interaction
     })
   }, [musicPlayer])
 
-  const fadeOutMusic = () =>
-    new Promise((resolve) => {
-      if (!musicPlayer) {
-        resolve(true)
+  // A newer fade on the same player cancels this one, so its promise never
+  // resolves and the request that started it is dropped
+  const fadeOutMusic = (audio: HTMLAudioElement) =>
+    new Promise<void>((resolve) => {
+      if (!audio.src || audio.paused) {
+        resolve()
         return
       }
 
-      if (musicPlayer.current?.src && !musicPlayer.current.paused) {
-        const fadeOutInterval = setInterval(() => {
-          const currentVolume = musicPlayer.current?.volume ?? 0
-
-          if (musicPlayer.current && currentVolume >= 0.05) {
-            musicPlayer.current.volume -= 0.05
-          } else {
-            if (musicPlayer.current) {
-              musicPlayer.current.volume = 0
-            }
-            clearInterval(fadeOutInterval)
-            resolve(true)
-          }
-        }, 100)
-      } else {
-        resolve(true)
-      }
+      fadeTo(audio, 0, resolve)
     })
 
   const latestSongRequest = useRef(0)
 
   const playRandomSong = useCallback(async () => {
-    if (!musicPlayer.current) return
+    const audio = musicPlayer.current
+
+    if (!audio) {
+      return
+    }
 
     // A newer request (like changing location mid-fade) takes over this one
     const request = ++latestSongRequest.current
 
     setChangingTrack(true)
-    await fadeOutMusic()
-    if (request !== latestSongRequest.current) return
+    await fadeOutMusic(audio)
+
+    if (request !== latestSongRequest.current) {
+      return
+    }
 
     setChangingTrack(false)
-    if (!useSound.getState().musicOn) return
+
+    // Music was turned off mid-fade, so leave the song ready to resume audibly
+    if (!useSound.getState().musicOn) {
+      audio.volume = MUSIC_VOLUME
+      return
+    }
 
     const songs = location === "Sea" ? SEA_SONGS : TOWN_SONGS
-    const otherSongs = songs.filter(
-      (song) => !musicPlayer.current?.src.endsWith(song)
-    )
+    const otherSongs = songs.filter((song) => !audio.src.endsWith(song))
     const randomSong = otherSongs[Math.floor(Math.random() * otherSongs.length)]
 
-    if (musicPlayer.current) {
-      musicPlayer.current.src = randomSong
-      musicPlayer.current.volume = 0.8
-    }
+    audio.src = randomSong
+    audio.volume = MUSIC_VOLUME
 
     playMusic()
   }, [musicPlayer, location, playMusic, setChangingTrack])
 
   useEffect(() => {
-    if (!musicPlayer.current) return
+    if (!musicPlayer.current) {
+      return
+    }
 
     const player = musicPlayer.current
 
@@ -136,8 +131,6 @@ const Sound = () => {
   }, [musicOn, musicPlayer, playRandomSong])
 
   useEffect(() => {
-    if (!musicPlayer) return
-
     if (!musicOn) {
       musicPlayer.current?.pause()
     } else if (isSongForLocation(musicPlayer.current?.src, location)) {
@@ -151,18 +144,26 @@ const Sound = () => {
   const handledTrackRequest = useRef(nextTrackRequest)
 
   useEffect(() => {
-    if (nextTrackRequest === handledTrackRequest.current) return
+    if (nextTrackRequest === handledTrackRequest.current) {
+      return
+    }
 
     handledTrackRequest.current = nextTrackRequest
 
-    if (musicOn) playRandomSong()
+    if (musicOn) {
+      playRandomSong()
+    }
   }, [nextTrackRequest, musicOn, playRandomSong])
 
   useEffect(() => {
-    if (!musicPlayer || !musicOn) return
+    if (!musicOn) {
+      return
+    }
 
     const handleClick = () => {
-      if (!musicPlayer.current?.paused) return
+      if (!musicPlayer.current?.paused) {
+        return
+      }
 
       if (isSongForLocation(musicPlayer.current?.src, location)) {
         playMusic()
@@ -183,10 +184,14 @@ const Sound = () => {
 
   // Changing location fades out the old sound while the new one fades in
   useEffect(() => {
-    if (!locationAmbienceSounds) return
+    if (!locationAmbienceSounds) {
+      return
+    }
 
     const audio = new Audio(
-      `/${locationAmbienceSounds[Math.floor(Math.random() * locationAmbienceSounds.length)]}`
+      locationAmbienceSounds[
+        Math.floor(Math.random() * locationAmbienceSounds.length)
+      ]
     )
     audio.loop = true
     audio.volume = 0
@@ -203,7 +208,9 @@ const Sound = () => {
     play()
 
     const handleClick = () => {
-      if (audio.paused) play()
+      if (audio.paused) {
+        play()
+      }
     }
 
     document.addEventListener("click", handleClick)
@@ -218,7 +225,9 @@ const Sound = () => {
   const hasPlayer = Boolean(player)
 
   useEffect(() => {
-    if (!hasPlayer) return
+    if (!hasPlayer) {
+      return
+    }
 
     const musicCookieValue = getCookie(MUSIC_STATE_COOKIE_NAME)
     const ambienceCookieValue = getCookie(AMBIENCE_STATE_COOKIE_NAME)
