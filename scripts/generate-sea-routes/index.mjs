@@ -11,8 +11,7 @@ const MASK_PATH = "public/img/map/spanish-main-mask.png"
 const OUTPUT_PATH = "constants/seaRoutes.json"
 
 const CELL_SIZE = 3
-const COAST_MARGIN = 2
-const TOWN_ICON_SIZE = 20
+const COAST_MARGIN = 1
 
 // Minimal decoder for 8-bit, non-interlaced RGBA PNGs
 const decodePng = (buffer) => {
@@ -87,13 +86,10 @@ const routes = {}
 
 for (let i = 0; i < towns.length; i++) {
   for (let j = i + 1; j < towns.length; j++) {
-    const from = TOWNS[towns[i]].map
-    const to = TOWNS[towns[j]].map
-
     const route = computeSeaRoute(
       grids,
-      { x: from.x + TOWN_ICON_SIZE / 2, y: from.y + TOWN_ICON_SIZE / 2 },
-      { x: to.x + TOWN_ICON_SIZE / 2, y: to.y + TOWN_ICON_SIZE / 2 }
+      TOWNS[towns[i]].map.harbor,
+      TOWNS[towns[j]].map.harbor
     )
 
     if (!route) {

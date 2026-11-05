@@ -274,20 +274,42 @@ const simplifyByLineOfSight = (grid: WaterGrid, points: Point[]) => {
   return result
 }
 
+// Moves `to` closer to `from` so it is at most `length` away
+const limitDistance = (from: Point, to: Point, length: number) => {
+  const distance = Math.hypot(to.x - from.x, to.y - from.y)
+
+  if (distance <= length) {
+    return to
+  }
+
+  const scale = length / distance
+
+  return {
+    x: from.x + (to.x - from.x) * scale,
+    y: from.y + (to.y - from.y) * scale,
+  }
+}
+
 const smoothPath = (points: Point[], spacing = 4) => {
   if (points.length <= 2) return points
 
   const result: Point[] = []
 
   for (let i = 0; i < points.length - 1; i++) {
-    const p0 = points[Math.max(0, i - 1)]
     const p1 = points[i]
     const p2 = points[i + 1]
-    const p3 = points[Math.min(points.length - 1, i + 2)]
-    const samples = Math.max(
-      1,
-      Math.ceil(Math.hypot(p2.x - p1.x, p2.y - p1.y) / spacing)
+    const segment = Math.hypot(p2.x - p1.x, p2.y - p1.y)
+
+    // A long leg next to a short one would bend the short one so much that
+    // it overshoots and loops back, so far neighbours only pull as much as
+    // a neighbour at the segment's own length
+    const p0 = limitDistance(p1, points[Math.max(0, i - 1)], segment)
+    const p3 = limitDistance(
+      p2,
+      points[Math.min(points.length - 1, i + 2)],
+      segment
     )
+    const samples = Math.max(1, Math.ceil(segment / spacing))
 
     for (let s = 0; s < samples; s++) {
       const t = s / samples

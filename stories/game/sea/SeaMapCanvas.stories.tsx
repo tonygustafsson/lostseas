@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { useState } from "react"
+import { type ComponentProps, useState } from "react"
 import { fn } from "storybook/test"
 
 import DestinationConfirm from "@/components/Map/DestinationConfirm"
@@ -60,14 +60,46 @@ export const InTown: Story = {
   args: { currentTown: "Havana", onSelectTown: fn() },
 }
 
-export const AtSea: Story = {
-  args: {
-    journey: {
-      origin: "Havana",
-      destination: "Barbados",
-      day: 3,
-      totalDays: 6,
-    },
+// Each town icon swapped for a dot at the town's location, where the bottom
+// of its icon stands, to check town positions against the map
+export const TownPositions: Story = {
+  args: InTown.args,
+  render: (args) => (
+    <div className="[&_button]:after:bg-error [&_button]:after:absolute [&_button]:after:bottom-1.5 [&_button]:after:left-1/2 [&_button]:after:size-1 [&_button]:after:-translate-x-1/2 [&_button]:after:translate-y-1/2 [&_button]:after:rounded-full [&_button]:after:content-[''] [&_button_img]:hidden">
+      <SeaMapCanvas {...args} />
+    </div>
+  ),
+}
+
+type AtSeaArgs = ComponentProps<typeof SeaMapCanvas> & {
+  origin: Town
+  destination: Town
+  day: number
+}
+
+// Pick any two towns and step through the days to watch the ship sail
+export const AtSea: StoryObj<AtSeaArgs> = {
+  args: { origin: "Havana", destination: "Barbados", day: 3 },
+  argTypes: {
+    origin: { control: "select", options: towns },
+    destination: { control: "select", options: towns },
+    day: { control: { type: "number", min: 1 } },
+    journey: { table: { disable: true } },
+  },
+  render: ({ origin, destination, day, ...args }) => {
+    const totalDays = TOWNS[origin].map.distanceTo[destination] ?? 1
+
+    return (
+      <SeaMapCanvas
+        {...args}
+        journey={{
+          origin,
+          destination,
+          day: Math.min(Math.max(day, 1), totalDays),
+          totalDays,
+        }}
+      />
+    )
   },
 }
 
@@ -81,7 +113,8 @@ export const LimitedSupplies: Story = {
 }
 
 // The ship stays put instead of sailing towards today's position
-export const Paused: Story = {
+export const Paused: StoryObj<AtSeaArgs> = {
+  ...AtSea,
   args: { ...AtSea.args, isPaused: true },
 }
 

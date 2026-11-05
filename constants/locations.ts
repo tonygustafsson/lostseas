@@ -53,6 +53,9 @@ export type TownLocations = Record<
       x: number
       y: number
       textAlign?: "bottom" | "right"
+      // Open water next to the town, where sea routes start and end and the
+      // ship docks
+      harbor: { x: number; y: number }
       distanceTo: Record<Town, number>
     }
   }
@@ -247,6 +250,7 @@ export const TOWNS: TownLocations = {
       x: 388,
       y: 47,
       textAlign: "bottom",
+      harbor: { x: 407, y: 62 },
       distanceTo: {
         "Charles Towne": 0,
         Biloxi: DISTANCES.CHARLES_TOWNE_BILOXI,
@@ -316,8 +320,9 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 779,
-      y: 387,
+      x: 778,
+      y: 393,
+      harbor: { x: 782, y: 407 },
       distanceTo: {
         Barbados: 0,
         Martinique: DISTANCES.BARBADOS_MARTINIQUE,
@@ -388,7 +393,8 @@ export const TOWNS: TownLocations = {
     },
     map: {
       x: 452,
-      y: 306,
+      y: 313,
+      harbor: { x: 461, y: 332 },
       distanceTo: {
         "Port Royale": 0,
         Havana: DISTANCES.PORT_ROYALE_HAVANA,
@@ -458,9 +464,9 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 207,
-      y: 303,
-      textAlign: "right",
+      x: 214,
+      y: 308,
+      harbor: { x: 242, y: 308 },
       distanceTo: {
         Belize: 0,
         "Villa Hermosa": DISTANCES.BELIZE_VILLA_HERMOSA,
@@ -530,8 +536,9 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 598,
-      y: 262,
+      x: 594,
+      y: 270,
+      harbor: { x: 593, y: 275 },
       distanceTo: {
         Tortuga: 0,
         Leogane: DISTANCES.TORTUGA_LEOGANE,
@@ -601,8 +608,9 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 537,
-      y: 300,
+      x: 524,
+      y: 307,
+      harbor: { x: 533, y: 323 },
       distanceTo: {
         Leogane: 0,
         "Port Royale": DISTANCES.LEOGANE_PORT_ROYALE,
@@ -672,9 +680,10 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 752,
-      y: 353,
+      x: 749,
+      y: 347,
       textAlign: "right",
+      harbor: { x: 752, y: 362 },
       distanceTo: {
         Martinique: 0,
         "St. Eustatius": DISTANCES.MARTINIQUE_ST_EUSTATIUS,
@@ -745,7 +754,8 @@ export const TOWNS: TownLocations = {
     },
     map: {
       x: 259,
-      y: 68,
+      y: 72,
+      harbor: { x: 269, y: 92 },
       distanceTo: {
         Biloxi: 0,
         "Charles Towne": DISTANCES.CHARLES_TOWNE_BILOXI,
@@ -815,8 +825,9 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 382,
-      y: 459,
+      x: 374,
+      y: 467,
+      harbor: { x: 374, y: 476 },
       distanceTo: {
         Panama: 0,
         Curacao: DISTANCES.PANAMA_CURACAO,
@@ -887,7 +898,8 @@ export const TOWNS: TownLocations = {
     },
     map: {
       x: 351,
-      y: 204,
+      y: 213,
+      harbor: { x: 374, y: 218 },
       distanceTo: {
         Havana: 0,
         Biloxi: DISTANCES.BILOXI_HAVANA,
@@ -958,7 +970,8 @@ export const TOWNS: TownLocations = {
     },
     map: {
       x: 133,
-      y: 303,
+      y: 313,
+      harbor: { x: 155, y: 314 },
       distanceTo: {
         "Villa Hermosa": 0,
         Belize: DISTANCES.BELIZE_VILLA_HERMOSA,
@@ -1029,7 +1042,8 @@ export const TOWNS: TownLocations = {
     },
     map: {
       x: 661,
-      y: 283,
+      y: 296,
+      harbor: { x: 683, y: 296 },
       distanceTo: {
         "San Juan": 0,
         "St. Martin": DISTANCES.SAN_JUAN_ST_MARTIN,
@@ -1099,8 +1113,9 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 610,
-      y: 429,
+      x: 607,
+      y: 439,
+      harbor: { x: 617, y: 431 },
       distanceTo: {
         Bonaire: 0,
         Curacao: DISTANCES.BONAIRE_CURACAO,
@@ -1170,8 +1185,9 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 558,
-      y: 405,
+      x: 561,
+      y: 419,
+      harbor: { x: 560, y: 431 },
       distanceTo: {
         Curacao: 0,
         Bonaire: DISTANCES.BONAIRE_CURACAO,
@@ -1241,9 +1257,10 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 720,
-      y: 301,
+      x: 715,
+      y: 308,
       textAlign: "right",
+      harbor: { x: 719, y: 323 },
       distanceTo: {
         "St. Martin": 0,
         "St. Eustatius": DISTANCES.ST_MARTIN_ST_EUSTATIUS,
@@ -1313,9 +1330,10 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 741,
-      y: 327,
+      x: 746,
+      y: 333,
       textAlign: "right",
+      harbor: { x: 749, y: 347 },
       distanceTo: {
         "St. Eustatius": 0,
         "St. Martin": DISTANCES.ST_MARTIN_ST_EUSTATIUS,

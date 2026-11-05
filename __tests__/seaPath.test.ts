@@ -1,10 +1,14 @@
 import { describe, expect, it } from "vitest"
 
+import { TOWN_ANCHOR_SIZE, TOWN_ICON_SIZE } from "@/components/Map/constants"
 import {
+  getDrawnRoute,
   getJourneyOrigin,
   getRouteLength,
   getSeaRoute,
+  getTownIconCentre,
   splitRoute,
+  stopAtTownIcon,
 } from "@/components/Map/seaRoutes"
 import { TOWNS } from "@/constants/locations"
 import {
@@ -91,9 +95,58 @@ describe("seaRoutes", () => {
   it("has a precalculated route between every pair of towns", () => {
     for (const from of towns) {
       for (const to of towns) {
-        if (from !== to) expect(getSeaRoute(from, to)).not.toBeNull()
+        if (from !== to) {
+          expect(getSeaRoute(from, to)).not.toBeNull()
+        }
       }
     }
+  })
+
+  it("draws every route from the edge of one town icon to the other", () => {
+    const half = TOWN_ICON_SIZE / 2
+    // How far a point is outside the icon, 0 on its edge
+    const distanceOutside = (town: Town, point: { x: number; y: number }) => {
+      const { x, y } = TOWNS[town].map
+      const centreX = x + TOWN_ANCHOR_SIZE / 2
+      const centreY = y + TOWN_ANCHOR_SIZE / 2 - half
+
+      return Math.max(
+        Math.abs(point.x - centreX) - half,
+        Math.abs(point.y - centreY) - half
+      )
+    }
+
+    for (const from of towns) {
+      for (const to of towns) {
+        if (from === to) {
+          continue
+        }
+
+        const route = getDrawnRoute(from, to)!
+
+        expect(Math.abs(distanceOutside(from, route[0]))).toBeLessThan(0.1)
+        expect(Math.abs(distanceOutside(to, route.at(-1)!))).toBeLessThan(0.1)
+
+        for (const point of route.slice(1, -1)) {
+          expect(distanceOutside(to, point)).toBeGreaterThan(0)
+        }
+      }
+    }
+  })
+
+  it("stops a travelled route at the town icon only once it reaches it", () => {
+    const town = towns[0]
+    const centre = getTownIconCentre(town)
+    const away = { x: centre.x + 40, y: centre.y }
+    const nearby = { x: centre.x + 20, y: centre.y }
+    const beyond = { x: centre.x - 20, y: centre.y }
+
+    expect(stopAtTownIcon([away, nearby], town)).toEqual([away, nearby])
+
+    const arrived = stopAtTownIcon([away, centre, beyond], town)
+
+    expect(arrived.at(-1)!.x).toBeCloseTo(centre.x + TOWN_ICON_SIZE / 2, 1)
+    expect(arrived).toHaveLength(2)
   })
 
   it("returns reversed routes for the opposite direction", () => {

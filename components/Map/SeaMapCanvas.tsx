@@ -3,31 +3,46 @@
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 
+import { useAmbienceCanvas } from "@/components/game-ui/LocationScene/useAmbienceCanvas"
 import { TOWNS } from "@/constants/locations"
 import { SEA_TRAVEL_SPEED } from "@/constants/sea"
 
 import {
   MAP_HEIGHT,
+  MAP_IMAGE_HEIGHT,
+  MAP_IMAGE_WIDTH,
   MAP_WIDTH,
   MAP_ZOOM,
   mapColorVariables,
-  TOWN_ANCHOR_SIZE,
 } from "./constants"
+import { createFishJumps, getWaterLookup } from "./fishJumps"
+import { createSeaMapRenderer } from "./seaMapShader"
 import SeaMapTowns from "./SeaMapTowns"
 import {
+  getDrawnRoute,
   getJourneyOrigin,
   getRouteLength,
   getSeaRoute,
+  getTownIconCentre,
   type Point,
   splitRoute,
+  startAtTownIcon,
+  stopAtTownIcon,
 } from "./seaRoutes"
+import {
+  getShipDirection,
+  SHIP_FRAMES,
+  SHIP_SPRITE,
+  SHIP_SPRITE_FRAME,
+} from "./shipFrames"
 import Tooltip from "./Tooltip"
 
 const MAP_CENTER = { x: MAP_WIDTH / 2, y: MAP_HEIGHT / 2 }
 const FRAME_INTERVAL = 1000 / 30
-const SHIP_WIDTH = 12
-const SEA_SHIP_WIDTH = 16
-const SHIP_ASPECT_RATIO = 494 / 642
+// Size of a whole sprite frame in map units, the ship fills most of it
+const SHIP_SIZE = 22
+const DOCKED_SHIP_FRAME = SHIP_FRAMES.down
+const WATER_MASKS = ["/img/map/spanish-main-mask.png"]
 
 const imageCache: Record<string, HTMLImageElement> = {}
 
@@ -62,6 +77,14 @@ const SeaMapCanvas = ({
   const mapImageRef = useRef<HTMLImageElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animation = useRef({ routeKey: "", progress: 0 })
+  // Kept across redraws, so hovering a town doesn't restart the fish
+  const fish = useRef<ReturnType<typeof createFishJumps> | null>(null)
+  // Wave crests on the water, panned along with the map
+  const ambienceRef = useAmbienceCanvas(
+    mapImageRef,
+    createSeaMapRenderer,
+    WATER_MASKS
+  )
   const camera = useRef({ ...MAP_CENTER, scale: 1, scaleY: 1 })
   const centeredTown = useRef<Town | undefined>(undefined)
   const drag = useRef({
@@ -97,9 +120,12 @@ const SeaMapCanvas = ({
     const route =
       origin && destination ? getSeaRoute(origin, destination) : null
     const routeLength = route ? getRouteLength(route) : 0
+    // The ship sails the sea route, the lines are drawn on to the town icons
+    const drawnRoute =
+      origin && destination ? getDrawnRoute(origin, destination) : null
     const previewRoute =
       currentTown && previewTown && !isAtSea
-        ? getSeaRoute(currentTown, previewTown)
+        ? getDrawnRoute(currentTown, previewTown)
         : null
     const routeKey = `${origin}|${destination}`
 
@@ -108,7 +134,7 @@ const SeaMapCanvas = ({
     }
 
     if (!isAtSea && centeredTown.current !== currentTown) {
-      const center = currentTown ? TOWNS[currentTown].map : MAP_CENTER
+      const center = currentTown ? getTownIconCentre(currentTown) : MAP_CENTER
       camera.current.x = center.x
       camera.current.y = center.y
       centeredTown.current = currentTown
@@ -117,13 +143,29 @@ const SeaMapCanvas = ({
     const fromProgress = animation.current.progress
     const toProgress = isPaused ? fromProgress : targetProgress
     const startTime = performance.now()
-    const shipImage = getCachedImage("/img/logo.svg")
+    const shipImage = getCachedImage(SHIP_SPRITE)
     const styles = getComputedStyle(canvas)
     const readColor = (name: keyof typeof mapColorVariables) =>
       styles.getPropertyValue(mapColorVariables[name]).trim()
     const shipGlowColor = readColor("shipGlow")
     const trailColor = readColor("trail")
     const trailTravelledColor = readColor("trailTravelled")
+    const fishColors = {
+      fish: readColor("fish"),
+      blueFish: readColor("blueFish"),
+      splash: readColor("fishSplash"),
+    }
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches
+
+    if (!prefersReducedMotion) {
+      fish.current ??= createFishJumps()
+    }
+
+    // Motion may have been reduced after the fish were created
+    const fishJumps = prefersReducedMotion ? null : fish.current
+    const waterMask = getCachedImage(WATER_MASKS[0])
     let previousTransform = ""
 
     // Align the DOM background and transparent canvas to the same camera.
@@ -155,6 +197,21 @@ const SeaMapCanvas = ({
       const scale =
         Math.max(1, width / MAP_WIDTH, height / MAP_HEIGHT) * MAP_ZOOM
       const scaleY = scale * mapYScale
+
+      // Keep the camera inside the map so its edge never shows. The map always
+      // covers the viewport, so there is always room to do so. At sea the
+      // ship drifts off centre near an edge instead.
+      const halfWidth = width / 2 / scale
+      const halfHeight = height / 2 / scaleY
+      camera.current.x = Math.min(
+        Math.max(camera.current.x, halfWidth),
+        MAP_WIDTH - halfWidth
+      )
+      camera.current.y = Math.min(
+        Math.max(camera.current.y, halfHeight),
+        MAP_HEIGHT - halfHeight
+      )
+
       const offsetX = width / 2 - camera.current.x * scale
       const offsetY = height / 2 - camera.current.y * scaleY
       const transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale}, ${scaleY})`
@@ -190,9 +247,12 @@ const SeaMapCanvas = ({
       context.restore()
     }
 
-    const drawShip = ({ x, y }: Point, now: number, flip = false) => {
-      const width = isAtSea ? SEA_SHIP_WIDTH : SHIP_WIDTH
-      const radius = width * 1.25
+    const drawShip = (
+      { x, y }: Point,
+      now: number,
+      shipFrame = DOCKED_SHIP_FRAME
+    ) => {
+      const radius = SHIP_SIZE * 0.9
       const glow = context.createRadialGradient(x, y, 0, x, y, radius)
       glow.addColorStop(0, shipGlowColor)
       glow.addColorStop(1, "transparent")
@@ -206,13 +266,26 @@ const SeaMapCanvas = ({
       context.globalAlpha = 1
 
       if (shipImage.complete && shipImage.naturalWidth > 0) {
-        const height = width * SHIP_ASPECT_RATIO
-        const wave = Math.sin((now / 1500) * Math.PI * 2)
+        // Narrow views are drawn a bit larger, see SHIP_FRAMES
+        const scale = (SHIP_SIZE / SHIP_SPRITE_FRAME) * shipFrame.scale
+        const width = shipFrame.width * scale
+        const height = shipFrame.height * scale
+        // The ship bobs on the waves, unless motion is reduced
+        const wave = prefersReducedMotion
+          ? 0
+          : Math.sin((now / 1500) * Math.PI * 2)
 
-        context.translate(x, y + wave * 0.5)
-        context.rotate((wave * 3 * Math.PI) / 180)
-        if (flip) context.scale(-1, 1)
-        context.drawImage(shipImage, -width / 2, -height / 2, width, height)
+        context.drawImage(
+          shipImage,
+          shipFrame.x,
+          shipFrame.y,
+          shipFrame.width,
+          shipFrame.height,
+          x - width / 2,
+          y - height / 2 + wave * 0.5,
+          width,
+          height
+        )
       }
 
       context.restore()
@@ -239,16 +312,50 @@ const SeaMapCanvas = ({
         isAtSea ? (routeProgress?.position ?? MAP_CENTER) : undefined
       )
 
+      if (fishJumps && waterMask.complete && waterMask.naturalWidth > 0) {
+        const isOpenWater = getWaterLookup(waterMask)
+        const { x, y, scale, scaleY } = camera.current
+        const halfWidth = viewport.clientWidth / 2 / scale
+        const halfHeight = viewport.clientHeight / 2 / scaleY
+
+        if (isOpenWater) {
+          fishJumps.update(
+            now,
+            {
+              left: x - halfWidth,
+              top: y - halfHeight,
+              right: x + halfWidth,
+              bottom: y + halfHeight,
+            },
+            isOpenWater
+          )
+          fishJumps.draw(context, now, fishColors)
+        }
+      }
+
       if (previewRoute) drawDashedRoute(previewRoute, trailColor)
 
       if (route && routeProgress) {
         animation.current.progress = progress
-        drawDashedRoute(route, trailColor)
-        drawDashedRoute(routeProgress.travelledRoute, trailTravelledColor)
-        drawShip(routeProgress.position, now, routeProgress.heading.x < 0)
+        drawDashedRoute(drawnRoute ?? route, trailColor)
+        // Trimmed at both town icons, like the route it is drawn over
+        drawDashedRoute(
+          origin && destination
+            ? stopAtTownIcon(
+                startAtTownIcon(routeProgress.travelledRoute, origin),
+                destination
+              )
+            : routeProgress.travelledRoute,
+          trailTravelledColor
+        )
+
+        drawShip(
+          routeProgress.position,
+          now,
+          SHIP_FRAMES[getShipDirection(routeProgress.heading)]
+        )
       } else if (currentTown && !isAtSea) {
-        const { x, y } = TOWNS[currentTown].map
-        drawShip({ x: x - 9, y: y + 7 }, now)
+        drawShip(TOWNS[currentTown].map.harbor, now)
       }
     }
 
@@ -346,9 +453,9 @@ const SeaMapCanvas = ({
     const viewport = viewportRef.current
     if (!viewport || !event.currentTarget.matches(":focus-visible")) return
 
-    const { x, y } = TOWNS[town].map
-    camera.current.x = x + TOWN_ANCHOR_SIZE / 2
-    camera.current.y = y + TOWN_ANCHOR_SIZE / 2
+    const { x, y } = getTownIconCentre(town)
+    camera.current.x = x
+    camera.current.y = y
     const rect = viewport.getBoundingClientRect()
 
     setHovered({
@@ -394,11 +501,16 @@ const SeaMapCanvas = ({
           ref={mapImageRef}
           src="/img/map/spanish-main.png"
           alt=""
-          width={MAP_WIDTH}
-          height={MAP_HEIGHT}
+          width={MAP_IMAGE_WIDTH}
+          height={MAP_IMAGE_HEIGHT}
           loading="eager"
           draggable={false}
           className="pointer-events-none absolute inset-0 size-full"
+        />
+
+        <div
+          ref={ambienceRef}
+          className="pointer-events-none absolute inset-0"
         />
 
         <SeaMapTowns

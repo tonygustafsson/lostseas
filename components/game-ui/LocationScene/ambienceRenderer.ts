@@ -142,11 +142,14 @@ const createTexture = (gl: WebGLRenderingContext, unit: number) => {
   return texture
 }
 
-// The first texture is the image, its size is passed as u_imageSize
+// The first texture is the image, its size is passed as u_imageSize. With
+// imageResolution the canvas has as many pixels as the image, for scenes that
+// are scaled up with a CSS transform.
 export const createAmbienceRenderer = (
   canvas: HTMLCanvasElement,
   fragmentShader: string,
-  textureNames: readonly string[]
+  textureNames: readonly string[],
+  { imageResolution = false } = {}
 ) => {
   const gl = canvas.getContext("webgl", { antialias: false })
 
@@ -176,6 +179,7 @@ export const createAmbienceRenderer = (
   }
 
   gl.useProgram(program)
+  gl.enable(gl.SCISSOR_TEST)
 
   // Two triangles covering the whole canvas
   gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer())
@@ -199,6 +203,7 @@ export const createAmbienceRenderer = (
   const imageSizeLocation = gl.getUniformLocation(program, "u_imageSize")
 
   let hasTextures = false
+  let imageWidth = 0
   let frame = 0
   let lastDraw = 0
 
@@ -208,7 +213,14 @@ export const createAmbienceRenderer = (
     if (!hasTextures || now - lastDraw < FRAME_INTERVAL) return
     lastDraw = now
 
-    const pixelRatio = Math.min(window.devicePixelRatio, 2)
+    // Nothing to draw while the scene has no size
+    if (!canvas.clientWidth || !canvas.clientHeight) {
+      return
+    }
+
+    const pixelRatio = imageResolution
+      ? imageWidth / canvas.clientWidth
+      : Math.min(window.devicePixelRatio, 2)
     const width = Math.round(canvas.clientWidth * pixelRatio)
     const height = Math.round(canvas.clientHeight * pixelRatio)
 
@@ -218,6 +230,24 @@ export const createAmbienceRenderer = (
       gl.viewport(0, 0, width, height)
     }
 
+    // Only shade the part of the canvas that is on screen. The rest is left
+    // clear, so the image underneath shows through until it scrolls into view.
+    const rect = canvas.getBoundingClientRect()
+    const toCanvasX = (x: number) =>
+      Math.min(Math.max(((x - rect.left) * width) / rect.width, 0), width)
+    const toCanvasY = (y: number) =>
+      Math.min(Math.max(((y - rect.top) * height) / rect.height, 0), height)
+    const left = Math.floor(toCanvasX(0))
+    const right = Math.ceil(toCanvasX(window.innerWidth))
+    const top = Math.floor(toCanvasY(0))
+    const bottom = Math.ceil(toCanvasY(window.innerHeight))
+
+    if (right <= left || bottom <= top) {
+      return
+    }
+
+    // The scissor box is measured from the bottom of the canvas
+    gl.scissor(left, height - bottom, right - left, bottom - top)
     gl.uniform1f(timeLocation, now / 1000)
     gl.uniform2f(sizeLocation, canvas.clientWidth, canvas.clientHeight)
     gl.drawArrays(gl.TRIANGLES, 0, 6)
@@ -239,6 +269,7 @@ export const createAmbienceRenderer = (
         )
       })
 
+      imageWidth = sources[0].naturalWidth
       gl.uniform2f(
         imageSizeLocation,
         sources[0].naturalWidth,
