@@ -65,9 +65,9 @@ export const useSea = () => {
       await queryClient.invalidateQueries({ queryKey: [PLAYER_QUERY_KEY] })
 
       if (outcome === "victory") {
-        playSoundEffect("victory")
+        playSoundEffect("victory-with-speech")
       } else if (outcome === "defeat") {
-        playSoundEffect("defeat")
+        playSoundEffect("defeat-with-speech")
       } else if (action === "fire") {
         playSoundEffect("cannons-firing")
       }

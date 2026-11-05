@@ -91,7 +91,7 @@ export const useTavern = () => {
         variant: "success",
       })
 
-      playSoundEffect("cheers")
+      playSoundEffect("victory")
     },
     onError: (err: any, { item }, context: any) => {
       handleError(
@@ -154,7 +154,7 @@ export const useTavern = () => {
           variant: "success",
         })
 
-        playSoundEffect("cheers")
+        playSoundEffect("victory")
       },
       onError: (err: any, _, context: any) => {
         handleError(`Could not accept new crew members`, err, context?.previous)
@@ -209,7 +209,7 @@ export const useTavern = () => {
           variant: "success",
         })
 
-        playSoundEffect("cheers")
+        playSoundEffect("victory")
       } else {
         setToast({
           title: `You fought ${numberOfSailors} sailors and lost`,
@@ -217,7 +217,7 @@ export const useTavern = () => {
           variant: "error",
         })
 
-        playSoundEffect("hurt")
+        playSoundEffect("defeat")
       }
     },
     onError: (err: any, _, context: any) => {
@@ -312,7 +312,7 @@ export const useTavern = () => {
       })
 
       if (cardsResults === "won") {
-        playSoundEffect("cheers")
+        playSoundEffect("victory")
       } else {
         playSoundEffect("frustration")
       }

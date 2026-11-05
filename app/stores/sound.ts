@@ -10,8 +10,6 @@ import {
 
 export const SOUND_EFFECTS = [
   "transaction",
-  "cheers",
-  "hurt",
   "frustration",
   "drinking",
   "hammer",
@@ -21,9 +19,11 @@ export const SOUND_EFFECTS = [
   "cannons-firing",
   "fanfare",
   "victory",
-  "victory-talk",
+  "victory-with-speech",
+  "victory-speech",
   "defeat",
-  "defeat-talk",
+  "defeat-with-speech",
+  "defeat-speech",
 ] as const
 
 export type SoundEffect = (typeof SOUND_EFFECTS)[number]

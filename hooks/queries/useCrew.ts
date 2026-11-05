@@ -122,7 +122,7 @@ export const useCrew = () => {
         queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
       }
 
-      playSoundEffect("cheers")
+      playSoundEffect("victory")
     },
     onError: (err: unknown, _variables, context) => {
       handleError(`Could not give gold`, String(err), context?.previous)

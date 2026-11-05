@@ -22,23 +22,17 @@ export const SOUND_EFFECT_VARIANTS: Partial<Record<SoundEffect, number>> = {
   hammer: 9,
   fanfare: 8,
   victory: 14,
-  "victory-talk": 14,
+  "victory-speech": 14,
   defeat: 11,
-  "defeat-talk": 14,
+  "defeat-speech": 14,
 }
-
-// The captain sometimes says something on top of the crew's reaction
-const SOUND_EFFECT_COMPANIONS: Partial<Record<SoundEffect, SoundEffect>> = {
-  victory: "victory-talk",
-  defeat: "defeat-talk",
-}
-
-const COMPANION_CHANCE = 1 / 3
 
 export const getSoundEffectFiles = (soundEffect: SoundEffect) => {
   const variants = SOUND_EFFECT_VARIANTS[soundEffect]
 
-  if (!variants) return [`soundfx/${soundEffect}.opus`]
+  if (!variants) {
+    return [`soundfx/${soundEffect}.opus`]
+  }
 
   return Array.from(
     { length: variants },
@@ -57,14 +51,16 @@ export const getSoundEffectSrcs = (
   soundEffect: SoundEffect,
   random: () => number = Math.random
 ) => {
-  const srcs = [pickFile(soundEffect, random)]
-  const companion = SOUND_EFFECT_COMPANIONS[soundEffect]
-
-  if (companion && random() < COMPANION_CHANCE) {
-    srcs.push(pickFile(companion, random))
+  // The crew's reaction with the captain speaking on top
+  if (soundEffect === "victory-with-speech") {
+    return [pickFile("victory", random), pickFile("victory-speech", random)]
   }
 
-  return srcs
+  if (soundEffect === "defeat-with-speech") {
+    return [pickFile("defeat", random), pickFile("defeat-speech", random)]
+  }
+
+  return [pickFile(soundEffect, random)]
 }
 
 export const playSoundEffect = (soundEffect: SoundEffect) => {

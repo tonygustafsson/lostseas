@@ -7,8 +7,6 @@ import {
   playSoundEffect,
 } from "@/utils/sound"
 
-import { createSeededRandom } from "./helpers/seededRandom"
-
 // Returns the given values in order, like a scripted Math.random
 const sequence =
   (...values: number[]) =>
@@ -16,10 +14,6 @@ const sequence =
     values.shift() ?? 0
 
 describe("sound utils", () => {
-  it("lists a single file for effects without variants", () => {
-    expect(getSoundEffectFiles("cheers")).toEqual(["soundfx/cheers.opus"])
-  })
-
   it("lists every variant of an effect", () => {
     const files = getSoundEffectFiles("victory")
 
@@ -28,35 +22,37 @@ describe("sound utils", () => {
     expect(files[13]).toBe("soundfx/victory/victory14.opus")
   })
 
-  it("plays one file for effects without a companion", () => {
+  it("plays one file for most effects", () => {
     expect(getSoundEffectSrcs("ship-meeting", sequence(0))).toEqual([
       "soundfx/ship-meeting/ship-meeting1.opus",
     ])
   })
 
-  it("adds the captain's line when the roll is below 1/3", () => {
-    expect(getSoundEffectSrcs("defeat", sequence(0.99, 0.2, 0))).toEqual([
-      "soundfx/defeat/defeat11.opus",
-      "soundfx/defeat-talk/defeat-talk1.opus",
+  it("plays the crew and the captain's line together for victory with speech", () => {
+    expect(
+      getSoundEffectSrcs("victory-with-speech", sequence(0, 0.99))
+    ).toEqual([
+      "soundfx/victory/victory1.opus",
+      "soundfx/victory-speech/victory-speech14.opus",
     ])
   })
 
-  it("skips the captain's line when the roll is 1/3 or more", () => {
-    expect(getSoundEffectSrcs("victory", sequence(0, 0.34))).toEqual([
+  it("plays the crew and the captain's line together for defeat with speech", () => {
+    expect(getSoundEffectSrcs("defeat-with-speech", sequence(0.99, 0))).toEqual(
+      [
+        "soundfx/defeat/defeat11.opus",
+        "soundfx/defeat-speech/defeat-speech1.opus",
+      ]
+    )
+  })
+
+  it("never adds the captain's line to a plain victory or defeat", () => {
+    expect(getSoundEffectSrcs("victory", sequence(0, 0))).toEqual([
       "soundfx/victory/victory1.opus",
     ])
-  })
-
-  it("adds the captain's line about a third of the time", () => {
-    const random = createSeededRandom(42)
-    const rolls = 3000
-
-    const withTalk = Array.from(
-      { length: rolls },
-      () => getSoundEffectSrcs("victory", random.next).length === 2
-    ).filter(Boolean).length
-
-    expect(withTalk / rolls).toBeCloseTo(1 / 3, 1)
+    expect(getSoundEffectSrcs("defeat", sequence(0, 0))).toEqual([
+      "soundfx/defeat/defeat1.opus",
+    ])
   })
 })
 
@@ -77,9 +73,9 @@ describe("playSoundEffect", () => {
   it("plays every effect when called back to back", () => {
     useSound.setState({ soundEffectsOn: true })
 
-    playSoundEffect("cheers")
-    playSoundEffect("cheers")
-    playSoundEffect("hurt")
+    playSoundEffect("transaction")
+    playSoundEffect("transaction")
+    playSoundEffect("defeat")
 
     expect(Audio).toHaveBeenCalledTimes(3)
     expect(play).toHaveBeenCalledTimes(3)
@@ -88,7 +84,7 @@ describe("playSoundEffect", () => {
   it("stays silent when sound effects are off", () => {
     useSound.setState({ soundEffectsOn: false })
 
-    playSoundEffect("cheers")
+    playSoundEffect("transaction")
 
     expect(Audio).not.toHaveBeenCalled()
   })

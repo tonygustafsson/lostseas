@@ -22,7 +22,7 @@ export const Default: Story = {
       canvas.getByRole("button", { name: "Play victory" })
     ).toBeInTheDocument()
     await expect(
-      canvas.getByRole("button", { name: "victory-talk7" })
+      canvas.getByRole("button", { name: "victory-speech7" })
     ).toBeInTheDocument()
     await expect(
       canvas.getByRole("button", { name: "Harbor 1" })
