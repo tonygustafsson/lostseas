@@ -10,6 +10,7 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useMapModal } from "@/hooks/useMapModal"
 import { getHarborArrivedQuip, getHarborTownQuip } from "@/utils/getPirateQuip"
 import { getTownsNationality } from "@/utils/location"
+import { playSoundEffect } from "@/utils/sound"
 
 import TownMap from "./TownMap"
 
@@ -29,7 +30,10 @@ const HarborScene = ({ town }: Props) => {
   const hasArrived =
     player?.locationStates?.harbor?.lastHarborReason === "arrived"
 
-  const handleMove = (location: TownLocation) => move({ location })
+  const handleMove = (location: TownLocation) => {
+    playSoundEffect("building-entry")
+    move({ location })
+  }
 
   return (
     <div className="bg-card overflow-hidden rounded-xl border">
