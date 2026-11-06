@@ -1,9 +1,8 @@
 import { MessageCircle } from "lucide-react"
 
-import ActionCard from "@/components/ActionCard"
+import NpcPortraitCard from "@/components/npc/NpcPortraitCard"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { getNpcImage } from "@/constants/npcs"
 
 type TalkButtonProps = {
   npc: Npc
@@ -44,21 +43,21 @@ export const TalkButton = ({
 
 type Props = Omit<TalkButtonProps, "size">
 
-/** The character in their own tab, so they can take the full card */
+/** The character in their own tab, with a round portrait beside their story */
 const NpcCard = (props: Props) => (
-  <ActionCard
+  <NpcPortraitCard
+    npc={props.npc}
     title={props.npc.name}
-    message={props.npc.description}
-    image={getNpcImage(props.npc)}
-    icon={<MessageCircle />}
     actions={
-      <div className="flex items-center gap-4">
+      <>
         <TalkButton {...props} />
 
         {props.hasQuestBusiness && <QuestBadge />}
-      </div>
+      </>
     }
-  />
+  >
+    <p>{props.npc.description}</p>
+  </NpcPortraitCard>
 )
 
 export default NpcCard

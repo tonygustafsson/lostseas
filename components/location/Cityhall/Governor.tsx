@@ -1,9 +1,8 @@
 import { Award, Handshake } from "lucide-react"
 import { useState } from "react"
-import { GiQuillInk } from "react-icons/gi"
 
-import ActionCard from "@/components/ActionCard"
 import { QuestBadge, TalkButton } from "@/components/npc/NpcCard"
+import NpcPortraitCard from "@/components/npc/NpcPortraitCard"
 import { useTownNpcTalk } from "@/components/npc/TownNpc"
 import { Button } from "@/components/ui/button"
 import { TOWNS } from "@/constants/locations"
@@ -146,27 +145,16 @@ const Governor = () => {
 
   const rewardWaiting = promotionAvailable || citizenshipChangeAvailable
 
-  const cardImage = rewardWaiting
-    ? "/img/cards/cityhall/governor-excited.png"
-    : "/img/cards/cityhall/governor-neutral.png"
-
   const greetingTitle = `${rewardWaiting ? "Thank you" : "Welcome"} ${player.character.title.toLowerCase()} ${
     player.character.name
   }.`
 
   return (
     <>
-      <ActionCard
+      <NpcPortraitCard
+        npc={npc}
         title={`Governor ${npc.name}`}
-        message={
-          <>
-            <p>{greetingTitle}</p>
-
-            {greeting && <div className="mt-2">{greeting}</div>}
-          </>
-        }
-        image={cardImage}
-        icon={<GiQuillInk />}
+        footer={<p>{npc.description}</p>}
         actions={
           <>
             {/* Hidden while claiming, the Talk button stays for quest business */}
@@ -197,7 +185,11 @@ const Governor = () => {
             </div>
           </>
         }
-      />
+      >
+        <p>{greetingTitle}</p>
+
+        {greeting && <div className="mt-2">{greeting}</div>}
+      </NpcPortraitCard>
 
       {dialog}
     </>

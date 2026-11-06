@@ -86,8 +86,6 @@ const TalkDialog = ({
           </div>
         </DialogHeader>
 
-        <p className="text-muted-foreground text-sm">{npc.description}</p>
-
         {line && (
           <div className="bg-secondary/50 border-border text-foreground flex flex-col gap-4 rounded-xl border p-4 text-base">
             <p>
