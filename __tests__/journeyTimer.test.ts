@@ -18,7 +18,6 @@ const state = vi.hoisted(() => ({
     locationStates: { sea: {} },
   } as Player,
   continueJourney: vi.fn(),
-  isPending: false,
   cleanup: undefined as (() => void) | undefined,
 }))
 
@@ -36,7 +35,6 @@ vi.mock("@/hooks/queries/usePlayer", () => ({
 vi.mock("@/hooks/queries/useSea", () => ({
   useSea: () => ({
     continueJourney: state.continueJourney,
-    isContinueingJourney: state.isPending,
   }),
 }))
 
@@ -52,7 +50,6 @@ describe("journey timer", () => {
   beforeEach(() => {
     vi.useFakeTimers()
     state.continueJourney.mockClear()
-    state.isPending = false
     state.player.character.location = "Sea"
     state.player.character.journey = {
       origin: "Bonaire",
@@ -96,13 +93,6 @@ describe("journey timer", () => {
 
     vi.advanceTimersByTime(SEA_TRAVEL_SPEED)
     expect(state.continueJourney).not.toHaveBeenCalled()
-  })
-
-  it("waits for a pending journey mutation", () => {
-    state.isPending = true
-    Sea()
-
-    expect(vi.getTimerCount()).toBe(0)
   })
 
   it("does not schedule travel without a journey", () => {

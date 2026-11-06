@@ -10,8 +10,9 @@ import SeaEventDialog from "./SeaEventDialog"
 
 const Sea = () => {
   const { data: player } = useGetPlayer()
-  const { continueJourney, isContinueingJourney } = useSea()
+  const { continueJourney } = useSea()
   const journey = player?.character.journey
+  const journeyDay = journey?.day
   const seaState = player?.locationStates?.sea
   const isPaused = !!(
     seaState?.shipMeeting ||
@@ -19,13 +20,17 @@ const Sea = () => {
     seaState?.attackFailureReport
   )
 
+  // Each day is advanced optimistically, so the timer follows the day and
+  // runs alongside the request instead of waiting for it
   useEffect(() => {
-    if (!journey || isPaused || isContinueingJourney) return
+    if (!journeyDay || isPaused) {
+      return
+    }
 
     const timer = setTimeout(() => continueJourney(), SEA_TRAVEL_SPEED)
 
     return () => clearTimeout(timer)
-  }, [continueJourney, isContinueingJourney, isPaused, journey])
+  }, [continueJourney, isPaused, journeyDay])
 
   if (!player || !journey) return null
 

@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 import { PLAYER_QUERY_KEY } from "@/constants/system"
 import apiRequest from "@/utils/apiRequest"
+import { patchDeep } from "@/utils/patchDeep"
 import { playSoundEffect } from "@/utils/sound"
 
 export const useSea = () => {
@@ -44,8 +45,36 @@ export const useSea = () => {
   const { mutate: continueJourney, isPending: isContinueingJourney } =
     useMutation({
       mutationFn: () => apiRequest("/api/sea/continueJourney", null, "POST"),
+      // Sail the next day straight away so the ship doesn't stop while the
+      // server answers. The refetch corrects it, and errors put it back.
+      onMutate: async () => {
+        await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
+
+        const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
+        const journey = previous?.character.journey
+
+        // Arriving moves the player to the harbour, so leave that to the server
+        if (previous && journey && journey.day < journey.totalDays) {
+          queryClient.setQueryData(
+            [PLAYER_QUERY_KEY],
+            patchDeep(previous, {
+              character: { journey: { day: journey.day + 1 } },
+            })
+          )
+        }
+
+        return { previous }
+      },
       onSuccess: onSailed,
-      onError: (error) => console.error(error),
+      onError: (error, _, context) => {
+        console.error(error)
+
+        if (context?.previous) {
+          queryClient.setQueryData([PLAYER_QUERY_KEY], context.previous)
+        }
+      },
+      // Keeps a late timer from sailing two days at once
+      scope: { id: "continueJourney" },
     })
 
   const { mutate: attackShip, isPending: isAttackingShip } = useMutation({
