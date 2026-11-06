@@ -48,6 +48,7 @@ const SECTIONS = [
   "social-status",
   "economy",
   "traveling",
+  "townsfolk",
   "account",
 ]
 
@@ -938,6 +939,66 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           unit of one to three of your goods. Your bank savings, treasures,
           cannons and repair kits are safe. With more than one ship, you might
           also lose one to the sea.
+        </p>
+      </AccordionContent>
+    </AccordionItem>
+
+    <AccordionItem
+      value="townsfolk"
+      className={appearance === "public" ? "py-4" : undefined}
+    >
+      <GuideSectionHeading
+        appearance={appearance}
+        className="font-serif text-xl"
+      >
+        Townsfolk and quests
+      </GuideSectionHeading>
+      <AccordionContent>
+        <h3 className="mb-2 font-serif text-lg">Talking to the locals</h3>
+
+        <p className="mb-4">
+          In every town a regular at the tavern, a trader at the market and the
+          governor are happy to chat. Each character gets 3 talks per visit, and
+          the count resets when you sail.
+        </p>
+
+        <p className="mb-4">
+          About half the time they ask you a question. Answer however you like,
+          it only changes how they reply. No wrong answers, just a little
+          colour.
+        </p>
+
+        <h3 className="mt-6 mb-2 font-serif text-lg">Quests</h3>
+
+        <p className="mb-4">
+          About 1 talk in 10, someone has a favour to ask. You can accept or
+          decline. Talking about quest business never uses up one of your 3
+          talks. There are four kinds of quest:
+        </p>
+
+        <ul className="mb-4 list-disc space-y-2 pl-6">
+          <li>Deliver a parcel to someone in another town.</li>
+          <li>
+            Bring a quantity of a barter good back to whoever asked for it.
+          </li>
+          <li>
+            Carry a message along a chain of 2 or 3 people, ending back with the
+            person who sent you.
+          </li>
+          <li>
+            Find a missing person somewhere in the towns of a named nation by
+            asking around the taverns and markets, then report back.
+          </li>
+        </ul>
+
+        <p className="mb-4">
+          Rewards are paid in gold, and sometimes part of it comes as goods.
+        </p>
+
+        <p>
+          You can hold at most 5 active quests, and nobody offers you a new one
+          while you are at the limit. Your quests are listed in the Status
+          drawer, where you can abandon any of them without penalty.
         </p>
       </AccordionContent>
     </AccordionItem>

@@ -1,0 +1,44 @@
+import { cookies } from "next/headers"
+import { NextResponse } from "next/server"
+
+import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
+import { getPlayer, savePlayer } from "@/firebase/db"
+import { declineQuest } from "@/utils/actions/npc"
+
+export async function POST(req: Request) {
+  const cookieStore = await cookies()
+  const playerId = cookieStore.get(PLAYER_ID_COOKIE_NAME)?.value
+
+  if (!playerId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
+  const { npcId } = await req.json()
+
+  const player = await getPlayer(playerId)
+
+  if (!player) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
+  const result = declineQuest(player, { npcId })
+
+  if ("error" in result) {
+    return NextResponse.json(
+      { error: result.error },
+      { status: result.status ?? 400 }
+    )
+  }
+
+  try {
+    const updatedPlayer = await savePlayer(result.player, result.log)
+
+    return NextResponse.json({
+      success: true,
+      updatedPlayer,
+      ...result.data,
+    })
+  } catch (error) {
+    return NextResponse.json({ error }, { status: 500 })
+  }
+}

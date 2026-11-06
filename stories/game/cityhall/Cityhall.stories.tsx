@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import Cityhall from "@/components/location/Cityhall"
+import { getNpcAt } from "@/constants/npcs"
 
 import { player } from "../../fixtures"
 import PlayerPreview from "../../PlayerPreview"
@@ -149,6 +150,44 @@ export const NothingToHandOverHere: Story = {
     player: atCityhall({
       treasures: { "treasure-3": treasures["treasure-3"] },
       wantedPirates: { "pirate-3": wantedPirates["pirate-3"] },
+    }),
+  },
+}
+
+/** The governor has used up all three talks this visit */
+export const GovernorOutOfTalks: Story = {
+  parameters: {
+    player: atCityhall({
+      locationStates: {
+        conversations: {
+          [getNpcAt("Port Royale", "governor").id]: { talks: 3 },
+        },
+      },
+    }),
+  },
+}
+
+/** A delivery for the governor shows the quest badge and keeps talking open */
+export const GovernorQuestBusiness: Story = {
+  parameters: {
+    player: atCityhall({
+      locationStates: {
+        conversations: {
+          [getNpcAt("Port Royale", "governor").id]: { talks: 3 },
+        },
+      },
+      quests: {
+        "quest-1": {
+          id: "quest-1",
+          giverId: getNpcAt("Havana", "market").id,
+          acceptedDay: 5,
+          pitch: "Take this sealed letter to the governor of Port Royale.",
+          reward: { gold: 600 },
+          type: "delivery",
+          parcel: "a sealed letter",
+          targetNpcId: getNpcAt("Port Royale", "governor").id,
+        },
+      },
     }),
   },
 }

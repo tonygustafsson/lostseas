@@ -15,6 +15,7 @@ const types: LogType[] = [
   "ship",
   "crew",
   "cards",
+  "quest",
 ]
 
 const entry = {

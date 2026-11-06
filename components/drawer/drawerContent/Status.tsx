@@ -1,6 +1,13 @@
 "use client"
 
-import { Anchor, Coins, Landmark, Sailboat, ScrollText } from "lucide-react"
+import {
+  Anchor,
+  CircleCheck,
+  Coins,
+  Landmark,
+  Sailboat,
+  ScrollText,
+} from "lucide-react"
 import Image from "next/image"
 import { AiOutlineCalendar } from "react-icons/ai"
 import { BiFemaleSign, BiMaleSign, BiTime } from "react-icons/bi"
@@ -19,6 +26,7 @@ import type { StatisticsSeries } from "@/components/charts/chartConfig"
 import StatisticsAreaChart from "@/components/charts/StatisticsAreaChart"
 import StatisticsSeriesChart from "@/components/charts/StatisticsSeriesChart"
 import Flag from "@/components/icons/Flag"
+import QuestCard from "@/components/quests/QuestCard"
 import StatTile from "@/components/StatTile"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
@@ -58,6 +66,11 @@ const StatusDrawer = () => {
     VentureId,
     VentureShare,
   ][]
+
+  const quests = Object.values(player.quests || {}).sort(
+    (a, b) => a.acceptedDay - b.acceptedDay
+  )
+  const questsCompleted = character.questsCompleted ?? 0
 
   return (
     <>
@@ -233,6 +246,29 @@ const StatusDrawer = () => {
                   />
                 )
               })}
+            </div>
+          </div>
+        </>
+      )}
+
+      {(!!quests.length || questsCompleted > 0) && (
+        <>
+          <h2 className="mt-8 mb-4 font-serif text-xl">Quests</h2>
+
+          <div className="@container">
+            <div className="grid grid-cols-1 gap-4 @md:grid-cols-2">
+              {quests.map((quest) => (
+                <QuestCard key={quest.id} quest={quest} />
+              ))}
+
+              {questsCompleted > 0 && (
+                <StatTile
+                  label="Quests completed"
+                  value={questsCompleted}
+                  icon={<CircleCheck />}
+                  className="@md:col-span-2"
+                />
+              )}
             </div>
           </div>
         </>

@@ -3,6 +3,8 @@ import { useState } from "react"
 import { GiQuillInk } from "react-icons/gi"
 
 import ActionCard from "@/components/ActionCard"
+import { QuestBadge, TalkButton } from "@/components/npc/NpcCard"
+import { useTownNpcTalk } from "@/components/npc/TownNpc"
 import { Button } from "@/components/ui/button"
 import { TOWNS } from "@/constants/locations"
 import { TitleInfo } from "@/constants/title"
@@ -98,7 +100,12 @@ const Governor = () => {
 
   const [hasClaimed, setHasClaimed] = useState(false)
 
-  if (!player) return null
+  const { npc, talksLeft, hasQuestBusiness, isPending, onTalk, dialog } =
+    useTownNpcTalk("governor")
+
+  if (!player || !npc) {
+    return null
+  }
 
   const {
     isHomeNation,
@@ -145,39 +152,55 @@ const Governor = () => {
 
   const greetingTitle = `${rewardWaiting ? "Thank you" : "Welcome"} ${player.character.title.toLowerCase()} ${
     player.character.name
-  }`
-
-  if (hasClaimed) {
-    return null
-  }
+  }.`
 
   return (
-    <ActionCard
-      title={greetingTitle}
-      message={greeting}
-      image={cardImage}
-      icon={<GiQuillInk />}
-      {...(promotionAvailable && {
-        actions: (
-          <Button size="lg" onClick={handleAcceptNewTitle}>
-            <Award className="size-6" />
-            Accept new title
-          </Button>
-        ),
-      })}
-      {...(citizenshipChangeAvailable && {
-        actions: (
-          <Button
-            size="lg"
+    <>
+      <ActionCard
+        title={`Governor ${npc.name}`}
+        message={
+          <>
+            <p>{greetingTitle}</p>
 
-            onClick={handleChangeCitizenship}
-          >
-            <Handshake className="size-6" />
-            Change citizenship
-          </Button>
-        ),
-      })}
-    />
+            {greeting && <div className="mt-2">{greeting}</div>}
+          </>
+        }
+        image={cardImage}
+        icon={<GiQuillInk />}
+        actions={
+          <>
+            {/* Hidden while claiming, the Talk button stays for quest business */}
+            {promotionAvailable && !hasClaimed && (
+              <Button size="lg" onClick={handleAcceptNewTitle}>
+                <Award className="size-6" />
+                Accept new title
+              </Button>
+            )}
+
+            {citizenshipChangeAvailable && !hasClaimed && (
+              <Button size="lg" onClick={handleChangeCitizenship}>
+                <Handshake className="size-6" />
+                Change citizenship
+              </Button>
+            )}
+
+            <div className="flex items-center gap-4">
+              <TalkButton
+                npc={npc}
+                talksLeft={talksLeft}
+                hasQuestBusiness={hasQuestBusiness}
+                disabled={isPending}
+                onTalk={onTalk}
+              />
+
+              {hasQuestBusiness && <QuestBadge />}
+            </div>
+          </>
+        }
+      />
+
+      {dialog}
+    </>
   )
 }
 

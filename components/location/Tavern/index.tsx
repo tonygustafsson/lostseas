@@ -3,6 +3,7 @@ import { GiPirateCaptain } from "react-icons/gi"
 
 import ActionCard from "@/components/ActionCard"
 import LocationTabs from "@/components/LocationTabs"
+import TownNpc, { getFirstName, useTownNpcTalk } from "@/components/npc/TownNpc"
 import { Button } from "@/components/ui/button"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useTavern } from "@/hooks/queries/useTavern"
@@ -10,11 +11,13 @@ import { useTavern } from "@/hooks/queries/useTavern"
 import TavernBuy from "./Buy"
 import TavernCards from "./Cards"
 
-export type TavernTab = "buy" | "cards"
+export type TavernTab = "buy" | "cards" | "talk"
 
 const Tavern = () => {
   const { data: player } = useGetPlayer()
   const { acceptNewCrewMembers, fightSailors, ignoreSailors } = useTavern()
+  const npcTalk = useTownNpcTalk("tavern")
+  const { npc, hasQuestBusiness } = npcTalk
 
   const [tab, setTab] = useState<TavernTab>("buy")
 
@@ -84,6 +87,15 @@ const Tavern = () => {
         items={[
           { id: "buy", label: "Buy" },
           { id: "cards", label: "Play cards" },
+          ...(npc
+            ? [
+                {
+                  id: "talk" as const,
+                  label: getFirstName(npc),
+                  indicator: hasQuestBusiness,
+                },
+              ]
+            : []),
         ]}
         currentTab={tab}
         setCurrentTab={setTab}
@@ -91,6 +103,7 @@ const Tavern = () => {
 
       {tab === "buy" && <TavernBuy />}
       {tab === "cards" && <TavernCards />}
+      {tab === "talk" && <TownNpc talk={npcTalk} />}
     </>
   )
 }

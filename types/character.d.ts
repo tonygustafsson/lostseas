@@ -22,6 +22,7 @@ type Character = {
   highestRewardedTitle?: Title
   /** Ventures the player has invested in and not yet collected. */
   ventures?: Partial<Record<VentureId, VentureShare>>
+  questsCompleted?: number
 }
 
 type VentureId = "sugarConvoy" | "tobaccoRun" | "silkSmugglers" | "silverFleet"

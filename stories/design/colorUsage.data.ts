@@ -37,12 +37,12 @@ export const colorUsage: ColorUsage[] = [
     "name": "gold",
     "token": "--color-gold",
     "css": "var(--color-gold)",
-    "count": 126,
+    "count": 131,
     "variants": {
       "/20": 5,
       "/10": 11,
       "/15": 1,
-      "/30": 2,
+      "/30": 3,
       "/40": 4,
       "/50": 5,
       "/60": 9,
@@ -50,9 +50,9 @@ export const colorUsage: ColorUsage[] = [
       "/25": 1
     },
     "utilities": {
-      "border": 20,
+      "border": 21,
       "bg": 14,
-      "text": 74,
+      "text": 78,
       "var()": 2,
       "via": 6,
       "from": 1,
@@ -93,7 +93,7 @@ export const colorUsage: ColorUsage[] = [
       "components/location/Shop/ShopTradeSummary.tsx": 2,
       "components/location/Tavern/Cards.tsx": 4,
       "components/LocationTabs.tsx": 1,
-      "components/LogBookEntry.tsx": 5,
+      "components/LogBookEntry.tsx": 6,
       "components/Map/DestinationConfirm.tsx": 1,
       "components/Map/Tooltip.tsx": 1,
       "components/menu/DesktopMenu.tsx": 5,
@@ -106,6 +106,8 @@ export const colorUsage: ColorUsage[] = [
       "components/menu/WeatherCard.tsx": 1,
       "components/MerchandiseCard.tsx": 2,
       "components/MerchandiseIcon.tsx": 1,
+      "components/npc/TalkDialog.tsx": 2,
+      "components/quests/QuestCard.tsx": 2,
       "components/Screenshots.tsx": 1,
       "components/settings/PasskeyList.tsx": 1,
       "components/ships/FittingsList.tsx": 1,
@@ -124,13 +126,13 @@ export const colorUsage: ColorUsage[] = [
     "name": "muted-foreground",
     "token": "--color-muted-foreground",
     "css": "var(--color-muted-foreground)",
-    "count": 95,
+    "count": 97,
     "variants": {
       "/10": 2,
       "/15": 2
     },
     "utilities": {
-      "text": 90,
+      "text": 92,
       "bg": 4,
       "var()": 1
     },
@@ -172,6 +174,7 @@ export const colorUsage: ColorUsage[] = [
       "components/menu/MobileMenuItem.tsx": 1,
       "components/menu/StatCard.tsx": 1,
       "components/MerchandiseCard.tsx": 1,
+      "components/quests/QuestCard.tsx": 2,
       "components/RadialProgressBar.tsx": 1,
       "components/RememberedAccountList.tsx": 3,
       "components/settings/PasskeyList.tsx": 1,
@@ -401,7 +404,7 @@ export const colorUsage: ColorUsage[] = [
     "name": "foreground",
     "token": "--color-foreground",
     "css": "var(--color-foreground)",
-    "count": 46,
+    "count": 47,
     "variants": {
       "/75": 3,
       "/80": 1,
@@ -411,7 +414,7 @@ export const colorUsage: ColorUsage[] = [
       "/60": 1
     },
     "utilities": {
-      "text": 38,
+      "text": 39,
       "ring": 3,
       "bg": 4,
       "fill": 1
@@ -424,6 +427,7 @@ export const colorUsage: ColorUsage[] = [
       "components/location/Bank/VentureCard.tsx": 2,
       "components/location/Sea/ShipMeetingContent.tsx": 1,
       "components/location/Shop/ShopTradeItem.tsx": 2,
+      "components/npc/TalkDialog.tsx": 1,
       "components/RadialProgressBar.tsx": 1,
       "components/StartPageScreen.tsx": 9,
       "components/ui/accordion.tsx": 1,
@@ -477,12 +481,12 @@ export const colorUsage: ColorUsage[] = [
     "name": "border",
     "token": "--color-border",
     "css": "var(--color-border)",
-    "count": 37,
+    "count": 38,
     "variants": {
       "/50": 1
     },
     "utilities": {
-      "border": 32,
+      "border": 33,
       "divide": 1,
       "ring": 1,
       "bg": 2,
@@ -506,6 +510,7 @@ export const colorUsage: ColorUsage[] = [
       "components/location/Tavern/Cards.tsx": 1,
       "components/LogBookEntry.tsx": 1,
       "components/MerchandiseShopItem.tsx": 1,
+      "components/npc/TalkDialog.tsx": 1,
       "components/Screenshots.tsx": 1,
       "components/settings/PasskeyList.tsx": 1,
       "components/Sound/SoundChannel.tsx": 1,
@@ -854,12 +859,13 @@ export const colorUsage: ColorUsage[] = [
     "name": "secondary",
     "token": "--color-secondary",
     "css": "var(--color-secondary)",
-    "count": 10,
+    "count": 11,
     "variants": {
+      "/50": 1,
       "/80": 1
     },
     "utilities": {
-      "bg": 9,
+      "bg": 10,
       "to": 1
     },
     "files": {
@@ -867,6 +873,7 @@ export const colorUsage: ColorUsage[] = [
       "components/character/SelectedCharacter.tsx": 1,
       "components/location/Bank/QuickAmounts.tsx": 1,
       "components/location/Sea/ShipMeetingContent.tsx": 2,
+      "components/npc/TalkDialog.tsx": 1,
       "components/StartPageScreen.tsx": 1,
       "components/ui/badge.tsx": 2,
       "components/ui/button.tsx": 2
@@ -877,20 +884,21 @@ export const colorUsage: ColorUsage[] = [
     "name": "info",
     "token": "--color-info",
     "css": "var(--color-info)",
-    "count": 9,
+    "count": 11,
     "variants": {
-      "/10": 1,
+      "/10": 2,
       "/20": 3,
       "/40": 2,
       "/30": 1
     },
     "utilities": {
-      "bg": 4,
-      "text": 2,
+      "bg": 5,
+      "text": 3,
       "border": 1,
       "ring": 2
     },
     "files": {
+      "components/npc/NpcCard.tsx": 2,
       "components/ui/button.tsx": 8,
       "components/ui/sonner.tsx": 1
     }

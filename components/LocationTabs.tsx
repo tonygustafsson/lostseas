@@ -4,6 +4,8 @@ import { cn } from "@/lib/utils"
 type TabItem<T> = {
   label: string
   id: T
+  /** A small dot that asks for attention, like quest business */
+  indicator?: boolean
 }
 
 interface Props<T> {
@@ -23,15 +25,26 @@ const LocationTabs = <T extends string>({
     onValueChange={(value) => setCurrentTab(value as T)}
   >
     <TabsList className="rounded-lg p-0">
-      {items.map(({ label, id }) => (
+      {items.map(({ label, id, indicator }) => (
         <TabsTrigger
           key={`location-tab-${id}`}
           value={id}
-          className={cn("px-6 font-serif text-xl font-bold", {
-            "text-gold!": id === currentTab,
-          })}
+          className={cn(
+            "px-3 font-serif text-lg font-bold sm:px-6 sm:text-xl",
+            {
+              "text-gold!": id === currentTab,
+            }
+          )}
         >
           {label}
+
+          {indicator && (
+            <span
+              role="img"
+              aria-label="Quest"
+              className="bg-info size-2 rounded-full"
+            />
+          )}
         </TabsTrigger>
       ))}
     </TabsList>
