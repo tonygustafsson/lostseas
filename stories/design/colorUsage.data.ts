@@ -11,7 +11,7 @@ export type ColorUsage = {
   files: Record<string, number>
 }
 
-export const scannedAt = "2026-11-05"
+export const scannedAt = "2026-11-06"
 
 // Opacity applied to whole elements (opacity-* classes and inline styles)
 // prettier-ignore
@@ -124,13 +124,13 @@ export const colorUsage: ColorUsage[] = [
     "name": "muted-foreground",
     "token": "--color-muted-foreground",
     "css": "var(--color-muted-foreground)",
-    "count": 96,
+    "count": 95,
     "variants": {
       "/10": 2,
       "/15": 2
     },
     "utilities": {
-      "text": 91,
+      "text": 90,
       "bg": 4,
       "var()": 1
     },
@@ -165,7 +165,7 @@ export const colorUsage: ColorUsage[] = [
       "components/location/Shop/ShopTradeChange.tsx": 1,
       "components/location/Shop/ShopTradeSummary.tsx": 1,
       "components/location/Tavern/Cards.tsx": 3,
-      "components/LogBookEntry.tsx": 7,
+      "components/LogBookEntry.tsx": 6,
       "components/LoginForm.tsx": 1,
       "components/Map/DestinationConfirm.tsx": 2,
       "components/menu/MenuCard.tsx": 1,

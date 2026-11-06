@@ -17,7 +17,6 @@ const mocks = vi.hoisted(() => ({
   playerId: "test-player" as string | undefined,
   player: undefined as Player | undefined,
   savePlayer: vi.fn(),
-  saveStatistics: vi.fn(),
 }))
 
 vi.mock("next/headers", () => ({
@@ -29,7 +28,6 @@ vi.mock("next/headers", () => ({
 vi.mock("@/firebase/db", () => ({
   getPlayer: async () => mocks.player,
   savePlayer: mocks.savePlayer,
-  saveStatistics: mocks.saveStatistics,
 }))
 
 const request = (body: unknown) =>
@@ -233,33 +231,13 @@ describe("POST /api/sea/continueJourney", () => {
 
     await continueJourney()
 
-    expect(mocks.saveStatistics).toHaveBeenCalledOnce()
-    expect(mocks.saveStatistics).toHaveBeenCalledWith(
-      "test-player",
-      expect.objectContaining({
-        netWorth: expect.any(Number),
-        mannedCannons: expect.any(Number),
-      })
-    )
+    expect(mocks.savePlayer.mock.calls[0][2]).toEqual({ withStatistics: true })
 
     vi.clearAllMocks()
     mocks.player = atSea({ justMetAShip: true })
 
     await continueJourney()
 
-    expect(mocks.saveStatistics).not.toHaveBeenCalled()
-  })
-
-  it("still arrives when saving statistics fails", async () => {
-    vi.spyOn(console, "error").mockImplementation(() => {})
-    mocks.saveStatistics.mockRejectedValue("Statistics down")
-    mocks.player = patchDeep<Player>(atSea(), {
-      character: { journey: { day: 7 } },
-    })
-
-    const response = await continueJourney()
-
-    expect(response.status).toBe(200)
-    expect((await response.json()).destinationReached).toBe(true)
+    expect(mocks.savePlayer.mock.calls[0][2]).toEqual({ withStatistics: false })
   })
 })

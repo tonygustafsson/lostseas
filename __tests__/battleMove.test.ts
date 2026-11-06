@@ -18,7 +18,6 @@ vi.mock("next/headers", () => ({
 vi.mock("@/firebase/db", () => ({
   getPlayer: async () => mocks.player,
   savePlayer: mocks.savePlayer,
-  saveStatistics: vi.fn(),
 }))
 
 // Always roll the highest value: maximum damage, no treasure, no loot, no sinking

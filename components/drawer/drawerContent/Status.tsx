@@ -15,10 +15,7 @@ import {
 
 import BattleRecordChart from "@/components/charts/BattleRecordChart"
 import ChartCard from "@/components/charts/ChartCard"
-import {
-  metricsOf,
-  type StatisticsSeries,
-} from "@/components/charts/chartConfig"
+import type { StatisticsSeries } from "@/components/charts/chartConfig"
 import StatisticsAreaChart from "@/components/charts/StatisticsAreaChart"
 import StatisticsSeriesChart from "@/components/charts/StatisticsSeriesChart"
 import Flag from "@/components/icons/Flag"
@@ -33,7 +30,7 @@ import { useGetStatistics } from "@/hooks/queries/useStatistics"
 import { convertDaysToTimeSpan, getCurrentDate } from "@/utils/date"
 import { formatGold } from "@/utils/number"
 import { getScore } from "@/utils/score"
-import { getBattleTotals, withMetrics } from "@/utils/statistics"
+import { getBattleTotals } from "@/utils/statistics"
 
 const chipClass = "h-6 gap-1 px-2 text-xs [&>svg]:size-3!"
 
@@ -56,9 +53,6 @@ const StatusDrawer = () => {
   const enemy = NATIONS[character.nationality].warWith
   const battles = getBattleTotals(character.battles)
 
-  // A chart needs at least two snapshots to draw a line
-  const scoreEntries = withMetrics(stats, metricsOf(scoreSeries))
-  const netWorthEntries = withMetrics(stats, ["netWorth"])
   const characterInfo = getCharacterById(character.characterId)
   const ventures = Object.entries(character.ventures || {}) as [
     VentureId,
@@ -166,13 +160,13 @@ const StatusDrawer = () => {
         </div>
       </div>
 
-      {scoreEntries.length >= 2 && (
+      {stats.length >= 2 && (
         <div className="mt-4">
           <ChartCard label="Score over time" icon={<GiProgression />}>
             <StatisticsSeriesChart
               title="Score"
               series={scoreSeries}
-              entries={scoreEntries}
+              entries={stats}
               stacked
             />
           </ChartCard>
@@ -203,13 +197,13 @@ const StatusDrawer = () => {
         </div>
       </div>
 
-      {netWorthEntries.length >= 2 && (
+      {stats.length >= 2 && (
         <div className="mt-4">
           <ChartCard label="Net worth over time" icon={<GiTwoCoins />}>
             <StatisticsAreaChart
               metric="netWorth"
               label="Net worth"
-              entries={netWorthEntries}
+              entries={stats}
             />
           </ChartCard>
         </div>

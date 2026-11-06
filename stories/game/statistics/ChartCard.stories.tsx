@@ -5,12 +5,7 @@ import BattleRecordChart from "@/components/charts/BattleRecordChart"
 import ChartCard from "@/components/charts/ChartCard"
 import StatisticsAreaChart from "@/components/charts/StatisticsAreaChart"
 
-const entries = [1, 3, 6, 8, 11, 14].map((day, index) => ({
-  day,
-  timestamp: 1704067200000 + index * 86400000,
-  score: 0,
-  netWorth: [500, 800, 650, 1200, 1800, 2500][index],
-}))
+import { statistics } from "../../fixtures"
 
 const icons = {
   Coins: <GiTwoCoins />,
@@ -23,7 +18,7 @@ const charts = {
     <StatisticsAreaChart
       metric="netWorth"
       label="Net worth"
-      entries={entries}
+      entries={statistics}
     />
   ),
   "Battle record": (

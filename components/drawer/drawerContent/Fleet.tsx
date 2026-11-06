@@ -5,10 +5,7 @@ import { MdGroups } from "react-icons/md"
 
 import useDrawer from "@/app/stores/drawer"
 import CargoMeter from "@/components/CargoMeter"
-import {
-  metricsOf,
-  type StatisticsSeries,
-} from "@/components/charts/chartConfig"
+import type { StatisticsSeries } from "@/components/charts/chartConfig"
 import HoldChart from "@/components/charts/HoldChart"
 import StatisticsSeriesChart from "@/components/charts/StatisticsSeriesChart"
 import RadialProgressBar from "@/components/RadialProgressBar"
@@ -21,7 +18,6 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useGetStatistics } from "@/hooks/queries/useStatistics"
 import { cn } from "@/lib/utils"
 import { getCargo } from "@/utils/cargo"
-import { withMetrics } from "@/utils/statistics"
 
 const cannonSeries: StatisticsSeries[] = [
   { metric: "mannedCannons", label: "Manned", color: "var(--gold)" },
@@ -42,9 +38,6 @@ const FleetDrawer = () => {
   const cargo = getCargo(player)
   const wantedPirates = Object.values(player.wantedPirates || {})
 
-  // A chart needs at least two snapshots to draw a line
-  const cannonEntries = withMetrics(stats, metricsOf(cannonSeries))
-
   return (
     <>
       <h1 className="mb-6 flex items-center gap-2 font-serif text-2xl">
@@ -62,14 +55,14 @@ const FleetDrawer = () => {
 
       <FittingsList />
 
-      {cannonEntries.length >= 2 && (
+      {stats.length >= 2 && (
         <div className="bg-card mt-4 flex flex-col gap-4 rounded-lg p-4">
           <p className="text-muted-foreground text-sm">Cannons over time</p>
 
           <StatisticsSeriesChart
             title="Cannons"
             series={cannonSeries}
-            entries={cannonEntries}
+            entries={stats}
           />
         </div>
       )}

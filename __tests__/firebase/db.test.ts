@@ -6,8 +6,8 @@ import {
   LEADERBOARD_SIZE,
   LOG_PAGE_SIZE,
   type LogEntry,
+  savePlayer,
 } from "@/firebase/db"
-import { savePlayerWithStatistics } from "@/utils/db/savePlayerWithStatistics"
 
 import { createTestPlayer } from "../helpers/createTestPlayer"
 
@@ -28,17 +28,17 @@ beforeEach(() => {
   mocks.push.mockReturnValue({ key: "new-entry" })
 })
 
-describe("reset persistence", () => {
-  it("atomically replaces the player and log, clears old statistics, then saves the new baseline", async () => {
+describe("saving the player", () => {
+  it("replaces the log and statistics on reset, in one write", async () => {
     const player = createTestPlayer({ character: { day: 1, gold: 300 } })
 
-    await savePlayerWithStatistics(
+    await savePlayer(
       player,
       { type: "beginning", message: "Started the game over." },
-      { resetHistory: true }
+      { resetHistory: true, withStatistics: true }
     )
 
-    expect(mocks.update).toHaveBeenCalledTimes(2)
+    expect(mocks.update).toHaveBeenCalledOnce()
     expect(mocks.update.mock.calls[0][0]).toEqual({
       [`players/${player.id}`]: player,
       [`leaderboard/${player.id}`]: expect.objectContaining({ day: 1 }),
@@ -50,23 +50,36 @@ describe("reset persistence", () => {
           timestamp: expect.any(Number),
         },
       },
-      [`statistics/${player.id}`]: null,
-    })
-    expect(mocks.update.mock.calls[1][0]).toEqual({
-      [`statistics/${player.id}/new-entry`]: expect.objectContaining({
-        day: 1,
-        netWorth: 300,
-      }),
+      [`statistics/${player.id}`]: {
+        "new-entry": expect.objectContaining({
+          day: 1,
+          netWorth: 300,
+          battlesWon: 0,
+          timestamp: expect.any(Number),
+        }),
+      },
     })
   })
 
-  it("keeps history when saving a player normally", async () => {
+  it("clears statistics on reset when no snapshot is asked for", async () => {
     const player = createTestPlayer()
 
-    await savePlayerWithStatistics(player, {
-      type: "trade",
-      message: "New entry",
+    await savePlayer(player, undefined, { resetHistory: true })
+
+    expect(mocks.update.mock.calls[0][0]).toMatchObject({
+      [`logs/${player.id}`]: null,
+      [`statistics/${player.id}`]: null,
     })
+  })
+
+  it("adds to the history when saving normally", async () => {
+    const player = createTestPlayer()
+
+    await savePlayer(
+      player,
+      { type: "trade", message: "New entry" },
+      { withStatistics: true }
+    )
 
     expect(mocks.update.mock.calls[0][0]).toEqual({
       [`players/${player.id}`]: player,
@@ -75,20 +88,20 @@ describe("reset persistence", () => {
         type: "trade",
         message: "New entry",
       }),
+      [`statistics/${player.id}/new-entry`]: expect.objectContaining({
+        netWorth: expect.any(Number),
+      }),
     })
   })
 
-  it("does not clear history separately if saving the new player fails", async () => {
-    mocks.update.mockRejectedValue(new Error("Database down"))
+  it("leaves statistics alone unless asked", async () => {
+    const player = createTestPlayer()
 
-    await expect(
-      savePlayerWithStatistics(
-        createTestPlayer(),
-        { type: "beginning", message: "Reset" },
-        { resetHistory: true }
-      )
-    ).rejects.toThrow("Database down")
-    expect(mocks.update).toHaveBeenCalledTimes(1)
+    await savePlayer(player, { type: "trade", message: "New entry" })
+
+    expect(Object.keys(mocks.update.mock.calls[0][0])).not.toContain(
+      `statistics/${player.id}/new-entry`
+    )
   })
 })
 
@@ -97,7 +110,12 @@ describe("log book paging", () => {
     Object.fromEntries(
       Array.from({ length: count }, (_, index) => [
         `key-${index}`,
-        { day: 1, timestamp: index, message: `Entry ${index}` },
+        {
+          day: 1,
+          timestamp: index,
+          message: `Entry ${index}`,
+          type: "trade" as const,
+        },
       ])
     )
 
@@ -164,7 +182,7 @@ describe("leaderboard", () => {
       character: { name: "Anne", title: "Captain", day: 12 },
     })
 
-    await savePlayerWithStatistics(player)
+    await savePlayer(player)
 
     expect(mocks.update.mock.calls[0][0][`leaderboard/${player.id}`]).toEqual({
       name: "Anne",

@@ -1,6 +1,6 @@
 import "server-only"
 
-import { getLeaderboardEntry } from "@/utils/statistics"
+import { getLeaderboardEntry, getStatisticsSnapshot } from "@/utils/statistics"
 
 import { adminDb } from "./firebase-admin"
 
@@ -18,8 +18,7 @@ export type LogEntry = {
   timestamp: number
   day: number
   message: string
-  /** Missing on entries saved before log types existed */
-  type?: LogType
+  type: LogType
 }
 
 export type LogRecord = LogEntry & { id: string }
@@ -38,10 +37,18 @@ export const getPlayer = async (playerId: Player["id"]) => {
   return snapshot.exists() ? (snapshot.val() as Player) : null
 }
 
+type SavePlayerOptions = {
+  /** Clears the log book and statistics, for a new game */
+  resetHistory?: boolean
+  /** Adds a statistics snapshot, used for the charts */
+  withStatistics?: boolean
+}
+
+/** Saves the player with its log entry and statistics in one atomic write */
 export const savePlayer = async (
   player: Player,
   log?: GameLog,
-  { resetHistory = false }: { resetHistory?: boolean } = {}
+  { resetHistory = false, withStatistics = false }: SavePlayerOptions = {}
 ) => {
   validatePlayerId(player.id)
   const updates: Record<string, unknown> = {}
@@ -54,24 +61,37 @@ export const savePlayer = async (
     updates[`statistics/${player.id}`] = null
   }
 
-  if (log) {
-    const pushRef = adminDb.ref(`logs/${player.id}`).push()
-    const key = pushRef.key
+  // After a reset the new entry replaces the whole list instead of joining it
+  const addEntry = (node: "logs" | "statistics", entry: unknown) => {
+    const key = adminDb.ref(`${node}/${player.id}`).push().key
 
-    if (key) {
-      const entry: LogEntry = {
-        type: log.type,
-        message: log.message,
-        day: player.character.day,
-        timestamp: Date.now(),
-      }
-
-      if (resetHistory) {
-        updates[`logs/${player.id}`] = { [key]: entry }
-      } else {
-        updates[`logs/${player.id}/${key}`] = entry
-      }
+    if (!key) {
+      return
     }
+
+    if (resetHistory) {
+      updates[`${node}/${player.id}`] = { [key]: entry }
+    } else {
+      updates[`${node}/${player.id}/${key}`] = entry
+    }
+  }
+
+  const timestamp = Date.now()
+
+  if (log) {
+    addEntry("logs", {
+      type: log.type,
+      message: log.message,
+      day: player.character.day,
+      timestamp,
+    } satisfies LogEntry)
+  }
+
+  if (withStatistics) {
+    addEntry("statistics", {
+      ...getStatisticsSnapshot(player),
+      timestamp,
+    } satisfies StatisticsEntry)
   }
 
   await adminDb.ref().update(updates)
@@ -108,23 +128,20 @@ export const getLog = async (
   }
 }
 
-/**
- * One snapshot of the player's progress. Fields other than timestamp, day and
- * score are missing on entries saved before they were collected.
- */
+/** One snapshot of the player's progress, drawn on the charts */
 export type StatisticsEntry = {
   timestamp: number
   day: number
   score: number
-  netWorth?: number
-  scoreTitle?: number
-  scoreWealth?: number
-  scoreShips?: number
-  scoreCannons?: number
-  mannedCannons?: number
-  cannons?: number
-  battlesWon?: number
-  battlesLost?: number
+  netWorth: number
+  scoreTitle: number
+  scoreWealth: number
+  scoreShips: number
+  scoreCannons: number
+  mannedCannons: number
+  cannons: number
+  battlesWon: number
+  battlesLost: number
 }
 
 export const getStatistics = async (playerId: Player["id"]) => {
@@ -140,29 +157,6 @@ export const getStatistics = async (playerId: Player["id"]) => {
   const stats = snapshot.val() as Record<string, StatisticsEntry>
 
   return Object.values(stats).sort((a, b) => a.timestamp - b.timestamp)
-}
-
-export const saveStatistics = async (
-  playerId: Player["id"],
-  statistics: Omit<StatisticsEntry, "timestamp">
-) => {
-  validatePlayerId(playerId)
-  const timestamp = Date.now()
-  const updates: Record<string, unknown> = {}
-
-  const pushRef = adminDb.ref(`statistics/${playerId}`).push()
-  const key = pushRef.key
-
-  if (key) {
-    updates[`statistics/${playerId}/${key}`] = {
-      ...statistics,
-      timestamp,
-    }
-  }
-
-  await adminDb.ref().update(updates)
-
-  return { ...statistics, timestamp }
 }
 
 /** The public part of a player shown on the start page leaderboard */

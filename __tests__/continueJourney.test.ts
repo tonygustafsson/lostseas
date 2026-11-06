@@ -6,7 +6,6 @@ import { POST as ignoreShip } from "@/app/api/sea/ignoreShip/route"
 const mocks = vi.hoisted(() => ({
   player: undefined as Player | undefined,
   savePlayer: vi.fn(),
-  saveStatistics: vi.fn(),
 }))
 
 vi.mock("next/headers", () => ({
@@ -16,7 +15,6 @@ vi.mock("next/headers", () => ({
 vi.mock("@/firebase/db", () => ({
   getPlayer: async () => mocks.player,
   savePlayer: mocks.savePlayer,
-  saveStatistics: mocks.saveStatistics,
 }))
 
 const successReport: AttackSuccessReport = {
@@ -85,7 +83,7 @@ const expectResumedFinalDay = async () => {
   expect(mocks.player?.inventory).toEqual(previous.inventory)
   expect(mocks.player?.crewMembers).toEqual(previous.crewMembers)
   expect(mocks.player?.locationStates?.sea).toEqual({})
-  expect(mocks.saveStatistics).not.toHaveBeenCalled()
+  expect(mocks.savePlayer.mock.lastCall?.[2]).toEqual({ withStatistics: false })
 
   const arrivalResponse = await continueJourney()
 
@@ -105,11 +103,11 @@ const expectResumedFinalDay = async () => {
     cannons: 10,
   })
   expect(mocks.player?.crewMembers).toEqual(previous.crewMembers)
-  expect(mocks.saveStatistics).toHaveBeenCalledOnce()
-  expect(mocks.savePlayer).toHaveBeenLastCalledWith(mocks.player, {
-    type: "voyage",
-    message: "Arrived at destination Villa Hermosa.",
-  })
+  expect(mocks.savePlayer).toHaveBeenLastCalledWith(
+    mocks.player,
+    { type: "voyage", message: "Arrived at destination Villa Hermosa." },
+    { withStatistics: true }
+  )
 }
 
 describe("continue journey after a final-day encounter", () => {
@@ -150,7 +148,9 @@ describe("continue journey after a final-day encounter", () => {
     expect(mocks.player?.character.location).toBe("Harbor")
     expect(mocks.player?.character.day).toBe(21)
     expect(mocks.player?.inventory).toMatchObject({ food: 98, water: 196 })
-    expect(mocks.saveStatistics).toHaveBeenCalledOnce()
+    expect(mocks.savePlayer.mock.lastCall?.[2]).toEqual({
+      withStatistics: true,
+    })
   })
 
   it("preserves continuation rules for an earlier battle report", async () => {

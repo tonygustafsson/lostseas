@@ -28,7 +28,6 @@ const mocks = vi.hoisted(() => ({
   playerId: undefined as string | undefined,
   player: undefined as Player | undefined,
   savePlayer: vi.fn(),
-  saveStatistics: vi.fn(),
   getLog: vi.fn(),
   getStatistics: vi.fn(),
 }))
@@ -42,7 +41,6 @@ vi.mock("next/headers", () => ({
 vi.mock("@/firebase/db", () => ({
   getPlayer: async () => mocks.player,
   savePlayer: mocks.savePlayer,
-  saveStatistics: mocks.saveStatistics,
   getLog: mocks.getLog,
   getStatistics: mocks.getStatistics,
 }))
@@ -63,7 +61,6 @@ beforeEach(() => {
   mocks.playerId = PLAYER_ID
   mocks.player = createTestPlayer({ id: PLAYER_ID })
   mocks.savePlayer.mockImplementation(async (player: Player) => player)
-  mocks.saveStatistics.mockResolvedValue(undefined)
 })
 
 describe.each([
@@ -239,10 +236,7 @@ describe("POST /api/user/register", () => {
     expect(savedPlayer.character).not.toHaveProperty("age")
     expect(savedPlayer.character).not.toHaveProperty("gender")
     expect(savedLog?.message).toBe("Created new character Anne Bonny.")
-    expect(mocks.saveStatistics).toHaveBeenCalledWith(
-      playerId,
-      expect.objectContaining({ day: 1, netWorth: 300, battlesWon: 0 })
-    )
+    expect(mocks.savePlayer.mock.calls[0][2]).toEqual({ withStatistics: true })
     expect(response.cookies.get(PLAYER_ID_COOKIE_NAME)?.value).toBe(playerId)
     expect(response.cookies.get(MUSIC_STATE_COOKIE_NAME)?.value).toBe("true")
     expect(response.cookies.get(AMBIENCE_STATE_COOKIE_NAME)?.value).toBe(
@@ -259,15 +253,6 @@ describe("POST /api/user/register", () => {
     const [savedPlayer] = mocks.savePlayer.mock.calls[0]
 
     expect(savedPlayer.character.nationality).toBe("England")
-  })
-
-  it("still registers when saving statistics fails", async () => {
-    vi.spyOn(console, "error").mockImplementation(() => {})
-    mocks.saveStatistics.mockRejectedValue("Statistics down")
-
-    const response = await register(request(validBody))
-
-    expect(response.status).toBe(200)
   })
 
   it.each([
@@ -330,11 +315,10 @@ describe("POST /api/user/reset", () => {
     expect(TOWNS[savedPlayer.character.town as Town].nation).toBe("Spain")
     expect(savedPlayer.crewMembers.count).toBe(4)
     expect(savedLog?.message).toBe("Started the game over.")
-    expect(mocks.savePlayer.mock.calls[0][2]).toEqual({ resetHistory: true })
-    expect(mocks.saveStatistics).toHaveBeenCalledWith(
-      PLAYER_ID,
-      expect.objectContaining({ day: 1, netWorth: 300, battlesWon: 0 })
-    )
+    expect(mocks.savePlayer.mock.calls[0][2]).toEqual({
+      resetHistory: true,
+      withStatistics: true,
+    })
   })
 
   it.each([undefined, "text/plain", "application/x-www-form-urlencoded"])(
@@ -352,18 +336,9 @@ describe("POST /api/user/reset", () => {
     }
   )
 
-  it("still resets when saving the new statistics fails", async () => {
-    vi.spyOn(console, "error").mockImplementation(() => {})
-    mocks.saveStatistics.mockRejectedValue(new Error("Statistics down"))
-
-    expect((await reset(request({}))).status).toBe(200)
-    expect(mocks.savePlayer.mock.calls[0][2]).toEqual({ resetHistory: true })
-  })
-
   it("returns 500 when resetting the player and history fails", async () => {
     mocks.savePlayer.mockRejectedValue(new Error("Database down"))
 
     expect((await reset(request({}))).status).toBe(500)
-    expect(mocks.saveStatistics).not.toHaveBeenCalled()
   })
 })

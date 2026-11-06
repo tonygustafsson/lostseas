@@ -2,26 +2,14 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import StatisticsSeriesChart from "@/components/charts/StatisticsSeriesChart"
 
-const entries = [1, 3, 6, 8, 11, 14].map((day, index) => ({
-  day,
-  timestamp: 1704067200000 + index * 86400000,
-  score: 0,
-  mannedCannons: [2, 4, 4, 8, 10, 12][index],
-  cannons: [4, 4, 10, 10, 16, 16][index],
-  battlesWon: [0, 1, 3, 4, 7, 9][index],
-  battlesLost: [0, 0, 1, 1, 1, 2][index],
-  scoreTitle: [0, 0, 50, 50, 100, 100][index],
-  scoreWealth: [1, 3, 5, 9, 12, 18][index],
-  scoreShips: [10, 10, 10, 20, 20, 30][index],
-  scoreCannons: [20, 40, 40, 80, 100, 120][index],
-}))
+import { statistics } from "../../fixtures"
 
 const meta = {
   title: "game/Statistics/StatisticsSeriesChart",
   component: StatisticsSeriesChart,
   args: {
     title: "Cannons",
-    entries,
+    entries: statistics,
     series: [
       { metric: "mannedCannons", label: "Manned", color: "var(--gold)" },
       { metric: "cannons", label: "Owned", color: "var(--muted-foreground)" },

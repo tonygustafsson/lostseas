@@ -9,8 +9,8 @@ import {
   MUSIC_STATE_COOKIE_NAME,
   SOUND_EFFECTS_STATE_COOKIE_NAME,
 } from "@/constants/system"
+import { savePlayer } from "@/firebase/db"
 import { createNewPlayer } from "@/utils/actions/user"
-import { savePlayerWithStatistics } from "@/utils/db/savePlayerWithStatistics"
 import { getRandomTown } from "@/utils/location"
 import { setPlayerCookie } from "@/utils/setPlayerCookie"
 import { createNewShip } from "@/utils/ship"
@@ -40,10 +40,11 @@ const createPlayer = async (body: any) => {
     }
   )
 
-  await savePlayerWithStatistics(newPlayer, {
-    type: "beginning",
-    message: `Created new character ${name}.`,
-  })
+  await savePlayer(
+    newPlayer,
+    { type: "beginning", message: `Created new character ${name}.` },
+    { withStatistics: true }
+  )
 
   return { playerId, musicOn, ambienceOn, soundEffectsOn }
 }

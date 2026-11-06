@@ -1,11 +1,9 @@
 import { describe, expect, it } from "vitest"
 
-import type { StatisticsEntry } from "@/firebase/db"
 import {
   getBattleRecordByNation,
   getBattleTotals,
   getStatisticsSnapshot,
-  withMetrics,
 } from "@/utils/statistics"
 
 import { createTestPlayer } from "./helpers/createTestPlayer"
@@ -79,27 +77,10 @@ describe("getStatisticsSnapshot", () => {
     const snapshot = getStatisticsSnapshot(createTestPlayer())
 
     expect(
-      (snapshot.scoreTitle ?? 0) +
-        (snapshot.scoreWealth ?? 0) +
-        (snapshot.scoreShips ?? 0) +
-        (snapshot.scoreCannons ?? 0)
+      snapshot.scoreTitle +
+        snapshot.scoreWealth +
+        snapshot.scoreShips +
+        snapshot.scoreCannons
     ).toBe(snapshot.score)
-  })
-})
-
-describe("withMetrics", () => {
-  const entries: StatisticsEntry[] = [
-    { timestamp: 1, day: 1, score: 10 },
-    { timestamp: 2, day: 2, score: 20, netWorth: 500 },
-    { timestamp: 3, day: 3, score: 30, netWorth: 0, cannons: 2 },
-  ]
-
-  it("keeps only entries that recorded every metric", () => {
-    expect(withMetrics(entries, ["netWorth"]).map(({ day }) => day)).toEqual([
-      2, 3,
-    ])
-    expect(
-      withMetrics(entries, ["netWorth", "cannons"]).map(({ day }) => day)
-    ).toEqual([3])
   })
 })

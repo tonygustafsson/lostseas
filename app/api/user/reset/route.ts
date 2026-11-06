@@ -3,9 +3,8 @@ import { NextResponse } from "next/server"
 
 import { STARTING_SHIP_TYPE } from "@/constants/player"
 import { PLAYER_ID_COOKIE_NAME } from "@/constants/system"
-import { getPlayer } from "@/firebase/db"
+import { getPlayer, savePlayer } from "@/firebase/db"
 import { resetGame } from "@/utils/actions/user"
-import { savePlayerWithStatistics } from "@/utils/db/savePlayerWithStatistics"
 import { getRandomTown } from "@/utils/location"
 import { requireJsonRequest } from "@/utils/requireJsonRequest"
 import { createNewShip } from "@/utils/ship"
@@ -36,11 +35,10 @@ export async function POST(req: Request) {
   }
 
   try {
-    const updatedPlayer = await savePlayerWithStatistics(
-      result.player,
-      result.log,
-      { resetHistory: true }
-    )
+    const updatedPlayer = await savePlayer(result.player, result.log, {
+      resetHistory: true,
+      withStatistics: true,
+    })
 
     return NextResponse.json({ success: true, updatedPlayer })
   } catch (error) {

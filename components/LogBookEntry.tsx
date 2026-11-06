@@ -8,7 +8,6 @@ import {
   GiLaurelsTrophy,
   GiOpenTreasureChest,
   GiPirateHat,
-  GiQuillInk,
   GiScrollUnfurled,
   GiShipWheel,
   GiSinkingShip,
@@ -44,18 +43,12 @@ const TYPE_STYLE: Record<LogType, EntryStyle> = {
   cards: { icon: <GiCardRandom />, color: "text-muted-foreground" },
 }
 
-const UNTYPED_STYLE: EntryStyle = {
-  icon: <GiQuillInk />,
-  color: "text-muted-foreground",
-}
-
 type Props = {
   entry: LogEntry
 }
 
 export default function LogBookEntry({ entry }: Props) {
-  const { icon, color, notable } =
-    (entry.type && TYPE_STYLE[entry.type]) || UNTYPED_STYLE
+  const { icon, color, notable } = TYPE_STYLE[entry.type]
 
   return (
     <li className="relative">

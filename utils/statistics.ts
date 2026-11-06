@@ -27,12 +27,6 @@ export const getBattleRecordByNation = (battles: Character["battles"]) =>
     }))
     .filter(({ won, lost }) => won + lost > 0)
 
-/** Entries that recorded all the given metrics. Older entries lack newer metrics. */
-export const withMetrics = (
-  entries: StatisticsEntry[],
-  metrics: (keyof StatisticsEntry)[]
-) => entries.filter((entry) => metrics.every((key) => entry[key] != null))
-
 export const getStatisticsSnapshot = (
   player: Player
 ): Omit<StatisticsEntry, "timestamp"> => {

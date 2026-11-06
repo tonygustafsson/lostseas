@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import StatusDrawer from "@/components/drawer/drawerContent/Status"
-import type { StatisticsEntry } from "@/firebase/db"
 
-import { player } from "../../fixtures"
+import { player, statistics } from "../../fixtures"
 import PlayerPreview from "../../PlayerPreview"
 
 const veteran: Player = {
@@ -19,19 +18,6 @@ const veteran: Player = {
     } as Character["battles"],
   },
 }
-
-const statistics: StatisticsEntry[] = [1, 3, 6, 8, 11, 14].map(
-  (day, index) => ({
-    day,
-    timestamp: 1704067200000 + index * 86400000,
-    score: [31, 53, 105, 159, 232, 268][index],
-    netWorth: [500, 800, 650, 1200, 1800, 3200][index],
-    scoreTitle: [0, 0, 50, 50, 100, 100][index],
-    scoreWealth: [1, 3, 5, 9, 12, 18][index],
-    scoreShips: [10, 10, 10, 20, 20, 30][index],
-    scoreCannons: [20, 40, 40, 80, 100, 120][index],
-  })
-)
 
 const meta = {
   title: "game/Status/StatusDrawer",

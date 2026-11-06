@@ -53,13 +53,6 @@ export const Routine: Story = {
   },
 }
 
-// Entries saved before log types existed fall back to a quill
-export const Untyped: Story = {
-  args: {
-    entry: { ...entry, type: undefined, message: "Arrived at Havana." },
-  },
-}
-
 export const AllTypes: Story = {
   render: (args) => (
     <>
