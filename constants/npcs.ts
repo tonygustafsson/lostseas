@@ -1,9 +1,3 @@
-export const NPC_PLACEHOLDER_IMAGES: Record<NpcPlacement, string> = {
-  tavern: "/img/cards/tavern/pass-the-rum.png",
-  market: "/img/cards/shop/spices.png",
-  governor: "/img/cards/cityhall/governor-neutral.png",
-}
-
 export const PLACEMENT_LOCATION: Record<NpcPlacement, TownLocation> = {
   tavern: "Tavern",
   market: "Market",
@@ -553,8 +547,8 @@ export const getNpcById = (id: string) => NPCS.find((npc) => npc.id === id)
 export const getNpcAt = (town: Town, placement: NpcPlacement) =>
   NPCS.find((npc) => npc.town === town && npc.placement === placement) as Npc
 
-export const getNpcImage = (npc: Npc) =>
-  npc.image ?? NPC_PLACEHOLDER_IMAGES[npc.placement]
+/** Every NPC has a portrait named after its id */
+export const getNpcImage = (npc: Npc) => `/img/npc/${npc.id}.png`
 
 const PLACE_NAMES: Record<NpcPlacement, string> = {
   tavern: "the tavern",

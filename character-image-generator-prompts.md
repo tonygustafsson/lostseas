@@ -6,7 +6,7 @@ Prompts for the 48 townsfolk portraits: a tavern character, a market character a
 
 - Match the existing player portraits in `public/img/characters/`: detailed pixel art, warm light and a square 1254 × 1254 head and shoulders close-up with a period setting behind.
 - The talk dialog crops the image to a circle and the card crops it to a wide strip, so keep the face near the centre with room around it.
-- Save each image to the file path given and set `image` on the character in `constants/npcs.ts`. Until then the placeholder for the building is shown.
+- Save each image to the file path given. The game loads the portrait by the character's id.
 - The description is the source of truth, because the dialogue refers to its details. If the tool drifts (wrong hair, missing scar), regenerate instead of changing the text.
 - The game is set in 1640, so avoid tricorn hats, powdered wigs and other later fashions.
 
@@ -20,7 +20,7 @@ Avoid: No text, letters, logos or watermarks. No modern objects. No tricorn hats
 
 ### Mavis Cartwright
 
-- File: `public/img/npcs/charles-towne-tavern-mavis-cartwright.png`
+- File: `public/img/npc/charles-towne-tavern-mavis-cartwright.png`
 - Id: `charles-towne-tavern-mavis-cartwright`
 - Building: Tavern
 - Nationality: English
@@ -34,7 +34,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Thomas Jarvis
 
-- File: `public/img/npcs/charles-towne-market-thomas-jarvis.png`
+- File: `public/img/npc/charles-towne-market-thomas-jarvis.png`
 - Id: `charles-towne-market-thomas-jarvis`
 - Building: Market
 - Nationality: English
@@ -48,7 +48,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Randolph Ellis
 
-- File: `public/img/npcs/charles-towne-governor-randolph-ellis.png`
+- File: `public/img/npc/charles-towne-governor-randolph-ellis.png`
 - Id: `charles-towne-governor-randolph-ellis`
 - Building: City hall
 - Nationality: English
@@ -64,7 +64,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Miles Barnes
 
-- File: `public/img/npcs/barbados-tavern-miles-barnes.png`
+- File: `public/img/npc/barbados-tavern-miles-barnes.png`
 - Id: `barbados-tavern-miles-barnes`
 - Building: Tavern
 - Nationality: English
@@ -78,7 +78,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Beatrix Lamb
 
-- File: `public/img/npcs/barbados-market-beatrix-lamb.png`
+- File: `public/img/npc/barbados-market-beatrix-lamb.png`
 - Id: `barbados-market-beatrix-lamb`
 - Building: Market
 - Nationality: English
@@ -92,7 +92,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Eleanor Richardson
 
-- File: `public/img/npcs/barbados-governor-eleanor-richardson.png`
+- File: `public/img/npc/barbados-governor-eleanor-richardson.png`
 - Id: `barbados-governor-eleanor-richardson`
 - Building: City hall
 - Nationality: English
@@ -108,7 +108,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Ursula Cole
 
-- File: `public/img/npcs/port-royale-tavern-ursula-cole.png`
+- File: `public/img/npc/port-royale-tavern-ursula-cole.png`
 - Id: `port-royale-tavern-ursula-cole`
 - Building: Tavern
 - Nationality: English
@@ -122,7 +122,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Abraham Parry
 
-- File: `public/img/npcs/port-royale-market-abraham-parry.png`
+- File: `public/img/npc/port-royale-market-abraham-parry.png`
 - Id: `port-royale-market-abraham-parry`
 - Building: Market
 - Nationality: English
@@ -136,7 +136,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Archibald Stokes
 
-- File: `public/img/npcs/port-royale-governor-archibald-stokes.png`
+- File: `public/img/npc/port-royale-governor-archibald-stokes.png`
 - Id: `port-royale-governor-archibald-stokes`
 - Building: City hall
 - Nationality: English
@@ -152,7 +152,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Hugh Palmer
 
-- File: `public/img/npcs/belize-tavern-hugh-palmer.png`
+- File: `public/img/npc/belize-tavern-hugh-palmer.png`
 - Id: `belize-tavern-hugh-palmer`
 - Building: Tavern
 - Nationality: English
@@ -166,7 +166,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Eliza Knowles
 
-- File: `public/img/npcs/belize-market-eliza-knowles.png`
+- File: `public/img/npc/belize-market-eliza-knowles.png`
 - Id: `belize-market-eliza-knowles`
 - Building: Market
 - Nationality: English
@@ -180,7 +180,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Frederick Howard
 
-- File: `public/img/npcs/belize-governor-frederick-howard.png`
+- File: `public/img/npc/belize-governor-frederick-howard.png`
 - Id: `belize-governor-frederick-howard`
 - Building: City hall
 - Nationality: English
@@ -196,7 +196,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Manon Artaud
 
-- File: `public/img/npcs/tortuga-tavern-manon-artaud.png`
+- File: `public/img/npc/tortuga-tavern-manon-artaud.png`
 - Id: `tortuga-tavern-manon-artaud`
 - Building: Tavern
 - Nationality: French
@@ -210,7 +210,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Blaise Chamfort
 
-- File: `public/img/npcs/tortuga-market-blaise-chamfort.png`
+- File: `public/img/npc/tortuga-market-blaise-chamfort.png`
 - Id: `tortuga-market-blaise-chamfort`
 - Building: Market
 - Nationality: French
@@ -224,7 +224,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Ignace Jobert
 
-- File: `public/img/npcs/tortuga-governor-ignace-jobert.png`
+- File: `public/img/npc/tortuga-governor-ignace-jobert.png`
 - Id: `tortuga-governor-ignace-jobert`
 - Building: City hall
 - Nationality: French
@@ -240,7 +240,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Aubin Laclos
 
-- File: `public/img/npcs/leogane-tavern-aubin-laclos.png`
+- File: `public/img/npc/leogane-tavern-aubin-laclos.png`
 - Id: `leogane-tavern-aubin-laclos`
 - Building: Tavern
 - Nationality: French
@@ -254,7 +254,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Adele Bonnaire
 
-- File: `public/img/npcs/leogane-market-adele-bonnaire.png`
+- File: `public/img/npc/leogane-market-adele-bonnaire.png`
 - Id: `leogane-market-adele-bonnaire`
 - Building: Market
 - Nationality: French
@@ -268,7 +268,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Yvon Boitel
 
-- File: `public/img/npcs/leogane-governor-yvon-boitel.png`
+- File: `public/img/npc/leogane-governor-yvon-boitel.png`
 - Id: `leogane-governor-yvon-boitel`
 - Building: City hall
 - Nationality: French
@@ -284,7 +284,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Babette Garnier
 
-- File: `public/img/npcs/martinique-tavern-babette-garnier.png`
+- File: `public/img/npc/martinique-tavern-babette-garnier.png`
 - Id: `martinique-tavern-babette-garnier`
 - Building: Tavern
 - Nationality: French
@@ -298,7 +298,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Etienne Boulanger
 
-- File: `public/img/npcs/martinique-market-etienne-boulanger.png`
+- File: `public/img/npc/martinique-market-etienne-boulanger.png`
 - Id: `martinique-market-etienne-boulanger`
 - Building: Market
 - Nationality: French
@@ -312,7 +312,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Bertrand Aubert
 
-- File: `public/img/npcs/martinique-governor-bertrand-aubert.png`
+- File: `public/img/npc/martinique-governor-bertrand-aubert.png`
 - Id: `martinique-governor-bertrand-aubert`
 - Building: City hall
 - Nationality: French
@@ -328,7 +328,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Yves Bouvier
 
-- File: `public/img/npcs/biloxi-tavern-yves-bouvier.png`
+- File: `public/img/npc/biloxi-tavern-yves-bouvier.png`
 - Id: `biloxi-tavern-yves-bouvier`
 - Building: Tavern
 - Nationality: French
@@ -342,7 +342,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Margot Besson
 
-- File: `public/img/npcs/biloxi-market-margot-besson.png`
+- File: `public/img/npc/biloxi-market-margot-besson.png`
 - Id: `biloxi-market-margot-besson`
 - Building: Market
 - Nationality: French
@@ -356,7 +356,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Alain Turgot
 
-- File: `public/img/npcs/biloxi-governor-alain-turgot.png`
+- File: `public/img/npc/biloxi-governor-alain-turgot.png`
 - Id: `biloxi-governor-alain-turgot`
 - Building: City hall
 - Nationality: French
@@ -372,7 +372,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Socorro Herrera
 
-- File: `public/img/npcs/panama-tavern-socorro-herrera.png`
+- File: `public/img/npc/panama-tavern-socorro-herrera.png`
 - Id: `panama-tavern-socorro-herrera`
 - Building: Tavern
 - Nationality: Spanish
@@ -386,7 +386,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Sancho Velasco
 
-- File: `public/img/npcs/panama-market-sancho-velasco.png`
+- File: `public/img/npc/panama-market-sancho-velasco.png`
 - Id: `panama-market-sancho-velasco`
 - Building: Market
 - Nationality: Spanish
@@ -400,7 +400,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Alfonso Benavides
 
-- File: `public/img/npcs/panama-governor-alfonso-benavides.png`
+- File: `public/img/npc/panama-governor-alfonso-benavides.png`
 - Id: `panama-governor-alfonso-benavides`
 - Building: City hall
 - Nationality: Spanish
@@ -416,7 +416,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Tadeo Paz
 
-- File: `public/img/npcs/havana-tavern-tadeo-paz.png`
+- File: `public/img/npc/havana-tavern-tadeo-paz.png`
 - Id: `havana-tavern-tadeo-paz`
 - Building: Tavern
 - Nationality: Spanish
@@ -430,7 +430,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Joaquina Mercado
 
-- File: `public/img/npcs/havana-market-joaquina-mercado.png`
+- File: `public/img/npc/havana-market-joaquina-mercado.png`
 - Id: `havana-market-joaquina-mercado`
 - Building: Market
 - Nationality: Spanish
@@ -444,7 +444,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Alejandro Heredia
 
-- File: `public/img/npcs/havana-governor-alejandro-heredia.png`
+- File: `public/img/npc/havana-governor-alejandro-heredia.png`
 - Id: `havana-governor-alejandro-heredia`
 - Building: City hall
 - Nationality: Spanish
@@ -460,7 +460,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Dulce Rivero
 
-- File: `public/img/npcs/villa-hermosa-tavern-dulce-rivero.png`
+- File: `public/img/npc/villa-hermosa-tavern-dulce-rivero.png`
 - Id: `villa-hermosa-tavern-dulce-rivero`
 - Building: Tavern
 - Nationality: Spanish
@@ -474,7 +474,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Bartolo Carrillo
 
-- File: `public/img/npcs/villa-hermosa-market-bartolo-carrillo.png`
+- File: `public/img/npc/villa-hermosa-market-bartolo-carrillo.png`
 - Id: `villa-hermosa-market-bartolo-carrillo`
 - Building: Market
 - Nationality: Spanish
@@ -488,7 +488,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Pedro Santacruz
 
-- File: `public/img/npcs/villa-hermosa-governor-pedro-santacruz.png`
+- File: `public/img/npc/villa-hermosa-governor-pedro-santacruz.png`
 - Id: `villa-hermosa-governor-pedro-santacruz`
 - Building: City hall
 - Nationality: Spanish
@@ -504,7 +504,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Roque Acosta
 
-- File: `public/img/npcs/san-juan-tavern-roque-acosta.png`
+- File: `public/img/npc/san-juan-tavern-roque-acosta.png`
 - Id: `san-juan-tavern-roque-acosta`
 - Building: Tavern
 - Nationality: Spanish
@@ -518,7 +518,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Jacinta Moya
 
-- File: `public/img/npcs/san-juan-market-jacinta-moya.png`
+- File: `public/img/npc/san-juan-market-jacinta-moya.png`
 - Id: `san-juan-market-jacinta-moya`
 - Building: Market
 - Nationality: Spanish
@@ -532,7 +532,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Salvador Arellano
 
-- File: `public/img/npcs/san-juan-governor-salvador-arellano.png`
+- File: `public/img/npc/san-juan-governor-salvador-arellano.png`
 - Id: `san-juan-governor-salvador-arellano`
 - Building: City hall
 - Nationality: Spanish
@@ -548,7 +548,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Hadewych Zorn
 
-- File: `public/img/npcs/bonaire-tavern-hadewych-zorn.png`
+- File: `public/img/npc/bonaire-tavern-hadewych-zorn.png`
 - Id: `bonaire-tavern-hadewych-zorn`
 - Building: Tavern
 - Nationality: Dutch
@@ -562,7 +562,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Maarten Koch
 
-- File: `public/img/npcs/bonaire-market-maarten-koch.png`
+- File: `public/img/npc/bonaire-market-maarten-koch.png`
 - Id: `bonaire-market-maarten-koch`
 - Building: Market
 - Nationality: Dutch
@@ -576,7 +576,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Diederik Lang
 
-- File: `public/img/npcs/bonaire-governor-diederik-lang.png`
+- File: `public/img/npc/bonaire-governor-diederik-lang.png`
 - Id: `bonaire-governor-diederik-lang`
 - Building: City hall
 - Nationality: Dutch
@@ -592,7 +592,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Griet Vogel
 
-- File: `public/img/npcs/curacao-tavern-griet-vogel.png`
+- File: `public/img/npc/curacao-tavern-griet-vogel.png`
 - Id: `curacao-tavern-griet-vogel`
 - Building: Tavern
 - Nationality: Dutch
@@ -606,7 +606,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Pieter Haas
 
-- File: `public/img/npcs/curacao-market-pieter-haas.png`
+- File: `public/img/npc/curacao-market-pieter-haas.png`
 - Id: `curacao-market-pieter-haas`
 - Building: Market
 - Nationality: Dutch
@@ -620,7 +620,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Hubrecht Engel
 
-- File: `public/img/npcs/curacao-governor-hubrecht-engel.png`
+- File: `public/img/npc/curacao-governor-hubrecht-engel.png`
 - Id: `curacao-governor-hubrecht-engel`
 - Building: City hall
 - Nationality: Dutch
@@ -636,7 +636,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Joost Becker
 
-- File: `public/img/npcs/st-martin-tavern-joost-becker.png`
+- File: `public/img/npc/st-martin-tavern-joost-becker.png`
 - Id: `st-martin-tavern-joost-becker`
 - Building: Tavern
 - Nationality: Dutch
@@ -650,7 +650,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Femke Apel
 
-- File: `public/img/npcs/st-martin-market-femke-apel.png`
+- File: `public/img/npc/st-martin-market-femke-apel.png`
 - Id: `st-martin-market-femke-apel`
 - Building: Market
 - Nationality: Dutch
@@ -664,7 +664,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Machteld Glauber
 
-- File: `public/img/npcs/st-martin-governor-machteld-glauber.png`
+- File: `public/img/npc/st-martin-governor-machteld-glauber.png`
 - Id: `st-martin-governor-machteld-glauber`
 - Building: City hall
 - Nationality: Dutch
@@ -680,7 +680,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Klaas Bier
 
-- File: `public/img/npcs/st-eustatius-tavern-klaas-bier.png`
+- File: `public/img/npc/st-eustatius-tavern-klaas-bier.png`
 - Id: `st-eustatius-tavern-klaas-bier`
 - Building: Tavern
 - Nationality: Dutch
@@ -694,7 +694,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Saskia Berg
 
-- File: `public/img/npcs/st-eustatius-market-saskia-berg.png`
+- File: `public/img/npc/st-eustatius-market-saskia-berg.png`
 - Id: `st-eustatius-market-saskia-berg`
 - Building: Market
 - Nationality: Dutch
@@ -708,7 +708,7 @@ Detailed pixel art portrait in the style of a 1990s point-and-click adventure ga
 
 ### Constantijn Reich
 
-- File: `public/img/npcs/st-eustatius-governor-constantijn-reich.png`
+- File: `public/img/npc/st-eustatius-governor-constantijn-reich.png`
 - Id: `st-eustatius-governor-constantijn-reich`
 - Building: City hall
 - Nationality: Dutch

@@ -24,7 +24,6 @@ type Npc = {
   placement: NpcPlacement
   personality: PersonalityId
   description: string
-  image?: string
 }
 
 /** What a player has said to an NPC during the current visit */
