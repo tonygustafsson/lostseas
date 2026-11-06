@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import { FlaskConical, MessageCircle, Store } from "lucide-react"
 import { fn } from "storybook/test"
 
 import LocationTabs from "@/components/LocationTabs"
@@ -6,11 +7,12 @@ import LocationTabs from "@/components/LocationTabs"
 const meta = {
   title: "components/LocationTabs",
   component: LocationTabs,
+  argTypes: { items: { control: false } },
   args: {
     items: [
-      { id: "traders", label: "Traders" },
-      { id: "apothecary", label: "Apothecary" },
-      { id: "talk", label: "Joaquina" },
+      { id: "traders", label: "Traders", icon: <Store /> },
+      { id: "apothecary", label: "Apothecary", icon: <FlaskConical /> },
+      { id: "talk", label: "Joaquina", icon: <MessageCircle /> },
     ],
     currentTab: "traders",
     setCurrentTab: fn(),
@@ -27,9 +29,14 @@ export const Default: Story = {}
 export const QuestIndicator: Story = {
   args: {
     items: [
-      { id: "traders", label: "Traders" },
-      { id: "apothecary", label: "Apothecary" },
-      { id: "talk", label: "Joaquina", indicator: true },
+      { id: "traders", label: "Traders", icon: <Store /> },
+      { id: "apothecary", label: "Apothecary", icon: <FlaskConical /> },
+      {
+        id: "talk",
+        label: "Joaquina",
+        icon: <MessageCircle />,
+        indicator: true,
+      },
     ],
   },
 }

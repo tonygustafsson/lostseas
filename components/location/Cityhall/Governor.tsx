@@ -159,22 +159,31 @@ const Governor = () => {
           <>
             {/* Hidden while claiming, the Talk button stays for quest business */}
             {promotionAvailable && !hasClaimed && (
-              <Button size="lg" onClick={handleAcceptNewTitle}>
-                <Award className="size-6" />
+              <Button
+                size="lg"
+                className="w-full @xl:w-auto"
+                onClick={handleAcceptNewTitle}
+              >
+                <Award />
                 Accept new title
               </Button>
             )}
 
             {citizenshipChangeAvailable && !hasClaimed && (
-              <Button size="lg" onClick={handleChangeCitizenship}>
-                <Handshake className="size-6" />
+              <Button
+                size="lg"
+                className="w-full @xl:w-auto"
+                onClick={handleChangeCitizenship}
+              >
+                <Handshake />
                 Change citizenship
               </Button>
             )}
 
-            <div className="flex items-center gap-4">
+            <div className="flex w-full items-center gap-4 @xl:w-auto">
               <TalkButton
                 npc={npc}
+                variant={rewardWaiting && !hasClaimed ? "secondary" : "default"}
                 talksLeft={talksLeft}
                 hasQuestBusiness={hasQuestBusiness}
                 disabled={isPending}

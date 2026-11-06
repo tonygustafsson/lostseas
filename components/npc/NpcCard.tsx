@@ -9,7 +9,8 @@ type TalkButtonProps = {
   talksLeft: number
   hasQuestBusiness: boolean
   disabled?: boolean
-  size?: "default" | "lg"
+  /** Gold unless another action on the card is the main one */
+  variant?: "default" | "secondary"
   onTalk: () => void
 }
 
@@ -22,7 +23,7 @@ export const TalkButton = ({
   talksLeft,
   hasQuestBusiness,
   disabled,
-  size = "lg",
+  variant = "default",
   onTalk,
 }: TalkButtonProps) => {
   // Quest business never uses a talk, so it is always possible
@@ -30,18 +31,19 @@ export const TalkButton = ({
 
   return (
     <Button
-      size={size}
-      variant="secondary"
+      size="lg"
+      variant={variant}
       disabled={!canTalk || disabled}
       onClick={onTalk}
+      className="w-full @xl:w-auto"
     >
-      <MessageCircle className={size === "lg" ? "size-6" : undefined} />
+      <MessageCircle />
       Talk
     </Button>
   )
 }
 
-type Props = Omit<TalkButtonProps, "size">
+type Props = Omit<TalkButtonProps, "variant">
 
 /** The character in their own tab, with a round portrait beside their story */
 const NpcCard = (props: Props) => (

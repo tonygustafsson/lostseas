@@ -1,3 +1,4 @@
+import { Coins, Hammer, Ship } from "lucide-react"
 import { useState } from "react"
 
 import LocationTabs from "@/components/LocationTabs"
@@ -15,9 +16,9 @@ const Shipyard = () => {
     <>
       <LocationTabs<ShipyardTab>
         items={[
-          { id: "buy", label: "Buy" },
-          { id: "sell", label: "Sell" },
-          { id: "repair", label: "Repair" },
+          { id: "buy", label: "Buy", icon: <Ship /> },
+          { id: "sell", label: "Sell", icon: <Coins /> },
+          { id: "repair", label: "Repair", icon: <Hammer /> },
         ]}
         currentTab={tab}
         setCurrentTab={setTab}

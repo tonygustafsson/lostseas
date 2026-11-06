@@ -1,4 +1,5 @@
 "use client"
+import { FlaskConical, MessageCircle, Store } from "lucide-react"
 import { useState } from "react"
 
 import LocationTabs from "@/components/LocationTabs"
@@ -36,13 +37,14 @@ const Market = () => {
     <div className="mb-8">
       <LocationTabs<MarketTab>
         items={[
-          { id: "traders", label: "Traders" },
-          { id: "apothecary", label: "Apothecary" },
+          { id: "traders", label: "Traders", icon: <Store /> },
+          { id: "apothecary", label: "Apothecary", icon: <FlaskConical /> },
           ...(npc
             ? [
                 {
                   id: "talk" as const,
                   label: getFirstName(npc),
+                  icon: <MessageCircle />,
                   indicator: hasQuestBusiness,
                 },
               ]

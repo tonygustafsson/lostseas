@@ -1,3 +1,4 @@
+import { Beer, MessageCircle, Spade } from "lucide-react"
 import { useState } from "react"
 import { GiPirateCaptain } from "react-icons/gi"
 
@@ -85,13 +86,14 @@ const Tavern = () => {
 
       <LocationTabs<TavernTab>
         items={[
-          { id: "buy", label: "Buy" },
-          { id: "cards", label: "Play cards" },
+          { id: "buy", label: "Buy", icon: <Beer /> },
+          { id: "cards", label: "Play cards", icon: <Spade /> },
           ...(npc
             ? [
                 {
                   id: "talk" as const,
                   label: getFirstName(npc),
+                  icon: <MessageCircle />,
                   indicator: hasQuestBusiness,
                 },
               ]

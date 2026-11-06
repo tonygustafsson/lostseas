@@ -13,7 +13,7 @@ const meta = {
     npc: governor,
     title: `Governor ${governor.name}`,
     children: <p>Welcome captain Morgan Reed.</p>,
-    actions: <Button variant="secondary">Talk</Button>,
+    actions: <Button>Talk</Button>,
   },
   argTypes: {
     children: { control: false },
