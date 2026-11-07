@@ -11,7 +11,7 @@ export type ColorUsage = {
   files: Record<string, number>
 }
 
-export const scannedAt = "2026-11-06"
+export const scannedAt = "2026-11-07"
 
 // Opacity applied to whole elements (opacity-* classes and inline styles)
 // prettier-ignore
@@ -37,32 +37,31 @@ export const colorUsage: ColorUsage[] = [
     "name": "gold",
     "token": "--color-gold",
     "css": "var(--color-gold)",
-    "count": 131,
+    "count": 139,
     "variants": {
       "/20": 5,
       "/10": 11,
       "/15": 1,
-      "/30": 3,
-      "/40": 4,
+      "/30": 2,
+      "/40": 6,
       "/50": 5,
-      "/60": 9,
-      "/70": 3,
+      "/60": 13,
+      "/70": 4,
       "/25": 1
     },
     "utilities": {
-      "border": 21,
+      "border": 20,
       "bg": 14,
-      "text": 78,
+      "text": 77,
       "var()": 2,
-      "via": 6,
-      "from": 1,
+      "via": 11,
+      "from": 4,
       "ring": 3,
       "shadow": 1,
-      "to": 5
+      "to": 7
     },
     "files": {
       "app/guide/page.tsx": 4,
-      "components/ActionCard.tsx": 3,
       "components/advisor/AdvisorTips.tsx": 1,
       "components/CargoMeter.tsx": 1,
       "components/character/CharacterOption.tsx": 1,
@@ -92,7 +91,8 @@ export const colorUsage: ColorUsage[] = [
       "components/location/Shop/ShopTradeItem.tsx": 3,
       "components/location/Shop/ShopTradeSummary.tsx": 2,
       "components/location/Tavern/Cards.tsx": 4,
-      "components/LocationTabs.tsx": 1,
+      "components/location/Tavern/TavernEventDialog.tsx": 2,
+      "components/LocationTabs.tsx": 3,
       "components/LogBookEntry.tsx": 6,
       "components/Map/DestinationConfirm.tsx": 1,
       "components/Map/Tooltip.tsx": 1,
@@ -106,6 +106,7 @@ export const colorUsage: ColorUsage[] = [
       "components/menu/WeatherCard.tsx": 1,
       "components/MerchandiseCard.tsx": 2,
       "components/MerchandiseIcon.tsx": 1,
+      "components/npc/NpcPortraitCard.tsx": 7,
       "components/npc/TalkDialog.tsx": 2,
       "components/quests/QuestCard.tsx": 2,
       "components/Screenshots.tsx": 1,
@@ -126,18 +127,17 @@ export const colorUsage: ColorUsage[] = [
     "name": "muted-foreground",
     "token": "--color-muted-foreground",
     "css": "var(--color-muted-foreground)",
-    "count": 97,
+    "count": 99,
     "variants": {
       "/10": 2,
       "/15": 2
     },
     "utilities": {
-      "text": 92,
+      "text": 94,
       "bg": 4,
       "var()": 1
     },
     "files": {
-      "components/ActionCard.tsx": 1,
       "components/advisor/AdvisorTips.tsx": 1,
       "components/CargoMeter.tsx": 1,
       "components/character/CharacterOption.tsx": 2,
@@ -155,6 +155,7 @@ export const colorUsage: ColorUsage[] = [
       "components/Leaderboard.tsx": 2,
       "components/location/Bank/Balances.tsx": 2,
       "components/location/Bank/VentureCard.tsx": 3,
+      "components/location/Market/index.tsx": 1,
       "components/location/Sea/AttackReport.tsx": 1,
       "components/location/Sea/AttackReportItem.tsx": 1,
       "components/location/Sea/JourneyProgress.tsx": 2,
@@ -174,6 +175,7 @@ export const colorUsage: ColorUsage[] = [
       "components/menu/MobileMenuItem.tsx": 1,
       "components/menu/StatCard.tsx": 1,
       "components/MerchandiseCard.tsx": 1,
+      "components/npc/NpcPortraitCard.tsx": 2,
       "components/quests/QuestCard.tsx": 2,
       "components/RadialProgressBar.tsx": 1,
       "components/RememberedAccountList.tsx": 3,
@@ -313,14 +315,13 @@ export const colorUsage: ColorUsage[] = [
       "/85": 1
     },
     "utilities": {
-      "bg": 38,
-      "to": 6,
+      "bg": 39,
       "from": 2,
+      "to": 5,
       "via": 3
     },
     "files": {
       "app/guide/page.tsx": 2,
-      "components/ActionCard.tsx": 1,
       "components/drawer/drawerContent/Fleet.tsx": 6,
       "components/game-ui/LocationScene/HarborScene.tsx": 1,
       "components/GuideContent.tsx": 1,
@@ -339,6 +340,7 @@ export const colorUsage: ColorUsage[] = [
       "components/menu/MenuCard.tsx": 2,
       "components/menu/WeatherCard.tsx": 1,
       "components/MerchandiseCard.tsx": 2,
+      "components/npc/NpcPortraitCard.tsx": 1,
       "components/Select.tsx": 1,
       "components/settings/UserIdDisplay.tsx": 1,
       "components/ships/FittingsList.tsx": 1,
@@ -447,6 +449,93 @@ export const colorUsage: ColorUsage[] = [
     }
   },
   {
+    "kind": "palette",
+    "name": "transparent",
+    "token": "transparent",
+    "css": "transparent",
+    "count": 46,
+    "variants": {},
+    "utilities": {
+      "from": 17,
+      "border": 7,
+      "to": 10,
+      "bg": 8,
+      "text": 4
+    },
+    "files": {
+      "app/guide/page.tsx": 1,
+      "components/character/CharacterOption.tsx": 1,
+      "components/game-ui/LocationScene/HarborScene.tsx": 2,
+      "components/GuideContent.tsx": 1,
+      "components/location/Bank/VentureCard.tsx": 1,
+      "components/location/Shop/ShopTradeItem.tsx": 2,
+      "components/location/Tavern/TavernEventDialog.tsx": 2,
+      "components/LocationTabs.tsx": 2,
+      "components/menu/DesktopMenu.tsx": 5,
+      "components/menu/MobileBottomNav.tsx": 2,
+      "components/menu/MobileTopBar.tsx": 5,
+      "components/MerchandiseCard.tsx": 1,
+      "components/npc/NpcPortraitCard.tsx": 7,
+      "components/StartPageScreen.tsx": 1,
+      "components/ui/accordion.tsx": 1,
+      "components/ui/badge.tsx": 1,
+      "components/ui/button.tsx": 2,
+      "components/ui/input.tsx": 1,
+      "components/ui/sidebar.tsx": 1,
+      "components/ui/switch.tsx": 1,
+      "components/ui/tabs.tsx": 6
+    }
+  },
+  {
+    "kind": "token",
+    "name": "border",
+    "token": "--color-border",
+    "css": "var(--color-border)",
+    "count": 39,
+    "variants": {
+      "/50": 1
+    },
+    "utilities": {
+      "border": 33,
+      "divide": 1,
+      "border-r": 1,
+      "ring": 1,
+      "bg": 2,
+      "var()": 1
+    },
+    "files": {
+      "app/guide/page.tsx": 1,
+      "components/advisor/AdvisorTips.tsx": 1,
+      "components/crew/DismissCrewMembers.tsx": 1,
+      "components/crew/GiveGold.tsx": 1,
+      "components/crew/GiveMedicine.tsx": 1,
+      "components/drawer/drawerContent/Logs.tsx": 1,
+      "components/DrawerBottom.tsx": 1,
+      "components/DrawerPanel.tsx": 1,
+      "components/game-ui/LocationScene/BuildingScene.tsx": 1,
+      "components/GuideContent.tsx": 3,
+      "components/Leaderboard.tsx": 1,
+      "components/location/Sea/BattleContent.tsx": 1,
+      "components/location/Sea/ShipMeetingContent.tsx": 1,
+      "components/location/Shop/ShopTradeControls.tsx": 1,
+      "components/location/Tavern/Cards.tsx": 1,
+      "components/LocationTabs.tsx": 1,
+      "components/LogBookEntry.tsx": 1,
+      "components/MerchandiseShopItem.tsx": 1,
+      "components/npc/TalkDialog.tsx": 1,
+      "components/Screenshots.tsx": 1,
+      "components/settings/PasskeyList.tsx": 1,
+      "components/Sound/SoundChannel.tsx": 1,
+      "components/Sound/SoundToggle.tsx": 1,
+      "components/StartPageScreen.tsx": 9,
+      "components/ui/badge.tsx": 1,
+      "components/ui/button.tsx": 1,
+      "components/ui/select.tsx": 1,
+      "components/ui/separator.tsx": 1,
+      "components/ui/sonner.tsx": 1
+    }
+  },
+  {
     "kind": "token",
     "name": "destructive",
     "token": "--color-destructive",
@@ -474,89 +563,6 @@ export const colorUsage: ColorUsage[] = [
       "components/ui/input.tsx": 4,
       "components/ui/select.tsx": 4,
       "components/ui/switch.tsx": 4
-    }
-  },
-  {
-    "kind": "token",
-    "name": "border",
-    "token": "--color-border",
-    "css": "var(--color-border)",
-    "count": 38,
-    "variants": {
-      "/50": 1
-    },
-    "utilities": {
-      "border": 33,
-      "divide": 1,
-      "ring": 1,
-      "bg": 2,
-      "var()": 1
-    },
-    "files": {
-      "app/guide/page.tsx": 1,
-      "components/advisor/AdvisorTips.tsx": 1,
-      "components/crew/DismissCrewMembers.tsx": 1,
-      "components/crew/GiveGold.tsx": 1,
-      "components/crew/GiveMedicine.tsx": 1,
-      "components/drawer/drawerContent/Logs.tsx": 1,
-      "components/DrawerBottom.tsx": 1,
-      "components/DrawerPanel.tsx": 1,
-      "components/game-ui/LocationScene/BuildingScene.tsx": 1,
-      "components/GuideContent.tsx": 3,
-      "components/Leaderboard.tsx": 1,
-      "components/location/Sea/BattleContent.tsx": 1,
-      "components/location/Sea/ShipMeetingContent.tsx": 1,
-      "components/location/Shop/ShopTradeControls.tsx": 1,
-      "components/location/Tavern/Cards.tsx": 1,
-      "components/LogBookEntry.tsx": 1,
-      "components/MerchandiseShopItem.tsx": 1,
-      "components/npc/TalkDialog.tsx": 1,
-      "components/Screenshots.tsx": 1,
-      "components/settings/PasskeyList.tsx": 1,
-      "components/Sound/SoundChannel.tsx": 1,
-      "components/Sound/SoundToggle.tsx": 1,
-      "components/StartPageScreen.tsx": 9,
-      "components/ui/badge.tsx": 1,
-      "components/ui/button.tsx": 1,
-      "components/ui/select.tsx": 1,
-      "components/ui/separator.tsx": 1,
-      "components/ui/sonner.tsx": 1
-    }
-  },
-  {
-    "kind": "palette",
-    "name": "transparent",
-    "token": "transparent",
-    "css": "transparent",
-    "count": 36,
-    "variants": {},
-    "utilities": {
-      "from": 14,
-      "border": 7,
-      "to": 5,
-      "bg": 8,
-      "text": 2
-    },
-    "files": {
-      "app/guide/page.tsx": 1,
-      "components/ActionCard.tsx": 1,
-      "components/character/CharacterOption.tsx": 1,
-      "components/game-ui/LocationScene/HarborScene.tsx": 2,
-      "components/GuideContent.tsx": 1,
-      "components/location/Bank/VentureCard.tsx": 1,
-      "components/location/Shop/ShopTradeItem.tsx": 2,
-      "components/menu/DesktopMenu.tsx": 5,
-      "components/menu/MobileBottomNav.tsx": 2,
-      "components/menu/MobileTopBar.tsx": 5,
-      "components/MerchandiseCard.tsx": 1,
-      "components/StartPageScreen.tsx": 1,
-      "components/ui/accordion.tsx": 1,
-      "components/ui/badge.tsx": 1,
-      "components/ui/button.tsx": 2,
-      "components/ui/input.tsx": 1,
-      "components/ui/sidebar.tsx": 1,
-      "components/ui/switch.tsx": 1,
-      "components/ui/tabs.tsx": 6
     }
   },
   {
@@ -666,18 +672,20 @@ export const colorUsage: ColorUsage[] = [
     "name": "gold-light",
     "token": "--color-gold-light",
     "css": "var(--color-gold-light)",
-    "count": 19,
+    "count": 22,
     "variants": {},
     "utilities": {
       "text": 16,
-      "from": 2,
+      "from": 5,
       "ring": 1
     },
     "files": {
       "app/guide/page.tsx": 2,
+      "components/location/Tavern/TavernEventDialog.tsx": 1,
       "components/menu/DesktopMenu.tsx": 1,
       "components/menu/MobileBottomNav.tsx": 5,
       "components/menu/MobileTopBar.tsx": 1,
+      "components/npc/NpcPortraitCard.tsx": 2,
       "components/Screenshots.tsx": 1,
       "components/SocialMedia.tsx": 2,
       "components/StartPageScreen.tsx": 7
@@ -841,6 +849,31 @@ export const colorUsage: ColorUsage[] = [
   },
   {
     "kind": "token",
+    "name": "info",
+    "token": "--color-info",
+    "css": "var(--color-info)",
+    "count": 12,
+    "variants": {
+      "/10": 2,
+      "/20": 3,
+      "/40": 2,
+      "/30": 1
+    },
+    "utilities": {
+      "bg": 6,
+      "text": 3,
+      "border": 1,
+      "ring": 2
+    },
+    "files": {
+      "components/LocationTabs.tsx": 1,
+      "components/npc/NpcCard.tsx": 2,
+      "components/ui/button.tsx": 8,
+      "components/ui/sonner.tsx": 1
+    }
+  },
+  {
+    "kind": "token",
     "name": "sidebar-accent",
     "token": "--color-sidebar-accent",
     "css": "var(--color-sidebar-accent)",
@@ -881,30 +914,6 @@ export const colorUsage: ColorUsage[] = [
   },
   {
     "kind": "token",
-    "name": "info",
-    "token": "--color-info",
-    "css": "var(--color-info)",
-    "count": 11,
-    "variants": {
-      "/10": 2,
-      "/20": 3,
-      "/40": 2,
-      "/30": 1
-    },
-    "utilities": {
-      "bg": 5,
-      "text": 3,
-      "border": 1,
-      "ring": 2
-    },
-    "files": {
-      "components/npc/NpcCard.tsx": 2,
-      "components/ui/button.tsx": 8,
-      "components/ui/sonner.tsx": 1
-    }
-  },
-  {
-    "kind": "token",
     "name": "sidebar",
     "token": "--color-sidebar",
     "css": "var(--color-sidebar)",
@@ -936,6 +945,27 @@ export const colorUsage: ColorUsage[] = [
     },
     "files": {
       "components/ui/sidebar.tsx": 8
+    }
+  },
+  {
+    "kind": "token",
+    "name": "gold-dark",
+    "token": "--color-gold-dark",
+    "css": "var(--gold-dark)",
+    "count": 7,
+    "variants": {},
+    "utilities": {
+      "var()": 1,
+      "border": 1,
+      "to": 5
+    },
+    "files": {
+      "components/charts/StatisticsAreaChart.tsx": 1,
+      "components/location/Tavern/Cards.tsx": 1,
+      "components/location/Tavern/TavernEventDialog.tsx": 1,
+      "components/menu/DesktopMenu.tsx": 1,
+      "components/menu/MobileTopBar.tsx": 1,
+      "components/npc/NpcPortraitCard.tsx": 2
     }
   },
   {
@@ -1001,25 +1031,6 @@ export const colorUsage: ColorUsage[] = [
     },
     "files": {
       "components/ui/sidebar.tsx": 5
-    }
-  },
-  {
-    "kind": "token",
-    "name": "gold-dark",
-    "token": "--color-gold-dark",
-    "css": "var(--gold-dark)",
-    "count": 4,
-    "variants": {},
-    "utilities": {
-      "var()": 1,
-      "border": 1,
-      "to": 2
-    },
-    "files": {
-      "components/charts/StatisticsAreaChart.tsx": 1,
-      "components/location/Tavern/Cards.tsx": 1,
-      "components/menu/DesktopMenu.tsx": 1,
-      "components/menu/MobileTopBar.tsx": 1
     }
   },
   {

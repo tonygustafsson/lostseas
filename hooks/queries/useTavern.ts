@@ -9,6 +9,13 @@ import { formatGold } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
 import { playSoundEffect } from "@/utils/sound"
 
+export type TavernFightResult = {
+  numberOfSailors: number
+  success: boolean
+  loot: number
+  healthLoss: number
+}
+
 export const useTavern = () => {
   const queryClient = useQueryClient()
   const setToast = useToasts((s) => s.setToast)
@@ -161,40 +168,14 @@ export const useTavern = () => {
       },
     })
 
-  const { mutate: fightSailors, isPending: isFightingSailors } = useMutation({
+  // No optimistic update, the sailors stay in the dialog until the fight result arrives
+  const fight = useMutation({
     mutationFn: () => apiRequest("/api/tavern/fightSailors", null, "POST"),
-    onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
-
-      const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
-
-      if (previous) {
-        const playerUpdates: DeepPartial<Player> = {
-          locationStates: {
-            tavern: {
-              noOfSailors: 0,
-            },
-          },
-        }
-
-        const newPlayer = patchDeep(previous, playerUpdates)
-        queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
-      }
-
-      return { previous }
-    },
-    onSuccess: (response, _, context) => {
-      const {
-        updatedPlayer,
-        error,
-        numberOfSailors,
-        success,
-        loot,
-        healthLoss,
-      } = response?.data
+    onSuccess: (response) => {
+      const { updatedPlayer, error, success } = response?.data
 
       if (error) {
-        handleError(`Could not fight sailors`, error, context?.previous)
+        handleError(`Could not fight sailors`, error, undefined)
         return
       }
 
@@ -202,28 +183,16 @@ export const useTavern = () => {
         queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
       }
 
-      if (success) {
-        setToast({
-          title: `You fought ${numberOfSailors} sailors sailors and won!`,
-          message: `You got ${formatGold(loot)}. Your crew lost ${healthLoss}% health.`,
-          variant: "success",
-        })
-
-        playSoundEffect("victory")
-      } else {
-        setToast({
-          title: `You fought ${numberOfSailors} sailors and lost`,
-          message: `Ouch! Your crew lost ${healthLoss}% health.`,
-          variant: "error",
-        })
-
-        playSoundEffect("defeat")
-      }
+      playSoundEffect(success ? "victory" : "defeat")
     },
-    onError: (err: any, _, context: any) => {
-      handleError(`Could not fight sailors`, err, context?.previous)
+    onError: (err: any) => {
+      handleError(`Could not fight sailors`, err, undefined)
     },
   })
+
+  const fightData = fight.data?.data
+  const fightResult: TavernFightResult | undefined =
+    fightData && !fightData.error ? fightData : undefined
 
   const { mutate: ignoreSailors, isPending: isIgnoringSailors } = useMutation({
     mutationFn: () =>
@@ -327,8 +296,11 @@ export const useTavern = () => {
     isTreatingCrew,
     acceptNewCrewMembers,
     isAcceptingNewCrewMembers,
-    fightSailors,
-    isFightingSailors,
+    fightSailors: fight.mutate,
+    isFightingSailors: fight.isPending,
+    fightResult,
+    /** Closes the fight result, the dialog was the only thing showing it */
+    dismissFightResult: fight.reset,
     ignoreSailors,
     isIgnoringSailors,
     playCards,
