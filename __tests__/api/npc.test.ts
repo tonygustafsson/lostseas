@@ -93,27 +93,10 @@ describe.each(routes)("POST /api/npc/%s", (_name, route, body) => {
 })
 
 describe("POST /api/npc/talk", () => {
-  const here = () =>
-    createTestPlayer({
-      character: { town: "Charles Towne", location: "Tavern" },
-      locationStates: {
-        conversations: { [NPC_ID]: { talks: 3 } },
-      },
-    })
-
   it("returns 400 for an unknown NPC", async () => {
     const response = await talk(request({ npcId: "nobody" }))
 
     expect(response.status).toBe(400)
-  })
-
-  it("passes a 409 from the action through", async () => {
-    mocks.player = here()
-
-    const response = await talk(request({ npcId: NPC_ID }))
-
-    expect(response.status).toBe(409)
-    expect(mocks.savePlayer).not.toHaveBeenCalled()
   })
 
   it("saves the player and returns the line", async () => {
@@ -129,7 +112,6 @@ describe("POST /api/npc/talk", () => {
     expect(body.success).toBe(true)
     expect(body.npcId).toBe(NPC_ID)
     expect(body.line.text).toEqual(expect.any(String))
-    expect(body.talksLeft).toBe(2)
   })
 })
 

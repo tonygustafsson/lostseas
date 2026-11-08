@@ -1,3 +1,4 @@
+import { ScrollText } from "lucide-react"
 import type { ReactNode } from "react"
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -7,7 +8,7 @@ type TabItem<T> = {
   label: string
   id: T
   icon: ReactNode
-  /** A small dot that asks for attention, like quest business */
+  /** A quest scroll that asks for attention when there is quest business */
   indicator?: boolean
 }
 
@@ -47,10 +48,10 @@ const LocationTabs = <T extends string>({
             {label}
 
             {indicator && (
-              <span
+              <ScrollText
                 role="img"
                 aria-label="Quest"
-                className="bg-info size-2 rounded-full"
+                className="text-info size-4"
               />
             )}
           </TabsTrigger>

@@ -9,13 +9,9 @@ import { formatReward } from "@/utils/npc/questText"
 
 type NpcResponse = { success: true; updatedPlayer: Player }
 
-type TalkResponse = NpcResponse & {
-  npcId: string
-  line: TalkLine
-  talksLeft: number
-}
+type TalkResponse = NpcResponse & { npcId: string; line: TalkLine }
 
-type AnswerResponse = NpcResponse & { reply: string; talksLeft: number }
+type AnswerResponse = NpcResponse & { reply: string }
 type AcceptResponse = NpcResponse & { quest: Quest; text: string }
 type DeclineResponse = NpcResponse & { text: string }
 type AbandonResponse = NpcResponse & { quest: Quest }

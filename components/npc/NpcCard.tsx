@@ -1,4 +1,4 @@
-import { MessageCircle } from "lucide-react"
+import { MessageCircle, ScrollText } from "lucide-react"
 
 import NpcPortraitCard from "@/components/npc/NpcPortraitCard"
 import { Badge } from "@/components/ui/badge"
@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 
 type TalkButtonProps = {
   npc: Npc
-  talksLeft: number
   hasQuestBusiness: boolean
   disabled?: boolean
   /** Gold unless another action on the card is the main one */
@@ -15,33 +14,29 @@ type TalkButtonProps = {
 }
 
 export const QuestBadge = () => (
-  <Badge className="bg-info/10 text-info">Quest</Badge>
+  <Badge className="bg-info/10 text-info">
+    <ScrollText />
+    Quest
+  </Badge>
 )
 
 /** Shared by the NPC card and the governor card */
 export const TalkButton = ({
-  talksLeft,
-  hasQuestBusiness,
   disabled,
   variant = "default",
   onTalk,
-}: TalkButtonProps) => {
-  // Quest business never uses a talk, so it is always possible
-  const canTalk = talksLeft > 0 || hasQuestBusiness
-
-  return (
-    <Button
-      size="lg"
-      variant={variant}
-      disabled={!canTalk || disabled}
-      onClick={onTalk}
-      className="w-full @xl:w-auto"
-    >
-      <MessageCircle />
-      Talk
-    </Button>
-  )
-}
+}: TalkButtonProps) => (
+  <Button
+    size="lg"
+    variant={variant}
+    disabled={disabled}
+    onClick={onTalk}
+    className="w-full @xl:w-auto"
+  >
+    <MessageCircle />
+    Talk
+  </Button>
+)
 
 type Props = Omit<TalkButtonProps, "variant">
 

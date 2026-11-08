@@ -1,10 +1,11 @@
+import {
+  DONE_TALKING_LINES,
+  TIRED_CHANCE,
+  TIRED_LINES,
+} from "@/constants/dialogue"
 import { TOWNS } from "@/constants/locations"
 import { getNpcById, PLACEMENT_LOCATION } from "@/constants/npcs"
-import {
-  MAX_ACTIVE_QUESTS,
-  QUEST_LINES,
-  TALKS_PER_VISIT,
-} from "@/constants/quests"
+import { MAX_ACTIVE_QUESTS, QUEST_LINES } from "@/constants/quests"
 import { generateQuest, targetExtras } from "@/utils/npc/generateQuest"
 import { findDialogue, pickDialogue } from "@/utils/npc/pickDialogue"
 import {
@@ -18,13 +19,17 @@ import { getRandomInt, pickRandom } from "@/utils/random"
 
 import type { ActionResult, RandomInt } from "./types"
 
-export { MAX_ACTIVE_QUESTS, TALKS_PER_VISIT }
+export { MAX_ACTIVE_QUESTS }
 
+/** One in this many visits, an NPC has a favour to ask */
 const QUEST_CHANCE = 10
 
 export type TalkLine =
-  | { kind: "statement"; text: string }
-  | { kind: "question"; text: string; answers: string[] }
+  // A tired NPC adds a farewell to show they have nothing more to say
+  | { kind: "statement"; text: string; farewell?: string }
+  | { kind: "question"; text: string; answers: string[]; farewell?: string }
+  // Said for the rest of the visit once the NPC has tired of talking
+  | { kind: "tired"; text: string }
   | { kind: "questOffer"; text: string; quest: Quest }
   | { kind: "handIn"; text: string; quest: Quest }
   | {
@@ -53,7 +58,7 @@ const findNpcHere = (player: Player, npcId: string) => {
 }
 
 const getConversation = (player: Player, npc: Npc): ConversationState =>
-  player.locationStates?.conversations?.[npc.id] ?? { talks: 0 }
+  player.locationStates?.conversations?.[npc.id] ?? {}
 
 // Replaced as a whole, so an old offer or question never mixes with a new one
 const setConversation = (
@@ -79,7 +84,7 @@ const giverName = (quest: Quest) => {
 
 type QuestProgress = { player: Player; line: TalkLine; log?: GameLog }
 
-/** Settles quest business with the NPC. It never uses a talk. */
+/** Settles quest business with the NPC */
 const progressQuest = (
   player: Player,
   npc: Npc,
@@ -205,7 +210,7 @@ export const talkTo = (
   player: Player,
   { npcId, skipHandIn }: { npcId: string; skipHandIn?: boolean },
   randomInt: RandomInt = getRandomInt
-): ActionResult<{ npcId: string; line: TalkLine; talksLeft: number }> => {
+): ActionResult<{ npcId: string; line: TalkLine }> => {
   const npc = findNpcHere(player, npcId)
 
   if (!npc) {
@@ -215,7 +220,7 @@ export const talkTo = (
   const conversation = getConversation(player, npc)
   const quest = getQuestBusiness(player, npc)
 
-  // An offer left open, eg by closing the dialog, comes back without using a talk
+  // An offer left open, eg by closing the dialog, comes back
   if (conversation.questOffer) {
     const offer = conversation.questOffer
 
@@ -224,7 +229,6 @@ export const talkTo = (
       data: {
         npcId: npc.id,
         line: { kind: "questOffer", text: offer.pitch, quest: offer },
-        talksLeft: TALKS_PER_VISIT - conversation.talks,
       },
     }
   }
@@ -251,7 +255,6 @@ export const talkTo = (
           ),
           quest,
         },
-        talksLeft: TALKS_PER_VISIT - conversation.talks,
       },
     }
   }
@@ -265,7 +268,6 @@ export const talkTo = (
       data: {
         npcId: npc.id,
         line: progress.line,
-        talksLeft: TALKS_PER_VISIT - conversation.talks,
       },
     }
   }
@@ -274,31 +276,41 @@ export const talkTo = (
   const resolve = (text: string, extra?: Record<string, string>) =>
     resolvePlaceholders(text, { ...context, extra }, randomInt)
 
-  if (conversation.talks >= TALKS_PER_VISIT) {
+  if (conversation.tired) {
     return {
-      error: resolve(pickRandom(QUEST_LINES.noMoreTalk, randomInt)),
-      status: 409,
+      player,
+      data: {
+        npcId: npc.id,
+        line: {
+          kind: "tired",
+          text: resolve(pickRandom(DONE_TALKING_LINES, randomInt)),
+        },
+      },
     }
   }
 
-  const talks = conversation.talks + 1
-  const talksLeft = TALKS_PER_VISIT - talks
   const saidIds = conversation.saidIds
   const activeQuests = Object.keys(player.quests ?? {}).length
 
-  if (activeQuests < MAX_ACTIVE_QUESTS && randomInt(1, QUEST_CHANCE) === 1) {
+  // Rolled on the first chat of the visit only, so talking on never fishes for quests
+  const questRolled = true
+  const hasQuest =
+    !conversation.questRolled &&
+    activeQuests < MAX_ACTIVE_QUESTS &&
+    randomInt(1, QUEST_CHANCE) === 1
+
+  if (hasQuest) {
     const offer = generateQuest(npc, player, randomInt)
 
     return {
       player: setConversation(player, npc, {
-        talks,
+        questRolled,
         ...(saidIds && { saidIds }),
         questOffer: offer,
       }),
       data: {
         npcId: npc.id,
         line: { kind: "questOffer", text: offer.pitch, quest: offer },
-        talksLeft,
       },
     }
   }
@@ -310,6 +322,11 @@ export const talkTo = (
     randomInt
   )
   const nextSaidIds = [...(saidIds ?? []), entry.id]
+  // Once tired, the NPC stays that way until the player sails
+  const tired = randomInt(1, TIRED_CHANCE) === 1
+  const farewell = tired
+    ? { farewell: resolve(pickRandom(TIRED_LINES, randomInt)) }
+    : {}
 
   if (entry.answers) {
     // Picked once, so a town or good named in the question is the same in the reply
@@ -325,7 +342,8 @@ export const talkTo = (
 
     return {
       player: setConversation(player, npc, {
-        talks,
+        questRolled,
+        ...(tired && { tired }),
         saidIds: nextSaidIds,
         pendingQuestionId: entry.id,
         ...(hasValues && { pendingValues: values }),
@@ -336,28 +354,31 @@ export const talkTo = (
           kind: "question",
           text: resolve(entry.text, values),
           answers: entry.answers.map((answer) => resolve(answer.text, values)),
+          ...farewell,
         },
-        talksLeft,
       },
     }
   }
 
   return {
-    player: setConversation(player, npc, { talks, saidIds: nextSaidIds }),
+    player: setConversation(player, npc, {
+      questRolled,
+      ...(tired && { tired }),
+      saidIds: nextSaidIds,
+    }),
     data: {
       npcId: npc.id,
-      line: { kind: "statement", text: resolve(entry.text) },
-      talksLeft,
+      line: { kind: "statement", text: resolve(entry.text), ...farewell },
     },
   }
 }
 
-/** Hands over the goods for a procurement quest. It does not use a talk. */
+/** Hands over the goods for a procurement quest */
 export const handInQuest = (
   player: Player,
   { npcId }: { npcId: string },
   randomInt: RandomInt = getRandomInt
-): ActionResult<{ npcId: string; line: TalkLine; talksLeft: number }> => {
+): ActionResult<{ npcId: string; line: TalkLine }> => {
   const npc = findNpcHere(player, npcId)
 
   if (!npc) {
@@ -378,17 +399,16 @@ export const handInQuest = (
     data: {
       npcId: npc.id,
       line: progress.line,
-      talksLeft: TALKS_PER_VISIT - getConversation(player, npc).talks,
     },
   }
 }
 
-/** Answers the NPC's question. It does not use a talk. */
+/** Answers the NPC's question */
 export const answerNpc = (
   player: Player,
   { npcId, answerIndex }: { npcId: string; answerIndex: number },
   randomInt: RandomInt = getRandomInt
-): ActionResult<{ reply: string; talksLeft: number }> => {
+): ActionResult<{ reply: string }> => {
   const npc = findNpcHere(player, npcId)
 
   if (!npc) {
@@ -423,7 +443,6 @@ export const answerNpc = (
         { player, town: npc.town, extra: pendingValues },
         randomInt
       ),
-      talksLeft: TALKS_PER_VISIT - conversation.talks,
     },
   }
 }

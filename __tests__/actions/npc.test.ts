@@ -1,13 +1,14 @@
 import { describe, expect, it, vi } from "vitest"
 
-import { NPC_LINES, PERSONALITIES } from "@/constants/dialogue"
+import {
+  DONE_TALKING_LINES,
+  NPC_LINES,
+  PERSONALITIES,
+  TIRED_LINES,
+} from "@/constants/dialogue"
 import { TOWNS } from "@/constants/locations"
 import { getNpcAt, NPCS, PLACEMENT_LOCATION } from "@/constants/npcs"
-import {
-  MAX_ACTIVE_QUESTS,
-  QUEST_LINES,
-  TALKS_PER_VISIT,
-} from "@/constants/quests"
+import { MAX_ACTIVE_QUESTS, QUEST_LINES } from "@/constants/quests"
 import {
   abandonQuest,
   acceptQuest,
@@ -32,6 +33,8 @@ const TORTUGA_TAVERN = getNpcAt("Tortuga", "tavern")
 const PANAMA_TAVERN = getNpcAt("Panama", "tavern")
 
 const UNRESOLVED = /\{\w+\}/
+
+const TALKS = 5
 
 /** A player standing where the NPC can be found */
 const nextTo = (npc: Npc, overrides: DeepPartial<Player> = {}) =>
@@ -140,35 +143,98 @@ describe("talkTo", () => {
     }
   })
 
-  it("counts talks and refuses the fourth", () => {
-    const random = createSeededRandom(1).int
-    let player = nextTo(GIVER)
+  it("stays tired for the rest of the visit", () => {
+    const tired = deepFreeze(
+      nextTo(GIVER, {
+        locationStates: {
+          conversations: { [GIVER.id]: { questRolled: true, tired: true } },
+        },
+      })
+    )
 
-    for (let talk = 1; talk <= TALKS_PER_VISIT; talk++) {
-      const result = expectSuccess(talkTo(player, { npcId: GIVER.id }, random))
+    for (let seed = 0; seed < 20; seed++) {
+      const result = expectSuccess(
+        talkTo(tired, { npcId: GIVER.id }, createSeededRandom(seed).int)
+      )
+      const { line } = result.data
 
-      expect(result.data.talksLeft).toBe(TALKS_PER_VISIT - talk)
-      player = deepFreeze(result.player)
+      expect(line.kind).toBe("tired")
+      expect(fromTemplate(line.text, DONE_TALKING_LINES)).toBe(true)
+      expect(line.text).not.toMatch(UNRESOLVED)
+      expect(result.player).toBe(tired)
     }
-
-    const result = talkTo(player, { npcId: GIVER.id }, random)
-
-    if (!("error" in result)) {
-      throw new Error("Expected an error")
-    }
-
-    expect(result.status).toBe(409)
-    expect(fromTemplate(result.error, QUEST_LINES.noMoreTalk)).toBe(true)
-    expect(result.error).not.toMatch(UNRESOLVED)
   })
 
-  it("talks reset when a journey starts", () => {
+  it("a farewell makes the NPC tired", () => {
+    const result = findTalk(
+      nextTo(GIVER, { quests: fiveQuests() }),
+      GIVER,
+      (line) => "farewell" in line && !!line.farewell
+    )
+
+    expect(result.player.locationStates?.conversations?.[GIVER.id].tired).toBe(
+      true
+    )
+  })
+
+  it("now and then the NPC tires of talking", () => {
+    const player = nextTo(GIVER, { quests: fiveQuests() })
+    let tired = 0
+
+    for (let seed = 0; seed < 300; seed++) {
+      const { line } = expectSuccess(
+        talkTo(player, { npcId: GIVER.id }, createSeededRandom(seed).int)
+      ).data
+
+      if ("farewell" in line && line.farewell) {
+        expect(fromTemplate(line.farewell, TIRED_LINES)).toBe(true)
+        expect(line.farewell).not.toMatch(UNRESOLVED)
+        tired++
+      }
+    }
+
+    // Roughly one line in three
+    expect(tired).toBeGreaterThan(60)
+    expect(tired).toBeLessThan(140)
+  })
+
+  it("only rolls for a quest on the first chat of a visit", () => {
+    for (let seed = 0; seed < 200; seed++) {
+      const random = createSeededRandom(seed).int
+      const first = expectSuccess(
+        talkTo(nextTo(GIVER), { npcId: GIVER.id }, random)
+      )
+
+      expect(
+        first.player.locationStates?.conversations?.[GIVER.id].questRolled
+      ).toBe(true)
+
+      if (first.data.line.kind === "questOffer") {
+        continue
+      }
+
+      let player = deepFreeze(first.player)
+
+      for (let talk = 0; talk < TALKS; talk++) {
+        const result = expectSuccess(
+          talkTo(player, { npcId: GIVER.id }, random)
+        )
+
+        expect(result.data.line.kind).not.toBe("questOffer")
+        player = deepFreeze(result.player)
+      }
+    }
+  })
+
+  it("conversations reset when a journey starts", () => {
     const player = deepFreeze(
       createTestPlayer({
         character: { location: "Harbor" },
         crewMembers: { count: 10, health: 100, mood: 80 },
         inventory: { food: 50, water: 100, cannons: 5 },
-        locationStates: { conversations: { [GIVER.id]: { talks: 3 } } },
+        locationStates: {
+          conversations: { [GIVER.id]: { questRolled: true } },
+        },
       })
     )
 
@@ -186,17 +252,24 @@ describe("talkTo", () => {
       const random = createSeededRandom(seed).int
       let player = nextTo(GIVER, { quests: fiveQuests() })
 
-      for (let talk = 0; talk < TALKS_PER_VISIT; talk++) {
+      let talks = 0
+
+      // Until the NPC tires of talking
+      while (
+        talks < TALKS &&
+        !player.locationStates?.conversations?.[GIVER.id]?.tired
+      ) {
         player = expectSuccess(
           talkTo(player, { npcId: GIVER.id }, random)
         ).player
+        talks++
       }
 
       const saidIds =
         player.locationStates?.conversations?.[GIVER.id].saidIds ?? []
 
-      expect(saidIds).toHaveLength(TALKS_PER_VISIT)
-      expect(new Set(saidIds).size).toBe(TALKS_PER_VISIT)
+      expect(saidIds).toHaveLength(talks)
+      expect(new Set(saidIds).size).toBe(talks)
     }
   })
 
@@ -218,7 +291,7 @@ describe("talkTo", () => {
       const random = createSeededRandom(seed).int
       let player = nextTo(npc)
 
-      for (let talk = 0; talk < TALKS_PER_VISIT; talk++) {
+      for (let talk = 0; talk < TALKS; talk++) {
         const result = expectSuccess(talkTo(player, { npcId: npc.id }, random))
         const { line } = result.data
 
@@ -293,7 +366,6 @@ describe("answerNpc", () => {
     expect(fromTemplate(result.data.reply, entry.answers![1].replies)).toBe(
       true
     )
-    expect(result.data.talksLeft).toBe(asked.data.talksLeft)
     expect(
       result.player.locationStates?.conversations?.[GIVER.id].pendingQuestionId
     ).toBeUndefined()
@@ -409,7 +481,7 @@ describe("quest offers", () => {
     })
   })
 
-  it("an open offer comes back on the next talk without using a talk", () => {
+  it("an open offer comes back on the next talk", () => {
     const offer = offered()
     const again = expectSuccess(
       talkTo(
@@ -420,7 +492,6 @@ describe("quest offers", () => {
     )
 
     expect(again.data.line).toEqual(offer.data.line)
-    expect(again.data.talksLeft).toBe(offer.data.talksLeft)
     expect(again.player).toBe(offer.player)
   })
 
@@ -456,11 +527,13 @@ describe("quest offers", () => {
 })
 
 describe("quest progress", () => {
-  it("delivers a parcel without using a talk and pays the reward", () => {
+  it("delivers a parcel and pays the reward", () => {
     const player = nextTo(HAVANA_MARKET, {
       character: { questsCompleted: 2 },
       inventory: { rum: 5 },
-      locationStates: { conversations: { [HAVANA_MARKET.id]: { talks: 3 } } },
+      locationStates: {
+        conversations: { [HAVANA_MARKET.id]: { questRolled: true } },
+      },
       quests: {
         parcel: {
           ...questBase,
@@ -484,7 +557,6 @@ describe("quest progress", () => {
       completed: true,
       reward: { gold: 500, item: { name: "rum", quantity: 10 } },
     })
-    expect(result.data.talksLeft).toBe(0)
     expect(result.player.character.gold).toBe(1500)
     expect(result.player.inventory?.rum).toBe(15)
     expect(result.player.character.questsCompleted).toBe(3)
@@ -522,10 +594,9 @@ describe("quest progress", () => {
       talkTo(player, { npcId: GIVER.id }, createSeededRandom(1).int)
     )
 
-    // Asking takes nothing and uses no talk
+    // Asking takes nothing
     expect(asked.data.line.kind).toBe("handIn")
     expect(asked.data.line.text).not.toMatch(UNRESOLVED)
-    expect(asked.data.talksLeft).toBe(TALKS_PER_VISIT)
     expect(asked.player.inventory?.rum).toBe(45)
 
     // "Not yet" chats instead

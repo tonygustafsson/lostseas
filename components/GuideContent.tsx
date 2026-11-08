@@ -958,8 +958,10 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
 
         <p className="mb-4">
           In every town a regular at the tavern, a trader at the market and the
-          governor are happy to chat. Each character gets 3 talks per visit, and
-          the count resets when you sail.
+          governor are happy to chat. Talk as long as you like, though now and
+          then they tire of it and make it clear you have run out of things to
+          say. They stay that way until you sail away and come back. Quest
+          business can always be settled, tired or not.
         </p>
 
         <p className="mb-4">
@@ -971,9 +973,11 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mt-6 mb-2 font-serif text-lg">Quests</h3>
 
         <p className="mb-4">
-          About 1 talk in 10, someone has a favour to ask. You can accept or
-          decline. Talking about quest business never uses up one of your 3
-          talks. There are four kinds of quest:
+          About 1 visit in 10, a character has a favour to ask, and they bring
+          it up the first time you talk. Asking again will not change their
+          mind, so sail on and come back another time. Characters with quest
+          business are marked with a scroll. You can accept or decline. There
+          are four kinds of quest:
         </p>
 
         <ul className="mb-4 list-disc space-y-2 pl-6">

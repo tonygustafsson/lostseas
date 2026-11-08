@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { fn } from "storybook/test"
 
 import TalkDialog from "@/components/npc/TalkDialog"
-import { getNpcAt } from "@/constants/npcs"
+import { getNpcAt, GO_ON_LABELS } from "@/constants/npcs"
 import type { TalkLine } from "@/utils/actions/npc"
 
 const npc = getNpcAt("Port Royale", "tavern")
@@ -37,7 +37,12 @@ const meta = {
     onDecline: fn(),
     onHandIn: fn(),
     onNotYet: fn(),
+    goOnLabel: GO_ON_LABELS[0],
+    onGoOn: fn(),
     onClose: fn(),
+  },
+  argTypes: {
+    goOnLabel: { control: "select", options: GO_ON_LABELS },
   },
 } satisfies Meta<typeof TalkDialog>
 
@@ -46,6 +51,27 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Statement: Story = {}
+
+/** The NPC is tired of talking, so the only way out is to leave */
+export const Tired: Story = {
+  args: {
+    line: {
+      kind: "statement",
+      text: "I once arm wrestled a Spanish admiral. He cheated, of course. He used both arms and his first mate.",
+      farewell: "I have said all I have to say, and some of it twice.",
+    },
+  },
+}
+
+/** Talking again to an NPC who tired of it earlier in the visit */
+export const StillTired: Story = {
+  args: {
+    line: {
+      kind: "tired",
+      text: "You again? I told you, captain, I am all talked out.",
+    },
+  },
+}
 
 const question: TalkLine = {
   kind: "question",
@@ -64,6 +90,18 @@ export const Question: Story = {
 export const ReplyShown: Story = {
   args: {
     line: question,
+    reply:
+      "Bigger than mine? Ha! There is not a bird in the Caribbean brave enough.",
+  },
+}
+
+/** A tired NPC says their farewell after the reply */
+export const TiredAfterReply: Story = {
+  args: {
+    line: {
+      ...question,
+      farewell: "That will do for one sitting, captain.",
+    },
     reply:
       "Bigger than mine? Ha! There is not a bird in the Caribbean brave enough.",
   },

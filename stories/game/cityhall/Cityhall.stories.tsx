@@ -154,28 +154,10 @@ export const NothingToHandOverHere: Story = {
   },
 }
 
-/** The governor has used up all three talks this visit */
-export const GovernorOutOfTalks: Story = {
-  parameters: {
-    player: atCityhall({
-      locationStates: {
-        conversations: {
-          [getNpcAt("Port Royale", "governor").id]: { talks: 3 },
-        },
-      },
-    }),
-  },
-}
-
-/** A delivery for the governor shows the quest badge and keeps talking open */
+/** A delivery for the governor shows the quest badge */
 export const GovernorQuestBusiness: Story = {
   parameters: {
     player: atCityhall({
-      locationStates: {
-        conversations: {
-          [getNpcAt("Port Royale", "governor").id]: { talks: 3 },
-        },
-      },
       quests: {
         "quest-1": {
           id: "quest-1",

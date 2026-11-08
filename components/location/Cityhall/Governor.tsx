@@ -99,7 +99,7 @@ const Governor = () => {
 
   const [hasClaimed, setHasClaimed] = useState(false)
 
-  const { npc, talksLeft, hasQuestBusiness, isPending, onTalk, dialog } =
+  const { npc, hasQuestBusiness, isPending, onTalk, dialog } =
     useTownNpcTalk("governor")
 
   if (!player || !npc) {
@@ -184,7 +184,6 @@ const Governor = () => {
               <TalkButton
                 npc={npc}
                 variant={rewardWaiting && !hasClaimed ? "secondary" : "default"}
-                talksLeft={talksLeft}
                 hasQuestBusiness={hasQuestBusiness}
                 disabled={isPending}
                 onTalk={onTalk}

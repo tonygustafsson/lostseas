@@ -2,13 +2,13 @@ import { useState } from "react"
 
 import NpcCard from "@/components/npc/NpcCard"
 import TalkDialog from "@/components/npc/TalkDialog"
-import { getNpcAt } from "@/constants/npcs"
-import { TALKS_PER_VISIT } from "@/constants/quests"
+import { getNpcAt, GO_ON_LABELS } from "@/constants/npcs"
 import { useNpc } from "@/hooks/queries/useNpc"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import type { TalkLine } from "@/utils/actions/npc"
 import { getQuestBusiness } from "@/utils/npc/questBusiness"
 import { playNpcVoice, stopNpcVoice } from "@/utils/npcVoice"
+import { pickRandom } from "@/utils/random"
 
 export const getFirstName = (npc: Npc) => npc.name.split(" ")[0]
 
@@ -22,14 +22,13 @@ export const useTownNpcTalk = (placement: NpcPlacement) => {
   const [line, setLine] = useState<TalkLine | null>(null)
   const [lineId, setLineId] = useState(0)
   const [reply, setReply] = useState<string | null>(null)
+  const [goOnLabel, setGoOnLabel] = useState(GO_ON_LABELS[0])
 
   const town = player?.character.town
   const npc = town ? getNpcAt(town, placement) : undefined
   const conversation = npc
     ? player?.locationStates?.conversations?.[npc.id]
     : undefined
-
-  const talksLeft = Math.max(0, TALKS_PER_VISIT - (conversation?.talks ?? 0))
 
   // An offer left open counts too, so the player can get back to it
   const hasQuestBusiness = !!(
@@ -41,6 +40,7 @@ export const useTownNpcTalk = (placement: NpcPlacement) => {
     setLine(next)
     setLineId((id) => id + 1)
     setReply(null)
+    setGoOnLabel(pickRandom(GO_ON_LABELS))
   }
 
   // useNpc shows a toast when a request fails, so the handlers only catch
@@ -78,14 +78,8 @@ export const useTownNpcTalk = (placement: NpcPlacement) => {
     setOpen(false)
   }
 
-  // "Not yet" carries on with a normal chat, as long as there are talks left
-  const handleNotYet = () => {
-    if (talksLeft > 0) {
-      handleTalk(true)
-    } else {
-      handleClose()
-    }
-  }
+  // "Not yet" and "Go on" carry on with a normal chat instead of asking for goods
+  const handleChat = () => handleTalk(true)
 
   const handleAnswer = async (answerIndex: number) => {
     if (!npc) {
@@ -132,14 +126,15 @@ export const useTownNpcTalk = (placement: NpcPlacement) => {
       onAccept={handleAccept}
       onDecline={handleDecline}
       onHandIn={handleHandIn}
-      onNotYet={handleNotYet}
+      onNotYet={handleChat}
+      goOnLabel={goOnLabel}
+      onGoOn={handleChat}
       onClose={handleClose}
     />
   )
 
   return {
     npc,
-    talksLeft,
     hasQuestBusiness,
     isPending,
     onTalk: () => handleTalk(),
@@ -151,7 +146,7 @@ type Props = { talk: ReturnType<typeof useTownNpcTalk> }
 
 /** The NPC card and dialog. The parent owns the talk state, as it also labels the tab. */
 const TownNpc = ({ talk }: Props) => {
-  const { npc, talksLeft, hasQuestBusiness, isPending, onTalk, dialog } = talk
+  const { npc, hasQuestBusiness, isPending, onTalk, dialog } = talk
 
   if (!npc) {
     return null
@@ -161,7 +156,6 @@ const TownNpc = ({ talk }: Props) => {
     <>
       <NpcCard
         npc={npc}
-        talksLeft={talksLeft}
         hasQuestBusiness={hasQuestBusiness}
         disabled={isPending}
         onTalk={onTalk}

@@ -28,7 +28,10 @@ type Npc = {
 
 /** What a player has said to an NPC during the current visit */
 type ConversationState = {
-  talks: number
+  /** Whether the NPC has had their one chance to offer a quest this visit */
+  questRolled?: boolean
+  /** The NPC has had enough of talking for this visit */
+  tired?: boolean
   saidIds?: string[]
   pendingQuestionId?: string
   questOffer?: Quest

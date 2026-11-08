@@ -11,7 +11,7 @@ export type ColorUsage = {
   files: Record<string, number>
 }
 
-export const scannedAt = "2026-11-07"
+export const scannedAt = "2026-11-08"
 
 // Opacity applied to whole elements (opacity-* classes and inline styles)
 // prettier-ignore
@@ -860,8 +860,8 @@ export const colorUsage: ColorUsage[] = [
       "/30": 1
     },
     "utilities": {
-      "bg": 6,
-      "text": 3,
+      "text": 4,
+      "bg": 5,
       "border": 1,
       "ring": 2
     },

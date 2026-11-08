@@ -21,9 +21,6 @@ export const QUEST_REWARDS = {
 
 export const PROCUREMENT_QUANTITY = { min: 20, max: 60, step: 5 }
 
-/** Talks per NPC per town visit, reset on arrival */
-export const TALKS_PER_VISIT = 3
-
 export const MAX_ACTIVE_QUESTS = 5
 
 /** Quest-only placeholders, filled by generateQuest and the quest actions */
@@ -204,13 +201,5 @@ export const QUEST_LINES = {
     "Alive and well? I do not know whether to be relieved or furious. Here is your money.",
     "Thank you. Now I know where to send the bill.",
     "Good work. I shall write to them at once, and possibly also to a lawyer.",
-  ],
-  noMoreTalk: [
-    "Not now, {name}. I have talked myself hoarse.",
-    "Enough for today. Come back when the tide has turned.",
-    "I have said all I have to say, and some of it twice.",
-    "My throat is dry and my patience drier. Another day, {name}.",
-    "If you keep asking, I shall start charging by the word.",
-    "Go and bother someone else, {title}. I need a rest.",
   ],
 } satisfies Record<string, string[]>

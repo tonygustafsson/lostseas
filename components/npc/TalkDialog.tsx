@@ -31,6 +31,10 @@ type Props = {
   onDecline: () => void
   onHandIn: () => void
   onNotYet: () => void
+  /** Varies between lines, so the button does not get repetitive */
+  goOnLabel: string
+  /** Carries the conversation on with a new line */
+  onGoOn: () => void
   onClose: () => void
 }
 
@@ -46,14 +50,27 @@ const TalkDialog = ({
   onDecline,
   onHandIn,
   onNotYet,
+  goOnLabel,
+  onGoOn,
   onClose,
 }: Props) => {
   // Which line and reply have finished typing, so buttons wait for the text
   const [typedLineId, setTypedLineId] = useState<number | null>(null)
   const [typedReplyId, setTypedReplyId] = useState<number | null>(null)
+  const [typedFarewellId, setTypedFarewellId] = useState<number | null>(null)
 
   const isAnswering = line?.kind === "question" && !reply
-  const isTyped = reply ? typedReplyId === lineId : typedLineId === lineId
+  const isSpoken = reply ? typedReplyId === lineId : typedLineId === lineId
+
+  // A tired NPC says their farewell last, after any reply to a question
+  const farewell =
+    (line?.kind === "statement" || line?.kind === "question") && !isAnswering
+      ? line.farewell
+      : undefined
+  const isTyped = farewell ? typedFarewellId === lineId : isSpoken
+
+  // Nothing more to say, so leaving is all that is left
+  const isDone = !!farewell || line?.kind === "tired"
 
   const reward = line?.kind === "questProgress" ? line.reward : undefined
 
@@ -102,6 +119,16 @@ const TalkDialog = ({
                   key={lineId}
                   text={reply}
                   onDone={() => setTypedReplyId(lineId)}
+                />
+              </p>
+            )}
+
+            {farewell && isSpoken && (
+              <p className="text-muted-foreground italic">
+                <TypewriterText
+                  key={lineId}
+                  text={farewell}
+                  onDone={() => setTypedFarewellId(lineId)}
                 />
               </p>
             )}
@@ -178,9 +205,20 @@ const TalkDialog = ({
             )}
 
             {line.kind !== "questOffer" && line.kind !== "handIn" && (
-              <Button variant="secondary" onClick={onClose}>
-                Leave
-              </Button>
+              <>
+                <Button
+                  variant={isDone ? "default" : "secondary"}
+                  onClick={onClose}
+                >
+                  {isDone ? "Farewell" : "Leave"}
+                </Button>
+
+                {!isDone && (
+                  <Button disabled={isPending} onClick={onGoOn}>
+                    {goOnLabel}
+                  </Button>
+                )}
+              </>
             )}
           </DialogFooter>
         )}

@@ -559,3 +559,17 @@ const PLACE_NAMES: Record<NpcPlacement, string> = {
 /** Where to find an NPC, eg "the market in Havana" */
 export const getNpcPlace = (npc: Npc) =>
   `${PLACE_NAMES[npc.placement]} in ${npc.town}`
+
+/** Labels for the button that carries a conversation on, so it never reads the same twice in a row */
+export const GO_ON_LABELS = [
+  "Go on",
+  "Tell me more",
+  "And then?",
+  "Keep talking",
+  "What else?",
+  "Spit it out",
+  "I'm listening",
+  "Do continue",
+  "Anything else?",
+  "Pray, go on",
+]
