@@ -8,6 +8,7 @@ import { useNpc } from "@/hooks/queries/useNpc"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import type { TalkLine } from "@/utils/actions/npc"
 import { getQuestBusiness } from "@/utils/npc/questBusiness"
+import { playNpcVoice, stopNpcVoice } from "@/utils/npcVoice"
 
 export const getFirstName = (npc: Npc) => npc.name.split(" ")[0]
 
@@ -51,6 +52,12 @@ export const useTownNpcTalk = (placement: NpcPlacement) => {
     try {
       const response = await talk({ npcId: npc.id, skipHandIn })
       showLine(response.line)
+
+      // The voice starts with the conversation, not again for every line
+      if (!open) {
+        playNpcVoice(npc)
+      }
+
       setOpen(true)
     } catch {}
   }
@@ -66,12 +73,17 @@ export const useTownNpcTalk = (placement: NpcPlacement) => {
     } catch {}
   }
 
+  const handleClose = () => {
+    stopNpcVoice()
+    setOpen(false)
+  }
+
   // "Not yet" carries on with a normal chat, as long as there are talks left
   const handleNotYet = () => {
     if (talksLeft > 0) {
       handleTalk(true)
     } else {
-      setOpen(false)
+      handleClose()
     }
   }
 
@@ -121,7 +133,7 @@ export const useTownNpcTalk = (placement: NpcPlacement) => {
       onDecline={handleDecline}
       onHandIn={handleHandIn}
       onNotYet={handleNotYet}
-      onClose={() => setOpen(false)}
+      onClose={handleClose}
     />
   )
 
