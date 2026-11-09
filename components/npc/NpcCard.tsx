@@ -8,7 +8,6 @@ type TalkButtonProps = {
   npc: Npc
   hasQuestBusiness: boolean
   disabled?: boolean
-  /** Gold unless another action on the card is the main one */
   variant?: "default" | "secondary"
   onTalk: () => void
 }

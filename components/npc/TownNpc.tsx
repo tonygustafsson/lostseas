@@ -5,6 +5,7 @@ import TalkDialog from "@/components/npc/TalkDialog"
 import { getNpcAt, GO_ON_LABELS } from "@/constants/npcs"
 import { useNpc } from "@/hooks/queries/useNpc"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { useQuest } from "@/hooks/queries/useQuest"
 import type { TalkLine } from "@/utils/actions/npc"
 import { getQuestBusiness } from "@/utils/npc/questBusiness"
 import { playNpcVoice, stopNpcVoice } from "@/utils/npc/voice"
@@ -15,8 +16,14 @@ export const getFirstName = (npc: Npc) => npc.name.split(" ")[0]
 /** Talking to the NPC in this building: the state for the Talk button and the dialog */
 export const useTownNpcTalk = (placement: NpcPlacement) => {
   const { data: player } = useGetPlayer()
-  const { talk, handIn, answer, acceptQuest, declineQuest, isPending } =
-    useNpc()
+  const { talk, answer, isPending: isNpcPending } = useNpc()
+  const {
+    handIn,
+    acceptQuest,
+    declineQuest,
+    isPending: isQuestPending,
+  } = useQuest()
+  const isPending = isNpcPending || isQuestPending
 
   const [open, setOpen] = useState(false)
   const [line, setLine] = useState<TalkLine | null>(null)
@@ -43,7 +50,7 @@ export const useTownNpcTalk = (placement: NpcPlacement) => {
     setGoOnLabel(pickRandom(GO_ON_LABELS))
   }
 
-  // useNpc shows a toast when a request fails, so the handlers only catch
+  // useNpc and useQuest show a toast when a request fails, so the handlers only catch
   const handleTalk = async (skipHandIn?: boolean) => {
     if (!npc) {
       return

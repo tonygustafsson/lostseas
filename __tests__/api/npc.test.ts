@@ -1,9 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
-import { POST as abandon } from "@/app/api/npc/abandon/route"
-import { POST as accept } from "@/app/api/npc/accept/route"
 import { POST as answer } from "@/app/api/npc/answer/route"
-import { POST as decline } from "@/app/api/npc/decline/route"
 import { POST as talk } from "@/app/api/npc/talk/route"
 
 import { createTestPlayer } from "../helpers/createTestPlayer"
@@ -39,23 +36,9 @@ const request = (body: object) =>
 const routes = [
   ["talk", talk, { npcId: "nobody" }],
   ["answer", answer, { npcId: "nobody", answerIndex: 0 }],
-  ["accept", accept, { npcId: "nobody" }],
-  ["decline", decline, { npcId: "nobody" }],
-  ["abandon", abandon, { questId: "missing" }],
 ] as const
 
 const NPC_ID = "charles-towne-tavern-mavis-cartwright"
-
-const quest: Quest = {
-  id: "quest-1",
-  giverId: NPC_ID,
-  acceptedDay: 1,
-  pitch: "Take this crate.",
-  reward: { gold: 100 },
-  type: "delivery",
-  parcel: "a crate",
-  targetNpcId: "other",
-}
 
 beforeEach(() => {
   vi.clearAllMocks()
@@ -112,41 +95,5 @@ describe("POST /api/npc/talk", () => {
     expect(body.success).toBe(true)
     expect(body.npcId).toBe(NPC_ID)
     expect(body.line.text).toEqual(expect.any(String))
-  })
-})
-
-describe("POST /api/npc/abandon", () => {
-  beforeEach(() => {
-    mocks.player = createTestPlayer({ quests: { [quest.id]: quest } })
-  })
-
-  it("passes a 404 from the action through", async () => {
-    const response = await abandon(request({ questId: "missing" }))
-
-    expect(response.status).toBe(404)
-  })
-
-  it("saves the new player with a log and returns it", async () => {
-    const response = await abandon(request({ questId: quest.id }))
-    const body = await response.json()
-
-    expect(response.status).toBe(200)
-
-    const [savedPlayer, savedLog] = mocks.savePlayer.mock.calls[0]
-
-    expect(savedLog?.type).toBe("quest")
-    expect(savedPlayer.quests?.[quest.id]).toBeUndefined()
-    expect(body.success).toBe(true)
-    expect(body.updatedPlayer).toEqual(savedPlayer)
-    expect(body.quest).toEqual(quest)
-  })
-
-  it("returns 500 when saving fails", async () => {
-    mocks.savePlayer.mockRejectedValue("Database down")
-
-    const response = await abandon(request({ questId: quest.id }))
-
-    expect(response.status).toBe(500)
-    expect(await response.json()).toEqual({ error: "Database down" })
   })
 })

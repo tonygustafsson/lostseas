@@ -1,5 +1,6 @@
 import { MERCHANDISE } from "@/constants/merchandise"
 import { getNpcById, getNpcPlace } from "@/constants/npcs"
+import type { TalkLine } from "@/utils/actions/npc"
 import { formatGold } from "@/utils/number"
 
 /** Goods as quest texts name them, eg "barrels of rum" */
@@ -11,6 +12,25 @@ export const formatReward = ({ gold, item }: QuestReward) =>
   item
     ? `${formatGold(gold)} and ${item.quantity} ${goodsName(item.name)}`
     : formatGold(gold)
+
+/** The toast message for a talk line that completed a quest, if it did */
+export const getQuestCompletedMessage = (line: TalkLine) => {
+  if (line.kind !== "questProgress" || !line.completed || !line.reward) {
+    return
+  }
+
+  // The reward only holds the goods that fit, the quest has the full amount
+  const promised = line.quest.reward.item
+  const leftBehind = promised
+    ? promised.quantity - (line.reward.item?.quantity ?? 0)
+    : 0
+  const leftBehindMessage =
+    promised && leftBehind > 0
+      ? ` Your hold was full, so ${leftBehind} ${goodsName(promised.name)} were left behind.`
+      : ""
+
+  return `You earned ${formatReward(line.reward)}.${leftBehindMessage}`
+}
 
 const describeNpc = (npcId: string) => {
   const npc = getNpcById(npcId)!

@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { getNpcById, getNpcPlace } from "@/constants/npcs"
-import { useNpc } from "@/hooks/queries/useNpc"
+import { useQuest } from "@/hooks/queries/useQuest"
 import { formatReward, getQuestObjective } from "@/utils/npc/questText"
 
 type Props = {
@@ -26,7 +26,7 @@ const QUEST_ICONS: Record<QuestType, ReactNode> = {
 }
 
 const QuestCard = ({ quest, onAbandon }: Props) => {
-  const { abandonQuest, isPending } = useNpc()
+  const { abandonQuest, isPending } = useQuest()
   const { setModal, removeModal } = useModal()
 
   const giver = getNpcById(quest.giverId)
