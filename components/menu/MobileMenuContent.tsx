@@ -8,6 +8,7 @@ import { TbHelp } from "react-icons/tb"
 import useDrawer, { DrawerId } from "@/app/stores/drawer"
 import { useGetPlayer, usePlayer } from "@/hooks/queries/usePlayer"
 import { getAdvisorWarnings } from "@/utils/getAdvisorWarnings"
+import { reloadAtTop } from "@/utils/reloadAtTop"
 
 import MobileMenuItem from "./MobileMenuItem"
 
@@ -29,7 +30,7 @@ const MobileMenuContent = ({ onClose }: Props) => {
     const response = await logout()
 
     if (response?.status === 200) {
-      window.location.reload()
+      reloadAtTop()
     }
   }
 

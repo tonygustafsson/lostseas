@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 
 import useModal from "@/app/stores/modals"
 import { usePlayer } from "@/hooks/queries/usePlayer"
+import { reloadAtTop } from "@/utils/reloadAtTop"
 
 import { Button } from "./ui/button"
 
@@ -109,7 +110,7 @@ const QrScanner = () => {
         login(qrCode.data)
           .then((response) => {
             if (response?.status === 200) {
-              window.location.reload()
+              reloadAtTop()
             }
           })
           .catch((error) => console.error(error))

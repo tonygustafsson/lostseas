@@ -3,6 +3,7 @@
 import { useState } from "react"
 
 import { usePlayer } from "@/hooks/queries/usePlayer"
+import { reloadAtTop } from "@/utils/reloadAtTop"
 import {
   forgetAccount,
   type RememberedAccount,
@@ -30,7 +31,7 @@ const RememberedAccounts = ({ accounts }: Props) => {
         : await login(account.playerId ?? "")
 
       if (response?.status === 200) {
-        window.location.reload()
+        reloadAtTop()
         return
       }
 

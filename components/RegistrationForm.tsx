@@ -8,6 +8,7 @@ import SelectedCharacter from "@/components/character/SelectedCharacter"
 import TextField from "@/components/TextField"
 import { usePlayer } from "@/hooks/queries/usePlayer"
 import { useRandomCharacter } from "@/hooks/queries/useRandomCharacter"
+import { reloadAtTop } from "@/utils/reloadAtTop"
 import { registrationValidationSchema } from "@/utils/validation"
 
 import { Button } from "./ui/button"
@@ -47,7 +48,7 @@ const RegistrationForm = ({ initialCharacter }: Props) => {
     const response = await playerRegister(data)
 
     if (response?.status === 200) {
-      window.location.reload()
+      reloadAtTop()
     }
   }
 

@@ -9,6 +9,7 @@ import { FiLogIn } from "react-icons/fi"
 import { z } from "zod"
 
 import { useGetPlayer, usePlayer } from "@/hooks/queries/usePlayer"
+import { reloadAtTop } from "@/utils/reloadAtTop"
 import { loginValidationSchema } from "@/utils/validation"
 
 import QrScanner from "./QrScanner"
@@ -40,7 +41,7 @@ const LoginForm = () => {
     const response = await login(data.playerId?.toString() || "")
 
     if (response?.status === 200) {
-      window.location.reload()
+      reloadAtTop()
     } else {
       setApiError("Could not sign in. Incorrect user ID?")
     }
@@ -53,7 +54,7 @@ const LoginForm = () => {
       const response = await loginWithPasskey()
 
       if (response?.status === 200) {
-        window.location.reload()
+        reloadAtTop()
       } else {
         setApiError("Could not sign in with that passkey.")
       }

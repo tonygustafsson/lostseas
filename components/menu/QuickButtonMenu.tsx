@@ -7,6 +7,7 @@ import { TbHelp } from "react-icons/tb"
 
 import useDrawer from "@/app/stores/drawer"
 import { usePlayer } from "@/hooks/queries/usePlayer"
+import { reloadAtTop } from "@/utils/reloadAtTop"
 
 import { Button } from "../ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
@@ -19,7 +20,7 @@ const QuickButtonMenu = () => {
     const response = await logout()
 
     if (response?.status === 200) {
-      window.location.reload()
+      reloadAtTop()
     }
   }
 

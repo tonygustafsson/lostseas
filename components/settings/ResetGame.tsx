@@ -12,6 +12,7 @@ import {
 } from "@/constants/player"
 import { usePlayer } from "@/hooks/queries/usePlayer"
 import { formatGold } from "@/utils/number"
+import { reloadAtTop } from "@/utils/reloadAtTop"
 
 import { Button } from "../ui/button"
 
@@ -31,7 +32,7 @@ const ResetGame = ({ player }: Props) => {
     const response = await resetGame()
 
     if (response?.status === 200) {
-      window.location.reload()
+      reloadAtTop()
     } else {
       setFailed(true)
     }
