@@ -84,7 +84,7 @@ export const Welcome: Story = {}
 export const ThankedForVictories: Story = {
   parameters: {
     player: atCityhall({
-      character: { battles: { France: { won: 22 } } },
+      character: { battles: { France: { won: 9 } } },
     }),
   },
 }
@@ -93,7 +93,7 @@ export const ThankedForVictories: Story = {
 export const PromotionAvailable: Story = {
   parameters: {
     player: atCityhall({
-      character: { battles: { France: { won: 34 } } },
+      character: { battles: { France: { won: 14 } } },
     }),
   },
 }
@@ -104,7 +104,7 @@ export const PromotionWithoutReward: Story = {
     player: atCityhall({
       character: {
         highestRewardedTitle: "Admiral",
-        battles: { France: { won: 34 } },
+        battles: { France: { won: 14 } },
       },
     }),
   },
@@ -121,7 +121,7 @@ export const ForeignTown: Story = {
 export const CitizenshipOffer: Story = {
   parameters: {
     player: atCityhall({
-      character: { town: "Havana", battles: { Holland: { won: 42 } } },
+      character: { town: "Havana", battles: { Holland: { won: 20 } } },
     }),
   },
 }
@@ -139,7 +139,7 @@ export const WithTreasuresAndWantedPirates: Story = {
     player: atCityhall({
       treasures,
       wantedPirates,
-      character: { battles: { France: { won: 34 } } },
+      character: { battles: { France: { won: 14 } } },
     }),
   },
 }

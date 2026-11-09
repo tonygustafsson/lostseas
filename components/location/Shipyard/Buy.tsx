@@ -28,6 +28,8 @@ const ShipyardBuy = () => {
   const titleInfo = TITLE_INFO[player?.character.title || "Pirate"]
   const shipCount = Object.keys(player?.ships || {}).length
   const maxShipsReached = shipCount >= titleInfo.maxShips
+  // Changing nation can give a title with a lower limit, and the ships are kept
+  const isOverLimit = shipCount > titleInfo.maxShips
 
   const shipBuyingDisabled = (price: number) =>
     maxShipsReached || price > (player?.character.gold || 0)
@@ -41,10 +43,16 @@ const ShipyardBuy = () => {
       {maxShipsReached && (
         <Alert className="bg-card mb-8">
           <AlertTriangleIcon />
-          <AlertTitle>Max ships reached</AlertTitle>
+          <AlertTitle>
+            {isOverLimit
+              ? "More ships than your title allows"
+              : "Max ships reached"}
+          </AlertTitle>
+
           <AlertDescription>
-            You can only have {titleInfo.maxShips} ships as long as you have the
-            title {titleInfo.title}.
+            {isOverLimit
+              ? `Your fleet has ${shipCount} ships, but a ${titleInfo.title} can only command ${titleInfo.maxShips}. You keep them all, but you can't buy another ship until you have fewer than ${titleInfo.maxShips}.`
+              : `You can only have ${titleInfo.maxShips} ships as long as you have the title ${titleInfo.title}.`}
           </AlertDescription>
         </Alert>
       )}

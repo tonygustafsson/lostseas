@@ -6,6 +6,7 @@ import {
 import { TOWNS } from "@/constants/locations"
 import { getNpcById, PLACEMENT_LOCATION } from "@/constants/npcs"
 import { MAX_ACTIVE_QUESTS, QUEST_LINES } from "@/constants/quests"
+import { getCargo } from "@/utils/cargo"
 import { generateQuest, targetExtras } from "@/utils/npc/generateQuest"
 import { findDialogue, pickDialogue } from "@/utils/npc/pickDialogue"
 import {
@@ -111,7 +112,22 @@ const progressQuest = (
     text: string,
     inventory: Partial<Inventory> = {}
   ): QuestProgress => {
-    const { reward } = quest
+    // Like loot, reward goods only fill the free hold space and the rest is left behind
+    const { free } = getCargo({
+      ships: player.ships,
+      inventory: { ...player.inventory, ...inventory },
+    })
+    const fittingQuantity = Math.min(
+      quest.reward.item?.quantity ?? 0,
+      Math.max(free, 0)
+    )
+    const reward: QuestReward =
+      quest.reward.item && fittingQuantity > 0
+        ? {
+            ...quest.reward,
+            item: { ...quest.reward.item, quantity: fittingQuantity },
+          }
+        : { gold: quest.reward.gold }
     const rewardItem = reward.item
       ? {
           [reward.item.name]:

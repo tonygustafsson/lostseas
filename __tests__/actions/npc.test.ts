@@ -567,6 +567,41 @@ describe("quest progress", () => {
     })
   })
 
+  it.each([
+    { rum: 265, received: { gold: 500, item: { name: "rum", quantity: 5 } } },
+    { rum: 270, received: { gold: 500 } },
+  ])(
+    "only pays reward goods that fit in the hold ($rum rum aboard)",
+    ({ rum, received }) => {
+      // The Brig holds 300, with 10 food and 20 water already aboard
+      const player = nextTo(HAVANA_MARKET, {
+        inventory: { rum },
+        locationStates: {
+          conversations: { [HAVANA_MARKET.id]: { questRolled: true } },
+        },
+        quests: {
+          parcel: {
+            ...questBase,
+            id: "parcel",
+            type: "delivery",
+            parcel: "a sealed letter",
+            targetNpcId: HAVANA_MARKET.id,
+            reward: { gold: 500, item: { name: "rum", quantity: 10 } },
+          },
+        },
+      })
+
+      const result = expectSuccess(
+        talkTo(player, { npcId: HAVANA_MARKET.id }, createSeededRandom(1).int)
+      )
+
+      expect(result.data.line).toMatchObject({ reward: received })
+      expect(result.player.inventory?.rum).toBe(
+        rum + (received.item?.quantity ?? 0)
+      )
+    }
+  )
+
   it("procurement asks before taking the goods, and only with the full amount", () => {
     const quests = {
       goods: {

@@ -38,15 +38,15 @@ const routes = [
   {
     name: "acceptNewTitle",
     call: () => acceptNewTitle(),
-    // English player in Port Royale with 15 victories against France
-    player: { character: { battles: { France: { won: 15 } } } },
+    // English player in Port Royale with 5 victories against France
+    player: { character: { battles: { France: { won: 5 } } } },
     fields: ["titleInfo", "title"],
   },
   {
     name: "changeCitizenship",
     call: () => changeCitizenship(),
     player: {
-      character: { nationality: "Spain", battles: { France: { won: 15 } } },
+      character: { nationality: "Spain", battles: { France: { won: 5 } } },
     },
     fields: ["titleInfo", "title", "newNationality"],
   },

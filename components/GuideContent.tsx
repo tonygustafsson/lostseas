@@ -597,6 +597,11 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           worth chasing.
         </p>
 
+        <p className="mb-4">
+          The first promotion only takes a few victories. After that, each title
+          needs one more victory than the step before it.
+        </p>
+
         <h3 className="mb-2 font-serif text-lg">The different titles</h3>
 
         <Table className="mb-6 rounded-xl bg-black/60">
@@ -610,66 +615,24 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           </TableHeader>
 
           <TableBody>
-            <TableRow>
-              <TableCell>Below 10</TableCell>
-              <TableCell>{TITLE_INFO.Pirate.title}</TableCell>
-              <TableCell>{formatGold(TITLE_INFO.Pirate.reward)}</TableCell>
-              <TableCell>{TITLE_INFO.Pirate.maxShips}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>10-19</TableCell>
-              <TableCell>{TITLE_INFO.Ensign.title}</TableCell>
-              <TableCell>{formatGold(TITLE_INFO.Ensign.reward)}</TableCell>
-              <TableCell>{TITLE_INFO.Ensign.maxShips}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>20-29</TableCell>
-              <TableCell>{TITLE_INFO.Captain.title}</TableCell>
-              <TableCell>{formatGold(TITLE_INFO.Captain.reward)}</TableCell>
-              <TableCell>{TITLE_INFO.Captain.maxShips}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>30-39</TableCell>
-              <TableCell>{TITLE_INFO.Major.title}</TableCell>
-              <TableCell>{formatGold(TITLE_INFO.Major.reward)}</TableCell>
-              <TableCell>{TITLE_INFO.Major.maxShips}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>40-49</TableCell>
-              <TableCell>{TITLE_INFO.Colonel.title}</TableCell>
-              <TableCell>{formatGold(TITLE_INFO.Colonel.reward)}</TableCell>
-              <TableCell>{TITLE_INFO.Colonel.maxShips}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>50-64</TableCell>
-              <TableCell>{TITLE_INFO.Admiral.title}</TableCell>
-              <TableCell>{formatGold(TITLE_INFO.Admiral.reward)}</TableCell>
-              <TableCell>{TITLE_INFO.Admiral.maxShips}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>65-79</TableCell>
-              <TableCell>{TITLE_INFO.Baron.title}</TableCell>
-              <TableCell>{formatGold(TITLE_INFO.Baron.reward)}</TableCell>
-              <TableCell>{TITLE_INFO.Baron.maxShips}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>80-99</TableCell>
-              <TableCell>{TITLE_INFO.Count.title}</TableCell>
-              <TableCell>{formatGold(TITLE_INFO.Count.reward)}</TableCell>
-              <TableCell>{TITLE_INFO.Count.maxShips}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>100-119</TableCell>
-              <TableCell>{TITLE_INFO.Marquis.title}</TableCell>
-              <TableCell>{formatGold(TITLE_INFO.Marquis.reward)}</TableCell>
-              <TableCell>{TITLE_INFO.Marquis.maxShips}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>120+</TableCell>
-              <TableCell>{TITLE_INFO.Duke.title}</TableCell>
-              <TableCell>{formatGold(TITLE_INFO.Duke.reward)}</TableCell>
-              <TableCell>{TITLE_INFO.Duke.maxShips}</TableCell>
-            </TableRow>
+            {Object.values(TITLE_INFO).map(
+              ({ title, minLevel, reward, maxShips }, index, titles) => {
+                const nextLevel = titles[index + 1]?.minLevel
+
+                return (
+                  <TableRow key={title}>
+                    <TableCell>
+                      {nextLevel
+                        ? `${minLevel}-${nextLevel - 1}`
+                        : `${minLevel}+`}
+                    </TableCell>
+                    <TableCell>{title}</TableCell>
+                    <TableCell>{formatGold(reward)}</TableCell>
+                    <TableCell>{maxShips}</TableCell>
+                  </TableRow>
+                )
+              }
+            )}
           </TableBody>
         </Table>
 
@@ -682,11 +645,13 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
           defeats too. The difference sets your new title, which may be lower
           than the one you have now. Title rewards are only paid once, so you
           only get gold for a title higher than any you&apos;ve been paid for
-          before.
+          before. If the new title allows fewer ships than you own, you keep
+          them all, but you can&apos;t buy another ship until your fleet is
+          below the new limit.
         </p>
 
         <p>
-          Say you&apos;re Spanish with 50 wins against French ships and
+          Say you&apos;re Spanish with 25 wins against French ships and
           you&apos;ve never attacked an English ship. England will welcome you
           as an Admiral.
         </p>
@@ -997,6 +962,8 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
 
         <p className="mb-4">
           Rewards are paid in gold, and sometimes part of it comes as goods.
+          Goods only fill the free space in your hold, and whatever doesn&apos;t
+          fit is left behind.
         </p>
 
         <p>
