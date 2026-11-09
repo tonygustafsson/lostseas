@@ -5,8 +5,6 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
 type TalkButtonProps = {
-  npc: Npc
-  hasQuestBusiness: boolean
   disabled?: boolean
   variant?: "default" | "secondary"
   onTalk: () => void
@@ -37,7 +35,12 @@ export const TalkButton = ({
   </Button>
 )
 
-type Props = Omit<TalkButtonProps, "variant">
+type Props = {
+  npc: Npc
+  hasQuestBusiness: boolean
+  disabled?: boolean
+  onTalk: () => void
+}
 
 /** The character in their own tab, with a round portrait beside their story */
 const NpcCard = (props: Props) => (
@@ -46,7 +49,7 @@ const NpcCard = (props: Props) => (
     title={props.npc.name}
     actions={
       <>
-        <TalkButton {...props} />
+        <TalkButton disabled={props.disabled} onTalk={props.onTalk} />
 
         {props.hasQuestBusiness && <QuestBadge />}
       </>

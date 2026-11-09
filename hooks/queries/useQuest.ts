@@ -3,9 +3,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useToasts } from "@/app/stores/toasts"
 import { getNpcById } from "@/constants/npcs"
 import { PLAYER_QUERY_KEY } from "@/constants/system"
-import type { TalkResponse } from "@/hooks/queries/useNpc"
+import { type TalkResponse, useHandleTalkLine } from "@/hooks/queries/useNpc"
 import { postOrThrow } from "@/utils/apiRequest"
-import { formatReward, getQuestCompletedMessage } from "@/utils/npc/questText"
+import { formatReward } from "@/utils/npc/questText"
 
 type QuestResponse = { success: true; updatedPlayer: Player }
 
@@ -16,6 +16,7 @@ type AbandonResponse = QuestResponse & { quest: Quest }
 export const useQuest = () => {
   const queryClient = useQueryClient()
   const setToast = useToasts((s) => s.setToast)
+  const handleTalkLine = useHandleTalkLine()
 
   const handleSuccess = ({ updatedPlayer }: QuestResponse) => {
     queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
@@ -60,15 +61,7 @@ export const useQuest = () => {
   const { mutateAsync: handIn, isPending: isHandingIn } = useMutation({
     mutationFn: (data: { npcId: string }) =>
       postOrThrow<TalkResponse>("/api/quest/handin", data),
-    onSuccess: (response) => {
-      handleSuccess(response)
-
-      const message = getQuestCompletedMessage(response.line)
-
-      if (message) {
-        setToast({ title: "Quest completed", message, variant: "success" })
-      }
-    },
+    onSuccess: handleTalkLine,
     onError: handleError("Could not hand over the goods"),
   })
 

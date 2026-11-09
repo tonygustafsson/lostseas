@@ -5,7 +5,11 @@ import {
 } from "@/constants/dialogue"
 import { TOWNS } from "@/constants/locations"
 import { getNpcById, PLACEMENT_LOCATION } from "@/constants/npcs"
-import { MAX_ACTIVE_QUESTS, QUEST_LINES } from "@/constants/quests"
+import {
+  MAX_ACTIVE_QUESTS,
+  QUEST_CHANCE,
+  QUEST_LINES,
+} from "@/constants/quests"
 import { getCargo } from "@/utils/cargo"
 import { generateQuest, targetExtras } from "@/utils/npc/generateQuest"
 import { findDialogue, pickDialogue } from "@/utils/npc/pickDialogue"
@@ -19,11 +23,6 @@ import { patchDeep } from "@/utils/patchDeep"
 import { getRandomInt, pickRandom } from "@/utils/random"
 
 import type { ActionResult, RandomInt } from "./types"
-
-export { MAX_ACTIVE_QUESTS }
-
-/** One in this many visits, an NPC has a favour to ask */
-const QUEST_CHANCE = 10
 
 export type TalkLine =
   // A tired NPC adds a farewell to show they have nothing more to say
@@ -234,7 +233,7 @@ export const talkTo = (
   }
 
   const conversation = getConversation(player, npc)
-  const quest = getQuestBusiness(player, npc)
+  const quest = getQuestBusiness(player, npc, skipHandIn)
 
   // An offer left open, eg by closing the dialog, comes back
   if (conversation.questOffer) {
@@ -250,7 +249,7 @@ export const talkTo = (
   }
 
   // Goods are only handed over when the player says so
-  if (quest?.type === "procurement" && !skipHandIn) {
+  if (quest?.type === "procurement") {
     return {
       player,
       data: {
@@ -275,7 +274,7 @@ export const talkTo = (
     }
   }
 
-  if (quest && quest.type !== "procurement") {
+  if (quest) {
     const progress = progressQuest(player, npc, quest, randomInt)
 
     return {

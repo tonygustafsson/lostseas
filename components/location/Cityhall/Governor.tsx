@@ -182,9 +182,7 @@ const Governor = () => {
 
             <div className="flex w-full items-center gap-4 @xl:w-auto">
               <TalkButton
-                npc={npc}
                 variant={rewardWaiting && !hasClaimed ? "secondary" : "default"}
-                hasQuestBusiness={hasQuestBusiness}
                 disabled={isPending}
                 onTalk={onTalk}
               />

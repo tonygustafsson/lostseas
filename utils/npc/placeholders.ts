@@ -1,5 +1,5 @@
 import { NATIONS, TOWNS } from "@/constants/locations"
-import { MERCHANDISE } from "@/constants/merchandise"
+import { BARTER_GOODS } from "@/constants/merchandise"
 import type { RandomInt } from "@/utils/actions/types"
 import { getDateOfDay } from "@/utils/date"
 import { getRandomInt, pickRandom } from "@/utils/random"
@@ -28,10 +28,6 @@ const ADJECTIVES: Record<Nation, string> = {
   Spain: "Spanish",
   Holland: "Dutch",
 }
-
-const BARTER_GOODS = Object.entries(MERCHANDISE)
-  .filter(([, item]) => item.isBarterGoods)
-  .map(([key]) => key)
 
 // A value starting a text, sentence or quote gets a capital letter
 const STARTS_SENTENCE = /(^|[.!?] |(^|\s)["'\u201C\u2018])$/

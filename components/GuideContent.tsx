@@ -9,6 +9,7 @@ import {
 import { LOAN_LIMIT } from "@/constants/bank"
 import { NATIONS, TOWNS } from "@/constants/locations"
 import { BARTER_GOODS, MERCHANDISE } from "@/constants/merchandise"
+import { MAX_ACTIVE_QUESTS, QUEST_CHANCE } from "@/constants/quests"
 import {
   REPAIR_KIT_HEALTH,
   SHIP_REPAIR_COST,
@@ -938,11 +939,11 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         <h3 className="mt-6 mb-2 font-serif text-lg">Quests</h3>
 
         <p className="mb-4">
-          About 1 visit in 10, a character has a favour to ask, and they bring
-          it up the first time you talk. Asking again will not change their
-          mind, so sail on and come back another time. Characters with quest
-          business are marked with a scroll. You can accept or decline. There
-          are four kinds of quest:
+          About 1 visit in {QUEST_CHANCE}, a character has a favour to ask, and
+          they bring it up the first time you talk. Asking again will not change
+          their mind, so sail on and come back another time. Characters with
+          quest business are marked with a scroll. You can accept or decline.
+          There are four kinds of quest:
         </p>
 
         <ul className="mb-4 list-disc space-y-2 pl-6">
@@ -967,9 +968,10 @@ const GuideContent = ({ defaultOpen = false, appearance = "game" }: Props) => (
         </p>
 
         <p>
-          You can hold at most 5 active quests, and nobody offers you a new one
-          while you are at the limit. Your quests are listed in the Status
-          drawer, where you can abandon any of them without penalty.
+          You can hold at most {MAX_ACTIVE_QUESTS} active quests, and nobody
+          offers you a new one while you are at the limit. Your quests are
+          listed in the Status drawer, where you can abandon any of them without
+          penalty.
         </p>
       </AccordionContent>
     </AccordionItem>

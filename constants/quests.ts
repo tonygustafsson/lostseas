@@ -23,6 +23,9 @@ export const PROCUREMENT_QUANTITY = { min: 20, max: 60, step: 5 }
 
 export const MAX_ACTIVE_QUESTS = 5
 
+/** One in this many visits, an NPC has a favour to ask */
+export const QUEST_CHANCE = 10
+
 /** Quest-only placeholders, filled by generateQuest and the quest actions */
 export const QUEST_PLACEHOLDERS = [
   "target",

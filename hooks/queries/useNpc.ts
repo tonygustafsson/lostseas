@@ -12,9 +12,26 @@ export type TalkResponse = NpcResponse & { npcId: string; line: TalkLine }
 
 type AnswerResponse = NpcResponse & { reply: string }
 
+/** Stores the player after a talk line and celebrates a completed quest */
+export const useHandleTalkLine = () => {
+  const queryClient = useQueryClient()
+  const setToast = useToasts((s) => s.setToast)
+
+  return (response: TalkResponse) => {
+    queryClient.setQueryData([PLAYER_QUERY_KEY], response.updatedPlayer)
+
+    const message = getQuestCompletedMessage(response.line)
+
+    if (message) {
+      setToast({ title: "Quest completed", message, variant: "success" })
+    }
+  }
+}
+
 export const useNpc = () => {
   const queryClient = useQueryClient()
   const setToast = useToasts((s) => s.setToast)
+  const handleTalkLine = useHandleTalkLine()
 
   const handleSuccess = ({ updatedPlayer }: NpcResponse) => {
     queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
@@ -27,16 +44,8 @@ export const useNpc = () => {
   const { mutateAsync: talk, isPending: isTalking } = useMutation({
     mutationFn: (data: { npcId: string; skipHandIn?: boolean }) =>
       postOrThrow<TalkResponse>("/api/npc/talk", data),
-    onSuccess: (response) => {
-      handleSuccess(response)
-
-      // Talking to the right person can complete a quest
-      const message = getQuestCompletedMessage(response.line)
-
-      if (message) {
-        setToast({ title: "Quest completed", message, variant: "success" })
-      }
-    },
+    // Talking to the right person can complete a quest
+    onSuccess: handleTalkLine,
     onError: handleError("Could not talk"),
   })
 

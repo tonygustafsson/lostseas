@@ -663,6 +663,43 @@ describe("quest progress", () => {
     expect(full.player.quests?.goods).toBeUndefined()
   })
 
+  it("moves on to newer quest business when the goods are kept", () => {
+    const quests = {
+      goods: {
+        ...questBase,
+        id: "goods",
+        type: "procurement",
+        item: "rum",
+        quantity: 40,
+      },
+      parcel: {
+        ...questBase,
+        id: "parcel",
+        giverId: HAVANA_MARKET.id,
+        acceptedDay: 5,
+        type: "delivery",
+        parcel: "a sealed letter",
+        targetNpcId: GIVER.id,
+      },
+    } as Record<string, Quest>
+
+    const result = expectSuccess(
+      talkTo(
+        nextTo(GIVER, { inventory: { rum: 45 }, quests }),
+        { npcId: GIVER.id, skipHandIn: true },
+        createSeededRandom(1).int
+      )
+    )
+
+    expect(result.data.line).toMatchObject({
+      kind: "questProgress",
+      completed: true,
+    })
+    expect(result.player.quests?.parcel).toBeUndefined()
+    expect(result.player.quests?.goods).toBeDefined()
+    expect(result.player.inventory?.rum).toBe(45)
+  })
+
   it("refuses to hand in without the goods", () => {
     const quests = {
       goods: {

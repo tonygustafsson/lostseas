@@ -31,7 +31,11 @@ export async function POST(req: Request) {
   }
 
   try {
-    const updatedPlayer = await savePlayer(result.player, result.log)
+    // Re-shown offers, hand-in prompts and tired lines change nothing
+    const updatedPlayer =
+      result.player === player
+        ? player
+        : await savePlayer(result.player, result.log)
 
     return NextResponse.json({
       success: true,

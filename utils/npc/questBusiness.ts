@@ -29,8 +29,19 @@ const hasBusiness = (quest: Quest, player: Player, npc: Npc) => {
   }
 }
 
-/** The quest the player has to settle with this NPC, oldest first */
-export const getQuestBusiness = (player: Player, npc: Npc) =>
+/**
+ * The quest the player has to settle with this NPC, oldest first.
+ * skipProcurement passes over goods the player chose to keep for now.
+ */
+export const getQuestBusiness = (
+  player: Player,
+  npc: Npc,
+  skipProcurement = false
+) =>
   Object.values(player.quests ?? {})
-    .filter((quest) => hasBusiness(quest, player, npc))
+    .filter(
+      (quest) =>
+        !(skipProcurement && quest.type === "procurement") &&
+        hasBusiness(quest, player, npc)
+    )
     .sort((a, b) => a.acceptedDay - b.acceptedDay)[0] as Quest | undefined
