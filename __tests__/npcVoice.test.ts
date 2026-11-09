@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { NPCS } from "@/constants/npcs"
 import { NPC_VOICE_VOLUMES } from "@/constants/npcVoices"
-import { getNpcVoice, getNpcVoiceClip } from "@/utils/npcVoice"
+import { getNpcVoice, getNpcVoiceClip } from "@/utils/npc/voice"
 
 const npc = NPCS.find((n) => n.name === "Griet Vogel")!
 

@@ -7,7 +7,7 @@ import { useNpc } from "@/hooks/queries/useNpc"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import type { TalkLine } from "@/utils/actions/npc"
 import { getQuestBusiness } from "@/utils/npc/questBusiness"
-import { playNpcVoice, stopNpcVoice } from "@/utils/npcVoice"
+import { playNpcVoice, stopNpcVoice } from "@/utils/npc/voice"
 import { pickRandom } from "@/utils/random"
 
 export const getFirstName = (npc: Npc) => npc.name.split(" ")[0]
