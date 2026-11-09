@@ -27,6 +27,7 @@ const meta = {
     icon: { control: false },
     tone: { control: "inline-radio", options: ["default", "danger"] },
     badge: { control: "number" },
+    href: { control: "text" },
   },
   decorators: [
     (Story) => (
@@ -45,6 +46,10 @@ export const Default: Story = {}
 export const WithBadge: Story = { args: { label: "Advisor", badge: 3 } }
 
 export const Danger: Story = { args: { label: "Logout", tone: "danger" } }
+
+export const Link: Story = {
+  args: { label: "Player guide", href: "/guide", onClick: undefined },
+}
 
 export const FullMenu: Story = {
   parameters: { player: warnings },

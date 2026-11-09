@@ -131,6 +131,22 @@ html {
   --radius-4xl: calc(var(--radius) * 2.6);
 
   --animate-equalizer: equalizer 1s ease-in-out infinite;
+  --animate-ring-shimmer: ring-shimmer 1s linear forwards;
+
+  /* One lap around the logo rim, fading out as it finishes */
+  @keyframes ring-shimmer {
+    0% {
+      transform: rotate(0deg);
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      transform: rotate(360deg);
+      opacity: 0;
+    }
+  }
 
   @keyframes equalizer {
     0%,

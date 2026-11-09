@@ -8,7 +8,6 @@ import {
   ShieldCheck,
   Ship,
   Sparkles,
-  Waves,
 } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
@@ -17,6 +16,7 @@ import type { LeaderboardEntry } from "@/firebase/db"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
 import Leaderboard from "./Leaderboard"
+import Logo from "./Logo"
 import RegistrationForm from "./RegistrationForm"
 import Screenshots from "./Screenshots"
 import SignInOptions from "./SignInOptions"
@@ -57,24 +57,24 @@ const StartPageScreen = ({ initialCharacter, leaderboard }: Props) => {
       </div>
 
       <div className="mx-auto flex max-w-7xl flex-col px-4 pb-16 sm:px-6 lg:px-8">
-        <header className="border-border flex min-h-20 items-center gap-4 border-b">
-          <Link
-            href="/"
-            className="flex items-center gap-4"
-            aria-label="Lost Seas home"
-          >
-            <Image src="/img/logo.svg" alt="" width={48} height={37} />
-            <span className="text-parchment font-serif text-2xl tracking-wide sm:text-3xl">
-              Lost Seas
-            </span>
+        <header className="flex min-h-20 items-center justify-between gap-4">
+          <Link href="/" aria-label="Lost Seas home">
+            <Logo />
           </Link>
+
+          <Button
+            asChild
+            variant="outline"
+            className="bg-card/75 hover:bg-muted text-parchment hover:text-gold-light rounded-full border-white/15"
+          >
+            <Link href="/guide">
+              <BookOpenText aria-hidden="true" />
+              Player guide
+            </Link>
+          </Button>
         </header>
 
-        <section aria-labelledby="page-title" className="max-w-5xl py-12">
-          <div className="bg-card/70 border-gold/20 text-gold-light mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold tracking-widest uppercase">
-            <Waves className="size-4" aria-hidden="true" />
-            The Caribbean, 1640
-          </div>
+        <section aria-labelledby="page-title" className="max-w-5xl pt-4 pb-12">
           <h1
             id="page-title"
             className="text-parchment max-w-3xl font-serif text-5xl leading-none tracking-tight sm:text-6xl lg:text-7xl"
@@ -82,13 +82,13 @@ const StartPageScreen = ({ initialCharacter, leaderboard }: Props) => {
             Your story begins <span className="text-gold">at sea.</span>
           </h1>
           <p className="text-foreground/80 mt-6 max-w-2xl text-lg leading-8 sm:text-xl">
-            Lost Seas is a free browser game set in 1640. Start as a simple
-            pirate, then earn your reputation, build a crew, command ships, and
-            make your fortune across the open seas.
+            Lost Seas is a free browser game set in the Caribbean of 1640. Start
+            as a simple pirate, then earn your reputation, build a crew, command
+            ships, and make your fortune across the open seas.
           </p>
         </section>
 
-        <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.9fr)]">
+        <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.9fr)] lg:items-stretch">
           <section
             id="register"
             aria-labelledby="register-title"
@@ -106,7 +106,7 @@ const StartPageScreen = ({ initialCharacter, leaderboard }: Props) => {
                   id="register-title"
                   className="text-parchment font-serif text-3xl sm:text-4xl"
                 >
-                  Your Legend Begins Here
+                  Create your captain
                 </h2>
                 <p className="text-foreground/70 mt-2 max-w-xl leading-6">
                   Choose who you&apos;ll be. It&apos;s free to play, and you can

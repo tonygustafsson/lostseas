@@ -7,7 +7,6 @@ export type DrawerId =
   | "status"
   | "fleet"
   | "settings"
-  | "guide"
   | "advisor"
   | "logs"
   | "manageCrew"

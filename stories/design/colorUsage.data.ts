@@ -11,7 +11,7 @@ export type ColorUsage = {
   files: Record<string, number>
 }
 
-export const scannedAt = "2026-11-08"
+export const scannedAt = "2026-11-09"
 
 // Opacity applied to whole elements (opacity-* classes and inline styles)
 // prettier-ignore
@@ -37,10 +37,10 @@ export const colorUsage: ColorUsage[] = [
     "name": "gold",
     "token": "--color-gold",
     "css": "var(--color-gold)",
-    "count": 139,
+    "count": 142,
     "variants": {
-      "/20": 5,
-      "/10": 11,
+      "/20": 6,
+      "/10": 12,
       "/15": 1,
       "/30": 2,
       "/40": 6,
@@ -50,8 +50,8 @@ export const colorUsage: ColorUsage[] = [
       "/25": 1
     },
     "utilities": {
-      "border": 20,
-      "bg": 14,
+      "border": 22,
+      "bg": 15,
       "text": 77,
       "var()": 2,
       "via": 11,
@@ -70,13 +70,14 @@ export const colorUsage: ColorUsage[] = [
       "components/crew/DismissCrewMembers.tsx": 1,
       "components/crew/GiveGold.tsx": 1,
       "components/drawer/drawerContent/Fleet.tsx": 3,
-      "components/drawer/drawerContent/Guide.tsx": 1,
       "components/drawer/drawerContent/Inventory.tsx": 1,
       "components/drawer/drawerContent/Logs.tsx": 2,
       "components/drawer/drawerContent/ManageCrew.tsx": 1,
       "components/drawer/drawerContent/Settings.tsx": 1,
       "components/drawer/drawerContent/Status.tsx": 2,
       "components/game-ui/LocationScene/HarborScene.tsx": 4,
+      "components/guide/GuideChapter.tsx": 3,
+      "components/guide/GuideMenu.tsx": 1,
       "components/Leaderboard.tsx": 1,
       "components/location/Bank/Balances.tsx": 1,
       "components/location/Bank/QuickAmounts.tsx": 2,
@@ -127,13 +128,13 @@ export const colorUsage: ColorUsage[] = [
     "name": "muted-foreground",
     "token": "--color-muted-foreground",
     "css": "var(--color-muted-foreground)",
-    "count": 99,
+    "count": 105,
     "variants": {
       "/10": 2,
       "/15": 2
     },
     "utilities": {
-      "text": 94,
+      "text": 100,
       "bg": 4,
       "var()": 1
     },
@@ -151,7 +152,11 @@ export const colorUsage: ColorUsage[] = [
       "components/drawer/drawerContent/Logs.tsx": 3,
       "components/drawer/drawerContent/Status.tsx": 1,
       "components/game-ui/LocationScene/HarborScene.tsx": 1,
-      "components/GuideContent.tsx": 3,
+      "components/guide/chapters/Gold.tsx": 1,
+      "components/guide/chapters/Ships.tsx": 1,
+      "components/guide/chapters/Trade.tsx": 2,
+      "components/guide/GuideMenu.tsx": 2,
+      "components/guide/GuideNavigation.tsx": 1,
       "components/Leaderboard.tsx": 2,
       "components/location/Bank/Balances.tsx": 2,
       "components/location/Bank/VentureCard.tsx": 3,
@@ -172,10 +177,11 @@ export const colorUsage: ColorUsage[] = [
       "components/LoginForm.tsx": 1,
       "components/Map/DestinationConfirm.tsx": 2,
       "components/menu/MenuCard.tsx": 1,
-      "components/menu/MobileMenuItem.tsx": 1,
+      "components/menu/MobileMenuItem.tsx": 2,
       "components/menu/StatCard.tsx": 1,
       "components/MerchandiseCard.tsx": 1,
       "components/npc/NpcPortraitCard.tsx": 2,
+      "components/npc/TalkDialog.tsx": 1,
       "components/quests/QuestCard.tsx": 2,
       "components/RadialProgressBar.tsx": 1,
       "components/RememberedAccountList.tsx": 3,
@@ -253,6 +259,116 @@ export const colorUsage: ColorUsage[] = [
   },
   {
     "kind": "token",
+    "name": "background",
+    "token": "--color-background",
+    "css": "var(--color-background)",
+    "count": 55,
+    "variants": {
+      "/95": 6,
+      "/80": 3,
+      "/55": 2,
+      "/70": 2,
+      "/20": 2,
+      "/50": 1,
+      "/60": 9,
+      "/90": 2
+    },
+    "utilities": {
+      "bg": 39,
+      "from": 3,
+      "via": 4,
+      "to": 6,
+      "text-shadow": 1,
+      "text": 2
+    },
+    "files": {
+      "app/guide/page.tsx": 8,
+      "components/advisor/AdvisorTips.tsx": 1,
+      "components/DrawerBottom.tsx": 1,
+      "components/DrawerPanel.tsx": 1,
+      "components/game-ui/LocationScene/BuildingScene.tsx": 1,
+      "components/game-ui/LocationScene/HarborScene.tsx": 1,
+      "components/guide/chapters/Crew.tsx": 1,
+      "components/guide/chapters/Gold.tsx": 1,
+      "components/guide/chapters/Nations.tsx": 1,
+      "components/guide/chapters/Ships.tsx": 1,
+      "components/guide/chapters/Towns.tsx": 1,
+      "components/guide/chapters/Trade.tsx": 2,
+      "components/guide/GuideNavigation.tsx": 1,
+      "components/layouts/default.tsx": 1,
+      "components/layouts/fullscreen.tsx": 1,
+      "components/location/Bank/QuickAmounts.tsx": 1,
+      "components/location/Bank/VentureCard.tsx": 2,
+      "components/location/Sea/JourneyProgress.tsx": 1,
+      "components/location/Sea/LootPicker.tsx": 1,
+      "components/location/Shop/ShopTradeItem.tsx": 6,
+      "components/Map/SeaMapTowns.tsx": 1,
+      "components/menu/MobileMenuItem.tsx": 1,
+      "components/MerchandiseCard.tsx": 1,
+      "components/Select.tsx": 1,
+      "components/ships/ShipCard.tsx": 1,
+      "components/StartPageScreen.tsx": 9,
+      "components/TextField.tsx": 1,
+      "components/ui/sheet.tsx": 1,
+      "components/ui/sidebar.tsx": 3,
+      "components/ui/tabs.tsx": 1,
+      "components/ui/tooltip.tsx": 1
+    }
+  },
+  {
+    "kind": "token",
+    "name": "foreground",
+    "token": "--color-foreground",
+    "css": "var(--color-foreground)",
+    "count": 52,
+    "variants": {
+      "/75": 5,
+      "/85": 2,
+      "/80": 1,
+      "/70": 5,
+      "/10": 1,
+      "/5": 2,
+      "/60": 1
+    },
+    "utilities": {
+      "text": 44,
+      "ring": 3,
+      "bg": 4,
+      "fill": 1
+    },
+    "files": {
+      "app/guide/page.tsx": 2,
+      "components/guide/chapters/Towns.tsx": 1,
+      "components/guide/GuideChapter.tsx": 2,
+      "components/guide/GuideMenu.tsx": 1,
+      "components/guide/GuideTip.tsx": 1,
+      "components/location/Bank/Balances.tsx": 1,
+      "components/location/Bank/BankArea.tsx": 1,
+      "components/location/Bank/QuickAmounts.tsx": 2,
+      "components/location/Bank/VentureCard.tsx": 2,
+      "components/location/Sea/ShipMeetingContent.tsx": 1,
+      "components/location/Shop/ShopTradeItem.tsx": 2,
+      "components/npc/TalkDialog.tsx": 1,
+      "components/RadialProgressBar.tsx": 1,
+      "components/StartPageScreen.tsx": 9,
+      "components/ui/accordion.tsx": 1,
+      "components/ui/alert.tsx": 2,
+      "components/ui/badge.tsx": 1,
+      "components/ui/button.tsx": 4,
+      "components/ui/card.tsx": 1,
+      "components/ui/dialog.tsx": 1,
+      "components/ui/input.tsx": 1,
+      "components/ui/popover.tsx": 1,
+      "components/ui/select.tsx": 1,
+      "components/ui/sheet.tsx": 1,
+      "components/ui/switch.tsx": 1,
+      "components/ui/table.tsx": 1,
+      "components/ui/tabs.tsx": 6,
+      "components/ui/tooltip.tsx": 3
+    }
+  },
+  {
+    "kind": "token",
     "name": "success",
     "token": "--color-success",
     "css": "var(--color-success)",
@@ -303,20 +419,20 @@ export const colorUsage: ColorUsage[] = [
     "name": "card",
     "token": "--color-card",
     "css": "var(--color-card)",
-    "count": 49,
+    "count": 50,
     "variants": {
       "/75": 1,
       "/80": 6,
-      "/90": 3,
+      "/85": 2,
       "/50": 1,
+      "/90": 2,
       "/70": 3,
       "/10": 1,
-      "/30": 1,
-      "/85": 1
+      "/30": 1
     },
     "utilities": {
       "bg": 39,
-      "from": 2,
+      "from": 3,
       "to": 5,
       "via": 3
     },
@@ -324,7 +440,7 @@ export const colorUsage: ColorUsage[] = [
       "app/guide/page.tsx": 2,
       "components/drawer/drawerContent/Fleet.tsx": 6,
       "components/game-ui/LocationScene/HarborScene.tsx": 1,
-      "components/GuideContent.tsx": 1,
+      "components/guide/GuideChapter.tsx": 2,
       "components/Leaderboard.tsx": 1,
       "components/location/Bank/Balances.tsx": 1,
       "components/location/Bank/BankArea.tsx": 3,
@@ -351,122 +467,25 @@ export const colorUsage: ColorUsage[] = [
     }
   },
   {
-    "kind": "token",
-    "name": "background",
-    "token": "--color-background",
-    "css": "var(--color-background)",
-    "count": 47,
-    "variants": {
-      "/95": 6,
-      "/80": 3,
-      "/55": 2,
-      "/70": 2,
-      "/20": 2,
-      "/50": 1,
-      "/60": 2,
-      "/90": 1
-    },
-    "utilities": {
-      "bg": 31,
-      "from": 3,
-      "via": 4,
-      "to": 6,
-      "text-shadow": 1,
-      "text": 2
-    },
-    "files": {
-      "app/guide/page.tsx": 8,
-      "components/advisor/AdvisorTips.tsx": 1,
-      "components/DrawerBottom.tsx": 1,
-      "components/DrawerPanel.tsx": 1,
-      "components/game-ui/LocationScene/BuildingScene.tsx": 1,
-      "components/game-ui/LocationScene/HarborScene.tsx": 1,
-      "components/layouts/default.tsx": 1,
-      "components/layouts/fullscreen.tsx": 1,
-      "components/location/Bank/QuickAmounts.tsx": 1,
-      "components/location/Bank/VentureCard.tsx": 2,
-      "components/location/Sea/JourneyProgress.tsx": 1,
-      "components/location/Sea/LootPicker.tsx": 1,
-      "components/location/Shop/ShopTradeItem.tsx": 6,
-      "components/Map/SeaMapTowns.tsx": 1,
-      "components/menu/MobileMenuItem.tsx": 1,
-      "components/MerchandiseCard.tsx": 1,
-      "components/Select.tsx": 1,
-      "components/ships/ShipCard.tsx": 1,
-      "components/StartPageScreen.tsx": 9,
-      "components/TextField.tsx": 1,
-      "components/ui/sheet.tsx": 1,
-      "components/ui/sidebar.tsx": 3,
-      "components/ui/tabs.tsx": 1,
-      "components/ui/tooltip.tsx": 1
-    }
-  },
-  {
-    "kind": "token",
-    "name": "foreground",
-    "token": "--color-foreground",
-    "css": "var(--color-foreground)",
-    "count": 47,
-    "variants": {
-      "/75": 3,
-      "/80": 1,
-      "/70": 5,
-      "/10": 1,
-      "/5": 2,
-      "/60": 1
-    },
-    "utilities": {
-      "text": 39,
-      "ring": 3,
-      "bg": 4,
-      "fill": 1
-    },
-    "files": {
-      "app/guide/page.tsx": 2,
-      "components/location/Bank/Balances.tsx": 1,
-      "components/location/Bank/BankArea.tsx": 1,
-      "components/location/Bank/QuickAmounts.tsx": 2,
-      "components/location/Bank/VentureCard.tsx": 2,
-      "components/location/Sea/ShipMeetingContent.tsx": 1,
-      "components/location/Shop/ShopTradeItem.tsx": 2,
-      "components/npc/TalkDialog.tsx": 1,
-      "components/RadialProgressBar.tsx": 1,
-      "components/StartPageScreen.tsx": 9,
-      "components/ui/accordion.tsx": 1,
-      "components/ui/alert.tsx": 2,
-      "components/ui/badge.tsx": 1,
-      "components/ui/button.tsx": 4,
-      "components/ui/card.tsx": 1,
-      "components/ui/dialog.tsx": 1,
-      "components/ui/input.tsx": 1,
-      "components/ui/popover.tsx": 1,
-      "components/ui/select.tsx": 1,
-      "components/ui/sheet.tsx": 1,
-      "components/ui/switch.tsx": 1,
-      "components/ui/table.tsx": 1,
-      "components/ui/tabs.tsx": 6,
-      "components/ui/tooltip.tsx": 3
-    }
-  },
-  {
     "kind": "palette",
     "name": "transparent",
     "token": "transparent",
     "css": "transparent",
-    "count": 46,
+    "count": 47,
     "variants": {},
     "utilities": {
       "from": 17,
-      "border": 7,
-      "to": 10,
-      "bg": 8,
+      "border": 8,
+      "to": 11,
+      "bg": 7,
       "text": 4
     },
     "files": {
       "app/guide/page.tsx": 1,
       "components/character/CharacterOption.tsx": 1,
       "components/game-ui/LocationScene/HarborScene.tsx": 2,
-      "components/GuideContent.tsx": 1,
+      "components/guide/GuideChapter.tsx": 1,
+      "components/guide/GuideMenu.tsx": 1,
       "components/location/Bank/VentureCard.tsx": 1,
       "components/location/Shop/ShopTradeItem.tsx": 2,
       "components/location/Tavern/TavernEventDialog.tsx": 2,
@@ -513,7 +532,9 @@ export const colorUsage: ColorUsage[] = [
       "components/DrawerBottom.tsx": 1,
       "components/DrawerPanel.tsx": 1,
       "components/game-ui/LocationScene/BuildingScene.tsx": 1,
-      "components/GuideContent.tsx": 3,
+      "components/guide/chapters/Towns.tsx": 1,
+      "components/guide/GuideChapter.tsx": 1,
+      "components/guide/GuideNavigation.tsx": 1,
       "components/Leaderboard.tsx": 1,
       "components/location/Sea/BattleContent.tsx": 1,
       "components/location/Sea/ShipMeetingContent.tsx": 1,
@@ -567,6 +588,37 @@ export const colorUsage: ColorUsage[] = [
   },
   {
     "kind": "token",
+    "name": "parchment",
+    "token": "--color-parchment",
+    "css": "var(--color-parchment)",
+    "count": 34,
+    "variants": {
+      "/80": 2
+    },
+    "utilities": {
+      "text": 32,
+      "bg": 2
+    },
+    "files": {
+      "app/guide/page.tsx": 4,
+      "components/drawer/drawerContent/Logs.tsx": 1,
+      "components/game-ui/LocationScene/BuildingIntro.tsx": 3,
+      "components/game-ui/LocationScene/HarborScene.tsx": 1,
+      "components/guide/chapters/Towns.tsx": 1,
+      "components/guide/chapters/Welcome.tsx": 1,
+      "components/guide/GuideChapter.tsx": 3,
+      "components/guide/GuideMenu.tsx": 2,
+      "components/guide/GuideTip.tsx": 1,
+      "components/Leaderboard.tsx": 1,
+      "components/location/Bank/Balances.tsx": 1,
+      "components/location/Bank/BankArea.tsx": 1,
+      "components/StartPageScreen.tsx": 12,
+      "components/ui/slider.tsx": 1,
+      "components/ui/switch.tsx": 1
+    }
+  },
+  {
+    "kind": "token",
     "name": "muted",
     "token": "--color-muted",
     "css": "var(--color-muted)",
@@ -609,54 +661,28 @@ export const colorUsage: ColorUsage[] = [
   },
   {
     "kind": "token",
-    "name": "parchment",
-    "token": "--color-parchment",
-    "css": "var(--color-parchment)",
-    "count": 27,
-    "variants": {
-      "/80": 2
-    },
-    "utilities": {
-      "text": 25,
-      "bg": 2
-    },
-    "files": {
-      "app/guide/page.tsx": 4,
-      "components/drawer/drawerContent/Logs.tsx": 1,
-      "components/game-ui/LocationScene/BuildingIntro.tsx": 3,
-      "components/game-ui/LocationScene/HarborScene.tsx": 1,
-      "components/GuideContent.tsx": 1,
-      "components/Leaderboard.tsx": 1,
-      "components/location/Bank/Balances.tsx": 1,
-      "components/location/Bank/BankArea.tsx": 1,
-      "components/StartPageScreen.tsx": 12,
-      "components/ui/slider.tsx": 1,
-      "components/ui/switch.tsx": 1
-    }
-  },
-  {
-    "kind": "token",
     "name": "warning",
     "token": "--color-warning",
     "css": "var(--color-warning)",
-    "count": 23,
+    "count": 26,
     "variants": {
       "/15": 1,
+      "/30": 2,
+      "/10": 3,
       "/20": 4,
-      "/10": 2,
-      "/40": 3,
-      "/30": 1
+      "/40": 3
     },
     "utilities": {
-      "bg": 8,
-      "text": 10,
+      "bg": 9,
+      "text": 11,
+      "border": 2,
       "var()": 1,
-      "border": 1,
       "ring": 3
     },
     "files": {
       "components/advisor/AdvisorTips.tsx": 2,
       "components/CargoMeter.tsx": 1,
+      "components/guide/GuideTip.tsx": 3,
       "components/menu/MobileMenuItem.tsx": 2,
       "components/RadialProgressBar.tsx": 1,
       "components/settings/AddPasskeyButton.tsx": 1,
@@ -672,15 +698,17 @@ export const colorUsage: ColorUsage[] = [
     "name": "gold-light",
     "token": "--color-gold-light",
     "css": "var(--color-gold-light)",
-    "count": 22,
+    "count": 24,
     "variants": {},
     "utilities": {
-      "text": 16,
+      "text": 18,
       "from": 5,
       "ring": 1
     },
     "files": {
       "app/guide/page.tsx": 2,
+      "components/guide/GuideChapter.tsx": 1,
+      "components/guide/GuideMenu.tsx": 1,
       "components/location/Tavern/TavernEventDialog.tsx": 1,
       "components/menu/DesktopMenu.tsx": 1,
       "components/menu/MobileBottomNav.tsx": 5,
@@ -726,29 +754,58 @@ export const colorUsage: ColorUsage[] = [
     "name": "sea",
     "token": "--color-sea",
     "css": "var(--color-sea)",
-    "count": 17,
+    "count": 18,
     "variants": {
+      "/30": 3,
       "/40": 1,
-      "/30": 2,
       "/5": 3,
       "/15": 2,
       "/20": 1,
       "/50": 1
     },
     "utilities": {
+      "bg": 7,
       "border": 5,
       "text": 4,
-      "bg": 6,
       "from": 1,
       "ring": 1
     },
     "files": {
+      "components/guide/GuideMenu.tsx": 1,
       "components/location/Sea/JourneyProgress.tsx": 3,
       "components/Sound/Equalizer.tsx": 1,
       "components/Sound/SoundChannel.tsx": 5,
       "components/Sound/SoundToggle.tsx": 4,
       "components/ui/button.tsx": 1,
       "components/ui/switch.tsx": 3
+    }
+  },
+  {
+    "kind": "palette",
+    "name": "white",
+    "token": "white",
+    "css": "var(--color-white)",
+    "count": 16,
+    "variants": {
+      "/15": 2,
+      "/5": 8
+    },
+    "utilities": {
+      "border": 2,
+      "text": 6,
+      "bg": 7,
+      "divide": 1
+    },
+    "files": {
+      "app/guide/page.tsx": 1,
+      "components/character/SelectedCharacter.tsx": 1,
+      "components/guide/GuideMenu.tsx": 1,
+      "components/Map/SeaMapTowns.tsx": 1,
+      "components/menu/MobileBottomNav.tsx": 5,
+      "components/menu/MobileMenuContent.tsx": 1,
+      "components/menu/MobileMenuItem.tsx": 2,
+      "components/StartPageScreen.tsx": 2,
+      "components/ui/select.tsx": 2
     }
   },
   {
@@ -793,79 +850,25 @@ export const colorUsage: ColorUsage[] = [
     }
   },
   {
-    "kind": "palette",
-    "name": "white",
-    "token": "white",
-    "css": "var(--color-white)",
-    "count": 15,
-    "variants": {
-      "/15": 2,
-      "/5": 7
-    },
-    "utilities": {
-      "border": 2,
-      "text": 6,
-      "bg": 6,
-      "divide": 1
-    },
-    "files": {
-      "app/guide/page.tsx": 1,
-      "components/character/SelectedCharacter.tsx": 1,
-      "components/Map/SeaMapTowns.tsx": 1,
-      "components/menu/MobileBottomNav.tsx": 5,
-      "components/menu/MobileMenuContent.tsx": 1,
-      "components/menu/MobileMenuItem.tsx": 2,
-      "components/StartPageScreen.tsx": 2,
-      "components/ui/select.tsx": 2
-    }
-  },
-  {
-    "kind": "palette",
-    "name": "black",
-    "token": "black",
-    "css": "var(--color-black)",
-    "count": 13,
-    "variants": {
-      "/50": 1,
-      "/55": 1,
-      "/60": 5,
-      "/30": 2,
-      "/80": 2
-    },
-    "utilities": {
-      "bg": 12,
-      "shadow": 1
-    },
-    "files": {
-      "components/character/SelectedCharacter.tsx": 1,
-      "components/DrawerBottom.tsx": 1,
-      "components/DrawerPanel.tsx": 1,
-      "components/game-ui/LocationScene/BuildingScene.tsx": 1,
-      "components/GuideContent.tsx": 5,
-      "components/Screenshots.tsx": 2,
-      "components/ui/dialog.tsx": 1,
-      "components/ui/sheet.tsx": 1
-    }
-  },
-  {
     "kind": "token",
     "name": "info",
     "token": "--color-info",
     "css": "var(--color-info)",
-    "count": 12,
+    "count": 15,
     "variants": {
-      "/10": 2,
+      "/30": 2,
+      "/10": 3,
       "/20": 3,
-      "/40": 2,
-      "/30": 1
+      "/40": 2
     },
     "utilities": {
-      "text": 4,
-      "bg": 5,
-      "border": 1,
+      "border": 2,
+      "bg": 6,
+      "text": 5,
       "ring": 2
     },
     "files": {
+      "components/guide/GuideTip.tsx": 3,
       "components/LocationTabs.tsx": 1,
       "components/npc/NpcCard.tsx": 2,
       "components/ui/button.tsx": 8,
@@ -910,6 +913,32 @@ export const colorUsage: ColorUsage[] = [
       "components/StartPageScreen.tsx": 1,
       "components/ui/badge.tsx": 2,
       "components/ui/button.tsx": 2
+    }
+  },
+  {
+    "kind": "palette",
+    "name": "black",
+    "token": "black",
+    "css": "var(--color-black)",
+    "count": 8,
+    "variants": {
+      "/50": 1,
+      "/55": 1,
+      "/30": 2,
+      "/80": 2
+    },
+    "utilities": {
+      "bg": 7,
+      "shadow": 1
+    },
+    "files": {
+      "components/character/SelectedCharacter.tsx": 1,
+      "components/DrawerBottom.tsx": 1,
+      "components/DrawerPanel.tsx": 1,
+      "components/game-ui/LocationScene/BuildingScene.tsx": 1,
+      "components/Screenshots.tsx": 2,
+      "components/ui/dialog.tsx": 1,
+      "components/ui/sheet.tsx": 1
     }
   },
   {

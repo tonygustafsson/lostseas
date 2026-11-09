@@ -65,11 +65,7 @@ const MobileMenuContent = ({ onClose }: Props) => {
           onClick={() => handleOpen("logs")}
         />
 
-        <MobileMenuItem
-          icon={<TbHelp />}
-          label="Player guide"
-          onClick={() => handleOpen("guide")}
-        />
+        <MobileMenuItem icon={<TbHelp />} label="Player guide" href="/guide" />
 
         <MobileMenuItem
           icon={<FiSettings />}

@@ -10,7 +10,6 @@ const drawers: DrawerId[] = [
   "status",
   "fleet",
   "settings",
-  "guide",
   "advisor",
   "logs",
   "manageCrew",

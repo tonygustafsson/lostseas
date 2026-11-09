@@ -19,7 +19,7 @@ describe("drawer store", () => {
   })
 
   it("stays quiet when other drawers open", () => {
-    useDrawer.getState().open("guide")
+    useDrawer.getState().open("logs")
 
     expect(playSoundEffect).not.toHaveBeenCalled()
   })
