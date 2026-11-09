@@ -47,6 +47,15 @@ describe("generateQuest", () => {
     )
   })
 
+  it("gives the same quest for the same seed, apart from its id", () => {
+    quests.forEach(({ giver, quest }, index) => {
+      const seed = index % 200
+      const again = generateQuest(giver, player, createSeededRandom(seed).int)
+
+      expect({ ...again, id: quest.id }).toEqual(quest)
+    })
+  })
+
   it("targets are never the giver or in the giver's town", () => {
     quests.forEach(({ giver, quest }) => {
       const targetIds =

@@ -1,3 +1,6 @@
+import type { RandomInt } from "@/utils/actions/types"
+import { pickRandom } from "@/utils/random"
+
 const names = [
   "Abelia",
   "Abelina",
@@ -1032,7 +1035,7 @@ const names = [
   "Zuria",
 ]
 
-const getFrenchFemaleName = () =>
-  names[Math.floor(Math.random() * names.length)]
+const getFrenchFemaleName = (randomInt?: RandomInt) =>
+  pickRandom(names, randomInt)
 
 export default getFrenchFemaleName

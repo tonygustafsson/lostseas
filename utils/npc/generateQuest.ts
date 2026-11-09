@@ -30,10 +30,12 @@ import { resolvePlaceholders } from "@/utils/npc/placeholders"
 import { goodsName } from "@/utils/npc/questText"
 import { getRandomInt, pickRandom } from "@/utils/random"
 
+type NameGetter = (randomInt?: RandomInt) => string
+
 type NameGetters = {
-  male: () => string
-  female: () => string
-  surname: () => string
+  male: NameGetter
+  female: NameGetter
+  surname: NameGetter
 }
 
 const NAMES: Record<Nation, NameGetters> = {
@@ -228,8 +230,10 @@ export const generateQuest = (
     randomInt
   )
   const names = NAMES[nation]
-  const firstName = randomInt(0, 1) ? names.male() : names.female()
-  const personName = `${firstName} ${names.surname()}`
+  const firstName = randomInt(0, 1)
+    ? names.male(randomInt)
+    : names.female(randomInt)
+  const personName = `${firstName} ${names.surname(randomInt)}`
 
   return {
     ...base,
