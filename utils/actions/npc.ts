@@ -309,7 +309,6 @@ export const talkTo = (
   const activeQuests = Object.keys(player.quests ?? {}).length
 
   // Rolled on the first chat of the visit only, so talking on never fishes for quests
-  const questRolled = true
   const hasQuest =
     !conversation.questRolled &&
     activeQuests < MAX_ACTIVE_QUESTS &&
@@ -320,7 +319,7 @@ export const talkTo = (
 
     return {
       player: setConversation(player, npc, {
-        questRolled,
+        questRolled: true,
         ...(saidIds && { saidIds }),
         questOffer: offer,
       }),
@@ -358,7 +357,7 @@ export const talkTo = (
 
     return {
       player: setConversation(player, npc, {
-        questRolled,
+        questRolled: true,
         ...(tired && { tired }),
         saidIds: nextSaidIds,
         pendingQuestionId: entry.id,
@@ -378,7 +377,7 @@ export const talkTo = (
 
   return {
     player: setConversation(player, npc, {
-      questRolled,
+      questRolled: true,
       ...(tired && { tired }),
       saidIds: nextSaidIds,
     }),
