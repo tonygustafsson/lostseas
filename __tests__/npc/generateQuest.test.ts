@@ -63,10 +63,6 @@ describe("generateQuest", () => {
         expect(target?.id).not.toBe(giver.id)
         expect(target?.town).not.toBe(giver.town)
       })
-
-      if (quest.type === "delivery") {
-        expect(getNpcById(quest.targetNpcId)?.placement).not.toBe("governor")
-      }
     })
   })
 

@@ -150,10 +150,7 @@ export const generateQuest = (
     )
 
   if (type === "delivery") {
-    const target = pickRandom(
-      elsewhere.filter((npc) => npc.placement !== "governor"),
-      randomInt
-    )
+    const target = pickRandom(elsewhere, randomInt)
     const parcel = pickRandom(PARCELS, randomInt)
     const days = routeDays([giver.town, target.town])
 

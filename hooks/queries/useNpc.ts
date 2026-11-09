@@ -5,7 +5,7 @@ import { getNpcById } from "@/constants/npcs"
 import { PLAYER_QUERY_KEY } from "@/constants/system"
 import type { TalkLine } from "@/utils/actions/npc"
 import apiRequest from "@/utils/apiRequest"
-import { formatReward } from "@/utils/npc/questText"
+import { formatReward, goodsName } from "@/utils/npc/questText"
 
 type NpcResponse = { success: true; updatedPlayer: Player }
 
@@ -51,9 +51,19 @@ export const useNpc = () => {
     const { line } = response
 
     if (line.kind === "questProgress" && line.completed && line.reward) {
+      // The reward only holds the goods that fit, the quest has the full amount
+      const promised = line.quest.reward.item
+      const leftBehind = promised
+        ? promised.quantity - (line.reward.item?.quantity ?? 0)
+        : 0
+      const leftBehindMessage =
+        promised && leftBehind > 0
+          ? ` Your hold was full, so ${leftBehind} ${goodsName(promised.name)} were left behind.`
+          : ""
+
       setToast({
         title: "Quest completed",
-        message: `You earned ${formatReward(line.reward)}.`,
+        message: `You earned ${formatReward(line.reward)}.${leftBehindMessage}`,
         variant: "success",
       })
     }
