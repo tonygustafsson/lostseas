@@ -1,7 +1,9 @@
+import { existsSync } from "node:fs"
+import { join } from "node:path"
+
 import { describe, expect, it } from "vitest"
 
-import { NPCS } from "@/constants/npcs"
-import { NPC_VOICE_VOLUMES } from "@/constants/npcVoices"
+import { NPC_VOICE_CLIPS, NPCS } from "@/constants/npcs"
 import { getNpcVoice, getNpcVoiceClip } from "@/utils/npc/voice"
 
 const npc = NPCS.find((n) => n.name === "Griet Vogel")!
@@ -11,20 +13,21 @@ describe("npc voice", () => {
     expect(getNpcVoice(npc)).toBe("gruff-female-holland")
   })
 
-  it("has 4 recorded clips for every NPC", () => {
+  it("has a recorded clip for every NPC voice", () => {
     NPCS.forEach((n) => {
-      expect(NPC_VOICE_VOLUMES[getNpcVoice(n)], n.name).toHaveLength(4)
+      for (let i = 0; i < NPC_VOICE_CLIPS; i++) {
+        const clip = getNpcVoiceClip(n, () => i / NPC_VOICE_CLIPS)
+
+        expect(existsSync(join("public", clip)), clip).toBe(true)
+      }
     })
   })
 
-  it("picks a random clip with its own volume", () => {
-    const voice = NPC_VOICE_VOLUMES["gruff-female-holland"]
-
-    expect(getNpcVoiceClip(npc, () => 0)).toEqual({
-      src: "/soundfx/npc/gruff-female-holland1.opus",
-      volume: voice[0],
-    })
-    expect(getNpcVoiceClip(npc, () => 0.99).src).toBe(
+  it("picks a random clip", () => {
+    expect(getNpcVoiceClip(npc, () => 0)).toBe(
+      "/soundfx/npc/gruff-female-holland1.opus"
+    )
+    expect(getNpcVoiceClip(npc, () => 0.99)).toBe(
       "/soundfx/npc/gruff-female-holland4.opus"
     )
   })

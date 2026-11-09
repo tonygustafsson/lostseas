@@ -299,7 +299,6 @@ export const useTavern = () => {
     fightSailors: fight.mutate,
     isFightingSailors: fight.isPending,
     fightResult,
-    /** Closes the fight result, the dialog was the only thing showing it */
     dismissFightResult: fight.reset,
     ignoreSailors,
     isIgnoringSailors,

@@ -4,6 +4,22 @@ export const PLACEMENT_LOCATION: Record<NpcPlacement, TownLocation> = {
   governor: "City hall",
 }
 
+/** Personalities that sound alike share a voice, so there are fewer recordings to make */
+export const NPC_VOICE_TYPES: Record<PersonalityId, string> = {
+  oldSalt: "gruff",
+  wearyVeteran: "gruff",
+  gossip: "lively",
+  braggart: "lively",
+  shrewdTrader: "smooth",
+  schemer: "smooth",
+  pompous: "smooth",
+  melancholic: "hushed",
+  superstitious: "hushed",
+}
+
+/** Every voice has this many clips in `public/soundfx/npc/` */
+export const NPC_VOICE_CLIPS = 4
+
 export const NPCS: Npc[] = [
   // England
   {

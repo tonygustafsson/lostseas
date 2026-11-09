@@ -1,6 +1,6 @@
 import useSound from "@/app/stores/sound"
 import { TOWNS } from "@/constants/locations"
-import { NPC_VOICE_TYPES, NPC_VOICE_VOLUMES } from "@/constants/npcVoices"
+import { NPC_VOICE_CLIPS, NPC_VOICE_TYPES } from "@/constants/npcs"
 
 /** Voices are shared by personality type, gender and the nation of their town, like "gruff-female-holland" */
 export const getNpcVoice = (npc: Npc) =>
@@ -14,14 +14,9 @@ export const getNpcVoiceClip = (
   npc: Npc,
   random: () => number = Math.random
 ) => {
-  const voice = getNpcVoice(npc)
-  const volumes = NPC_VOICE_VOLUMES[voice]
-  const index = Math.floor(random() * volumes.length)
+  const index = Math.floor(random() * NPC_VOICE_CLIPS)
 
-  return {
-    src: `/soundfx/npc/${voice}${index + 1}.opus`,
-    volume: volumes[index],
-  }
+  return `/soundfx/npc/${getNpcVoice(npc)}${index + 1}.opus`
 }
 
 // Only one NPC talks at a time, so the playing clip lives outside React
@@ -40,8 +35,6 @@ export const playNpcVoice = (npc: Npc) => {
     return
   }
 
-  const { src, volume } = getNpcVoiceClip(npc)
-  playing = new Audio(src)
-  playing.volume = volume
+  playing = new Audio(getNpcVoiceClip(npc))
   playing.play().catch(console.error)
 }
