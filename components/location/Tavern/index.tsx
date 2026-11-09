@@ -1,7 +1,7 @@
 import { Beer, MessageCircle, Spade } from "lucide-react"
 import { useState } from "react"
 
-import LocationTabs from "@/components/LocationTabs"
+import LocationNavigation from "@/components/LocationNavigation"
 import TownNpc, { getFirstName, useTownNpcTalk } from "@/components/npc/TownNpc"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useTavern } from "@/hooks/queries/useTavern"
@@ -56,7 +56,7 @@ const Tavern = () => {
         />
       )}
 
-      <LocationTabs<TavernTab>
+      <LocationNavigation
         items={[
           { id: "buy", label: "Buy", icon: <Beer /> },
           { id: "cards", label: "Play cards", icon: <Spade /> },

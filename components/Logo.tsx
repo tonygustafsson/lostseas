@@ -1,5 +1,6 @@
 import { useId } from "react"
 
+import RingShimmer from "@/components/RingShimmer"
 import { cn } from "@/lib/utils"
 
 type Props = {
@@ -88,10 +89,7 @@ export const LogoMark = ({ className }: Props) => {
       </svg>
 
       {/* A glint that runs once around the gold rim when the logo is hovered */}
-      <span
-        aria-hidden="true"
-        className="motion-safe:group-hover/logo:animate-ring-shimmer pointer-events-none absolute inset-0 rounded-full bg-[conic-gradient(transparent_0_50%,var(--gold-light)_75%,var(--foreground)_88%,transparent_100%)] mask-[radial-gradient(closest-side,transparent_87%,black_89%,black_95%,transparent_97%)] opacity-0"
-      />
+      <RingShimmer className="motion-safe:group-hover/logo:animate-ring-shimmer" />
     </span>
   )
 }

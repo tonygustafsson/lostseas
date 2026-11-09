@@ -2,7 +2,7 @@
 import { FlaskConical, MessageCircle, Store } from "lucide-react"
 import { useState } from "react"
 
-import LocationTabs from "@/components/LocationTabs"
+import LocationNavigation from "@/components/LocationNavigation"
 import MerchandiseCard from "@/components/MerchandiseCard"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
 import TownNpc, { getFirstName, useTownNpcTalk } from "@/components/npc/TownNpc"
@@ -35,7 +35,7 @@ const Market = () => {
 
   return (
     <div className="mb-8">
-      <LocationTabs<MarketTab>
+      <LocationNavigation
         items={[
           { id: "traders", label: "Traders", icon: <Store /> },
           { id: "apothecary", label: "Apothecary", icon: <FlaskConical /> },

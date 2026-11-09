@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { FlaskConical, MessageCircle, Store } from "lucide-react"
 import { fn } from "storybook/test"
 
-import LocationTabs from "@/components/LocationTabs"
+import LocationNavigation from "@/components/LocationNavigation"
 
 const meta = {
-  title: "components/LocationTabs",
-  component: LocationTabs,
+  title: "components/LocationNavigation",
+  component: LocationNavigation,
   argTypes: { items: { control: false } },
   args: {
     items: [
@@ -17,7 +17,7 @@ const meta = {
     currentTab: "traders",
     setCurrentTab: fn(),
   },
-} satisfies Meta<typeof LocationTabs>
+} satisfies Meta<typeof LocationNavigation>
 
 export default meta
 
@@ -25,7 +25,7 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {}
 
-/** The NPC tab gets a dot when they have quest business with the player */
+/** The NPC medallion gets a scroll badge when they have quest business with the player */
 export const QuestIndicator: Story = {
   args: {
     items: [
@@ -43,4 +43,8 @@ export const QuestIndicator: Story = {
 
 export const TalkSelected: Story = {
   args: { currentTab: "talk" },
+}
+
+export const QuestIndicatorSelected: Story = {
+  args: { ...QuestIndicator.args, currentTab: "talk" },
 }

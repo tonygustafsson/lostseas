@@ -1,7 +1,7 @@
 import { Coins, Hammer, Ship } from "lucide-react"
 import { useState } from "react"
 
-import LocationTabs from "@/components/LocationTabs"
+import LocationNavigation from "@/components/LocationNavigation"
 
 import ShipyardBuy from "./Buy"
 import ShipyardRepair from "./Repair"
@@ -14,7 +14,7 @@ const Shipyard = () => {
 
   return (
     <>
-      <LocationTabs<ShipyardTab>
+      <LocationNavigation
         items={[
           { id: "buy", label: "Buy", icon: <Ship /> },
           { id: "sell", label: "Sell", icon: <Coins /> },
