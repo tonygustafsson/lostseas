@@ -1,8 +1,8 @@
 import { Award, Handshake } from "lucide-react"
-import { useState } from "react"
-import { GiQuillInk } from "react-icons/gi"
 
-import ActionCard from "@/components/ActionCard"
+import { QuestBadge, TalkButton } from "@/components/npc/NpcCard"
+import NpcPortraitCard from "@/components/npc/NpcPortraitCard"
+import { useTownNpcTalk } from "@/components/npc/TownNpc"
 import { Button } from "@/components/ui/button"
 import { TOWNS } from "@/constants/locations"
 import { TitleInfo } from "@/constants/title"
@@ -94,11 +94,21 @@ const getGreeting = ({
 
 const Governor = () => {
   const { data: player } = useGetPlayer()
-  const { acceptNewTitle, changeCitizenship } = useCityhall()
+  const {
+    acceptNewTitle,
+    isAcceptingNewTitle,
+    changeCitizenship,
+    isChangingCitizenship,
+  } = useCityhall()
 
-  const [hasClaimed, setHasClaimed] = useState(false)
+  const isClaiming = isAcceptingNewTitle || isChangingCitizenship
 
-  if (!player) return null
+  const { npc, hasQuestBusiness, isPending, onTalk, dialog } =
+    useTownNpcTalk("governor")
+
+  if (!player || !npc) {
+    return null
+  }
 
   const {
     isHomeNation,
@@ -127,57 +137,62 @@ const Governor = () => {
     enemyWins,
   })
 
-  const handleAcceptNewTitle = () => {
-    setHasClaimed(true)
-    acceptNewTitle(undefined, { onError: () => setHasClaimed(false) })
-  }
-
-  const handleChangeCitizenship = () => {
-    setHasClaimed(true)
-    changeCitizenship(undefined, { onError: () => setHasClaimed(false) })
-  }
-
   const rewardWaiting = promotionAvailable || citizenshipChangeAvailable
-
-  const cardImage = rewardWaiting
-    ? "/img/cards/cityhall/governor-excited.png"
-    : "/img/cards/cityhall/governor-neutral.png"
 
   const greetingTitle = `${rewardWaiting ? "Thank you" : "Welcome"} ${player.character.title.toLowerCase()} ${
     player.character.name
-  }`
-
-  if (hasClaimed) {
-    return null
-  }
+  }.`
 
   return (
-    <ActionCard
-      title={greetingTitle}
-      message={greeting}
-      image={cardImage}
-      icon={<GiQuillInk />}
-      {...(promotionAvailable && {
-        actions: (
-          <Button size="lg" onClick={handleAcceptNewTitle}>
-            <Award className="size-6" />
-            Accept new title
-          </Button>
-        ),
-      })}
-      {...(citizenshipChangeAvailable && {
-        actions: (
-          <Button
-            size="lg"
+    <>
+      <NpcPortraitCard
+        npc={npc}
+        title={`Governor ${npc.name}`}
+        footer={<p>{npc.description}</p>}
+        actions={
+          <>
+            {/* Hidden while claiming, the Talk button stays for quest business */}
+            {promotionAvailable && !isClaiming && (
+              <Button
+                size="lg"
+                className="w-full @xl:w-auto"
+                onClick={() => acceptNewTitle()}
+              >
+                <Award />
+                Accept new title
+              </Button>
+            )}
 
-            onClick={handleChangeCitizenship}
-          >
-            <Handshake className="size-6" />
-            Change citizenship
-          </Button>
-        ),
-      })}
-    />
+            {citizenshipChangeAvailable && !isClaiming && (
+              <Button
+                size="lg"
+                className="w-full @xl:w-auto"
+                onClick={() => changeCitizenship()}
+              >
+                <Handshake />
+                Change citizenship
+              </Button>
+            )}
+
+            <div className="flex w-full items-center gap-4 @xl:w-auto">
+              <TalkButton
+                variant={rewardWaiting && !isClaiming ? "secondary" : "default"}
+                disabled={isPending}
+                onTalk={onTalk}
+              />
+
+              {hasQuestBusiness && <QuestBadge />}
+            </div>
+          </>
+        }
+      >
+        <p>{greetingTitle}</p>
+
+        {greeting && <div className="mt-2">{greeting}</div>}
+      </NpcPortraitCard>
+
+      {dialog}
+    </>
   )
 }
 

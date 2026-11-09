@@ -27,6 +27,7 @@ type LocationStates = {
   tavern?: TavernState
   sea?: SeaState
   harbor?: HarborState
+  conversations?: Record<string, ConversationState>
 }
 
 type AdvisorWarning =

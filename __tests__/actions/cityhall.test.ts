@@ -50,7 +50,7 @@ const expectError = (result: ActionResult, error: string) => {
 describe("acceptNewTitle", () => {
   it("promotes the player and pays the reward", () => {
     const result = expectSuccess(
-      acceptNewTitle(withBattles({ France: { won: 15 } }))
+      acceptNewTitle(withBattles({ France: { won: 5 } }))
     )
 
     expect(result.player.character.title).toBe("Ensign")
@@ -67,15 +67,15 @@ describe("acceptNewTitle", () => {
   })
 
   it.each([
-    [10, "Ensign"],
-    [20, "Captain"],
-    [30, "Major"],
-    [40, "Colonel"],
-    [50, "Admiral"],
-    [65, "Baron"],
-    [80, "Count"],
-    [100, "Marquis"],
-    [120, "Duke"],
+    [3, "Ensign"],
+    [7, "Captain"],
+    [12, "Major"],
+    [18, "Colonel"],
+    [25, "Admiral"],
+    [33, "Baron"],
+    [42, "Count"],
+    [52, "Marquis"],
+    [63, "Duke"],
   ] as const)("%i enemy victories give the title %s", (won, title) => {
     const result = expectSuccess(
       acceptNewTitle(withBattles({ France: { won } }))
@@ -86,10 +86,10 @@ describe("acceptNewTitle", () => {
   })
 
   it("counts battles against the own nation against the player", () => {
-    // 25 enemy victories minus 10 English battles = 15, which is Ensign
+    // 15 enemy victories minus 10 English battles = 5, which is Ensign
     const result = expectSuccess(
       acceptNewTitle(
-        withBattles({ France: { won: 25 }, England: { won: 4, lost: 6 } })
+        withBattles({ France: { won: 15 }, England: { won: 4, lost: 6 } })
       )
     )
 
@@ -98,14 +98,14 @@ describe("acceptNewTitle", () => {
 
   it("rejects when the title is already held", () => {
     expectError(
-      acceptNewTitle(withBattles({ France: { won: 15 } }, { title: "Ensign" })),
+      acceptNewTitle(withBattles({ France: { won: 5 } }, { title: "Ensign" })),
       "You already have the title Ensign."
     )
   })
 
   it("never demotes, as the guide says, and names the current title", () => {
     expectError(
-      acceptNewTitle(withBattles({ France: { won: 15 } }, { title: "Duke" })),
+      acceptNewTitle(withBattles({ France: { won: 5 } }, { title: "Duke" })),
       "You need more victories against France to be promoted from Duke."
     )
   })
@@ -113,7 +113,7 @@ describe("acceptNewTitle", () => {
   it("rejects promotions in another nation's town", () => {
     expectError(
       acceptNewTitle(
-        withBattles({ France: { won: 15 } }, { town: townOf("Spain") })
+        withBattles({ France: { won: 5 } }, { town: townOf("Spain") })
       ),
       "Not your home nation."
     )
@@ -122,7 +122,7 @@ describe("acceptNewTitle", () => {
   it("rejects outside the city hall", () => {
     expectError(
       acceptNewTitle(
-        createTestPlayer({ character: { battles: { France: { won: 15 } } } })
+        createTestPlayer({ character: { battles: { France: { won: 5 } } } })
       ),
       "You must be at City hall to do this."
     )
@@ -131,10 +131,10 @@ describe("acceptNewTitle", () => {
 
 describe("changeCitizenship", () => {
   it("matches the guide's example", () => {
-    // A Spanish citizen with 50 victories against France who never attacked
+    // A Spanish citizen with 25 victories against France who never attacked
     // England qualifies for English citizenship as Admiral
     const player = withBattles(
-      { France: { won: 50 } },
+      { France: { won: 25 } },
       { nationality: "Spain", town: townOf("England") }
     )
 
@@ -154,7 +154,7 @@ describe("changeCitizenship", () => {
 
   it("can give a lower title than before, as the guide says", () => {
     const player = withBattles(
-      { France: { won: 5 } },
+      { France: { won: 2 } },
       { nationality: "Spain", title: "Duke" }
     )
 
@@ -223,13 +223,13 @@ describe("title rewards are paid once", () => {
 
   it("pays nothing for a lower title after changing citizenship", () => {
     const player = withBattles(
-      { France: { won: 50 }, England: { won: 30 } },
+      { France: { won: 30 }, England: { won: 20 } },
       admiral({ nationality: "Spain", town: townOf("England") })
     )
 
     const result = expectSuccess(changeCitizenship(player))
 
-    // 50 - 30 = 20 is Captain, lower than the Admiral already rewarded
+    // 30 - 20 = 10 is Captain, lower than the Admiral already rewarded
     expect(result.player.character.title).toBe("Captain")
     expect(result.player.character.gold).toBe(1000)
     expect(result.player.character.highestRewardedTitle).toBe("Admiral")
@@ -241,7 +241,7 @@ describe("title rewards are paid once", () => {
 
     // Step 1: an English Admiral switches to Spain and becomes a Captain
     let player = withBattles(
-      { [spainsEnemy]: { won: 20 } },
+      { [spainsEnemy]: { won: 10 } },
       admiral({ town: townOf("Spain") })
     )
     const switched = expectSuccess(changeCitizenship(player))
@@ -251,7 +251,7 @@ describe("title rewards are paid once", () => {
 
     // Step 2: more victories make them an Admiral again in Spain, without a second reward
     player = patchDeep<Player>(switched.player, {
-      character: { battles: { [spainsEnemy]: { won: 50 } } },
+      character: { battles: { [spainsEnemy]: { won: 25 } } },
     })
     const regained = expectSuccess(acceptNewTitle(player))
 
@@ -260,7 +260,7 @@ describe("title rewards are paid once", () => {
 
     // Step 3: a title they never held pays its reward as normal
     player = patchDeep<Player>(regained.player, {
-      character: { battles: { [spainsEnemy]: { won: 65 } } },
+      character: { battles: { [spainsEnemy]: { won: 33 } } },
     })
     const baron = expectSuccess(acceptNewTitle(player))
 
@@ -270,7 +270,7 @@ describe("title rewards are paid once", () => {
 
   it("uses the current title for older players without a rewarded title", () => {
     const player = withBattles(
-      { France: { won: 30 } },
+      { France: { won: 12 } },
       { title: "Major", nationality: "Spain", town: townOf("England") }
     )
 

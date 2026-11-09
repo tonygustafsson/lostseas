@@ -15,4 +15,4 @@ This file gives GitHub Copilot (and other in-editor agents) concise, project-spe
 
 This is a pirate style game where you travel from port to port, trading goods and battling other pirates.
 
-Read the [GuideContent.tsx](./components/GuideContent.tsx) file for a detailed overview of the project's features and structure.
+Read the player guide chapters in [components/guide/chapters/](./components/guide/chapters/) for a detailed overview of the project's features and structure.

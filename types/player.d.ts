@@ -8,6 +8,7 @@ type Player = {
   treasures?: Record<string, Treasure>
   wantedPirates?: Record<string, WantedPirate>
   locationStates?: LocationStates
+  quests?: Record<string, Quest>
 }
 
 type CreatePlayerClientRequest = Pick<Character, "name" | "characterId">

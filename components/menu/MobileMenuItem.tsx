@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { FiChevronRight } from "react-icons/fi"
+import { FiChevronRight, FiExternalLink } from "react-icons/fi"
 
 import { cn } from "@/lib/utils"
 
@@ -8,29 +8,30 @@ import { Button } from "../ui/button"
 type Props = {
   icon: ReactNode
   label: string
-  onClick: () => void
   badge?: number
   tone?: "default" | "danger"
+  onClick?: () => void
+  /** Opens in a new tab instead of running onClick */
+  href?: string
 }
 
 const MobileMenuItem = ({
   icon,
   label,
   onClick,
+  href,
   badge,
   tone = "default",
 }: Props) => {
   const isDanger = tone === "danger"
 
-  return (
-    <Button
-      variant="ghost"
-      onClick={onClick}
-      className={cn(
-        "h-auto w-full justify-start gap-4 px-2 py-2 text-base text-white transition-transform hover:bg-white/5 active:scale-95",
-        isDanger && "text-destructive hover:text-destructive"
-      )}
-    >
+  const className = cn(
+    "h-auto w-full justify-start gap-4 px-2 py-2 text-base text-white transition-transform hover:bg-white/5 active:scale-95",
+    isDanger && "text-destructive hover:text-destructive"
+  )
+
+  const content = (
+    <>
       <span
         className={cn(
           "bg-background grid size-10 shrink-0 place-items-center rounded-full border [&_svg]:size-5!",
@@ -50,7 +51,28 @@ const MobileMenuItem = ({
         </span>
       )}
 
-      {!isDanger && <FiChevronRight className="text-muted-foreground" />}
+      {href && <FiExternalLink className="text-muted-foreground" />}
+
+      {!href && !isDanger && (
+        <FiChevronRight className="text-muted-foreground" />
+      )}
+    </>
+  )
+
+  // Links open in a new tab so the game keeps running behind them
+  if (href) {
+    return (
+      <Button asChild variant="ghost" className={className}>
+        <a href={href} target="_blank" rel="noopener">
+          {content}
+        </a>
+      </Button>
+    )
+  }
+
+  return (
+    <Button variant="ghost" onClick={onClick} className={className}>
+      {content}
     </Button>
   )
 }

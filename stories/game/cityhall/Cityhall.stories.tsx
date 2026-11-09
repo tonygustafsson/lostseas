@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import Cityhall from "@/components/location/Cityhall"
+import { getNpcAt } from "@/constants/npcs"
 
 import { player } from "../../fixtures"
 import PlayerPreview from "../../PlayerPreview"
@@ -83,7 +84,7 @@ export const Welcome: Story = {}
 export const ThankedForVictories: Story = {
   parameters: {
     player: atCityhall({
-      character: { battles: { France: { won: 22 } } },
+      character: { battles: { France: { won: 9 } } },
     }),
   },
 }
@@ -92,7 +93,7 @@ export const ThankedForVictories: Story = {
 export const PromotionAvailable: Story = {
   parameters: {
     player: atCityhall({
-      character: { battles: { France: { won: 34 } } },
+      character: { battles: { France: { won: 14 } } },
     }),
   },
 }
@@ -103,7 +104,7 @@ export const PromotionWithoutReward: Story = {
     player: atCityhall({
       character: {
         highestRewardedTitle: "Admiral",
-        battles: { France: { won: 34 } },
+        battles: { France: { won: 14 } },
       },
     }),
   },
@@ -120,7 +121,7 @@ export const ForeignTown: Story = {
 export const CitizenshipOffer: Story = {
   parameters: {
     player: atCityhall({
-      character: { town: "Havana", battles: { Holland: { won: 42 } } },
+      character: { town: "Havana", battles: { Holland: { won: 20 } } },
     }),
   },
 }
@@ -138,7 +139,7 @@ export const WithTreasuresAndWantedPirates: Story = {
     player: atCityhall({
       treasures,
       wantedPirates,
-      character: { battles: { France: { won: 34 } } },
+      character: { battles: { France: { won: 14 } } },
     }),
   },
 }
@@ -149,6 +150,26 @@ export const NothingToHandOverHere: Story = {
     player: atCityhall({
       treasures: { "treasure-3": treasures["treasure-3"] },
       wantedPirates: { "pirate-3": wantedPirates["pirate-3"] },
+    }),
+  },
+}
+
+/** A delivery for the governor shows the quest badge */
+export const GovernorQuestBusiness: Story = {
+  parameters: {
+    player: atCityhall({
+      quests: {
+        "quest-1": {
+          id: "quest-1",
+          giverId: getNpcAt("Havana", "market").id,
+          acceptedDay: 5,
+          pitch: "Take this sealed letter to the governor of Port Royale.",
+          reward: { gold: 600 },
+          type: "delivery",
+          parcel: "a sealed letter",
+          targetNpcId: getNpcAt("Port Royale", "governor").id,
+        },
+      },
     }),
   },
 }

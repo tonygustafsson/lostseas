@@ -22,4 +22,15 @@ const apiRequest = async (url: string, data: any, method: Method = "GET") => {
   }
 }
 
+/** Posts and rejects on failure, so callers only ever get a successful response */
+export const postOrThrow = async <T>(url: string, data: object): Promise<T> => {
+  const response = await apiRequest(url, data, "POST")
+
+  if (!response || response.data?.error) {
+    throw new Error(response?.data?.error ?? "Something went wrong.")
+  }
+
+  return response.data
+}
+
 export default apiRequest

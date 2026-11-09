@@ -65,10 +65,10 @@
 
 ## Game mechanics
 
-- Before changing gameplay, read [`components/GuideContent.tsx`](components/GuideContent.tsx).
+- Before changing gameplay, read the player guide chapters in [`components/guide/chapters/`](components/guide/chapters/).
 - Treat it as the source of truth for existing game rules and player-facing behavior unless the task explicitly changes those rules.
 - Keep gameplay behavior and player-facing guidance consistent.
-- When game rules change, update `GuideContent.tsx` when necessary so the guide remains accurate.
+- When game rules change, update the matching chapter in `components/guide/chapters/` when necessary so the guide remains accurate.
 - Do not add new town buildings. Each one needs map hotspots and interior art for all 16 towns. Put new features in existing buildings.
 - When you change game mechanics, don't forget to see if you also need to change the Log book or Statistics.
 

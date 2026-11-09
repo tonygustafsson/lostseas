@@ -1,20 +1,30 @@
+import { Beer, MessageCircle, Spade } from "lucide-react"
 import { useState } from "react"
-import { GiPirateCaptain } from "react-icons/gi"
 
-import ActionCard from "@/components/ActionCard"
-import LocationTabs from "@/components/LocationTabs"
-import { Button } from "@/components/ui/button"
+import LocationNavigation from "@/components/LocationNavigation"
+import TownNpc, { getFirstName, useTownNpcTalk } from "@/components/npc/TownNpc"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useTavern } from "@/hooks/queries/useTavern"
 
 import TavernBuy from "./Buy"
 import TavernCards from "./Cards"
+import TavernEventDialog from "./TavernEventDialog"
 
-export type TavernTab = "buy" | "cards"
+export type TavernTab = "buy" | "cards" | "talk"
 
 const Tavern = () => {
   const { data: player } = useGetPlayer()
-  const { acceptNewCrewMembers, fightSailors, ignoreSailors } = useTavern()
+  const {
+    acceptNewCrewMembers,
+    fightSailors,
+    isFightingSailors,
+    fightResult,
+    dismissFightResult,
+    ignoreSailors,
+  } = useTavern()
+  const tavernState = player?.locationStates?.tavern
+  const npcTalk = useTownNpcTalk("tavern")
+  const { npc, hasQuestBusiness } = npcTalk
 
   const [tab, setTab] = useState<TavernTab>("buy")
 
@@ -32,58 +42,34 @@ const Tavern = () => {
 
   return (
     <>
-      {!!player?.locationStates?.tavern?.noOfSailors &&
-        !player?.locationStates.tavern.isHostile && (
-          <ActionCard
-            title={`${player?.locationStates?.tavern?.noOfSailors} sailors approach you`}
-            message="After a couple of drinks and a few games of cards, it turns out they want to join you on your adventure."
-            image="/img/cards/tavern/crew-joining.png"
-            icon={<GiPirateCaptain />}
-            actions={
-              <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
-                <Button size="lg" onClick={handleAcceptNewCrewMembers}>
-                  Take them in
-                </Button>
-                <Button
-                  size="lg"
-                  variant="secondary"
-                  onClick={handleIgnoreSailors}
-                >
-                  Pass
-                </Button>
-              </div>
-            }
-          />
-        )}
+      {/* Ignoring the sailors is an answer too, so the dialog cannot be closed */}
+      {(!!tavernState?.noOfSailors || fightResult) && (
+        <TavernEventDialog
+          noOfSailors={tavernState?.noOfSailors ?? 0}
+          isHostile={!!tavernState?.isHostile}
+          result={fightResult}
+          isPending={isFightingSailors}
+          onContinue={dismissFightResult}
+          onAccept={handleAcceptNewCrewMembers}
+          onFight={handleFightSailors}
+          onIgnore={handleIgnoreSailors}
+        />
+      )}
 
-      {!!player?.locationStates?.tavern?.noOfSailors &&
-        player?.locationStates.tavern.isHostile && (
-          <ActionCard
-            title={`${player?.locationStates?.tavern?.noOfSailors} sailors approach you`}
-            message="After a couple of drinks they start to get aggressive and want to fight you."
-            image="/img/cards/tavern/crew-fight.png"
-            icon={<GiPirateCaptain />}
-            actions={
-              <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
-                <Button size="lg" onClick={handleFightSailors}>
-                  Fight them
-                </Button>
-                <Button
-                  size="lg"
-                  variant="secondary"
-                  onClick={handleIgnoreSailors}
-                >
-                  Avoid
-                </Button>
-              </div>
-            }
-          />
-        )}
-
-      <LocationTabs<TavernTab>
+      <LocationNavigation
         items={[
-          { id: "buy", label: "Buy" },
-          { id: "cards", label: "Play cards" },
+          { id: "buy", label: "Buy", icon: <Beer /> },
+          { id: "cards", label: "Play cards", icon: <Spade /> },
+          ...(npc
+            ? [
+                {
+                  id: "talk" as const,
+                  label: getFirstName(npc),
+                  icon: <MessageCircle />,
+                  indicator: hasQuestBusiness,
+                },
+              ]
+            : []),
         ]}
         currentTab={tab}
         setCurrentTab={setTab}
@@ -91,6 +77,7 @@ const Tavern = () => {
 
       {tab === "buy" && <TavernBuy />}
       {tab === "cards" && <TavernCards />}
+      {tab === "talk" && <TownNpc talk={npcTalk} />}
     </>
   )
 }

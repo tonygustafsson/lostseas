@@ -1,47 +1,10 @@
 import { NATIONS, TOWNS } from "@/constants/locations"
 import { TITLE_INFO, type TitleInfo } from "@/constants/title"
 
-export const getTitleInfoByScore = (score = 0) => {
-  let titleInfo = TITLE_INFO.Pirate
-
-  if (score >= 10 && score < 20) {
-    titleInfo = TITLE_INFO.Ensign
-  }
-
-  if (score >= 20 && score < 30) {
-    titleInfo = TITLE_INFO.Captain
-  }
-
-  if (score >= 30 && score < 40) {
-    titleInfo = TITLE_INFO.Major
-  }
-
-  if (score >= 40 && score < 50) {
-    titleInfo = TITLE_INFO.Colonel
-  }
-
-  if (score >= 50 && score < 65) {
-    titleInfo = TITLE_INFO.Admiral
-  }
-
-  if (score >= 65 && score < 80) {
-    titleInfo = TITLE_INFO.Baron
-  }
-
-  if (score >= 80 && score < 100) {
-    titleInfo = TITLE_INFO.Count
-  }
-
-  if (score >= 100 && score < 120) {
-    titleInfo = TITLE_INFO.Marquis
-  }
-
-  if (score >= 120) {
-    titleInfo = TITLE_INFO.Duke
-  }
-
-  return titleInfo
-}
+/** The highest title the level qualifies for. */
+export const getTitleInfoByScore = (score = 0) =>
+  Object.values(TITLE_INFO).findLast(({ minLevel }) => score >= minLevel) ??
+  TITLE_INFO.Pirate
 
 export const getNewTitle = (character: Character) => {
   const townNation = character.town ? TOWNS[character.town]?.nation : null

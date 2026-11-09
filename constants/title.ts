@@ -1,5 +1,7 @@
 export type TitleInfo = {
   title: Title
+  /** Level needed for the title. Each step needs one more victory than the one before. */
+  minLevel: number
   reward: number
   maxShips: number
   higherThan: Title[]
@@ -8,49 +10,57 @@ export type TitleInfo = {
 export const TITLE_INFO: Record<Title, TitleInfo> = {
   Pirate: {
     title: "Pirate",
+    minLevel: 0,
     reward: 0,
     maxShips: 3,
     higherThan: [],
   },
   Ensign: {
     title: "Ensign",
-    reward: 1000,
+    minLevel: 3,
+    reward: 500,
     maxShips: 5,
     higherThan: ["Pirate"],
   },
   Captain: {
     title: "Captain",
-    reward: 2500,
+    minLevel: 7,
+    reward: 1200,
     maxShips: 6,
     higherThan: ["Pirate", "Ensign"],
   },
   Major: {
     title: "Major",
-    reward: 4000,
+    minLevel: 12,
+    reward: 2000,
     maxShips: 7,
     higherThan: ["Pirate", "Ensign", "Captain"],
   },
   Colonel: {
     title: "Colonel",
-    reward: 6000,
+    minLevel: 18,
+    reward: 3000,
     maxShips: 8,
     higherThan: ["Pirate", "Ensign", "Captain", "Major"],
   },
   Admiral: {
     title: "Admiral",
-    reward: 8000,
+    minLevel: 25,
+    reward: 4000,
     maxShips: 10,
     higherThan: ["Pirate", "Ensign", "Captain", "Major", "Colonel"],
   },
   Baron: {
     title: "Baron",
-    reward: 10000,
+    minLevel: 33,
+    reward: 5000,
     maxShips: 11,
     higherThan: ["Pirate", "Ensign", "Captain", "Major", "Colonel", "Admiral"],
   },
   Count: {
     title: "Count",
-    reward: 15000,
+    minLevel: 42,
+    reward: 7500,
     maxShips: 12,
     higherThan: [
       "Pirate",
@@ -64,7 +74,8 @@ export const TITLE_INFO: Record<Title, TitleInfo> = {
   },
   Marquis: {
     title: "Marquis",
-    reward: 20000,
+    minLevel: 52,
+    reward: 10000,
     maxShips: 13,
     higherThan: [
       "Pirate",
@@ -79,7 +90,8 @@ export const TITLE_INFO: Record<Title, TitleInfo> = {
   },
   Duke: {
     title: "Duke",
-    reward: 35000,
+    minLevel: 63,
+    reward: 17500,
     maxShips: 15,
     higherThan: [
       "Pirate",

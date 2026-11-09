@@ -4,6 +4,7 @@ import AdvisorDrawerTrigger from "@/components/advisor/AdvisorDrawerTrigger"
 import { almendra } from "@/fonts"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 
+import { LogoMark } from "../Logo"
 import SocialMedia from "../SocialMedia"
 import SoundButton from "../Sound/SoundButton"
 import { Sidebar, SidebarContent, SidebarGroup } from "../ui/sidebar"
@@ -30,14 +31,18 @@ const DesktopMenu = ({ className }: Props) => {
         >
           <div className="bg-gold/10 absolute inset-x-0 -top-16 mx-auto h-24 w-48 rounded-full blur-2xl" />
 
-          <div className="relative flex items-center justify-center gap-4 py-2">
-            <div className="to-gold/60 h-px flex-1 bg-linear-to-r from-transparent" />
+          <div className="group/logo relative flex cursor-default flex-col items-center gap-1 py-2 select-none">
+            <div className="flex w-full items-center gap-4">
+              <div className="to-gold/60 h-px flex-1 bg-linear-to-r from-transparent" />
+
+              <LogoMark className="size-11 sm:size-11" />
+
+              <div className="to-gold/60 h-px flex-1 bg-linear-to-l from-transparent" />
+            </div>
 
             <span className="from-gold-light via-gold to-gold-dark bg-linear-to-b bg-clip-text font-serif text-2xl tracking-widest text-transparent uppercase">
               Lost Seas
             </span>
-
-            <div className="to-gold/60 h-px flex-1 bg-linear-to-l from-transparent" />
           </div>
 
           <div className="via-gold/70 absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent to-transparent" />

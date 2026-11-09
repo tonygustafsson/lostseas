@@ -8,12 +8,13 @@ export const getTownsNationality = (
   return TOWNS[town].nation
 }
 
-export const getRandomTown = (nation: Nation) => {
-  const nationTowns = Object.entries(TOWNS)
-    .filter(([_, town]) => town.nation === nation)
-    .map(([townName]) => townName)
+export const getNationTowns = (nation: Nation) =>
+  (Object.keys(TOWNS) as Town[]).filter((town) => TOWNS[town].nation === nation)
 
-  return nationTowns[Math.floor(Math.random() * nationTowns.length)] as Town
+export const getRandomTown = (nation: Nation) => {
+  const nationTowns = getNationTowns(nation)
+
+  return nationTowns[Math.floor(Math.random() * nationTowns.length)]
 }
 
 export const toSlug = (value: string) =>

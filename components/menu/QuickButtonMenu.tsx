@@ -60,12 +60,15 @@ const QuickButtonMenu = () => {
       <li>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => openDrawer("guide")}
-            >
-              <TbHelp className="h-5 w-5" />
+            <Button asChild variant="secondary" size="sm">
+              <a
+                href="/guide"
+                target="_blank"
+                rel="noopener"
+                aria-label="Player guide"
+              >
+                <TbHelp className="h-5 w-5" />
+              </a>
             </Button>
           </TooltipTrigger>
 

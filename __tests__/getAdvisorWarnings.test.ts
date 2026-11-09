@@ -490,11 +490,11 @@ describe("getAdvisorWarnings", () => {
   describe("PROMOTION_AVAILABLE", () => {
     it("triggers when a promotion is available at the current town", () => {
       const p = basePlayer()
-      // Port Royale is England; warWith France; 15 wins vs France = score 15 -> Ensign
+      // Port Royale is England; warWith France; 5 wins vs France = score 5 -> Ensign
       p.character.title = "Pirate"
       p.character.nationality = "England"
       p.character.town = "Port Royale"
-      p.character.battles = { France: { won: 15, lost: 0 } } as any
+      p.character.battles = { France: { won: 5, lost: 0 } } as any
       expect(tips(p)).toContain("PROMOTION_AVAILABLE")
       expect(advisory(p)).toContain("PROMOTION_AVAILABLE")
     })
@@ -504,7 +504,7 @@ describe("getAdvisorWarnings", () => {
       p.character.title = "Ensign"
       p.character.nationality = "England"
       p.character.town = "Port Royale"
-      p.character.battles = { France: { won: 15, lost: 0 } } as any
+      p.character.battles = { France: { won: 5, lost: 0 } } as any
       expect(tips(p)).not.toContain("PROMOTION_AVAILABLE")
     })
   })

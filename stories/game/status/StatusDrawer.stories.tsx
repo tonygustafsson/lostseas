@@ -4,6 +4,7 @@ import StatusDrawer from "@/components/drawer/drawerContent/Status"
 
 import { player, statistics } from "../../fixtures"
 import PlayerPreview from "../../PlayerPreview"
+import { quests } from "../../questFixtures"
 
 const veteran: Player = {
   ...player,
@@ -46,4 +47,15 @@ export const Default: Story = {}
 
 export const NewCaptain: Story = {
   parameters: { player, statistics: [] },
+}
+
+export const WithQuests: Story = {
+  parameters: {
+    player: {
+      ...veteran,
+      quests,
+      character: { ...veteran.character, questsCompleted: 3 },
+    },
+    statistics,
+  },
 }

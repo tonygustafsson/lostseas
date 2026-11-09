@@ -14,8 +14,6 @@ type Props = {
 
 const MarketApothecary = ({ player, onBuy, isBuying }: Props) => (
   <>
-    <h2 className="mb-4 font-serif text-xl">Apothecary</h2>
-
     <p className="mb-6">
       These remedies can help restore your crew&apos;s health. They will be used
       immediately upon purchase and will not be part of your inventory.

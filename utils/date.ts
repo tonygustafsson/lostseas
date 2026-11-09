@@ -1,6 +1,6 @@
 export const START_DATE = new Date(1640, 0, 1)
 
-const getDateOfDay = (day: Character["day"]) => {
+export const getDateOfDay = (day: Character["day"]) => {
   const elapsedDays = Math.max(0, day - 1)
   const date = new Date(START_DATE)
   date.setDate(date.getDate() + elapsedDays)

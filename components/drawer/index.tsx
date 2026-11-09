@@ -5,7 +5,6 @@ import DrawerPanel from "@/components/DrawerPanel"
 
 import AdvisorDrawer from "./drawerContent/Advisor"
 import FleetDrawer from "./drawerContent/Fleet"
-import GuideDrawer from "./drawerContent/Guide"
 import InventoryDrawer from "./drawerContent/Inventory"
 import LogsDrawer from "./drawerContent/Logs"
 import ManageCrewDrawer from "./drawerContent/ManageCrew"
@@ -17,7 +16,6 @@ const ComponentMap: Record<DrawerId, React.FC> = {
   status: StatusDrawer,
   fleet: FleetDrawer,
   settings: SettingsDrawer,
-  guide: GuideDrawer,
   advisor: AdvisorDrawer,
   logs: LogsDrawer,
   manageCrew: ManageCrewDrawer,

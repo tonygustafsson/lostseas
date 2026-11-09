@@ -12,6 +12,7 @@ type LogType =
   | "crew"
   | "cards"
   | "beginning"
+  | "quest"
 
 /** A log book entry written by a game action */
 type GameLog = {
