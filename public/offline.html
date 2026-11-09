@@ -21,9 +21,12 @@
         font-family: Georgia, serif;
         text-align: center;
       }
-      img {
-        width: 96px;
-        height: 96px;
+      svg {
+        width: 128px;
+        height: 128px;
+      }
+      h1 {
+        color: #f6ead1;
       }
       button {
         padding: 8px 16px;
@@ -34,10 +37,130 @@
         font: inherit;
         cursor: pointer;
       }
+
+      /* The ship rocks and bobs while the waves roll past beneath it */
+      .ship {
+        transform-box: fill-box;
+        transform-origin: 50% 85%;
+        animation: ride 3s ease-in-out infinite;
+      }
+      .wave {
+        animation: roll 1.5s linear infinite;
+      }
+      .wave.back {
+        animation-duration: 2.25s;
+      }
+      @keyframes ride {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-4deg);
+        }
+        50% {
+          transform: translateY(1.5px) rotate(4deg);
+        }
+      }
+      @keyframes roll {
+        to {
+          transform: translateX(-10px);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .ship,
+        .wave {
+          animation: none;
+        }
+      }
     </style>
   </head>
   <body>
-    <img src="/android-chrome-192x192.png" alt="" />
+    <!-- Same artwork as LogoMark in components/Logo.tsx, inlined so it works without a network -->
+    <svg viewBox="0 0 64 64" aria-hidden="true">
+      <defs>
+        <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#fae8a2" />
+          <stop offset="50%" stop-color="#ddb049" />
+          <stop offset="100%" stop-color="#7e541b" />
+        </linearGradient>
+        <linearGradient id="sails" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="50%" stop-color="#f6ead1" />
+          <stop offset="100%" stop-color="#cab490" />
+        </linearGradient>
+        <linearGradient id="night" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#215d72" />
+          <stop offset="100%" stop-color="#152932" />
+        </linearGradient>
+        <clipPath id="porthole">
+          <circle cx="32" cy="32" r="28.5" />
+        </clipPath>
+      </defs>
+
+      <circle cx="32" cy="32" r="31" fill="url(#night)" />
+
+      <g clip-path="url(#porthole)">
+        <g transform="translate(10 9) scale(0.69)">
+          <path
+            class="wave back"
+            d="M-24 53Q-19 50 -14 53T-4 53T6 53T16 53T26 53T36 53T46 53T56 53T66 53T76 53T86 53"
+            fill="none"
+            stroke="#58b4c4"
+            stroke-width="2"
+            stroke-linecap="round"
+            opacity="0.4"
+          />
+
+          <g class="ship">
+            <g fill="url(#gold)">
+              <rect x="22" y="6" width="2" height="30" />
+              <rect x="42" y="12" width="2" height="24" />
+            </g>
+            <path d="M23 6 30 8 23 10Z" fill="#ff6467" />
+            <path
+              d="M11 35 3 28"
+              stroke="url(#gold)"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+            <g fill="url(#sails)">
+              <path
+                d="M14 9Q23 7 32 9Q30.5 20 32 31Q23 29 14 31Q15.5 20 14 9Z"
+              />
+              <path
+                d="M36 15Q43 13.5 50 15Q48.5 23 50 31Q43 29.5 36 31Q37.5 23 36 15Z"
+              />
+            </g>
+            <path
+              d="M4 36H45V30H57L55 40 50 48Q30 52 12 48Z"
+              fill="url(#gold)"
+            />
+            <g fill="#090b0c">
+              <rect x="48" y="32" width="2.5" height="3" />
+              <rect x="52" y="32" width="2.5" height="3" />
+              <circle cx="18" cy="41" r="1.5" />
+              <circle cx="30" cy="41" r="1.5" />
+            </g>
+          </g>
+
+          <path
+            class="wave"
+            d="M-24 58Q-19 55 -14 58T-4 58T6 58T16 58T26 58T36 58T46 58T56 58T66 58T76 58T86 58"
+            fill="none"
+            stroke="#58b4c4"
+            stroke-width="2.5"
+            stroke-linecap="round"
+          />
+        </g>
+      </g>
+
+      <circle
+        cx="32"
+        cy="32"
+        r="29.5"
+        fill="none"
+        stroke="url(#gold)"
+        stroke-width="2"
+      />
+    </svg>
+
     <h1>You are adrift</h1>
     <p>Lost Seas needs a connection to play. Reconnect to keep sailing.</p>
     <button onclick="location.reload()">Try again</button>

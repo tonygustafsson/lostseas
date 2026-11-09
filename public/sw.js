@@ -2,18 +2,14 @@
 // speeds up static assets and shows a friendly page when the network is down.
 // Never cache /api/* or HTML, game state lives on the server.
 
-const VERSION = "v1"
+const VERSION = "v2"
 const STATIC_CACHE = `static-${VERSION}`
 const OFFLINE_URL = "/offline.html"
 const STATIC_PATHS = [/^\/_next\/static\//, /^\/img\//]
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches
-      .open(STATIC_CACHE)
-      .then((cache) =>
-        cache.addAll([OFFLINE_URL, "/android-chrome-192x192.png"])
-      )
+    caches.open(STATIC_CACHE).then((cache) => cache.addAll([OFFLINE_URL]))
   )
   // Activation is triggered by the page, so it can prompt before reloading
 })
