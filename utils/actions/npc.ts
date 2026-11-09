@@ -3,7 +3,6 @@ import {
   TIRED_CHANCE,
   TIRED_LINES,
 } from "@/constants/dialogue"
-import { TOWNS } from "@/constants/locations"
 import { getNpcById, PLACEMENT_LOCATION } from "@/constants/npcs"
 import {
   MAX_ACTIVE_QUESTS,
@@ -11,6 +10,7 @@ import {
   QUEST_LINES,
 } from "@/constants/quests"
 import { getCargo } from "@/utils/cargo"
+import { getNationTowns } from "@/utils/location"
 import { generateQuest, targetExtras } from "@/utils/npc/generateQuest"
 import { findDialogue, pickDialogue } from "@/utils/npc/pickDialogue"
 import {
@@ -197,11 +197,8 @@ const progressQuest = (
       const ruledOut = [...(quest.ruledOut ?? []), npc.town]
 
       // Now and then they also know a town where the person is not
-      const hintTowns = (Object.keys(TOWNS) as Town[]).filter(
-        (town) =>
-          TOWNS[town].nation === quest.nation &&
-          town !== quest.hiddenTown &&
-          !ruledOut.includes(town)
+      const hintTowns = getNationTowns(quest.nation).filter(
+        (town) => town !== quest.hiddenTown && !ruledOut.includes(town)
       )
 
       if (hintTowns.length && randomInt(1, 2) === 1) {
@@ -234,19 +231,6 @@ export const talkTo = (
 
   const conversation = getConversation(player, npc)
   const quest = getQuestBusiness(player, npc, skipHandIn)
-
-  // An offer left open, eg by closing the dialog, comes back
-  if (conversation.questOffer) {
-    const offer = conversation.questOffer
-
-    return {
-      player,
-      data: {
-        npcId: npc.id,
-        line: { kind: "questOffer", text: offer.pitch, quest: offer },
-      },
-    }
-  }
 
   // Goods are only handed over when the player says so
   if (quest?.type === "procurement") {
@@ -283,6 +267,19 @@ export const talkTo = (
       data: {
         npcId: npc.id,
         line: progress.line,
+      },
+    }
+  }
+
+  // An offer left open, eg by closing the dialog, comes back once any quest business is settled
+  if (conversation.questOffer) {
+    const offer = conversation.questOffer
+
+    return {
+      player,
+      data: {
+        npcId: npc.id,
+        line: { kind: "questOffer", text: offer.pitch, quest: offer },
       },
     }
   }

@@ -31,6 +31,9 @@ export const useTownNpcTalk = (placement: NpcPlacement) => {
   const [reply, setReply] = useState<string | null>(null)
   const [goOnLabel, setGoOnLabel] = useState(GO_ON_LABELS[0])
 
+  // Saying "Not yet" keeps the goods out of the rest of this conversation
+  const [keepsGoods, setKeepsGoods] = useState(false)
+
   const town = player?.character.town
   const npc = town ? getNpcAt(town, placement) : undefined
   const conversation = npc
@@ -85,8 +88,12 @@ export const useTownNpcTalk = (placement: NpcPlacement) => {
     setOpen(false)
   }
 
-  // "Not yet" and "Go on" carry on with a normal chat instead of asking for goods
-  const handleChat = () => handleTalk(true)
+  const handleNotYet = () => {
+    setKeepsGoods(true)
+    handleTalk(true)
+  }
+
+  const handleGoOn = () => handleTalk(keepsGoods)
 
   const handleAnswer = async (answerIndex: number) => {
     if (!npc) {
@@ -133,9 +140,9 @@ export const useTownNpcTalk = (placement: NpcPlacement) => {
       onAccept={handleAccept}
       onDecline={handleDecline}
       onHandIn={handleHandIn}
-      onNotYet={handleChat}
+      onNotYet={handleNotYet}
       goOnLabel={goOnLabel}
-      onGoOn={handleChat}
+      onGoOn={handleGoOn}
       onClose={handleClose}
     />
   )
@@ -144,7 +151,10 @@ export const useTownNpcTalk = (placement: NpcPlacement) => {
     npc,
     hasQuestBusiness,
     isPending,
-    onTalk: () => handleTalk(),
+    onTalk: () => {
+      setKeepsGoods(false)
+      handleTalk()
+    },
     dialog,
   }
 }

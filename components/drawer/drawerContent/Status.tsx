@@ -34,6 +34,7 @@ import { getCharacterById } from "@/constants/characters"
 import { NATIONS } from "@/constants/locations"
 import { VENTURES } from "@/constants/ventures"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { useQuest } from "@/hooks/queries/useQuest"
 import { useGetStatistics } from "@/hooks/queries/useStatistics"
 import { convertDaysToTimeSpan, getCurrentDate } from "@/utils/date"
 import { formatGold } from "@/utils/number"
@@ -52,6 +53,7 @@ const scoreSeries: StatisticsSeries[] = [
 const StatusDrawer = () => {
   const { data: player } = useGetPlayer()
   const { data: stats = [] } = useGetStatistics(player?.id)
+  const { abandonQuest, isPending: isQuestPending } = useQuest()
 
   if (!player) {
     return null
@@ -71,6 +73,14 @@ const StatusDrawer = () => {
     (a, b) => a.acceptedDay - b.acceptedDay
   )
   const questsCompleted = character.questsCompleted ?? 0
+
+  const handleAbandon = async (questId: string) => {
+    try {
+      await abandonQuest({ questId })
+    } catch {
+      // useQuest already shows a toast
+    }
+  }
 
   return (
     <>
@@ -258,7 +268,12 @@ const StatusDrawer = () => {
           <div className="@container">
             <div className="grid grid-cols-1 gap-4 @md:grid-cols-2">
               {quests.map((quest) => (
-                <QuestCard key={quest.id} quest={quest} />
+                <QuestCard
+                  key={quest.id}
+                  quest={quest}
+                  onAbandon={handleAbandon}
+                  disabled={isQuestPending}
+                />
               ))}
 
               {questsCompleted > 0 && (

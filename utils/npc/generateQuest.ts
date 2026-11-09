@@ -14,6 +14,7 @@ import {
   QUEST_TYPE_WEIGHTS,
 } from "@/constants/quests"
 import type { RandomInt } from "@/utils/actions/types"
+import { getNationTowns } from "@/utils/location"
 import getDutchFemaleName from "@/utils/names/getDutchFemaleName"
 import getDutchMaleName from "@/utils/names/getDutchMaleName"
 import getDutchSurname from "@/utils/names/getDutchSurname"
@@ -224,9 +225,7 @@ export const generateQuest = (
 
   const nation = pickRandom(Object.keys(NAMES) as Nation[], randomInt)
   const hiddenTown = pickRandom(
-    (Object.keys(TOWNS) as Town[]).filter(
-      (town) => TOWNS[town].nation === nation && town !== giver.town
-    ),
+    getNationTowns(nation).filter((town) => town !== giver.town),
     randomInt
   )
   const names = NAMES[nation]

@@ -2,6 +2,7 @@ import { NATIONS, TOWNS } from "@/constants/locations"
 import { BARTER_GOODS } from "@/constants/merchandise"
 import type { RandomInt } from "@/utils/actions/types"
 import { getDateOfDay } from "@/utils/date"
+import { getNationTowns } from "@/utils/location"
 import { getRandomInt, pickRandom } from "@/utils/random"
 
 export const DIALOGUE_PLACEHOLDERS = [
@@ -47,7 +48,7 @@ const buildValues = (
   const enemy = NATIONS[townNation].warWith
 
   const townsOf = (nation: Nation) =>
-    towns.filter((name) => name !== town && TOWNS[name].nation === nation)
+    getNationTowns(nation).filter((name) => name !== town)
 
   const values: Record<string, () => string> = {
     name: () => player.character.name,

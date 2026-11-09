@@ -155,7 +155,7 @@ const TalkDialog = ({
           >
             {line.answers.map((answer, index) => (
               <Button
-                key={answer}
+                key={`answer-${index}`}
                 variant="secondary"
                 disabled={isPending}
                 onClick={() => onAnswer(index)}

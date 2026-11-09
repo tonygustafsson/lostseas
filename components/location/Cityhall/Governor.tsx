@@ -1,5 +1,4 @@
 import { Award, Handshake } from "lucide-react"
-import { useState } from "react"
 
 import { QuestBadge, TalkButton } from "@/components/npc/NpcCard"
 import NpcPortraitCard from "@/components/npc/NpcPortraitCard"
@@ -95,9 +94,14 @@ const getGreeting = ({
 
 const Governor = () => {
   const { data: player } = useGetPlayer()
-  const { acceptNewTitle, changeCitizenship } = useCityhall()
+  const {
+    acceptNewTitle,
+    isAcceptingNewTitle,
+    changeCitizenship,
+    isChangingCitizenship,
+  } = useCityhall()
 
-  const [hasClaimed, setHasClaimed] = useState(false)
+  const isClaiming = isAcceptingNewTitle || isChangingCitizenship
 
   const { npc, hasQuestBusiness, isPending, onTalk, dialog } =
     useTownNpcTalk("governor")
@@ -133,16 +137,6 @@ const Governor = () => {
     enemyWins,
   })
 
-  const handleAcceptNewTitle = () => {
-    setHasClaimed(true)
-    acceptNewTitle(undefined, { onError: () => setHasClaimed(false) })
-  }
-
-  const handleChangeCitizenship = () => {
-    setHasClaimed(true)
-    changeCitizenship(undefined, { onError: () => setHasClaimed(false) })
-  }
-
   const rewardWaiting = promotionAvailable || citizenshipChangeAvailable
 
   const greetingTitle = `${rewardWaiting ? "Thank you" : "Welcome"} ${player.character.title.toLowerCase()} ${
@@ -158,22 +152,22 @@ const Governor = () => {
         actions={
           <>
             {/* Hidden while claiming, the Talk button stays for quest business */}
-            {promotionAvailable && !hasClaimed && (
+            {promotionAvailable && !isClaiming && (
               <Button
                 size="lg"
                 className="w-full @xl:w-auto"
-                onClick={handleAcceptNewTitle}
+                onClick={() => acceptNewTitle()}
               >
                 <Award />
                 Accept new title
               </Button>
             )}
 
-            {citizenshipChangeAvailable && !hasClaimed && (
+            {citizenshipChangeAvailable && !isClaiming && (
               <Button
                 size="lg"
                 className="w-full @xl:w-auto"
-                onClick={handleChangeCitizenship}
+                onClick={() => changeCitizenship()}
               >
                 <Handshake />
                 Change citizenship
@@ -182,7 +176,7 @@ const Governor = () => {
 
             <div className="flex w-full items-center gap-4 @xl:w-auto">
               <TalkButton
-                variant={rewardWaiting && !hasClaimed ? "secondary" : "default"}
+                variant={rewardWaiting && !isClaiming ? "secondary" : "default"}
                 disabled={isPending}
                 onTalk={onTalk}
               />

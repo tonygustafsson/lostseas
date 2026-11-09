@@ -9,13 +9,12 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { getNpcById, getNpcPlace } from "@/constants/npcs"
-import { useQuest } from "@/hooks/queries/useQuest"
 import { formatReward, getQuestObjective } from "@/utils/npc/questText"
 
 type Props = {
   quest: Quest
-  /** Replaces the default confirmation and abandon request, for stories and tests */
-  onAbandon?: () => void
+  onAbandon: (questId: string) => void
+  disabled?: boolean
 }
 
 const QUEST_ICONS: Record<QuestType, ReactNode> = {
@@ -25,22 +24,16 @@ const QUEST_ICONS: Record<QuestType, ReactNode> = {
   findPerson: <Search />,
 }
 
-const QuestCard = ({ quest, onAbandon }: Props) => {
-  const { abandonQuest, isPending } = useQuest()
+const QuestCard = ({ quest, onAbandon, disabled }: Props) => {
   const { setModal, removeModal } = useModal()
 
   const giver = getNpcById(quest.giverId)
   const { reward } = quest
   const ruledOut = quest.type === "findPerson" ? (quest.ruledOut ?? []) : []
 
-  const handleAbandon = async () => {
+  const handleAbandon = () => {
     removeModal("abandonQuest")
-
-    try {
-      await abandonQuest({ questId: quest.id })
-    } catch {
-      // The hook already shows a toast
-    }
+    onAbandon(quest.id)
   }
 
   const openAbandonModal = () => {
@@ -110,8 +103,8 @@ const QuestCard = ({ quest, onAbandon }: Props) => {
         <Button
           variant="secondary"
           size="xs"
-          onClick={onAbandon ?? openAbandonModal}
-          disabled={isPending}
+          onClick={openAbandonModal}
+          disabled={disabled}
         >
           Abandon
         </Button>

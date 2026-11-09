@@ -17,7 +17,7 @@ import {
 const meta = {
   title: "game/Status/QuestCard",
   component: QuestCard,
-  args: { quest: deliveryQuest, onAbandon: fn() },
+  args: { quest: deliveryQuest, onAbandon: fn(), disabled: false },
   decorators: [
     (Story) => (
       <PlayerPreview data={player}>
@@ -48,3 +48,5 @@ export const FindPersonFound: Story = {
 }
 
 export const ItemReward: Story = { args: { quest: itemRewardQuest } }
+
+export const Disabled: Story = { args: { disabled: true } }
