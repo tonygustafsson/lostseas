@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.lostseas.twa",
+      "sha256_cert_fingerprints": [
+        "04:28:35:70:E8:0C:63:79:98:89:A2:DA:CB:88:C3:4E:D6:98:B2:95:C7:EA:E0:A1:21:C2:AB:02:6B:5A:EE:80"
+      ]
+    }
+  }
+]
