@@ -9,10 +9,28 @@ import { almendra, crimsonText } from "@/fonts"
 import { cn } from "@/lib/utils"
 import { getDehydratedPlayerState } from "@/utils/app/getDehydratedPlayerState"
 
+const description =
+  "Sail, trade and fight your way across the Lost Seas. A free pirate trading game in your browser: trade goods between ports, recruit a crew and battle rival ships in the 17th-century Caribbean."
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://lostseas.vercel.app"),
   title: {
     default: "Lost Seas",
     template: "%s - Lost Seas",
+  },
+  description,
+  applicationName: "Lost Seas",
+  openGraph: {
+    type: "website",
+    siteName: "Lost Seas",
+    title: "Lost Seas",
+    description,
+    locale: "en_GB",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Lost Seas",
+    description,
   },
   appleWebApp: {
     capable: true,
