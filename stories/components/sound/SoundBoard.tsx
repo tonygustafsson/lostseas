@@ -5,9 +5,9 @@ import { SOUND_EFFECTS, type SoundEffect } from "@/app/stores/sound"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
+  AMBIENCE_SOUNDS,
   getSoundEffectFiles,
   getSoundEffectSrcs,
-  LOCATION_AMBIENCE_SOUNDS,
   SEA_SONGS,
   TOWN_SONGS,
 } from "@/utils/sound"
@@ -166,7 +166,7 @@ const SoundBoard = () => {
         </CardHeader>
 
         <CardContent className="flex flex-col gap-4">
-          {Object.entries(LOCATION_AMBIENCE_SOUNDS).map(([location, files]) => (
+          {Object.entries(AMBIENCE_SOUNDS).map(([location, files]) => (
             <ChannelRow
               key={location}
               label={location}

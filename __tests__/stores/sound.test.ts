@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-vi.mock("cookies-next", () => ({ setCookie: vi.fn() }))
+vi.mock("cookies-next", () => ({ getCookie: vi.fn(), setCookie: vi.fn() }))
 
-import { setCookie } from "cookies-next"
+import { getCookie, setCookie } from "cookies-next"
 
 import useSound from "@/app/stores/sound"
 import {
@@ -76,5 +76,18 @@ describe("sound store", () => {
 
     useSound.getState().setChangingTrack(false)
     expect(useSound.getState().changingTrack).toBe(false)
+  })
+
+  it("loads settings from cookies, turning on what was never saved", () => {
+    vi.mocked(getCookie).mockImplementation((name) =>
+      name === MUSIC_STATE_COOKIE_NAME ? "false" : undefined
+    )
+
+    useSound.getState().loadSettings()
+
+    const state = useSound.getState()
+    expect(state.musicOn).toBe(false)
+    expect(state.ambienceOn).toBe(true)
+    expect(state.soundEffectsOn).toBe(true)
   })
 })

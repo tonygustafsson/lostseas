@@ -1,14 +1,8 @@
-import { getCookie } from "cookies-next/client"
 import { AiOutlineQrcode } from "react-icons/ai"
 
 import useDrawer from "@/app/stores/drawer"
 import useSound from "@/app/stores/sound"
 import { Button } from "@/components/ui/button"
-import {
-  AMBIENCE_STATE_COOKIE_NAME,
-  MUSIC_STATE_COOKIE_NAME,
-  SOUND_EFFECTS_STATE_COOKIE_NAME,
-} from "@/constants/system"
 
 import AddPasskeyButton from "../settings/AddPasskeyButton"
 import UserIdDisplay from "../settings/UserIdDisplay"
@@ -19,13 +13,11 @@ type Props = {
 }
 
 const WelcomeNewUser = ({ player, onClose }: Props) => {
-  const { setMusic, setAmbience, setSoundEffects } = useSound()
+  const { loadSettings } = useSound()
   const { open: openDrawer } = useDrawer()
 
   const startExploring = () => {
-    setMusic(getCookie(MUSIC_STATE_COOKIE_NAME) === "true")
-    setAmbience(getCookie(AMBIENCE_STATE_COOKIE_NAME) === "true")
-    setSoundEffects(getCookie(SOUND_EFFECTS_STATE_COOKIE_NAME) === "true")
+    loadSettings()
 
     onClose()
   }

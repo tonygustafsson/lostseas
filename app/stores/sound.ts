@@ -1,4 +1,4 @@
-import { setCookie } from "cookies-next"
+import { getCookie, setCookie } from "cookies-next"
 import { create } from "zustand"
 
 import {
@@ -46,7 +46,12 @@ export interface SoundState {
   setSoundEffects: (soundEffectsOn: boolean) => void
   nextTrack: () => void
   setChangingTrack: (changingTrack: boolean) => void
+  /** Reads the saved settings from cookies */
+  loadSettings: () => void
 }
+
+// A missing cookie means the player never changed it, so sound starts on
+const isOn = (cookieName: string) => getCookie(cookieName) !== "false"
 
 const useSound = create<SoundState>((set) => ({
   musicOn: false,
@@ -78,6 +83,13 @@ const useSound = create<SoundState>((set) => ({
     set((state) => ({ nextTrackRequest: state.nextTrackRequest + 1 })),
 
   setChangingTrack: (changingTrack: boolean) => set({ changingTrack }),
+
+  loadSettings: () =>
+    set({
+      musicOn: isOn(MUSIC_STATE_COOKIE_NAME),
+      ambienceOn: isOn(AMBIENCE_STATE_COOKIE_NAME),
+      soundEffectsOn: isOn(SOUND_EFFECTS_STATE_COOKIE_NAME),
+    }),
 }))
 
 export default useSound

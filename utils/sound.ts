@@ -10,30 +10,29 @@ export const SEA_SONGS = Array.from(
   (_, i) => `/music/sea/song${i + 1}.opus`
 )
 
-export const LOCATION_AMBIENCE_SOUNDS: Partial<
-  Record<Character["location"], string[]>
-> = {
-  Harbor: Array.from(
-    { length: 6 },
-    (_, i) => `/ambience/harbor/harbor${i + 1}.opus`
-  ),
-  Market: Array.from(
-    { length: 13 },
-    (_, i) => `/ambience/market/market${i + 1}.opus`
-  ),
-  Tavern: Array.from(
-    { length: 4 },
-    (_, i) => `/ambience/tavern/tavern${i + 1}.opus`
-  ),
-  Shipyard: Array.from(
-    { length: 7 },
-    (_, i) => `/ambience/shipyard/shipyard${i + 1}.opus`
-  ),
-  Sea: Array.from({ length: 9 }, (_, i) => `/ambience/sea/sea${i + 1}.opus`),
-}
+export const AMBIENCE_SOUNDS: Partial<Record<Character["location"], string[]>> =
+  {
+    Harbor: Array.from(
+      { length: 6 },
+      (_, i) => `/ambience/harbor/harbor${i + 1}.opus`
+    ),
+    Market: Array.from(
+      { length: 13 },
+      (_, i) => `/ambience/market/market${i + 1}.opus`
+    ),
+    Tavern: Array.from(
+      { length: 4 },
+      (_, i) => `/ambience/tavern/tavern${i + 1}.opus`
+    ),
+    Shipyard: Array.from(
+      { length: 7 },
+      (_, i) => `/ambience/shipyard/shipyard${i + 1}.opus`
+    ),
+    Sea: Array.from({ length: 9 }, (_, i) => `/ambience/sea/sea${i + 1}.opus`),
+  }
 
-export const getLocationAmbienceSounds = (location?: Character["location"]) =>
-  location ? LOCATION_AMBIENCE_SOUNDS[location] : undefined
+export const getAmbienceSounds = (location?: Character["location"]) =>
+  location ? AMBIENCE_SOUNDS[location] : undefined
 
 // Effects with several recordings, one is picked at random each time
 export const SOUND_EFFECT_VARIANTS: Partial<Record<SoundEffect, number>> = {
