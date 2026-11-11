@@ -276,6 +276,15 @@ const StartPageScreen = ({ initialCharacter, leaderboard }: Props) => {
 
           <footer className="border-border mt-12 border-t pt-6">
             <SocialMedia className="my-0 text-white opacity-75" />
+
+            <p className="mt-4 text-center text-sm">
+              <Link
+                href="/privacy"
+                className="text-muted-foreground hover:text-parchment transition-colors"
+              >
+                Privacy policy
+              </Link>
+            </p>
           </footer>
         </section>
       </div>
