@@ -9,7 +9,7 @@
 - When a task is complete, run linting and formatting.
 - Make the smallest change that meets the request, but suggest optimizations and abstractions if you see it would benefit the project.
 - Don't forget to create a Storybook story for new features, and see that all properties can be tested in the story.
-- This project doesn't have any active users so feel free to change the database queries and add data, see it as required and assumed it will be there instead of handling fallbacks, errors or batch fixing the database.
+- The game is live and players must be able to continue their saved games. Keep changes to stored data backward compatible. Prefer migrating existing data in the database (Firebase). If that isn't practical, add a fallback when reading old data, like the defaults in `utils/db/getPlayer.ts`. Ask before deleting or renaming stored fields.
 - Never commit, stage, stash or push anything in GIT, that will always be handled by a human.
 - Avoid single lines without brackets, such as if (true) return, go for if (true) { return }.
 
