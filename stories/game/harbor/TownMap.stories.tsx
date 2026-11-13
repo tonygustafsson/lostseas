@@ -17,11 +17,17 @@ type Args = {
   town: Town
   weather: WeatherType
   onMove: (location: TownLocation) => void
+  onPreview: (location: TownLocation) => void
 }
 
 const meta = {
   title: "game/Harbor/TownMap",
-  args: { town: "Port Royale", weather: "foggy", onMove: fn() },
+  args: {
+    town: "Port Royale",
+    weather: "foggy",
+    onMove: fn(),
+    onPreview: fn(),
+  },
   argTypes: {
     town: {
       control: "select",
@@ -32,7 +38,7 @@ const meta = {
       options: WEATHER,
     },
   },
-  render: ({ town, weather, onMove }) => (
+  render: ({ town, weather, onMove, onPreview }) => (
     <div className="mx-auto max-w-6xl">
       <TownMap
         key={town}
@@ -40,6 +46,7 @@ const meta = {
         alt={`Map of ${town}`}
         weather={weather}
         onMove={onMove}
+        onPreview={onPreview}
       />
     </div>
   ),

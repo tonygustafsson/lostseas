@@ -1,7 +1,9 @@
 import { useEffect } from "react"
 
+import { preloadTownMap } from "@/components/game-ui/LocationScene/preloadTownMap"
 import SeaMapCanvas from "@/components/Map/SeaMapCanvas"
 import { SEA_TRAVEL_SPEED } from "@/constants/sea"
+import { getTownMap } from "@/constants/townMaps"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useSea } from "@/hooks/queries/useSea"
 
@@ -33,6 +35,13 @@ const Sea = () => {
   }, [continueJourney, isPaused, journeyDay])
 
   if (!player || !journey) return null
+
+  // The voyage gives the destination's harbour plenty of time to load
+  const destinationMap = getTownMap(journey.destination)
+
+  if (destinationMap) {
+    preloadTownMap(destinationMap)
+  }
 
   return (
     <>

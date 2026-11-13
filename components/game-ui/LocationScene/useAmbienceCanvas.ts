@@ -71,6 +71,27 @@ export const useAmbienceCanvas = (
 
     let isCancelled = false
     let latestLoad = 0
+    const maskLoads = new Map<string, Promise<HTMLImageElement>>()
+
+    const getMaskSources = () => {
+      const isDesktop = window.matchMedia(TOWN_MAP_DESKTOP_MEDIA).matches
+
+      return (!isDesktop && mobileMasksKey ? mobileMasksKey : masksKey).split(
+        SEPARATOR
+      )
+    }
+
+    const loadMask = (src: string) => {
+      if (!maskLoads.has(src)) {
+        maskLoads.set(src, loadImage(src))
+      }
+
+      return maskLoads.get(src)!
+    }
+
+    // Masks load alongside the picture instead of after it, so the weather
+    // shows as soon as the picture does
+    getMaskSources().forEach((src) => loadMask(src).catch(() => undefined))
 
     // Runs again when the picture switches between mobile and desktop. Only
     // the latest load is used, an earlier one finishing late would put the
@@ -79,14 +100,13 @@ export const useAmbienceCanvas = (
       if (!image.complete || !image.naturalWidth) return
 
       const load = ++latestLoad
-      const isDesktop = window.matchMedia(TOWN_MAP_DESKTOP_MEDIA).matches
-      const sources = (
-        !isDesktop && mobileMasksKey ? mobileMasksKey : masksKey
-      ).split(SEPARATOR)
 
       // The shown image's naturalWidth is divided by the srcset density, a
       // fresh copy of the same file has its real size
-      Promise.all([image.currentSrc, ...sources].map(loadImage))
+      Promise.all([
+        loadImage(image.currentSrc),
+        ...getMaskSources().map(loadMask),
+      ])
         .then(([picture, ...textures]) => {
           if (!isCancelled && load === latestLoad) {
             renderer.setTextures([picture, ...textures])

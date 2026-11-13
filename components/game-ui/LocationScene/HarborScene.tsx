@@ -13,6 +13,7 @@ import { getHarborArrivedQuip, getHarborTownQuip } from "@/utils/getPirateQuip"
 import { getTownsNationality } from "@/utils/location"
 import { playSoundEffect } from "@/utils/sound"
 
+import { preloadBuildingScene } from "./preloadBuildingScene"
 import TownMap from "./TownMap"
 
 type Props = {
@@ -45,6 +46,7 @@ const HarborScene = ({ town }: Props) => {
             alt={`Map of ${town}`}
             weather={player?.character.weather}
             onMove={handleMove}
+            onPreview={(location) => preloadBuildingScene(town, location)}
           />
         </div>
       )}

@@ -1,4 +1,3 @@
-import { getImageProps } from "next/image"
 import { CSSProperties, Ref, useRef, useState } from "react"
 
 import {
@@ -8,6 +7,7 @@ import {
 } from "@/constants/townMaps"
 import { cn } from "@/lib/utils"
 
+import { getTownMapImageProps } from "./preloadTownMap"
 import { createTownMapRenderer } from "./townMapShader"
 import { useAmbienceCanvas } from "./useAmbienceCanvas"
 import { getWeatherAmbience } from "./weatherAmbience"
@@ -21,34 +21,15 @@ type PictureProps = {
 }
 
 const TownMapPicture = ({ map, alt, className, style, ref }: PictureProps) => {
-  const { desktop, mobile } = map
-
-  const {
-    props: { srcSet: desktopSrcSet },
-  } = getImageProps({
-    src: desktop.src,
-    width: desktop.width,
-    height: desktop.height,
-    sizes: "100vw",
-    alt,
-  })
-
-  const { props: mobileProps } = getImageProps({
-    src: mobile.src,
-    width: mobile.width,
-    height: mobile.height,
-    sizes: "100vw",
-    loading: "eager",
-    fetchPriority: "high",
-    alt,
-  })
+  const { desktop } = map
+  const { desktopProps, mobileProps } = getTownMapImageProps(map, alt)
 
   return (
     <picture>
       <source
         media={TOWN_MAP_DESKTOP_MEDIA}
-        srcSet={desktopSrcSet}
-        sizes="100vw"
+        srcSet={desktopProps.srcSet}
+        sizes={desktopProps.sizes}
         width={desktop.width}
         height={desktop.height}
       />
@@ -70,9 +51,11 @@ type Props = {
   alt: string
   weather?: WeatherType
   onMove: (location: TownLocation) => void
+  // Called when the player is about to pick a building, to load it early
+  onPreview?: (location: TownLocation) => void
 }
 
-const TownMap = ({ map, alt, weather, onMove }: Props) => {
+const TownMap = ({ map, alt, weather, onMove, onPreview }: Props) => {
   const [highlighted, setHighlighted] = useState<TownMapBuilding | null>(null)
   const [isHovering, setIsHovering] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null)
@@ -94,6 +77,7 @@ const TownMap = ({ map, alt, weather, onMove }: Props) => {
   const handleHighlight = (building: TownMapBuilding) => {
     setHighlighted(building)
     setIsHovering(true)
+    onPreview?.(building.location)
   }
 
   const renderButtons = (buildings: TownMapBuilding[], className: string) =>
@@ -115,6 +99,7 @@ const TownMap = ({ map, alt, weather, onMove }: Props) => {
         onMouseEnter={() => handleHighlight(building)}
         onFocus={() => handleHighlight(building)}
         onBlur={() => setIsHovering(false)}
+        onPointerDown={() => onPreview?.(building.location)}
         onClick={() => onMove(building.location)}
       />
     ))
