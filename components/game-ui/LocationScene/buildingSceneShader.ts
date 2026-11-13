@@ -1,7 +1,8 @@
 // Brings a building interior to life with WebGL, in a single pass over one
 // canvas: rippling water and drifting clouds seen through windows and arches,
 // dust floating in the light around them, and flickering candles, lanterns
-// and fires.
+// and fires. The weather shows in the sky outside, and a rainy day makes the
+// room a little darker.
 
 import { createAmbienceRenderer, SHADER_COMMON } from "./ambienceRenderer"
 
@@ -15,10 +16,20 @@ uniform sampler2D u_sky;
 uniform sampler2D u_light;
 uniform vec2 u_imageSize;
 
+// The weather, see weatherAmbience.ts
+uniform float u_cloudCover;
+uniform float u_cloudShade;
+uniform float u_rain;
+uniform float u_fog;
+uniform float u_sun;
+uniform float u_gloom;
+
 // Water ripple strength in CSS pixels, the sea is far away in most interiors
 const float WATER_AMPLITUDE = 1.25;
 const vec3 GLOW_COLOR = vec3(1.0, 0.72, 0.36);
 const vec3 DUST_COLOR = vec3(1.0, 0.96, 0.86);
+const vec3 FOG_COLOR = vec3(0.86, 0.88, 0.9);
+const vec3 GLOOM_COLOR = vec3(0.04, 0.05, 0.08);
 
 // Between -1 and 1. Lights a little apart get their own rhythm: a slow
 // breathing, a quick flutter and now and then a short dip.
@@ -70,12 +81,33 @@ void main() {
     color = water(u_water, uv, shown, waterMask, WATER_AMPLITUDE);
   }
 
+  // Rain falls in the sky and fog hangs over the sky and the sea, neither comes
+  // inside
+  float outside = max(skyMask, waterMask);
+
   if (skyMask > 0.01) {
-    color = clouds(color, p, shown.x, skyMask);
+    color = clouds(color, p, shown.x, skyMask, u_cloudCover, u_cloudShade);
   }
 
-  // Less dust over the sky itself, it floats inside
-  float dustZone = light.b * (1.0 - 0.6 * skyMask);
+  if (outside > 0.01 && u_fog > 0.0) {
+    float mist = fbm(p / shown.x * vec2(4.0, 8.0) + vec2(-u_time * 0.04, 0.0));
+    color = over(color, FOG_COLOR, min(0.6 + 0.4 * mist, 0.95) * u_fog * outside);
+  }
+
+  if (skyMask > 0.01 && u_rain > 0.0) {
+    color = rain(color, p, vec2(6.0, 50.0), 2.4, 0.0, u_rain * skyMask);
+    color = rain(color, p, vec2(9.0, 80.0), 1.8, 41.0, u_rain * skyMask);
+  }
+
+  // Grey skies leave the room a little gloomier and rain more so, the lights
+  // below still glow
+  if (u_gloom > 0.0) {
+    color = over(color, GLOOM_COLOR, u_gloom * (1.0 - skyMask));
+  }
+
+  // Less dust over the sky itself, it floats inside. It only shows in
+  // sunlight.
+  float dustZone = light.b * (1.0 - 0.6 * skyMask) * u_sun;
 
   if (dustZone > 0.01) {
     color = dust(color, p, 14.0, 0.08, 31.0, dustZone);
@@ -101,6 +133,7 @@ void main() {
 
 const TEXTURES = ["u_image", "u_water", "u_sky", "u_light"] as const
 
-// Textures in this order: image, water, sky, light
+// Textures in this order: image, water, sky, light. Uniforms from
+// getWeatherAmbience.
 export const createBuildingSceneRenderer = (canvas: HTMLCanvasElement) =>
   createAmbienceRenderer(canvas, FRAGMENT_SHADER, TEXTURES)

@@ -24,5 +24,10 @@ export const getPlayer = async (playerId: Player["id"] | undefined) => {
   player.id = playerId
   player.ships = sortShipsByDate<Ship>(player.ships) ?? {}
 
+  // Players saved before weather was stored start out in sunshine
+  if (player.character) {
+    player.character.weather ??= "sunny"
+  }
+
   return player
 }

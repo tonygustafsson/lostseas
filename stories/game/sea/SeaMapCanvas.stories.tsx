@@ -5,11 +5,18 @@ import { fn } from "storybook/test"
 import DestinationConfirm from "@/components/Map/DestinationConfirm"
 import SeaMapCanvas from "@/components/Map/SeaMapCanvas"
 import { TOWNS } from "@/constants/locations"
-import { getSuppliesDays } from "@/utils/journey"
+import { getJourneyLength, getSuppliesDays } from "@/utils/journey"
 
 import { player } from "../../fixtures"
 
 const towns = Object.keys(TOWNS)
+const weather: WeatherType[] = [
+  "sunny",
+  "partlySunny",
+  "cloudy",
+  "rainy",
+  "foggy",
+]
 
 // Mirrors the map modal: picking a town opens the confirm card on top
 const MapWithConfirm = ({
@@ -22,6 +29,7 @@ const MapWithConfirm = ({
   return (
     <div className="relative">
       <SeaMapCanvas
+        weather="partlySunny"
         currentTown={player.character.town}
         selectedTown={destination}
         suppliesDays={getSuppliesDays(player).days}
@@ -32,6 +40,7 @@ const MapWithConfirm = ({
         <DestinationConfirm
           key={destination}
           player={player}
+          origin={player.character.town!}
           destination={destination}
           isPending={false}
           onConfirm={fn()}
@@ -45,8 +54,9 @@ const MapWithConfirm = ({
 const meta = {
   title: "game/Sea/SeaMapCanvas",
   component: SeaMapCanvas,
-  args: { isPaused: false },
+  args: { isPaused: false, weather: "partlySunny" },
   argTypes: {
+    weather: { control: "radio", options: weather },
     currentTown: { control: "select", options: towns },
     selectedTown: { control: "select", options: towns },
     suppliesDays: { control: { type: "number", min: 0 } },
@@ -87,7 +97,7 @@ export const AtSea: StoryObj<AtSeaArgs> = {
     journey: { table: { disable: true } },
   },
   render: ({ origin, destination, day, ...args }) => {
-    const totalDays = TOWNS[origin].map.distanceTo[destination] ?? 1
+    const totalDays = getJourneyLength(origin, destination)
 
     return (
       <SeaMapCanvas
@@ -101,6 +111,16 @@ export const AtSea: StoryObj<AtSeaArgs> = {
       />
     )
   },
+}
+
+export const Rainy: StoryObj<AtSeaArgs> = {
+  ...AtSea,
+  args: { ...AtSea.args, weather: "rainy" },
+}
+
+export const Foggy: StoryObj<AtSeaArgs> = {
+  ...AtSea,
+  args: { ...AtSea.args, weather: "foggy" },
 }
 
 export const LimitedSupplies: Story = {

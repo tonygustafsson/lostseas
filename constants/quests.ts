@@ -8,7 +8,7 @@ export const QUEST_TYPE_WEIGHTS: Record<
 }
 
 export const QUEST_REWARDS = {
-  goldPerDay: 150,
+  goldPerDay: 75,
   baseGold: 200,
   /** Procurement pays the shop price of the goods times this */
   procurementPremium: 1.5,

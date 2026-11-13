@@ -15,11 +15,20 @@ const LOCATIONS: TownLocation[] = [
   "Tavern",
 ]
 
+const WEATHER: WeatherType[] = [
+  "sunny",
+  "partlySunny",
+  "cloudy",
+  "rainy",
+  "foggy",
+]
+
 const meta = {
   title: "game/Town/BuildingScene",
   component: BuildingScene,
-  args: { town: "Tortuga", location: "Tavern" },
+  args: { town: "Tortuga", location: "Tavern", weather: "partlySunny" },
   argTypes: {
+    weather: { control: "radio", options: WEATHER },
     town: {
       control: "select",
       options: Object.keys(TOWNS).sort(),

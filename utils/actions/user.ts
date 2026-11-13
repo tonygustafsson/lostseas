@@ -35,6 +35,7 @@ export const createNewPlayer = (
     location: LOCATIONS.harbor,
     gold: STARTING_GOLD,
     day: 1,
+    weather: "sunny",
   },
   inventory: {
     food: 20,

@@ -1,4 +1,4 @@
-import type { Point } from "./seaRoutes"
+import type { Point } from "@/utils/seaRoutes"
 
 export const SHIP_SPRITE = "/img/map/ship-sprite.png"
 export const SHIP_SPRITE_WIDTH = 1792

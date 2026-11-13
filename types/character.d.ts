@@ -5,6 +5,8 @@ type Journey = {
   totalDays: number
 }
 
+type WeatherType = "rainy" | "foggy" | "partlySunny" | "cloudy" | "sunny"
+
 type Character = {
   characterId: string
   name: string
@@ -17,6 +19,8 @@ type Character = {
   account?: number
   loan?: number
   day: number
+  /** Changes with every day at sea and stays the same in port. */
+  weather: WeatherType
   battles?: Record<Nation | "Pirate", { won?: number; lost?: number }>
   /** Highest title a reward has been paid for. Missing on older players, then the current title is used. */
   highestRewardedTitle?: Title

@@ -5,6 +5,7 @@ import Image from "next/image"
 import Flag from "@/components/icons/Flag"
 import { TOWNS } from "@/constants/locations"
 import { cn } from "@/lib/utils"
+import { getJourneyLength } from "@/utils/journey"
 
 import {
   MAP_ZOOM,
@@ -60,9 +61,8 @@ const SeaMapTowns = ({
     }
     const isCurrentTown = town === currentTown
     const canSelectTown = canSelectTowns && !isCurrentTown
-    const distance = currentTown
-      ? TOWNS[currentTown].map.distanceTo[town] || 0
-      : 0
+    const distance =
+      currentTown && !isCurrentTown ? getJourneyLength(currentTown, town) : 0
     const isOutOfReach = distance > suppliesDays
 
     return (

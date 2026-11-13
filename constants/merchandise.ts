@@ -23,7 +23,7 @@ export const MERCHANDISE: Record<
     singleUnit: "crate",
     unit: "crates",
     description:
-      "Salt pork, hard tack and the odd weevil. Every 10 crew eat a crate a day, and no captain leaves port without enough for the whole voyage.",
+      "Salt pork, hard tack and the odd weevil. A bigger crew eats more, and no captain leaves port without enough for the whole voyage.",
     availableAt: "shop",
     isNecessity: true,
   },
@@ -33,7 +33,7 @@ export const MERCHANDISE: Record<
     singleUnit: "barrel",
     unit: "barrels",
     description:
-      "Fresh water in oak barrels, worth more than gold when the wind dies. Every 5 crew drink a barrel a day.",
+      "Fresh water in oak barrels, worth more than gold when the wind dies, and the crew drinks it every day.",
     availableAt: "shop",
     isNecessity: true,
   },

@@ -13,7 +13,7 @@ const meta = {
     target: 40,
     max: 196,
     limitedBy: "gold",
-    dailyUse: 4,
+    crewMembers: 80,
     onChange: fn(),
   },
   render: function Render(args) {
@@ -49,7 +49,7 @@ export const NothingOwned: Story = {
     owned: 0,
     target: 0,
     max: 71,
-    dailyUse: undefined,
+    crewMembers: undefined,
   },
 }
 

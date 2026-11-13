@@ -26,7 +26,7 @@ import { createNewPlayer, resetGame } from "@/utils/actions/user"
 import { getCargo, getLootPreset } from "@/utils/cargo"
 import { getMannedCannons } from "@/utils/crew"
 import { getAdvisorWarnings } from "@/utils/getAdvisorWarnings"
-import { getJourneySupplies } from "@/utils/journey"
+import { getJourneyLength, getJourneySupplies } from "@/utils/journey"
 import { getRandomTown } from "@/utils/location"
 import { getNetWorth, getScore } from "@/utils/score"
 import { createNewShip } from "@/utils/ship"
@@ -60,8 +60,6 @@ const owned = (game: Game, item: keyof Inventory) =>
   game.player.inventory?.[item] ?? 0
 
 const freeCargo = (game: Game) => getCargo(game.player).free
-
-const distance = (from: Town, to: Town) => TOWNS[from].map.distanceTo[to]
 
 const goTo = (game: Game, location: Character["location"]) => {
   if (game.player.character.location !== location) {
@@ -606,7 +604,8 @@ const sellBarterGoods = (game: Game) => {
 
 /** Food and water for the voyage, borrowing when short. */
 const buySupplies = (game: Game, destination: Town) => {
-  const days = distance(game.player.character.town!, destination) + SPARE_DAYS
+  const days =
+    getJourneyLength(game.player.character.town!, destination) + SPARE_DAYS
   const needed = getJourneySupplies(game.player, days)
   const food = Math.max(needed.food - owned(game, "food"), 0)
   const water = Math.max(needed.water - owned(game, "water"), 0)
@@ -689,7 +688,8 @@ const runQuestErrands = (game: Game) => {
 /** Promotions first, then quest business, otherwise somewhere near. */
 const chooseDestination = (game: Game): Town => {
   const here = game.player.character.town!
-  const byDistance = (a: Town, b: Town) => distance(here, a) - distance(here, b)
+  const byDistance = (a: Town, b: Town) =>
+    getJourneyLength(here, a) - getJourneyLength(here, b)
   const homeTowns = TOWN_NAMES.filter(
     (town) =>
       TOWNS[town].nation === game.player.character.nationality && town !== here
@@ -730,7 +730,10 @@ const chooseDestination = (game: Game): Town => {
   }
 
   const otherTowns = TOWN_NAMES.filter((town) => town !== here)
-  const nearTowns = otherTowns.filter((town) => distance(here, town) <= 6)
+  // The closer half of the map, so it holds whatever the voyage lengths are
+  const nearTowns = [...otherTowns]
+    .sort((a, b) => getJourneyLength(here, a) - getJourneyLength(here, b))
+    .slice(0, Math.ceil(otherTowns.length / 2))
 
   return game.random.pick(
     nearTowns.length && game.random.next() < 0.7 ? nearTowns : otherTowns
@@ -861,7 +864,7 @@ const playTown = (game: Game) => {
       const here = game.player.character.town!
 
       destination = TOWN_NAMES.filter((town) => town !== here).sort(
-        (a, b) => distance(here, a) - distance(here, b)
+        (a, b) => getJourneyLength(here, a) - getJourneyLength(here, b)
       )[0]
     }
   }

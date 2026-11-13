@@ -1,5 +1,3 @@
-import { getWeatherType, type WeatherType } from "./weather"
-
 // A seed (like the game day) gives the same pick on the server and the
 // client, so server rendered quips don't cause hydration mismatches
 function pickRandom<T>(arr: T[], seed?: number): T {
@@ -82,6 +80,11 @@ const weatherQuips: Record<WeatherType, string[]> = {
     "Squawk! The skies be grey as Davy Jones' beard today, Cap'n!",
     "Arrr, gloomy clouds above — thick as the skull of a stubborn Spaniard! Squawk!",
     "Can't see the stars to navigate today, Cap'n! Good thing we be stayin' in port! Squawk!",
+  ],
+  foggy: [
+    "Squawk! Fog thick as porridge out there, Cap'n! I can't see the end of me own beak!",
+    "Arrr, a ghostly mist be creepin' over the harbour. Keep a sharp eye for phantom ships!",
+    "Squawk! Can't tell the fort from the tavern in this murk, Cap'n! Mind the pier!",
   ],
   partlySunny: [
     "Squawk! Sun and clouds battlin' it out up there — just like us against the Spanish fleet!",
@@ -200,11 +203,12 @@ export function getHarborBlockedQuip() {
 
 export function getPirateQuip(
   crew: Player["crewMembers"] | undefined,
-  day: Character["day"] = 0
+  weather: WeatherType | undefined
 ) {
-  if (!day || !crew) return pickRandom(generalQuips)
+  if (!weather || !crew) {
+    return pickRandom(generalQuips)
+  }
 
-  const weather = getWeatherType(day)
   const crewCount = crew?.count ?? 0
   const crewMood = crew?.mood ?? 100
   const crewHealth = crew?.health ?? 100

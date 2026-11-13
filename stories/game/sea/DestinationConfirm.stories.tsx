@@ -26,12 +26,14 @@ const meta = {
   ],
   args: {
     player,
+    origin: player.character.town!,
     destination: "Havana",
     isPending: false,
     onConfirm: fn(),
     onCancel: fn(),
   },
   argTypes: {
+    origin: { control: "select", options: Object.keys(TOWNS) },
     destination: { control: "select", options: Object.keys(TOWNS) },
   },
 } satisfies Meta<typeof DestinationConfirm>

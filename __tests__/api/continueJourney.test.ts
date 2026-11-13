@@ -46,6 +46,7 @@ const createPlayer = (): Player => ({
     location: "Sea",
     gold: 1000,
     day: 20,
+    weather: "sunny",
     journey: {
       origin: "Bonaire",
       destination: "Villa Hermosa",
@@ -98,8 +99,8 @@ const expectResumedFinalDay = async () => {
   })
   expect(mocks.player?.character.journey).toBeUndefined()
   expect(mocks.player?.inventory).toEqual({
-    food: 98,
-    water: 196,
+    food: 99,
+    water: 198,
     cannons: 10,
   })
   expect(mocks.player?.crewMembers).toEqual(previous.crewMembers)
@@ -147,7 +148,7 @@ describe("continue journey after a final-day encounter", () => {
     expect((await response.json()).destinationReached).toBe(true)
     expect(mocks.player?.character.location).toBe("Harbor")
     expect(mocks.player?.character.day).toBe(21)
-    expect(mocks.player?.inventory).toMatchObject({ food: 98, water: 196 })
+    expect(mocks.player?.inventory).toMatchObject({ food: 99, water: 198 })
     expect(mocks.savePlayer.mock.lastCall?.[2]).toEqual({
       withStatistics: true,
     })

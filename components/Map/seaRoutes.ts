@@ -1,27 +1,7 @@
 import { TOWNS } from "@/constants/locations"
-import SEA_ROUTES from "@/constants/seaRoutes.json"
+import { getRouteLength, getSeaRoute, type Point } from "@/utils/seaRoutes"
 
 import { TOWN_ANCHOR_SIZE, TOWN_ICON_SIZE } from "./constants"
-
-export type Point = { x: number; y: number }
-
-const routes = SEA_ROUTES as Record<string, number[]>
-
-const toPoints = (flat: number[]) =>
-  Array.from({ length: flat.length / 2 }, (_, i) => ({
-    x: flat[i * 2],
-    y: flat[i * 2 + 1],
-  }))
-
-export const getSeaRoute = (from: Town, to: Town): Point[] | null => {
-  const forward = routes[`${from}|${to}`]
-  if (forward) return toPoints(forward)
-
-  const backward = routes[`${to}|${from}`]
-  if (backward) return toPoints(backward).reverse()
-
-  return null
-}
 
 // The square the town icon covers, standing on the town's location
 const getTownIcon = (town: Town) => {
@@ -107,25 +87,6 @@ export const getDrawnRoute = (from: Town, to: Town) => {
 
   return endAtTownIcon(startAtTownIcon(route, from), to)
 }
-
-// Older journeys did not store their origin, so guess it from the distance
-export const getJourneyOrigin = (journey: Journey) =>
-  journey.origin ??
-  (Object.keys(TOWNS) as Town[]).find(
-    (town) =>
-      town !== journey.destination &&
-      TOWNS[town].map.distanceTo[journey.destination] === journey.totalDays
-  )
-
-export const getRouteLength = (route: Point[]) =>
-  route.reduce(
-    (total, point, i) =>
-      i === 0
-        ? 0
-        : total +
-          Math.hypot(point.x - route[i - 1].x, point.y - route[i - 1].y),
-    0
-  )
 
 // Splits the route at a progress between 0 and 1
 export const splitRoute = (

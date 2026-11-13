@@ -135,7 +135,7 @@ const ventureRoutes = [
   {
     name: "invest",
     route: invest,
-    log: "Invested 500 gold in The Barbados sugar convoy. Expected back on day 15.",
+    log: "Invested 500 gold in The Barbados sugar convoy. Expected back on day 29.",
   },
   {
     name: "collect",

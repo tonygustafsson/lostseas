@@ -58,6 +58,7 @@ const createPlayer = (mood = 50, health = 80): Player => ({
     location: "Tavern",
     gold: 10000,
     day: 1,
+    weather: "sunny",
   },
   ships: {},
   crewMembers: { count: 4, mood, health },

@@ -11,21 +11,35 @@ export type TradeChange = { item: keyof Inventory; quantity: number }
 /** How many of each item the player wants to own after trading. */
 export type TradeTargets = Partial<Record<keyof Inventory, number>>
 
+/** Each day at sea, this many crew eat a crate of food or drink a barrel of water. */
+const CREW_PER_UNIT = { food: 20, water: 10 }
+
 /**
- * Food and water the crew uses each day at sea: 1 crate of food per 10 crew
- * and 1 barrel of water per 5 crew, rounded to whole units. Any crew uses at
- * least 1 of each per day. No crew uses nothing.
+ * Food and water a crew needs for a number of days at sea. Rounded up over the
+ * whole stretch, so a small crew opens a new crate every few days instead of
+ * every day.
  */
-export const getDailyConsumption = (crewMembers: CrewMembers["count"]) => {
-  if (crewMembers <= 0) {
-    return { food: 0, water: 0 }
-  }
+export const getSuppliesNeeded = (
+  crewMembers: CrewMembers["count"],
+  days: number
+) => {
+  const crewDays = Math.max(crewMembers, 0) * days
 
   return {
-    food: Math.max(1, Math.round(crewMembers / 10)),
-    water: Math.max(1, Math.round(crewMembers / 5)),
+    food: Math.ceil(crewDays / CREW_PER_UNIT.food),
+    water: Math.ceil(crewDays / CREW_PER_UNIT.water),
   }
 }
+
+/** How many days an amount of food or water lasts. Without crew, forever. */
+export const getDaysOfSupply = (
+  item: "food" | "water",
+  amount: number,
+  crewMembers: CrewMembers["count"]
+) =>
+  crewMembers > 0
+    ? Math.floor((amount * CREW_PER_UNIT[item]) / crewMembers)
+    : Infinity
 
 export const getDaysWorthOfNecessities = ({
   crewMembers,
@@ -35,15 +49,11 @@ export const getDaysWorthOfNecessities = ({
   crewMembers: CrewMembers["count"]
   food?: Inventory["food"]
   water?: Inventory["water"]
-}) => {
-  const daily = getDailyConsumption(crewMembers)
-
-  // Without crew, supplies last forever
-  const foodDays = daily.food ? Math.floor(food / daily.food) : Infinity
-  const waterDays = daily.water ? Math.floor(water / daily.water) : Infinity
-
-  return Math.min(foodDays, waterDays)
-}
+}) =>
+  Math.min(
+    getDaysOfSupply("food", food, crewMembers),
+    getDaysOfSupply("water", water, crewMembers)
+  )
 
 const SHOP_ITEMS = (Object.keys(MERCHANDISE) as (keyof Inventory)[]).filter(
   (item) => MERCHANDISE[item].availableAt === "shop"
@@ -114,11 +124,11 @@ export const getNecessitiesTargets = (
   }: { crewMembers: CrewMembers["count"]; food: number; water: number },
   days: number
 ): TradeTargets => {
-  const daily = getDailyConsumption(crewMembers)
+  const needed = getSuppliesNeeded(crewMembers, days)
 
   return {
-    food: Math.max(food, daily.food * days),
-    water: Math.max(water, daily.water * days),
+    food: Math.max(food, needed.food),
+    water: Math.max(water, needed.water),
   }
 }
 

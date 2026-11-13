@@ -10,7 +10,7 @@ import {
   formatSigned,
   getAffordableTarget,
   getChangeGold,
-  getDailyConsumption,
+  getDaysOfSupply,
   getDaysWorthOfNecessities,
   getGoldLeftForItem,
   getItemChange,
@@ -18,6 +18,7 @@ import {
   getPlannedAmount,
   getSellBarterGoodsTargets,
   getShopItems,
+  getSuppliesNeeded,
   getTradeChanges,
   getTradeGold,
   getTradeToast,
@@ -30,29 +31,35 @@ import { createSeededRandom } from "./helpers/seededRandom"
 
 describe("shop utils", () => {
   it.each([
-    [0, 0, 0],
-    [1, 1, 1],
-    [4, 1, 1],
-    [5, 1, 1],
-    [14, 1, 3],
-    [15, 2, 3],
-    [25, 3, 5],
-    [100, 10, 20],
+    [0, 10, 0, 0],
+    [1, 1, 1, 1],
+    [10, 1, 1, 1],
+    [10, 10, 5, 10],
+    [15, 4, 3, 6],
+    [20, 7, 7, 14],
+    [100, 3, 15, 30],
   ])(
-    "getDailyConsumption: %i crew use %i food and %i water a day",
-    (crew, food, water) => {
-      expect(getDailyConsumption(crew)).toEqual({ food, water })
+    "getSuppliesNeeded: %i crew for %i days need %i food and %i water",
+    (crew, days, food, water) => {
+      expect(getSuppliesNeeded(crew, days)).toEqual({ food, water })
     }
   )
+
+  it("getDaysOfSupply is how long an amount lasts, forever without crew", () => {
+    expect(getDaysOfSupply("food", 5, 10)).toBe(10)
+    expect(getDaysOfSupply("water", 5, 10)).toBe(5)
+    expect(getDaysOfSupply("food", 1, 30)).toBe(0)
+    expect(getDaysOfSupply("food", 0, 0)).toBe(Infinity)
+  })
 
   it("getDaysWorthOfNecessities returns min days for food and water", () => {
     const days = getDaysWorthOfNecessities({
       crewMembers: 5,
       food: 2,
-      water: 4,
+      water: 3,
     })
-    // 5 crew use at least 1 food and 1 water a day, so 2 food lasts 2 days
-    expect(days).toBe(2)
+    // 5 crew get through a crate in 4 days and a barrel in 2 days
+    expect(days).toBe(6)
   })
 })
 
@@ -163,24 +170,24 @@ describe("trade draft utils", () => {
   })
 
   it("getNecessitiesTargets tops up food and water for the days", () => {
-    // 20 crew use 2 food and 4 water a day
+    // 20 crew use 1 food and 2 water a day
     expect(
-      getNecessitiesTargets({ crewMembers: 20, food: 10, water: 50 }, 10)
-    ).toEqual({ food: 20, water: 50 })
+      getNecessitiesTargets({ crewMembers: 20, food: 5, water: 50 }, 10)
+    ).toEqual({ food: 10, water: 50 })
   })
 
   it("getNecessitiesTargets keeps a planned purchase larger than it needs", () => {
     // The player plans to own 100 water, more than 10 days need
     expect(
       getNecessitiesTargets({ crewMembers: 20, food: 0, water: 100 }, 10)
-    ).toEqual({ food: 20, water: 100 })
+    ).toEqual({ food: 10, water: 100 })
   })
 
   it("getNecessitiesTargets tops up from a planned sale", () => {
     // The player planned to sell all food, so the preset buys it back
     expect(
       getNecessitiesTargets({ crewMembers: 20, food: 0, water: 40 }, 5)
-    ).toEqual({ food: 10, water: 40 })
+    ).toEqual({ food: 5, water: 40 })
   })
 
   it("getNecessitiesTargets always lasts the requested days and never lowers", () => {

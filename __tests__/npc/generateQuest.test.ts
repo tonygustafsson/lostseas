@@ -13,6 +13,7 @@ import {
   QUEST_PLACEHOLDERS,
   QUEST_REWARDS,
 } from "@/constants/quests"
+import { getJourneyLength } from "@/utils/journey"
 import { generateQuest } from "@/utils/npc/generateQuest"
 import { DIALOGUE_PLACEHOLDERS } from "@/utils/npc/placeholders"
 
@@ -161,7 +162,7 @@ describe("generateQuest", () => {
       }
 
       const target = getNpcById(quest.targetNpcId) as Npc
-      const days = TOWNS[giver.town].map.distanceTo[target.town]
+      const days = getJourneyLength(giver.town, target.town)
       const full = days * QUEST_REWARDS.goldPerDay + QUEST_REWARDS.baseGold
 
       expect(quest.reward.gold % 10).toBe(0)
@@ -196,7 +197,7 @@ describe("generateQuest", () => {
       const days = route
         .slice(1)
         .reduce(
-          (sum, town, index) => sum + TOWNS[route[index]].map.distanceTo[town],
+          (sum, town, index) => sum + getJourneyLength(route[index], town),
           0
         )
 

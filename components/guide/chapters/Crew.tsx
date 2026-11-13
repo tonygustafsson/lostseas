@@ -31,9 +31,9 @@ const Crew = () => (
     <h3>Mood</h3>
 
     <p>
-      Mood drops a little every day at sea and jumps after a win in battle. Let
-      it hit rock bottom and your crew refuse to leave port until you make it up
-      to them. Buy a round at the tavern, or use Give gold in Manage Crew. The
+      Mood slowly drops on long voyages and jumps after a win in battle. Let it
+      hit rock bottom and your crew refuse to leave port until you make it up to
+      them. Buy a round at the tavern, or use Give gold in Manage Crew. The
       bigger the crew, the more it costs to keep them sweet.
     </p>
 

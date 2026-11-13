@@ -17,6 +17,7 @@ export const createTestPlayer = (overrides: DeepPartial<Player> = {}) => {
       location: "Shop",
       gold: 1000,
       day: 10,
+      weather: "sunny",
     },
     ships: {
       "ship-1": {

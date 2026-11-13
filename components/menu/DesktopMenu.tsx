@@ -52,7 +52,10 @@ const DesktopMenu = ({ className }: Props) => {
           <CharacterCard player={player} />
           <FleetCard player={player} />
           <InventoryCard player={player} />
-          <WeatherCard day={player.character.day} />
+          <WeatherCard
+            day={player.character.day}
+            weather={player.character.weather}
+          />
 
           <AdvisorDrawerTrigger />
 

@@ -24,7 +24,8 @@ type Props = {
   target: number
   max: number
   limitedBy: BuyLimit
-  dailyUse?: number
+  /** Crew to feed, for food and water only */
+  crewMembers?: number
   onChange: (target: number) => void
 }
 
@@ -34,7 +35,7 @@ const ShopTradeItem = ({
   target,
   max,
   limitedBy,
-  dailyUse,
+  crewMembers,
   onChange,
 }: Props) => {
   const title = snakeCaseToTitleCase(item)
@@ -125,7 +126,7 @@ const ShopTradeItem = ({
             target={target}
             max={max}
             limitedBy={limitedBy}
-            dailyUse={dailyUse}
+            crewMembers={crewMembers}
             onChange={onChange}
           />
         </div>

@@ -1,6 +1,7 @@
 // Brings a town map to life with WebGL, in a single pass over one canvas:
 // rippling water (where the water mask is), drifting clouds (where the sky
-// mask is) and a few seagulls flying over everything.
+// mask is) and a few seagulls flying over everything. The weather decides how
+// cloudy it is, and can bring rain or fog over the whole town.
 
 import { createAmbienceRenderer, SHADER_COMMON } from "./ambienceRenderer"
 
@@ -10,9 +11,31 @@ ${SHADER_COMMON}
 uniform sampler2D u_water;
 uniform sampler2D u_sky;
 
+// The weather, see weatherAmbience.ts
+uniform float u_cloudCover;
+uniform float u_cloudShade;
+uniform float u_rain;
+uniform float u_fog;
+uniform float u_gulls;
+
 // Water ripple strength in CSS pixels
 const float WATER_AMPLITUDE = 1.875;
 const int SEAGULLS = 5;
+const vec3 FOG_COLOR = vec3(0.9, 0.92, 0.94);
+const vec3 OVERCAST_COLOR = vec3(0.08, 0.1, 0.14);
+
+// Fog rolls in from the sea, thickest in the distance at the top of the map
+// and over the open water and sky, thinning out towards the bottom
+vec4 fog(vec4 base, vec2 p, float skyMask, float waterMask) {
+  vec2 q = p / u_size.x * vec2(4.0, 10.0);
+  float wisps = smoothstep(0.35, 0.7, fbm(q + vec2(-u_time * 0.05, u_time * 0.01)));
+  float banks = smoothstep(0.3, 0.65, fbm(q * 0.35 + vec2(u_time * 0.02, 3.0)));
+  float far = 1.0 - smoothstep(0.05, 0.9, v_uv.y);
+  float open = max(skyMask, waterMask * 0.6);
+  float density = (0.12 + 0.75 * far + 0.25 * open) * (0.4 + 0.45 * banks + 0.5 * wisps);
+
+  return over(base, FOG_COLOR, clamp(density, 0.0, 0.9) * u_fog);
+}
 
 vec4 seagull(vec4 base, vec2 p, float i) {
   float t = u_time;
@@ -45,7 +68,7 @@ vec4 seagull(vec4 base, vec2 p, float i) {
 
   float body = (length(q / vec2(0.17, 0.11)) - 1.0) * size * 0.11;
   float dist = min(wing, body);
-  float alpha = 1.0 - smoothstep(-0.5, 0.5, dist);
+  float alpha = (1.0 - smoothstep(-0.5, 0.5, dist)) * u_gulls;
 
   if (alpha <= 0.0) {
     return base;
@@ -67,15 +90,32 @@ void main() {
   vec4 color = vec4(0.0);
 
   if (waterMask > 0.01) {
-    color = water(u_water, v_uv, u_size, waterMask, WATER_AMPLITUDE);
+    // Choppier in the rain
+    float amplitude = WATER_AMPLITUDE * (1.0 + 0.6 * u_rain);
+    color = water(u_water, v_uv, u_size, waterMask, amplitude);
   }
 
   if (skyMask > 0.01) {
-    color = clouds(color, p, u_size.x, skyMask);
+    color = clouds(color, p, u_size.x, skyMask, u_cloudCover, u_cloudShade);
   }
 
-  for (int i = 0; i < SEAGULLS; i++) {
-    color = seagull(color, p, float(i));
+  if (u_rain > 0.0) {
+    color = over(color, OVERCAST_COLOR, 0.2 * u_rain);
+  }
+
+  if (u_gulls > 0.0) {
+    for (int i = 0; i < SEAGULLS; i++) {
+      color = seagull(color, p, float(i));
+    }
+  }
+
+  if (u_fog > 0.0) {
+    color = fog(color, p, skyMask, waterMask);
+  }
+
+  if (u_rain > 0.0) {
+    color = rain(color, p, vec2(7.0, 70.0), 2.2, 0.0, u_rain);
+    color = rain(color, p, vec2(11.0, 110.0), 1.6, 41.0, u_rain);
   }
 
   gl_FragColor = color;
@@ -84,6 +124,6 @@ void main() {
 
 const TEXTURES = ["u_image", "u_water", "u_sky"] as const
 
-// Textures in this order: image, water, sky
+// Textures in this order: image, water, sky. Uniforms from getWeatherAmbience.
 export const createTownMapRenderer = (canvas: HTMLCanvasElement) =>
   createAmbienceRenderer(canvas, FRAGMENT_SHADER, TEXTURES)

@@ -68,16 +68,18 @@ const Map = ({ currentTown }: Props) => {
   return (
     <div className="relative -mx-6 md:mx-0">
       <SeaMapCanvas
+        weather={player?.character.weather}
         currentTown={currentTown}
         selectedTown={destination}
         suppliesDays={suppliesDays}
         onSelectTown={setDestination}
       />
 
-      {player && destination && (
+      {player && currentTown && destination && (
         <DestinationConfirm
           key={destination}
           player={player}
+          origin={currentTown}
           destination={destination}
           isPending={isStartingJourney}
           onConfirm={() => handleStartJourney(destination)}

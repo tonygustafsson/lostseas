@@ -45,10 +45,15 @@ export const getAdvisorWarnings = (
   const isInPort = player.character.location !== "Sea"
   const cargoIsOverloaded = playerHasShips && isOverloaded(player)
 
+  // At sea there is no town to leave from, so no supplies are needed
+  const town = player.character.town
+
   // Without a destination, supplies must at least reach the nearest town
-  const journeyLength = destination
-    ? getJourneyLength(player.character.town, destination)
-    : getShortestJourneyLength(player.character.town)
+  const journeyLength = !town
+    ? 0
+    : destination
+      ? getJourneyLength(town, destination)
+      : getShortestJourneyLength(town)
   const { hasEnoughFood, hasEnoughWater } = getJourneySupplies(
     player,
     journeyLength
@@ -57,7 +62,7 @@ export const getAdvisorWarnings = (
   // Supplies reach some towns but not all of them
   const longestJourney = getJourneySupplies(
     player,
-    getLongestJourneyLength(player.character.town)
+    town ? getLongestJourneyLength(town) : 0
   )
   const hasLimitedSupplies =
     !destination &&

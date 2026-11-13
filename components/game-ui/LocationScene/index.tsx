@@ -1,3 +1,5 @@
+import { useGetPlayer } from "@/hooks/queries/usePlayer"
+
 import BuildingScene from "./BuildingScene"
 import HarborScene from "./HarborScene"
 
@@ -7,6 +9,8 @@ type Props = {
 }
 
 const LocationScene = ({ town, location }: Props) => {
+  const { data: player } = useGetPlayer()
+
   if (location === "Sea") return null
 
   if (location === "Harbor") {
@@ -18,6 +22,7 @@ const LocationScene = ({ town, location }: Props) => {
       key={`${town}-${location}`}
       town={town}
       location={location}
+      weather={player?.character.weather}
     />
   )
 }

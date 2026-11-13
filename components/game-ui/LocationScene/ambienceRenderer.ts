@@ -88,8 +88,10 @@ vec4 water(sampler2D waterMask, vec2 uv, vec2 size, float mask, float amplitude)
   return vec4(color * mask, mask);
 }
 
-// Drifting clouds at position p (CSS pixels) on an image shown width wide
-vec4 clouds(vec4 base, vec2 p, float width, float mask) {
+// Drifting clouds at position p (CSS pixels) on an image shown width wide.
+// Cover from 0 (a few wisps) to 1 (overcast), shade from 0 (white) to 1 (storm
+// grey).
+vec4 clouds(vec4 base, vec2 p, float width, float mask, float cover, float shade) {
   // Cloud size follows the image width, stretched to look flatter. They drift
   // sideways and slowly change shape.
   vec2 q = p / width * vec2(12.0, 30.0);
@@ -97,9 +99,10 @@ vec4 clouds(vec4 base, vec2 p, float width, float mask) {
   q.y += u_time * 0.01;
 
   float density = fbm(q);
-  float cover = smoothstep(0.5, 0.6, density);
+  float threshold = mix(0.62, 0.3, cover);
+  float alpha = smoothstep(threshold, threshold + 0.1, density);
 
-  if (cover <= 0.0) {
+  if (alpha <= 0.0) {
     return base;
   }
 
@@ -107,8 +110,32 @@ vec4 clouds(vec4 base, vec2 p, float width, float mask) {
   float above = fbm(q - vec2(0.0, 0.3));
   float light = clamp(0.65 + (density - above) * 3.0, 0.0, 1.0);
   vec3 color = mix(vec3(0.7, 0.77, 0.88), vec3(1.0), light);
+  color = mix(color, color * vec3(0.5, 0.53, 0.58), shade);
 
-  return over(base, color, cover * 0.9 * mask);
+  return over(base, color, alpha * 0.9 * mask);
+}
+
+// Streaks falling in one layer of a grid, cells CSS pixels wide and tall,
+// leaning a little with the wind. Strength from 0 to 1.
+vec4 rain(vec4 base, vec2 p, vec2 cell, float speed, float seed, float strength) {
+  vec2 q = vec2(p.x + p.y * 0.2, p.y) / cell - vec2(0.0, u_time * speed);
+  vec2 id = floor(q);
+  float h = hash(id + seed);
+
+  if (h > 0.3) {
+    return base;
+  }
+
+  vec2 f = fract(q);
+  float x = abs(f.x - 0.5 - (h - 0.15) * 2.0) * cell.x;
+  float streakLength = 0.3 + 0.4 * hash(id + seed + 2.0);
+  float start = hash(id + seed + 3.0) * (1.0 - streakLength);
+  float streak =
+    smoothstep(start, start + 0.05, f.y) *
+    (1.0 - smoothstep(start + streakLength - 0.05, start + streakLength, f.y));
+  float alpha = (1.0 - smoothstep(0.3, 0.9, x)) * streak * 0.35;
+
+  return over(base, vec3(0.8, 0.85, 0.9), alpha * strength);
 }
 `
 
@@ -141,6 +168,11 @@ const createTexture = (gl: WebGLRenderingContext, unit: number) => {
 
   return texture
 }
+
+export type AmbienceUniforms = Record<string, number>
+
+// How long a change of uniforms, like the weather, takes to fade in
+const UNIFORM_FADE = 1500
 
 // The first texture is the image, its size is passed as u_imageSize. With
 // imageResolution the canvas has as many pixels as the image, for scenes that
@@ -206,11 +238,26 @@ export const createAmbienceRenderer = (
   let imageWidth = 0
   let frame = 0
   let lastDraw = 0
+  // Float uniforms ease from their current value towards the target
+  const uniforms: Record<
+    string,
+    { location: WebGLUniformLocation | null; value: number; target: number }
+  > = {}
+
+  const updateUniforms = (elapsed: number) => {
+    const step = Math.min(1, elapsed / UNIFORM_FADE)
+
+    Object.values(uniforms).forEach((uniform) => {
+      uniform.value += (uniform.target - uniform.value) * step
+      gl.uniform1f(uniform.location, uniform.value)
+    })
+  }
 
   const draw = (now: number) => {
     frame = requestAnimationFrame(draw)
 
     if (!hasTextures || now - lastDraw < FRAME_INTERVAL) return
+    updateUniforms(lastDraw ? now - lastDraw : 0)
     lastDraw = now
 
     // Nothing to draw while the scene has no size
@@ -218,9 +265,11 @@ export const createAmbienceRenderer = (
       return
     }
 
+    // More pixels than the image has add no detail, they only cost GPU time
+    const imageRatio = imageWidth / canvas.clientWidth
     const pixelRatio = imageResolution
-      ? imageWidth / canvas.clientWidth
-      : Math.min(window.devicePixelRatio, 2)
+      ? imageRatio
+      : Math.min(window.devicePixelRatio, 2, Math.max(1, imageRatio))
     const width = Math.round(canvas.clientWidth * pixelRatio)
     const height = Math.round(canvas.clientHeight * pixelRatio)
 
@@ -276,6 +325,18 @@ export const createAmbienceRenderer = (
         sources[0].naturalHeight
       )
       hasTextures = true
+    },
+    // New values fade in, the first ones apply straight away
+    setUniforms: (values: AmbienceUniforms) => {
+      Object.entries(values).forEach(([name, target]) => {
+        if (uniforms[name]) {
+          uniforms[name].target = target
+        } else {
+          const location = gl.getUniformLocation(program, name)
+          uniforms[name] = { location, value: target, target }
+          gl.uniform1f(location, target)
+        }
+      })
     },
     start: () => {
       cancelAnimationFrame(frame)

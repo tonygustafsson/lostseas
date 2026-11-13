@@ -14,6 +14,7 @@ import {
   QUEST_TYPE_WEIGHTS,
 } from "@/constants/quests"
 import type { RandomInt } from "@/utils/actions/types"
+import { getJourneyLength } from "@/utils/journey"
 import { getNationTowns } from "@/utils/location"
 import getDutchFemaleName from "@/utils/names/getDutchFemaleName"
 import getDutchMaleName from "@/utils/names/getDutchMaleName"
@@ -86,10 +87,7 @@ const pickType = (placement: NpcPlacement, randomInt: RandomInt) => {
 const routeDays = (towns: Town[]) =>
   towns
     .slice(1)
-    .reduce(
-      (sum, town, index) => sum + TOWNS[towns[index]].map.distanceTo[town],
-      0
-    )
+    .reduce((sum, town, index) => sum + getJourneyLength(towns[index], town), 0)
 
 const travelGold = (days: number) =>
   days * QUEST_REWARDS.goldPerDay + QUEST_REWARDS.baseGold

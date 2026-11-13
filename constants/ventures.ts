@@ -28,7 +28,7 @@ export const VENTURES: Record<VentureId, Venture> = {
     description:
       "English merchantmen carry hogsheads of sugar and molasses north under the guns of a Royal Navy frigate.",
     stake: 500,
-    days: 14,
+    days: 28,
     risk: "Low",
     outcomes: [
       {
@@ -52,7 +52,7 @@ export const VENTURES: Record<VentureId, Venture> = {
     description:
       "A Spanish factor sends cured leaf to the Dutch free port, sailing under false colours while Spain and Holland are at war.",
     stake: 1500,
-    days: 21,
+    days: 42,
     risk: "Moderate",
     outcomes: [
       {
@@ -81,7 +81,7 @@ export const VENTURES: Record<VentureId, Venture> = {
     description:
       "Silk and porcelain from the Manila galleon are slipped past the Spanish coastguard and sold to Dutch traders.",
     stake: 3000,
-    days: 28,
+    days: 56,
     risk: "High",
     outcomes: [
       {
@@ -110,7 +110,7 @@ export const VENTURES: Record<VentureId, Venture> = {
     description:
       "A share of Peruvian silver carried by the treasure galleons to meet the fleet at Havana.",
     stake: 6000,
-    days: 42,
+    days: 84,
     risk: "Very high",
     outcomes: [
       {

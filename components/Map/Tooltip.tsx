@@ -2,6 +2,7 @@ import React from "react"
 import { createPortal } from "react-dom"
 
 import { TOWNS } from "@/constants/locations"
+import { getDistanceKm, getJourneyLength } from "@/utils/journey"
 
 import Flag from "../icons/Flag"
 
@@ -27,9 +28,10 @@ const Tooltip = ({
 }: Props) => {
   if (!show || !currentTown || !destination) return null
 
-  const currentTownInfo = TOWNS[currentTown]
   const destinationInfo = TOWNS[destination]
-  const distance = currentTownInfo.map.distanceTo[destination] || 0
+  const isOtherTown = currentTown !== destination
+  const distance = isOtherTown ? getJourneyLength(currentTown, destination) : 0
+  const km = getDistanceKm(currentTown, destination)
 
   return createPortal(
     <div
@@ -46,7 +48,12 @@ const Tooltip = ({
 
       <p className="text-sm">Nation: {destinationInfo.nation}</p>
 
-      {distance !== 0 && <p className="text-sm">Distance: {distance} days</p>}
+      {isOtherTown && (
+        <p className="text-sm">
+          Distance: {distance} {distance === 1 ? "day" : "days"} (
+          {km.toLocaleString("en-GB")} km)
+        </p>
+      )}
 
       {distance > suppliesDays && (
         <p className="text-gold text-sm">

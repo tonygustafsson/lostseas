@@ -4,8 +4,10 @@ import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 
 import { useAmbienceCanvas } from "@/components/game-ui/LocationScene/useAmbienceCanvas"
+import { getWeatherAmbience } from "@/components/game-ui/LocationScene/weatherAmbience"
 import { TOWNS } from "@/constants/locations"
 import { SEA_TRAVEL_SPEED } from "@/constants/sea"
+import { getRouteLength, getSeaRoute, type Point } from "@/utils/seaRoutes"
 
 import {
   MAP_HEIGHT,
@@ -20,11 +22,7 @@ import { createSeaMapRenderer } from "./seaMapShader"
 import SeaMapTowns from "./SeaMapTowns"
 import {
   getDrawnRoute,
-  getJourneyOrigin,
-  getRouteLength,
-  getSeaRoute,
   getTownIconCentre,
-  type Point,
   splitRoute,
   startAtTownIcon,
   stopAtTownIcon,
@@ -56,6 +54,7 @@ const getCachedImage = (src: string) => {
 }
 
 type Props = {
+  weather?: WeatherType
   currentTown?: Town
   journey?: Journey
   isPaused?: boolean
@@ -65,6 +64,7 @@ type Props = {
 }
 
 const SeaMapCanvas = ({
+  weather,
   currentTown,
   journey,
   isPaused = false,
@@ -79,11 +79,12 @@ const SeaMapCanvas = ({
   const animation = useRef({ routeKey: "", progress: 0 })
   // Kept across redraws, so hovering a town doesn't restart the fish
   const fish = useRef<ReturnType<typeof createFishJumps> | null>(null)
-  // Wave crests on the water, panned along with the map
+  // Wave crests on the water and the day's weather, panned along with the map
   const ambienceRef = useAmbienceCanvas(
     mapImageRef,
     createSeaMapRenderer,
-    WATER_MASKS
+    WATER_MASKS,
+    { uniforms: getWeatherAmbience(weather) }
   )
   const camera = useRef({ ...MAP_CENTER, scale: 1, scaleY: 1 })
   const centeredTown = useRef<Town | undefined>(undefined)
@@ -103,7 +104,7 @@ const SeaMapCanvas = ({
     left: number
   } | null>(null)
 
-  const origin = journey ? getJourneyOrigin(journey) : undefined
+  const origin = journey?.origin
   const destination = journey?.destination
   const startProgress = journey ? (journey.day - 1) / journey.totalDays : 0
   const targetProgress = journey ? journey.day / journey.totalDays : 0

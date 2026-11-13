@@ -12,9 +12,10 @@ const Sailing = () => (
   >
     <p>
       Press Set sail at the harbour, or Travel in the bottom menu on a phone, to
-      open the map. Pick a town and you see how far it is and what the trip
-      needs. Towns your supplies won&apos;t reach are greyed out. If something
-      else is stopping you, the advisor pops up to explain.
+      open the map. Pick a town and you see how far it is, in days and
+      kilometres, and what the trip needs. A voyage takes as long in either
+      direction. Towns your supplies won&apos;t reach are greyed out. If
+      something else is stopping you, the advisor pops up to explain.
     </p>
 
     <h3>Time</h3>
@@ -35,9 +36,12 @@ const Sailing = () => (
     <h3>Weather</h3>
 
     <p>
-      The weather changes from day to day and looks lovely, but it&apos;s purely
-      for show. Storms don&apos;t slow you down, and sunshine doesn&apos;t make
-      the crew any less grumpy.
+      The weather can turn from one day at sea to the next, from sunshine to
+      rain and the odd morning of thick fog. Whatever sky you sail in under is
+      the one you find in port, and it stays until you set sail again. You can
+      see it over the harbour and on the sea map. It&apos;s purely for show.
+      Storms don&apos;t slow you down, and sunshine doesn&apos;t make the crew
+      any less grumpy.
     </p>
 
     <h3>Who you&apos;ll meet</h3>

@@ -14,7 +14,6 @@ import {
 } from "@/utils/cargo"
 import {
   getAffordableTarget,
-  getDailyConsumption,
   getGoldLeftForItem,
   getPlannedAmount,
   getSellBarterGoodsTargets,
@@ -41,7 +40,6 @@ const Shop = () => {
   )
   const crewMembers = player.crewMembers.count || 0
   const changes = getTradeChanges(inventory, targets)
-  const dailyUse = getDailyConsumption(crewMembers)
   const cargoCapacity = getCargoCapacity(player.ships)
   const cargoAfter = getCargoAfterTrade(inventory, changes)
 
@@ -79,8 +77,8 @@ const Shop = () => {
         target={getPlannedAmount(inventory, targets, item)}
         max={Math.min(affordable, storable)}
         limitedBy={storable < affordable ? "cargo" : "gold"}
-        dailyUse={
-          item === "food" || item === "water" ? dailyUse[item] : undefined
+        crewMembers={
+          item === "food" || item === "water" ? crewMembers : undefined
         }
         onChange={(value) => applyTargets({ [item]: value })}
       />

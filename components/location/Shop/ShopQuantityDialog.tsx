@@ -14,7 +14,11 @@ import {
 } from "@/components/ui/dialog"
 import { MERCHANDISE } from "@/constants/merchandise"
 import { formatGold } from "@/utils/number"
-import { formatAmountChange, formatQuantity } from "@/utils/shop"
+import {
+  formatAmountChange,
+  formatQuantity,
+  getDaysOfSupply,
+} from "@/utils/shop"
 import { snakeCaseToTitleCase } from "@/utils/string"
 
 import ShopBuyLimit, { type BuyLimit } from "./ShopBuyLimit"
@@ -31,8 +35,8 @@ type Props = {
   max: number
   /** What stops the player from owning more than max. */
   limitedBy: BuyLimit
-  /** How much the crew uses each day, for food and water. */
-  dailyUse?: number
+  /** Crew to feed, for food and water only. */
+  crewMembers?: number
   onChange: (target: number) => void
 }
 
@@ -42,7 +46,7 @@ const ShopQuantityDialog = ({
   target,
   max,
   limitedBy,
-  dailyUse,
+  crewMembers,
   onChange,
 }: Props) => {
   const title = snakeCaseToTitleCase(item)
@@ -82,9 +86,9 @@ const ShopQuantityDialog = ({
             className="text-sm"
           />
 
-          {!!dailyUse && (
+          {!!crewMembers && (item === "food" || item === "water") && (
             <p className="text-muted-foreground text-sm">
-              Lasts {Math.floor(target / dailyUse)} days at sea
+              Lasts {getDaysOfSupply(item, target, crewMembers)} days at sea
             </p>
           )}
 

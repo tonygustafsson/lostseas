@@ -1,3 +1,4 @@
+import { CloudFog } from "lucide-react"
 import {
   IoCloudyOutline,
   IoPartlySunnyOutline,
@@ -5,24 +6,25 @@ import {
   IoSunnyOutline,
 } from "react-icons/io5"
 
-import { useGetPlayer } from "@/hooks/queries/usePlayer"
-import { getWeatherType } from "@/utils/weather"
-
 type Props = {
+  weather: WeatherType
   className?: string
 }
 
 const ICONS = {
   rainy: IoRainyOutline,
+  foggy: CloudFog,
   partlySunny: IoPartlySunnyOutline,
   cloudy: IoCloudyOutline,
   sunny: IoSunnyOutline,
 }
 
-const WeatherIcon = ({ className }: Props) => {
-  const { data: player } = useGetPlayer()
+const WeatherIcon = ({ weather, className }: Props) => {
+  const Icon = ICONS[weather]
 
-  const Icon = ICONS[getWeatherType(player?.character.day || 0)]
+  if (!Icon) {
+    return null
+  }
 
   return <Icon className={className} />
 }

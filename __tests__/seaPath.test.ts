@@ -3,9 +3,6 @@ import { describe, expect, it } from "vitest"
 import { TOWN_ANCHOR_SIZE, TOWN_ICON_SIZE } from "@/components/Map/constants"
 import {
   getDrawnRoute,
-  getJourneyOrigin,
-  getRouteLength,
-  getSeaRoute,
   getTownIconCentre,
   splitRoute,
   stopAtTownIcon,
@@ -16,6 +13,7 @@ import {
   computeSeaRoute,
   isPathOnWater,
 } from "@/scripts/generate-sea-routes/seaPath"
+import { getRouteLength, getSeaRoute } from "@/utils/seaRoutes"
 
 // 30x20 mask with a land wall at x 12-17, open only at the bottom rows
 const createMask = () => {
@@ -154,22 +152,5 @@ describe("seaRoutes", () => {
     const backward = getSeaRoute(towns[1], towns[0])!
 
     expect(backward).toEqual([...forward].reverse())
-  })
-
-  it("uses the stored origin, or guesses it from the distance", () => {
-    expect(
-      getJourneyOrigin({
-        origin: "Havana",
-        destination: "Biloxi",
-        day: 1,
-        totalDays: 3,
-      })
-    ).toBe("Havana")
-
-    const destination = towns[0]
-    const totalDays = TOWNS[towns[1]].map.distanceTo[destination]
-    const origin = getJourneyOrigin({ destination, day: 1, totalDays })
-
-    expect(TOWNS[origin!].map.distanceTo[destination]).toBe(totalDays)
   })
 })

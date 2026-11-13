@@ -7,20 +7,23 @@ import BackToTown from "./BackToTown"
 import BuildingIntro from "./BuildingIntro"
 import { createBuildingSceneRenderer } from "./buildingSceneShader"
 import { useAmbienceCanvas } from "./useAmbienceCanvas"
+import { getWeatherAmbience } from "./weatherAmbience"
 
 type Props = {
   town: Character["town"]
   location: Character["location"]
+  weather?: WeatherType
 }
 
-const BuildingScene = ({ town, location }: Props) => {
+const BuildingScene = ({ town, location, weather }: Props) => {
   const imageRef = useRef<HTMLImageElement>(null)
   const ambience = getLocationAmbience(town, location)
-  // Rippling water, drifting clouds, dust and flickering lights
+  // Rippling water, the weather outside, dust and flickering lights
   const ambienceRef = useAmbienceCanvas(
     imageRef,
     createBuildingSceneRenderer,
-    ambience && [ambience.water, ambience.sky, ambience.light]
+    ambience && [ambience.water, ambience.sky, ambience.light],
+    { uniforms: getWeatherAmbience(weather) }
   )
 
   return (
@@ -47,7 +50,7 @@ const BuildingScene = ({ town, location }: Props) => {
       </div>
 
       <div className="z-20 flex w-full items-center justify-center px-4 py-12 text-center sm:px-6 lg:px-12 lg:py-32">
-        <div className="border-border w-full max-w-3xl rounded-3xl border bg-black/55 px-6 py-12 backdrop-blur-xs sm:px-8 lg:min-w-150 lg:px-16 lg:py-6">
+        <div className="border-border w-full max-w-3xl rounded-3xl border bg-black/55 px-6 py-12 sm:px-8 lg:min-w-150 lg:px-16 lg:py-6">
           <BuildingIntro town={town} location={location} />
 
           <BackToTown />

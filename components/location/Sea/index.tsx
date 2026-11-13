@@ -39,10 +39,18 @@ const Sea = () => {
       <SeaEventDialog />
 
       <div className="relative overflow-hidden rounded-xl border border-neutral-700 bg-neutral-700">
-        <SeaMapCanvas journey={journey} isPaused={isPaused} />
+        <SeaMapCanvas
+          weather={player.character.weather}
+          journey={journey}
+          isPaused={isPaused}
+        />
 
         <div className="absolute top-4 left-4 z-10 max-w-[calc(100%-2rem)] rounded-lg shadow-lg">
-          <JourneyProgress journey={journey} day={player.character.day} />
+          <JourneyProgress
+            journey={journey}
+            day={player.character.day}
+            weather={player.character.weather}
+          />
         </div>
       </div>
     </>

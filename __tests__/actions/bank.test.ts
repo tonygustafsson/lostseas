@@ -304,17 +304,17 @@ describe("investInVenture", () => {
 
     expect(result.player.character.gold).toBe(500)
     expect(result.player.character.ventures).toEqual({
-      tobaccoRun: { investedDay: 7, returnDay: 28 },
+      tobaccoRun: { investedDay: 7, returnDay: 49 },
     })
     expect(result.data).toEqual({
       ventureId: "tobaccoRun",
       gold: 500,
-      returnDay: 28,
+      returnDay: 49,
     })
     expect(result.log).toMatchObject({
       type: "bank",
       message:
-        "Invested 1500 gold in The Havana tobacco run. Expected back on day 28.",
+        "Invested 1500 gold in The Havana tobacco run. Expected back on day 49.",
     })
   })
 

@@ -3,13 +3,15 @@ import RadialProgressBar from "@/components/RadialProgressBar"
 import WeatherIcon from "@/components/WeatherIcon"
 import { TOWNS } from "@/constants/locations"
 import { getLogDate } from "@/utils/date"
+import { WEATHER_NAMES } from "@/utils/weather"
 
 type Props = {
   journey: Character["journey"]
   day: Character["day"]
+  weather: WeatherType
 }
 
-const JourneyProgress = ({ journey, day }: Props) => {
+const JourneyProgress = ({ journey, day, weather }: Props) => {
   if (!journey) return null
 
   const startPercentage = ((journey.day - 1) / journey.totalDays) * 100
@@ -47,10 +49,15 @@ const JourneyProgress = ({ journey, day }: Props) => {
           Day {journey.day} of {journey.totalDays}
         </p>
 
-        <p className="text-muted-foreground flex items-center gap-2 font-serif text-sm italic">
+        <p className="text-muted-foreground font-serif text-sm italic">
           {getLogDate(day)}
-          <WeatherIcon className="text-sea size-4 shrink-0" />
         </p>
+      </div>
+
+      <div className="border-sea/40 ml-auto flex shrink-0 flex-col items-center gap-1 border-l pl-4">
+        <WeatherIcon weather={weather} className="text-parchment size-8" />
+
+        <span className="text-parchment text-xs">{WEATHER_NAMES[weather]}</span>
       </div>
     </div>
   )

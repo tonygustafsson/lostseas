@@ -4,6 +4,7 @@ import { getCargo, getCargoLoad, getLootPreset } from "@/utils/cargo"
 import { getMannedCannons } from "@/utils/crew"
 import { getAdvisorWarnings } from "@/utils/getAdvisorWarnings"
 import { addToInventory } from "@/utils/inventory"
+import { getJourneyLength } from "@/utils/journey"
 import { patchDeep } from "@/utils/patchDeep"
 import {
   getBattleLosses,
@@ -18,9 +19,10 @@ import {
 } from "@/utils/shipMeeting"
 import {
   describeItems,
-  getDailyConsumption,
+  getSuppliesNeeded,
   type TradeChange,
 } from "@/utils/shop"
+import { getNextWeather } from "@/utils/weather"
 
 import type { ActionResult } from "./types"
 
@@ -31,7 +33,8 @@ type Random = () => number
 
 const BATTLE_ACTIONS: BattleAction[] = ["fire", "evade"]
 
-const MEETING_CHANCE = 0.33
+// Checked every day at sea, so a ship turns up about every sixth day
+const MEETING_CHANCE = 0.165
 
 const badRequest = (error: string): SeaError => ({ error, status: 400 })
 
@@ -71,7 +74,7 @@ export const startJourney = (
     return { blocked: true }
   }
 
-  const distance = TOWNS[player.character.town!].map.distanceTo[town]
+  const distance = getJourneyLength(player.character.town!, town)
 
   return {
     player: patchDeep<Player>(player, {
@@ -218,9 +221,18 @@ export const continueJourney = (
     }
   }
 
-  const daily = getDailyConsumption(player.crewMembers.count)
-  const food = Math.max((player.inventory?.food || 0) - daily.food, 0)
-  const water = Math.max((player.inventory?.water || 0) - daily.water, 0)
+  // Today's share of what the voyage so far needs, so rounding never adds up
+  const crew = player.crewMembers.count
+  const soFar = getSuppliesNeeded(crew, journey.day)
+  const untilYesterday = getSuppliesNeeded(crew, journey.day - 1)
+  const food = Math.max(
+    (player.inventory?.food || 0) - (soFar.food - untilYesterday.food),
+    0
+  )
+  const water = Math.max(
+    (player.inventory?.water || 0) - (soFar.water - untilYesterday.water),
+    0
+  )
 
   if (destinationReached) {
     return {
@@ -272,18 +284,27 @@ export const continueJourney = (
   // Continuing after a battle report does not advance the date
   const day = hasPendingAttackReport ? journey.day : journey.day + 1
 
+  // The weather may change with each day at sea. Arriving keeps the sky the
+  // player sailed in under
   return {
     player: patchDeep<Player>(player, {
       character: hasPendingAttackReport
         ? {}
-        : { day: player.character.day + 1, journey: { day } },
+        : {
+            day: player.character.day + 1,
+            weather: getNextWeather(player.character.weather, random),
+            journey: { day },
+          },
       locationStates: {
         sea: { ...clearedSeaState, shipMeeting: shipMeetingState },
       },
-      // A day at sea uses supplies and mood, resuming after a battle does not
+      // A day at sea uses supplies, and every other day a point of mood.
+      // Resuming after a battle does not
       ...(!hasPendingAttackReport && {
         inventory: { food, water },
-        crewMembers: { mood: Math.max(player.crewMembers.mood - 1, 0) },
+        crewMembers: {
+          mood: Math.max(player.crewMembers.mood - (day % 2 === 0 ? 1 : 0), 0),
+        },
       }),
     }),
     data: { ...journeyData, day, destinationReached, shipMeetingState },

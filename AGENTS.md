@@ -67,10 +67,27 @@
 
 - Before changing gameplay, read the player guide chapters in [`components/guide/chapters/`](components/guide/chapters/).
 - Treat it as the source of truth for existing game rules and player-facing behavior unless the task explicitly changes those rules.
+- Keep the guide about how to play. Leave out exact figures players don't need, like rates per crew member or kilometres per day, so it doesn't go stale when balance changes.
 - Keep gameplay behavior and player-facing guidance consistent.
 - When game rules change, update the matching chapter in `components/guide/chapters/` when necessary so the guide remains accurate.
 - Do not add new town buildings. Each one needs map hotspots and interior art for all 16 towns. Put new features in existing buildings.
 - When you change game mechanics, don't forget to see if you also need to change the Log book or Statistics.
+
+### Sea distances
+
+Voyage lengths follow the routes drawn on the sea map, so a town that looks further away is further away.
+
+1. `npm run generate:sea-routes` finds the shortest water path between every pair of harbours (`TOWNS[town].map.harbor`) on the mask `public/img/map/spanish-main-mask.png` and saves them to `constants/seaRoutes.json`. A return trip uses the same route reversed.
+2. `getDistanceKm` (`utils/journey.ts`) measures the route in map pixels and multiplies by `KM_PER_PIXEL`, rounded to 10 km.
+3. `getJourneyLength` divides by `KM_PER_DAY` (about the speed of a real ship in 1640), rounded, with a minimum of 1 day. `startJourney` stores it as `journey.totalDays`.
+4. Each `continueJourney` call sails one day, `SEA_TRAVEL_SPEED` apart in real time. Per-day effects are tuned for realistic voyage lengths: a ship turns up on about one day in six (`MEETING_CHANCE`), and mood drops every other day.
+
+- Change `KM_PER_DAY` (in `constants/locations.ts`) to make every voyage longer or shorter in days. Anything counted per day (food and water, quest gold per day, venture durations) is balanced for it. `KM_PER_PIXEL` is the map scale and mostly changes the kilometres shown.
+- After moving a harbour or editing the mask, re-run `generate:sea-routes` and check the voyage length snapshot in `__tests__/journey.test.ts`. Days feed into supplies, quest rewards and the advisor.
+
+### Autoplay bot
+
+`npm run autoplay` plays hundreds of seeded games through the pure actions to find bugs and check balance. Run it before and after balance changes and compare the reports. See [`scripts/autoplay/README.md`](scripts/autoplay/README.md).
 
 ## Verification
 

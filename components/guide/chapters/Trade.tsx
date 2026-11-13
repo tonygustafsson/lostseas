@@ -63,9 +63,8 @@ const Trade = () => (
     <h3>Food and water</h3>
 
     <p>
-      Every 10 crew eat a crate of food a day and every 5 drink a barrel of
-      water, rounded to whole units. Even a crew of one gets through one of
-      each. Pick a town on the map and you see the distance and what the trip
+      Your crew eats and drinks every day at sea, and a bigger crew gets through
+      more. Pick a town on the map and you see the distance and what the trip
       needs before you commit.
     </p>
 

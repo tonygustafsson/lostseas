@@ -20,16 +20,11 @@ const crew = (overrides?: Partial<CrewMembers>): CrewMembers => ({
   ...overrides,
 })
 
-// Known days for each weather type (derived from getWeatherType logic):
-//   rainy       → day % 5 === 2                    → e.g. day 2, 7, 12
-//   partlySunny → day % 4 === 0 || day % 3 === 0   → e.g. day 3, 4, 6
-//   cloudy      → day % 3 === 1 (partlySunny miss)  → e.g. day 1, 10
-//   sunny       → everything else                   → e.g. day 5, 11
-
-const RAINY_DAY = 2 // 2 % 5 === 2
-const PARTLY_SUNNY_DAY = 3 // 3 % 3 === 0
-const CLOUDY_DAY = 1 // 1 % 3 === 1
-const SUNNY_DAY = 11 // falls through all conditions
+const RAINY_DAY = "rainy"
+const FOGGY_DAY = "foggy"
+const PARTLY_SUNNY_DAY = "partlySunny"
+const CLOUDY_DAY = "cloudy"
+const SUNNY_DAY = "sunny"
 
 // First-element samples for exported simple-quip functions
 const harborArrivedQuipSamples = [
@@ -52,6 +47,7 @@ const attackFailureQuipSamples = [
 const weatherQuipSnippets: Record<string, string> = {
   sunny: "The sun be blazin'",
   rainy: "heavens be pourin'",
+  foggy: "Fog thick as porridge",
   cloudy: "grey as Davy Jones",
   partlySunny: "Sun and clouds battlin'",
 }
@@ -103,23 +99,18 @@ afterEach(() => vi.restoreAllMocks())
 
 describe("getPirateQuip", () => {
   describe("fallback to generalQuips", () => {
-    it("returns a general quip when day is 0", () => {
-      // !day → short-circuits to pickRandom(generalQuips); index 0 = "Pieces of eight"
+    it("returns a general quip when weather is undefined", () => {
+      // !weather → short-circuits to pickRandom(generalQuips); index 0 = "Pieces of eight"
       mockPickFirst()
-      expect(getPirateQuip(crew(), 0)).toContain(GENERAL_QUIP_SNIPPET)
-    })
-
-    it("returns a general quip when day is undefined (default)", () => {
-      mockPickFirst()
-      expect(getPirateQuip(crew())).toContain(GENERAL_QUIP_SNIPPET)
+      expect(getPirateQuip(crew(), undefined)).toContain(GENERAL_QUIP_SNIPPET)
     })
 
     it("returns a general quip when crew is undefined", () => {
       mockPickFirst()
-      expect(getPirateQuip(undefined, 5)).toContain(GENERAL_QUIP_SNIPPET)
+      expect(getPirateQuip(undefined, "sunny")).toContain(GENERAL_QUIP_SNIPPET)
     })
 
-    it("returns a non-empty string when both crew and day are undefined", () => {
+    it("returns a non-empty string when both crew and weather are undefined", () => {
       const result = getPirateQuip(undefined, undefined)
       expect(typeof result).toBe("string")
       expect(result.length).toBeGreaterThan(0)
@@ -131,6 +122,13 @@ describe("getPirateQuip", () => {
       mockPickFirst()
       expect(getPirateQuip(crew(), RAINY_DAY)).toContain(
         weatherQuipSnippets.rainy
+      )
+    })
+
+    it("includes a foggy quip on a foggy day", () => {
+      mockPickFirst()
+      expect(getPirateQuip(crew(), FOGGY_DAY)).toContain(
+        weatherQuipSnippets.foggy
       )
     })
 
@@ -152,25 +150,6 @@ describe("getPirateQuip", () => {
       mockPickFirst()
       expect(getPirateQuip(crew(), SUNNY_DAY)).toContain(
         weatherQuipSnippets.sunny
-      )
-    })
-
-    // Exhaustive boundary verification for the getWeatherType logic
-    it.each([
-      [2, "rainy"],
-      [7, "rainy"],
-      [12, "rainy"],
-      [3, "partlySunny"],
-      [4, "partlySunny"],
-      [6, "partlySunny"],
-      [1, "cloudy"],
-      [10, "cloudy"],
-      [5, "sunny"],
-      [11, "sunny"],
-    ])("day %i produces %s weather", (day, expectedWeather) => {
-      mockPickFirst()
-      expect(getPirateQuip(crew(), day)).toContain(
-        weatherQuipSnippets[expectedWeather]
       )
     })
   })
@@ -322,16 +301,16 @@ describe("getPirateQuip", () => {
   })
 
   describe("always returns a non-empty string", () => {
-    const cases: [CrewMembers | undefined, number | undefined][] = [
+    const cases: [CrewMembers | undefined, WeatherType | undefined][] = [
       [undefined, undefined],
-      [undefined, 5],
-      [crew({ count: 0 }), 0],
+      [undefined, "sunny"],
+      [crew({ count: 0 }), undefined],
       [crew({ count: 1, mood: 10, health: 10 }), RAINY_DAY],
       [crew({ count: 50, mood: 100, health: 100 }), SUNNY_DAY],
     ]
 
-    it.each(cases)("for crew=%o, day=%s", (c, day) => {
-      const result = getPirateQuip(c, day)
+    it.each(cases)("for crew=%o, weather=%s", (c, weather) => {
+      const result = getPirateQuip(c, weather)
       expect(typeof result).toBe("string")
       expect(result.length).toBeGreaterThan(0)
     })

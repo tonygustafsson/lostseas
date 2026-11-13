@@ -35,6 +35,7 @@ describe("createNewPlayer", () => {
         location: "Harbor",
         gold: 300,
         day: 1,
+        weather: "sunny",
       },
       inventory: { food: 20, water: 40, cannons: 2 },
       ships: { "ship-1": ship },

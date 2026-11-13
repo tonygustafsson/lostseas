@@ -12,8 +12,10 @@ import {
   takeLootAndSail,
 } from "@/utils/actions/sea"
 import { getVictoryUpdate } from "@/utils/battleOutcome"
+import { getJourneyLength } from "@/utils/journey"
 import { patchDeep } from "@/utils/patchDeep"
 import { BATTLE_MAX_ROUNDS } from "@/utils/seaBattle"
+import { getSuppliesNeeded } from "@/utils/shop"
 
 import { createTestPlayer, deepFreeze } from "../helpers/createTestPlayer"
 import { createSeededRandom } from "../helpers/seededRandom"
@@ -110,7 +112,7 @@ describe("startJourney", () => {
 
     const result = expectSuccess(startJourney(player, { town: "Havana" }))
 
-    const distance = TOWNS["Port Royale"].map.distanceTo.Havana
+    const distance = getJourneyLength("Port Royale", "Havana")
 
     expect(result.player.character).toMatchObject({
       location: "Sea",
@@ -207,7 +209,7 @@ describe("continueJourney", () => {
 
     expect(result.player.character.day).toBe(21)
     expect(result.player.character.journey?.day).toBe(4)
-    expect(result.player.inventory).toMatchObject({ food: 49, water: 98 })
+    expect(result.player.inventory).toMatchObject({ food: 49, water: 99 })
     expect(result.player.crewMembers.mood).toBe(49)
     expect(result.log).toBeUndefined()
     expect(result.data).toEqual({
@@ -219,8 +221,8 @@ describe("continueJourney", () => {
     })
   })
 
-  it("meets a ship a third of the time", () => {
-    const met = [0, 0.32, 0.33, 0.9].map(
+  it("meets a ship on about one day in six", () => {
+    const met = [0, 0.16, 0.17, 0.9].map(
       (roll) =>
         expectSuccess(continueJourney(atSea(), always(roll))).data
           .shipMeetingState !== null
@@ -298,8 +300,8 @@ describe("continueJourney", () => {
     expect(result.player.inventory?.water).toBe(0)
   })
 
-  it("runs a small crew out of food, at least one crate a day", () => {
-    // 5 crew use 1 crate a day, so 10 crates last exactly 10 days
+  it("lets a small crew open a crate every few days", () => {
+    // 5 crew eat a crate every 4 days, the first on the first day
     let player: Player = patchDeep<Player>(atSea({}, 1), {
       character: { journey: { totalDays: 30 } },
       crewMembers: { count: 5 },
@@ -315,7 +317,24 @@ describe("continueJourney", () => {
       player = result.player
     }
 
-    expect(foodPerDay).toEqual([9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0])
+    expect(foodPerDay).toEqual([9, 9, 9, 9, 8, 8, 8, 8, 7, 7, 7])
+  })
+
+  it("uses exactly the supplies the voyage preview asks for", () => {
+    let player: Player = patchDeep<Player>(atSea({}, 1), {
+      crewMembers: { count: 15 },
+    })
+
+    while (player.character.location === "Sea") {
+      player = expectSuccess(continueJourney(player, NO_SHIP)).player
+    }
+
+    const needed = getSuppliesNeeded(15, 7)
+
+    expect(player.inventory).toMatchObject({
+      food: 50 - needed.food,
+      water: 100 - needed.water,
+    })
   })
 
   it("uses no supplies without a crew", () => {
@@ -349,7 +368,7 @@ describe("continueJourney", () => {
     expect(result.player.locationStates?.harbor?.lastHarborReason).toBe(
       "arrived"
     )
-    expect(result.player.inventory).toMatchObject({ food: 49, water: 98 })
+    expect(result.player.inventory).toMatchObject({ food: 49, water: 99 })
     // Arrival does not lower mood
     expect(result.player.crewMembers.mood).toBe(50)
     expect(result.log).toMatchObject({
@@ -360,6 +379,53 @@ describe("continueJourney", () => {
       destinationReached: true,
       shipMeetingState: null,
     })
+  })
+
+  it("lowers mood only every other day", () => {
+    const result = expectSuccess(continueJourney(atSea({}, 4), NO_SHIP))
+
+    expect(result.player.character.journey?.day).toBe(5)
+    expect(result.player.crewMembers.mood).toBe(50)
+  })
+
+  it("may change the weather with each day at sea", () => {
+    // No ship, then a change of weather, then foggy
+    const rolls = [0.99, 0.1, 0.95]
+    const changed = expectSuccess(
+      continueJourney(atSea(), () => rolls.shift()!)
+    )
+    const unchanged = expectSuccess(continueJourney(atSea(), NO_SHIP))
+
+    expect(changed.player.character.weather).toBe("foggy")
+    expect(unchanged.player.character.weather).toBe("sunny")
+  })
+
+  it("keeps the weather when setting sail", () => {
+    const result = expectSuccess(startJourney(inPort(), { town: "Havana" }))
+
+    expect(result.player.character.weather).toBe("sunny")
+  })
+
+  // The sky the player sailed in under is the sky they arrive to
+  it("keeps the weather when arriving", () => {
+    const result = expectSuccess(continueJourney(atSea({}, 7), NO_SHIP))
+
+    expect(result.player.character.location).toBe("Harbor")
+    expect(result.player.character.weather).toBe("sunny")
+  })
+
+  it("keeps the weather when resuming after a battle report", () => {
+    const report: AttackFailureReport = {
+      crewHealthLoss: 10,
+      shipHealthLoss: 5,
+      sunkShip: false,
+      lostMerchandise: {},
+    }
+    const player = atSea({ justMetAShip: true, attackFailureReport: report })
+
+    const result = expectSuccess(continueJourney(player, NO_SHIP))
+
+    expect(result.player.character.weather).toBe("sunny")
   })
 
   it("does not advance the date after a battle report", () => {

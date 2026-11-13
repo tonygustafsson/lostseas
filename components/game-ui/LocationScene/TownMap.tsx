@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils"
 
 import { createTownMapRenderer } from "./townMapShader"
 import { useAmbienceCanvas } from "./useAmbienceCanvas"
+import { getWeatherAmbience } from "./weatherAmbience"
 
 type PictureProps = {
   map: TownMapData
@@ -67,19 +68,23 @@ const TownMapPicture = ({ map, alt, className, style, ref }: PictureProps) => {
 type Props = {
   map: TownMapData
   alt: string
+  weather?: WeatherType
   onMove: (location: TownLocation) => void
 }
 
-const TownMap = ({ map, alt, onMove }: Props) => {
+const TownMap = ({ map, alt, weather, onMove }: Props) => {
   const [highlighted, setHighlighted] = useState<TownMapBuilding | null>(null)
   const [isHovering, setIsHovering] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null)
-  // Rippling water, drifting clouds and seagulls
+  // Rippling water, drifting clouds and seagulls, with rain or fog on bad days
   const ambienceRef = useAmbienceCanvas(
     imageRef,
     createTownMapRenderer,
     [map.desktop.waterMask, map.desktop.skyMask],
-    [map.mobile.waterMask, map.mobile.skyMask]
+    {
+      mobileMasks: [map.mobile.waterMask, map.mobile.skyMask],
+      uniforms: getWeatherAmbience(weather),
+    }
   )
 
   const mask = highlighted

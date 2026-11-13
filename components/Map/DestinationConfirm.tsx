@@ -7,10 +7,15 @@ import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { NATIONS, TOWNS } from "@/constants/locations"
 import { cn } from "@/lib/utils"
-import { getJourneyLength, getJourneySupplies } from "@/utils/journey"
+import {
+  getDistanceKm,
+  getJourneyLength,
+  getJourneySupplies,
+} from "@/utils/journey"
 
 type Props = {
   player: Player
+  origin: Town
   destination: Town
   isPending: boolean
   onConfirm: () => void
@@ -37,12 +42,14 @@ const NationRelationBadge = ({
 
 const DestinationConfirm = ({
   player,
+  origin,
   destination,
   isPending,
   onConfirm,
   onCancel,
 }: Props) => {
-  const days = getJourneyLength(player.character.town, destination)
+  const days = getJourneyLength(origin, destination)
+  const km = getDistanceKm(origin, destination)
   const supplies = getJourneySupplies(player, days)
   const townNation = TOWNS[destination].nation
   const rows = [
@@ -84,6 +91,7 @@ const DestinationConfirm = ({
 
             <p className="text-muted-foreground text-sm">
               {days} {days === 1 ? "day" : "days"} at sea
+              {` · ${km.toLocaleString("en-GB")} km`}
             </p>
           </div>
         </div>

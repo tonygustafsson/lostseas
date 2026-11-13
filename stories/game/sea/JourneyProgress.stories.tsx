@@ -2,9 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import JourneyProgress from "@/components/location/Sea/JourneyProgress"
 import { TOWNS } from "@/constants/locations"
-
-import { player } from "../../fixtures"
-import PlayerPreview from "../../PlayerPreview"
+import { WEATHER_NAMES } from "@/utils/weather"
 
 const towns = Object.keys(TOWNS)
 
@@ -19,24 +17,17 @@ const meta = {
       totalDays: 6,
     },
     day: 15,
+    weather: "partlySunny",
   },
   argTypes: {
     day: { control: { type: "number", min: 1 } },
+    weather: { control: "radio", options: Object.keys(WEATHER_NAMES) },
   },
   decorators: [
-    // The weather icon reads the day from the player, so it follows the arg
-    (Story, context) => (
-      <PlayerPreview
-        key={context.args.day}
-        data={{
-          ...player,
-          character: { ...player.character, day: context.args.day },
-        }}
-      >
-        <div className="max-w-md">
-          <Story />
-        </div>
-      </PlayerPreview>
+    (Story) => (
+      <div className="max-w-md">
+        <Story />
+      </div>
     ),
   ],
 } satisfies Meta<typeof JourneyProgress>
@@ -60,6 +51,10 @@ export const ArrivingToday: Story = {
   },
 }
 
+export const Rainy: Story = { args: { weather: "rainy" } }
+
+export const Foggy: Story = { args: { weather: "foggy" } }
+
 // Nothing is shown in port
 export const NoJourney: Story = { args: { journey: undefined } }
 
@@ -71,6 +66,7 @@ export const Destinations: Story = {
         <JourneyProgress
           key={town}
           day={args.day}
+          weather={args.weather}
           journey={{ ...args.journey!, destination: town as Town }}
         />
       ))}

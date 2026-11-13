@@ -14,6 +14,7 @@ export const player = {
     account: 1200,
     loan: 0,
     day: 12,
+    weather: "sunny",
   },
   ships: {
     endeavour: {
