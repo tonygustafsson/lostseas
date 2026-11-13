@@ -1,10 +1,10 @@
-import { CloudFog } from "lucide-react"
 import {
-  IoCloudyOutline,
-  IoPartlySunnyOutline,
-  IoRainyOutline,
-  IoSunnyOutline,
-} from "react-icons/io5"
+  PiCloudFogLight,
+  PiCloudLight,
+  PiCloudRainLight,
+  PiCloudSunLight,
+  PiSunLight,
+} from "react-icons/pi"
 
 type Props = {
   weather: WeatherType
@@ -12,11 +12,11 @@ type Props = {
 }
 
 const ICONS = {
-  rainy: IoRainyOutline,
-  foggy: CloudFog,
-  partlySunny: IoPartlySunnyOutline,
-  cloudy: IoCloudyOutline,
-  sunny: IoSunnyOutline,
+  rainy: PiCloudRainLight,
+  foggy: PiCloudFogLight,
+  partlySunny: PiCloudSunLight,
+  cloudy: PiCloudLight,
+  sunny: PiSunLight,
 }
 
 const WeatherIcon = ({ weather, className }: Props) => {
