@@ -531,7 +531,7 @@ const SeaMapCanvas = ({
     <div
       ref={viewportRef}
       className={cn(
-        "relative mx-auto aspect-850/540 w-full touch-none overflow-clip bg-neutral-700 opacity-80 lg:max-w-7xl portrait:aspect-auto portrait:h-[calc(95dvh-8rem)]",
+        "relative mx-auto aspect-850/540 w-full touch-none overflow-clip bg-neutral-700 opacity-80 lg:max-w-7xl portrait:aspect-auto portrait:h-[calc(100dvh-10.5rem-env(safe-area-inset-bottom))]",
         !isAtSea && "cursor-grab active:cursor-grabbing",
         className
       )}
