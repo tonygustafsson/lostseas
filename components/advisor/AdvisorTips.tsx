@@ -103,7 +103,7 @@ const AdvisorTips = ({ heading, title, showAllClear, destination }: Props) => {
     <div className="bg-background/50 flex flex-col gap-6 rounded-lg border p-4 sm:p-6">
       <div className="flex items-center gap-4">
         <Image
-          src="/img/parrot.svg"
+          src="/img/parrot.png"
           alt="Parrot"
           width={100}
           height={100}

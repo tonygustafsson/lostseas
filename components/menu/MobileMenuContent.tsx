@@ -46,7 +46,7 @@ const MobileMenuContent = ({ onClose }: Props) => {
           <MobileMenuItem
             icon={
               <Image
-                src="/img/parrot.svg"
+                src="/img/parrot.png"
                 alt=""
                 width={20}
                 height={20}

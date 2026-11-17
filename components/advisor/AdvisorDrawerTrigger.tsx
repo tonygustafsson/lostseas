@@ -28,7 +28,7 @@ const AdvisorDrawerTrigger = ({ onClick, className }: Props) => {
       className={className}
     >
       <Image
-        src="/img/parrot.svg"
+        src="/img/parrot.png"
         alt="Parrot advisor"
         width={20}
         height={20}

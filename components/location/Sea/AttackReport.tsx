@@ -50,7 +50,7 @@ const AttackReport = () => {
         )}
       >
         <Image
-          src="/img/parrot.svg"
+          src="/img/parrot.png"
           alt="Parrot"
           width={100}
           height={100}
