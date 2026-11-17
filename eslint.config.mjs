@@ -54,6 +54,7 @@ const eslintConfig = defineConfig([
     ".storybook/public/**",
     "output/playwright/**",
     ".playwright-cli/**",
+    ".playwright-mcp/**",
     "next-env.d.ts",
   ]),
 ])
