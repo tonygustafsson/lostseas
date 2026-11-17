@@ -38,7 +38,7 @@ const SeaEventDialog = () => {
         onEscapeKeyDown={(event) => event.preventDefault()}
         onInteractOutside={(event) => event.preventDefault()}
         className={cn(
-          "max-h-[90dvh] gap-4 overflow-y-auto p-6 sm:max-w-xl",
+          "max-h-[90dvh] gap-4 overflow-y-auto p-6 pb-8 sm:max-w-xl",
           hasAttackReport &&
             (isVictory
               ? "shadow-success/25 shadow-2xl"

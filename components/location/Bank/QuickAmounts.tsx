@@ -17,6 +17,7 @@ type Props = {
   description?: string
   verb: string
   max: number
+  amounts?: number[]
   emptyMessage: string
   disabled?: boolean
   onSelect: (amount: number) => void
@@ -28,6 +29,7 @@ const QuickAmounts = ({
   description,
   verb,
   max,
+  amounts,
   emptyMessage,
   disabled,
   onSelect,
@@ -50,7 +52,22 @@ const QuickAmounts = ({
         </div>
       </div>
 
-      {max > 0 ? (
+      {max > 0 && amounts ? (
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {amounts.map((amount) => (
+            <Button
+              key={amount}
+              variant="secondary"
+              className="h-auto py-3 font-serif text-base font-semibold tabular-nums hover:brightness-125"
+              aria-label={`${verb} ${formatGold(amount)}`}
+              disabled={disabled || amount > max}
+              onClick={() => onSelect(amount)}
+            >
+              {formatGold(amount)}
+            </Button>
+          ))}
+        </div>
+      ) : max > 0 ? (
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {SHARES.map(({ label, share }) => {
             const amount = Math.floor(max * share)

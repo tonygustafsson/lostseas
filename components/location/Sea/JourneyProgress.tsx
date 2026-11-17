@@ -19,7 +19,7 @@ const JourneyProgress = ({ journey, day, weather }: Props) => {
   const percentage = (journey.day / journey.totalDays) * 100
 
   return (
-    <div className="border-sea/40 bg-background/90 flex items-center gap-4 rounded-lg border px-4 py-2 backdrop-blur-sm">
+    <div className="border-sea/40 bg-background/90 flex w-80 max-w-full items-center gap-4 rounded-lg border px-4 py-2 backdrop-blur-sm">
       <div className="relative size-12 shrink-0">
         <RadialProgressBar
           startPercentage={startPercentage}

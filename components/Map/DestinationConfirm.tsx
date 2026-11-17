@@ -74,7 +74,7 @@ const DestinationConfirm = ({
     <div className="absolute inset-x-4 top-1/2 mx-auto max-w-md -translate-y-1/2">
       <div className="gilded-frame animate-in fade-in-0 slide-in-from-bottom-4 flex flex-col overflow-hidden rounded-lg duration-200">
         {/* Inset to sit inside the gold line of the frame */}
-        <div className="relative m-2 mb-0 aspect-5/2 overflow-hidden rounded-t-sm">
+        <div className="relative m-2 mb-0 aspect-2/1 overflow-hidden rounded-t-sm">
           <Image
             src={getTownMapSrc(destination, "desktop")}
             alt=""

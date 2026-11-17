@@ -11,7 +11,7 @@ type Props = {
 }
 
 const LocationActions = ({ location }: Props) => (
-  <div className="mt-8">
+  <div className={location === "Sea" ? undefined : "mt-8"}>
     {location === "Shop" && <Shop />}
     {location === "Bank" && <Bank />}
     {location === "Market" && <Market />}

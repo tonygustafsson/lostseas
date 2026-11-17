@@ -19,7 +19,7 @@ const meta = {
   component: DestinationConfirm,
   decorators: [
     (Story) => (
-      <div className="relative h-96">
+      <div className="relative h-160">
         <Story />
       </div>
     ),

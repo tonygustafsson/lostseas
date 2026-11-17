@@ -14,6 +14,7 @@ import { getRouteLength, getSeaRoute, type Point } from "@/utils/seaRoutes"
 
 import {
   DEFAULT_MAP_ZOOM_LEVEL,
+  DEFAULT_SEA_MAP_ZOOM_LEVEL,
   MAP_DETAIL_SCALE,
   MAP_HEIGHT,
   MAP_IMAGE_HEIGHT,
@@ -103,8 +104,11 @@ const SeaMapCanvas = ({
   )
   const camera = useRef({ ...MAP_CENTER, scale: 1, scaleY: 1 })
   // The draw loop reads the zoom from a ref, so zooming doesn't restart it
-  const [zoomLevel, setZoomLevel] = useState(DEFAULT_MAP_ZOOM_LEVEL)
-  const zoom = useRef(MAP_ZOOM_LEVELS[DEFAULT_MAP_ZOOM_LEVEL])
+  const defaultZoomLevel = journey
+    ? DEFAULT_SEA_MAP_ZOOM_LEVEL
+    : DEFAULT_MAP_ZOOM_LEVEL
+  const [zoomLevel, setZoomLevel] = useState(defaultZoomLevel)
+  const zoom = useRef(MAP_ZOOM_LEVELS[defaultZoomLevel])
   const maxZoomLevel = useIsMobile()
     ? MAP_ZOOM_LEVELS.length - 1
     : MAX_DESKTOP_MAP_ZOOM_LEVEL
@@ -531,7 +535,7 @@ const SeaMapCanvas = ({
     <div
       ref={viewportRef}
       className={cn(
-        "relative mx-auto aspect-850/540 w-full touch-none overflow-clip bg-neutral-700 opacity-80 lg:max-w-7xl portrait:aspect-auto portrait:h-[calc(100dvh-10.5rem-env(safe-area-inset-bottom))]",
+        "relative mx-auto aspect-850/540 w-full touch-none overflow-clip bg-neutral-700 opacity-80 lg:max-w-7xl portrait:aspect-auto portrait:h-[calc(100dvh-9rem-env(safe-area-inset-bottom))]",
         !isAtSea && "cursor-grab active:cursor-grabbing",
         className
       )}

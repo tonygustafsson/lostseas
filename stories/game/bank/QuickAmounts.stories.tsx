@@ -26,6 +26,7 @@ const meta = {
     icon: { control: "select", options: Object.keys(icons), mapping: icons },
     description: { control: "text" },
     max: { control: { type: "number", min: 0 } },
+    amounts: { control: "object" },
   },
   decorators: [
     (Story) => (
@@ -58,3 +59,13 @@ export const SmallAmount: Story = { args: { max: 3 } }
 export const Empty: Story = { args: { max: 0 } }
 
 export const Disabled: Story = { args: { disabled: true } }
+
+// Fixed sums, like the bank's loans. Sums above max can't be picked
+export const FixedAmounts: Story = {
+  args: {
+    title: "Take a loan",
+    verb: "Borrow",
+    max: 5000,
+    amounts: [2500, 5000, 7500, 10000],
+  },
+}

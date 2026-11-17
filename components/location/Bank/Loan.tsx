@@ -1,7 +1,7 @@
 "use client"
 import { BadgeCheck, ScrollText } from "lucide-react"
 
-import { LOAN_LIMIT } from "@/constants/bank"
+import { LOAN_AMOUNTS, LOAN_LIMIT } from "@/constants/bank"
 import { useBank } from "@/hooks/queries/useBank"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { formatGold } from "@/utils/number"
@@ -32,6 +32,7 @@ const BankLoan = () => {
         title="Take a loan"
         verb="Borrow"
         max={LOAN_LIMIT - debt}
+        amounts={LOAN_AMOUNTS}
         emptyMessage="You have reached the loan limit."
         disabled={isLoaning}
         onSelect={(amount) => loan({ amount })}

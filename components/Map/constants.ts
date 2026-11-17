@@ -10,6 +10,8 @@ export const MAP_ZOOM = 1.3125
 // earlier if the map would no longer cover the view.
 export const MAP_ZOOM_LEVELS = [0.75, 1, 1.25, 1.5, 2]
 export const DEFAULT_MAP_ZOOM_LEVEL = MAP_ZOOM_LEVELS.indexOf(1)
+// While sailing there is nothing to pick, so the map starts closer in
+export const DEFAULT_SEA_MAP_ZOOM_LEVEL = MAP_ZOOM_LEVELS.indexOf(1.25)
 // Small screens get the last step too, since the towns are tiny on them
 export const MAX_DESKTOP_MAP_ZOOM_LEVEL = MAP_ZOOM_LEVELS.indexOf(1.5)
 // Towns, the ship, fish and routes are drawn in map units, so they grow with

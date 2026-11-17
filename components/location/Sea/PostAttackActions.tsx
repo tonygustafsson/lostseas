@@ -13,7 +13,7 @@ const PostAttackActions = () => {
   return (
     <Button
       size="lg"
-      className="my-2 w-full"
+      className="mt-2 w-full"
       disabled={isContinueingJourney}
       onClick={handleContinueJourney}
     >
