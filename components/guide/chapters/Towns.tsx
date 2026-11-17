@@ -1,4 +1,6 @@
 import { NATIONS, TOWNS } from "@/constants/locations"
+import { getTownName } from "@/utils/location"
+import { getNationName } from "@/utils/location"
 
 import GuideChapter from "../GuideChapter"
 
@@ -77,10 +79,20 @@ const Towns = () => (
     <ul>
       {Object.keys(NATIONS).map((nation) => (
         <li key={nation}>
-          <strong>{nation}:</strong>{" "}
-          {(Object.keys(TOWNS) as Town[])
-            .filter((town) => TOWNS[town].nation === nation)
-            .join(", ")}
+          <strong>{getNationName(nation as Nation)}</strong>
+
+          <ul>
+            {(Object.keys(TOWNS) as Town[])
+              .filter((town) => TOWNS[town].nation === nation)
+              .map((town) => (
+                <li key={town}>
+                  {getTownName(town)}{" "}
+                  <span className="text-muted-foreground">
+                    ({TOWNS[town].summary})
+                  </span>
+                </li>
+              ))}
+          </ul>
         </li>
       ))}
     </ul>

@@ -1,3 +1,5 @@
+import { getNationName } from "@/utils/location"
+
 import { createTreasure } from "./createTreasure"
 import { createWantedPirate } from "./createWantedPirate"
 import { increaseCrewMood } from "./crew"
@@ -95,8 +97,8 @@ export const getVictoryUpdate = (
     log: {
       type: "victory",
       message: capturedPirate
-        ? `Won a battle against ${opponentNation}; looted ${lootedGold} gold and captured the wanted pirate ${capturedPirate.name}.`
-        : `Won a battle against ${opponentNation}; looted ${lootedGold} gold.`,
+        ? `Won a battle against ${getNationName(opponentNation)}; looted ${lootedGold} gold and captured the wanted pirate ${capturedPirate.name}.`
+        : `Won a battle against ${getNationName(opponentNation)}; looted ${lootedGold} gold.`,
     } satisfies GameLog,
   }
 }
@@ -165,7 +167,7 @@ export const getDefeatUpdate = (
     report,
     log: {
       type: "defeat",
-      message: `Lost a battle against ${opponentNation}; crew health loss ${report.crewHealthLoss}.`,
+      message: `Lost a battle against ${getNationName(opponentNation)}; crew health loss ${report.crewHealthLoss}.`,
     } satisfies GameLog,
   }
 }

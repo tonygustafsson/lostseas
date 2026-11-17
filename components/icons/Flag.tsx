@@ -1,3 +1,5 @@
+import { getNationName } from "@/utils/location"
+
 type Props = {
   nation: (Nation | "Pirate") | undefined
   size?: number
@@ -17,15 +19,17 @@ const Flag = ({ nation, size = 32, className, decorative }: Props) => {
       viewBox="0 0 640 480"
       width={size}
       height={size}
-      aria-label={decorative ? undefined : nation}
+      aria-label={decorative ? undefined : getNationName(nation)}
       aria-hidden={decorative}
       className={className}
     >
       {nation === "England" && (
         <>
-          <path fill="#fff" d="M0 0h640v480H0z" />
-          <path fill="#ce1124" d="M281.6 0h76.8v480h-76.8z" />
-          <path fill="#ce1124" d="M0 201.6h640v76.8H0z" />
+          {/* The Union flag of 1707, before the cross of St Patrick */}
+          <path fill="#012169" d="M0 0h640v480H0z" />
+          <path stroke="#fff" strokeWidth="96" d="m0 0 640 480M640 0 0 480" />
+          <path fill="#fff" d="M240 0h160v480H240zM0 160h640v160H0z" />
+          <path fill="#c8102e" d="M272 0h96v480h-96zM0 192h640v96H0z" />
         </>
       )}
 

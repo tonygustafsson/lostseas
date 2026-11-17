@@ -22,10 +22,10 @@ vi.mock("@/constants/npcs", async (importOriginal) => {
   })
 
   const npcs = [
-    npc("catalina", "Catalina Ruiz", "Havana", "market"),
-    npc("tom", "Tom Pickering", "Port Royale", "tavern"),
-    npc("margot", "Margot Lefèvre", "Tortuga", "tavern"),
-    npc("isabel", "Isabel Navarro", "Villa Hermosa", "market"),
+    npc("catalina", "Catalina Ruiz", "havana", "market"),
+    npc("tom", "Tom Pickering", "kingston", "tavern"),
+    npc("margot", "Margot Lefèvre", "cap-francais", "tavern"),
+    npc("isabel", "Isabel Navarro", "campeche", "market"),
   ]
 
   return {
@@ -70,9 +70,7 @@ describe("getQuestObjective", () => {
         item: "rum",
         quantity: 40,
       })
-    ).toBe(
-      "Bring 40 barrels of rum to Tom Pickering, the tavern in Port Royale"
-    )
+    ).toBe("Bring 40 barrels of rum to Tom Pickering, the tavern in Kingston")
   })
 
   it("describes a message chain step", () => {
@@ -83,7 +81,7 @@ describe("getQuestObjective", () => {
         stepNpcIds: ["margot", "catalina", "isabel"],
         step: 0,
       })
-    ).toBe("Speak to Margot Lefèvre, the tavern in Tortuga (step 1 of 3)")
+    ).toBe("Speak to Margot Lefèvre, the tavern in Cap-Français (step 1 of 3)")
   })
 
   it("sends the player back to the giver on the last chain step", () => {
@@ -94,7 +92,7 @@ describe("getQuestObjective", () => {
         stepNpcIds: ["margot", "catalina", "isabel"],
         step: 2,
       })
-    ).toBe("Return to Isabel Navarro, the market in Villa Hermosa")
+    ).toBe("Return to Isabel Navarro, the market in Campeche")
   })
 
   it("describes a missing person search", () => {
@@ -104,7 +102,7 @@ describe("getQuestObjective", () => {
         type: "findPerson",
         personName: "Diego Navarro",
         nation: "Spain",
-        hiddenTown: "Havana",
+        hiddenTown: "havana",
       })
     ).toBe("Find Diego Navarro somewhere in Spain's towns")
   })
@@ -116,9 +114,9 @@ describe("getQuestObjective", () => {
         type: "findPerson",
         personName: "Diego Navarro",
         nation: "Spain",
-        hiddenTown: "Havana",
+        hiddenTown: "havana",
         found: true,
       })
-    ).toBe("Return to Isabel Navarro, the market in Villa Hermosa")
+    ).toBe("Return to Isabel Navarro, the market in Campeche")
   })
 })

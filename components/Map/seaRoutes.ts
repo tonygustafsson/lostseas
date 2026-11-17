@@ -3,7 +3,9 @@ import { getRouteLength, getSeaRoute, type Point } from "@/utils/seaRoutes"
 
 import { TOWN_ANCHOR_SIZE, TOWN_ICON_SIZE } from "./constants"
 
-// The square the town icon covers, standing on the town's location
+// The circle inside the square the town icon covers, standing on the town's
+// location. The art leaves the corners of the square empty, so a route that
+// stopped there would seem to miss the town.
 const getTownIcon = (town: Town) => {
   const { x, y } = TOWNS[town].map
   const half = TOWN_ICON_SIZE / 2
@@ -17,7 +19,7 @@ const getTownIcon = (town: Town) => {
 const isOnTownIcon = (town: Town, { x, y }: Point) => {
   const { centre, half } = getTownIcon(town)
 
-  return Math.abs(x - centre.x) <= half && Math.abs(y - centre.y) <= half
+  return Math.hypot(x - centre.x, y - centre.y) <= half
 }
 
 // Where a line from a point towards the town meets the edge of its icon
@@ -25,7 +27,7 @@ export const getTownIconEdge = (town: Town, from: Point): Point => {
   const { centre, half } = getTownIcon(town)
   const dx = from.x - centre.x
   const dy = from.y - centre.y
-  const scale = half / Math.max(Math.abs(dx), Math.abs(dy), half)
+  const scale = half / Math.max(Math.hypot(dx, dy), half)
 
   return { x: centre.x + dx * scale, y: centre.y + dy * scale }
 }

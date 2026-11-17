@@ -8,7 +8,7 @@ const meta = {
   title: "game/Townsfolk/TypewriterText",
   component: TypewriterText,
   args: {
-    text: "Three days out of Tortuga the cook swore the fog was following us. By the fifth day it had started asking for rum.",
+    text: "Three days out of Nassau the cook swore the fog was following us. By the fifth day it had started asking for rum.",
     charactersPerSecond: 100,
     onDone: fn(),
   },

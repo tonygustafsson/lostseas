@@ -1,4 +1,4 @@
-import { TOWNS } from "@/constants/locations"
+import { NATIONS, TOWNS } from "@/constants/locations"
 
 export const getTownsNationality = (
   town: Town | undefined
@@ -7,6 +7,16 @@ export const getTownsNationality = (
 
   return TOWNS[town].nation
 }
+
+// England is kept as the stored key, but shown as Great Britain
+export const getNationName = (nation: Nation | "Pirate") =>
+  nation === "Pirate" ? nation : NATIONS[nation].name
+
+export const getTownName = (town: Town | undefined) =>
+  town ? TOWNS[town].name : ""
+
+export const isTown = (value: unknown): value is Town =>
+  typeof value === "string" && Object.hasOwn(TOWNS, value)
 
 export const getNationTowns = (nation: Nation) =>
   (Object.keys(TOWNS) as Town[]).filter((town) => TOWNS[town].nation === nation)
@@ -23,7 +33,7 @@ export const toSlug = (value: string) =>
 export const getLocationBackground = (
   town: Character["town"],
   location: Character["location"]
-) => `/img/location/${town && toSlug(town)}/${toSlug(location)}.png`
+) => `/img/location/${town}/${toSlug(location)}.png`
 
 export type LocationAmbience = {
   sky: string
@@ -38,7 +48,7 @@ export const getLocationAmbience = (
 ): LocationAmbience | undefined => {
   if (!town) return undefined
 
-  const path = `${toSlug(town)}/${toSlug(location)}.png`
+  const path = `${town}/${toSlug(location)}.png`
 
   return {
     sky: `/img/location-sky-masks/${path}`,

@@ -86,22 +86,22 @@ export const POMPOUS: DialogueEntry[] = [
     text: "Do you have news from Europe, {title}? My last letters are four months old and smell of bilge.",
     answers: [
       {
-        text: "The war in Germany is still going.",
+        text: "The war in the north is still going.",
         replies: [
-          "Still? It has been more than twenty years. Somebody should tell them it is no longer fashionable.",
-          "Dreadful business. Half the princes of Germany cannot remember which side they are on, and the other half have switched twice.",
+          "Still? It has been fifteen years. Somebody should tell them it is no longer fashionable.",
+          "Dreadful business. Half the princes of the north cannot remember which side they are on, and the other half have switched twice.",
           "I suspected as much. Wars in Europe are like my dinners, they go on far longer than anyone wanted.",
           "Then the crown will be too busy to read my letters. Again.",
           "Pity. I had placed a small wager on it being over by Michaelmas.",
         ],
       },
       {
-        text: "There is trouble in Catalonia and Portugal.",
+        text: "There is trouble brewing in Scotland.",
         replies: [
-          "Rebellion in Catalonia? Philip IV must be beside himself. I do so enjoy another man's troubles.",
-          "Portugal restless? Unrest in someone else's kingdom always makes my own colony look orderly.",
+          "Rebellion in Scotland? King George must be beside himself. I do so enjoy another man's troubles.",
+          "The Scots restless? Unrest in someone else's kingdom always makes my own colony look orderly.",
           "Hm. I shall write a stern letter about it. To whom, I have not decided.",
-          "Catalonia. Yes. I have always found it a very argumentative place on maps.",
+          "Scotland. Yes. I have always found it a very argumentative place on maps.",
           "These are dangerous times. I have doubled the guard on my wine cellar.",
         ],
       },
@@ -207,7 +207,7 @@ export const POMPOUS: DialogueEntry[] = [
   },
   {
     id: "pompous-12",
-    text: "Cardinal Richelieu writes his letters in cipher. I have started doing the same, so that nobody can read mine. Including, unfortunately, me.",
+    text: "Every minister in Europe writes his letters in cipher. I have started doing the same, so that nobody can read mine. Including, unfortunately, me.",
   },
   {
     id: "pompous-13",
@@ -335,7 +335,7 @@ export const POMPOUS: DialogueEntry[] = [
   },
   {
     id: "pompous-20",
-    text: "When Piet Heyn took the Spanish silver fleet, every governor in the Indies doubled his guard. I tripled mine. I am that much more important.",
+    text: "When the Spanish plate fleet was wrecked off Florida, every governor in the Indies doubled his guard. I tripled mine. I am that much more important.",
   },
   {
     id: "pompous-21",
@@ -467,7 +467,7 @@ export const POMPOUS: DialogueEntry[] = [
   },
   {
     id: "pompous-29",
-    text: "I am told buccaneers roam the coast of Hispaniola. Have you dealt with such people, {title}?",
+    text: "I am told pirates gather at Nassau now. Have you dealt with such people, {title}?",
     answers: [
       {
         text: "Never.",
@@ -482,7 +482,7 @@ export const POMPOUS: DialogueEntry[] = [
       {
         text: "I had lunch with some.",
         replies: [
-          "Lunch? With buccaneers? What did they serve?",
+          "Lunch? With pirates? What did they serve?",
           "And you survived? Did they at least use a napkin?",
           "Do not tell my secretary. He faints at the word.",
           "I suppose even savages must eat. Was the wine any good?",
@@ -547,7 +547,7 @@ export const POMPOUS: DialogueEntry[] = [
   },
   {
     id: "pompous-33",
-    text: "Philip IV has a palace full of fine paintings. I have one portrait and a damp patch shaped like Sicily. We make do.",
+    text: "Philip V has a palace full of fine paintings. I have one portrait and a damp patch shaped like Sicily. We make do.",
   },
   {
     id: "pompous-34",
@@ -727,7 +727,7 @@ export const POMPOUS: DialogueEntry[] = [
   },
   {
     id: "pompous-46",
-    text: "News reached me that King Charles quarrels with his Parliament. Imagine a ruler asking permission. I shudder.",
+    text: "News reached me that King George must ask his Parliament for money. Imagine a ruler asking permission. I shudder.",
   },
   {
     id: "pompous-47",

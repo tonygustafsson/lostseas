@@ -1,5 +1,5 @@
-// Brings the sea map to life with WebGL: small wave crests rolling over the
-// water, and the weather drifting over the whole map in a few clouds, a light
+// Brings the sea map to life with WebGL: a blue tint and small wave crests
+// rolling over the water, and the weather drifting over the whole map in a few clouds, a light
 // rain or a thin fog. The image itself is never displaced, so the ink lines
 // and labels stay crisp.
 
@@ -28,6 +28,13 @@ const float WAVE_SPEED = 0.75;
 
 // How far from land, in map units, the waves start to fade out
 const float COAST_MARGIN = 12.0;
+
+// The water is tinted blue. Multiplied in, so ink lines and labels on the sea
+// stay dark.
+const vec3 SEA_TINT = vec3(0.7, 0.84, 1.0);
+const float SEA_TINT_STRENGTH = 0.6;
+// Map units the tint blends over at the coast, so the mask's pixels don't show
+const float SEA_TINT_BLUR = 1.5;
 
 // Crests roll diagonally and are broken into short strokes that come and go.
 // A pale crest with a darker trough behind it reads on light parchment.
@@ -59,6 +66,20 @@ float openWater(vec2 uv) {
   }
 
   return smoothstep(0.75, 1.0, sum / 16.0);
+}
+
+// The share of water right around uv, for a soft edge to the tint
+float softWater(vec2 uv) {
+  float sum = texture2D(u_water, uv).r;
+
+  for (int i = 0; i < 8; i++) {
+    float angle = float(i) * 0.785398;
+    vec2 direction = vec2(cos(angle), sin(angle)) / u_size;
+
+    sum += texture2D(u_water, uv + direction * SEA_TINT_BLUR).r;
+  }
+
+  return sum / 9.0;
 }
 
 // A few soft clouds drifting over the map, each with its shadow a little below
@@ -96,6 +117,8 @@ void main() {
 
   // The mask is opaque black and white, white is water
   float water = texture2D(u_water, v_uv).r;
+
+  color = mix(color, color * SEA_TINT, softWater(v_uv) * SEA_TINT_STRENGTH);
 
   if (water > 0.5) {
     color = mix(color, waves(color, p), openWater(v_uv));

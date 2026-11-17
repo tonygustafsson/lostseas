@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import { getJourneyLength } from "@/utils/journey"
 
 import {
+  MAP_DETAIL_SCALE,
   MAP_ZOOM,
   mapColorVariables,
   TOWN_ANCHOR_SIZE,
@@ -16,14 +17,14 @@ import {
   TOWN_IMAGE_WIDTH,
 } from "./constants"
 
-const TOWN_HIT_PADDING = 6
-const FLAG_SIZE = 8
+const TOWN_HIT_PADDING = 6 * MAP_DETAIL_SCALE
+const FLAG_SIZE = 8 * MAP_DETAIL_SCALE
 const LABEL_FONT_SIZE = 11 / MAP_ZOOM
 const LABEL_LINE_HEIGHT = 13 / MAP_ZOOM
-const LABEL_PADDING_X = 3
-const LABEL_PADDING_Y = 1
+const LABEL_PADDING_X = 3 * MAP_DETAIL_SCALE
+const LABEL_PADDING_Y = 1 * MAP_DETAIL_SCALE
 const LABEL_HEIGHT = LABEL_LINE_HEIGHT + LABEL_PADDING_Y * 2
-const LABEL_GAP = 2
+const LABEL_GAP = 2 * MAP_DETAIL_SCALE
 // Where the icon's bottom and right edges are inside the button
 const ICON_EDGE = TOWN_HIT_PADDING + TOWN_SIZE
 
@@ -64,13 +65,15 @@ const SeaMapTowns = ({
     const distance =
       currentTown && !isCurrentTown ? getJourneyLength(currentTown, town) : 0
     const isOutOfReach = distance > suppliesDays
+    const isLabelBelow = textAlign !== "right" && textAlign !== "left"
+    const name = TOWNS[town].name
 
     return (
       <button
         key={town}
         type="button"
         disabled={!canSelectTown}
-        aria-label={isCurrentTown ? `${town}, current town` : `Sail to ${town}`}
+        aria-label={isCurrentTown ? `${name}, current town` : `Sail to ${name}`}
         className="group absolute flex items-center justify-center outline-offset-2 focus-visible:outline-2 enabled:cursor-pointer disabled:pointer-events-none"
         style={{
           left: location.x - TOWN_SIZE / 2 - TOWN_HIT_PADDING,
@@ -104,19 +107,28 @@ const SeaMapTowns = ({
           className={cn(
             "pointer-events-none absolute flex items-center gap-0.5 whitespace-nowrap text-white",
             // Centred under the icon, whatever the length of the name
-            textAlign !== "right" && "left-1/2 -translate-x-1/2",
+            isLabelBelow && "left-1/2 -translate-x-1/2",
+            // The map grows with wide screens, so desktop labels are scaled
+            // back, keeping the edge that touches the icon in place
+            "lg:scale-80",
+            isLabelBelow
+              ? "origin-top"
+              : textAlign === "right"
+                ? "origin-left"
+                : "origin-right",
             // Dark text, since white is hard to read on the light grey label
             isOutOfReach && !isCurrentTown && "text-background"
           )}
           style={{
             left: textAlign === "right" ? ICON_EDGE + LABEL_GAP : undefined,
-            top:
-              textAlign === "right"
-                ? TOWN_HIT_PADDING + (TOWN_SIZE - LABEL_HEIGHT) / 2
-                : ICON_EDGE + LABEL_GAP,
+            right: textAlign === "left" ? ICON_EDGE + LABEL_GAP : undefined,
+            top: isLabelBelow
+              ? ICON_EDGE + LABEL_GAP
+              : TOWN_HIT_PADDING + (TOWN_SIZE - LABEL_HEIGHT) / 2,
             fontSize: LABEL_FONT_SIZE,
             lineHeight: `${LABEL_LINE_HEIGHT}px`,
-            padding: `${LABEL_PADDING_Y}px ${LABEL_PADDING_X}px`,
+            height: LABEL_HEIGHT,
+            paddingInline: LABEL_PADDING_X,
             backgroundColor: `var(${
               isCurrentTown
                 ? mapColorVariables.currentTownLabel
@@ -133,7 +145,10 @@ const SeaMapTowns = ({
             decorative
             className="shrink-0"
           />
-          {town}
+          {/* Trimmed to the letters, from the top of the capitals to the
+              baseline, so they are centred like the flag. Crimson Text leaves
+              room for deep descenders, which would lift them otherwise. */}
+          <span className="[text-box:trim-both_cap_alphabetic]">{name}</span>
         </span>
       </button>
     )

@@ -1,4 +1,4 @@
-export const START_DATE = new Date(1640, 0, 1)
+export const START_DATE = new Date(1715, 0, 1)
 
 export const getDateOfDay = (day: Character["day"]) => {
   const elapsedDays = Math.max(0, day - 1)
@@ -11,7 +11,7 @@ export const getDateOfDay = (day: Character["day"]) => {
 export const getCurrentDate = (day: Character["day"]) =>
   getDateOfDay(day).toDateString()
 
-// Written like a ship's log entry, eg "14 March 1640". The locale is fixed
+// Written like a ship's log entry, eg "14 March 1715". The locale is fixed
 // so server and client render the same text.
 export const getLogDate = (day: Character["day"]) =>
   getDateOfDay(day).toLocaleDateString("en-GB", {

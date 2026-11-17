@@ -1,13 +1,13 @@
 import "server-only"
 
 export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
-  "martinique-tavern-babette-garnier": [
+  "saint-pierre-tavern-babette-garnier": [
     {
-      id: "martinique-tavern-babette-garnier-1",
+      id: "saint-pierre-tavern-babette-garnier-1",
       text: "Sit, sit, {title}. Everyone who comes to Saint Pierre ends up at my bar sooner or later, and I hear everything they say on the way in.",
     },
     {
-      id: "martinique-tavern-babette-garnier-2",
+      id: "saint-pierre-tavern-babette-garnier-2",
       text: "Have you heard what the governor's wife said to the priest after Mass last Sunday?",
       answers: [
         {
@@ -16,7 +16,7 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
             "She said his sermon was so long her candle died of old age. Father Mathieu has not spoken to her since. Bliss for everyone.",
             "Lean closer. She told him she confesses every week so he never runs out of work. The man turned the colour of claret.",
             "She asked him to bless her new parrot. The parrot then repeated something it learnt from the governor. Half of {town} heard it.",
-            "Oh, I knew you had good taste. She told him the Company pays him too much for Latin nobody understands. True, but you do not say it in church.",
+            "Oh, I knew you had good taste. She told him the Crown pays him too much for Latin nobody understands. True, but you do not say it in church.",
             "She asked whether a sin committed in the tropics counts the same as one in France. He is still writing to Rome about it.",
           ],
         },
@@ -43,11 +43,11 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "martinique-tavern-babette-garnier-3",
+      id: "saint-pierre-tavern-babette-garnier-3",
       text: "My Jacques marched in the King's army for twelve years and died here of a fever and a bad oyster. I still say the oyster did more damage.",
     },
     {
-      id: "martinique-tavern-babette-garnier-4",
+      id: "saint-pierre-tavern-babette-garnier-4",
       text: "So, {title}, any news from {otherTown}? I pay for good stories in rum.",
       answers: [
         {
@@ -77,17 +77,17 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
             "I have heard sillier things about {otherTown}, but not many. Have a small rum, for effort.",
             "If that is true, their tavern keeper must be furious. Goats are terrible tippers.",
             "Do not laugh, {title}. In my trade, a story like that travels faster than the truth. It will be round the island by Sunday.",
-            "I shall tell the Company men. They will send a tax collector to count the goats, and good riddance to him.",
+            "I shall tell the intendant's men. They will send a tax collector to count the goats, and good riddance to him.",
           ],
         },
       ],
     },
     {
-      id: "martinique-tavern-babette-garnier-5",
+      id: "saint-pierre-tavern-babette-garnier-5",
       text: "They say the {enemyAdjective} have spies in every French port. Nonsense. If there were a spy in Saint Pierre, I would know his mother's maiden name by Tuesday.",
     },
     {
-      id: "martinique-tavern-babette-garnier-6",
+      id: "saint-pierre-tavern-babette-garnier-6",
       text: "Tell me honestly, {name}. Married? Courting? Running from someone? I only ask so I know which story to tell about you.",
       answers: [
         {
@@ -123,18 +123,18 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "martinique-tavern-babette-garnier-7",
-      text: "If you hear anything about the Company of the Islands and our dear Governor Aubert, bring it to me first. Before the planters. Before the priest. Before God, if you can manage it.",
+      id: "saint-pierre-tavern-babette-garnier-7",
+      text: "If you hear anything about the King's intendant and our dear Governor Aubert, bring it to me first. Before the planters. Before the priest. Before God, if you can manage it.",
     },
   ],
 
-  "martinique-market-etienne-boulanger": [
+  "saint-pierre-market-etienne-boulanger": [
     {
-      id: "martinique-market-etienne-boulanger-1",
+      id: "saint-pierre-market-etienne-boulanger-1",
       text: "Do not whistle near my stall, {title}. I mean it. The last man who whistled here bought a barrel of salt fish and drowned in a puddle within the week.",
     },
     {
-      id: "martinique-market-etienne-boulanger-2",
+      id: "saint-pierre-market-etienne-boulanger-2",
       text: "Before we trade, did you step into my stall with your left foot or your right?",
       answers: [
         {
@@ -170,11 +170,11 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "martinique-market-etienne-boulanger-3",
+      id: "saint-pierre-market-etienne-boulanger-3",
       text: "I lost a whole hold of cocoa off {nationTown} because a cabin boy whistled at a gull. The gull was fine. The cocoa was not. The cabin boy is now a priest, which is probably for the best.",
     },
     {
-      id: "martinique-market-etienne-boulanger-4",
+      id: "saint-pierre-market-etienne-boulanger-4",
       text: "Do you have any black cats on your ship? Ravens? A priest? Priests are the worst luck at sea, God forgive me for saying so.",
       answers: [
         {
@@ -210,11 +210,11 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "martinique-market-etienne-boulanger-5",
+      id: "saint-pierre-market-etienne-boulanger-5",
       text: "Every coin you hand me, I rub with salt first. Not because I distrust you, {title}. Because I distrust the coin.",
     },
     {
-      id: "martinique-market-etienne-boulanger-6",
+      id: "saint-pierre-market-etienne-boulanger-6",
       text: "Do you carry a charm against storms? Hurricane season is no time to sail without one.",
       answers: [
         {
@@ -250,22 +250,22 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "martinique-market-etienne-boulanger-7",
+      id: "saint-pierre-market-etienne-boulanger-7",
       text: "A woman in {town} told me Friday sailings are cursed. A man in {otherTown} told me Tuesday sailings are cursed. I have not left the island in six years.",
     },
   ],
 
-  "martinique-governor-bertrand-aubert": [
+  "saint-pierre-governor-bertrand-aubert": [
     {
-      id: "martinique-governor-bertrand-aubert-1",
-      text: "Welcome to {town}, {title}. I serve the Company of the Islands with every breath I take. Most of the breaths, at any rate.",
+      id: "saint-pierre-governor-bertrand-aubert-1",
+      text: "Welcome to {town}, {title}. I serve His Majesty with every breath I take. Most of the breaths, at any rate.",
     },
     {
-      id: "martinique-governor-bertrand-aubert-2",
+      id: "saint-pierre-governor-bertrand-aubert-2",
       text: "A captain hears things at sea, {name}. Tell me, what do the planters say about me?",
       answers: [
         {
-          text: "That you are a fair and loyal servant of the Company.",
+          text: "That you are a fair and loyal servant of the Crown.",
           replies: [
             "How kind of them. And how unlike them. Which planter said it? I should like to reward him. Or watch him.",
             "Loyal. Fair. Yes. You may repeat that wherever you go. Especially in Paris.",
@@ -297,11 +297,11 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "martinique-governor-bertrand-aubert-3",
-      text: "The Cardinal's people read every letter that leaves this island. Which is why I write two of each and send only the boring one.",
+      id: "saint-pierre-governor-bertrand-aubert-3",
+      text: "The Minister of Marine's clerks read every letter that leaves this island. Which is why I write two of each and send only the boring one.",
     },
     {
-      id: "martinique-governor-bertrand-aubert-4",
+      id: "saint-pierre-governor-bertrand-aubert-4",
       text: "Would you call yourself a discreet person, {title}?",
       answers: [
         {
@@ -311,7 +311,7 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
             "Good. Graves are reliable. Planters are not. Clerks are worse.",
             "Then one day I may have a small errand for you. Small, quiet and very well paid.",
             "I like that answer. I also like that it costs me nothing yet.",
-            "Silence is the finest currency in the islands, {title}. Better than livres, and the Company cannot tax it.",
+            "Silence is the finest currency in the islands, {title}. Better than livres, and the Crown cannot tax it.",
           ],
         },
         {
@@ -337,19 +337,19 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "martinique-governor-bertrand-aubert-5",
+      id: "saint-pierre-governor-bertrand-aubert-5",
       text: "This coat came out from Paris on a ship that the {enemyAdjective} chased halfway across the ocean. The coat arrived. The ship's captain did not. I find it best not to ask how.",
     },
     {
-      id: "martinique-governor-bertrand-aubert-6",
-      text: "If the Company asked you whether I keep honest books, {name}, what would you tell them?",
+      id: "saint-pierre-governor-bertrand-aubert-6",
+      text: "If the intendant asked you whether I keep honest books, {name}, what would you tell them?",
       answers: [
         {
           text: "That you are honesty itself.",
           replies: [
             "Beautifully said. You will go far in {town}. Not too far, though. I like to keep friends close.",
             "Honesty itself. I may have that carved over my door. In small letters.",
-            "Good. Practise saying it with a straight face. The Company's inspectors are very good at faces.",
+            "Good. Practise saying it with a straight face. The intendant's clerks are very good at faces.",
             "Thank you, {title}. You have just made a powerful friend, and a cheaper harbour fee.",
             "Excellent. And if they ask which books, you will look confused. That part comes naturally, I hope.",
           ],
@@ -369,7 +369,7 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
           replies: [
             "Ha! I shall take that as praise for my imagination, which is considerable.",
             "Fiction is such an ugly word. I prefer 'creative bookkeeping in the service of France'.",
-            "Say that to the Company and you will find your ship's papers have gone mysteriously missing.",
+            "Say that to the intendant and you will find your ship's papers have gone mysteriously missing.",
             "Clever tongue. I could use a clever tongue. I could also cut one out, but let us stay friends.",
             "Finest fiction. Yes. Better than anything they print in Paris, and far more profitable.",
           ],
@@ -377,18 +377,18 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "martinique-governor-bertrand-aubert-7",
+      id: "saint-pierre-governor-bertrand-aubert-7",
       text: "The {enemyAdjective} are our enemies, naturally. Officially. Unofficially, an enemy who buys sugar at a good price is merely a customer with a poor accent.",
     },
   ],
 
-  "biloxi-tavern-yves-bouvier": [
+  "fort-louis-tavern-yves-bouvier": [
     {
-      id: "biloxi-tavern-yves-bouvier-1",
-      text: "Forty years I sailed this Gulf after beaver and deer hides. The sea took two fingers, three ships and all my hair, and I still say it was a fair trade.",
+      id: "fort-louis-tavern-yves-bouvier-1",
+      text: "Forty years I sailed the islands and the Gulf, trading tobacco and hides. The sea took two fingers, three ships and all my hair, and I still say it was a fair trade.",
     },
     {
-      id: "biloxi-tavern-yves-bouvier-2",
+      id: "fort-louis-tavern-yves-bouvier-2",
       text: "My knee is aching something cruel today. Did you see the sky to the south on your way into {town}?",
       answers: [
         {
@@ -396,7 +396,7 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
           replies: [
             "Clear today. My knee says otherwise for tomorrow. Trust the knee, {title}. The sky lies.",
             "Hm. Then it is the rum making the knee ache. That has happened before.",
-            "Clear skies on the Gulf are like a smiling customs man. Enjoy it, but count your fingers.",
+            "Clear skies over the Gulf are like a smiling customs man. Enjoy it, but count your fingers.",
             "Good. Then sail before dawn and be in harbour by dusk. The knee is rarely wrong by more than a day.",
             "Clear as glass, and glass breaks. Keep your boats lashed down.",
           ],
@@ -408,14 +408,14 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
             "Then stay in port and buy an old man a drink. Nobody sane sails into that.",
             "Low and heavy. That is a hurricane clearing its throat. Double your lines tonight.",
             "Forty years and I have seen many clouds like that. Most of the men who sailed into them I have not seen again.",
-            "Get your ship into the bayou and pray. The pelican knows to hide, and so should you.",
+            "Get your ship into the lee of Dauphin Island and pray. The pelican knows to hide, and so should you.",
           ],
         },
         {
           text: "I never look up. It is bad for the neck.",
           replies: [
             "Ha! Then you will never see the storm that kills you. Some might call that a mercy.",
-            "Bad for the neck, good for the neck. The neck will not matter much at the bottom of the Gulf.",
+            "Bad for the neck, good for the neck. The neck will not matter much at the bottom of the sea.",
             "I sailed with a man like that. He walked into the mast every morning for six years. Lovely fellow.",
             "Young people. In my day we looked up, down and sideways, and still we drowned.",
             "Then let my knee do the looking for you, {title}. It charges less than a pilot.",
@@ -424,11 +424,11 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "biloxi-tavern-yves-bouvier-3",
+      id: "fort-louis-tavern-yves-bouvier-3",
       text: "Young sailors trust their charts. Old sailors trust their knees. Dead sailors trusted their charts.",
     },
     {
-      id: "biloxi-tavern-yves-bouvier-4",
+      id: "fort-louis-tavern-yves-bouvier-4",
       text: "What do you sail, {title}? Tell me she has a proper keel and is not some bathtub from {otherTown}.",
       answers: [
         {
@@ -444,10 +444,10 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
         {
           text: "A swift little sloop.",
           replies: [
-            "A sloop! Lovely in the shallows. On the open Gulf in a blow, she will toss you like a pancake.",
+            "A sloop! Lovely in the shallows. On the open sea in a blow, she will toss you like a pancake.",
             "Swift is good when you need to run. And on this coast, you always need to run eventually.",
-            "I ran pelts in a sloop for twelve years. Slept wet every night of it. Best years of my life.",
-            "Keep her close to shore and watch the sandbars. The Gulf has eaten more sloops than sharks.",
+            "I ran tobacco in a sloop for twelve years. Slept wet every night of it. Best years of my life.",
+            "Keep her close to shore and watch the reefs. These waters have eaten more sloops than sharks.",
             "Little, eh? Then you will learn the sea properly. Big ships make soft sailors.",
           ],
         },
@@ -464,11 +464,11 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "biloxi-tavern-yves-bouvier-5",
+      id: "fort-louis-tavern-yves-bouvier-5",
       text: "I got these tattoos in four ports and remember getting two of them. One is an anchor. The other might be a woman, or possibly a turnip.",
     },
     {
-      id: "biloxi-tavern-yves-bouvier-6",
+      id: "fort-louis-tavern-yves-bouvier-6",
       text: "Have you ever been through a real hurricane, {name}?",
       answers: [
         {
@@ -504,18 +504,18 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "biloxi-tavern-yves-bouvier-7",
-      text: "When I first came to this coast there was nothing but marsh, mosquitoes and native traders who drove harder bargains than any Paris merchant. Now there is marsh, mosquitoes and a governor.",
+      id: "fort-louis-tavern-yves-bouvier-7",
+      text: "When I first came to this bay there was nothing but swamp, mosquitoes and Choctaw traders who drove harder bargains than any Paris merchant. Now there is swamp, mosquitoes and a governor.",
     },
   ],
 
-  "biloxi-market-margot-besson": [
+  "fort-louis-market-margot-besson": [
     {
-      id: "biloxi-market-margot-besson-1",
+      id: "fort-louis-market-margot-besson-1",
       text: "Do admire the hat, {title}. Everyone does. It was a gift from a duke. Or a count. A very tall man with a carriage, at any rate.",
     },
     {
-      id: "biloxi-market-margot-besson-2",
+      id: "fort-louis-market-margot-besson-2",
       text: "Have you ever been to Paris, {name}? I was practically born at court.",
       answers: [
         {
@@ -524,7 +524,7 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
             "Then you will know the palace. The big one. With the windows. I was there constantly.",
             "Wonderful. Which street? No, wait, it does not matter, I lived on all the important ones.",
             "Ah, then you have surely heard of me. No? They must have changed the gossip since I left.",
-            "Did you see the Queen? We were very close. Practically sisters. I do not remember her name either.",
+            "Did you see the Duchess? We were very close. Practically sisters. I do not remember which duchess either.",
             "Then you understand how dreadful it is to sell goods in {town} after all that splendour.",
           ],
         },
@@ -551,11 +551,11 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "biloxi-market-margot-besson-3",
+      id: "fort-louis-market-margot-besson-3",
       text: "I sell the finest goods in all of {town}. Admittedly there are only three stalls, and one of them is a man selling a single goat, but still.",
     },
     {
-      id: "biloxi-market-margot-besson-4",
+      id: "fort-louis-market-margot-besson-4",
       text: "Did I mention my duke? Do you think he will come across the sea for me one day?",
       answers: [
         {
@@ -591,11 +591,11 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "biloxi-market-margot-besson-5",
+      id: "fort-louis-market-margot-besson-5",
       text: "In {nationTown} they told me my velvet cloak was too warm for the climate. I told them elegance does not sweat. Then I fainted twice before noon.",
     },
     {
-      id: "biloxi-market-margot-besson-6",
+      id: "fort-louis-market-margot-besson-6",
       text: "What is the grandest thing you have ever done, {title}? Go on. Try to outdo me.",
       answers: [
         {
@@ -631,25 +631,25 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "biloxi-market-margot-besson-7",
-      text: "Some say I am vain. Untrue. I simply happen to be the most beautiful, clever and well connected woman on the Gulf, and it would be dishonest to pretend otherwise.",
+      id: "fort-louis-market-margot-besson-7",
+      text: "Some say I am vain. Untrue. I simply happen to be the most beautiful, clever and well connected woman in Louisiana, and it would be dishonest to pretend otherwise.",
     },
   ],
 
-  "biloxi-governor-alain-turgot": [
+  "fort-louis-governor-alain-turgot": [
     {
-      id: "biloxi-governor-alain-turgot-1",
+      id: "fort-louis-governor-alain-turgot-1",
       text: "Welcome to {town}, {title}. Mind the mud, the mosquitoes and the sergeant. In that order of danger.",
     },
     {
-      id: "biloxi-governor-alain-turgot-2",
+      id: "fort-louis-governor-alain-turgot-2",
       text: "You have the look of someone who has seen a fight. Were you ever a soldier?",
       answers: [
         {
           text: "Yes, I served.",
           replies: [
             "I thought so. You stand like a man who expects to be shouted at. Sit, then. Nobody shouts here.",
-            "Then you know what a long march feels like. Here, every day is a long march through a swamp.",
+            "Then you know what a long march feels like. Here, every day is a long march through a swamp in the rain.",
             "Good. Most of my men think a musket is a walking stick. I could use a few more of you.",
             "Which campaign? No, do not tell me. All wars smell the same after a week.",
             "Then we understand each other. Old soldiers do not need many words.",
@@ -678,15 +678,15 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "biloxi-governor-alain-turgot-3",
-      text: "I fought for the Cardinal at La Rochelle. A long siege, hunger, fever. Then they sent me here, where it is much the same, only wetter.",
+      id: "fort-louis-governor-alain-turgot-3",
+      text: "I held the walls of Lille for the King. A long siege, hunger, fever. Then they sent me here, where it is much the same, only wetter.",
     },
     {
-      id: "biloxi-governor-alain-turgot-4",
+      id: "fort-louis-governor-alain-turgot-4",
       text: "The {enemyAdjective} are restless, they say. Have you seen their sails near our coast?",
       answers: [
         {
-          text: "Yes, a frigate off the islands.",
+          text: "Yes, a frigate off Dauphin Island.",
           replies: [
             "A frigate. Then I will double the watch tonight. That means one more man, so the watch will be two.",
             "Thank you, {title}. I will write to Paris. Paris will thank me in about eight months.",
@@ -718,19 +718,19 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "biloxi-governor-alain-turgot-5",
+      id: "fort-louis-governor-alain-turgot-5",
       text: "This musket ball was meant for my heart. It hit my belt buckle instead. I wear it to remind me that luck is a poor substitute for armour.",
     },
     {
-      id: "biloxi-governor-alain-turgot-6",
-      text: "Tell me plainly, {title}. Is there anywhere in the Caribbean worse than {town} in summer?",
+      id: "fort-louis-governor-alain-turgot-6",
+      text: "Tell me plainly, {title}. Is there anywhere in the Americas worse than {town} in summer?",
       answers: [
         {
           text: "Nowhere, my lord.",
           replies: [
             "Thank you. Finally, someone honest. Will you write that down for Paris?",
             "I knew it. I asked the priest the same question and he said hell. He is very loyal to hell.",
-            "Then I am governor of the worst place in the Caribbean. I should get a medal for that, at least.",
+            "Then I am governor of the worst place in the Americas. I should get a medal for that, at least.",
             "Good to hear it said aloud. It makes the itching bearable.",
             "Nowhere. Yes. That is what my wife said, right before she sailed home to France.",
           ],
@@ -748,7 +748,7 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
         {
           text: "I find it rather charming.",
           replies: [
-            "Charming. I have been called many things, but never charming. Neither has this swamp.",
+            "Charming. I have been called many things, but never charming. Neither has this fort.",
             "You have fever, {title}. Sit down, have some water, and let the surgeon look at you.",
             "Stay a month and then tell me. I will be waiting, scratching.",
             "Charming. Hm. Perhaps you would like to take my post? It comes with a free mosquito net.",
@@ -758,18 +758,18 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "biloxi-governor-alain-turgot-7",
-      text: "Paris writes to ask why the colony does not grow faster. I write back that the swamp eats one settler in three. They write back asking for more taxes.",
+      id: "fort-louis-governor-alain-turgot-7",
+      text: "Monsieur Crozat writes from Paris to ask why the colony earns him nothing. I write back that fever and hunger take one settler in three. He writes back asking for more deerskins.",
     },
   ],
 
-  "tortuga-tavern-manon-artaud": [
+  "cap-francais-tavern-manon-artaud": [
     {
-      id: "tortuga-tavern-manon-artaud-1",
+      id: "cap-francais-tavern-manon-artaud-1",
       text: "Do not touch the fish, {title}. That fish has kept every hurricane off {town} for three seasons. Mostly.",
     },
     {
-      id: "tortuga-tavern-manon-artaud-2",
+      id: "cap-francais-tavern-manon-artaud-2",
       text: "Hold still while I read your foam. Hmm. Do you want the truth, or the pleasant version?",
       answers: [
         {
@@ -777,7 +777,7 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
           replies: [
             "Brave. The foam says you will face a great danger at sea. It also says you need a bath.",
             "The truth? The bubbles have gathered on the left. That means money, or possibly a broken mast.",
-            "It says you will meet a tall stranger. On Tortuga, that is not much of a prophecy.",
+            "It says you will meet a tall stranger. In {town}, that is not much of a prophecy.",
             "The foam is murky today. Either fate is uncertain or the barrel needs cleaning.",
             "I see a sail, a storm and a chest. Whether the chest is full of gold or your belongings, I cannot say.",
           ],
@@ -805,11 +805,11 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "tortuga-tavern-manon-artaud-3",
+      id: "cap-francais-tavern-manon-artaud-3",
       text: "My mother told the fortune of every buccaneer in the coves. She told one he would die rich. He drowned holding a chest of silver, so technically she was right.",
     },
     {
-      id: "tortuga-tavern-manon-artaud-4",
+      id: "cap-francais-tavern-manon-artaud-4",
       text: "What season were you born in, {name}? It matters more than you would think.",
       answers: [
         {
@@ -845,11 +845,11 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "tortuga-tavern-manon-artaud-5",
+      id: "cap-francais-tavern-manon-artaud-5",
       text: "Three knocks on the bar before you sail, a coin in the sea when you leave, and never, ever say the word 'drown' aboard a ship. Oh. I just said it. Pardon me while I spit.",
     },
     {
-      id: "tortuga-tavern-manon-artaud-6",
+      id: "cap-francais-tavern-manon-artaud-6",
       text: "Has anything strange happened on your voyages, {title}? Lights on the water? Voices in the rigging?",
       answers: [
         {
@@ -885,24 +885,24 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "tortuga-tavern-manon-artaud-7",
-      text: "The buccaneers laugh at my fish. Then a storm comes, they run in here soaking wet, and suddenly every one of them wants to kiss it.",
+      id: "cap-francais-tavern-manon-artaud-7",
+      text: "The old buccaneers laugh at my fish. They are planters now, very respectable. Then a storm comes, they run in here soaking wet, and suddenly every one of them wants to kiss it.",
     },
   ],
 
-  "tortuga-market-blaise-chamfort": [
+  "cap-francais-market-blaise-chamfort": [
     {
-      id: "tortuga-market-blaise-chamfort-1",
+      id: "cap-francais-market-blaise-chamfort-1",
       text: "Welcome, {title}. I buy, I sell, and I do not ask questions. Questions cost money, and I prefer to keep mine.",
     },
     {
-      id: "tortuga-market-blaise-chamfort-2",
+      id: "cap-francais-market-blaise-chamfort-2",
       text: "Got anything to sell? I pay a fair price. Fair for me, anyway.",
       answers: [
         {
           text: "A hold full of honest cargo.",
           replies: [
-            "Honest cargo. On Tortuga. How exotic. I may have to charge you a little extra for the novelty.",
+            "Honest cargo. In {town}. How exotic. I may have to charge you a little extra for the novelty.",
             "Honest is good. Honest has fewer angry owners turning up at my stall.",
             "Then bring it here. I will weigh it, judge it and offer you rather less than you hoped.",
             "Honest cargo sells at honest prices, {title}. Which is to say, low.",
@@ -932,11 +932,11 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "tortuga-market-blaise-chamfort-3",
+      id: "cap-francais-market-blaise-chamfort-3",
       text: "I got this nose in {otherTown} haggling over a barrel of nails. The other man got a worse nose and a better price, so we call it even.",
     },
     {
-      id: "tortuga-market-blaise-chamfort-4",
+      id: "cap-francais-market-blaise-chamfort-4",
       text: "Where did your cargo come from, {name}? No, wait. Do not tell me. I sleep better that way.",
       answers: [
         {
@@ -965,24 +965,24 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
             "Then it is clearly not stolen. The crate says so. I trust crates more than captains.",
             "Ha. I have seen that crate before. It washes up on this island about once a fortnight.",
             "Perfect. I will put it on the shelf next to the barrels labelled 'definitely mine'.",
-            "Excellent provenance. Better than half the paperwork I see from the Company.",
-            "With a label like that, it is practically legal. I will give you a fair price. For Tortuga.",
+            "Excellent provenance. Better than half the paperwork I see from the customs house.",
+            "With a label like that, it is practically legal. I will give you a fair price. For {town}.",
           ],
         },
       ],
     },
     {
-      id: "tortuga-market-blaise-chamfort-5",
-      text: "The buccaneers bring me hides and silver, the merchants bring me livres, and I give them both a smile. The smile is the only thing I give away for free.",
+      id: "cap-francais-market-blaise-chamfort-5",
+      text: "The old buccaneers bring me hides and indigo, the merchants bring me livres, and I give them both a smile. The smile is the only thing I give away for free.",
     },
     {
-      id: "tortuga-market-blaise-chamfort-6",
+      id: "cap-francais-market-blaise-chamfort-6",
       text: "Tell me, what sells best in {otherTown} these days? Information is the only cargo I pay full price for.",
       answers: [
         {
           text: "Sugar, as always.",
           replies: [
-            "Sugar. Always sugar. Since Barbados started planting it, half the Caribbean has a sweet tooth and a sour planter.",
+            "Sugar. Always sugar. Every old buccaneer on this coast has turned planter, and every one of them grows cane.",
             "Hm. Everyone says sugar. Which means soon nobody will be able to sell it. Thank you, {title}.",
             "Useful. Here, one piece of eight. Do not spend it all on rum.",
             "Sugar. I knew that, but it is good to have it confirmed by someone who has smelled the harbour.",
@@ -1012,18 +1012,18 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "tortuga-market-blaise-chamfort-7",
+      id: "cap-francais-market-blaise-chamfort-7",
       text: "The reading glasses are for contracts. The broken nose is for men who think the reading glasses make me soft.",
     },
   ],
 
-  "tortuga-governor-ignace-jobert": [
+  "cap-francais-governor-ignace-jobert": [
     {
-      id: "tortuga-governor-ignace-jobert-1",
-      text: "You stand before the Governor of {town}, appointed by His Majesty Louis XIII. You may now bow. Lower. Lower still. Adequate.",
+      id: "cap-francais-governor-ignace-jobert-1",
+      text: "You stand before the Governor of {town}, appointed in the name of His Most Christian Majesty. You may now bow. Lower. Lower still. Adequate.",
     },
     {
-      id: "tortuga-governor-ignace-jobert-2",
+      id: "cap-francais-governor-ignace-jobert-2",
       text: "Do you know the correct form of address for a royal governor, {title}?",
       answers: [
         {
@@ -1043,7 +1043,7 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
             "Hey, you. Hey, you. I have not been so insulted since a buccaneer called me 'mate'.",
             "One more like that and you will be bowing to me from inside a cell.",
             "I shall pretend I did not hear that. My hearing is very selective, and so is my mercy.",
-            "This is Tortuga, {title}, not a fish market. Well. Not only a fish market.",
+            "This is {town}, {title}, not a fish market. Well. Not only a fish market.",
           ],
         },
         {
@@ -1059,11 +1059,11 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "tortuga-governor-ignace-jobert-3",
-      text: "I have fined forty buccaneers this year for slovenly bowing. Three for piracy. One must have priorities.",
+      id: "cap-francais-governor-ignace-jobert-3",
+      text: "I have fined forty old buccaneers this year for slovenly bowing. Three for piracy. One must have priorities.",
     },
     {
-      id: "tortuga-governor-ignace-jobert-4",
+      id: "cap-francais-governor-ignace-jobert-4",
       text: "What do you think of my hat? Be honest. Within reason.",
       answers: [
         {
@@ -1073,7 +1073,7 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
             "Thank you. It took three ostriches and a very brave milliner in Paris.",
             "Correct answer. The last man who called it 'a bit much' now cleans the cannons.",
             "Magnificent. I shall have that inscribed on the hat box.",
-            "You have taste, {title}. Unusual on {town}. Most here think a hat is something you wipe your blade on.",
+            "You have taste, {title}. Unusual in {town}. Most here think a hat is something you wipe your blade on.",
           ],
         },
         {
@@ -1099,20 +1099,20 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "tortuga-governor-ignace-jobert-5",
-      text: "In Paris I danced before the Queen. On {town} I dance around puddles of rum and the occasional sleeping buccaneer. Such is the sacrifice of royal service.",
+      id: "cap-francais-governor-ignace-jobert-5",
+      text: "In Paris I danced before the Queen. In {town} I dance around puddles of rum and the occasional sleeping buccaneer. Such is the sacrifice of royal service.",
     },
     {
-      id: "tortuga-governor-ignace-jobert-6",
+      id: "cap-francais-governor-ignace-jobert-6",
       text: "Have you ever been presented at court, {name}?",
       answers: [
         {
-          text: "Yes, at the Louvre.",
+          text: "Yes, at Versailles.",
           replies: [
-            "The Louvre! Then you understand. You are the first person on this island who does.",
+            "Versailles! Then you understand. You are the first person on this island who does.",
             "Indeed? Then you know how to stand, how to bow and how to look bored. Splendid.",
             "Ah, then we are practically equals. Practically. Not entirely, of course.",
-            "Did you see the Cardinal? Did he notice you? He never noticed me. I was crushed for a week.",
+            "Did you see the King? Did he notice you? He never noticed me. I was crushed for a week.",
             "Then I may invite you to dinner. Wear a clean collar. Bring no buccaneers.",
           ],
         },
@@ -1139,18 +1139,18 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "tortuga-governor-ignace-jobert-7",
-      text: "The buccaneers call this island a pirate den. I call it a fort under royal administration with a regrettable number of earrings.",
+      id: "cap-francais-governor-ignace-jobert-7",
+      text: "The old buccaneers still call this coast a pirate den. I call it a royal colony with a regrettable number of earrings.",
     },
   ],
 
-  "leogane-tavern-aubin-laclos": [
+  "basse-terre-tavern-aubin-laclos": [
     {
-      id: "leogane-tavern-aubin-laclos-1",
+      id: "basse-terre-tavern-aubin-laclos-1",
       text: "Aubin Laclos, at your service. Perhaps you have heard of me? Twice round the world, {title}. Twice! The second time just to check it was still round.",
     },
     {
-      id: "leogane-tavern-aubin-laclos-2",
+      id: "basse-terre-tavern-aubin-laclos-2",
       text: "Have you ever crossed the line, {title}? The equator? I have crossed it so often it waves at me.",
       answers: [
         {
@@ -1186,11 +1186,11 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "leogane-tavern-aubin-laclos-3",
+      id: "basse-terre-tavern-aubin-laclos-3",
       text: "This rapier has tasted the blood of a hundred men. It is merely being polite now, which is why it stays in the scabbard.",
     },
     {
-      id: "leogane-tavern-aubin-laclos-4",
+      id: "basse-terre-tavern-aubin-laclos-4",
       text: "What is the most dangerous voyage you have made? Mine was to Tortuga. Er, I mean, round Cape Horn. Twice.",
       answers: [
         {
@@ -1226,11 +1226,11 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "leogane-tavern-aubin-laclos-5",
+      id: "basse-terre-tavern-aubin-laclos-5",
       text: "The ladies of {town} cannot resist the moustache. I twirl it clockwise for charm and anticlockwise for menace. Nobody has noticed the menace yet.",
     },
     {
-      id: "leogane-tavern-aubin-laclos-6",
+      id: "basse-terre-tavern-aubin-laclos-6",
       text: "Would you like to hear about the time I fought a sea serpent off the coast of {otherTown}?",
       answers: [
         {
@@ -1266,18 +1266,18 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "leogane-tavern-aubin-laclos-7",
+      id: "basse-terre-tavern-aubin-laclos-7",
       text: "Seasick? Me? Never. That was simply my stomach saluting the ocean. Repeatedly. All the way to Tortuga and back.",
     },
   ],
 
-  "leogane-market-adele-bonnaire": [
+  "basse-terre-market-adele-bonnaire": [
     {
-      id: "leogane-market-adele-bonnaire-1",
-      text: "Indigo, {title}? The finest blue on Hispaniola. My husband used to say it was the colour of the sea at dawn. He said a great many hopeful things.",
+      id: "basse-terre-market-adele-bonnaire-1",
+      text: "Sugar, {title}? The finest on Guadeloupe, grown below La Soufrière. My husband used to say it was worth its weight in silver. He said a great many hopeful things.",
     },
     {
-      id: "leogane-market-adele-bonnaire-2",
+      id: "basse-terre-market-adele-bonnaire-2",
       text: "Are you married, {name}? Or do you keep your heart at sea?",
       answers: [
         {
@@ -1285,7 +1285,7 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
           replies: [
             "Then go home to them as often as the wind allows. Time is shorter than it looks from here.",
             "Good. Tell them you love them before every voyage. I always thought there would be another chance.",
-            "Married. That is lovely. Take them a piece of indigo cloth. Blue suits nearly everyone.",
+            "Married. That is lovely. Take them a little loaf of good sugar. It suits nearly everyone.",
             "Henri and I were married eighteen years. I would give the whole stall for one more ordinary morning.",
             "Then you have something worth sailing home for. Not everyone in {town} can say that.",
           ],
@@ -1313,11 +1313,11 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "leogane-market-adele-bonnaire-3",
-      text: "Henri planned rows of indigo as far as the eye could see. The fever took him in our first summer, and the plants never came up. I sell other people's indigo now.",
+      id: "basse-terre-market-adele-bonnaire-3",
+      text: "Henri planned fields of cane as far as the eye could see. The fever took him in our first summer, and the cane never went in. I sell other people's sugar now.",
     },
     {
-      id: "leogane-market-adele-bonnaire-4",
+      id: "basse-terre-market-adele-bonnaire-4",
       text: "Do you ever think of going home to France, {title}?",
       answers: [
         {
@@ -1353,11 +1353,11 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "leogane-market-adele-bonnaire-5",
-      text: "Everything in {town} ends up stained blue. My hands, my apron, my thoughts.",
+      id: "basse-terre-market-adele-bonnaire-5",
+      text: "Everything in {town} ends up smelling of boiling sugar. My hands, my apron, my thoughts.",
     },
     {
-      id: "leogane-market-adele-bonnaire-6",
+      id: "basse-terre-market-adele-bonnaire-6",
       text: "Is there any news from {otherTown}? Good news, I mean. I have had my fill of the other kind.",
       answers: [
         {
@@ -1366,7 +1366,7 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
             "Good harvests. That means good prices, and good prices mean full bellies. Thank you, {title}.",
             "Oh, I am glad. It is nice to know some fields are growing as they should.",
             "Henri would have been delighted. He always loved a good harvest, even someone else's.",
-            "That is the best news I have heard all season. Here, take a ribbon of indigo. No charge.",
+            "That is the best news I have heard all season. Here, take a lump of my best sugar. No charge.",
             "Good. Somewhere, someone's plans are coming true. That is a comfort.",
           ],
         },
@@ -1374,7 +1374,7 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
           text: "Only bad news, I am afraid.",
           replies: [
             "Of course. It always is. Never mind, I am used to it.",
-            "Then do not tell me. I would rather fold my cloth in peace.",
+            "Then do not tell me. I would rather weigh my sugar in peace.",
             "Ah well. Bad news travels fast. Good news must be taking the long way round.",
             "Thank you for being honest, {title}. Most people lie to widows. It is meant kindly, but it is still lying.",
             "Then let us talk about the weather instead. At least that changes.",
@@ -1393,18 +1393,18 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "leogane-market-adele-bonnaire-7",
-      text: "People say time heals. It has been eleven years, and so far time has only taught me to fold cloth very neatly.",
+      id: "basse-terre-market-adele-bonnaire-7",
+      text: "People say time heals. It has been eleven years, and so far time has only taught me to wrap sugar very neatly.",
     },
   ],
 
-  "leogane-governor-yvon-boitel": [
+  "basse-terre-governor-yvon-boitel": [
     {
-      id: "leogane-governor-yvon-boitel-1",
+      id: "basse-terre-governor-yvon-boitel-1",
       text: "Sit, {title}. Mind the chair, it was expensive. Everything here was expensive. Someone has to pay for it, and I would prefer it were not me.",
     },
     {
-      id: "leogane-governor-yvon-boitel-2",
+      id: "basse-terre-governor-yvon-boitel-2",
       text: "A captain like you must find all sorts of things at sea. Things that do not need to be written down?",
       answers: [
         {
@@ -1440,11 +1440,11 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "leogane-governor-yvon-boitel-3",
+      id: "basse-terre-governor-yvon-boitel-3",
       text: "I bought this post fair and square. With other people's money, admittedly, but the purchase itself was entirely honest.",
     },
     {
-      id: "leogane-governor-yvon-boitel-4",
+      id: "basse-terre-governor-yvon-boitel-4",
       text: "Do you like my rings? Ten fingers, ten rings. Each one paid for by a grateful citizen of {town}.",
       answers: [
         {
@@ -1480,11 +1480,11 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "leogane-governor-yvon-boitel-5",
-      text: "The buccaneers on this coast are a nuisance, of course. A nuisance who pays a modest fee for anchorage, and whose fees somehow never quite reach Paris.",
+      id: "basse-terre-governor-yvon-boitel-5",
+      text: "The smugglers on this coast are a nuisance, of course. A nuisance who pays a modest fee for anchorage, and whose fees somehow never quite reach Paris.",
     },
     {
-      id: "leogane-governor-yvon-boitel-6",
+      id: "basse-terre-governor-yvon-boitel-6",
       text: "If someone from Paris came asking about my accounts, you would be helpful, {name}? Helpful to me, I mean.",
       answers: [
         {
@@ -1503,7 +1503,7 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
             "The truth. How... quaint. Do you know what the truth costs, these days?",
             "Of course. But truth is a matter of perspective, and my perspective is very persuasive.",
             "Then I must make sure there is nothing true for you to tell. A tidy solution.",
-            "How noble. I had a clerk like that once. He was reassigned to Biloxi.",
+            "How noble. I had a clerk like that once. He was reassigned to Vieux-Fort.",
             "Hm. Well, everyone tells the truth until they hear the alternative. Let us talk again.",
           ],
         },
@@ -1520,7 +1520,7 @@ export const FRANCE_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "leogane-governor-yvon-boitel-7",
+      id: "basse-terre-governor-yvon-boitel-7",
       text: "My creditors in Paris write every month. I write back every month too, describing the weather in great detail. It buys me another month.",
     },
   ],

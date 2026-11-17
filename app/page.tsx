@@ -7,6 +7,7 @@ import StartPageScreen from "@/components/StartPageScreen"
 import { getLeaderboard } from "@/firebase/db"
 import { getLoggedInPlayer } from "@/utils/app/getLoggedInPlayer"
 import { getRandomCharacter } from "@/utils/getRandomCharacter"
+import { getTownName } from "@/utils/location"
 
 export async function generateMetadata(): Promise<Metadata> {
   const player = await getLoggedInPlayer()
@@ -26,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 
   return {
-    title: `The ${player.character.location} - ${player.character.town}`,
+    title: `The ${player.character.location} - ${getTownName(player.character.town)}`,
   }
 }
 

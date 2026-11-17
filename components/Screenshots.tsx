@@ -5,7 +5,7 @@ import Image from "next/image"
 import useModal from "@/app/stores/modals"
 
 const SCREENSHOTS = [
-  { id: "harbor", title: "Harbor", alt: "The harbor of Curacao" },
+  { id: "harbor", title: "Harbor", alt: "The harbor" },
   { id: "map", title: "Map", alt: "Picking a destination on the map" },
   { id: "battle-won", title: "Battle won", alt: "The spoils of a won battle" },
   {

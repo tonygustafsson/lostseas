@@ -3,6 +3,8 @@ import type { TitleInfo } from "@/constants/title"
 import { TREASURES } from "@/constants/treasures"
 import type { PIRATE_CRIMES } from "@/constants/wantedPirates"
 import { getPirateCrime } from "@/utils/createWantedPirate"
+import { getTownName } from "@/utils/location"
+import { getNationName } from "@/utils/location"
 import { patchDeep } from "@/utils/patchDeep"
 import { getNewTitle, getTitleReward } from "@/utils/title"
 
@@ -49,7 +51,7 @@ export const acceptNewTitle = (
     }),
     log: {
       type: "honour",
-      message: `Accepted new title ${titleInfo.title} from the governor of ${player.character.town}.`,
+      message: `Accepted new title ${titleInfo.title} from the governor of ${getTownName(player.character.town)}.`,
     },
     // titleInfo.reward is the reward actually paid. title is the previous title.
     data: { titleInfo: { ...titleInfo, reward }, title: currentTitle },
@@ -93,7 +95,7 @@ export const changeCitizenship = (
     }),
     log: {
       type: "honour",
-      message: `Changed citizenship from ${player.character.nationality} to ${newNationality}.`,
+      message: `Changed citizenship from ${getNationName(player.character.nationality)} to ${getNationName(newNationality)}.`,
     },
     // titleInfo.reward is the reward actually paid. title is the previous title.
     data: {
@@ -140,7 +142,7 @@ export const handOverTreasure = (
     }),
     log: {
       type: "honour",
-      message: `Handed over ${treasure.name} to the town of ${town}.`,
+      message: `Handed over ${treasure.name} to the town of ${getTownName(town)}.`,
     },
     data: { treasure, treasureInfo },
   }
@@ -182,7 +184,7 @@ export const handOverPirate = (
     }),
     log: {
       type: "honour",
-      message: `Handed over the wanted pirate ${pirate.name} to the governor of ${town}.`,
+      message: `Handed over the wanted pirate ${pirate.name} to the governor of ${getTownName(town)}.`,
     },
     data: { pirate, crime },
   }

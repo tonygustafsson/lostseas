@@ -15,7 +15,7 @@ const locations: TownLocation[] = [
 const meta = {
   title: "game/Town/BuildingIntro",
   component: BuildingIntro,
-  args: { town: "Port Royale", location: "Tavern" },
+  args: { town: "kingston", location: "Tavern" },
   argTypes: {
     town: { control: "select", options: Object.keys(TOWNS) },
     location: { control: "select", options: [...locations, "Harbor", "Sea"] },
@@ -35,14 +35,14 @@ type Story = StoryObj<typeof meta>
 export const Tavern: Story = {}
 
 export const Shipyard: Story = {
-  args: { town: "Havana", location: "Shipyard" },
+  args: { town: "havana", location: "Shipyard" },
 }
 
 export const FrenchMarket: Story = {
-  args: { town: "Tortuga", location: "Market" },
+  args: { town: "cap-francais", location: "Market" },
 }
 
 // Places without a building fall back to a plain name and no description
 export const NoBuilding: Story = {
-  args: { town: "Barbados", location: "Harbor" },
+  args: { town: "bridgetown", location: "Harbor" },
 }

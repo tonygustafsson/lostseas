@@ -54,7 +54,7 @@ const createPlayer = (mood = 50, health = 80): Player => ({
     characterId: "mateo-salazar",
     nationality: "England",
     title: "Pirate",
-    town: "Port Royale",
+    town: "kingston",
     location: "Tavern",
     gold: 10000,
     day: 1,

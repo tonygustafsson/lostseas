@@ -4,6 +4,7 @@
 import { readFileSync, writeFileSync } from "node:fs"
 import { inflateSync } from "node:zlib"
 
+import { MAP_HEIGHT, MAP_WIDTH } from "../../components/Map/constants.ts"
 import { TOWNS } from "../../constants/locations.ts"
 import { buildWaterGrid, computeSeaRoute } from "./seaPath.ts"
 
@@ -74,7 +75,26 @@ const decodePng = (buffer) => {
   return { width, height, pixels }
 }
 
-const { width, height, pixels } = decodePng(readFileSync(MASK_PATH))
+// The mask has the art's resolution. Routes are planned in map units, so take
+// the pixel at the centre of each map unit.
+const toMapUnits = (mask) => {
+  const pixels = new Uint8Array(MAP_WIDTH * MAP_HEIGHT * 4)
+
+  for (let y = 0; y < MAP_HEIGHT; y++) {
+    const maskY = Math.floor(((y + 0.5) * mask.height) / MAP_HEIGHT)
+
+    for (let x = 0; x < MAP_WIDTH; x++) {
+      const maskX = Math.floor(((x + 0.5) * mask.width) / MAP_WIDTH)
+      const from = (maskY * mask.width + maskX) * 4
+
+      pixels.set(mask.pixels.subarray(from, from + 4), (y * MAP_WIDTH + x) * 4)
+    }
+  }
+
+  return { width: MAP_WIDTH, height: MAP_HEIGHT, pixels }
+}
+
+const { width, height, pixels } = toMapUnits(decodePng(readFileSync(MASK_PATH)))
 
 const grids = {
   safe: buildWaterGrid(pixels, width, height, CELL_SIZE, COAST_MARGIN),

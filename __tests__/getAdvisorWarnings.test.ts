@@ -15,7 +15,7 @@ const basePlayer = (): Player =>
       name: "Test",
       nationality: "England",
       title: "Pirate",
-      town: "Port Royale",
+      town: "kingston",
       location: "Harbor",
       gold: 0,
       day: 1,
@@ -349,16 +349,16 @@ describe("getAdvisorWarnings", () => {
   describe("NEED_MORE_FOOD", () => {
     it("triggers when food is insufficient for the destination", () => {
       const p = basePlayer()
-      // 5 crew eat a crate every 4 days, so Biloxi, 10 days away, needs 3
+      // 2 food lasts 5 crew 8 days, not enough for Fort Louis, 10 days away
       p.crewMembers.count = 5
       p.inventory = { food: 2, water: 100 }
-      expect(tips(p, "Biloxi")).toContain("NEED_MORE_FOOD")
-      expect(tips(p, "Leogane")).not.toContain("NEED_MORE_FOOD")
+      expect(tips(p, "fort-louis")).toContain("NEED_MORE_FOOD")
+      expect(tips(p, "cap-francais")).not.toContain("NEED_MORE_FOOD")
     })
 
     it("without a destination, triggers only when no town is in reach", () => {
       const p = basePlayer()
-      // Leogane is the nearest town, 2 days from Port Royale
+      // Cap-Français is the nearest town, 4 days from Kingston
       p.inventory = { food: 1, water: 100 }
       expect(tips(p)).not.toContain("NEED_MORE_FOOD")
 
@@ -383,7 +383,7 @@ describe("getAdvisorWarnings", () => {
   describe("LIMITED_SUPPLIES", () => {
     it("triggers when supplies reach some towns but not all", () => {
       const p = basePlayer()
-      // 1 crate lasts 5 crew 4 days, Leogane is 2 days away, Biloxi 10
+      // 1 food lasts the crew a few days, Cap-Français is 4 days away, Campeche 10
       p.inventory = { food: 1, water: 100 }
       expect(tips(p)).toContain("LIMITED_SUPPLIES")
       expect(blocking(p)).not.toContain("LIMITED_SUPPLIES")
@@ -410,7 +410,7 @@ describe("getAdvisorWarnings", () => {
     it("does not trigger for a destination", () => {
       const p = basePlayer()
       p.inventory = { food: 3, water: 100 }
-      expect(tips(p, "Leogane")).not.toContain("LIMITED_SUPPLIES")
+      expect(tips(p, "basse-terre")).not.toContain("LIMITED_SUPPLIES")
     })
   })
 
@@ -428,11 +428,11 @@ describe("getAdvisorWarnings", () => {
   describe("NEED_MORE_WATER", () => {
     it("triggers when water is insufficient for the destination", () => {
       const p = basePlayer()
-      // 5 crew drink 1 water a day, Biloxi is 5 days from Port Royale
+      // 4 water lasts 5 crew 8 days, not enough for Fort Louis, 10 days away
       p.crewMembers.count = 5
       p.inventory = { food: 100, water: 4 }
-      expect(tips(p, "Biloxi")).toContain("NEED_MORE_WATER")
-      expect(tips(p, "Leogane")).not.toContain("NEED_MORE_WATER")
+      expect(tips(p, "fort-louis")).toContain("NEED_MORE_WATER")
+      expect(tips(p, "cap-francais")).not.toContain("NEED_MORE_WATER")
     })
 
     it("does not trigger when water is sufficient", () => {
@@ -490,10 +490,10 @@ describe("getAdvisorWarnings", () => {
   describe("PROMOTION_AVAILABLE", () => {
     it("triggers when a promotion is available at the current town", () => {
       const p = basePlayer()
-      // Port Royale is England; warWith France; 5 wins vs France = score 5 -> Ensign
+      // Kingston is Great Britain; warWith France; 5 wins vs France = score 5 -> Ensign
       p.character.title = "Pirate"
       p.character.nationality = "England"
-      p.character.town = "Port Royale"
+      p.character.town = "kingston"
       p.character.battles = { France: { won: 5, lost: 0 } } as any
       expect(tips(p)).toContain("PROMOTION_AVAILABLE")
       expect(advisory(p)).toContain("PROMOTION_AVAILABLE")
@@ -503,7 +503,7 @@ describe("getAdvisorWarnings", () => {
       const p = basePlayer()
       p.character.title = "Ensign"
       p.character.nationality = "England"
-      p.character.town = "Port Royale"
+      p.character.town = "kingston"
       p.character.battles = { France: { won: 5, lost: 0 } } as any
       expect(tips(p)).not.toContain("PROMOTION_AVAILABLE")
     })

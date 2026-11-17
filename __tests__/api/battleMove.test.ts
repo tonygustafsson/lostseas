@@ -51,8 +51,8 @@ const createPlayer = (sea: Partial<SeaState> = {}): Player => ({
     day: 20,
     weather: "sunny",
     journey: {
-      origin: "Bonaire",
-      destination: "Villa Hermosa",
+      origin: "savaneta",
+      destination: "campeche",
       day: 3,
       totalDays: 7,
     },

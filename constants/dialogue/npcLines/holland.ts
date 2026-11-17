@@ -1,13 +1,13 @@
 import "server-only"
 
 export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
-  "curacao-tavern-griet-vogel": [
+  "willemstad-tavern-griet-vogel": [
     {
-      id: "curacao-tavern-griet-vogel-1",
+      id: "willemstad-tavern-griet-vogel-1",
       text: "Sit, {title}. I cooked for two hundred men on the road to Batavia, so one more mouth at my bar is nothing. Beer's salted. Don't ask, I can't stop.",
     },
     {
-      id: "curacao-tavern-griet-vogel-2",
+      id: "willemstad-tavern-griet-vogel-2",
       text: "Tell me true, {name}. Have you ever rounded the Cape of Good Hope?",
       answers: [
         {
@@ -43,11 +43,11 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "curacao-tavern-griet-vogel-3",
+      id: "willemstad-tavern-griet-vogel-3",
       text: "Captain on my last voyage swore lemons were a papist superstition. Lost forty men to scurvy before Mauritius. I've kept a lemon in my apron ever since, out of spite.",
     },
     {
-      id: "curacao-tavern-griet-vogel-4",
+      id: "willemstad-tavern-griet-vogel-4",
       text: "What do you feed your crew, {title}? Be honest, I'll know if you're lying.",
       answers: [
         {
@@ -83,11 +83,11 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "curacao-tavern-griet-vogel-5",
+      id: "willemstad-tavern-griet-vogel-5",
       text: "This harbour takes ships of every flag, so long as the Company gets its share. I've poured beer for English, French and once a Spaniard who cried into it. Tipped well, mind.",
     },
     {
-      id: "curacao-tavern-griet-vogel-6",
+      id: "willemstad-tavern-griet-vogel-6",
       text: "Do you know why I smoke this pipe all day, {title}?",
       answers: [
         {
@@ -123,18 +123,18 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "curacao-tavern-griet-vogel-7",
+      id: "willemstad-tavern-griet-vogel-7",
       text: "If you're bound for {otherTown}, take a barrel of water more than you think you need. The sea always lasts longer than the plan.",
     },
   ],
 
-  "curacao-market-pieter-haas": [
+  "willemstad-market-pieter-haas": [
     {
-      id: "curacao-market-pieter-haas-1",
+      id: "willemstad-market-pieter-haas-1",
       text: "Good day, {title}. Salt, cloth, copper. I know what every crate on this island is worth, and I know what it's worth to you, which is usually more.",
     },
     {
-      id: "curacao-market-pieter-haas-2",
+      id: "willemstad-market-pieter-haas-2",
       text: "Before we talk business, {title}, how do you keep your accounts?",
       answers: [
         {
@@ -170,17 +170,17 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "curacao-market-pieter-haas-3",
+      id: "willemstad-market-pieter-haas-3",
       text: "I came out as a junior clerk of the West India Company. Six years later I still have the same desk, but now I own the chair.",
     },
     {
-      id: "curacao-market-pieter-haas-4",
+      id: "willemstad-market-pieter-haas-4",
       text: "What do you make of the Company, {title}? Speak freely. I'll only write some of it down.",
       answers: [
         {
           text: "It made Holland rich. Credit where due.",
           replies: [
-            "Exactly. Piet Heyn took the silver fleet in '28 and every shareholder bought a new hat.",
+            "Exactly. Piet Heyn took the silver fleet in '28 and the shareholders still talk of it. Their grandfathers bought very fine hats.",
             "Credit, yes. And debit, and interest. That's the beauty of it.",
             "A sensible view. You'll go far, or at least to {otherTown} and back.",
             "Rich, and pious with it. We pray on Sunday and count on Monday.",
@@ -210,11 +210,11 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "curacao-market-pieter-haas-5",
-      text: "The Spanish ran this island for a hundred years and never found anything worth selling. We've been here six and found salt, horses and a fine natural harbour. Some people just don't look.",
+      id: "willemstad-market-pieter-haas-5",
+      text: "The Spanish held this island for over a hundred years and never found anything worth selling. We've had it eighty and made it a harbour every flag comes to. Some people just don't look.",
     },
     {
-      id: "curacao-market-pieter-haas-6",
+      id: "willemstad-market-pieter-haas-6",
       text: "Tell me, {title}, what's the secret of a good bargain?",
       answers: [
         {
@@ -241,7 +241,7 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
           text: "Buy low, sell high, nap in between.",
           replies: [
             "Two parts of that are sound. The nap is where your rivals rob you.",
-            "I haven't napped since 1634. The Company frowns on unconscious clerks.",
+            "I haven't napped since 1699. The Company frowns on unconscious clerks.",
             "That's not a secret, {title}. That's a confession.",
             "Buy low, sell high, and while you nap, I'll buy your cargo low.",
             "Lovely philosophy. Shall I write it on your tombstone or your bankruptcy notice?",
@@ -250,22 +250,22 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "curacao-market-pieter-haas-7",
+      id: "willemstad-market-pieter-haas-7",
       text: "My father wanted me to be a preacher. I told him a ledger is just a Bible where the sinners pay interest.",
     },
   ],
 
-  "curacao-governor-hubrecht-engel": [
+  "willemstad-governor-hubrecht-engel": [
     {
-      id: "curacao-governor-hubrecht-engel-1",
-      text: "Sit if you like, {title}. I've been standing since 1634 and my leg has opinions about it.",
+      id: "willemstad-governor-hubrecht-engel-1",
+      text: "Sit if you like, {title}. I've been standing since 1674 and my leg has opinions about it.",
     },
     {
-      id: "curacao-governor-hubrecht-engel-2",
-      text: "I took this island from the Spanish with four hundred men and a lot of shouting. Then they gave me a desk and told me to write reports. I'd rather storm the fort again.",
+      id: "willemstad-governor-hubrecht-engel-2",
+      text: "I fought the French for thirty years with a musket and a lot of shouting. Then they gave me a desk and told me to write reports. I'd rather face their cavalry again.",
     },
     {
-      id: "curacao-governor-hubrecht-engel-3",
+      id: "willemstad-governor-hubrecht-engel-3",
       text: "Have you ever had to write a report, {title}?",
       answers: [
         {
@@ -301,11 +301,11 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "curacao-governor-hubrecht-engel-4",
-      text: "The {enemyAdjective} would love this harbour back. I keep a cannon pointed at the entrance and a quill pointed at my own heart.",
+      id: "willemstad-governor-hubrecht-engel-4",
+      text: "The {enemyAdjective} would love this harbour. I keep a cannon pointed at the entrance and a quill pointed at my own heart.",
     },
     {
-      id: "curacao-governor-hubrecht-engel-5",
+      id: "willemstad-governor-hubrecht-engel-5",
       text: "What brings you to my office, {title}? Business, or are you lost?",
       answers: [
         {
@@ -341,31 +341,31 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "curacao-governor-hubrecht-engel-6",
-      text: "Every morning I look at the harbour, every afternoon I look at my reports, and every evening I look at my leg and remember the Spanish pikeman who gave it to me. Busy days.",
+      id: "willemstad-governor-hubrecht-engel-6",
+      text: "Every morning I look at the harbour, every afternoon I look at my reports, and every evening I look at my leg and remember the French dragoon who gave it to me. Busy days.",
     },
     {
-      id: "curacao-governor-hubrecht-engel-7",
-      text: "Do you think the war will ever end, {title}? Eighty years, they'll call it, if it keeps on.",
+      id: "willemstad-governor-hubrecht-engel-7",
+      text: "Do you think the peace will last, {title}? Utrecht was signed in '13 and I still sleep in my boots.",
       answers: [
         {
-          text: "It must end sometime.",
+          text: "It has to. Everyone's out of money.",
           replies: [
-            "Sometime. That's what they told my father, and he died waiting.",
-            "I hope so. I'd like to retire to a farm where nobody owns a pike.",
-            "Perhaps, when Philip IV runs out of money. Which could take a while.",
-            "Maybe. The silver keeps flowing to Madrid and the war keeps flowing back.",
-            "You're kinder than the war is, {title}. I'll take the hope.",
+            "Out of money. That kept the last peace too, until someone found more.",
+            "I hope so. I'd like to retire to a farm where nobody owns a musket.",
+            "Perhaps. The French are tired, the Spanish are tired, and we're the most tired of all.",
+            "Maybe. But kings find money for wars the way sailors find money for rum.",
+            "You're kinder than the world is, {title}. I'll take the hope.",
           ],
         },
         {
-          text: "Only when the paperwork runs out.",
+          text: "Only as long as the paperwork lasts.",
           replies: [
             "Then it will outlive us all. And our grandchildren. And the paper mills.",
             "Ha! You've understood government better than most governors.",
             "Don't. That's too true to be funny, and I laughed anyway.",
             "I'll put that in my next report. Nobody will read it, so it's safe.",
-            "The war's been running on ink since Breda, {title}. You may be right.",
+            "The peace was made of ink at Utrecht, {title}. You may be right.",
           ],
         },
       ],
@@ -396,7 +396,7 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
           replies: [
             "True? Friend, I sell beer and stories. Neither one's improved by being plain.",
             "Mostly true. True enough to tell, false enough to be fun.",
-            "If I only told true things I'd have been silent since 1620.",
+            "If I only told true things I'd have been silent since 1670.",
             "Truth is for courts and churches. This is a tavern.",
             "Fine, here's a true one. My beer is the best on the island. And the only.",
           ],
@@ -482,7 +482,7 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
             "Who told you that? Give me a name. I've a little list of my own.",
             "Ha! The free drink is cancelled and the next one costs extra.",
             "Watered? It's the salt air. Makes everything taste thinner.",
-            "That rumour's been going since 1625 and I started it myself, to see who'd repeat it.",
+            "That rumour's been going since 1695 and I started it myself, to see who'd repeat it.",
           ],
         },
         {
@@ -629,7 +629,7 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
   "st-eustatius-governor-constantijn-reich": [
     {
       id: "st-eustatius-governor-constantijn-reich-1",
-      text: "Welcome to {town}, {title}. A free port. Free to come, free to trade, free to tell me what you carry. Purely for the records.",
+      text: "Welcome to {town}, {title}. A friendly harbour. Free to come, free to trade, free to tell me what you carry. Purely for the records.",
     },
     {
       id: "st-eustatius-governor-constantijn-reich-2",
@@ -661,7 +661,7 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
             "No taxes? I'll have to send a clerk. We can't have that.",
             "The moon. I'll put it down. It's no stranger than what the French captains say.",
             "Ha. And what do they trade on the moon? Cheese, I suppose.",
-            "A free port on the moon. Competition. I must think about that.",
+            "A harbour on the moon with no taxes. Competition. I must think about that.",
             "Charming. I'll write 'lunar' in the book and see who asks.",
           ],
         },
@@ -753,17 +753,17 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
     },
   ],
 
-  "bonaire-tavern-hadewych-zorn": [
+  "savaneta-tavern-hadewych-zorn": [
     {
-      id: "bonaire-tavern-hadewych-zorn-1",
+      id: "savaneta-tavern-hadewych-zorn-1",
       text: "Good evening, {title}. Mind the cup at the end of the bar. It's for someone. He's only a little late.",
     },
     {
-      id: "bonaire-tavern-hadewych-zorn-2",
-      text: "Forty years ago my Willem sailed out for the salt pans. He said he'd be back before supper. I've kept supper warm ever since, more or less.",
+      id: "savaneta-tavern-hadewych-zorn-2",
+      text: "Forty years ago my Willem sailed out with the horse sloop for Curaçao. He said he'd be back before supper. I've kept supper warm ever since, more or less.",
     },
     {
-      id: "bonaire-tavern-hadewych-zorn-3",
+      id: "savaneta-tavern-hadewych-zorn-3",
       text: "Have you ever loved someone who went to sea, {title}?",
       answers: [
         {
@@ -773,7 +773,7 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
             "Hold on to that, {title}. Thinking of them is how they stay alive.",
             "I'm sorry. Sit. The extra cup can be shared tonight. Willem won't mind.",
             "We're the same then, you and I. Waiting is a kind of sailing too.",
-            "Some nights I swear I hear his whistle down by the pans. You'll hear yours, one day.",
+            "Some nights I swear I hear his whistle down by the shore. You'll hear yours, one day.",
           ],
         },
         {
@@ -799,11 +799,11 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "bonaire-tavern-hadewych-zorn-4",
-      text: "The flamingos come back to the pans every year. Pink as a sunset and twice as silly. I tell myself if they can find their way back, so can he.",
+      id: "savaneta-tavern-hadewych-zorn-4",
+      text: "The goats wander off into the hills every morning and come back every evening. Thin, dusty and twice as silly. I tell myself if they can find their way back, so can he.",
     },
     {
-      id: "bonaire-tavern-hadewych-zorn-5",
+      id: "savaneta-tavern-hadewych-zorn-5",
       text: "Will you take a drink with me, {title}? The evenings are long here.",
       answers: [
         {
@@ -839,11 +839,11 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "bonaire-tavern-hadewych-zorn-6",
+      id: "savaneta-tavern-hadewych-zorn-6",
       text: "I keep his cameo here at my collar. He was handsome. Terrible singer. Spent all his wages on a fiddle he couldn't play. I'd give anything to hear him murder a song again.",
     },
     {
-      id: "bonaire-tavern-hadewych-zorn-7",
+      id: "savaneta-tavern-hadewych-zorn-7",
       text: "If you ever meet a grey old sailor named Willem out there, {title}, would you tell him I'm still waiting?",
       answers: [
         {
@@ -860,7 +860,7 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
           text: "Forty years is a long time to wait.",
           replies: [
             "It is. But leaving would mean deciding he isn't coming. I'm not ready to decide.",
-            "Long, yes. But the flamingos wait a whole year and they've smaller brains than me.",
+            "Long, yes. But the goats wait all day for a scrap of shade and they've smaller brains than me.",
             "I know, {title}. I've counted every one of them.",
             "Long for you. For me it's one very long evening.",
             "Perhaps. But what else would I do? Knit? I tried. The knitting was worse than the waiting.",
@@ -880,20 +880,20 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
     },
   ],
 
-  "bonaire-market-maarten-koch": [
+  "savaneta-market-maarten-koch": [
     {
-      id: "bonaire-market-maarten-koch-1",
-      text: "Maarten Koch, at your service! Finest salt on Bonaire, sold by the bravest man on Bonaire. I'll let you guess which one is me.",
+      id: "savaneta-market-maarten-koch-1",
+      text: "Maarten Koch, at your service! Finest goats on Aruba, sold by the bravest man on Aruba. I'll let you guess which one is me.",
     },
     {
-      id: "bonaire-market-maarten-koch-2",
+      id: "savaneta-market-maarten-koch-2",
       text: "Did you hear about the shark, {title}? Ten feet long. I wrestled it in the shallows with my bare hands.",
       answers: [
         {
           text: "Incredible! Tell me everything.",
           replies: [
             "Well, it was twelve feet. Possibly thirteen. It's hard to measure while wrestling.",
-            "It came at me out of the pans, jaws wide, and I said 'Not today, fish.'",
+            "It came at me out of the shallows, jaws wide, and I said 'Not today, fish.'",
             "I'd show you the scar, but it healed suspiciously fast. Heroic blood, I think.",
             "We fought for an hour. Maybe ten minutes. It felt like an hour.",
             "Finally, someone who appreciates a good story! A true story, I mean. Obviously.",
@@ -922,11 +922,11 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "bonaire-market-maarten-koch-3",
+      id: "savaneta-market-maarten-koch-3",
       text: "This sword? Borrowed. Well, inherited from a man who doesn't know he's left it to me yet. Why do people keep saying it's on the wrong hip?",
     },
     {
-      id: "bonaire-market-maarten-koch-4",
+      id: "savaneta-market-maarten-koch-4",
       text: "One day I'll captain my own ship, like you, {title}. What's the hardest part of the job?",
       answers: [
         {
@@ -962,15 +962,15 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "bonaire-market-maarten-koch-5",
-      text: "The salt here is the best in the whole world. I know because I licked a lot of it. That's market research, that is.",
+      id: "savaneta-market-maarten-koch-5",
+      text: "The horses here are the best in the whole world. I know because I've fallen off most of them. That's market research, that is.",
     },
     {
-      id: "bonaire-market-maarten-koch-6",
-      text: "If pirates ever attack {town}, they'll have to get past me first. Then the governor. Then the flamingos, who are vicious, frankly.",
+      id: "savaneta-market-maarten-koch-6",
+      text: "If pirates ever attack {town}, they'll have to get past me first. Then the governor. Then the goats, who are vicious, frankly.",
     },
     {
-      id: "bonaire-market-maarten-koch-7",
+      id: "savaneta-market-maarten-koch-7",
       text: "Would you take me on as crew, {title}? I'm very brave. Ask anyone. Except the fishermen.",
       answers: [
         {
@@ -990,7 +990,7 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
             "I'm tall. Surely being tall counts as half the climbing already.",
             "I can climb anything. Getting down is a separate skill I'm working on.",
             "Yes! Well, ladders. Rigging's just a wobbly ladder, isn't it?",
-            "I once climbed a salt pile in under a minute. Barefoot. It stung.",
+            "I once climbed a cactus in under a minute. Barefoot. It stung.",
           ],
         },
         {
@@ -1007,17 +1007,17 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
     },
   ],
 
-  "bonaire-governor-diederik-lang": [
+  "savaneta-governor-diederik-lang": [
     {
-      id: "bonaire-governor-diederik-lang-1",
+      id: "savaneta-governor-diederik-lang-1",
       text: "Ah. A visitor. Come in, {title}, but please don't bring any excitement. I've had enough excitement for three lifetimes.",
     },
     {
-      id: "bonaire-governor-diederik-lang-2",
-      text: "Twenty years in Flanders fighting the Spanish. Sieges, mud, more sieges, more mud. I took {town} because the most dangerous thing here is a flamingo with a grudge.",
+      id: "savaneta-governor-diederik-lang-2",
+      text: "Twenty years in Flanders fighting the French. Sieges, mud, more sieges, more mud. I took {town} because the most dangerous thing here is a goat with a grudge.",
     },
     {
-      id: "bonaire-governor-diederik-lang-3",
+      id: "savaneta-governor-diederik-lang-3",
       text: "Do you bring news, {title}? Please say no.",
       answers: [
         {
@@ -1025,7 +1025,7 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
           replies: [
             "Wonderful. The best news is none. Sit, have an orange.",
             "Oh, thank God. You've no idea how lovely those words are.",
-            "Splendid. Then let's sit quietly and watch the salt dry.",
+            "Splendid. Then let's sit quietly and watch the goats nap.",
             "Excellent. I'll write in my report: nothing happened. My favourite report.",
             "Bless you, {title}. You may visit any time you bring nothing.",
           ],
@@ -1033,19 +1033,19 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
         {
           text: "The {enemyAdjective} are planning an attack.",
           replies: [
-            "On Bonaire? They'd need to want salt very badly. Wake me if they arrive.",
+            "On Aruba? They'd need to want goats very badly. Wake me if they arrive.",
             "Hm. They said that in Flanders too. Then they took three years to arrive.",
             "Fine. I'll move the fruit out of my helmet. Just in case.",
-            "Let them come. They'll find salt, goats and one very tired old man.",
+            "Let them come. They'll find goats, cactus and one very tired old man.",
             "Sigh. Is it a real attack or one of Maarten's stories? With him it's always a shark.",
           ],
         },
         {
-          text: "Frederick Henry sends his regards and a trumpet.",
+          text: "The States General send their regards and a trumpet.",
           replies: [
             "A trumpet? Please take it away. I spent twenty years being woken by trumpets.",
-            "The Stadtholder remembers me? How alarming. That usually means he wants something.",
-            "Tell His Highness I'm very honoured and very busy doing nothing.",
+            "The States General remember me? How alarming. That usually means they want something.",
+            "Tell Their High Mightinesses I'm very honoured and very busy doing nothing.",
             "Ha. If that's true I'll use the trumpet as a vase. Next to the helmet.",
             "Regards I'll take. The trumpet goes to the bottom of the harbour.",
           ],
@@ -1053,11 +1053,11 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "bonaire-governor-diederik-lang-4",
-      text: "My helmet? Yes, there's a dent. Spanish musket ball at Breda. These days it holds oranges. Much more peaceful work for us both.",
+      id: "savaneta-governor-diederik-lang-4",
+      text: "My helmet? Yes, there's a dent. French musket ball at Malplaquet. These days it holds oranges. Much more peaceful work for us both.",
     },
     {
-      id: "bonaire-governor-diederik-lang-5",
+      id: "savaneta-governor-diederik-lang-5",
       text: "What do you think of the quiet here, {title}?",
       answers: [
         {
@@ -1093,16 +1093,16 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "bonaire-governor-diederik-lang-6",
+      id: "savaneta-governor-diederik-lang-6",
       text: "A young man once asked me how to win a war. I told him: arrive late, leave early and let the other side run out of money. He's a general now. Of course he is.",
     },
     {
-      id: "bonaire-governor-diederik-lang-7",
+      id: "savaneta-governor-diederik-lang-7",
       text: "If you're sailing on to {otherTown}, {title}, go carefully. And if you find any trouble out there, please keep it far away from here.",
     },
     {
-      id: "bonaire-governor-diederik-lang-8",
-      text: "Tell me, {title}, how do you sleep at sea? I haven't slept a full night since the siege of Breda.",
+      id: "savaneta-governor-diederik-lang-8",
+      text: "Tell me, {title}, how do you sleep at sea? I haven't slept a full night since the siege of Namur.",
       answers: [
         {
           text: "Like a baby. I wake up screaming every two hours.",
@@ -1138,17 +1138,17 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
     },
   ],
 
-  "st-martin-tavern-joost-becker": [
+  "simpson-bay-tavern-joost-becker": [
     {
-      id: "st-martin-tavern-joost-becker-1",
-      text: "Evening, {title}. Pull up a stool. Ten years I spent in the rigging of the salt ships. Now I keep my feet on the floor, and I've grown to like the floor.",
+      id: "simpson-bay-tavern-joost-becker-1",
+      text: "Evening, {title}. Pull up a stool. Ten years I spent in the rigging of the Company sloops. Now I keep my feet on the floor, and I've grown to like the floor.",
     },
     {
-      id: "st-martin-tavern-joost-becker-2",
-      text: "That arm? A yard came down in a squall off the Great Pond. Snapped it like a pipe stem. The sail got mended before I did.",
+      id: "simpson-bay-tavern-joost-becker-2",
+      text: "That arm? A yard came down in a squall off Curaçao. Snapped it like a pipe stem. The sail got mended before I did.",
     },
     {
-      id: "st-martin-tavern-joost-becker-3",
+      id: "simpson-bay-tavern-joost-becker-3",
       text: "Can you tie a bowline one handed, {title}?",
       answers: [
         {
@@ -1184,11 +1184,11 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "st-martin-tavern-joost-becker-4",
-      text: "The salt pond here feeds half the herring barrels of Holland. Every pickled fish in Amsterdam owes a small thank you to {town}. They never send one.",
+      id: "simpson-bay-tavern-joost-becker-4",
+      text: "The salt from our great pond goes into half the herring barrels in Holland. Every Dutchman with a pickled fish owes a small thank you to {town}. They never send one.",
     },
     {
-      id: "st-martin-tavern-joost-becker-5",
+      id: "simpson-bay-tavern-joost-becker-5",
       text: "Do you miss the rigging, {title}? Or are you a quarterdeck sort?",
       answers: [
         {
@@ -1224,11 +1224,11 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "st-martin-tavern-joost-becker-6",
+      id: "simpson-bay-tavern-joost-becker-6",
       text: "Sailor's rule: never trust a calm sea in hurricane season. Second rule: never trust a cook who's thin. I've broken both and lived, but only just.",
     },
     {
-      id: "st-martin-tavern-joost-becker-7",
+      id: "simpson-bay-tavern-joost-becker-7",
       text: "Heading out soon, {title}? Which way's the wind blowing tonight?",
       answers: [
         {
@@ -1255,17 +1255,17 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
     },
   ],
 
-  "st-martin-market-femke-apel": [
+  "simpson-bay-market-femke-apel": [
     {
-      id: "st-martin-market-femke-apel-1",
+      id: "simpson-bay-market-femke-apel-1",
       text: "Welcome, {title}! Salt, cheese, a little cloth. Everything weighed honestly on my scale. Honestly in my favour, mind, but honestly.",
     },
     {
-      id: "st-martin-market-femke-apel-2",
-      text: "I came here to sell cheese. Then I noticed nobody in the tropics wants cheese, but everybody wants salt. Now the cheese is for me and the salt is for profit.",
+      id: "simpson-bay-market-femke-apel-2",
+      text: "I came here to sell cheese. Then I noticed nobody in the tropics wants cheese, but every ship wants salt. Now the cheese is for me and the salt is for profit.",
     },
     {
-      id: "st-martin-market-femke-apel-3",
+      id: "simpson-bay-market-femke-apel-3",
       text: "How would you like to pay, {title}?",
       answers: [
         {
@@ -1301,11 +1301,11 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "st-martin-market-femke-apel-4",
+      id: "simpson-bay-market-femke-apel-4",
       text: "My brass scale? I polish it every hour. Customers trust a shiny scale. They shouldn't, but they do.",
     },
     {
-      id: "st-martin-market-femke-apel-5",
+      id: "simpson-bay-market-femke-apel-5",
       text: "Have you any {merchandise} to sell, {title}? I'll make you an offer you'll find very reasonable for exactly ten minutes.",
       answers: [
         {
@@ -1323,7 +1323,7 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
           replies: [
             "Cheat? Never. I'd simply be better at sums than you.",
             "Well, I respect a suspicious captain. They're always the ones who come back.",
-            "Suit yourself. Nobody on {town} will pay more, and they'll pay slower.",
+            "Suit yourself. Nobody in {town} will pay more, and they'll pay slower.",
             "Ha. Clever. You've met my brother, haven't you?",
             "Fine. Go elsewhere. I'll be here when you discover I was right.",
           ],
@@ -1341,16 +1341,16 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "st-martin-market-femke-apel-6",
+      id: "simpson-bay-market-femke-apel-6",
       text: "People say the {enemyAdjective} pay well for salt. They do. They also pay with cannon fire when they change their minds. I only sell to customers who stay polite.",
     },
     {
-      id: "st-martin-market-femke-apel-7",
-      text: "Sentiment is a fine thing, {title}, for poets. I've never seen a poet buy salt.",
+      id: "simpson-bay-market-femke-apel-7",
+      text: "Sentiment is a fine thing, {title}, for poets. I've never seen a poet buy a barrel of salt.",
     },
     {
-      id: "st-martin-market-femke-apel-8",
-      text: "Do you know what salt is worth in Amsterdam, {title}? Every herring in Holland needs it, and every herring is hungry.",
+      id: "simpson-bay-market-femke-apel-8",
+      text: "Do you know what good salt is worth in Amsterdam, {title}? Every herring in Holland needs salt, and every Dutchman eats herring.",
       answers: [
         {
           text: "More than here, I'd wager.",
@@ -1363,12 +1363,12 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
           ],
         },
         {
-          text: "Herrings don't eat, they're already pickled.",
+          text: "Dutchmen don't eat herring, they eat cheese.",
           replies: [
             "Ha! Pedant. You'll make a terrible customer and a very good accountant.",
-            "That's what the salt is for, clever captain. The pickling.",
-            "A dead herring is the best customer there is. It never haggles.",
-            "Fine. Every barrel is hungry, then. My point stands, and so does my price.",
+            "Cheese needs salt too, clever captain. Lots of it.",
+            "Cheese and herring both. That's two salt customers in one Dutchman. Even better for me.",
+            "Fine. On Sundays they eat cheese, the rest of the week herring. My point stands, and so does my price.",
             "My grandmother would have hit you with a ladle for that. Then laughed.",
           ],
         },
@@ -1379,20 +1379,20 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
             "Good. A captain who doesn't care is a captain I can bargain with.",
             "{merchandise}. Hm. Bring it round, but I'm warning you, my scale is honest.",
             "I respect focus, {title}. Let's see what your focus is worth.",
-            "Then let's skip the herrings and talk numbers. I prefer numbers anyway.",
+            "Then let's skip the herring and talk numbers. I prefer numbers anyway.",
           ],
         },
       ],
     },
   ],
 
-  "st-martin-governor-machteld-glauber": [
+  "simpson-bay-governor-machteld-glauber": [
     {
-      id: "st-martin-governor-machteld-glauber-1",
+      id: "simpson-bay-governor-machteld-glauber-1",
       text: "You stand before Machteld Glauber, governing {town} in the name of my brother, who is away. Very far away. Indefinitely, if I have my way.",
     },
     {
-      id: "st-martin-governor-machteld-glauber-2",
+      id: "simpson-bay-governor-machteld-glauber-2",
       text: "Have you noticed the portraits, {title}?",
       answers: [
         {
@@ -1428,22 +1428,22 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "st-martin-governor-machteld-glauber-3",
+      id: "simpson-bay-governor-machteld-glauber-3",
       text: "This collar was made in Haarlem and took six lacemakers three months. I wear it on Tuesdays. Today is not Tuesday, but you are a guest, so I made an exception.",
     },
     {
-      id: "st-martin-governor-machteld-glauber-4",
+      id: "simpson-bay-governor-machteld-glauber-4",
       text: "My brother writes that I should be more modest. I've had his letter framed. Next to a portrait of me reading it.",
     },
     {
-      id: "st-martin-governor-machteld-glauber-5",
+      id: "simpson-bay-governor-machteld-glauber-5",
       text: "How do you address a governor where you come from, {title}?",
       answers: [
         {
           text: "Your excellency, with a deep bow.",
           replies: [
             "Correct. Deeper, next time. I'll have someone measure.",
-            "Lovely. The salt traders could learn from you.",
+            "Lovely. The salt rakers could learn from you.",
             "Good. You may rise. Slowly. I like to savour it.",
             "Finally, a captain who knows manners. Write to my brother and tell him.",
             "Excellent. You may come again, {title}. On a Tuesday, for the collar.",
@@ -1472,11 +1472,11 @@ export const HOLLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "st-martin-governor-machteld-glauber-6",
-      text: "The salt of the Great Pond makes {town} the envy of the Caribbean. I take personal credit. The salt doesn't object, and the salt workers wouldn't dare.",
+      id: "simpson-bay-governor-machteld-glauber-6",
+      text: "The salt of {town} is the envy of the Caribbean. I take personal credit. The pond doesn't object, and the salt rakers wouldn't dare.",
     },
     {
-      id: "st-martin-governor-machteld-glauber-7",
+      id: "simpson-bay-governor-machteld-glauber-7",
       text: "Do you think a woman can govern as well as a man, {title}?",
       answers: [
         {

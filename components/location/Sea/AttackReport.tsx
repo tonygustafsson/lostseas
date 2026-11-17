@@ -15,6 +15,7 @@ import {
   getAttackFailureQuip,
   getAttackSuccessQuip,
 } from "@/utils/getPirateQuip"
+import { getTownName } from "@/utils/location"
 import { formatGold } from "@/utils/number"
 import { snakeCaseToTitleCase } from "@/utils/string"
 
@@ -99,7 +100,10 @@ const AttackReport = () => {
                     : "treasures"}{" "}
                   aboard
                 </p>
-                <p>Bring it to the governor of {foundTreasure.rewarder}.</p>
+                <p>
+                  Bring it to the governor of{" "}
+                  {getTownName(foundTreasure.rewarder)}.
+                </p>
               </AttackReportItem>
             )}
 
@@ -113,8 +117,9 @@ const AttackReport = () => {
               >
                 <p>{capturedPirateCrime?.description}</p>
                 <p>
-                  Bring them to the governor of {capturedPirate.rewarder} for a
-                  bounty of {formatGold(capturedPirateCrime?.bounty)}.
+                  Bring them to the governor of{" "}
+                  {getTownName(capturedPirate.rewarder)} for a bounty of{" "}
+                  {formatGold(capturedPirateCrime?.bounty)}.
                 </p>
               </AttackReportItem>
             )}

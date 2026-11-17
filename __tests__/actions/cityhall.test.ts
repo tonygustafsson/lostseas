@@ -21,7 +21,7 @@ const ALL_TOWNS = Object.keys(TOWNS) as Town[]
 const townOf = (nation: Nation) =>
   ALL_TOWNS.find((town) => TOWNS[town].nation === nation)!
 
-// The default test player is English and stands in Port Royale (English)
+// The default test player is British and stands in Kingston (Great Britain)
 const atCityHall = (overrides: DeepPartial<Player> = {}) =>
   deepFreeze(
     patchDeep<Player>(
@@ -62,7 +62,7 @@ describe("acceptNewTitle", () => {
     })
     expect(result.log).toMatchObject({
       type: "honour",
-      message: "Accepted new title Ensign from the governor of Port Royale.",
+      message: "Accepted new title Ensign from the governor of Kingston.",
     })
   })
 
@@ -286,7 +286,7 @@ describe("handOverTreasure", () => {
   const treasure = (
     id: string,
     name: TreasureName,
-    rewarder: Town = "Port Royale"
+    rewarder: Town = "kingston"
   ): Treasure => ({ id, name, rewarder })
 
   it.each(TREASURES)("pays $value gold for the $name", ({ name, value }) => {
@@ -314,13 +314,13 @@ describe("handOverTreasure", () => {
     expect(Object.keys(result.player.treasures ?? {})).toEqual(["b"])
     expect(result.log).toMatchObject({
       type: "honour",
-      message: "Handed over Inca mask to the town of Port Royale.",
+      message: "Handed over Inca mask to the town of Kingston.",
     })
   })
 
   it("rejects a treasure belonging to another town, as the guide says", () => {
     const player = atCityHall({
-      treasures: { a: treasure("a", "Inca mask", "Havana") },
+      treasures: { a: treasure("a", "Inca mask", "havana") },
     })
 
     expectError(
@@ -367,7 +367,7 @@ describe("handOverPirate", () => {
   const pirate = (
     id: string,
     crimeId: string,
-    rewarder: Town = "Port Royale"
+    rewarder: Town = "kingston"
   ): WantedPirate => ({ id, name: 'Jack "Mad" Flint', crimeId, rewarder })
 
   it.each(PIRATE_CRIMES)(
@@ -397,13 +397,13 @@ describe("handOverPirate", () => {
     expect(result.log).toMatchObject({
       type: "honour",
       message:
-        'Handed over the wanted pirate Jack "Mad" Flint to the governor of Port Royale.',
+        'Handed over the wanted pirate Jack "Mad" Flint to the governor of Kingston.',
     })
   })
 
   it("rejects a pirate wanted by another town", () => {
     const player = atCityHall({
-      wantedPirates: { a: pirate("a", "jailbreak", "Havana") },
+      wantedPirates: { a: pirate("a", "jailbreak", "havana") },
     })
 
     expectError(

@@ -44,7 +44,7 @@ const routes = [
 
 const quest: Quest = {
   id: "quest-1",
-  giverId: "charles-towne-tavern-mavis-cartwright",
+  giverId: "st-georges-tavern-mavis-cartwright",
   acceptedDay: 1,
   pitch: "Take this crate.",
   reward: { gold: 100 },

@@ -15,7 +15,7 @@ import {
 } from "@/constants/quests"
 import type { RandomInt } from "@/utils/actions/types"
 import { getJourneyLength } from "@/utils/journey"
-import { getNationTowns } from "@/utils/location"
+import { getNationTowns, getTownName } from "@/utils/location"
 import getDutchFemaleName from "@/utils/names/getDutchFemaleName"
 import getDutchMaleName from "@/utils/names/getDutchMaleName"
 import getDutchSurname from "@/utils/names/getDutchSurname"
@@ -126,7 +126,7 @@ const createReward = (
 
 export const targetExtras = (npc: Npc) => ({
   target: npc.name,
-  targetTown: npc.town,
+  targetTown: getTownName(npc.town),
   targetPlace: getNpcPlace(npc),
 })
 

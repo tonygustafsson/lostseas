@@ -1,13 +1,13 @@
 import "server-only"
 
 export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
-  "panama-tavern-socorro-herrera": [
+  "portobelo-tavern-socorro-herrera": [
     {
-      id: "panama-tavern-socorro-herrera-1",
+      id: "portobelo-tavern-socorro-herrera-1",
       text: "Sit down, {title}. I sailed eleven years with the silver fleet and not one admiral noticed I was a woman. Mind you, not one of them noticed the reefs off Cartagena either.",
     },
     {
-      id: "panama-tavern-socorro-herrera-2",
+      id: "portobelo-tavern-socorro-herrera-2",
       text: "The wind is backing to the south. Can you feel it in your teeth, {title}, or are you one of those who needs a chart to tell you it is raining?",
       answers: [
         {
@@ -43,18 +43,18 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "panama-tavern-socorro-herrera-3",
+      id: "portobelo-tavern-socorro-herrera-3",
       text: "They caught me shaving one morning. The captain asked why a cabin boy with no beard needed a razor. I told him I was practising. He made me cook for three months as punishment, and the crew begged him to make it permanent.",
     },
     {
-      id: "panama-tavern-socorro-herrera-4",
+      id: "portobelo-tavern-socorro-herrera-4",
       text: "Every piece of eight from Peru crosses this isthmus on a mule's back before it ever sees a galleon. What do you make of that, {title}?",
       answers: [
         {
           text: "I would like to meet those mules.",
           replies: [
             "Everyone would. The mules are not interested. They have seen richer men than you.",
-            "Then walk the road to Portobelo. Bring boots, a sword and a strong opinion about mosquitoes.",
+            "Then walk the road to Panama. Bring boots, a sword and a strong opinion about mosquitoes.",
             "A mule carrying silver is still a mule. It will bite you, kick you and then sit down in a river.",
             "I knew a man who tried to steal one. The mule ate his hat and walked home on its own.",
             "Careful, {title}. The King's soldiers guard those mules more closely than they guard the bishop.",
@@ -83,11 +83,11 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "panama-tavern-socorro-herrera-5",
+      id: "portobelo-tavern-socorro-herrera-5",
       text: "Keep limes aboard, {title}. Laugh all you like, but I never lost a tooth after I started sucking them on watch. Lost two to a bosun's fist, mind, but none to the scurvy.",
     },
     {
-      id: "panama-tavern-socorro-herrera-6",
+      id: "portobelo-tavern-socorro-herrera-6",
       text: "Have you ever had to pretend to be something you are not, {title}?",
       answers: [
         {
@@ -123,18 +123,18 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "panama-tavern-socorro-herrera-7",
+      id: "portobelo-tavern-socorro-herrera-7",
       text: "The Pacific is a strange sea, {title}. Calm as a millpond for weeks and then it remembers it has a temper. A bit like me after my third cup.",
     },
   ],
 
-  "panama-market-sancho-velasco": [
+  "portobelo-market-sancho-velasco": [
     {
-      id: "panama-market-sancho-velasco-1",
+      id: "portobelo-market-sancho-velasco-1",
       text: "Ah, {title}! Did you hear? The alcalde's wife has bought a third parrot, and this one speaks better Castilian than the alcalde. Nobody is surprised.",
     },
     {
-      id: "panama-market-sancho-velasco-2",
+      id: "portobelo-market-sancho-velasco-2",
       text: "I drove mules on the Portobelo road for nine years. You learn a lot about people when they think a mule is not listening. Want to hear what the bishop's secretary said?",
       answers: [
         {
@@ -144,7 +144,7 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
             "He said he keeps a second set of accounts. Under his mattress. Which explains why he sleeps so badly.",
             "He said the cathedral bells are cracked and nobody wants to pay for new ones. So they ring them softly and hope God does not notice.",
             "He confessed he cannot ride a mule at all. He spent the whole road being led like a sack of flour. Very dignified.",
-            "He said he would kill for a decent cheese. In Panama! Where would he find a decent cheese? I am still looking for him.",
+            "He said he would kill for a decent cheese. In Portobelo! Where would he find a decent cheese? I am still looking for him.",
           ],
         },
         {
@@ -160,21 +160,21 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
         {
           text: "I only want to hear what the mule said.",
           replies: [
-            "The mule? The mule said nothing. The mule is the only honest creature in Panama.",
+            "The mule? The mule said nothing. The mule is the only honest creature on the isthmus.",
             "Ha! The mule had opinions, believe me. Mostly about the bishop's secretary, and all of them rude.",
             "That mule was called Esperanza, and she once kicked a tax collector into the Chagres River. Her opinions were very clear.",
             "You joke, but mules know everything. They just keep it to themselves, which makes them terrible gossips.",
-            "She said hee-haw, {title}. In Panama that means the price of silver is going up.",
+            "She said hee-haw, {title}. In Portobelo that means the price of silver is going up.",
           ],
         },
       ],
     },
     {
-      id: "panama-market-sancho-velasco-3",
+      id: "portobelo-market-sancho-velasco-3",
       text: "Word from the road is that a merchant came through with three crates of {merchandise} and swore they were packed in {otherTown}. The crates said otherwise. The crates always say otherwise.",
     },
     {
-      id: "panama-market-sancho-velasco-4",
+      id: "portobelo-market-sancho-velasco-4",
       text: "So, {title}, where have you sailed from? Everyone who comes through here has a story, and I collect them like other men collect coins.",
       answers: [
         {
@@ -210,11 +210,11 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "panama-market-sancho-velasco-5",
+      id: "portobelo-market-sancho-velasco-5",
       text: "When the silver fleet is in, this market goes mad. Prices double, tempers triple and the priest hears more confessions in a week than he does all year. Best time to sell, worst time to buy, {title}.",
     },
     {
-      id: "panama-market-sancho-velasco-6",
+      id: "portobelo-market-sancho-velasco-6",
       text: "Between us, {title}, have you heard anything worth repeating on your travels?",
       answers: [
         {
@@ -251,13 +251,13 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
     },
   ],
 
-  "panama-governor-alfonso-benavides": [
+  "portobelo-governor-alfonso-benavides": [
     {
-      id: "panama-governor-alfonso-benavides-1",
+      id: "portobelo-governor-alfonso-benavides-1",
       text: "You stand before Don Alfonso Benavides y Toledo, Lord of Valdeolmos, Marquis-in-waiting of Torrecilla, Keeper of the Royal Mules of the Isthmus, Count of... no matter. You may bow, {title}.",
     },
     {
-      id: "panama-governor-alfonso-benavides-2",
+      id: "portobelo-governor-alfonso-benavides-2",
       text: "Do you know how many titles my family holds, {title}?",
       answers: [
         {
@@ -267,14 +267,14 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
             "Fifteen, if you count the vineyard. My cousin disputes the vineyard. My cousin is a fool.",
             "Fourteen, yes, and I can recite every one. I shall do so now. Clear your afternoon.",
             "How did you know? Have you been reading my letters to the viceroy? They are very long letters.",
-            "Excellent. His Majesty Philip IV himself once nodded at my father. It was a very gracious nod.",
+            "Excellent. His late Majesty Carlos II himself once nodded at my father. It was a very gracious nod.",
           ],
         },
         {
           text: "I have no idea.",
           replies: [
             "No idea! Then you shall have one. Begin with the first: Lord of Valdeolmos, a very ancient lordship with almost a dozen sheep.",
-            "Shameful. Even the mules of Panama know. I have had it painted on their saddles.",
+            "Shameful. Even the mules of Portobelo know. I have had it painted on their saddles.",
             "Ignorance is forgivable in a sailor. Barely. Write this down. All fourteen.",
             "Then let me enlighten you. We shall start in the year 1214 and work forward.",
             "Hmph. The last captain who said that was posted to guard the Darien swamp. He sends me letters. They are mostly about frogs.",
@@ -293,11 +293,11 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "panama-governor-alfonso-benavides-3",
-      text: "Every ounce of Peruvian silver that serves His Catholic Majesty passes through my city, {title}. Without Panama, the treasure fleet would sail empty and Spain would be forced to sell its paintings. Some of them are of me.",
+      id: "portobelo-governor-alfonso-benavides-3",
+      text: "Every ounce of Peruvian silver that serves His Catholic Majesty passes through my city, {title}. Without Portobelo, the treasure fleet would sail empty and Spain would be forced to sell its paintings. Some of them are of me.",
     },
     {
-      id: "panama-governor-alfonso-benavides-4",
+      id: "portobelo-governor-alfonso-benavides-4",
       text: "I have commissioned a new portrait to send to Madrid. Tell me, {title}, should I be painted on horseback or beside a globe?",
       answers: [
         {
@@ -307,16 +307,16 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
             "Exactly my thought. Though I do not ride. The horse will have to be painted from memory.",
             "Splendid. The last horse they brought me bit the painter. We shall use a stuffed one.",
             "A conqueror! Yes. I once conquered a very difficult dinner with the archbishop. It counts.",
-            "On horseback. Of course. Velázquez paints the King that way, and I see no reason to be outdone.",
+            "On horseback. Of course. Velázquez painted the old kings that way, and I see no reason to be outdone.",
           ],
         },
         {
           text: "Beside a globe, like a scholar.",
           replies: [
-            "A scholar! Yes. With one hand resting on Panama, which shall be painted rather larger than it is.",
+            "A scholar! Yes. With one hand resting on Portobelo, which shall be painted rather larger than it is.",
             "Wise. A globe suggests learning. I have read almost half a book this year.",
             "Very good. I shall point at Castile with a thoughtful expression. I have been practising the expression.",
-            "Excellent. Though the only globe in Panama belongs to the bishop, and he will not lend it.",
+            "Excellent. Though the only globe in Portobelo belongs to the bishop, and he will not lend it.",
             "A globe shows the world, and my face shows the man who governs a part of it. A very important part.",
           ],
         },
@@ -324,7 +324,7 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
           text: "Beside a mule. It suits you.",
           replies: [
             "A mule! I have never been so insulted. Though, to be fair, the mules are the source of my wealth.",
-            "You mock me, {title}, but the mules of Panama carry an empire. They are noble animals. Nobler than you.",
+            "You mock me, {title}, but the mules of the isthmus carry an empire. They are noble animals. Nobler than you.",
             "Guards! Ah, still at lunch. You are lucky they eat for three hours.",
             "I shall pretend I did not hear that, and you shall pretend you did not say it.",
             "Hmm. A mule bearing silver beneath my outstretched hand. No. No, I refuse to consider it. Leave it with me.",
@@ -333,11 +333,11 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "panama-governor-alfonso-benavides-5",
+      id: "portobelo-governor-alfonso-benavides-5",
       text: "The {enemyAdjective} have the impudence to threaten the King's waters. When I was a boy in Castile, such people would not have been allowed in the house. They would have been made to wait in the stables with the fourth cousins.",
     },
     {
-      id: "panama-governor-alfonso-benavides-6",
+      id: "portobelo-governor-alfonso-benavides-6",
       text: "I have written to the viceroy about my promotion fourteen times. One letter for each title. Do you think he will reply, {title}?",
       answers: [
         {
@@ -354,7 +354,7 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
           text: "He might be busy with the war.",
           replies: [
             "Busy? Too busy for a Benavides? Then the war must be going worse than they tell me.",
-            "The war, yes. The Thirty Years' War, the Dutch war, the Portuguese grumbling. Still, fourteen letters.",
+            "The war, yes. The succession, the treaty at Utrecht, the British and their asiento. Still, fourteen letters.",
             "Possibly. I shall write a fifteenth to ask whether he is busy.",
             "A fair point, {title}. Even I cannot compete with a war. Only nearly.",
             "Then I shall offer to help with the war. In writing. At length.",
@@ -421,7 +421,7 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
     },
     {
       id: "san-juan-tavern-roque-acosta-4",
-      text: "Look at El Morro up there, {title}. Stone walls, fat cannons, a hundred years of standing. Do you think anything lasts?",
+      text: "Look at El Morro up there, {title}. Stone walls, fat cannons, a century and more of standing. Do you think anything lasts?",
       answers: [
         {
           text: "The fortress will outlast us all.",
@@ -533,7 +533,7 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
         {
           text: "I will trade you my left boot.",
           replies: [
-            "Only the left? What am I to do with one boot? Find a one-legged sailor? Actually, Belize has a few.",
+            "Only the left? What am I to do with one boot? Find a one-legged sailor? Actually, Tortuga has a few.",
             "Hmm. Let me see it. Good leather, poor stitching, terrible smell. I will give you half a candle.",
             "I once sold a sailor his own lost hat. Do not tempt me to sell you your own boot.",
             "Throw in the right one and we have a deal. You can walk home on your dignity.",
@@ -627,7 +627,7 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
   "san-juan-governor-salvador-arellano": [
     {
       id: "san-juan-governor-salvador-arellano-1",
-      text: "Sit, {title}. And before you ask, yes, I held El Morro against the Dutch. No, I will not tell the story. Yes, the scar hurts when it rains. It always rains.",
+      text: "Sit, {title}. And before you ask, yes, I fought the English at Arecibo. No, I will not tell the story. Yes, the scar hurts when it rains. It always rains.",
     },
     {
       id: "san-juan-governor-salvador-arellano-2",
@@ -636,9 +636,9 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
         {
           text: "I came to hear about the siege.",
           replies: [
-            "Of course you did. Fine. The Dutch came, we stayed, they left. There. Now you have heard it.",
-            "Of course. The Dutch burned the town, we held the fort, I was hit by a stone the size of a ham. The end.",
-            "They had ships, we had walls. Walls won. I would have preferred a nap.",
+            "Of course you did. Fine. The English came, we stayed, they left. There. Now you have heard it.",
+            "Of course. The English landed, we met them on the beach, I was hit by something the size of a ham. The end.",
+            "They had ships, we had a very angry militia. The militia won. I would have preferred a nap.",
             "Everyone does. The bishop asks at every dinner. I have started serving food that requires both hands.",
             "I will tell you the short version. It was hot, it was long, and I would not do it again for all the silver in Potosí.",
           ],
@@ -654,13 +654,13 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
           ],
         },
         {
-          text: "I heard you fought the Dutch with a soup ladle.",
+          text: "I heard you fought the English with a soup ladle.",
           replies: [
-            "That is Dulce Rivero's story, from Villa Hermosa, and it was a thief, not the Dutch. Keep your legends straight.",
+            "That is Dulce Rivero's story, from Campeche, and it was a thief, not the English. Keep your legends straight.",
             "A ladle. Wonderful. Every time this story is told it gets more kitchen utensils.",
-            "If only. The Dutch might have laughed themselves to death and spared us months of work.",
+            "If only. The English might have laughed themselves to death and spared us a hot afternoon.",
             "No. A ladle was involved, but only at supper. We were very hungry.",
-            "Go on believing it, {title}. It is a better story than the truth, which was mostly mud and waiting.",
+            "Go on believing it, {title}. It is a better story than the truth, which was mostly sand and shouting.",
           ],
         },
       ],
@@ -679,7 +679,7 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
             "A good answer. A soldier's answer. Now find me the money for it and you can have my job.",
             "Yes. Walls and men. Simple, sound, expensive. The three words every governor dreads.",
             "That is what I wrote to Madrid. They sent back a letter asking me to economise on candles.",
-            "Sensible. You would have done well at El Morro. Not that I am telling that story.",
+            "Sensible. You would have done well at Arecibo. Not that I am telling that story.",
             "Agreed. The militia are willing, mostly. They just need muskets, training and someone to wake them.",
           ],
         },
@@ -723,7 +723,7 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
             "Thank you. Nobody has said that kindly in years. They usually say it to my back.",
             "The doctor also told me to drink less wine. I have decided he is only partly right.",
             "Rest. Yes. I remember resting. It was in {year}, I think, for most of an afternoon.",
-            "You are right, {title}. Tell the clerk on your way out. He frightens me more than the Dutch did.",
+            "You are right, {title}. Tell the clerk on your way out. He frightens me more than the English did.",
             "I will rest when the {enemyAdjective} do. So, never, by the look of things.",
           ],
         },
@@ -732,7 +732,7 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
           replies: [
             "Duty. Yes. The word that has kept me awake since I was nineteen.",
             "Very well. Hand me that quill. No, the other one. That one has seen too much.",
-            "Spoken like a true servant of Philip IV. Or like a captain who needs a document signed.",
+            "Spoken like a true servant of Philip V. Or like a captain who needs a document signed.",
             "Fine. But if I fall asleep on the harbour accounts, you are writing to Madrid to explain.",
             "The colony needs me. The colony also needs gunpowder, a new roof and a priest who stays sober. One thing at a time.",
           ],
@@ -838,7 +838,7 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
     },
     {
       id: "havana-tavern-tadeo-paz-6",
-      text: "Piet Heyn took the whole silver fleet at Matanzas in 1628, just along the coast. My uncle was there. He says there was a seagull flying backwards that morning. Nobody listened to him. Nobody ever listens.",
+      text: "Piet Heyn took the whole silver fleet at Matanzas in 1628, just along the coast. My grandfather was there. He said there was a seagull flying backwards that morning. Nobody listened to him. Nobody ever listens.",
     },
     {
       id: "havana-tavern-tadeo-paz-7",
@@ -885,7 +885,7 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
     },
     {
       id: "havana-market-joaquina-mercado-2",
-      text: "I have sold tobacco on this square since the fortress was new. Do you know what the governor's servant came to ask me this morning, {title}?",
+      text: "I have sold tobacco on this square since I was a girl. Do you know what the governor's servant came to ask me this morning, {title}?",
       answers: [
         {
           text: "What did he ask?",
@@ -1128,19 +1128,19 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
     },
   ],
 
-  "villa-hermosa-tavern-dulce-rivero": [
+  "campeche-tavern-dulce-rivero": [
     {
-      id: "villa-hermosa-tavern-dulce-rivero-1",
-      text: "Welcome to the finest tavern on the Grijalva, {title}! See that cutlass above the bar? I took it from a pirate captain with my bare hands. And a ladle. Mostly the ladle.",
+      id: "campeche-tavern-dulce-rivero-1",
+      text: "Welcome to the finest tavern in Yucatán, {title}! See that cutlass above the bar? I took it from a pirate captain with my bare hands. And a ladle. Mostly the ladle.",
     },
     {
-      id: "villa-hermosa-tavern-dulce-rivero-2",
-      text: "Have you heard how I chased the river pirates out of {town}, {title}?",
+      id: "campeche-tavern-dulce-rivero-2",
+      text: "Have you heard how I chased the pirates out of {town}, {title}?",
       answers: [
         {
           text: "No, tell me.",
           replies: [
-            "Two leagues along the river, at night, with one weapon. Thirty pirates. Well, twenty. Well, a dozen at least.",
+            "Two leagues along the beach, at night, with one weapon. Thirty pirates. Well, twenty. Well, a dozen at least.",
             "It was a dark and stormy night. A thief, no, a whole crew, came through that window. I grabbed my sword. Fine, my ladle.",
             "I ran so fast the fish thought I was a canoe. And the pirates ran faster. That is how good I am.",
             "There were eight of them, all armed to the teeth, and I had only my wits and a soup ladle. The soup was still hot, too.",
@@ -1170,11 +1170,11 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "villa-hermosa-tavern-dulce-rivero-3",
-      text: "My gold tooth? I won it arm wrestling a Portuguese captain in Campeche. Or I got it from a dentist in Veracruz. Depends on the night and how much you are drinking.",
+      id: "campeche-tavern-dulce-rivero-3",
+      text: "My gold tooth? I won it arm wrestling a Portuguese captain in Havana. Or I got it from a dentist in Veracruz. Depends on the night and how much you are drinking.",
     },
     {
-      id: "villa-hermosa-tavern-dulce-rivero-4",
+      id: "campeche-tavern-dulce-rivero-4",
       text: "I could have been a pirate queen, {title}. I had the arms, the voice and the hat. Do you think I would have been a good one?",
       answers: [
         {
@@ -1201,7 +1201,7 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
           text: "You would get seasick on a raft.",
           replies: [
             "How dare you! I get seasick only on boats, rafts, canoes and once on a hammock.",
-            "Ha! That is a lie. I am a creature of the sea. Mostly the shallow end of the river.",
+            "Ha! That is a lie. I am a creature of the sea. Mostly the shallow end of the bay.",
             "Seasick? Me? I was born in a storm. Well, it was raining.",
             "Take that back, or I will tell everyone in {town} you cry when you hear guitar music.",
             "Get out. No, stay. You are funny. But you pay double tonight.",
@@ -1210,22 +1210,22 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "villa-hermosa-tavern-dulce-rivero-5",
+      id: "campeche-tavern-dulce-rivero-5",
       text: "Cocoa from Tabasco is the finest in New Spain, {title}. I put some in my rum. The sailors call it Dulce's Fury. I call it breakfast.",
     },
     {
-      id: "villa-hermosa-tavern-dulce-rivero-6",
+      id: "campeche-tavern-dulce-rivero-6",
       text: "If anyone gives you trouble in {town}, mention my name, {title}. They will stand aside. Or laugh. Either way you will have time to run.",
     },
     {
-      id: "villa-hermosa-tavern-dulce-rivero-7",
-      text: "Arm wrestle me, {title}. Winner drinks free. Loser buys a round for the house and admits Dulce Rivero is the strongest woman on the Grijalva.",
+      id: "campeche-tavern-dulce-rivero-7",
+      text: "Arm wrestle me, {title}. Winner drinks free. Loser buys a round for the house and admits Dulce Rivero is the strongest woman in all Yucatán.",
       answers: [
         {
           text: "You are on.",
           replies: [
             "Ha! Brave. Foolish, but brave. Roll up your sleeve. No, the other one. That one looks weak.",
-            "Lovely. I warn you, I once beat three river pilots and a priest in one evening.",
+            "Lovely. I warn you, I once beat three fishermen and a priest in one evening.",
             "Very well. Sit. Grip. Pray. In that order.",
             "Excellent. The last captain who tried still cannot lift a tankard with his right hand.",
             "Good! The whole room is watching, {title}. Try not to cry. It upsets the regulars.",
@@ -1236,7 +1236,7 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
           replies: [
             "A wise choice. My arm has broken tables. Three, in fact. Well, one, and it was old.",
             "Coward! But a coward who lives. That is the best kind.",
-            "Fine. Then you admit I am the strongest woman on the Grijalva. Say it louder.",
+            "Fine. Then you admit I am the strongest woman in all Yucatán. Say it louder.",
             "Ha. Smart. Nobody in {town} will arm wrestle me any more. They say it is the gold tooth.",
             "Very well. You buy the round anyway. That is the rule for cowards.",
           ],
@@ -1255,13 +1255,13 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
     },
   ],
 
-  "villa-hermosa-market-bartolo-carrillo": [
+  "campeche-market-bartolo-carrillo": [
     {
-      id: "villa-hermosa-market-bartolo-carrillo-1",
+      id: "campeche-market-bartolo-carrillo-1",
       text: "Mind the parrot, {title}. His name is Almirante, and he bites everyone except me. We have an understanding. I feed him and he does not peck my eyes out.",
     },
     {
-      id: "villa-hermosa-market-bartolo-carrillo-2",
+      id: "campeche-market-bartolo-carrillo-2",
       text: "Thirty years a bosun in the Gulf, {title}. I know these waters better than I know my own face. Want to know the best sign of an approaching storm?",
       answers: [
         {
@@ -1297,11 +1297,11 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "villa-hermosa-market-bartolo-carrillo-3",
+      id: "campeche-market-bartolo-carrillo-3",
       text: "I still sleep in a hammock between these two poles. My wife said a bed would be more comfortable. My wife now sleeps in the bed, and I sleep in peace. Everyone is happy.",
     },
     {
-      id: "villa-hermosa-market-bartolo-carrillo-4",
+      id: "campeche-market-bartolo-carrillo-4",
       text: "Cocoa beans, {title}. In these parts people still pay small debts with them. A sack of these is worth more than a sack of reales some days. Do you know cocoa?",
       answers: [
         {
@@ -1337,15 +1337,15 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "villa-hermosa-market-bartolo-carrillo-5",
-      text: "I lost my finger to a block and tackle off Campeche, {title}. The surgeon offered to sew it back on. I said keep it. I had nine others.",
+      id: "campeche-market-bartolo-carrillo-5",
+      text: "I lost my finger to a block and tackle off the Laguna de Términos, {title}. The surgeon offered to sew it back on. I said keep it. I had nine others.",
     },
     {
-      id: "villa-hermosa-market-bartolo-carrillo-6",
-      text: "Mind the sandbars at the river mouth, {title}. They move with every storm. The only thing that stays put in {town} is the governor's opinion of himself.",
+      id: "campeche-market-bartolo-carrillo-6",
+      text: "Mind the shoals in the bay, {title}. They move with every storm. The only thing that stays put in {town} is the governor's opinion of himself.",
     },
     {
-      id: "villa-hermosa-market-bartolo-carrillo-7",
+      id: "campeche-market-bartolo-carrillo-7",
       text: "Almirante is getting old, {title}. Like me. Do you think a parrot can retire?",
       answers: [
         {
@@ -1382,59 +1382,59 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
     },
   ],
 
-  "villa-hermosa-governor-pedro-santacruz": [
+  "campeche-governor-pedro-santacruz": [
     {
-      id: "villa-hermosa-governor-pedro-santacruz-1",
-      text: "Welcome to Villa Hermosa, {title}, the true jewel of New Spain! Mexico City is merely large. Veracruz is merely busy. Villa Hermosa is beautiful. It says so in the name.",
+      id: "campeche-governor-pedro-santacruz-1",
+      text: "Welcome to Campeche, {title}, the true jewel of Yucatán! Mérida is merely the capital. Veracruz is merely busy. Campeche is beautiful. Even the walls are new.",
     },
     {
-      id: "villa-hermosa-governor-pedro-santacruz-2",
-      text: "Do you know what Villa Hermosa means, {title}?",
+      id: "campeche-governor-pedro-santacruz-2",
+      text: "Do you know where Europe gets the dye for its finest black cloth, {title}?",
       answers: [
         {
-          text: "Beautiful town.",
+          text: "From Campeche.",
           replies: [
-            "Exactly! Beautiful. Not merely pleasant. Not merely adequate. Beautiful.",
-            "Yes. And I have written to the viceroy every month to remind him. He seems to keep forgetting.",
-            "Correct. And it is also the name of my favourite horse.",
-            "Beautiful town. You see? Even foreigners agree. I shall put that in my next letter.",
-            "Correct. There is no Villa Hermosa in Spain. That tells you everything.",
+            "Exactly! From us. Not from those British thieves in the Laguna de Términos. From us.",
+            "Yes. And I have written to the king every month to remind him. He seems to keep forgetting.",
+            "Correct. Our logwood and our salt sail to half the world.",
+            "From Campeche. You see? Even foreigners know. I shall put that in my next letter.",
+            "Correct. Half the coats in Europe would be grey without our logwood. That tells you everything.",
           ],
         },
         {
           text: "I have no idea.",
           replies: [
-            "Beautiful town! Beautiful! Look around you, {title}. Is it not obvious?",
+            "From Campeche! From these very forests. Look around you, {title}. Is it not obvious?",
             "Shameful. I shall have a sign painted at the harbour. In letters taller than a man.",
-            "It means you are in the jewel of New Spain and did not even know it.",
-            "Then I shall tell you. Beautiful town. Remember it, and tell everyone in {otherTown}.",
+            "It comes from the jewel of Yucatán, and you are standing in it.",
+            "Then I shall tell you. From Campeche. Remember it, and tell everyone in {otherTown}.",
             "Hmph. Next time, before you visit, read about us. I have written several pamphlets.",
           ],
         },
         {
-          text: "Muddy riverbank with mosquitoes.",
+          text: "Mud and mosquitoes.",
           replies: [
-            "Outrageous! The mosquitoes are a sign of a healthy climate. The viceroy agreed. Probably.",
-            "The mud is fertile, the mosquitoes are noble and the riverbank is magnificent.",
+            "Outrageous! The mosquitoes are a sign of a healthy climate. The king agreed. Probably.",
+            "The mud is fertile, the mosquitoes are noble and the logwood is magnificent.",
             "Guards! Arrest this... no, I will not. A true gentleman ignores insults. Nearly always.",
-            "The mosquitoes of Villa Hermosa are the finest mosquitoes in all New Spain.",
-            "Get out. No, stay. I must convince you. Look at that sunset! Ignore the swamp.",
+            "The mosquitoes of Campeche are the finest mosquitoes in all New Spain.",
+            "Get out. No, stay. I must convince you. Look at that sunset! Ignore the mosquitoes.",
           ],
         },
       ],
     },
     {
-      id: "villa-hermosa-governor-pedro-santacruz-3",
+      id: "campeche-governor-pedro-santacruz-3",
       text: "These medals? Gifts from grateful kings, generals and cities, {title}. This one is for valour at sea. This one is for valour on land. This one is from a cheese festival in Toledo, but it is very shiny.",
     },
     {
-      id: "villa-hermosa-governor-pedro-santacruz-4",
-      text: "Every month I write to the viceroy, {title}, and every month I ask him to make Villa Hermosa the capital of New Spain. Do you think he will agree this time?",
+      id: "campeche-governor-pedro-santacruz-4",
+      text: "Every month I write to the king, {title}, and every month I ask him to make Campeche the capital of Yucatán instead of Mérida. Do you think he will agree this time?",
       answers: [
         {
           text: "Surely, Your Excellency.",
           replies: [
-            "I knew it. This month I included a drawing of our church. I made it a bit taller than it is.",
+            "I knew it. This month I included a drawing of our new walls. I made them a bit taller than they are.",
             "Of course! I just need to write a little more persuasively. Perhaps twenty pages more.",
             "Yes. He cannot resist me forever. Nobody can. Except my wife.",
             "Splendid. When I am governor of the capital, I will remember you. Probably.",
@@ -1442,12 +1442,12 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
           ],
         },
         {
-          text: "Perhaps if Mexico City burns down.",
+          text: "Perhaps if Mérida burns down.",
           replies: [
             "Now that would be a great tragedy. And a great opportunity. No, I did not say that.",
-            "Do not say such things! The viceroy might hear. Though it would solve the problem.",
+            "Do not say such things! The king might hear. Though it would solve the problem.",
             "Ha. Ha. No. No, that would be terrible. Yes, terrible. Very.",
-            "Hmm. Even then, they would rebuild it. The viceroy is stubborn.",
+            "Hmm. Even then, they would rebuild it. Mérida is stubborn, and so is the king.",
             "Shocking suggestion, {title}. Absolutely shocking. Tell me more. No, do not.",
           ],
         },
@@ -1464,25 +1464,25 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "villa-hermosa-governor-pedro-santacruz-5",
-      text: "The {enemyAdjective} would not dare attack Villa Hermosa, {title}. Our river is too shallow, our walls too strong and our governor far too impressive. Mostly the river.",
+      id: "campeche-governor-pedro-santacruz-5",
+      text: "The {enemyAdjective} would not dare attack Campeche again, {title}. Our walls are too new, our water too shallow and our governor far too impressive. Mostly the water.",
     },
     {
-      id: "villa-hermosa-governor-pedro-santacruz-6",
+      id: "campeche-governor-pedro-santacruz-6",
       text: "I have commissioned a statue of myself for the main plaza. Bronze, with a cape. The sculptor says it will take ten years. I told him to make it nine and add a horse.",
     },
     {
-      id: "villa-hermosa-governor-pedro-santacruz-7",
-      text: "Tell me honestly, {title}. Have you ever seen a town finer than Villa Hermosa?",
+      id: "campeche-governor-pedro-santacruz-7",
+      text: "Tell me honestly, {title}. Have you ever seen a town finer than Campeche?",
       answers: [
         {
           text: "Never, Your Excellency.",
           replies: [
-            "I knew it. Write that down, clerk. Another testimonial for the viceroy.",
+            "I knew it. Write that down, clerk. Another testimonial for the king.",
             "Of course not. There is none. I have looked very hard, on maps.",
             "Splendid. You may kiss my ring. No, the other one. That one is from the cheese festival.",
             "Wonderful. You have excellent taste, {title}. Rare in a sailor.",
-            "Naturally. And you have not even seen the new well behind the church. A marvel of engineering.",
+            "Naturally. And you have not even walked our new walls. A marvel of engineering.",
           ],
         },
         {
@@ -1491,7 +1491,7 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
             "{nationTown}? Grand? It is large. Large is not grand. A cow is large.",
             "Hmph. They have a bigger church, I grant you. Ours has more character. And more bats.",
             "You must have arrived on a good day. Go back in the rainy season.",
-            "I shall write to the viceroy about your opinion. In a very long footnote.",
+            "I shall write to the king about your opinion. In a very long footnote.",
             "Grand, perhaps. But do they have our mosquitoes? I think not.",
           ],
         },
@@ -1499,7 +1499,7 @@ export const SPAIN_NPC_LINES: Record<string, DialogueEntry[]> = {
           text: "Yes. Every other one.",
           replies: [
             "Every other one? Outrageous! You have clearly not seen the plaza at sunset.",
-            "You wound me, {title}. You wound Villa Hermosa. You wound the whole Grijalva.",
+            "You wound me, {title}. You wound Campeche. You wound the whole of Yucatán.",
             "Guards! Ah, they are fishing. They always fish when they should be arresting.",
             "Hmph. I shall add you to my list of people who are wrong. It is a long list. You are near the top.",
             "Bah. One day they will build a statue of me here, and you will weep for having said that.",

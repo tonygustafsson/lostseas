@@ -121,7 +121,7 @@ describe("buyItem", () => {
 
   it("rejects goods the local shop does not trade", () => {
     expectError(
-      buyItem(createTestPlayer({ character: { town: "Tortuga" } }), {
+      buyItem(createTestPlayer({ character: { town: "cap-francais" } }), {
         item: "porcelain",
         quantity: 1,
       }),
@@ -220,7 +220,7 @@ describe("sellItem", () => {
 
   it("rejects goods the local shop does not trade", () => {
     const player = createTestPlayer({
-      character: { town: "Tortuga" },
+      character: { town: "cap-francais" },
       inventory: { porcelain: 5 },
     })
 

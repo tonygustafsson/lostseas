@@ -23,7 +23,7 @@ type Args = {
 const meta = {
   title: "game/Harbor/TownMap",
   args: {
-    town: "Port Royale",
+    town: "kingston",
     weather: "foggy",
     onMove: fn(),
     onPreview: fn(),

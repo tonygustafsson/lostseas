@@ -11,6 +11,8 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useMapModal } from "@/hooks/useMapModal"
 import { getHarborArrivedQuip, getHarborTownQuip } from "@/utils/getPirateQuip"
 import { getTownsNationality } from "@/utils/location"
+import { getTownName } from "@/utils/location"
+import { getNationName } from "@/utils/location"
 import { playSoundEffect } from "@/utils/sound"
 
 import { preloadBuildingScene } from "./preloadBuildingScene"
@@ -43,7 +45,7 @@ const HarborScene = ({ town }: Props) => {
         <div className="border-gold/40 bg-background border-b">
           <TownMap
             map={map}
-            alt={`Map of ${town}`}
+            alt={`Map of ${getTownName(town)}`}
             weather={player?.character.weather}
             onMove={handleMove}
             onPreview={(location) => preloadBuildingScene(town, location)}
@@ -59,11 +61,11 @@ const HarborScene = ({ town }: Props) => {
 
           <h1 className="flex items-center gap-4 font-serif text-4xl tracking-wide lg:text-5xl">
             <Flag nation={nation} className="size-8 opacity-80 lg:size-10" />
-            {town}
+            {getTownName(town)}
           </h1>
 
           <p className="text-muted-foreground mt-1 font-serif text-lg">
-            A port of {nation}
+            A port of {nation && getNationName(nation)}
           </p>
 
           <div className="via-gold/50 lg:from-gold/50 my-6 h-px w-32 bg-linear-to-r from-transparent to-transparent" />

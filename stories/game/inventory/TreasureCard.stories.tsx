@@ -7,7 +7,7 @@ const meta = {
   title: "game/Inventory/TreasureCard",
   component: TreasureCard,
   args: {
-    treasure: { id: "treasure-1", name: "Inca mask", rewarder: "Havana" },
+    treasure: { id: "treasure-1", name: "Inca mask", rewarder: "havana" },
   },
   decorators: [
     (Story) => (
@@ -26,7 +26,11 @@ export const Default: Story = {}
 
 export const KeyOfSouls: Story = {
   args: {
-    treasure: { id: "treasure-2", name: "Key of souls", rewarder: "Tortuga" },
+    treasure: {
+      id: "treasure-2",
+      name: "Key of souls",
+      rewarder: "cap-francais",
+    },
   },
 }
 

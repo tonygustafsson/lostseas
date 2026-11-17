@@ -51,7 +51,7 @@ type Story = StoryObj<typeof meta>
 export const Warnings: Story = {}
 export const WithHeading: Story = { args: { heading: "Land ho!" } }
 // Supplies are checked against the voyage length to the destination
-export const WithDestination: Story = { args: { destination: "Tortuga" } }
+export const WithDestination: Story = { args: { destination: "cap-francais" } }
 export const AllClear: Story = {
   args: { showAllClear: true },
   parameters: { player: allClear },

@@ -1,17 +1,17 @@
 import "server-only"
 
 export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
-  "charles-towne-tavern-mavis-cartwright": [
+  "st-georges-tavern-mavis-cartwright": [
     {
-      id: "charles-towne-tavern-mavis-cartwright-1",
+      id: "st-georges-tavern-mavis-cartwright-1",
       text: "Come closer, {title}, I don't shout secrets. Do you want to know who the parson's wife was seen walking with down by the waterfront?",
       answers: [
         {
           text: "Tell me everything.",
           replies: [
-            "The cooper. Twice. And the second time she was carrying his hoops for him, which in Charles Towne is practically a betrothal.",
-            "The new harbour clerk, and he walked her home the long way round. There is no long way round in Charles Towne, {title}. He made one.",
-            "A planter's son from up the river. She says they were discussing scripture. Nobody discusses scripture that slowly.",
+            "The cooper. Twice. And the second time she was carrying his hoops for him, which in St. George's is practically a betrothal.",
+            "The new harbour clerk, and he walked her home the long way round. There is no long way round in St. George's, {title}. He made one.",
+            "A planter's son from up the hill. She says they were discussing scripture. Nobody discusses scripture that slowly.",
             "Her own husband, if you can believe it. The whole town was so shocked we talked of nothing else for a week.",
             "The surgeon. She claimed a splinter. I've seen the splinter, {title}. It would not trouble a mouse.",
           ],
@@ -39,11 +39,11 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "charles-towne-tavern-mavis-cartwright-2",
+      id: "st-georges-tavern-mavis-cartwright-2",
       text: "I came over as a cook for a planter who couldn't tell salt from gravel. He's in the churchyard now, and I'm still here, polishing this same tankard. There's a lesson in that, though I've never worked out what it is.",
     },
     {
-      id: "charles-towne-tavern-mavis-cartwright-3",
+      id: "st-georges-tavern-mavis-cartwright-3",
       text: "You've the look of someone who's been to {otherTown}. Is it true their governor wears a wig made from his own late horse?",
       answers: [
         {
@@ -71,7 +71,7 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
           replies: [
             "I never give up my sources, {title}. Mostly because I can't remember which of them I made up.",
             "A fisherman, who heard it from a sailor, who heard it from the horse, I expect.",
-            "Never you mind. Everything reaches this tavern sooner or later, like river mud.",
+            "Never you mind. Everything reaches this tavern sooner or later, like driftwood.",
             "Someone very reliable, who had been drinking very reliably.",
             "The same person who told me about you, and you turned out to be true, didn't you?",
           ],
@@ -79,11 +79,11 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "charles-towne-tavern-mavis-cartwright-4",
+      id: "st-georges-tavern-mavis-cartwright-4",
       text: "Half the debts on this waterfront are owed to the other half, and I know the sums to the penny. If ever the whole town settled up at once, {title}, there'd be nothing left but me and the tankards.",
     },
     {
-      id: "charles-towne-tavern-mavis-cartwright-5",
+      id: "st-georges-tavern-mavis-cartwright-5",
       text: "Our governor has written forty-one letters to London asking for a larger desk. Forty-one! Have you ever been that desperate for furniture?",
       answers: [
         {
@@ -93,7 +93,7 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
             "Write to London, then. They'll answer you about as fast as they answer him.",
             "A sailor's wish. Sensible. You can't fall out of a desk in a storm, I suppose.",
             "I'll tell him that. He'll write a forty-second letter asking for a hammock.",
-            "You'd get one sooner than he gets his desk. The King has bigger troubles with Parliament.",
+            "You'd get one sooner than he gets his desk. The new King has the Whigs and the Tories to sort out first.",
           ],
         },
         {
@@ -113,20 +113,20 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
             "He'd only complain that it smells of fish. Then again, so does he after Fridays.",
             "Now that's a kindness the whole town would pay to see.",
             "Mind you take the barnacles off first. He's particular about barnacles.",
-            "Then you'll be the first person in Charles Towne he's ever thanked. I'd want witnesses.",
+            "Then you'll be the first person in St. George's he's ever thanked. I'd want witnesses.",
           ],
         },
       ],
     },
     {
-      id: "charles-towne-tavern-mavis-cartwright-6",
+      id: "st-georges-tavern-mavis-cartwright-6",
       text: "A word to the wise, {title}. If anyone at that corner table offers to sell you a map of Spanish gold, it's the same map. He's sold it nine times. The gold has moved every time.",
     },
   ],
 
-  "charles-towne-market-thomas-jarvis": [
+  "st-georges-market-thomas-jarvis": [
     {
-      id: "charles-towne-market-thomas-jarvis-1",
+      id: "st-georges-market-thomas-jarvis-1",
       text: "Good day, {title}. I deal in salt pork, hides and honest weights. Mostly honest weights. Shall we talk prices, or did you only come to admire my scales?",
       answers: [
         {
@@ -135,7 +135,7 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
             "Splendid. My prices are fair, and I say that as the person who sets them.",
             "Then let me warn you, I learned my trade from a London draper who once charged a duke for the air in a bolt of cloth.",
             "Good. Everything here is weighed twice, once for you and once for me. Somehow my weighing is always right.",
-            "Excellent. Prices in Charles Towne move with the river, {title}. Today the river is in my favour.",
+            "Excellent. Prices in St. George's move with the tide, {title}. Today the tide is in my favour.",
             "A sensible captain. Most come in, look at the salt pork and ask if it's edible. It is. Mostly.",
           ],
         },
@@ -162,11 +162,11 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "charles-towne-market-thomas-jarvis-2",
+      id: "st-georges-market-thomas-jarvis-2",
       text: "I crossed the ocean with nothing but these scales and a letter of recommendation. The letter got wet off the Azores. The scales have done rather better, so I trust them more than people.",
     },
     {
-      id: "charles-towne-market-thomas-jarvis-3",
+      id: "st-georges-market-thomas-jarvis-3",
       text: "Here's a riddle for a captain. If I buy {merchandise} cheap in {nationTown} and sell it dear here, who loses?",
       answers: [
         {
@@ -175,7 +175,7 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
             "Spoken like a buyer. Somebody always loses, {title}. The trick is never to be in the room when they notice.",
             "Delightful answer. Wrong, but delightful. I'll sell you something on the strength of it.",
             "Nobody, until the next ship arrives with twice as much. Then it's me.",
-            "In a perfect world, yes. Charles Towne is not a perfect world. It is barely a dry one.",
+            "In a perfect world, yes. St. George's is not a perfect world. It is barely a finished one.",
             "That's the answer I give the customs men. Very good, {title}.",
           ],
         },
@@ -202,11 +202,11 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "charles-towne-market-thomas-jarvis-4",
-      text: "Rice is the coming thing here, mark me. The planters laugh, but they laughed at tobacco too, and look how many of them smoke it now.",
+      id: "st-georges-market-thomas-jarvis-4",
+      text: "Cedar is what keeps this island afloat, mark me. The tobacco is long gone, but a sloop of Bermuda cedar outsails anything they ever built of oak.",
     },
     {
-      id: "charles-towne-market-thomas-jarvis-5",
+      id: "st-georges-market-thomas-jarvis-5",
       text: "One {playerNationAdjective} captain once tried to pay me in buttons. Said they were the coin of a faraway kingdom. What would you have done?",
       answers: [
         {
@@ -242,15 +242,15 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "charles-towne-market-thomas-jarvis-6",
-      text: "Never buy hides in the rainy season, {title}. They come with half the river still in them, and you pay for every drop.",
+      id: "st-georges-market-thomas-jarvis-6",
+      text: "Never buy hides in the rainy season, {title}. They come with half the rain still in them, and you pay for every drop.",
     },
   ],
 
-  "charles-towne-governor-randolph-ellis": [
+  "st-georges-governor-randolph-ellis": [
     {
-      id: "charles-towne-governor-randolph-ellis-1",
-      text: "You stand before Randolph Ellis, appointed by His Majesty King Charles to govern Charles Towne. Do you know how fortunate you are to be received?",
+      id: "st-georges-governor-randolph-ellis-1",
+      text: "You stand before Randolph Ellis, appointed by His Majesty King George to govern St. George's. Do you know how fortunate you are to be received?",
       answers: [
         {
           text: "I'm honoured, Your Excellency.",
@@ -285,11 +285,11 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "charles-towne-governor-randolph-ellis-2",
+      id: "st-georges-governor-randolph-ellis-2",
       text: "I have written forty-one letters to London requesting a larger desk befitting my office. They have not replied. I can only assume the desk is being built and is very large indeed.",
     },
     {
-      id: "charles-towne-governor-randolph-ellis-3",
+      id: "st-georges-governor-randolph-ellis-3",
       text: "The {enemyAdjective} ships grow bold along our coast. What does a captain of your standing advise His Majesty's governor to do?",
       answers: [
         {
@@ -325,11 +325,11 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "charles-towne-governor-randolph-ellis-4",
-      text: "When I arrived, Charles Towne was a mud bank with ambitions. Now it is a mud bank with a governor. One must recognise progress where one finds it.",
+      id: "st-georges-governor-randolph-ellis-4",
+      text: "When I arrived, St. George's was a row of huts with ambitions. Now it is a row of huts with a governor. One must recognise progress where one finds it.",
     },
     {
-      id: "charles-towne-governor-randolph-ellis-5",
+      id: "st-georges-governor-randolph-ellis-5",
       text: "I am considering a portrait of myself for the hall. Full length, naturally. Should I be painted on horseback or at my desk?",
       answers: [
         {
@@ -365,14 +365,14 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "charles-towne-governor-randolph-ellis-6",
+      id: "st-georges-governor-randolph-ellis-6",
       text: "Do keep the peace in my harbour, {title}. Any trouble and I shall have to write to London, and they will not reply, and that will make me very cross indeed.",
     },
   ],
 
-  "belize-tavern-hugh-palmer": [
+  "nassau-tavern-hugh-palmer": [
     {
-      id: "belize-tavern-hugh-palmer-1",
+      id: "nassau-tavern-hugh-palmer-1",
       text: "Sit, sit. My leg tells me the wind's turning. Do you know what that means, young {title}?",
       answers: [
         {
@@ -380,7 +380,7 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
           replies: [
             "Aye, by tomorrow night. Double your lines and don't trust anything that floats on its own.",
             "Good sailor. A storm, or the leg wants another drink. Either way, take precautions.",
-            "Right in one. Last time it tapped like this, the whole logwood camp ended up three miles inland.",
+            "Right in one. Last time it tapped like this, half the roofs in town ended up three miles out to sea.",
             "That it is. In hurricane months, {title}, a wooden leg is worth more than a weather glass.",
             "Smart. Most young captains say it means my leg's wooden. Which it is, but that isn't the point.",
           ],
@@ -408,51 +408,51 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "belize-tavern-hugh-palmer-2",
-      text: "I cut logwood on this shore before there was a Belize to cut it in. Just us, the mosquitoes and the Mayans watching from the trees, wondering why we were so keen on chopping down the red ones.",
+      id: "nassau-tavern-hugh-palmer-2",
+      text: "I was on this island before there was a Nassau to be on. Just us, the mosquitoes and the turtles watching from the shallows, wondering why we'd sailed so far to rake salt and pick over wrecks.",
     },
     {
-      id: "belize-tavern-hugh-palmer-3",
-      text: "That river mouth owes me a boat and two good friends. Want to know how it took them?",
+      id: "nassau-tavern-hugh-palmer-3",
+      text: "That reef off the harbour owes me a boat and two good friends. Want to know how it took them?",
       answers: [
         {
           text: "Please, tell me.",
           replies: [
-            "Sandbar, after dark. Shifted in one night like a sleeping dog rolling over. We hit it, the boat broke, and the river took Ned and Jack before I could reach them.",
-            "Hurricane of '24. We tied the boat fast. The boat stayed. The trees we tied it to left.",
-            "A crocodile the length of a pinnace. The boat, I could forgive. The boys, never.",
-            "Spaniards. Came up the river at dawn and fired on anything that moved. We moved a lot, and not fast enough.",
-            "It doesn't matter how, {title}. Only that it can. Watch the bar at the mouth every time you come in.",
+            "The reef, after dark. Lay under the water like a sleeping dog, quiet till we trod on it. The boat broke, and the sea took Ned and Jack before I could reach them.",
+            "First hurricane after we landed. We tied the boat fast. The boat stayed. The trees we tied it to left.",
+            "A shark the length of a pinnace. The boat, I could forgive. The boys, never.",
+            "Spaniards. Came round the point at dawn and fired on anything that moved. We moved a lot, and not fast enough.",
+            "It doesn't matter how, {title}. Only that it can. Watch the reef every time you come in.",
           ],
         },
         {
           text: "I'll get them back for you.",
           replies: [
-            "The friends are gone, {title}. The boat you're welcome to. It's under twelve feet of silt.",
-            "Kind of you. But the river keeps what it takes. Bring back a good tale instead.",
-            "Ha. You and whose army? The river's had better men than us. Me included.",
-            "Get me a rum and we'll call it settled. The river can owe someone else.",
+            "The friends are gone, {title}. The boat you're welcome to. It's under twelve feet of sand.",
+            "Kind of you. But the sea keeps what it takes. Bring back a good tale instead.",
+            "Ha. You and whose army? The reef's had better men than us. Me included.",
+            "Get me a rum and we'll call it settled. The reef can owe someone else.",
             "That's a fine heart you've got. Keep it, {title}. This coast will try to take it.",
           ],
         },
         {
-          text: "Did the river at least say sorry?",
+          text: "Did the reef at least say sorry?",
           replies: [
-            "Ha! Not once. Every spring it floods my hut, which I take as a sort of apology.",
-            "Rivers never apologise, {title}. Neither do governors. They're cut from the same mud.",
-            "It sent me a crocodile once, on the anniversary. I took it as rudeness.",
-            "No. But I've cursed it every morning for fifteen years, so I'd say we're about even.",
+            "Ha! Not once. Every storm it throws a plank of that boat on the beach, which I take as a sort of apology.",
+            "Reefs never apologise, {title}. Neither do governors. They're made of the same stone.",
+            "It sent me a shark once, on the anniversary. I took it as rudeness.",
+            "No. But I've cursed it every morning for ten years, so I'd say we're about even.",
             "You've a mouth on you. Good. You'll need it with the Spanish.",
           ],
         },
       ],
     },
     {
-      id: "belize-tavern-hugh-palmer-4",
+      id: "nassau-tavern-hugh-palmer-4",
       text: "Scurvy took more of my mates than any Spaniard. Eat your limes, {title}. A sour face is better than no teeth.",
     },
     {
-      id: "belize-tavern-hugh-palmer-5",
+      id: "nassau-tavern-hugh-palmer-5",
       text: "In my day we sailed with nothing but a compass, a lead line and a bad attitude. What do you young captains sail with now?",
       answers: [
         {
@@ -488,18 +488,18 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "belize-tavern-hugh-palmer-6",
-      text: "The Spanish in Villa Hermosa call this coast a nest of thieves. Fair enough. But we're thieves who show up on time, and that's more than you can say for their treasure fleet.",
+      id: "nassau-tavern-hugh-palmer-6",
+      text: "The Spanish in Havana call this island a nest of thieves. Since the pirates moved in, I can't argue. But we're thieves who show up on time, and that's more than you can say for their treasure fleet.",
     },
     {
-      id: "belize-tavern-hugh-palmer-7",
+      id: "nassau-tavern-hugh-palmer-7",
       text: "I once saw a waterspout pick up a turtle and drop it on a ship's deck. The cook took it as a sign from heaven. So did the turtle, briefly.",
     },
   ],
 
-  "belize-market-eliza-knowles": [
+  "nassau-market-eliza-knowles": [
     {
-      id: "belize-market-eliza-knowles-1",
+      id: "nassau-market-eliza-knowles-1",
       text: "Stop right there, {title}. Before you step up to my stall, have you got a black cat aboard your ship?",
       answers: [
         {
@@ -535,11 +535,11 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "belize-market-eliza-knowles-2",
+      id: "nassau-market-eliza-knowles-2",
       text: "My father's ship went down the day a black cat crossed his gangplank. Everyone said it was the hurricane. A hurricane doesn't stop to look at you first, {title}. That cat did.",
     },
     {
-      id: "belize-market-eliza-knowles-3",
+      id: "nassau-market-eliza-knowles-3",
       text: "These shells came from a beach where no ship has ever wrecked. Would you like one for luck?",
       answers: [
         {
@@ -575,12 +575,12 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "belize-market-eliza-knowles-4",
+      id: "nassau-market-eliza-knowles-4",
       text: "Never whistle on deck, never rename a ship and never let a parson aboard on a Friday. I've sold to captains who broke all three. I don't sell to them anymore. I can't. They're at the bottom.",
     },
     {
-      id: "belize-market-eliza-knowles-5",
-      text: "The logwood men say they've seen lights in the mangroves at night. Do you believe in ghosts, {title}?",
+      id: "nassau-market-eliza-knowles-5",
+      text: "The wreckers say they've seen lights out on the cays at night. Do you believe in ghosts, {title}?",
       answers: [
         {
           text: "Yes. I've seen one.",
@@ -615,41 +615,41 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "belize-market-eliza-knowles-6",
+      id: "nassau-market-eliza-knowles-6",
       text: "I sell dried herbs for fever, garlic for bad spirits and nutmeg for luck. The garlic does wonders for the spirits. It does even more for keeping away customers I don't like.",
     },
   ],
 
-  "belize-governor-frederick-howard": [
+  "nassau-governor-frederick-howard": [
     {
-      id: "belize-governor-frederick-howard-1",
-      text: "Sit down, {title}. You'll forgive me if I don't stand. I've been standing since 1621. What brings you to my swamp?",
+      id: "nassau-governor-frederick-howard-1",
+      text: "Sit down, {title}. You'll forgive me if I don't stand. I've been standing since Blenheim. What brings you to what's left of my island?",
       answers: [
         {
           text: "Trade, Governor.",
           replies: [
-            "Logwood, then. That's all there is here. Logwood, mosquitoes and men who should know better.",
+            "Plunder, then. That's all anyone sells here. Stolen cargo, mosquitoes and men who should know better.",
             "Good. Trade is the only thing that keeps this place alive. That and a great deal of rum.",
             "Then take your cargo and sail safely. I'm too tired to rescue anyone this month.",
-            "Trade's honest work. Mostly. Just don't trade with the Spanish where I can see it.",
-            "Fair enough. Pay your duties at the harbour and don't start fights. That's the whole of Belize law.",
+            "Trade's honest work. Mostly. Just don't ask where the goods came from. Nobody here does.",
+            "Fair enough. Pay your duties and don't start fights. That's the whole of the law here, and nobody keeps it.",
           ],
         },
         {
           text: "Glory and adventure.",
           replies: [
-            "I said that once, in 1618. Look at me now. Look at this desk. Look at that damp patch.",
+            "I said that once, in 1689. Look at me now. Look at this desk. Look at that damp patch.",
             "Glory. Hmph. It's very loud and then it's very quiet, and then you've got a bad knee.",
-            "There's plenty of adventure here. Last week a crocodile came into the fort and we couldn't get it out for two days.",
+            "There's plenty of adventure here. Last week a wild hog moved into what's left of the fort. Nobody has the heart to evict it.",
             "Go on, then. Glory's out there somewhere. I left mine in Flanders, if you happen to pass by.",
             "Young people. I admire your energy. I'd like some of it back, actually.",
           ],
         },
         {
-          text: "I heard the swamp was hiring.",
+          text: "I heard the island was hiring.",
           replies: [
-            "The swamp is always hiring. It takes everyone eventually.",
-            "Ha. You've the right temper for Belize. The swamp likes people who can laugh at it.",
+            "The island is always hiring. The fever or the pirates take everyone eventually.",
+            "Ha. You've the right temper for Nassau. Just don't call yourself honest, they'll think you're mocking them.",
             "Well, there's an opening for a man to count mosquitoes. You'd never finish.",
             "It pays in fever and damp boots, {title}. Very generous terms.",
             "Wonderful. You can have my job. I'll be on the next ship to anywhere dry.",
@@ -658,12 +658,12 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "belize-governor-frederick-howard-2",
-      text: "I fought under Frederick Henry in the Low Countries. Sieges in the rain, marches in the mud. They sent me here as a reward. I have since concluded that someone in London dislikes me.",
+      id: "nassau-governor-frederick-howard-2",
+      text: "I fought under Marlborough in the Low Countries. Sieges in the rain, marches in the mud. When the peace came, they sent me here as a reward. I have since concluded that someone in London dislikes me.",
     },
     {
-      id: "belize-governor-frederick-howard-3",
-      text: "The Spanish in Villa Hermosa keep sending letters saying this coast belongs to King Philip. What would you reply, if you were me?",
+      id: "nassau-governor-frederick-howard-3",
+      text: "The Spanish in Havana keep sending letters saying this island belongs to King Philip. What would you reply, if you were me?",
       answers: [
         {
           text: "Ignore them.",
@@ -680,17 +680,17 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
           replies: [
             "Brave words from someone who won't be here when they arrive.",
             "I said that in Flanders once. They came and took it. Then we took it back. Then it rained.",
-            "Hmm. Tempting. But I've forty men and eleven muskets, and three of those are decorative.",
-            "If they want this swamp so badly, they can have the mosquitoes too. Let's see how long they last.",
+            "Hmm. Tempting. But I've four men and eleven muskets, and the pirates have borrowed six of those.",
+            "If they want this rock so badly, they can have the mosquitoes too. Let's see how long they last.",
             "I admire your spirit, {title}. My spirit retired years ago.",
           ],
         },
         {
-          text: "Send them a crocodile.",
+          text: "Send them a shark.",
           replies: [
             "Ha! Now that's diplomacy I can get behind. Would you deliver it?",
-            "We have plenty spare. They keep coming into the fort uninvited, much like the Spanish.",
-            "A crocodile with a polite note round its neck. 'Regards from Belize.' Yes. Very tempting.",
+            "We have plenty spare. They keep circling the harbour uninvited, much like the Spanish.",
+            "A shark with a polite note round its fin. 'Regards from Nassau.' Yes. Very tempting.",
             "That's the first sensible suggestion I've heard since I arrived.",
             "Don't encourage me. I've been here long enough to actually do it.",
           ],
@@ -698,11 +698,11 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "belize-governor-frederick-howard-4",
-      text: "My orders from London are three years old. They tell me to watch for a Spanish fleet that has since been sunk, captured and sunk again. I watch anyway. It's something to do.",
+      id: "nassau-governor-frederick-howard-4",
+      text: "My orders from London are three years old. They tell me to keep the Queen's peace. The Queen has since died, and the peace went long before her. I keep it anyway. It's something to do.",
     },
     {
-      id: "belize-governor-frederick-howard-5",
+      id: "nassau-governor-frederick-howard-5",
       text: "I haven't slept a full night in twenty years, {title}. Do you sleep well at sea?",
       answers: [
         {
@@ -738,14 +738,14 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "belize-governor-frederick-howard-6",
-      text: "If you're heading out, {title}, keep away from the reef north of the cays. I've lost two boats there and a perfectly good lieutenant. He's fine. He just won't come back to Belize.",
+      id: "nassau-governor-frederick-howard-6",
+      text: "If you're heading out, {title}, keep away from the reef north of the cays. I've lost two boats there and a perfectly good lieutenant. He's fine. He just won't come back to Nassau.",
     },
   ],
 
-  "port-royale-tavern-ursula-cole": [
+  "kingston-tavern-ursula-cole": [
     {
-      id: "port-royale-tavern-ursula-cole-1",
+      id: "kingston-tavern-ursula-cole-1",
       text: "Have you heard of the night I arm wrestled four privateer captains and a Spanish admiral? Four! Back to back! Want to know how it ended?",
       answers: [
         {
@@ -754,7 +754,7 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
             "I won, obviously. The admiral cried. Then he offered me a command. I turned him down, I don't like Spanish wine.",
             "Every one of them on the floor by midnight. And I still had time to serve the next round.",
             "The admiral tried to use his left arm. I used my left arm too, and my right was holding a rum. Still won.",
-            "They're all buried in the Port Royale churchyard now. Not from the wrestling, mind. Mostly scurvy.",
+            "They all went down with old Port Royal in the earthquake. Not from the wrestling, mind.",
             "I broke the table. The landlord made me pay for it. Worth every shilling.",
           ],
         },
@@ -781,11 +781,11 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "port-royale-tavern-ursula-cole-2",
+      id: "kingston-tavern-ursula-cole-2",
       text: "This cutlass? Took it off a pirate who tried to steal my rum. Now I use it to slice limes. It's never been so happy, {title}.",
     },
     {
-      id: "port-royale-tavern-ursula-cole-3",
+      id: "kingston-tavern-ursula-cole-3",
       text: "Fancy a contest? Arm wrestling, drinking or lying. Choose your poison.",
       answers: [
         {
@@ -813,7 +813,7 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
           replies: [
             "Your Majesty! Then you owe me for the twelve galleons I sank last spring. Cash only.",
             "Good one. Mine's better. I'm the Queen of Spain, and I want a divorce.",
-            "Ha! Philip, is it? You've lost weight. And your Spanish.",
+            "Ha! Philip, is it? You've lost weight. And your French accent.",
             "Fine. I'll drink to Your Majesty's health. You'll be paying, being so rich.",
             "That's not a lie, that's an insult. To the King of Spain. I like it.",
           ],
@@ -821,11 +821,11 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "port-royale-tavern-ursula-cole-4",
+      id: "kingston-tavern-ursula-cole-4",
       text: "I've been to every port from {nationTown} to {enemyTown}, and no tavern pours like mine. Mainly because I pour mine with a bucket.",
     },
     {
-      id: "port-royale-tavern-ursula-cole-5",
+      id: "kingston-tavern-ursula-cole-5",
       text: "A fellow from {otherTown} said he could lift me. Me! What do you reckon happened?",
       answers: [
         {
@@ -861,14 +861,14 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "port-royale-tavern-ursula-cole-6",
-      text: "Here's a true one, {title}, and I don't tell many. When the hurricane flattened half the town, I kept the doors open and served everyone for free. The other half still owes me.",
+      id: "kingston-tavern-ursula-cole-6",
+      text: "Here's a true one, {title}, and I don't tell many. When the earthquake swallowed Port Royal, I set up a tent over here and served every survivor for free. Half of Kingston still owes me.",
     },
   ],
 
-  "port-royale-market-abraham-parry": [
+  "kingston-market-abraham-parry": [
     {
-      id: "port-royale-market-abraham-parry-1",
+      id: "kingston-market-abraham-parry-1",
       text: "Oh. A customer. I'd almost given up hoping. Would you like to look at some cloth, {title}?",
       answers: [
         {
@@ -904,11 +904,11 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "port-royale-market-abraham-parry-2",
+      id: "kingston-market-abraham-parry-2",
       text: "I left a wife and a small shop in Bristol to make my fortune out here. Her last letter said the shop has never done better. She sounded pleased about it. Very pleased. Suspiciously pleased.",
     },
     {
-      id: "port-royale-market-abraham-parry-3",
+      id: "kingston-market-abraham-parry-3",
       text: "Do you have family waiting for you somewhere, {title}?",
       answers: [
         {
@@ -944,18 +944,18 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "port-royale-market-abraham-parry-4",
-      text: "Port Royale is very lively, they tell me. I wouldn't know. I'm usually here, folding cloth while everyone else has a good time.",
+      id: "kingston-market-abraham-parry-4",
+      text: "Kingston is very lively, they tell me. I wouldn't know. I'm usually here, folding cloth while everyone else has a good time.",
     },
     {
-      id: "port-royale-market-abraham-parry-5",
+      id: "kingston-market-abraham-parry-5",
       text: "Do you think a man can still make his fortune at fifty-two, {title}? Be honest. No, don't be honest. Be kind.",
       answers: [
         {
           text: "Of course you can.",
           replies: [
             "You're very kind. I don't believe a word, but you're very kind.",
-            "Thank you. I'll hold onto that. It's the nicest thing anyone's said to me since 1637.",
+            "Thank you. I'll hold onto that. It's the nicest thing anyone's said to me since 1687.",
             "Do you mean it? No, don't answer. Let me keep it as it is.",
             "Perhaps. Perhaps the Spanish treasure fleet will wash up on my doorstep. Stranger things have happened. Not to me, though.",
             "Then I'll give it one more year. I said that last year. And the one before.",
@@ -984,15 +984,15 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "port-royale-market-abraham-parry-6",
+      id: "kingston-market-abraham-parry-6",
       text: "If you're sailing to Bristol, {title}, would you look in on a small shop on Broad Street? Don't say I sent you. Just see if they look happy. Then don't tell me.",
     },
   ],
 
-  "port-royale-governor-archibald-stokes": [
+  "kingston-governor-archibald-stokes": [
     {
-      id: "port-royale-governor-archibald-stokes-1",
-      text: "Ah, {title} {name}. I've been expecting you. I always expect everyone, eventually. Shall we discuss what you might do for Port Royale, and what Port Royale might do for you?",
+      id: "kingston-governor-archibald-stokes-1",
+      text: "Ah, {title} {name}. I've been expecting you. I always expect everyone, eventually. Shall we discuss what you might do for Kingston, and what Kingston might do for you?",
       answers: [
         {
           text: "What did you have in mind?",
@@ -1027,11 +1027,11 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "port-royale-governor-archibald-stokes-2",
-      text: "I began as a clerk. Copying letters for men who could barely read them. You learn a great deal about people from what they ask you to copy. And even more from what they ask you to burn.",
+      id: "kingston-governor-archibald-stokes-2",
+      text: "I began as a clerk in Port Royal, copying letters for men who could barely read them. The sea took the town, but I had kept copies. You learn a great deal about people from what they ask you to copy. And even more from what they ask you to burn.",
     },
     {
-      id: "port-royale-governor-archibald-stokes-3",
+      id: "kingston-governor-archibald-stokes-3",
       text: "A ship from {enemyTown} lies in our harbour, flying a neutral flag. Its captain is very generous at dinner. Should I trust him?",
       answers: [
         {
@@ -1059,7 +1059,7 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
           replies: [
             "Goodness, {title}. I would never. Not the soup, at least. Too obvious.",
             "I'll pretend you didn't say that, and remember that you did.",
-            "Crude. Effective, but crude. We prefer subtler things in Port Royale, like paperwork.",
+            "Crude. Effective, but crude. We prefer subtler things in Kingston, like paperwork.",
             "Ha! You've been reading Italian plays. Real life is much more about ledgers.",
             "Soup is a terrible place to hide anything. It's always being stirred.",
           ],
@@ -1067,11 +1067,11 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "port-royale-governor-archibald-stokes-4",
+      id: "kingston-governor-archibald-stokes-4",
       text: "Every sealed letter on this desk is a promise someone wishes they hadn't made. I never open them unless I need to. Knowing that I could is usually enough.",
     },
     {
-      id: "port-royale-governor-archibald-stokes-5",
+      id: "kingston-governor-archibald-stokes-5",
       text: "Suppose a captain heard that the governor of {otherTown} has been trading with the {enemyAdjective}. Would that captain tell me, or keep it to himself?",
       answers: [
         {
@@ -1107,14 +1107,14 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "port-royale-governor-archibald-stokes-6",
-      text: "Do enjoy Port Royale, {title}. Drink, trade, make friends. Everyone you meet here will tell me about it, of course, but don't let that spoil your fun.",
+      id: "kingston-governor-archibald-stokes-6",
+      text: "Do enjoy Kingston, {title}. Drink, trade, make friends. Everyone you meet here will tell me about it, of course, but don't let that spoil your fun.",
     },
   ],
 
-  "barbados-tavern-miles-barnes": [
+  "bridgetown-tavern-miles-barnes": [
     {
-      id: "barbados-tavern-miles-barnes-1",
+      id: "bridgetown-tavern-miles-barnes-1",
       text: "Oh, sorry. I was writing. Do you want to hear a poem, {title}? It's about a girl in Plymouth. They're all about her.",
       answers: [
         {
@@ -1150,11 +1150,11 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "barbados-tavern-miles-barnes-2",
+      id: "bridgetown-tavern-miles-barnes-2",
       text: "I signed on as a cabin boy to forget her. I've forgotten Plymouth, my mother's face and how to tie a bowline. Mary, I remember perfectly.",
     },
     {
-      id: "barbados-tavern-miles-barnes-3",
+      id: "bridgetown-tavern-miles-barnes-3",
       text: "Should I send the poems, {title}? All two hundred of them? In one envelope?",
       answers: [
         {
@@ -1182,7 +1182,7 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
           replies: [
             "Burn them? You monster. I'll write a poem about you. A sad one.",
             "Sugar. Hm. 'Sweet as the cane on Barbados' fields.' Wait. That's still about her.",
-            "Everyone here writes about sugar. The planters talk of nothing else since they gave up tobacco.",
+            "Everyone here writes about sugar. The planters have talked of nothing else for fifty years.",
             "I tried writing about sugar once. It turned into a poem about Mary's teeth. They're lovely teeth.",
             "I couldn't. They're all I have. Well, them and this quill. And a debt to the landlord.",
           ],
@@ -1190,11 +1190,11 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "barbados-tavern-miles-barnes-4",
-      text: "The planters here pulled up the tobacco for sugar cane. They say tobacco was ruining them. I know the feeling. Some things you have to uproot entirely.",
+      id: "bridgetown-tavern-miles-barnes-4",
+      text: "The planters here cut the cane down to the root every harvest, and still it grows back. I know the feeling. Some things you can't uproot, however hard you try.",
     },
     {
-      id: "barbados-tavern-miles-barnes-5",
+      id: "bridgetown-tavern-miles-barnes-5",
       text: "Have you ever been in love, {title}?",
       answers: [
         {
@@ -1230,14 +1230,14 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "barbados-tavern-miles-barnes-6",
+      id: "bridgetown-tavern-miles-barnes-6",
       text: "Someone told me she married a cooper. I don't believe it. Coopers can't rhyme. What would they even talk about? Barrels?",
     },
   ],
 
-  "barbados-market-beatrix-lamb": [
+  "bridgetown-market-beatrix-lamb": [
     {
-      id: "barbados-market-beatrix-lamb-1",
+      id: "bridgetown-market-beatrix-lamb-1",
       text: "Let's not waste each other's time, {title}. Are you here to buy sugar, sell me something or ask me for directions?",
       answers: [
         {
@@ -1246,7 +1246,7 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
             "Good. Here's my price. It isn't going down, and if you wait, it'll go up.",
             "Excellent. Test any loaf you like with the knife. If you find rot, it's free. You won't.",
             "Then you're in the right place. Everyone else on this market copies my prices, but not my sugar.",
-            "Sugar's the gold of Barbados now, {title}. Priced accordingly.",
+            "Sugar's the gold of Barbados, {title}. Priced accordingly.",
             "Splendid. How much? Don't say 'some'. 'Some' isn't a number.",
           ],
         },
@@ -1264,7 +1264,7 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
           text: "Directions to your heart.",
           replies: [
             "It's behind the ledger, past the knife, and you can't afford the toll.",
-            "Ha! That's a new one. My husband tried that. Took him three years and a cartload of tobacco.",
+            "Ha! That's a new one. My husband tried that. Took him three years and a hogshead of sugar.",
             "Sorry, {title}, closed for business. Try the parson's niece, she's easily impressed.",
             "Cheeky. I'll add a shilling to whatever you buy for wasting my time so charmingly.",
             "Left at the sugar loaves, then straight into the harbour. Swim fast.",
@@ -1273,12 +1273,12 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "barbados-market-beatrix-lamb-2",
+      id: "bridgetown-market-beatrix-lamb-2",
       text: "My husband left me this stall and a pile of debts. I paid the debts in six months and doubled the trade in a year. He'd be proud. Or annoyed. With him it was hard to tell.",
     },
     {
-      id: "barbados-market-beatrix-lamb-3",
-      text: "The planters here switched from tobacco to sugar, and now every fool on the island wants to grow cane. What's the smart move, {title}?",
+      id: "bridgetown-market-beatrix-lamb-3",
+      text: "Every acre of this island is under cane, and every fool on it wants a plantation of his own. What's the smart move, {title}?",
       answers: [
         {
           text: "Grow sugar like everyone else.",
@@ -1313,11 +1313,11 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "barbados-market-beatrix-lamb-4",
+      id: "bridgetown-market-beatrix-lamb-4",
       text: "This knife tests every sugar loaf before I buy. A good loaf cuts clean. A bad one crumbles. Men are much the same, {title}, in my experience.",
     },
     {
-      id: "barbados-market-beatrix-lamb-5",
+      id: "bridgetown-market-beatrix-lamb-5",
       text: "I hear {merchandise} is cheap in {otherTown} this {month}. Do you know, or are you only guessing like the rest?",
       answers: [
         {
@@ -1353,14 +1353,14 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "barbados-market-beatrix-lamb-6",
+      id: "bridgetown-market-beatrix-lamb-6",
       text: "The other merchants copy my prices and think I don't notice. I notice. Sometimes I put a price up for a day just to watch them all follow me off a cliff.",
     },
   ],
 
-  "barbados-governor-eleanor-richardson": [
+  "bridgetown-governor-eleanor-richardson": [
     {
-      id: "barbados-governor-eleanor-richardson-1",
+      id: "bridgetown-governor-eleanor-richardson-1",
       text: "You are addressing Her Excellency, the acting governor of Barbados. Do remember the 'Excellency' part. My husband forgets it, and he's been sleeping in the stables.",
       answers: [
         {
@@ -1396,11 +1396,11 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "barbados-governor-eleanor-richardson-2",
-      text: "I took over the island when my husband fell ill. Since then, taxes are collected, roads are repaired and the sugar ships sail on time. I'm not saying he was the problem. I'm just saying.",
+      id: "bridgetown-governor-eleanor-richardson-2",
+      text: "I took over the island when my husband fell ill. Since then, taxes are collected, roads are repaired and the ships sail on time. I'm not saying he was the problem. I'm just saying.",
     },
     {
-      id: "barbados-governor-eleanor-richardson-3",
+      id: "bridgetown-governor-eleanor-richardson-3",
       text: "I'm planning a grand ball to celebrate the King's birthday. Who on this island deserves an invitation, {title}?",
       answers: [
         {
@@ -1436,11 +1436,11 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "barbados-governor-eleanor-richardson-4",
-      text: "When this island grew tobacco, it was poor and muddy. Now it grows sugar, and it is rich and muddy. I have plans for the mud.",
+      id: "bridgetown-governor-eleanor-richardson-4",
+      text: "Before sugar, this island was poor and muddy. Now it is rich and muddy, and it means to stay that way. I have plans for the mud.",
     },
     {
-      id: "barbados-governor-eleanor-richardson-5",
+      id: "bridgetown-governor-eleanor-richardson-5",
       text: "The {enemyAdjective} have been seen near the island. My husband would have panicked. What would you do in my place, {title}?",
       answers: [
         {
@@ -1454,11 +1454,11 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
           ],
         },
         {
-          text: "Send for help from England.",
+          text: "Send for help from London.",
           replies: [
-            "England is busy with the King's quarrel with Parliament. By the time help arrives, we'd be speaking another language.",
+            "London is busy with the new King, the Whigs and the Tories. By the time help arrives, we'd be speaking another language.",
             "I have sent letters. They answer them with letters. Very slow, very polite letters.",
-            "Help from England? That's what my husband would say. That's why he's in the stables.",
+            "Help from London? That's what my husband would say. That's why he's in the stables.",
             "We help ourselves on this island, {title}. That's how we got rich.",
             "London barely knows where Barbados is. One clerk asked if it was near Scotland.",
           ],
@@ -1476,7 +1476,7 @@ export const ENGLAND_NPC_LINES: Record<string, DialogueEntry[]> = {
       ],
     },
     {
-      id: "barbados-governor-eleanor-richardson-6",
+      id: "bridgetown-governor-eleanor-richardson-6",
       text: "You may go, {title}. And when you write home, tell them Barbados is well governed. By me. They do tend to forget.",
     },
   ],

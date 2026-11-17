@@ -4,10 +4,10 @@ import GuideTip from "../GuideTip"
 const Welcome = () => (
   <GuideChapter
     id="welcome"
-    lead="The year is 1640. Four nations are squabbling over the Caribbean, and you have a small ship, a smaller crew and big ideas."
+    lead="The year is 1715. Four nations are squabbling over the Caribbean, and you have a small ship, a smaller crew and big ideas."
     image={{
-      src: "/img/location/tortuga/tavern.png",
-      alt: "A busy tavern in Tortuga",
+      src: "/img/location/cap-francais/tavern.png",
+      alt: "A busy tavern in Cap-Français",
     }}
   >
     <p>

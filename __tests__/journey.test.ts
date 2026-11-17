@@ -38,13 +38,13 @@ describe("sea distances", () => {
   })
 
   it("follows the map", () => {
-    expect(getJourneyLength("Bonaire", "Curacao")).toBe(2)
-    expect(getJourneyLength("Havana", "Port Royale")).toBe(7)
-    expect(getJourneyLength("Villa Hermosa", "Barbados")).toBe(20)
+    expect(getJourneyLength("savaneta", "willemstad")).toBe(1)
+    expect(getJourneyLength("havana", "kingston")).toBe(8)
+    expect(getJourneyLength("campeche", "bridgetown")).toBe(20)
 
-    // Tortuga is drawn further east than Leogane
-    expect(getDistanceKm("Villa Hermosa", "Tortuga")).toBeGreaterThan(
-      getDistanceKm("Villa Hermosa", "Leogane")
+    // The Leeward Islands lie further east than San Juan
+    expect(getDistanceKm("campeche", "basse-terre")).toBeGreaterThan(
+      getDistanceKm("campeche", "san-juan")
     )
   })
 
@@ -59,11 +59,11 @@ describe("sea distances", () => {
   })
 
   it("is zero to the town you are in", () => {
-    expect(getDistanceKm("Havana", "Havana")).toBe(0)
+    expect(getDistanceKm("havana", "havana")).toBe(0)
   })
 
   it("finds the nearest and farthest towns", () => {
-    expect(getShortestJourneyLength("Bonaire")).toBe(2)
-    expect(getLongestJourneyLength("Barbados")).toBe(20)
+    expect(getShortestJourneyLength("savaneta")).toBe(1)
+    expect(getLongestJourneyLength("bridgetown")).toBe(20)
   })
 })

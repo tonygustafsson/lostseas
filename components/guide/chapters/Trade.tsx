@@ -23,8 +23,8 @@ const Trade = () => (
     id="trade"
     lead="Buy low, sell high, and try not to get sunk with a hold full of silk."
     image={{
-      src: "/img/location/belize/market.png",
-      alt: "The market in Belize",
+      src: "/img/location/nassau/market.png",
+      alt: "The market in Nassau",
     }}
   >
     <h3>The shop</h3>

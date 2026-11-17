@@ -3,6 +3,7 @@ import { AiOutlineQrcode } from "react-icons/ai"
 import useDrawer from "@/app/stores/drawer"
 import useSound from "@/app/stores/sound"
 import { Button } from "@/components/ui/button"
+import { getTownName } from "@/utils/location"
 
 import AddPasskeyButton from "../settings/AddPasskeyButton"
 import UserIdDisplay from "../settings/UserIdDisplay"
@@ -32,7 +33,7 @@ const WelcomeNewUser = ({ player, onClose }: Props) => {
       <p className="text-lg">
         Nice to see you. You are located at{" "}
         <span className="text-success">
-          {player.character.town}s {player.character.location}
+          {getTownName(player.character.town)}s {player.character.location}
         </span>
         . You can either check out the town, or head out to the open seas.
       </p>

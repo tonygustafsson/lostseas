@@ -55,7 +55,7 @@ const atSea = (sea: Partial<SeaState> = {}) =>
     character: {
       town: null,
       location: "Sea",
-      journey: { destination: "Havana", day: 3, totalDays: 7 },
+      journey: { destination: "havana", day: 3, totalDays: 7 },
     },
     crewMembers: { count: 10, health: 90, mood: 50 },
     inventory: { food: 50, water: 100, cannons: 5 },
@@ -65,7 +65,7 @@ const atSea = (sea: Partial<SeaState> = {}) =>
 const routes = [
   {
     name: "startJourney",
-    call: () => startJourney(request({ town: "Havana" })),
+    call: () => startJourney(request({ town: "havana" })),
     player: inPort,
     invalid: (player: Player) =>
       patchDeep<Player>(player, { character: { location: "Sea" } }),
@@ -86,7 +86,7 @@ const routes = [
       success: true,
       day: 4,
       totalDays: 7,
-      destination: "Havana",
+      destination: "havana",
       destinationReached: false,
       shipMeetingState: null,
     },
@@ -215,7 +215,7 @@ describe("POST /api/sea/startJourney", () => {
   it("answers success false without saving when the advisor blocks travel", async () => {
     mocks.player = patchDeep<Player>(inPort(), { inventory: { food: 0 } })
 
-    const response = await startJourney(request({ town: "Havana" }))
+    const response = await startJourney(request({ town: "havana" }))
 
     expect(response.status).toBe(200)
     expect(await response.json()).toEqual({ success: false })

@@ -1,5 +1,4 @@
 import { type TownBuildingPosition, TOWNS } from "@/constants/locations"
-import { toSlug } from "@/utils/location"
 
 export type TownMapBuilding = TownBuildingPosition & {
   location: TownLocation
@@ -32,15 +31,15 @@ const IMAGE_SIZES: Record<TownMapVariant, { width: number; height: number }> = {
 }
 
 export const getTownMapSrc = (town: Town, variant: TownMapVariant) =>
-  `/img/towns/${toSlug(town)}-${variant}.png`
+  `/img/towns/${town}-${variant}.png`
 
 // Transparent everywhere except the water, used to animate only the sea
 export const getTownWaterMaskSrc = (town: Town, variant: TownMapVariant) =>
-  `/img/town-water-masks/${toSlug(town)}-${variant}.png`
+  `/img/town-water-masks/${town}-${variant}.png`
 
 // Transparent everywhere except the sky, used to draw clouds behind the town
 export const getTownSkyMaskSrc = (town: Town, variant: TownMapVariant) =>
-  `/img/town-sky-masks/${toSlug(town)}-${variant}.png`
+  `/img/town-sky-masks/${town}-${variant}.png`
 
 const getTownMapImage = (
   town: Town,

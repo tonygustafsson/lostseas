@@ -13,8 +13,8 @@ const FirstVoyage = () => (
     id="first-voyage"
     lead="Every legend starts somewhere. Yours starts with a modest boat and a crew you could count on one hand."
     image={{
-      src: "/img/location/port-royale/shop.png",
-      alt: "The shop in Port Royale",
+      src: "/img/location/kingston/shop.png",
+      alt: "The shop in Kingston",
     }}
   >
     <p>

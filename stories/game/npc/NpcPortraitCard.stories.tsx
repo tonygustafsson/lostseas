@@ -4,7 +4,7 @@ import NpcPortraitCard from "@/components/npc/NpcPortraitCard"
 import { Button } from "@/components/ui/button"
 import { getNpcAt } from "@/constants/npcs"
 
-const governor = getNpcAt("Havana", "governor")
+const governor = getNpcAt("havana", "governor")
 
 const meta = {
   title: "game/Townsfolk/NpcPortraitCard",

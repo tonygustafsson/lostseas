@@ -8,7 +8,7 @@ export const player = {
     name: "Morgan Reed",
     nationality: "England",
     title: "Captain",
-    town: "Port Royale",
+    town: "kingston",
     location: "Shop",
     gold: 2500,
     account: 1200,

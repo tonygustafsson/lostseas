@@ -212,7 +212,7 @@ export const GOSSIP: DialogueEntry[] = [
       {
         text: "The silver fleet must be running late.",
         replies: [
-          "Running late, or running into the Dutch. Ever since Piet Heyn took the flota, the treasury has had hiccups.",
+          "Running late, or running onto a reef. Ever since the hurricane sank the plate fleet off Florida, the treasury has had hiccups.",
           "Late, light and leaking, my brother-in-law says. He knows a man who caulks the galleons.",
           "If it is late, it will be a hurricane or an admiral, and either way someone will lie about it.",
           "Running late, yes. Like my cousin's dowry. Twelve years and counting.",
@@ -223,7 +223,7 @@ export const GOSSIP: DialogueEntry[] = [
         text: "Perhaps he spent it all on hats.",
         replies: [
           "Hats! Well, you have seen the portraits. A man does not get that magnificent by accident.",
-          "Hats and painters, they say. That Velázquez fellow is not cheap.",
+          "Hats and wigs, they say. A Bourbon wig from Paris is not cheap.",
           "I shall add that to my collection. Royal hats, ruinous costs. It sounds true, which is all that matters.",
           "Do not say that in Havana. The Inquisition has no sense of humour about hats.",
           "If only. My hat cost me six reales and I have regretted it every day.",
@@ -232,7 +232,7 @@ export const GOSSIP: DialogueEntry[] = [
       {
         text: "Soldiers always complain.",
         replies: [
-          "They do. But they complain louder with empty bellies, and Catalonia is very loud just now.",
+          "They do. But they complain louder with empty bellies, and they have only just finished a year's siege of Barcelona.",
           "True. Sailors too. I have never met a sailor who was content, except one, and he was asleep.",
           "Complaining is the soldier's second trade. Drinking is the first. Paying for it is a distant third.",
           "You sound like a paymaster. Are you a paymaster? You have the look.",
@@ -287,16 +287,16 @@ export const GOSSIP: DialogueEntry[] = [
   },
   {
     id: "gossip-16",
-    text: "A sailor told me Cardinal Richelieu has spies in every port. Do you think there is one in {town}?",
+    text: "A sailor told me the Regent of France has spies in every port. Do you think there is one in {town}?",
     answers: [
       {
         text: "Of course. You are probably it.",
         replies: [
-          "Me? A spy? I would never keep a secret long enough to be any use to a cardinal.",
+          "Me? A spy? I would never keep a secret long enough to be any use to a regent.",
           "If I were a spy, I would have been paid by now. I have not. Draw your own conclusions.",
-          "How flattering. The cardinal could do worse. He could hire the fishmonger.",
+          "How flattering. The Regent could do worse. He could hire the fishmonger.",
           "Shh. Now look what you have done. Everyone is staring and I have not even said anything shocking yet.",
-          "I tell everyone everything for free. The cardinal would go bankrupt with me. Or rich.",
+          "I tell everyone everything for free. The Regent would go bankrupt with me. Or rich.",
         ],
       },
       {
@@ -304,7 +304,7 @@ export const GOSSIP: DialogueEntry[] = [
         replies: [
           "Nothing? The governor's debts alone could fill a dispatch. With pictures.",
           "You underestimate {town}. We had a duel last week over a hat. A hat!",
-          "Hmph. The cardinal would be fascinated by the chandler's wife, I assure you.",
+          "Hmph. The Regent would be fascinated by the chandler's wife, I assure you.",
           "Perhaps not, but he collects everything. Like me, but with more soldiers.",
           "That is exactly what a spy would say, {title}.",
         ],
@@ -323,16 +323,16 @@ export const GOSSIP: DialogueEntry[] = [
   },
   {
     id: "gossip-17",
-    text: "The Stadtholder has been taking towns in Brabant again, they say. The Dutch merchants in port are insufferable about it. One of them bought a round for the whole tavern and then charged us for it.",
+    text: "The Dutch claim they won the last war, though nobody can find what they won. The Dutch merchants in port are insufferable about it. One of them bought a round for the whole tavern and then charged us for it.",
   },
   {
     id: "gossip-18",
-    text: "Have you heard the news from England? They say King Charles and Parliament are barely speaking.",
+    text: "Have you heard the news from Britain? They say King George and his ministers are barely speaking. He has no English and they have no German.",
     answers: [
       {
         text: "I heard the Scots are angry too.",
         replies: [
-          "Angry about a prayer book! Imagine going to war over a book. I would only go to war over a good letter.",
+          "Angry enough to rise for James Stuart! Imagine going to war over who sits on a chair. I would only go to war over a good letter.",
           "The Scots are always angry. It is the weather. Too much rain and not enough rum.",
           "Yes, and the king needs money to fight them, and Parliament holds the purse. It is like a marriage, but with cannon.",
           "A sailor from Bristol says the whole country is quarrelling. I have never been so jealous of a country.",
@@ -343,7 +343,7 @@ export const GOSSIP: DialogueEntry[] = [
         text: "Neither are my first mate and I.",
         replies: [
           "Oh? What happened? Was it money or a woman? It is always money or a woman. Occasionally a parrot.",
-          "Then you and King Charles have something in common. Perhaps you should write to him for advice.",
+          "Then you and King George have something in common. Perhaps you should write to him for advice.",
           "Tell me everything. I promise to share it only with people who are interested.",
           "A crew divided is a crew that talks. And a crew that talks talks to me.",
           "At least your first mate cannot dissolve you. Can he? Check your articles.",
@@ -453,7 +453,7 @@ export const GOSSIP: DialogueEntry[] = [
   },
   {
     id: "gossip-23",
-    text: "Did you hear about the buccaneers on Hispaniola? They roast whole oxen and eat them with their hands. My brother-in-law wants to join them, but only for the food.",
+    text: "Did you hear about the pirates gathering at Nassau? They roast whole oxen and eat them with their hands. My brother-in-law wants to join them, but only for the food.",
   },
   {
     id: "gossip-24",
@@ -497,32 +497,32 @@ export const GOSSIP: DialogueEntry[] = [
   },
   {
     id: "gossip-26",
-    text: "There are whispers that Portugal wants to be free of Spain. What do you think will happen?",
+    text: "There are whispers that the Scots will rise for James Stuart. What do you think will happen?",
     answers: [
       {
         text: "There will be war, mark my words.",
         replies: [
-          "I think so too. The Portuguese merchants have that look, like a cat that has seen an open door.",
+          "I think so too. The Scottish merchants have that look, like a cat that has seen an open door.",
           "War, and then everyone will need sugar and powder. Somebody will get rich, and it will not be me.",
           "Mark your words? I shall carve them into the table. The landlord will be furious.",
-          "My aunt's lodger is Portuguese. He has started humming in a very defiant way.",
-          "I fear you are right. Philip has trouble in Catalonia as it is. He cannot hold everything.",
+          "My aunt's lodger is a Scot. He has started humming in a very defiant way.",
+          "I fear you are right. King George can barely hold a conversation in English. He cannot hold everything.",
         ],
       },
       {
         text: "Nothing. It is just talk.",
         replies: [
           "Just talk! Talk is how everything starts. Love, war, and my mother-in-law's visits.",
-          "That is what they said about the Dutch, and look at them now, seventy years on and still at it.",
+          "That is what they said about the Catalans, and Philip needed a year's siege to quiet Barcelona.",
           "Talk is never just talk, {title}. Talk is a fire that has not found the hay yet.",
           "You would make a terrible gossip. You have no sense of drama at all.",
           "Perhaps. But I shall keep listening, because talk is my favourite food.",
         ],
       },
       {
-        text: "Portugal? Is that near {otherTown}?",
+        text: "Scotland? Is that near {otherTown}?",
         replies: [
-          "Near {otherTown}! Ha! No, it is next to Spain. Underneath it, practically. Being squashed.",
+          "Near {otherTown}! Ha! No, it is on top of England. Sitting on it, practically. Glaring.",
           "You are teasing me. Or you are a very bad navigator. Either way, I am delighted.",
           "Do you sail by map or by smell? Please say smell. It would make such a story.",
           "Not quite. Though if you keep sailing in the wrong direction long enough, I suppose anything is near anything.",
@@ -573,7 +573,7 @@ export const GOSSIP: DialogueEntry[] = [
   },
   {
     id: "gossip-29",
-    text: "Barbados is all sugar now, they say. The tobacco planters are furious. One of them burned his own crop in protest, then realised he had no other crop.",
+    text: "Barbados is all sugar now, they say. The last tobacco planter there was furious. He burned his own crop in protest, then realised he had no other crop.",
   },
   {
     id: "gossip-30",
@@ -582,7 +582,7 @@ export const GOSSIP: DialogueEntry[] = [
       {
         text: "I believe it, and I would like some of it.",
         replies: [
-          "You and every buccaneer from Tortuga to Bonaire. Get in line, {title}. It is a long line.",
+          "You and every pirate from Nassau to Curaçao. Get in line, {title}. It is a long line.",
           "Ha! Do not say that too loudly near anyone with a cannon. They hang people for wanting things.",
           "Piet Heyn did it, and they still sing songs about him in Amsterdam. Nobody sings about the ones who failed.",
           "Wanting silver is easy. Carrying it home without being shot is the trick.",
@@ -634,7 +634,7 @@ export const GOSSIP: DialogueEntry[] = [
         replies: [
           "How did you know? Has she been talking about me? What did she say? Never mind, I shall find out.",
           "Ha! That is no feud. That is a long and happy war. We both enjoy it far too much.",
-          "She started it. In the year of Our Lord sixteen thirty-one. Over a chicken.",
+          "She started it. In the year of Our Lord sixteen ninety-one. Over a chicken.",
           "Perhaps. But I am winning, and that is what matters.",
           "Feud is such a strong word. I prefer to call it a lifelong exchange of opinions.",
         ],
@@ -693,7 +693,7 @@ export const GOSSIP: DialogueEntry[] = [
   },
   {
     id: "gossip-35",
-    text: "Louis of France is not well, they say, and the cardinal is worse. Mind, they say that every year and both are still breathing. Rumours of a king's death are like fishermen, they always come back.",
+    text: "Old Louis of France is not well, they say, and his doctors are worse. Mind, they say that every year and he is still breathing. Rumours of a king's death are like fishermen, they always come back.",
   },
   {
     id: "gossip-36",
@@ -814,7 +814,7 @@ export const GOSSIP: DialogueEntry[] = [
         replies: [
           "That is what he says. His mother says he lost it to a goose when he was nine.",
           "In battle, yes. With a bottle. In a tavern in {otherTown}. The bottle won.",
-          "Some battle. He was charging at a cardinal's guard and tripped over a chicken.",
+          "Some battle. He was charging at a French grenadier and tripped over a chicken.",
           "Possibly. But he switches it from eye to eye depending on the weather. I have noted it down.",
           "That is the official tale. The unofficial one is much better and involves a jealous fiddler.",
         ],
@@ -983,7 +983,7 @@ export const GOSSIP: DialogueEntry[] = [
         text: "Never. Wars here never end, they just take a nap.",
         replies: [
           "Ha! Like my uncle. He never stops snoring, he just changes rooms.",
-          "True. The Spanish and the Dutch have been at it for seventy years. They have forgotten how to stop.",
+          "True. They signed a peace at Utrecht and half the captains out here have not stopped yet. They have forgotten how.",
           "Grim, but probably right. The war is older than half the people fighting it.",
           "A nap! I like that. I shall use it. I shall say I heard it from a very wise captain.",
           "Then we shall all keep talking about it forever. Good. I need the material.",

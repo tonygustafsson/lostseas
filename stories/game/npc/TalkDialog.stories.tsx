@@ -5,7 +5,7 @@ import TalkDialog from "@/components/npc/TalkDialog"
 import { getNpcAt, GO_ON_LABELS } from "@/constants/npcs"
 import type { TalkLine } from "@/utils/actions/npc"
 
-const npc = getNpcAt("Port Royale", "tavern")
+const npc = getNpcAt("kingston", "tavern")
 
 const quest: Quest = {
   id: "quest-1",
@@ -16,7 +16,7 @@ const quest: Quest = {
   reward: { gold: 900 },
   type: "delivery",
   parcel: "a sealed letter",
-  targetNpcId: getNpcAt("Havana", "market").id,
+  targetNpcId: getNpcAt("havana", "market").id,
 }
 
 const meta = {
@@ -115,7 +115,7 @@ export const QuestProgress: Story = {
   args: {
     line: {
       kind: "questProgress",
-      text: "A letter for me? From Port Royale? Well, I never. Thank you, captain.",
+      text: "A letter for me? From Kingston? Well, I never. Thank you, captain.",
       quest,
       completed: false,
     },

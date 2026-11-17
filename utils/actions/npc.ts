@@ -11,6 +11,7 @@ import {
 } from "@/constants/quests"
 import { getCargo } from "@/utils/cargo"
 import { getNationTowns } from "@/utils/location"
+import { getTownName } from "@/utils/location"
 import { generateQuest, targetExtras } from "@/utils/npc/generateQuest"
 import { findDialogue, pickDialogue } from "@/utils/npc/pickDialogue"
 import {
@@ -79,7 +80,7 @@ const setConversation = (
 const giverName = (quest: Quest) => {
   const giver = getNpcById(quest.giverId)!
 
-  return `${giver.name} of ${giver.town}`
+  return `${giver.name} of ${getTownName(giver.town)}`
 }
 
 type QuestProgress = { player: Player; line: TalkLine; log?: GameLog }

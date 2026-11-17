@@ -12,13 +12,13 @@ const withPrisoners: Player = {
       id: "pirate-1",
       name: 'Jack "Mad" Flint',
       crimeId: "rum-warehouse",
-      rewarder: "Havana",
+      rewarder: "havana",
     },
     "pirate-2": {
       id: "pirate-2",
       name: 'Grace "Bloody" Morgan',
       crimeId: "sacked-town",
-      rewarder: "Tortuga",
+      rewarder: "cap-francais",
     },
   },
 }

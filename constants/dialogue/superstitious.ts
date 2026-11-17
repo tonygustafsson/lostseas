@@ -94,7 +94,7 @@ export const SUPERSTITIOUS: DialogueEntry[] = [
       {
         text: "Perhaps it was just a fish.",
         replies: [
-          "Just a fish. That's what the Spanish said about the whale before Piet Heyn took their silver.",
+          "Just a fish. That's what the Spanish said about the whale before the hurricane took their plate fleet.",
           "Nothing is just a fish, {title}. Fish have seen the bottom of the sea. They know things.",
           "You'll say that until a fish tells you something you didn't want to hear.",
           "Hush. They can hear you in the barrel.",
@@ -308,7 +308,7 @@ export const SUPERSTITIOUS: DialogueEntry[] = [
   },
   {
     id: "superstitious-13",
-    text: "Cardinal Richelieu has a cat for every day of the week, I hear. No man needs seven cats unless he's warding something off. What do you think he fears, {title}?",
+    text: "The Regent of France has a cat for every day of the week, I hear. No man needs seven cats unless he's warding something off. What do you think he fears, {title}?",
     answers: [
       {
         text: "Assassins, most likely.",
@@ -326,15 +326,15 @@ export const SUPERSTITIOUS: DialogueEntry[] = [
           "Ha! The most powerful man in France, terrified of a mouse. I'd believe it.",
           "Mice carry the plague, so he's not wrong. Just very thorough.",
           "Seven cats for mice. Well, that's a great many mice, or a very great fear.",
-          "Even cardinals have their weaknesses, {title}. Mine is fish guts. His is mice.",
+          "Even regents have their weaknesses, {title}. Mine is fish guts. His is mice.",
           "Now there's a man I understand. I've got four cats myself, and I'm still not sure I'm safe.",
         ],
       },
       {
-        text: "Louis XIII.",
+        text: "The little king.",
         replies: [
-          "Hush! Don't say that. Cardinals have ears in every tavern, even this one.",
-          "A king and his cardinal, each afraid of the other. It's like a marriage, only with more poisoners.",
+          "Hush! Don't say that. Regents have ears in every tavern, even this one.",
+          "A boy king and his regent, each afraid of the other. It's like a marriage, only with more poisoners.",
           "Then he'll need more than seven cats. He'll need a lion.",
           "Smart man, {title}. Kings change their minds. Cats never do.",
           "I'll not say yes and I'll not say no. I'll just cross myself and order another drink.",
@@ -418,7 +418,7 @@ export const SUPERSTITIOUS: DialogueEntry[] = [
         text: "No. I make my own luck.",
         replies: [
           "And who do you think made the luck before you got there? You're borrowing, {title}. Pay it back.",
-          "Make your own luck. The Spanish said that before 1628. Ask them how their silver fleet is.",
+          "Make your own luck. The Spanish said that about their plate fleet. Ask the divers off Florida how it went.",
           "Brave. I'll light a candle for you anyway. It costs me nothing but wax.",
           "That's what the cursed always say. Right up to the end.",
           "Making luck is fine. Just don't make it on a Friday, and don't whistle while you do it.",
@@ -464,7 +464,7 @@ export const SUPERSTITIOUS: DialogueEntry[] = [
   },
   {
     id: "superstitious-20",
-    text: "The flota is due through soon. Every year I pray for the silver to get safely to Seville, and every year I pray just as hard that somebody else's luck runs out. I'm not proud of it.",
+    text: "The flota is due through soon. Every year I pray for the silver to get safely to Cádiz, and every year I pray just as hard that somebody else's luck runs out. I'm not proud of it.",
   },
   {
     id: "superstitious-21",
@@ -540,7 +540,7 @@ export const SUPERSTITIOUS: DialogueEntry[] = [
   },
   {
     id: "superstitious-23",
-    text: "I've heard the buccaneers on Hispaniola smoke their meat over green wood to keep the spirits of the dead away. I don't know if it works, but I've started doing it too, just in case.",
+    text: "I've heard the old buccaneers on Hispaniola smoked their meat over green wood to keep the spirits of the dead away. I don't know if it works, but I've started doing it too, just in case.",
   },
   {
     id: "superstitious-24",
@@ -580,7 +580,7 @@ export const SUPERSTITIOUS: DialogueEntry[] = [
   },
   {
     id: "superstitious-25",
-    text: "King Philip lost his silver to Piet Heyn because somebody let a priest aboard on a Friday. That's my theory. The Dutch have never forgiven me for it. Well, they've never heard of me, but still.",
+    text: "King Philip lost his plate fleet off Florida because somebody let a priest aboard on a Friday. That's my theory. The Spanish have never forgiven me for it. Well, they've never heard of me, but still.",
   },
   {
     id: "superstitious-26",
@@ -912,14 +912,14 @@ export const SUPERSTITIOUS: DialogueEntry[] = [
   },
   {
     id: "superstitious-44",
-    text: "They say King Charles is having trouble with Parliament back in England. I could have told him. I'm told he was crowned on a day with a rainbow. A rainbow at a crowning means the arguments will last. How do you think it will end, {title}?",
+    text: "They say King George is having trouble with the Jacobites back in Britain. I could have told him. I'm told he was crowned on a day with a rainbow. A rainbow at a crowning means the arguments will last. How do you think it will end, {title}?",
     answers: [
       {
         text: "Badly, for someone.",
         replies: [
-          "Badly for everyone. That's how these things always end. Ask the Germans.",
+          "Badly for everyone. That's how these things always end. Ask the Catalans.",
           "Yes. I've thrown the bones on it three times and every time they landed in the fire.",
-          "Then I'll pray for the king, and for Parliament, and for whoever has to clean up after.",
+          "Then I'll pray for the king, and for the Pretender, and for whoever has to clean up after.",
           "Badly, and with a lot of shouting first. Like my last wedding.",
           "Someone will lose their head over it. I mean that as a feeling, not a prophecy. Mostly.",
         ],
@@ -1028,7 +1028,7 @@ export const SUPERSTITIOUS: DialogueEntry[] = [
   },
   {
     id: "superstitious-49",
-    text: "I've heard that the Portuguese are restless under Spanish rule and Catalonia too. You want to know why? An eclipse. Every revolt starts with an eclipse, or with taxes. Usually both, which is why I always look up when I pay.",
+    text: "I've heard the Scots are restless for James Stuart. You want to know why? An eclipse. Every revolt starts with an eclipse, or with taxes. Usually both, which is why I always look up when I pay.",
   },
   {
     id: "superstitious-50",
@@ -1072,11 +1072,11 @@ export const SUPERSTITIOUS: DialogueEntry[] = [
   },
   {
     id: "superstitious-52",
-    text: "Barbados has gone from tobacco to sugar, they say. I could have told them. Tobacco smoke keeps the spirits away. Sugar invites them in. I've seen how ants behave around sugar, and I don't trust it.",
+    text: "Saint-Domingue is going from tobacco to sugar, they say. I could have told them. Tobacco smoke keeps the spirits away. Sugar invites them in. I've seen how ants behave around sugar, and I don't trust it.",
   },
   {
     id: "superstitious-53",
-    text: "The Stadtholder sent a ship out with an orange tied to its bowsprit for luck, so I heard. Orange is Frederick Henry's colour. Personally I'd have tied on a garlic, but nobody asked me.",
+    text: "The Dutch still tie an orange to the bowsprit for luck, so I heard, though Holland has had no stadtholder for years. Personally I'd have tied on a garlic, but nobody asked me.",
   },
   {
     id: "superstitious-54",

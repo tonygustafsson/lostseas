@@ -2,6 +2,19 @@
 
 import type { Point } from "../../utils/seaRoutes"
 
+// How much longer than the shortest route one kept clear of the coast may be
+const MAX_DETOUR = 1.15
+
+const getRouteLength = (route: Point[]) =>
+  route.reduce(
+    (length, point, i) =>
+      i === 0
+        ? 0
+        : length +
+          Math.hypot(point.x - route[i - 1].x, point.y - route[i - 1].y),
+    0
+  )
+
 type WaterGrid = {
   width: number
   height: number
@@ -372,13 +385,15 @@ export const computeSeaRoute = (
   from: Point,
   to: Point
 ) => {
-  for (const grid of [grids.safe, grids.raw]) {
+  const [safe, raw] = [grids.safe, grids.raw].map((grid) => {
     const start = snapToWater(grid, from)
     const goal = snapToWater(grid, to)
-    if (start === null || goal === null) continue
+    // Harbours close together can snap to the same cell away from the coast,
+    // which would make the voyage zero long
+    if (start === null || goal === null || start === goal) return null
 
     const cells = findPath(grid, start, goal)
-    if (!cells) continue
+    if (!cells) return null
 
     const simplified = simplifyByLineOfSight(
       grid,
@@ -387,7 +402,16 @@ export const computeSeaRoute = (
     const smoothed = reducePoints(smoothPath(simplified), 0.3)
 
     return isPathOnWater(grids.raw, smoothed) ? smoothed : simplified
+  })
+
+  // Keep clear of the coast, unless the channels between islands are too
+  // narrow for that and staying clear means sailing far around them
+  if (
+    safe &&
+    (!raw || getRouteLength(safe) <= getRouteLength(raw) * MAX_DETOUR)
+  ) {
+    return safe
   }
 
-  return null
+  return raw
 }

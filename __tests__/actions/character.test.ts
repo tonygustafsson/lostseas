@@ -86,7 +86,7 @@ describe("moveToLocation", () => {
     const player = createTestPlayer({
       character: {
         location: "Harbor",
-        journey: { destination: "Havana", day: 1, totalDays: 3 },
+        journey: { destination: "havana", day: 1, totalDays: 3 },
       },
     })
 

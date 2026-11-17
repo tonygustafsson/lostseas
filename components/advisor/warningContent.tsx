@@ -13,6 +13,7 @@ import MerchandiseIcon from "@/components/MerchandiseIcon"
 import { getCargo } from "@/utils/cargo"
 import { AdvisorWarningItem } from "@/utils/getAdvisorWarnings"
 import { getSuppliesDays } from "@/utils/journey"
+import { getTownName } from "@/utils/location"
 import { formatGold } from "@/utils/number"
 
 export const getWarningContent = (
@@ -89,12 +90,12 @@ export const getWarningContent = (
     case "NEED_MORE_FOOD":
       return {
         icon: <MerchandiseIcon item="food" />,
-        text: `Not enough food to reach ${destination ?? "any port"}. Stock up at the shop.`,
+        text: `Not enough food to reach ${destination ? getTownName(destination) : "any port"}. Stock up at the shop.`,
       }
     case "NEED_MORE_WATER":
       return {
         icon: <MerchandiseIcon item="water" />,
-        text: `Not enough water to reach ${destination ?? "any port"}. Stock up at the shop.`,
+        text: `Not enough water to reach ${destination ? getTownName(destination) : "any port"}. Stock up at the shop.`,
       }
     case "LIMITED_SUPPLIES": {
       const { days, limitedBy } = getSuppliesDays(player)

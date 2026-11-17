@@ -458,7 +458,7 @@ describe("collectVenture", () => {
   it("works in any town", () => {
     expectSuccess(
       collectVenture(
-        withShare(22, { character: { town: "Tortuga" } }),
+        withShare(22, { character: { town: "cap-francais" } }),
         { ventureId: "tobaccoRun" },
         () => 1
       )

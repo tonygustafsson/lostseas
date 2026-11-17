@@ -141,7 +141,7 @@ export const WEARY_VETERAN: DialogueEntry[] = [
           "Spoken like someone who has never paid one. Soldiers keep a colony alive until payday.",
           "Soldiers, aye. Fed ones. Unfed soldiers keep nothing alive, least of all themselves.",
           "I was a soldier. I know exactly how much a colony relies on us, and exactly how little it thanks us.",
-          "Soldiers help. Walls help more. Walls do not desert to go buccaneering on Hispaniola.",
+          "Soldiers help. Walls help more. Walls do not desert to go pirating at Nassau.",
           "True enough. Though mine spend more time fighting mosquitoes than {enemy}.",
         ],
       },
@@ -159,7 +159,7 @@ export const WEARY_VETERAN: DialogueEntry[] = [
   },
   {
     id: "wearyVeteran-8",
-    text: "They say Cardinal Richelieu reads every letter in France before the king does. I wish someone would read mine at all.",
+    text: "They say King Louis's ministers read every letter in France before the king does. I wish someone would read mine at all.",
   },
   {
     id: "wearyVeteran-9",
@@ -211,7 +211,7 @@ export const WEARY_VETERAN: DialogueEntry[] = [
           "I tried. Nobody here wants a wig in this heat. Except the goats. They ate two.",
           "A merchant's answer. Sadly the only buyer offered me salt pork, and it was older than the wigs.",
           "Hm. I sold one to a planter. He wears it to church and sweats like a boiled pudding.",
-          "To whom? The buccaneers? They would wear them in battle and terrify everyone.",
+          "To whom? The pirates at Nassau? They would wear them in battle and terrify everyone.",
           "Good thinking. I used the money to buy powder. The wigs have done more for defence than the nephew.",
         ],
       },
@@ -283,7 +283,7 @@ export const WEARY_VETERAN: DialogueEntry[] = [
   },
   {
     id: "wearyVeteran-15",
-    text: "I hear things are going badly for King Charles with his Parliament. Kings and councils, always quarrelling. Glad I only have one council. It is bad enough.",
+    text: "I hear King George speaks barely a word of English to his own Parliament. Kings and councils, always quarrelling. Glad I only have one council. It is bad enough.",
   },
   {
     id: "wearyVeteran-16",
@@ -334,21 +334,21 @@ export const WEARY_VETERAN: DialogueEntry[] = [
     text: "Have you heard the news from Europe, {title}? I have not, and I am the governor.",
     answers: [
       {
-        text: "The war in Germany goes on.",
+        text: "The war in the north goes on.",
         replies: [
-          "Twenty two years of it now. They will run out of Germans before they run out of reasons.",
+          "Fifteen years of it now. They will run out of Swedes before they run out of reasons.",
           "Of course it does. That war has outlived three of my old officers and both my good boots.",
-          "The Thirty Years' War, they will call it, if it ever stops long enough to be counted.",
+          "The Great Northern War, they will call it, if it ever stops long enough to be counted.",
           "Hm. And every army there needs money. Which means they take it from us. Which means more letters.",
           "I served in it for a time. Mud, plague and generals. In that order of usefulness.",
         ],
       },
       {
-        text: "They say Portugal and Catalonia are restless.",
+        text: "They say the Scots are restless.",
         replies: [
-          "Are they? Philip IV must be pulling his hair out. If he has any left, after paying for everything else.",
+          "Are they? King George must be pulling his wig off. If he has one left, after paying for everything else.",
           "Restless. That is a polite word for 'about to set fire to something'. I know the feeling.",
-          "Interesting. If Spain is busy at home, the Caribbean may get a little quieter. Or louder.",
+          "Interesting. If Britain is busy at home, the Caribbean may get a little quieter. Or louder.",
           "Hm. I will write that down. Not that anyone will read it, but it makes me feel informed.",
           "Everyone is restless. Europe is one large tavern brawl that pretends to be politics.",
         ],
@@ -563,7 +563,7 @@ export const WEARY_VETERAN: DialogueEntry[] = [
   },
   {
     id: "wearyVeteran-29",
-    text: "News reached me that Cardinal Richelieu has a new plan for the colonies. By the time it gets here, he will have had six more.",
+    text: "News reached me that the Regent in France has a new plan for the colonies. By the time it gets here, he will have had six more.",
   },
   {
     id: "wearyVeteran-30",
@@ -669,7 +669,7 @@ export const WEARY_VETERAN: DialogueEntry[] = [
           "I did. The reply will arrive next year, asking me to pay for the barrels.",
           "The ship has gone. The weevils stayed. Like everything else here, they have settled in.",
           "Hm. I wrote a strongly worded letter. I suspect they will use it to wrap the next lot of weevils.",
-          "Back to Europe? They would only be sent to the army in Germany. Poor beasts.",
+          "Back to Europe? They would only be sent to some army in the north. Poor beasts.",
           "I complained in triplicate. Three copies of nothing happening.",
         ],
       },
@@ -727,32 +727,32 @@ export const WEARY_VETERAN: DialogueEntry[] = [
   },
   {
     id: "wearyVeteran-38",
-    text: "There are buccaneers on Hispaniola who eat wild cattle and fear nothing. Would you trust them with a colony's defence?",
+    text: "In my youth there were buccaneers on Hispaniola who ate wild cattle and feared nothing. Would you have trusted them with a colony's defence?",
     answers: [
       {
         text: "Yes, they are fierce fighters.",
         replies: [
-          "Fierce, yes. Loyal, no. They fight for whoever has the most meat and the least rules.",
-          "Hm. I have thought about it. I would need a lot of beef and a very short contract.",
-          "They are. I watched a dozen of them take a ship with knives. Then they tried to take my boots.",
-          "Fierce until they get bored. Then they go hunting and leave you to the enemy.",
-          "Perhaps. But I would sleep with my pistol under the pillow every night they stayed.",
+          "Fierce, yes. Loyal, no. They fought for whoever had the most meat and the least rules.",
+          "Hm. I thought about it once. I would have needed a lot of beef and a very short contract.",
+          "They were. I watched a dozen of them take a ship with knives. Then they tried to take my boots.",
+          "Fierce until they got bored. Then they went hunting and left you to the enemy.",
+          "Perhaps. But I would have slept with my pistol under the pillow every night they stayed.",
         ],
       },
       {
         text: "Not for a moment.",
         replies: [
-          "Wise. They would defend {town} beautifully, then sell it to the highest bidder.",
+          "Wise. They would have defended {town} beautifully, then sold it to the highest bidder.",
           "Nor would I. Though I would trust them more than some of my council.",
-          "Hm. Good instinct. They are allies in the morning and robbers by supper.",
-          "Quite. They smell of smoke and hide and bad decisions.",
+          "Hm. Good instinct. They were allies in the morning and robbers by supper.",
+          "Quite. They smelled of smoke and hide and bad decisions.",
           "Agreed. I want soldiers who march, not hunters who wander off after a pig.",
         ],
       },
       {
         text: "I would trust their cattle more.",
         replies: [
-          "Ha. The cattle are calmer and better behaved, I give you that.",
+          "Ha. The cattle were calmer and better behaved, I give you that.",
           "A good point. A cow never mutinied over pay.",
           "Then we will hire the cattle. They eat grass, which is cheaper than rum.",
           "The cattle do not fear anything either. They are just more polite about it.",
@@ -807,7 +807,7 @@ export const WEARY_VETERAN: DialogueEntry[] = [
   },
   {
     id: "wearyVeteran-42",
-    text: "They tell me Barbados is giving up tobacco for sugar. Smart people. Tobacco has ruined more planters than {enemy} ever has.",
+    text: "They tell me Saint-Domingue is giving up tobacco for sugar. Smart people. Tobacco has ruined more planters than {enemy} ever has.",
   },
   {
     id: "wearyVeteran-43",
@@ -999,7 +999,7 @@ export const WEARY_VETERAN: DialogueEntry[] = [
   },
   {
     id: "wearyVeteran-50",
-    text: "Stadtholder Frederick Henry has besieged more towns than I have had hot dinners. I would happily trade places, if he would take the paperwork.",
+    text: "The Duke of Marlborough has besieged more towns than I have had hot dinners. I would happily trade places, if he would take the paperwork.",
   },
   {
     id: "wearyVeteran-51",

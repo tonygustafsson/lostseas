@@ -19,6 +19,7 @@ import {
 } from "@/utils/actions/npc"
 import { startJourney } from "@/utils/actions/sea"
 import type { ActionResult } from "@/utils/actions/types"
+import { getTownName } from "@/utils/location"
 import { resolvePlaceholders } from "@/utils/npc/placeholders"
 import { patchDeep } from "@/utils/patchDeep"
 
@@ -27,10 +28,10 @@ import { createSeededRandom } from "../helpers/seededRandom"
 
 vi.mock("server-only", () => ({}))
 
-const GIVER = getNpcAt("Port Royale", "tavern")
-const HAVANA_MARKET = getNpcAt("Havana", "market")
-const TORTUGA_TAVERN = getNpcAt("Tortuga", "tavern")
-const PANAMA_TAVERN = getNpcAt("Panama", "tavern")
+const GIVER = getNpcAt("kingston", "tavern")
+const HAVANA_MARKET = getNpcAt("havana", "market")
+const TORTUGA_TAVERN = getNpcAt("cap-francais", "tavern")
+const PANAMA_TAVERN = getNpcAt("portobelo", "tavern")
 
 const UNRESOLVED = /\{\w+\}/
 
@@ -86,7 +87,7 @@ const fiveQuests = () =>
         id: `busy-${index}`,
         type: "delivery",
         parcel: "a sealed letter",
-        targetNpcId: getNpcAt("Bonaire", "market").id,
+        targetNpcId: getNpcAt("savaneta", "market").id,
       },
     ])
   ) as Record<string, Quest>
@@ -134,7 +135,7 @@ describe("talkTo", () => {
 
     for (const npcId of [
       HAVANA_MARKET.id,
-      getNpcAt("Port Royale", "market").id,
+      getNpcAt("kingston", "market").id,
       "nobody",
     ]) {
       expect(talkTo(player, { npcId })).toEqual({
@@ -238,7 +239,7 @@ describe("talkTo", () => {
       })
     )
 
-    const result = startJourney(player, { town: "Havana" })
+    const result = startJourney(player, { town: "havana" })
 
     if (!("player" in result)) {
       throw new Error("Expected a journey")
@@ -323,7 +324,7 @@ describe("talkTo", () => {
         type: "findPerson",
         personName: "Diego Navarro",
         nation: "Spain",
-        hiddenTown: "Havana",
+        hiddenTown: "havana",
       },
     } as Record<string, Quest>
 
@@ -477,7 +478,7 @@ describe("quest offers", () => {
     ).toBeUndefined()
     expect(result.log).toEqual({
       type: "quest",
-      message: `Accepted a quest from ${GIVER.name} of ${GIVER.town}.`,
+      message: `Accepted a quest from ${GIVER.name} of ${getTownName(GIVER.town)}.`,
     })
   })
 
@@ -520,7 +521,7 @@ describe("quest offers", () => {
     expect(Object.keys(result.player.quests ?? {})).toHaveLength(4)
     expect(result.log).toEqual({
       type: "quest",
-      message: `Abandoned a quest for ${GIVER.name} of ${GIVER.town}.`,
+      message: `Abandoned a quest for ${GIVER.name} of ${getTownName(GIVER.town)}.`,
     })
     expect(abandonQuest(player, { questId: "nope" })).toHaveProperty("error")
   })
@@ -563,7 +564,7 @@ describe("quest progress", () => {
     expect(result.player.quests?.parcel).toBeUndefined()
     expect(result.log).toEqual({
       type: "quest",
-      message: `Completed a quest for ${GIVER.name} of ${GIVER.town}.`,
+      message: `Completed a quest for ${GIVER.name} of ${getTownName(GIVER.town)}.`,
     })
   })
 
@@ -754,7 +755,7 @@ describe("quest progress", () => {
       completed: false,
     })
     expect(first.data.line.text).not.toMatch(UNRESOLVED)
-    expect(first.data.line.text).toMatch(/Tortuga|Manon Artaud/)
+    expect(first.data.line.text).toMatch(/Cap-Français|Manon Artaud/)
     expect(first.player.quests?.chain).toMatchObject({ step: 1 })
     expect(first.log).toBeUndefined()
 
@@ -767,7 +768,7 @@ describe("quest progress", () => {
     )
 
     expect(second.data.line).toMatchObject({ completed: false })
-    expect(second.data.line.text).toMatch(/Port Royale|Ursula Cole/)
+    expect(second.data.line.text).toMatch(/Kingston|Ursula Cole/)
     expect(second.player.quests?.chain).toMatchObject({ step: 2 })
 
     const last = expectSuccess(
@@ -795,7 +796,7 @@ describe("quest progress", () => {
         type: "findPerson",
         personName: "Diego Navarro",
         nation: "Spain",
-        hiddenTown: "Havana",
+        hiddenTown: "havana",
       },
     } as Record<string, Quest>
     let hints = 0
@@ -818,8 +819,8 @@ describe("quest progress", () => {
         completed: false,
       })
       expect(result.data.line.text).not.toMatch(UNRESOLVED)
-      expect(quest.ruledOut).toContain("Panama")
-      expect(quest.ruledOut).not.toContain("Havana")
+      expect(quest.ruledOut).toContain("portobelo")
+      expect(quest.ruledOut).not.toContain("havana")
       quest.ruledOut?.forEach((town) => {
         expect(spanishTowns).toContain(town)
       })
@@ -847,7 +848,7 @@ describe("quest progress", () => {
     expect(again.data.line.kind).not.toBe("questProgress")
 
     // The governor knows nothing about missing people
-    const governor = getNpcAt("Havana", "governor")
+    const governor = getNpcAt("havana", "governor")
     const asked = expectSuccess(
       talkTo(moveTo(again.player, governor), { npcId: governor.id }, random)
     )

@@ -38,7 +38,7 @@ const routes = [
   {
     name: "acceptNewTitle",
     call: () => acceptNewTitle(),
-    // English player in Port Royale with 5 victories against France
+    // British player in Kingston with 5 victories against France
     player: { character: { battles: { France: { won: 5 } } } },
     fields: ["titleInfo", "title"],
   },
@@ -54,7 +54,7 @@ const routes = [
     name: "handover",
     call: () => handover(request({ id: "a" })),
     player: {
-      treasures: { a: { id: "a", name: "Inca mask", rewarder: "Port Royale" } },
+      treasures: { a: { id: "a", name: "Inca mask", rewarder: "kingston" } },
     },
     fields: ["treasure", "treasureInfo"],
   },
@@ -67,7 +67,7 @@ const routes = [
           id: "a",
           name: 'Jack "Mad" Flint',
           crimeId: "jailbreak",
-          rewarder: "Port Royale",
+          rewarder: "kingston",
         },
       },
     },

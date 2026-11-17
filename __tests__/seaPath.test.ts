@@ -102,16 +102,13 @@ describe("seaRoutes", () => {
 
   it("draws every route from the edge of one town icon to the other", () => {
     const half = TOWN_ICON_SIZE / 2
-    // How far a point is outside the icon, 0 on its edge
+    // How far a point is outside the circle the icon stands in, 0 on its edge
     const distanceOutside = (town: Town, point: { x: number; y: number }) => {
       const { x, y } = TOWNS[town].map
       const centreX = x + TOWN_ANCHOR_SIZE / 2
       const centreY = y + TOWN_ANCHOR_SIZE / 2 - half
 
-      return Math.max(
-        Math.abs(point.x - centreX) - half,
-        Math.abs(point.y - centreY) - half
-      )
+      return Math.hypot(point.x - centreX, point.y - centreY) - half
     }
 
     for (const from of towns) {

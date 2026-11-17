@@ -10,6 +10,7 @@ import Flag from "@/components/icons/Flag"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { getCharacterById } from "@/constants/characters"
+import { getNationName } from "@/utils/location"
 
 type Props = {
   characterId: string
@@ -112,7 +113,7 @@ const SelectedCharacter = ({
 
           <Badge variant="secondary" className="h-6">
             <Flag nation={character.nationality} size={16} decorative />
-            {character.nationality}
+            {getNationName(character.nationality)}
           </Badge>
         </div>
 

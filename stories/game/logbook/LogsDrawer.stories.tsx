@@ -25,12 +25,12 @@ const voyage: [number, LogType, string][] = [
   [7, "honour", "Accepted new title Captain from the governor of Havana."],
   [7, "crew", "Tavern action Serve supper for 40 crew members."],
   [8, "cards", "Played cards: bet 50, result loss. Gold change: -50."],
-  [8, "voyage", "Started journey to Tortuga. Expected arrival in 4 days."],
+  [8, "voyage", "Started journey to Cap-Français. Expected arrival in 4 days."],
   [10, "attack", "Attacked a ship from Pirate."],
   [10, "defeat", "Lost a battle against Pirate; crew health loss 18."],
-  [12, "voyage", "Arrived at destination Tortuga."],
+  [12, "voyage", "Arrived at destination Cap-Français."],
   [12, "ship", "Repaired ship Endeavour for 240 gold."],
-  [12, "honour", "Handed over Inca mask to the town of Tortuga."],
+  [12, "honour", "Handed over Inca mask to the town of Cap-Français."],
 ]
 
 const logs: LogRecord[] = voyage.map(([day, type, message], index) => ({
@@ -71,8 +71,3 @@ export const Empty: Story = { parameters: { logs: [] } }
 
 /** Older entries than the first page exist, so the button shows */
 export const MoreToLoad: Story = { parameters: { hasMoreLogs: true } }
-
-/** Entries saved before log types existed fall back to a quill */
-export const Untyped: Story = {
-  parameters: { logs: logs.map(({ type: _type, ...entry }) => entry) },
-}

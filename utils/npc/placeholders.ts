@@ -2,7 +2,7 @@ import { NATIONS, TOWNS } from "@/constants/locations"
 import { BARTER_GOODS } from "@/constants/merchandise"
 import type { RandomInt } from "@/utils/actions/types"
 import { getDateOfDay } from "@/utils/date"
-import { getNationTowns } from "@/utils/location"
+import { getNationTowns, getTownName } from "@/utils/location"
 import { getRandomInt, pickRandom } from "@/utils/random"
 
 export const DIALOGUE_PLACEHOLDERS = [
@@ -24,7 +24,7 @@ export const DIALOGUE_PLACEHOLDERS = [
 ] as const
 
 const ADJECTIVES: Record<Nation, string> = {
-  England: "English",
+  England: "British",
   France: "French",
   Spain: "Spanish",
   Holland: "Dutch",
@@ -53,7 +53,7 @@ const buildValues = (
   const values: Record<string, () => string> = {
     name: () => player.character.name,
     title: () => player.character.title.toLowerCase(),
-    town: () => town,
+    town: () => getTownName(town),
     nation: () => townNation,
     enemy: () => enemy,
     playerNation: () => player.character.nationality,
@@ -61,12 +61,14 @@ const buildValues = (
     enemyAdjective: () => ADJECTIVES[enemy],
     playerNationAdjective: () => ADJECTIVES[player.character.nationality],
     otherTown: () =>
-      pickRandom(
-        towns.filter((name) => name !== town),
-        randomInt
+      getTownName(
+        pickRandom(
+          towns.filter((name) => name !== town),
+          randomInt
+        )
       ),
-    nationTown: () => pickRandom(townsOf(townNation), randomInt),
-    enemyTown: () => pickRandom(townsOf(enemy), randomInt),
+    nationTown: () => getTownName(pickRandom(townsOf(townNation), randomInt)),
+    enemyTown: () => getTownName(pickRandom(townsOf(enemy), randomInt)),
     merchandise: () => pickRandom(BARTER_GOODS, randomInt),
     month: () =>
       getDateOfDay(player.character.day).toLocaleDateString("en-GB", {

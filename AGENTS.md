@@ -79,11 +79,12 @@ Voyage lengths follow the routes drawn on the sea map, so a town that looks furt
 
 1. `npm run generate:sea-routes` finds the shortest water path between every pair of harbours (`TOWNS[town].map.harbor`) on the mask `public/img/map/spanish-main-mask.png` and saves them to `constants/seaRoutes.json`. A return trip uses the same route reversed.
 2. `getDistanceKm` (`utils/journey.ts`) measures the route in map pixels and multiplies by `KM_PER_PIXEL`, rounded to 10 km.
-3. `getJourneyLength` divides by `KM_PER_DAY` (about the speed of a real ship in 1640), rounded, with a minimum of 1 day. `startJourney` stores it as `journey.totalDays`.
+3. `getJourneyLength` divides by `KM_PER_DAY` (about the speed of a real ship in 1715), rounded, with a minimum of 1 day. `startJourney` stores it as `journey.totalDays`.
 4. Each `continueJourney` call sails one day, `SEA_TRAVEL_SPEED` apart in real time. Per-day effects are tuned for realistic voyage lengths: a ship turns up on about one day in six (`MEETING_CHANCE`), and mood drops every other day.
 
 - Change `KM_PER_DAY` (in `constants/locations.ts`) to make every voyage longer or shorter in days. Anything counted per day (food and water, quest gold per day, venture durations) is balanced for it. `KM_PER_PIXEL` is the map scale and mostly changes the kilometres shown.
 - After moving a harbour or editing the mask, re-run `generate:sea-routes` and check the voyage length snapshot in `__tests__/journey.test.ts`. Days feed into supplies, quest rewards and the advisor.
+- The map art is `public/img/map/spanish-main.avif`. Positions are in map units, `MAP_WIDTH` by `MAP_HEIGHT` (`components/Map/constants.ts`), which keep the art's shape. The art is a 3000 px wide copy of `spanish-main-large.png`. The mask has the art's resolution, white for water and black for land, and the route generator and fish read it per map unit. If the art changes, make a new mask at the same size, check every town and harbour on it, and set `KM_PER_PIXEL` so voyages keep their real length.
 
 ### Autoplay bot
 

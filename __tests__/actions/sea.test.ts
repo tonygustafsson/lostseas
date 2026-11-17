@@ -29,7 +29,7 @@ const shipMeeting: ShipMeetingState = {
   cannons: 8,
 }
 
-/** A player ready to leave Port Royale: enough crew, supplies and cannons. */
+/** A player ready to leave Kingston: enough crew, supplies and cannons. */
 const inPort = (overrides: DeepPartial<Player> = {}) =>
   deepFreeze(
     patchDeep<Player>(
@@ -52,8 +52,8 @@ const atSea = (sea: Partial<SeaState> = {}, journeyDay = 3) =>
           location: "Sea",
           day: 20,
           journey: {
-            origin: "Port Royale",
-            destination: "Havana",
+            origin: "kingston",
+            destination: "havana",
             day: journeyDay,
             totalDays: 7,
           },
@@ -110,16 +110,16 @@ describe("startJourney", () => {
   it("sets sail with the known distance between towns", () => {
     const player = inPort()
 
-    const result = expectSuccess(startJourney(player, { town: "Havana" }))
+    const result = expectSuccess(startJourney(player, { town: "havana" }))
 
-    const distance = getJourneyLength("Port Royale", "Havana")
+    const distance = getJourneyLength("kingston", "havana")
 
     expect(result.player.character).toMatchObject({
       location: "Sea",
       day: player.character.day,
       journey: {
-        origin: "Port Royale",
-        destination: "Havana",
+        origin: "kingston",
+        destination: "havana",
         day: 1,
         totalDays: distance,
       },
@@ -138,7 +138,7 @@ describe("startJourney", () => {
       },
     })
 
-    const result = expectSuccess(startJourney(player, { town: "Havana" }))
+    const result = expectSuccess(startJourney(player, { town: "havana" }))
 
     expect(result.player.locationStates).toBeUndefined()
   })
@@ -155,7 +155,7 @@ describe("startJourney", () => {
 
   it("rejects a second journey", () => {
     expectError(
-      startJourney(atSea(), { town: "Havana" }),
+      startJourney(atSea(), { town: "havana" }),
       "Character is already on a journey"
     )
   })
@@ -163,7 +163,7 @@ describe("startJourney", () => {
   it("rejects sailing from the sea without a journey", () => {
     expectError(
       startJourney(inPort({ character: { location: "Sea" } }), {
-        town: "Havana",
+        town: "havana",
       }),
       "You can only start a journey from land."
     )
@@ -171,7 +171,7 @@ describe("startJourney", () => {
 
   it("rejects sailing to the current town", () => {
     expectError(
-      startJourney(inPort(), { town: "Port Royale" }),
+      startJourney(inPort(), { town: "kingston" }),
       "You are already at this destination."
     )
   })
@@ -187,17 +187,19 @@ describe("startJourney", () => {
     ["too little food", { inventory: { food: 1 } }],
     ["too little water", { inventory: { water: 3 } }],
   ])("is blocked by %s", (_, overrides) => {
-    expect(startJourney(inPort(overrides), { town: "Havana" })).toEqual({
+    expect(startJourney(inPort(overrides), { town: "havana" })).toEqual({
       blocked: true,
     })
   })
 
   it("needs supplies for the distance to the destination", () => {
-    // 3 days of food: enough for 1-day Leogane, not for 5-day Biloxi
+    // 3 food lasts 10 crew 6 days: enough for 4-day Cap-Français, not 10-day Fort Louis
     const player = inPort({ inventory: { food: 3 } })
 
-    expectSuccess(startJourney(player, { town: "Leogane" }))
-    expect(startJourney(player, { town: "Biloxi" })).toEqual({ blocked: true })
+    expectSuccess(startJourney(player, { town: "cap-francais" }))
+    expect(startJourney(player, { town: "fort-louis" })).toEqual({
+      blocked: true,
+    })
   })
 })
 
@@ -215,7 +217,7 @@ describe("continueJourney", () => {
     expect(result.data).toEqual({
       day: 4,
       totalDays: 7,
-      destination: "Havana",
+      destination: "havana",
       destinationReached: false,
       shipMeetingState: null,
     })
@@ -360,7 +362,7 @@ describe("continueJourney", () => {
     const result = expectSuccess(continueJourney(atSea({}, 7), MEET_SHIP))
 
     expect(result.player.character).toMatchObject({
-      town: "Havana",
+      town: "havana",
       location: "Harbor",
       day: 21,
     })
@@ -401,7 +403,7 @@ describe("continueJourney", () => {
   })
 
   it("keeps the weather when setting sail", () => {
-    const result = expectSuccess(startJourney(inPort(), { town: "Havana" }))
+    const result = expectSuccess(startJourney(inPort(), { town: "havana" }))
 
     expect(result.player.character.weather).toBe("sunny")
   })
@@ -923,7 +925,7 @@ describe("battleMove", () => {
         character: { gold: 500, account: 2000 },
         inventory: { rum: 4 },
         treasures: {
-          t1: { id: "t1", name: "Golden hen", rewarder: "Havana" },
+          t1: { id: "t1", name: "Golden hen", rewarder: "havana" },
         },
       }
     )
@@ -1069,12 +1071,12 @@ describe("battleMove", () => {
 })
 
 describe("whole voyage", () => {
-  it("sails from Port Royale to Havana, fights a ship and arrives", () => {
+  it("sails from Kingston to Havana, fights a ship and arrives", () => {
     const random = createSeededRandom(7)
     vi.spyOn(Math, "random").mockImplementation(random.next)
 
     let player: Player = expectSuccess(
-      startJourney(inPort(), { town: "Havana" })
+      startJourney(inPort(), { town: "havana" })
     ).player
     const totalDays = player.character.journey!.totalDays
     const startDay = player.character.day
@@ -1100,7 +1102,7 @@ describe("whole voyage", () => {
     expect(battles).toBeGreaterThan(0)
     expect(player.character).toMatchObject({
       location: "Harbor",
-      town: "Havana",
+      town: "havana",
       // One day per journey step, including arrival
       day: startDay + totalDays,
     })

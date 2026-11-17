@@ -67,15 +67,16 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const InTown: Story = {
-  args: { currentTown: "Havana", onSelectTown: fn() },
+  args: { currentTown: "havana", onSelectTown: fn() },
 }
 
-// Each town icon swapped for a dot at the town's location, where the bottom
-// of its icon stands, to check town positions against the map
+// A dot at each town's location, where the bottom of its icon stands, to
+// check town positions against the map. The icons stay faintly visible, since
+// routes end at their edge.
 export const TownPositions: Story = {
   args: InTown.args,
   render: (args) => (
-    <div className="[&_button]:after:bg-error [&_button]:after:absolute [&_button]:after:bottom-1.5 [&_button]:after:left-1/2 [&_button]:after:size-1 [&_button]:after:-translate-x-1/2 [&_button]:after:translate-y-1/2 [&_button]:after:rounded-full [&_button]:after:content-[''] [&_button_img]:hidden">
+    <div className="[&_button]:after:bg-error [&_button]:after:absolute [&_button]:after:bottom-1.5 [&_button]:after:left-1/2 [&_button]:after:size-1 [&_button]:after:-translate-x-1/2 [&_button]:after:translate-y-1/2 [&_button]:after:rounded-full [&_button]:after:content-[''] [&_button_img]:opacity-40">
       <SeaMapCanvas {...args} />
     </div>
   ),
@@ -89,7 +90,7 @@ type AtSeaArgs = ComponentProps<typeof SeaMapCanvas> & {
 
 // Pick any two towns and step through the days to watch the ship sail
 export const AtSea: StoryObj<AtSeaArgs> = {
-  args: { origin: "Havana", destination: "Barbados", day: 3 },
+  args: { origin: "havana", destination: "bridgetown", day: 3 },
   argTypes: {
     origin: { control: "select", options: towns },
     destination: { control: "select", options: towns },
@@ -125,8 +126,8 @@ export const Foggy: StoryObj<AtSeaArgs> = {
 
 export const LimitedSupplies: Story = {
   args: {
-    currentTown: "Havana",
-    selectedTown: "Port Royale",
+    currentTown: "havana",
+    selectedTown: "kingston",
     suppliesDays: 2,
     onSelectTown: fn(),
   },
@@ -140,5 +141,5 @@ export const Paused: StoryObj<AtSeaArgs> = {
 
 export const WithDestinationConfirm: Story = {
   parameters: { controls: { disable: true } },
-  render: () => <MapWithConfirm initialDestination="Havana" />,
+  render: () => <MapWithConfirm initialDestination="havana" />,
 }

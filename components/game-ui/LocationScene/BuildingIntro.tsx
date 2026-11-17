@@ -1,6 +1,8 @@
 import Flag from "@/components/icons/Flag"
 import { getBuilding } from "@/constants/townMaps"
 import { getTownsNationality } from "@/utils/location"
+import { getTownName } from "@/utils/location"
+import { getNationName } from "@/utils/location"
 
 type Props = {
   town: Character["town"]
@@ -20,7 +22,7 @@ const BuildingIntro = ({ town, location }: Props) => {
 
       <h2 className="text-parchment mb-4 flex items-center justify-center gap-2 font-serif text-xl lg:text-2xl">
         <Flag nation={nation} className="h-5 w-5 opacity-80 lg:h-7 lg:w-7" />
-        {town}, {nation}
+        {getTownName(town)}, {nation && getNationName(nation)}
       </h2>
 
       <p className="lg:text-md text-parchment/80 mx-auto text-center text-sm">

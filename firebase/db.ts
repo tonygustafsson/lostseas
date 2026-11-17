@@ -34,7 +34,11 @@ export const getPlayer = async (playerId: Player["id"]) => {
   validatePlayerId(playerId)
   const snapshot = await adminDb.ref(`players/${playerId}`).get()
 
-  return snapshot.exists() ? (snapshot.val() as Player) : null
+  if (!snapshot.exists()) {
+    return null
+  }
+
+  return snapshot.val() as Player
 }
 
 type SavePlayerOptions = {

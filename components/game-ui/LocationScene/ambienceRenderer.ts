@@ -169,6 +169,31 @@ const createTexture = (gl: WebGLRenderingContext, unit: number) => {
   return texture
 }
 
+// Many phones can't hold a texture over 4096 pixels wide, a larger image is
+// scaled down to fit or it would draw nothing
+const fitTextureSize = (source: TexImageSource, maxSize: number) => {
+  if (!(source instanceof HTMLImageElement)) {
+    return source
+  }
+
+  const scale = Math.min(
+    1,
+    maxSize / source.naturalWidth,
+    maxSize / source.naturalHeight
+  )
+
+  if (scale === 1) {
+    return source
+  }
+
+  const canvas = document.createElement("canvas")
+  canvas.width = Math.floor(source.naturalWidth * scale)
+  canvas.height = Math.floor(source.naturalHeight * scale)
+  canvas.getContext("2d")?.drawImage(source, 0, 0, canvas.width, canvas.height)
+
+  return canvas
+}
+
 export type AmbienceUniforms = Record<string, number>
 
 // How long a change of uniforms, like the weather, takes to fade in
@@ -265,10 +290,14 @@ export const createAmbienceRenderer = (
       return
     }
 
-    // More pixels than the image has add no detail, they only cost GPU time
+    // More pixels than the image has add no detail, they only cost GPU time.
+    // Nor do more than the screen shows of a scaled up scene.
+    const rect = canvas.getBoundingClientRect()
     const imageRatio = imageWidth / canvas.clientWidth
+    const screenRatio =
+      (rect.width / canvas.clientWidth) * Math.min(window.devicePixelRatio, 2)
     const pixelRatio = imageResolution
-      ? imageRatio
+      ? Math.min(imageRatio, screenRatio)
       : Math.min(window.devicePixelRatio, 2, Math.max(1, imageRatio))
     const width = Math.round(canvas.clientWidth * pixelRatio)
     const height = Math.round(canvas.clientHeight * pixelRatio)
@@ -281,7 +310,6 @@ export const createAmbienceRenderer = (
 
     // Only shade the part of the canvas that is on screen. The rest is left
     // clear, so the image underneath shows through until it scrolls into view.
-    const rect = canvas.getBoundingClientRect()
     const toCanvasX = (x: number) =>
       Math.min(Math.max(((x - rect.left) * width) / rect.width, 0), width)
     const toCanvasY = (y: number) =>
@@ -305,6 +333,8 @@ export const createAmbienceRenderer = (
   return {
     // In the same order as the texture names
     setTextures: (sources: [HTMLImageElement, ...TexImageSource[]]) => {
+      const maxSize: number = gl.getParameter(gl.MAX_TEXTURE_SIZE)
+
       sources.forEach((source, unit) => {
         gl.activeTexture(gl.TEXTURE0 + unit)
         gl.bindTexture(gl.TEXTURE_2D, textures[unit])
@@ -314,7 +344,7 @@ export const createAmbienceRenderer = (
           gl.RGBA,
           gl.RGBA,
           gl.UNSIGNED_BYTE,
-          source
+          fitTextureSize(source, maxSize)
         )
       })
 

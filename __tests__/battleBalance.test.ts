@@ -14,7 +14,7 @@ const playBattle = (level: number) => {
     crewMembers: { count: level * 2 },
     inventory: { cannons: level },
   })
-  const opponent = createMeetingShip(level, "Port Royale")
+  const opponent = createMeetingShip(level, "kingston")
 
   let battle = startBattle()
 

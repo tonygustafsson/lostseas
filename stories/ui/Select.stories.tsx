@@ -18,9 +18,9 @@ const meta = {
         <SelectValue placeholder="Choose a destination" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="Barbados">Barbados</SelectItem>
-        <SelectItem value="Port Royale">Port Royale</SelectItem>
-        <SelectItem value="Tortuga">Tortuga</SelectItem>
+        <SelectItem value="bridgetown">Bridgetown</SelectItem>
+        <SelectItem value="kingston">Kingston</SelectItem>
+        <SelectItem value="cap-francais">Cap-Français</SelectItem>
       </SelectContent>
     </Select>
   ),
@@ -28,14 +28,16 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 export const Default: Story = {}
-export const Selected: Story = { args: { defaultValue: "Barbados" } }
+export const Selected: Story = { args: { defaultValue: "bridgetown" } }
 export const Disabled: Story = { args: { disabled: true } }
 export const ChooseDestination: Story = {
   play: async ({ args, canvas, canvasElement, userEvent }) => {
     await userEvent.click(canvas.getByRole("combobox", { name: "Destination" }))
     const body = within(canvasElement.ownerDocument.body)
-    await userEvent.click(await body.findByRole("option", { name: "Tortuga" }))
-    await expect(args.onValueChange).toHaveBeenCalledWith("Tortuga")
-    await expect(canvas.getByRole("combobox")).toHaveTextContent("Tortuga")
+    await userEvent.click(
+      await body.findByRole("option", { name: "cap-francais" })
+    )
+    await expect(args.onValueChange).toHaveBeenCalledWith("cap-francais")
+    await expect(canvas.getByRole("combobox")).toHaveTextContent("cap-francais")
   },
 }

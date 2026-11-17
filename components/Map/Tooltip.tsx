@@ -3,6 +3,8 @@ import { createPortal } from "react-dom"
 
 import { TOWNS } from "@/constants/locations"
 import { getDistanceKm, getJourneyLength } from "@/utils/journey"
+import { getTownName } from "@/utils/location"
+import { getNationName } from "@/utils/location"
 
 import Flag from "../icons/Flag"
 
@@ -43,10 +45,10 @@ const Tooltip = ({
     >
       <div className="flex items-center gap-2">
         <Flag nation={destinationInfo.nation} className="h-6 w-6" />
-        <p className="font-bold">{destination}</p>
+        <p className="font-bold">{getTownName(destination)}</p>
       </div>
 
-      <p className="text-sm">Nation: {destinationInfo.nation}</p>
+      <p className="text-sm">Nation: {getNationName(destinationInfo.nation)}</p>
 
       {isOtherTown && (
         <p className="text-sm">

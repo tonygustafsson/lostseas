@@ -22,7 +22,7 @@ import { createSeededRandom } from "../helpers/seededRandom"
 
 const player = createTestPlayer()
 const placements: NpcPlacement[] = ["tavern", "market", "governor"]
-const giverTowns: Town[] = ["Havana", "Port Royale", "Tortuga", "Curacao"]
+const giverTowns: Town[] = ["havana", "kingston", "cap-francais", "willemstad"]
 
 /** Generates quests for 200 seeds per placement */
 const generateMany = () =>

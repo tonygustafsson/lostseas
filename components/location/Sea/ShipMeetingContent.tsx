@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { DialogTitle } from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
 import { getMannedCannons } from "@/utils/crew"
+import { getNationName } from "@/utils/location"
 import { getRelation, type Relation } from "@/utils/shipMeeting"
 
 type Props = {
@@ -47,7 +48,7 @@ const getTitle = (shipMeeting: ShipMeetingState, relation: Relation) => {
   if (shipMeeting.isAggressive) {
     return relation === "pirate"
       ? `A Pirate ${shipMeeting.shipType} is closing in!`
-      : `A ${shipMeeting.shipType} from ${shipMeeting.nation} is closing in!`
+      : `A ${shipMeeting.shipType} from ${getNationName(shipMeeting.nation)} is closing in!`
   }
 
   if (relation === "pirate") return `You meet a Pirate ${shipMeeting.shipType}`
@@ -60,7 +61,7 @@ const getTitle = (shipMeeting: ShipMeetingState, relation: Relation) => {
         : ""
   const article = adjective || "a "
 
-  return `You meet ${article}${shipMeeting.shipType} from ${shipMeeting.nation}`
+  return `You meet ${article}${shipMeeting.shipType} from ${getNationName(shipMeeting.nation)}`
 }
 
 const getOdds = (difference: number) => {
@@ -131,7 +132,7 @@ const ShipMeetingContent = ({
 
         <Image
           src={shipImg}
-          alt={`${shipMeeting.nation} ${shipMeeting.shipType}`}
+          alt={`${getNationName(shipMeeting.nation)} ${shipMeeting.shipType}`}
           width={162}
           height={162}
           sizes="(min-width: 640px) 144px, 120px"

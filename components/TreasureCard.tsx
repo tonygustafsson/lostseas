@@ -3,6 +3,7 @@ import { GiOpenTreasureChest } from "react-icons/gi"
 import TreasureIcon from "@/components/TreasureIcon"
 import { Card } from "@/components/ui/card"
 import { TREASURES } from "@/constants/treasures"
+import { getTownName } from "@/utils/location"
 import { formatGold } from "@/utils/number"
 
 type Props = {
@@ -43,7 +44,8 @@ export default function TreasureCard({ treasure }: Props) {
       )}
 
       <p className="relative mt-2 text-sm">
-        Bring it to the governor of {treasure.rewarder} for a reward of{" "}
+        Bring it to the governor of {getTownName(treasure.rewarder)} for a
+        reward of{" "}
         <span className="text-gold font-semibold">
           {formatGold(treasureInfo?.value)}
         </span>

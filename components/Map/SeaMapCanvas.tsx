@@ -7,15 +7,24 @@ import { useAmbienceCanvas } from "@/components/game-ui/LocationScene/useAmbienc
 import { getWeatherAmbience } from "@/components/game-ui/LocationScene/weatherAmbience"
 import { TOWNS } from "@/constants/locations"
 import { SEA_TRAVEL_SPEED } from "@/constants/sea"
+import { useIsMobile } from "@/hooks/use-mobile"
+import { cn } from "@/lib/utils"
+import { getTownName } from "@/utils/location"
 import { getRouteLength, getSeaRoute, type Point } from "@/utils/seaRoutes"
 
 import {
+  DEFAULT_MAP_ZOOM_LEVEL,
+  MAP_DETAIL_SCALE,
   MAP_HEIGHT,
   MAP_IMAGE_HEIGHT,
   MAP_IMAGE_WIDTH,
+  MAP_VIEW_HEIGHT,
+  MAP_VIEW_WIDTH,
   MAP_WIDTH,
   MAP_ZOOM,
+  MAP_ZOOM_LEVELS,
   mapColorVariables,
+  MAX_DESKTOP_MAP_ZOOM_LEVEL,
 } from "./constants"
 import { createFishJumps, getWaterLookup } from "./fishJumps"
 import { createSeaMapRenderer } from "./seaMapShader"
@@ -34,11 +43,15 @@ import {
   SHIP_SPRITE_FRAME,
 } from "./shipFrames"
 import Tooltip from "./Tooltip"
+import TownPicker from "./TownPicker"
+import ZoomControl from "./ZoomControl"
 
 const MAP_CENTER = { x: MAP_WIDTH / 2, y: MAP_HEIGHT / 2 }
 const FRAME_INTERVAL = 1000 / 30
 // Size of a whole sprite frame in map units, the ship fills most of it
-const SHIP_SIZE = 22
+const SHIP_SIZE = 22 * MAP_DETAIL_SCALE
+const ROUTE_WIDTH = 2 * MAP_DETAIL_SCALE
+const ROUTE_DASH = 4 * MAP_DETAIL_SCALE
 const DOCKED_SHIP_FRAME = SHIP_FRAMES.down
 const WATER_MASKS = ["/img/map/spanish-main-mask.png"]
 
@@ -61,6 +74,7 @@ type Props = {
   selectedTown?: Town
   suppliesDays?: number
   onSelectTown?: (town: Town) => void
+  className?: string
 }
 
 const SeaMapCanvas = ({
@@ -71,6 +85,7 @@ const SeaMapCanvas = ({
   selectedTown,
   suppliesDays,
   onSelectTown,
+  className,
 }: Props) => {
   const viewportRef = useRef<HTMLDivElement>(null)
   const backgroundRef = useRef<HTMLDivElement>(null)
@@ -87,6 +102,12 @@ const SeaMapCanvas = ({
     { uniforms: getWeatherAmbience(weather) }
   )
   const camera = useRef({ ...MAP_CENTER, scale: 1, scaleY: 1 })
+  // The draw loop reads the zoom from a ref, so zooming doesn't restart it
+  const [zoomLevel, setZoomLevel] = useState(DEFAULT_MAP_ZOOM_LEVEL)
+  const zoom = useRef(MAP_ZOOM_LEVELS[DEFAULT_MAP_ZOOM_LEVEL])
+  const maxZoomLevel = useIsMobile()
+    ? MAP_ZOOM_LEVELS.length - 1
+    : MAX_DESKTOP_MAP_ZOOM_LEVEL
   const centeredTown = useRef<Town | undefined>(undefined)
   const drag = useRef({
     pointerId: -1,
@@ -168,6 +189,7 @@ const SeaMapCanvas = ({
     const fishJumps = prefersReducedMotion ? null : fish.current
     const waterMask = getCachedImage(WATER_MASKS[0])
     let previousTransform = ""
+    let previousScale = 0
 
     // Align the DOM background and transparent canvas to the same camera.
     const prepareFrame = (shipPosition?: Point) => {
@@ -195,8 +217,14 @@ const SeaMapCanvas = ({
         ? (MAP_WIDTH * mapImage.naturalHeight) /
           (mapImage.naturalWidth * MAP_HEIGHT)
         : 1
-      const scale =
-        Math.max(1, width / MAP_WIDTH, height / MAP_HEIGHT) * MAP_ZOOM
+      // Zooming out never goes so far that the map's edge shows
+      const scale = Math.max(
+        Math.max(1, width / MAP_VIEW_WIDTH, height / MAP_VIEW_HEIGHT) *
+          MAP_ZOOM *
+          zoom.current,
+        width / MAP_WIDTH,
+        height / (MAP_HEIGHT * mapYScale)
+      )
       const scaleY = scale * mapYScale
 
       // Keep the camera inside the map so its edge never shows. The map always
@@ -225,6 +253,16 @@ const SeaMapCanvas = ({
         previousTransform = transform
       }
 
+      // A will-change layer is drawn once and then stretched, which blurs the
+      // town labels when the zoom changes. Letting go of it for a frame makes
+      // the browser draw it again, sharp, at the new size.
+      if (previousScale !== scale) {
+        background.style.willChange = "auto"
+        previousScale = scale
+      } else if (background.style.willChange === "auto") {
+        background.style.willChange = "transform"
+      }
+
       context.setTransform(
         scale * pixelRatio,
         0,
@@ -238,8 +276,8 @@ const SeaMapCanvas = ({
     const drawDashedRoute = (points: Point[], color: string) => {
       context.save()
       context.strokeStyle = color
-      context.lineWidth = 2
-      context.setLineDash([4, 4])
+      context.lineWidth = ROUTE_WIDTH
+      context.setLineDash([ROUTE_DASH, ROUTE_DASH])
       context.beginPath()
       points.forEach(({ x, y }, i) =>
         i === 0 ? context.moveTo(x, y) : context.lineTo(x, y)
@@ -435,6 +473,17 @@ const SeaMapCanvas = ({
     drag.current.suppressClick = false
   }
 
+  const changeZoom = (step: number) => {
+    const level = Math.min(
+      Math.max(zoomLevel + step, 0),
+      Math.max(maxZoomLevel, zoomLevel)
+    )
+
+    zoom.current = MAP_ZOOM_LEVELS[level]
+    setZoomLevel(level)
+    setHovered(null)
+  }
+
   const hideTownTooltip = () => setHovered(null)
 
   const showTownTooltip = (
@@ -481,7 +530,11 @@ const SeaMapCanvas = ({
   return (
     <div
       ref={viewportRef}
-      className={`relative mx-auto aspect-850/540 w-full touch-none overflow-clip bg-neutral-700 opacity-80 lg:max-w-7xl portrait:aspect-auto portrait:h-[calc(95dvh-8rem)] ${isAtSea ? "" : "cursor-grab active:cursor-grabbing"}`}
+      className={cn(
+        "relative mx-auto aspect-850/540 w-full touch-none overflow-clip bg-neutral-700 opacity-80 lg:max-w-7xl portrait:aspect-auto portrait:h-[calc(95dvh-8rem)]",
+        !isAtSea && "cursor-grab active:cursor-grabbing",
+        className
+      )}
       onPointerDown={startPanning}
       onPointerMove={panMap}
       onPointerUp={stopPanning}
@@ -495,15 +548,17 @@ const SeaMapCanvas = ({
     >
       <div
         ref={backgroundRef}
-        className="absolute top-0 left-0 origin-top-left will-change-transform select-none"
+        className="absolute top-0 left-0 origin-top-left select-none"
         style={{ width: MAP_WIDTH, height: MAP_HEIGHT }}
       >
         <Image
           ref={mapImageRef}
-          src="/img/map/spanish-main.png"
+          src="/img/map/spanish-main.avif"
           alt=""
           width={MAP_IMAGE_WIDTH}
           height={MAP_IMAGE_HEIGHT}
+          // Already a small AVIF, re-encoding would only lose detail
+          unoptimized
           loading="eager"
           draggable={false}
           className="pointer-events-none absolute inset-0 size-full"
@@ -530,11 +585,29 @@ const SeaMapCanvas = ({
         role="img"
         aria-label={
           journey
-            ? `Sea map, sailing to ${journey.destination}`
+            ? `Sea map, sailing to ${getTownName(journey.destination)}`
             : "Sea map of the Spanish Main"
         }
         className="pointer-events-none absolute inset-0 size-full"
       />
+
+      <div className="absolute right-4 bottom-4 flex gap-2">
+        <ZoomControl
+          zoom={MAP_ZOOM_LEVELS[zoomLevel]}
+          canZoomIn={zoomLevel < maxZoomLevel}
+          canZoomOut={zoomLevel > 0}
+          onZoomIn={() => changeZoom(1)}
+          onZoomOut={() => changeZoom(-1)}
+        />
+
+        {onSelectTown && currentTown && !isAtSea && (
+          <TownPicker
+            currentTown={currentTown}
+            suppliesDays={suppliesDays}
+            onSelectTown={onSelectTown}
+          />
+        )}
+      </div>
 
       <Tooltip
         show={!!hovered}

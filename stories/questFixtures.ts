@@ -6,17 +6,17 @@ const base = {
 export const deliveryQuest: Quest = {
   ...base,
   id: "quest-delivery",
-  giverId: "charles-towne-tavern-mavis-cartwright",
+  giverId: "st-georges-tavern-mavis-cartwright",
   type: "delivery",
   parcel: "a sealed letter",
-  targetNpcId: "port-royale-market-abraham-parry",
+  targetNpcId: "kingston-market-abraham-parry",
   reward: { gold: 250 },
 }
 
 export const procurementQuest: Quest = {
   ...base,
   id: "quest-procurement",
-  giverId: "belize-market-eliza-knowles",
+  giverId: "nassau-market-eliza-knowles",
   type: "procurement",
   item: "rum",
   quantity: 12,
@@ -26,12 +26,12 @@ export const procurementQuest: Quest = {
 export const messageChainQuest: Quest = {
   ...base,
   id: "quest-chain",
-  giverId: "charles-towne-governor-randolph-ellis",
+  giverId: "st-georges-governor-randolph-ellis",
   type: "messageChain",
   stepNpcIds: [
-    "belize-tavern-hugh-palmer",
-    "port-royale-tavern-ursula-cole",
-    "barbados-tavern-miles-barnes",
+    "nassau-tavern-hugh-palmer",
+    "kingston-tavern-ursula-cole",
+    "bridgetown-tavern-miles-barnes",
   ],
   step: 1,
   reward: { gold: 600 },
@@ -40,12 +40,12 @@ export const messageChainQuest: Quest = {
 export const findPersonQuest: Quest = {
   ...base,
   id: "quest-find",
-  giverId: "barbados-governor-eleanor-richardson",
+  giverId: "bridgetown-governor-eleanor-richardson",
   type: "findPerson",
   personName: "Jonas Whitlock",
   nation: "England",
-  hiddenTown: "Belize",
-  ruledOut: ["Port Royale", "Barbados"],
+  hiddenTown: "nassau",
+  ruledOut: ["kingston", "bridgetown"],
   reward: { gold: 500 },
 }
 

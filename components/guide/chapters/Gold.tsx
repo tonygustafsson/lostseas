@@ -1,5 +1,6 @@
 import { LOAN_LIMIT } from "@/constants/bank"
 import { VENTURES } from "@/constants/ventures"
+import { getTownName } from "@/utils/location"
 import { formatGold } from "@/utils/number"
 
 import {
@@ -18,8 +19,8 @@ const Gold = () => (
     id="gold"
     lead="Gold buys ships, cannons and rum, roughly in that order of importance. Here's how to get it and how to keep it."
     image={{
-      src: "/img/location/port-royale/bank.png",
-      alt: "The bank in Port Royale",
+      src: "/img/location/kingston/bank.png",
+      alt: "The bank in Kingston",
     }}
   >
     <h3>Making money</h3>
@@ -53,14 +54,14 @@ const Gold = () => (
 
     <p>
       Lose a battle and the enemy takes every coin you carry. Gold in the bank
-      is safe. Every bank shares the same account, so deposit in Panama and
-      withdraw in Port Royale. Keep what you need for shopping and bank the rest
+      is safe. Every bank shares the same account, so deposit in Portobelo and
+      withdraw in Kingston. Keep what you need for shopping and bank the rest
       before you sail.
     </p>
 
     <p>
       The bank lends up to {formatGold(LOAN_LIMIT)} with no interest and no
-      fees, which is suspiciously generous for 1640. Pay it back bit by bit or
+      fees, which is suspiciously generous for 1715. Pay it back bit by bit or
       all at once. Until it&apos;s repaid you can&apos;t deposit, but you can
       still withdraw.
     </p>
@@ -97,7 +98,8 @@ const Gold = () => (
             <TableCell className="min-w-48 whitespace-normal">
               <div className="font-medium">{venture.name}</div>
               <div className="text-muted-foreground">
-                {venture.origin} to {venture.destination}
+                {getTownName(venture.origin)} to{" "}
+                {getTownName(venture.destination)}
               </div>
             </TableCell>
             <TableCell className="text-right tabular-nums">

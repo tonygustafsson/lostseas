@@ -48,8 +48,8 @@ const createPlayer = (): Player => ({
     day: 20,
     weather: "sunny",
     journey: {
-      origin: "Bonaire",
-      destination: "Villa Hermosa",
+      origin: "savaneta",
+      destination: "campeche",
       day: 7,
       totalDays: 7,
     },
@@ -94,7 +94,7 @@ const expectResumedFinalDay = async () => {
   })
   expect(mocks.player?.character).toMatchObject({
     location: "Harbor",
-    town: "Villa Hermosa",
+    town: "campeche",
     day: 21,
   })
   expect(mocks.player?.character.journey).toBeUndefined()
@@ -106,7 +106,7 @@ const expectResumedFinalDay = async () => {
   expect(mocks.player?.crewMembers).toEqual(previous.crewMembers)
   expect(mocks.savePlayer).toHaveBeenLastCalledWith(
     mocks.player,
-    { type: "voyage", message: "Arrived at destination Villa Hermosa." },
+    { type: "voyage", message: "Arrived at destination Campeche." },
     { withStatistics: true }
   )
 }

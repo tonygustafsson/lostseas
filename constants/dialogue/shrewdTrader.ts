@@ -47,7 +47,7 @@ export const SHREWD_TRADER: DialogueEntry[] = [
   },
   {
     id: "shrewdTrader-4",
-    text: "Barbados used to be all tobacco. Now they plant sugar from shore to shore. Do you know what that means for trade?",
+    text: "Barbados has been all sugar since my grandfather's day, and now Saint-Domingue plants it from shore to shore. Do you know what that means for trade?",
     answers: [
       {
         text: "That sugar is the future?",
@@ -65,7 +65,7 @@ export const SHREWD_TRADER: DialogueEntry[] = [
           "It means somebody gets rich and it is never the man who asked. But I like your honesty.",
           "It means Virginia leaf floods the market and Barbados leaf rots on the quay. Buy cheap, wait, pray.",
           "Advice costs money, {title}. That much I will give you free, as an advertisement.",
-          "It means the Dutch will carry it, the English will tax it, and I will complain about both.",
+          "It means the Dutch will carry it, the British will tax it, and I will complain about both.",
           "It means you should stop asking questions in public. Prices move when people overhear.",
         ],
       },
@@ -112,7 +112,7 @@ export const SHREWD_TRADER: DialogueEntry[] = [
           "Is that a Dutch thing? It sounds like a Dutch thing.",
           "I once had a customer who only paid in odd numbers. He was odd too.",
           "Very well. Your price is six, ten or fifteen guilders. Pick a corner.",
-          "That is the strangest thing anyone has said in {town} this week, and I sell to buccaneers.",
+          "That is the strangest thing anyone has said in {town} this week, and I sell to pirates.",
         ],
       },
     ],
@@ -159,7 +159,7 @@ export const SHREWD_TRADER: DialogueEntry[] = [
   },
   {
     id: "shrewdTrader-8",
-    text: "Piet Heyn took the whole silver fleet in '28 and the Company paid a dividend of fifty in the hundred. I still dream about that dividend.",
+    text: "Piet Heyn took the whole silver fleet back in '28 and the Company paid a dividend of fifty in the hundred. My grandfather dreamt about that dividend until the day he died.",
   },
   {
     id: "shrewdTrader-9",
@@ -315,7 +315,7 @@ export const SHREWD_TRADER: DialogueEntry[] = [
   },
   {
     id: "shrewdTrader-15",
-    text: "The Spanish flota sails with the whole wealth of Peru and Mexico, and Philip IV still borrows from the Genoese. Imagine owning a mountain of silver and dying in debt. I lie awake over it.",
+    text: "The Spanish flota sails with the whole wealth of Peru and Mexico, and the King of Spain still borrows from the bankers. Imagine owning a mountain of silver and dying in debt. I lie awake over it.",
   },
   {
     id: "shrewdTrader-16",
@@ -355,7 +355,7 @@ export const SHREWD_TRADER: DialogueEntry[] = [
   },
   {
     id: "shrewdTrader-17",
-    text: "Tortuga is crawling with buccaneers who smoke beef and sell hides for nothing. Somebody ought to organise them. Somebody with a ledger.",
+    text: "Nassau is crawling with pirates who sell stolen cargo for nothing. Somebody ought to organise them. Somebody with a ledger.",
   },
   {
     id: "shrewdTrader-18",
@@ -424,14 +424,14 @@ export const SHREWD_TRADER: DialogueEntry[] = [
           "At least you are honest. You may stay, but stand away from the goods.",
           "My afternoons are worth more than your ship, {title}. Waste it wisely.",
           "A man who admits to wasting time is a man with money to burn. Sit down. Let us talk.",
-          "I wasted an afternoon once in '32. I still regret it. Go on, then, let us see if you can top that one.",
+          "I wasted an afternoon once in '02. I still regret it. Go on, then, let us see if you can top that one.",
         ],
       },
     ],
   },
   {
     id: "shrewdTrader-20",
-    text: "Cardinal Richelieu runs France the way I run my shop. Everyone hates him and the accounts are in excellent order.",
+    text: "The Dutch run their Republic the way I run my shop. Nobody is in charge, everyone argues and the accounts are kept to the last stiver.",
   },
   {
     id: "shrewdTrader-21",
@@ -457,7 +457,7 @@ export const SHREWD_TRADER: DialogueEntry[] = [
           "Penny-pinchers? That is a compliment where I come from.",
           "Cheese built an empire, {title}. Show me what your hat ever built.",
           "Careful. They hold half the debts in the Caribbean, possibly yours.",
-          "Penny-pinching is how they paid for a war against Spain that has lasted seventy years. Not bad for cheese.",
+          "Penny-pinching is how they paid for eighty years of war against Spain. Not bad for cheese.",
           "I would pinch pennies too if I had as many as they do.",
         ],
       },
@@ -479,7 +479,7 @@ export const SHREWD_TRADER: DialogueEntry[] = [
   },
   {
     id: "shrewdTrader-24",
-    text: "Portugal is restless under Spain, Catalonia is in open revolt, and Philip IV keeps asking for more silver. Bad times for kings, good times for anyone holding coin.",
+    text: "Scotland is restless under King George, France is waiting on an old king's health, and Philip V keeps asking for more silver. Bad times for kings, good times for anyone holding coin.",
   },
   {
     id: "shrewdTrader-25",
@@ -599,7 +599,7 @@ export const SHREWD_TRADER: DialogueEntry[] = [
   },
   {
     id: "shrewdTrader-30",
-    text: "Charles I and his Parliament are quarrelling over taxes again. Kings and merchants are alike in one way. Neither of us likes to be asked where the money went.",
+    text: "King George and his Parliament are haggling over taxes again. Kings and merchants are alike in one way. Neither of us likes to be asked where the money went.",
   },
   {
     id: "shrewdTrader-31",
@@ -655,7 +655,7 @@ export const SHREWD_TRADER: DialogueEntry[] = [
         text: "Two. One for the taxman.",
         replies: [
           "Close. Two is for beginners.",
-          "You are thinking like Cardinal Richelieu. He would want to see both.",
+          "You are thinking like a French tax farmer. He would want to see both.",
           "Two. One for him and one for you? And who keeps the one for your wife?",
           "That is the right idea, {title}. Your numbers are just too small.",
           "Two books, two prices, two faces. You will go far.",
@@ -715,7 +715,7 @@ export const SHREWD_TRADER: DialogueEntry[] = [
   },
   {
     id: "shrewdTrader-35",
-    text: "Louis XIII sends governors, Richelieu sends taxes and nobody sends money. That is the French colonial system in one sentence.",
+    text: "Old King Louis sends governors, his ministers send taxes and nobody sends money. That is the French colonial system in one sentence.",
   },
   {
     id: "shrewdTrader-36",
@@ -824,7 +824,7 @@ export const SHREWD_TRADER: DialogueEntry[] = [
       {
         text: "Only if you pay me back in pickled herring.",
         replies: [
-          "Done. At the herring rate of 1638, which was very favourable to me.",
+          "Done. At the herring rate of 1698, which was very favourable to me.",
           "Pickled herring. The Dutch would accept that as currency and they would be right.",
           "I can offer you smoked herring. Pickled is beyond my means this month.",
           "A man who wants herring is a man who has been at sea too long. Very well.",
@@ -839,7 +839,7 @@ export const SHREWD_TRADER: DialogueEntry[] = [
   },
   {
     id: "shrewdTrader-42",
-    text: "The Thirty Years' War has gone on so long that half of Europe has forgotten what started it. The other half is still selling gunpowder to both sides.",
+    text: "The war in the north has gone on so long that half of Europe has forgotten what started it. The other half is still selling gunpowder to both sides.",
   },
   {
     id: "shrewdTrader-43",
@@ -923,7 +923,7 @@ export const SHREWD_TRADER: DialogueEntry[] = [
   },
   {
     id: "shrewdTrader-47",
-    text: "Stadtholder Frederick Henry takes towns from the Spanish one siege at a time. I take customers from my rivals the same way. Slowly, with digging.",
+    text: "The Duke of Marlborough took towns from the French one siege at a time. I take customers from my rivals the same way. Slowly, with digging.",
   },
   {
     id: "shrewdTrader-48",
@@ -947,7 +947,7 @@ export const SHREWD_TRADER: DialogueEntry[] = [
         text: "A share in the West India Company.",
         replies: [
           "Now you are thinking like a merchant. Expensive thinking, but merchant thinking.",
-          "Shares go up and down. Mostly down since Piet Heyn died.",
+          "Shares go up and down. Mostly down since my grandfather's day.",
           "I already own one. Very small. I polish it on Sundays.",
           "Good luck. The directors guard those like dragons guard eggs.",
           "A share? Buy two. Then you have someone to talk to at the meetings.",
@@ -988,7 +988,7 @@ export const SHREWD_TRADER: DialogueEntry[] = [
         replies: [
           "True. I knew a bosun who hated his captain for twenty years. They are business partners now.",
           "Grudges, yes. They do not rot, need no barrels and grow with every voyage.",
-          "Very good. I have been holding one against the West India Company since '31.",
+          "Very good. I have been holding one against the West India Company since '01.",
           "Grudges keep better than salt pork. Lighter too.",
           "Ha. If I could sell grudges by weight, I would be the richest man in {town}.",
         ],

@@ -8,6 +8,7 @@ import { TOWNS } from "@/constants/locations"
 import { TitleInfo } from "@/constants/title"
 import { useCityhall } from "@/hooks/queries/useCityhall"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { getNationName } from "@/utils/location"
 import { formatGold } from "@/utils/number"
 import { getNewTitle, getTitleReward } from "@/utils/title"
 
@@ -38,8 +39,8 @@ const getGreeting = ({
     return (
       <>
         <p>
-          We are at war with {townWarWith}. Thank you for {enemyWins} victories
-          over our common enemy.
+          We are at war with {getNationName(townWarWith)}. Thank you for{" "}
+          {enemyWins} victories over our common enemy.
         </p>
 
         {promotionAvailable && titleInfo && (
@@ -58,8 +59,9 @@ const getGreeting = ({
   if (isHomeNation) {
     return (
       <p>
-        We are at war with {townWarWith}. I&apos;m looking forward for your wins
-        against our common enemy. You will be rewarded by doing so.
+        We are at war with {getNationName(townWarWith)}. I&apos;m looking
+        forward for your wins against our common enemy. You will be rewarded by
+        doing so.
       </p>
     )
   }
@@ -68,14 +70,14 @@ const getGreeting = ({
     return (
       <>
         <p>
-          We are at war with {townWarWith}. Thank you for {enemyWins} victories
-          over our enemy.
+          We are at war with {getNationName(townWarWith)}. Thank you for{" "}
+          {enemyWins} victories over our enemy.
         </p>
 
         <p className="mt-2">
           I would like to share my appreciation by giving you the chance to be a
-          citizen of {currentNation} with the title{" "}
-          <strong>{titleInfo.title}</strong>.
+          citizen of {currentNation && getNationName(currentNation)} with the
+          title <strong>{titleInfo.title}</strong>.
           {reward > 0 && (
             <span> You will also get a reward of {formatGold(reward)}.</span>
           )}
@@ -86,8 +88,8 @@ const getGreeting = ({
 
   return (
     <p>
-      We are at war with {townWarWith}. I might consider making you a citizen if
-      you destroy enemy ships.
+      We are at war with {getNationName(townWarWith)}. I might consider making
+      you a citizen if you destroy enemy ships.
     </p>
   )
 }

@@ -6,6 +6,7 @@ import { scaleBand } from "@tanstack/charts/scales/band"
 import { scaleLinear } from "@tanstack/charts/scales/linear"
 import { tooltip } from "@tanstack/charts/tooltip"
 
+import { getNationName } from "@/utils/location"
 import { getBattleRecordByNation } from "@/utils/statistics"
 
 import { chartRenderer, enterDelay } from "./chartConfig"
@@ -21,7 +22,7 @@ const wonColor = "var(--chart-4)"
 const lostColor = "var(--chart-3)"
 
 const nationLabel = (nation: Nation | "Pirate") =>
-  nation === "Pirate" ? "Pirates" : nation
+  nation === "Pirate" ? "Pirates" : getNationName(nation)
 
 const BattleRecordChart = ({ battles, delay = 0 }: Props) => {
   const rows = getBattleRecordByNation(battles)

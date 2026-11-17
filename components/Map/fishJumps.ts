@@ -1,10 +1,12 @@
 // Fish that now and then jump out of the open sea and dive back in with a
 // splash, drawn on the sea map canvas in map units
 
-const FISH_LENGTH = 9
+import { MAP_DETAIL_SCALE, MAP_HEIGHT, MAP_WIDTH } from "./constants"
+
+const FISH_LENGTH = 9 * MAP_DETAIL_SCALE
 const JUMP_DURATION = 900
-const JUMP_HEIGHT = 7
-const JUMP_DISTANCE = 12
+const JUMP_HEIGHT = 7 * MAP_DETAIL_SCALE
+const JUMP_DISTANCE = 12 * MAP_DETAIL_SCALE
 const SPLASH_DURATION = 700
 const MAX_FISH = 3
 // Time between new jumps, picked at random in this range
@@ -42,16 +44,18 @@ export const getWaterLookup = (mask: HTMLImageElement) => {
     return cached
   }
 
+  // One pixel per map unit is plenty, the mask at full size would take a
+  // hundred megabytes to read
   const canvas = document.createElement("canvas")
-  canvas.width = mask.naturalWidth
-  canvas.height = mask.naturalHeight
+  canvas.width = MAP_WIDTH
+  canvas.height = MAP_HEIGHT
   const context = canvas.getContext("2d", { willReadFrequently: true })
 
   if (!context) {
     return null
   }
 
-  context.drawImage(mask, 0, 0)
+  context.drawImage(mask, 0, 0, MAP_WIDTH, MAP_HEIGHT)
   const { data, width, height } = context.getImageData(
     0,
     0,
@@ -104,6 +108,8 @@ const drawSplash = (
   color: string
 ) => {
   context.save()
+  context.translate(x, y)
+  context.scale(MAP_DETAIL_SCALE, MAP_DETAIL_SCALE)
   context.globalAlpha = 1 - age
   context.strokeStyle = color
   context.fillStyle = color
@@ -113,8 +119,8 @@ const drawSplash = (
   for (const ring of [1, 0.6]) {
     context.beginPath()
     context.ellipse(
-      x,
-      y,
+      0,
+      0,
       1 + age * 5 * ring,
       0.5 + age * 2 * ring,
       0,
@@ -130,8 +136,8 @@ const drawSplash = (
 
     context.beginPath()
     context.arc(
-      x + spread * age * 2,
-      y - Math.sin(age * Math.PI) * (2.5 + Math.abs(spread)),
+      spread * age * 2,
+      -Math.sin(age * Math.PI) * (2.5 + Math.abs(spread)),
       0.4,
       0,
       2 * Math.PI
@@ -162,7 +168,7 @@ const drawFish = (
 
   // Tail fin
   context.beginPath()
-  context.moveTo(-half + 1, 0)
+  context.moveTo(-half + MAP_DETAIL_SCALE, 0)
   context.lineTo(-half - FISH_LENGTH / 4, -FISH_LENGTH / 5)
   context.lineTo(-half - FISH_LENGTH / 4, FISH_LENGTH / 5)
   context.closePath()

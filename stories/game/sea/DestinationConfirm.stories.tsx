@@ -6,9 +6,9 @@ import { TOWNS } from "@/constants/locations"
 
 import { player } from "../../fixtures"
 
-// The fixture player is English and sails from Port Royale.
-// Havana (Spain) is 2 days away and needs 8 food and 16 water.
-// Biloxi (France, at war with England) is 5 days away and needs 20 food and 40 water.
+// The fixture player is British and sails from Kingston.
+// Havana (Spain) is 7 days away and needs 28 food and 56 water.
+// Fort Louis (France, at war with Great Britain) is 10 days away and needs 40 food and 80 water.
 const withSupplies = (food: number, water: number) => ({
   ...player,
   inventory: { ...player.inventory, food, water },
@@ -27,7 +27,7 @@ const meta = {
   args: {
     player,
     origin: player.character.town!,
-    destination: "Havana",
+    destination: "havana",
     isPending: false,
     onConfirm: fn(),
     onCancel: fn(),
@@ -44,16 +44,16 @@ type Story = StoryObj<typeof meta>
 export const NeutralPort: Story = {}
 
 export const HomePort: Story = {
-  args: { destination: "Belize" },
+  args: { destination: "nassau" },
 }
 
 export const EnemyPort: Story = {
-  args: { destination: "Tortuga" },
+  args: { destination: "cap-francais" },
 }
 
 // Arrives with an empty hold, but the voyage is still allowed
 export const JustEnoughSupplies: Story = {
-  args: { player: withSupplies(8, 16) },
+  args: { player: withSupplies(28, 56) },
 }
 
 export const ShortOnFood: Story = {
@@ -73,7 +73,7 @@ export const EmptyHold: Story = {
 }
 
 export const EnemyPortOutOfReach: Story = {
-  args: { destination: "Biloxi", player: withSupplies(100, 20) },
+  args: { destination: "fort-louis", player: withSupplies(100, 20) },
 }
 
 export const SettingSail: Story = {

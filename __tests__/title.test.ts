@@ -41,7 +41,7 @@ describe("title utils", () => {
   it("getNewTitle computes promotion and citizenship scenarios", () => {
     const character = {
       title: "Pirate",
-      town: "Port Royale",
+      town: "kingston",
       nationality: "England",
       battles: {
         France: { won: 5, lost: 0 },
@@ -49,7 +49,7 @@ describe("title utils", () => {
       },
     } as any
 
-    // townPort Royale nation is England; warWith is France -> score = enemyWins (France) - friendlyAttacks (England)
+    // Kingston's nation is Great Britain; warWith is France -> score = enemyWins (France) - friendlyAttacks (England)
     const res = getNewTitle(character)
     expect(res.isHomeNation).toBe(true)
     expect(res.titleInfo.title).toBe("Ensign")

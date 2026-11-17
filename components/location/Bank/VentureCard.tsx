@@ -15,6 +15,7 @@ import { Progress } from "@/components/ui/progress"
 import { getBestReturns, getVentureImage, VENTURES } from "@/constants/ventures"
 import { cn } from "@/lib/utils"
 import { getCurrentDate } from "@/utils/date"
+import { getTownName } from "@/utils/location"
 import { formatGold, formatNumber } from "@/utils/number"
 
 type Props = {
@@ -101,9 +102,9 @@ const VentureCard = ({
           </h3>
 
           <p className="text-foreground flex items-center gap-2 text-sm drop-shadow-md">
-            {venture.origin}
+            {getTownName(venture.origin)}
             <ArrowRight className="text-gold size-4" />
-            {venture.destination}
+            {getTownName(venture.destination)}
           </p>
         </header>
       </div>

@@ -33,7 +33,7 @@ const meta = {
   title: "game/Harbor/Harbor",
   component: HarborScene,
   parameters: { player: fewWarnings },
-  args: { town: "Port Royale" },
+  args: { town: "kingston" },
   argTypes: {
     town: {
       control: "select",

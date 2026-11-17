@@ -38,7 +38,7 @@ const routes = [
   ["answer", answer, { npcId: "nobody", answerIndex: 0 }],
 ] as const
 
-const NPC_ID = "charles-towne-tavern-mavis-cartwright"
+const NPC_ID = "st-georges-tavern-mavis-cartwright"
 
 beforeEach(() => {
   vi.clearAllMocks()
@@ -84,7 +84,7 @@ describe("POST /api/npc/talk", () => {
 
   it("saves the player and returns the line", async () => {
     mocks.player = createTestPlayer({
-      character: { town: "Charles Towne", location: "Tavern" },
+      character: { town: "st-georges", location: "Tavern" },
     })
 
     const response = await talk(request({ npcId: NPC_ID }))

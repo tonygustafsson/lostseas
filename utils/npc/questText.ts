@@ -1,6 +1,7 @@
 import { MERCHANDISE } from "@/constants/merchandise"
 import { getNpcById, getNpcPlace } from "@/constants/npcs"
 import type { TalkLine } from "@/utils/actions/npc"
+import { getNationName } from "@/utils/location"
 import { formatGold } from "@/utils/number"
 
 /** Goods as quest texts name them, eg "barrels of rum" */
@@ -64,6 +65,6 @@ export const getQuestObjective = (quest: Quest) => {
         return `Return to ${giver}`
       }
 
-      return `Find ${quest.personName} somewhere in ${quest.nation}'s towns`
+      return `Find ${quest.personName} somewhere in ${getNationName(quest.nation)}'s towns`
   }
 }

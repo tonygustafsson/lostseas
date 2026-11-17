@@ -8,7 +8,7 @@ const meta = {
   title: "game/Townsfolk/NpcCard",
   component: NpcCard,
   args: {
-    npc: getNpcAt("Port Royale", "tavern"),
+    npc: getNpcAt("kingston", "tavern"),
     hasQuestBusiness: false,
     disabled: false,
     onTalk: fn(),
@@ -31,5 +31,5 @@ export const Pending: Story = {
 }
 
 export const Market: Story = {
-  args: { npc: getNpcAt("Havana", "market") },
+  args: { npc: getNpcAt("havana", "market") },
 }

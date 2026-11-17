@@ -23,10 +23,10 @@ export type Venture = {
 export const VENTURES: Record<VentureId, Venture> = {
   sugarConvoy: {
     name: "The Barbados sugar convoy",
-    origin: "Barbados",
-    destination: "Charles Towne",
+    origin: "bridgetown",
+    destination: "st-georges",
     description:
-      "English merchantmen carry hogsheads of sugar and molasses north under the guns of a Royal Navy frigate.",
+      "British merchantmen carry hogsheads of sugar and molasses north under the guns of a Royal Navy frigate.",
     stake: 500,
     days: 28,
     risk: "Low",
@@ -34,8 +34,7 @@ export const VENTURES: Record<VentureId, Venture> = {
       {
         chance: 85,
         returns: 600,
-        message:
-          "Fair winds all the way. The sugar sold well in Charles Towne.",
+        message: "Fair winds all the way. The sugar sold well in St. George's.",
       },
       {
         chance: 15,
@@ -47,8 +46,8 @@ export const VENTURES: Record<VentureId, Venture> = {
   },
   tobaccoRun: {
     name: "The Havana tobacco run",
-    origin: "Havana",
-    destination: "St. Eustatius",
+    origin: "havana",
+    destination: "st-eustatius",
     description:
       "A Spanish factor sends cured leaf to the Dutch free port, sailing under false colours while Spain and Holland are at war.",
     stake: 1500,
@@ -76,8 +75,8 @@ export const VENTURES: Record<VentureId, Venture> = {
   },
   silkSmugglers: {
     name: "The Manila silk smugglers",
-    origin: "Villa Hermosa",
-    destination: "Curacao",
+    origin: "campeche",
+    destination: "willemstad",
     description:
       "Silk and porcelain from the Manila galleon are slipped past the Spanish coastguard and sold to Dutch traders.",
     stake: 3000,
@@ -105,8 +104,8 @@ export const VENTURES: Record<VentureId, Venture> = {
   },
   silverFleet: {
     name: "A share in the silver fleet",
-    origin: "Panama",
-    destination: "Havana",
+    origin: "portobelo",
+    destination: "havana",
     description:
       "A share of Peruvian silver carried by the treasure galleons to meet the fleet at Havana.",
     stake: 6000,

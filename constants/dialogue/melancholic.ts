@@ -43,7 +43,7 @@ export const MELANCHOLIC: DialogueEntry[] = [
   },
   {
     id: "melancholic-3",
-    text: "They say Barbados is all sugar now. Tobacco used to be the thing. Everything I ever loved used to be the thing.",
+    text: "Barbados is all sugar. Tobacco used to be the thing, in my father's day. Everything I ever loved used to be the thing.",
   },
   {
     id: "melancholic-4",
@@ -152,7 +152,7 @@ export const MELANCHOLIC: DialogueEntry[] = [
       {
         text: "The cold?",
         replies: [
-          "Yes. The cold. You don't know how much you love frost until you've spent a summer sweating through a doublet.",
+          "Yes. The cold. You don't know how much you love frost until you've spent a summer sweating through a woollen coat.",
           "Proper cold, with ice on the water barrel. Here the water barrel grows things.",
           "A grey sky, a cold wind and a fire to sit by. That's paradise. This is just weather.",
           "Exactly. In the cold you could shiver and call it the weather. Here I just shiver from sorrow.",
@@ -189,7 +189,7 @@ export const MELANCHOLIC: DialogueEntry[] = [
           "My grandfather felt it too. He was buried during the third truce.",
           "Peace comes, sits down, has a drink and leaves without paying. Then the war comes back.",
           "I hope you're right. I hoped once before. It cost me a brother.",
-          "In Germany they have been fighting for twenty years. Children there think peace is a fairy tale.",
+          "In the north the Swedes and the Russians have been fighting for fifteen years. Children there think peace is a fairy tale.",
           "What you feel is the rum. I feel it too. It wears off.",
         ],
       },
@@ -301,11 +301,11 @@ export const MELANCHOLIC: DialogueEntry[] = [
   },
   {
     id: "melancholic-17",
-    text: "They say Cardinal Richelieu never sleeps. Neither do I. But nobody prints pamphlets about me.",
+    text: "They say old King Louis never sleeps. Neither do I. But nobody prints pamphlets about me.",
   },
   {
     id: "melancholic-18",
-    text: "The letters say King Charles has fallen out with his Parliament, Catalonia is in uproar against King Philip, and Richelieu is squeezing France dry. It's comforting, in a way. All of Europe is as miserable as I am.",
+    text: "The letters say King George speaks no English to his own ministers, the Scots are muttering about James Stuart, and the Dutch won a war and are too poor to enjoy it. It's comforting, in a way. All of Europe is as miserable as I am.",
   },
   {
     id: "melancholic-19",
@@ -469,7 +469,7 @@ export const MELANCHOLIC: DialogueEntry[] = [
   },
   {
     id: "melancholic-27",
-    text: "The flota sails past {town} loaded with silver, and every coin of it will be spent on some war in Flanders. All that shine, and it ends up as mud and widows.",
+    text: "The flota sails past {town} loaded with silver, and every coin of it will be spent on some war in Europe. All that shine, and it ends up as mud and widows.",
   },
   {
     id: "melancholic-28",
@@ -557,7 +557,7 @@ export const MELANCHOLIC: DialogueEntry[] = [
   },
   {
     id: "melancholic-33",
-    text: "In Flanders they've been at war for longer than I've been alive. My uncle went to fight and came home without his legs. He still says it was the best years of his life. That's how bad the other years were.",
+    text: "In Flanders they were at war on and off for as long as I've been alive. My uncle went to fight and came home without his legs. He still says it was the best years of his life. That's how bad the other years were.",
   },
   {
     id: "melancholic-34",
@@ -733,7 +733,7 @@ export const MELANCHOLIC: DialogueEntry[] = [
   },
   {
     id: "melancholic-45",
-    text: "The buccaneers on Hispaniola eat wild cattle smoked over a fire. They seem happy. I'd try it, but happiness gives me indigestion.",
+    text: "The old buccaneers on Hispaniola ate wild cattle smoked over a fire. They seemed happy. I'd have tried it, but happiness gives me indigestion.",
   },
   {
     id: "melancholic-46",
@@ -821,7 +821,7 @@ export const MELANCHOLIC: DialogueEntry[] = [
   },
   {
     id: "melancholic-51",
-    text: "I heard Portugal is restless under King Philip, and Catalonia has risen against him. Everyone is trying to leave somebody. I understand completely.",
+    text: "I heard the Scots are restless under King George, and half of them would rather have James Stuart. Everyone is trying to leave somebody. I understand completely.",
   },
   {
     id: "melancholic-52",
@@ -901,7 +901,7 @@ export const MELANCHOLIC: DialogueEntry[] = [
   },
   {
     id: "melancholic-55",
-    text: "The Stadtholder in Holland, the King in Spain, the Cardinal in France, the King in England. All of them so busy. None of them have ever once asked how I'm feeling.",
+    text: "The States General in Holland, the King in Spain, the King in France, the King in Britain. All of them so busy. None of them have ever once asked how I'm feeling.",
   },
   {
     id: "melancholic-56",
@@ -932,7 +932,7 @@ export const MELANCHOLIC: DialogueEntry[] = [
         replies: [
           "Cheer up? Hm. You're asking a lot for the price of one letter.",
           "Perhaps. A little. Around Christmas. No promises.",
-          "I'll try. I did it once in the summer of thirty-six. It didn't take.",
+          "I'll try. I did it once in the summer of ninety-six. It didn't take.",
           "If your letter is long enough, I might manage a smile. A small, sad one.",
           "Ha. You've already cheered me up a little. Now look what you've done. I'll be miserable about it.",
         ],

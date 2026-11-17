@@ -6,7 +6,7 @@ import { getNpcAt } from "@/constants/npcs"
 import { player } from "../../fixtures"
 import PlayerPreview from "../../PlayerPreview"
 
-// An English captain in Port Royale. England is at war with France.
+// A British captain in Kingston. Great Britain is at war with France.
 const atCityhall = ({
   character,
   ...rest
@@ -27,15 +27,15 @@ const treasures: Player["treasures"] = {
   "treasure-1": {
     id: "treasure-1",
     name: "Inca mask",
-    rewarder: "Port Royale",
+    rewarder: "kingston",
   },
   "treasure-2": {
     id: "treasure-2",
     name: "Cursed star",
-    rewarder: "Port Royale",
+    rewarder: "kingston",
   },
   // Belongs to another town, so it is not offered here
-  "treasure-3": { id: "treasure-3", name: "Golden hen", rewarder: "Havana" },
+  "treasure-3": { id: "treasure-3", name: "Golden hen", rewarder: "havana" },
 }
 
 const wantedPirates: Player["wantedPirates"] = {
@@ -43,20 +43,20 @@ const wantedPirates: Player["wantedPirates"] = {
     id: "pirate-1",
     name: 'Jack "Mad" Flint',
     crimeId: "rum-warehouse",
-    rewarder: "Port Royale",
+    rewarder: "kingston",
   },
   "pirate-2": {
     id: "pirate-2",
     name: 'Grace "Bloody" Morgan',
     crimeId: "sacked-town",
-    rewarder: "Port Royale",
+    rewarder: "kingston",
   },
   // Wanted in another town, so it is not offered here
   "pirate-3": {
     id: "pirate-3",
     name: 'Diego "Salty" Mendoza',
     crimeId: "mail-ship",
-    rewarder: "Tortuga",
+    rewarder: "cap-francais",
   },
 }
 
@@ -113,7 +113,7 @@ export const PromotionWithoutReward: Story = {
 /** Foreign town, no victories against its enemy */
 export const ForeignTown: Story = {
   parameters: {
-    player: atCityhall({ character: { town: "Havana" } }),
+    player: atCityhall({ character: { town: "havana" } }),
   },
 }
 
@@ -121,7 +121,7 @@ export const ForeignTown: Story = {
 export const CitizenshipOffer: Story = {
   parameters: {
     player: atCityhall({
-      character: { town: "Havana", battles: { Holland: { won: 20 } } },
+      character: { town: "havana", battles: { Holland: { won: 20 } } },
     }),
   },
 }
@@ -161,13 +161,13 @@ export const GovernorQuestBusiness: Story = {
       quests: {
         "quest-1": {
           id: "quest-1",
-          giverId: getNpcAt("Havana", "market").id,
+          giverId: getNpcAt("havana", "market").id,
           acceptedDay: 5,
-          pitch: "Take this sealed letter to the governor of Port Royale.",
+          pitch: "Take this sealed letter to the governor of Kingston.",
           reward: { gold: 600 },
           type: "delivery",
           parcel: "a sealed letter",
-          targetNpcId: getNpcAt("Port Royale", "governor").id,
+          targetNpcId: getNpcAt("kingston", "governor").id,
         },
       },
     }),

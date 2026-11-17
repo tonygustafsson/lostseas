@@ -3,6 +3,7 @@ import RadialProgressBar from "@/components/RadialProgressBar"
 import WeatherIcon from "@/components/WeatherIcon"
 import { TOWNS } from "@/constants/locations"
 import { getLogDate } from "@/utils/date"
+import { getTownName } from "@/utils/location"
 import { WEATHER_NAMES } from "@/utils/weather"
 
 type Props = {
@@ -42,7 +43,7 @@ const JourneyProgress = ({ journey, day, weather }: Props) => {
         </p>
 
         <h2 className="font-serif text-lg leading-tight">
-          {journey.destination}
+          {getTownName(journey.destination)}
         </h2>
 
         <p className="text-muted-foreground text-sm">

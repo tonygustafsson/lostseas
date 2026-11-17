@@ -82,7 +82,7 @@ const StartPageScreen = ({ initialCharacter, leaderboard }: Props) => {
             Your story begins <span className="text-gold">at sea.</span>
           </h1>
           <p className="text-foreground/80 mt-6 max-w-2xl text-lg leading-8 sm:text-xl">
-            Lost Seas is a free browser game set in the Caribbean of 1640. Start
+            Lost Seas is a free browser game set in the Caribbean of 1715. Start
             as a simple pirate, then earn your reputation, build a crew, command
             ships, and make your fortune across the open seas.
           </p>
@@ -188,8 +188,8 @@ const StartPageScreen = ({ initialCharacter, leaderboard }: Props) => {
                 Four rival nations
               </h3>
               <p className="text-foreground/70 mt-2 leading-6">
-                Explore 16 ports across England, France, Spain and Holland, each
-                with its own atmosphere and imagery.
+                Explore 16 ports across Great Britain, France, Spain and
+                Holland, each with its own atmosphere and imagery.
               </p>
             </article>
 

@@ -20,7 +20,7 @@ vi.mock("@/firebase/db", () => ({
 const request = () =>
   new Request("http://localhost/api/sea/startJourney", {
     method: "POST",
-    body: JSON.stringify({ town: "Havana" }),
+    body: JSON.stringify({ town: "havana" }),
   })
 
 beforeEach(() => {
@@ -76,7 +76,7 @@ describe("starting a journey", () => {
     const saved = mocks.savePlayer.mock.calls[0][0] as Player
     expect(saved.character).toMatchObject({
       location: "Sea",
-      journey: { origin: "Port Royale", destination: "Havana", day: 1 },
+      journey: { origin: "kingston", destination: "havana", day: 1 },
       day: fixture.character.day,
     })
     expect(saved.character.town).toBeUndefined()

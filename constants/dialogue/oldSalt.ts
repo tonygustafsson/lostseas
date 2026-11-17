@@ -79,13 +79,13 @@ export const OLD_SALT: DialogueEntry[] = [
   },
   {
     id: "oldSalt-4",
-    text: "I sailed with a man once who swore he was at Matanzas with Piet Heyn. Do you believe every old sailor's tale?",
+    text: "I sailed with a man once who swore he was at Vigo Bay when the silver fleet burned. Do you believe every old sailor's tale?",
     answers: [
       {
         text: "Only the ones about sea monsters.",
         replies: [
           "Wise. The monster ones are the only honest ones. I've seen three.",
-          "Then you'll like this. A squid off Bonaire took my hat. Just the hat. Very particular squid.",
+          "Then you'll like this. A squid off Aruba took my hat. Just the hat. Very particular squid.",
           "Hah. The monsters are real enough. It's the treasure stories you want to doubt.",
           "Good choice. Monsters don't need to lie. Men do it for them.",
           "Sea monsters, aye. I'll tell you one later. You'll need a drink first.",
@@ -94,7 +94,7 @@ export const OLD_SALT: DialogueEntry[] = [
       {
         text: "Not a word.",
         replies: [
-          "Smart. Half the men in {town} claim they were at Matanzas. The fleet would've sunk under the weight.",
+          "Smart. Half the men in {town} claim they were at Vigo. The fleet would've sunk under the weight.",
           "Good. Trust the tide tables and your own eyes. Nothing else.",
           "Then you'll not believe me either, and that's fair. But I was there. Near enough.",
           "A doubter. You'll live longer than most, if not happier.",
@@ -102,12 +102,12 @@ export const OLD_SALT: DialogueEntry[] = [
         ],
       },
       {
-        text: "I was at Matanzas myself, actually.",
+        text: "I was at Vigo myself, actually.",
         replies: [
           "Were you now? And I'm Philip of Spain, come for my silver back.",
-          "You'd have been in swaddling clothes, {name}. Unless you sailed in your cradle.",
+          "You'd have been a ship's boy at best, {name}. Barely tall enough to see over the rail.",
           "Hah! That's the spirit. Lie big, lie proud, and never take it back.",
-          "Then you owe me a share. I've been owed a share since '28 and nobody's paid.",
+          "Then you owe me a share. I've been owed a share since '02 and nobody's paid.",
           "Mind who you say that to. There's still plenty sore about it, and they've long memories.",
         ],
       },
@@ -259,7 +259,7 @@ export const OLD_SALT: DialogueEntry[] = [
         text: "I'd rather chase a good night's sleep.",
         replies: [
           "Hah! The wisest thing said in this town all week.",
-          "Now there's a treasure worth having. I've not slept a full night since '19.",
+          "Now there's a treasure worth having. I've not slept a full night since '95.",
           "Sensible. Silver don't keep you warm. A hammock does.",
           "A man after my own heart. Let the young fools get shot at.",
           "Sleep's easy to catch. It's waking up alive that takes skill.",
@@ -323,12 +323,12 @@ export const OLD_SALT: DialogueEntry[] = [
   },
   {
     id: "oldSalt-17",
-    text: "Barbados used to be all tobacco. Now it's sugar, sugar, sugar. Which would you rather carry in your hold, {name}?",
+    text: "Barbados used to be all tobacco, my old captain said. Now it's sugar, sugar, sugar. Which would you rather carry in your hold, {name}?",
     answers: [
       {
         text: "Sugar. That's where the money's going.",
         replies: [
-          "Aye, the planters are tearing up tobacco faster than a gale tears sails.",
+          "Aye, the planters tore up their tobacco faster than a gale tears sails.",
           "Smart. Sugar sells in every port from here to Amsterdam.",
           "Mind the damp. Wet sugar's just sticky ballast.",
           "Sugar today, rum tomorrow. Next they'll be planting rum straight in the ground.",
@@ -363,7 +363,7 @@ export const OLD_SALT: DialogueEntry[] = [
   },
   {
     id: "oldSalt-19",
-    text: "They say Charles and his Parliament are at each other's throats back in England. Do you care about kings and their quarrels?",
+    text: "They say the Whigs and Tories are at each other's throats back in Britain, and the new king can't follow a word of it. Do you care about kings and their quarrels?",
     answers: [
       {
         text: "Not one bit.",
@@ -559,7 +559,7 @@ export const OLD_SALT: DialogueEntry[] = [
   },
   {
     id: "oldSalt-28",
-    text: "Have you met the buccaneers on Hispaniola yet, {name}? Wild hunters, the lot of them. Smoke their meat on wooden frames.",
+    text: "Have you met the pirates at Nassau yet, {name}? Wild lot. Half of them were honest privateers till the war ended.",
     answers: [
       {
         text: "I've shared a fire with them.",
@@ -568,7 +568,7 @@ export const OLD_SALT: DialogueEntry[] = [
           "And you're still here with all your fingers? Lucky or charming.",
           "Good folk, mostly. Don't argue with them over cards, though.",
           "Aye, they're honest in their way. They'll rob you to your face, not behind your back.",
-          "Did they offer you the boar's head? That's a mark of respect. Or a joke. Hard to tell.",
+          "Did they offer you the first cup? That's a mark of respect. Or a joke. Hard to tell.",
         ],
       },
       {
@@ -584,9 +584,9 @@ export const OLD_SALT: DialogueEntry[] = [
       {
         text: "Are they hiring?",
         replies: [
-          "Always. The pay's in hides and the pension's an early grave.",
-          "If you can shoot a wild cow at a hundred paces, aye. Can you?",
-          "Go to Tortuga and ask. They'll hire you or shoot you. Either way, it's quick.",
+          "Always. The pay's in plunder and the pension's a short rope.",
+          "If you can climb a mast with a cutlass in your teeth, aye. Can you?",
+          "Go to Nassau and ask. They'll hire you or shoot you. Either way, it's quick.",
           "Hah! Bring your own musket and leave your manners behind.",
           "They don't hire. They adopt. Like stray cats, but with knives.",
         ],
@@ -817,11 +817,11 @@ export const OLD_SALT: DialogueEntry[] = [
   },
   {
     id: "oldSalt-42",
-    text: "Louis of France, Philip of Spain, Charles of England. Three kings, and not one of them could tie a bowline.",
+    text: "Louis of France, Philip of Spain, George of Great Britain. Three kings, and not one of them could tie a bowline.",
   },
   {
     id: "oldSalt-43",
-    text: "The Thirty Years' War is still dragging on in the German lands, they say. Would you ever fight for a foreign king?",
+    text: "The Swedes and the Russians are still at it in the north, they say. Would you ever fight for a foreign king?",
     answers: [
       {
         text: "For the right price.",
@@ -892,7 +892,7 @@ export const OLD_SALT: DialogueEntry[] = [
         replies: [
           "Ha! Cheeky. There's nothing in my purse but lint and regrets.",
           "Touch it and you'll lose a finger. I've still got all my teeth for biting.",
-          "My purse is empty. Has been since '32. That's why I'm so trustworthy.",
+          "My purse is empty. Has been since '92. That's why I'm so trustworthy.",
           "Bold. You'll make a fine pirate or a dead thief.",
           "Take it, then. You'll find two buttons and a tooth. Not mine.",
         ],
@@ -977,7 +977,7 @@ export const OLD_SALT: DialogueEntry[] = [
   },
   {
     id: "oldSalt-50",
-    text: "There's trouble in Portugal and Catalonia, they say. Philip's got rebels at home and Dutchmen on the water. Wouldn't want his crown. Too heavy for swimming.",
+    text: "Philip of Spain won his war, they say, and lost Gibraltar, Minorca and half his lands in Europe doing it. Wouldn't want his crown. Too heavy for swimming.",
   },
   {
     id: "oldSalt-51",
@@ -985,7 +985,7 @@ export const OLD_SALT: DialogueEntry[] = [
   },
   {
     id: "oldSalt-52",
-    text: "What's your feeling on Cardinal Richelieu, {name}?",
+    text: "What's your feeling on the Duke of Orléans, {name}?",
     answers: [
       {
         text: "A clever man.",
@@ -993,7 +993,7 @@ export const OLD_SALT: DialogueEntry[] = [
           "Too clever. Clever men start wars and let the rest of us finish them.",
           "Aye, clever as a Barbados rat. And twice as hungry.",
           "Clever, sure. Can he reef a topsail in a gale? Didn't think so.",
-          "Clever enough to run France while Louis hunts deer. Can't fault that.",
+          "Clever enough to run France while the little king learns his letters. Can't fault that.",
           "Clever men get statues. Sailors get a sack and two cannonballs.",
         ],
       },
@@ -1002,7 +1002,7 @@ export const OLD_SALT: DialogueEntry[] = [
         replies: [
           "Lucky you. Most men who hear of him regret it.",
           "Good. Keep it that way. Politics are like rocks. Best seen from far off.",
-          "He's the French king's right hand. And left. And probably his feet too.",
+          "He's regent for the little French king. His right hand, and left, and probably his feet too.",
           "Never heard of him? Where've you been, under a hull?",
           "Fair. He's never heard of you either. Even match.",
         ],
@@ -1057,7 +1057,7 @@ export const OLD_SALT: DialogueEntry[] = [
           "Me? Lucky? I've sunk four ships. Well, been on four that sank.",
           "Hah! Flattery. Buy me a drink and I might consider it.",
           "I'm no charm. I'm a curse with a beard. Ask anyone in {nationTown}.",
-          "Tempting. But my knees haven't been to sea since '35, and they like it that way.",
+          "Tempting. But my knees haven't been to sea since '05, and they like it that way.",
           "Bring rum and I'll think about it. Bring two barrels and I'll start packing.",
         ],
       },
@@ -1118,7 +1118,7 @@ export const OLD_SALT: DialogueEntry[] = [
           "He swore off it on a Sunday. Back on it by Monday. That's the whole story. True one, too.",
           "Nobody has. He died of thirst. Very sad. We toasted him with rum.",
           "Ask me again when I've had another. Rum makes the ending better.",
-          "Me, in '25. Lasted two hours. Longest two hours of my life.",
+          "Me, in '95. Lasted two hours. Longest two hours of my life.",
         ],
       },
       {

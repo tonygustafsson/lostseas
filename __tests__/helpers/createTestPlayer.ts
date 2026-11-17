@@ -1,7 +1,7 @@
 import { patchDeep } from "@/utils/patchDeep"
 
 /**
- * A valid player standing in the Port Royale shop.
+ * A valid player standing in the Kingston shop.
  * Pass deep overrides for the parts a test cares about. Use null to remove a key.
  */
 export const createTestPlayer = (overrides: DeepPartial<Player> = {}) => {
@@ -13,7 +13,7 @@ export const createTestPlayer = (overrides: DeepPartial<Player> = {}) => {
       characterId: "mateo-salazar",
       nationality: "England",
       title: "Pirate",
-      town: "Port Royale",
+      town: "kingston",
       location: "Shop",
       gold: 1000,
       day: 10,

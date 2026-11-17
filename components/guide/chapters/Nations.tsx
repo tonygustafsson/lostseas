@@ -18,14 +18,17 @@ const Nations = () => (
     id="nations"
     lead="Sink your nation's enemies and the governor will find you a nicer hat. Sink your own and he'll find you a smaller one."
     image={{
-      src: "/img/location/port-royale/city-hall.png",
-      alt: "The city hall in Port Royale",
+      src: "/img/location/kingston/city-hall.png",
+      alt: "The city hall in Kingston",
     }}
   >
     <p>
-      {Object.keys(NATIONS).join(", ")} are fighting over the islands. England
-      is at war with {NATIONS.England.warWith}, and Spain with{" "}
-      {NATIONS.Spain.warWith}. Whoever you sail for, their enemy is your enemy.
+      {Object.values(NATIONS)
+        .map(({ name }) => name)
+        .join(", ")}{" "}
+      are fighting over the islands. {NATIONS.England.name} is at war with{" "}
+      {NATIONS.England.warWith}, and Spain with {NATIONS.Spain.warWith}. Whoever
+      you sail for, their enemy is your enemy.
     </p>
 
     <h3>Levels</h3>
@@ -87,7 +90,8 @@ const Nations = () => (
 
     <p>
       Say you&apos;re Spanish, you&apos;ve beaten 25 French ships and never
-      touched an English one. England will happily welcome you as an Admiral.
+      touched a British one. Great Britain will happily welcome you as an
+      Admiral.
     </p>
 
     <GuideTip variant="warning">

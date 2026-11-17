@@ -8,8 +8,8 @@ const Townsfolk = () => (
     id="townsfolk"
     lead="Every town has people with opinions, gossip and errands they'd rather you ran for them."
     image={{
-      src: "/img/location/curacao/tavern.png",
-      alt: "The tavern in Curaçao",
+      src: "/img/location/willemstad/tavern.png",
+      alt: "The tavern in Willemstad",
     }}
   >
     <p>

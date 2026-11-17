@@ -23,7 +23,7 @@ export const BRAGGART: DialogueEntry[] = [
         text: "No. Who are you again?",
         replies: [
           "Who am I? Who am I? I am the man who... well, it was very dark that night, but trust me, it was heroic.",
-          "You wound me, {title}. Deeper than the pike from {enemy} that bounced off my ribs in '32.",
+          "You wound me, {title}. Deeper than the bayonet from {enemy} that bounced off my ribs in '04.",
           "A newcomer, then. Sit down. This will take about three hours and two jugs of rum.",
           "Odd. My name is carved on a tree in Hispaniola. Admittedly I carved it, but still.",
           "No matter. By tomorrow you will have heard of me, because I intend to tell you everything.",
@@ -47,14 +47,14 @@ export const BRAGGART: DialogueEntry[] = [
   },
   {
     id: "braggart-4",
-    text: "Between you and me, Piet Heyn only took the silver fleet in '28 because I had already softened them up. Do you believe me?",
+    text: "Between you and me, Admiral Rooke only took the silver fleet at Vigo in '02 because I had already softened them up. Do you believe me?",
     answers: [
       {
         text: "Every word.",
         replies: [
           "A person of rare judgement! I like you. You may buy me a drink.",
-          "Good. The Dutch West India Company refuses to pay me my share. Bureaucrats, the lot of them.",
-          "Piet was a fine fellow. A bit slow. I had to point out which ships were full of silver.",
+          "Good. The Admiralty refuses to pay me my share. Bureaucrats, the lot of them.",
+          "Rooke was a fine fellow. A bit slow. I had to point out which ships were full of silver.",
           "He sent me a letter of thanks once. I used it to light my pipe, which I now regret.",
           "Ah, a true believer. There are so few of you left. Mostly just you, in fact.",
         ],
@@ -62,10 +62,10 @@ export const BRAGGART: DialogueEntry[] = [
       {
         text: "Where were you on the day, exactly?",
         replies: [
-          "Exactly? Well. Near. In the general region of Cuba. Within a fortnight's sail.",
+          "Exactly? Well. Near. In the general region of Spain. Within a fortnight's sail.",
           "On a ship. A different ship. Behind a cloud. Look, it was a busy day for everyone.",
           "That is a very specific question and I resent it, {title}.",
-          "Matanzas Bay, obviously. Or was it... no, it was definitely somewhere with water.",
+          "Vigo Bay, obviously. Or was it... no, it was definitely somewhere with water.",
           "I was in the hold, softening up the silver. It is very technical, you would not understand.",
         ],
       },
@@ -83,7 +83,7 @@ export const BRAGGART: DialogueEntry[] = [
   },
   {
     id: "braggart-5",
-    text: "Cardinal Richelieu wrote to me personally, you know. He asked me to stop writing to him. A man does not ask that of a nobody.",
+    text: "Old King Louis of France wrote to me personally, you know. He asked me to stop writing to him. A man does not ask that of a nobody.",
   },
   {
     id: "braggart-6",
@@ -234,7 +234,7 @@ export const BRAGGART: DialogueEntry[] = [
         replies: [
           "Take our own town? I am a hero, not a lunatic. There is a difference. A small one.",
           "Ha! The governor of {nationTown} would have me hanged. Then he would beg my forgiveness, but still.",
-          "Practice is for those who make mistakes. I last made one in '31 and it was not my fault.",
+          "Practice is for those who make mistakes. I last made one in '01 and it was not my fault.",
           "Now that is treason, {title}. Funny treason, but treason. I shall pretend I did not hear it.",
           "I took {nationTown} once already. They just did not notice. That is how good I am.",
         ],
@@ -243,7 +243,7 @@ export const BRAGGART: DialogueEntry[] = [
   },
   {
     id: "braggart-13",
-    text: "I knew the buccaneers on Hispaniola before they were famous. Taught them how to smoke meat. Before me, they just looked at it.",
+    text: "I knew the old buccaneers on Hispaniola before they settled down as planters. Taught them how to smoke meat. Before me, they just looked at it.",
   },
   {
     id: "braggart-14",
@@ -323,7 +323,7 @@ export const BRAGGART: DialogueEntry[] = [
   },
   {
     id: "braggart-17",
-    text: "My grandfather sailed with Drake. Or near Drake. He once saw Drake's ship from a hill, and the family has never stopped talking about it.",
+    text: "My grandfather sailed with Morgan. Or near Morgan. He once saw Morgan's ship from a hill, and the family has never stopped talking about it.",
   },
   {
     id: "braggart-18",
@@ -395,7 +395,7 @@ export const BRAGGART: DialogueEntry[] = [
           "Two hours. And I did breathe. Through my ears, a trick I learned from a Dutch pearl diver.",
           "That is a skill, not a deed. But thank you for noticing.",
           "You exaggerate. I breathe at least twice an hour. Usually during the applause.",
-          "I could do it now if you like. Time me. Right. So, in '29, I was...",
+          "I could do it now if you like. Time me. Right. So, in '09, I was...",
           "Better than breathing for an hour without talking. That is called being a clerk.",
         ],
       },
@@ -487,14 +487,14 @@ export const BRAGGART: DialogueEntry[] = [
   },
   {
     id: "braggart-26",
-    text: "I hear Portugal is restless under Philip IV. I predicted it years ago, to anyone who would listen. Do you think they will rise?",
+    text: "I hear the Scots are restless under King George. I predicted it years ago, to anyone who would listen. Do you think they will rise?",
     answers: [
       {
         text: "It seems likely.",
         replies: [
           "Then remember who said it first. Me. In a tavern. Loudly.",
-          "When they do, I expect a letter from Lisbon admitting I was right. And maybe a small castle.",
-          "Philip IV has enough on his plate with Catalonia. I would not want to be in his boots, and they are very fine boots.",
+          "When they do, I expect a letter from James Stuart admitting I was right. And maybe a small castle.",
+          "King George has enough on his plate learning English. I would not want to be in his boots, and they are very fine boots.",
           "History is about to listen to me, {title}. It is a very proud day.",
           "Mark my words. And mark my name next to them, in big letters.",
         ],
@@ -502,11 +502,11 @@ export const BRAGGART: DialogueEntry[] = [
       {
         text: "Did you really predict it?",
         replies: [
-          "I told a Portuguese sailor. He told his mother. She told me to stop shouting.",
+          "I told a Scottish sailor. He told his mother. She told me to stop shouting.",
           "I predicted it, and also rain, and also that the cook would burn the pork. Two out of three so far.",
           "In a manner of speaking. I wrote it on a tavern wall in {otherTown}. Somebody painted over it.",
           "I predict everything, {title}. Some of it is bound to come true.",
-          "Not in words. But I gave a very knowing nod in the direction of Lisbon.",
+          "Not in words. But I gave a very knowing nod in the direction of Edinburgh.",
         ],
       },
       {
@@ -515,7 +515,7 @@ export const BRAGGART: DialogueEntry[] = [
           "Unkind. My presence has decided many battles. Not always in the right direction, but decided.",
           "Ha! Very well, I shall stay here and let them take all the glory.",
           "My help is in high demand, {title}. They would be lucky to get it.",
-          "I wrote to the Catalans once and they stopped answering letters altogether. I am starting to see a pattern.",
+          "I wrote to the Catalans once, and Barcelona fell within the year. I am starting to see a pattern.",
           "Fine. But when they win, I will still say it was me.",
         ],
       },
@@ -563,11 +563,11 @@ export const BRAGGART: DialogueEntry[] = [
   },
   {
     id: "braggart-29",
-    text: "Louis XIII sends me cheese every Christmas. At least, someone sends me cheese. I like to think it is him.",
+    text: "Louis XIV sends me cheese every Christmas. At least, someone sends me cheese. I like to think it is him.",
   },
   {
     id: "braggart-30",
-    text: "The Thirty Years' War would have been the Three Weeks' War if they had sent for me. Do you know why they did not?",
+    text: "The War of the Spanish Succession would have been over in three weeks if they had sent for me. Do you know why they did not?",
     answers: [
       {
         text: "Because you would have won it too quickly?",
@@ -807,7 +807,7 @@ export const BRAGGART: DialogueEntry[] = [
   },
   {
     id: "braggart-42",
-    text: "Barbados is all sugar now, they say. I told them to stop growing tobacco years ago. Do you think anyone thanked me?",
+    text: "Barbados is all sugar, they say. I told them to stop growing tobacco years ago. Do you think anyone thanked me?",
     answers: [
       {
         text: "I am sure someone did.",
@@ -923,7 +923,7 @@ export const BRAGGART: DialogueEntry[] = [
   },
   {
     id: "braggart-47",
-    text: "Charles I has his troubles with Parliament. If he had a man like me at his side, Parliament would be too busy listening to my stories to cause any trouble.",
+    text: "King George has his troubles with his ministers. If he had a man like me at his side, they would be too busy listening to my stories to cause any trouble.",
   },
   {
     id: "braggart-48",
@@ -1007,7 +1007,7 @@ export const BRAGGART: DialogueEntry[] = [
   },
   {
     id: "braggart-52",
-    text: "Catalonia is in revolt, Portugal is grumbling, and here I am in {town}, wasting my talents. What should I do with myself, {title}?",
+    text: "Scotland is grumbling, France has a sickly old king, and here I am in {town}, wasting my talents. What should I do with myself, {title}?",
     answers: [
       {
         text: "Go to Europe and sort it all out.",
@@ -1015,7 +1015,7 @@ export const BRAGGART: DialogueEntry[] = [
           "I would, but the crossing is long and I get bored without an audience.",
           "Excellent idea. Lend me the fare and I will leave in the morning. Or the morning after.",
           "Europe is not ready for me. It has enough wars already.",
-          "I tried that in '35. They sent me back. Said I was too heroic for the paperwork.",
+          "I tried that in '05. They sent me back. Said I was too heroic for the paperwork.",
           "Ha! And leave {town} defenceless? Never. I am too noble.",
         ],
       },

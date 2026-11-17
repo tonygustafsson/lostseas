@@ -66,29 +66,29 @@ describe("shop utils", () => {
 describe("isTradeGoodAvailableInTown", () => {
   it("unrestricted items are always available regardless of town", () => {
     expect(isTradeGoodAvailableInTown("food", undefined)).toBe(true)
-    expect(isTradeGoodAvailableInTown("water", "Port Royale")).toBe(true)
-    expect(isTradeGoodAvailableInTown("medicine", "Havana")).toBe(true)
+    expect(isTradeGoodAvailableInTown("water", "kingston")).toBe(true)
+    expect(isTradeGoodAvailableInTown("medicine", "havana")).toBe(true)
     expect(isTradeGoodAvailableInTown("tobacco", undefined)).toBe(true)
-    expect(isTradeGoodAvailableInTown("rum", "Belize")).toBe(true)
-    expect(isTradeGoodAvailableInTown("cannons", "Panama")).toBe(true)
+    expect(isTradeGoodAvailableInTown("rum", "nassau")).toBe(true)
+    expect(isTradeGoodAvailableInTown("cannons", "portobelo")).toBe(true)
   })
 
   it("restricted trade good is available in a town that carries it", () => {
-    expect(isTradeGoodAvailableInTown("porcelain", "Port Royale")).toBe(true)
-    expect(isTradeGoodAvailableInTown("spices", "Charles Towne")).toBe(true)
-    expect(isTradeGoodAvailableInTown("sugar", "Barbados")).toBe(true)
-    expect(isTradeGoodAvailableInTown("silk", "Havana")).toBe(true)
-    expect(isTradeGoodAvailableInTown("tea", "Bonaire")).toBe(true)
-    expect(isTradeGoodAvailableInTown("cotton", "Belize")).toBe(true)
+    expect(isTradeGoodAvailableInTown("porcelain", "kingston")).toBe(true)
+    expect(isTradeGoodAvailableInTown("spices", "st-georges")).toBe(true)
+    expect(isTradeGoodAvailableInTown("sugar", "bridgetown")).toBe(true)
+    expect(isTradeGoodAvailableInTown("silk", "havana")).toBe(true)
+    expect(isTradeGoodAvailableInTown("tea", "savaneta")).toBe(true)
+    expect(isTradeGoodAvailableInTown("cotton", "nassau")).toBe(true)
   })
 
   it("restricted trade good is NOT available in a town that does not carry it", () => {
-    expect(isTradeGoodAvailableInTown("porcelain", "Charles Towne")).toBe(false)
-    expect(isTradeGoodAvailableInTown("spices", "Port Royale")).toBe(false)
-    expect(isTradeGoodAvailableInTown("sugar", "Panama")).toBe(false)
-    expect(isTradeGoodAvailableInTown("silk", "Barbados")).toBe(false)
-    expect(isTradeGoodAvailableInTown("tea", "Panama")).toBe(false)
-    expect(isTradeGoodAvailableInTown("cotton", "San Juan")).toBe(false)
+    expect(isTradeGoodAvailableInTown("porcelain", "st-georges")).toBe(false)
+    expect(isTradeGoodAvailableInTown("spices", "kingston")).toBe(false)
+    expect(isTradeGoodAvailableInTown("sugar", "portobelo")).toBe(false)
+    expect(isTradeGoodAvailableInTown("silk", "bridgetown")).toBe(false)
+    expect(isTradeGoodAvailableInTown("tea", "portobelo")).toBe(false)
+    expect(isTradeGoodAvailableInTown("cotton", "san-juan")).toBe(false)
   })
 
   it("restricted trade good with undefined town returns false (secure default-deny)", () => {
@@ -102,22 +102,22 @@ describe("isTradeGoodAvailableInTown", () => {
 
   it("every town has at least one restricted trade good available", () => {
     const towns: Town[] = [
-      "Charles Towne",
-      "Belize",
-      "Port Royale",
-      "Barbados",
-      "Martinique",
-      "Biloxi",
-      "Tortuga",
-      "Leogane",
-      "Curacao",
-      "St. Eustatius",
-      "Bonaire",
-      "St. Martin",
-      "Panama",
-      "San Juan",
-      "Havana",
-      "Villa Hermosa",
+      "st-georges",
+      "nassau",
+      "kingston",
+      "bridgetown",
+      "saint-pierre",
+      "fort-louis",
+      "cap-francais",
+      "basse-terre",
+      "willemstad",
+      "st-eustatius",
+      "savaneta",
+      "simpson-bay",
+      "portobelo",
+      "san-juan",
+      "havana",
+      "campeche",
     ]
     const restrictedGoods = [
       "porcelain",
@@ -216,9 +216,9 @@ describe("trade draft utils", () => {
   })
 
   it("getSellBarterGoodsTargets sets every barter good the local shop accepts to zero", () => {
-    // Port Royale trades porcelain but not spices
+    // Kingston trades porcelain but not spices
     const targets = getSellBarterGoodsTargets(
-      getShopItems("Port Royale").barterGoods
+      getShopItems("kingston").barterGoods
     )
 
     expect(targets).toMatchObject({ rum: 0, tobacco: 0, porcelain: 0 })
@@ -233,7 +233,7 @@ describe("trade draft utils", () => {
       { food: 10 },
       {
         ...targets,
-        ...getSellBarterGoodsTargets(getShopItems("Port Royale").barterGoods),
+        ...getSellBarterGoodsTargets(getShopItems("kingston").barterGoods),
       }
     )
 
@@ -242,12 +242,12 @@ describe("trade draft utils", () => {
 
   it("getSellBarterGoodsTargets never sells medicine, since it is a utility", () => {
     expect(
-      getSellBarterGoodsTargets(getShopItems("Port Royale").barterGoods)
+      getSellBarterGoodsTargets(getShopItems("kingston").barterGoods)
     ).not.toHaveProperty("medicine")
   })
 
   it("getShopItems groups the items this town trades", () => {
-    const { necessities, utilities, barterGoods } = getShopItems("Port Royale")
+    const { necessities, utilities, barterGoods } = getShopItems("kingston")
 
     expect(necessities).toEqual(["food", "water"])
     expect(utilities).toEqual(["medicine"])
@@ -258,7 +258,7 @@ describe("trade draft utils", () => {
 })
 
 describe("planned trade utils", () => {
-  const portRoyaleBarterGoods = getShopItems("Port Royale").barterGoods
+  const portRoyaleBarterGoods = getShopItems("kingston").barterGoods
 
   it("getPlannedAmount prefers the target, then what is owned, then zero", () => {
     expect(getPlannedAmount({ food: 10 }, { food: 4 }, "food")).toBe(4)
@@ -286,7 +286,7 @@ describe("planned trade utils", () => {
     expect(
       hasPlannedBarterGoods(portRoyaleBarterGoods, { medicine: 5 }, {})
     ).toBe(false)
-    // Port Royale does not trade spices
+    // Kingston does not trade spices
     expect(
       hasPlannedBarterGoods(portRoyaleBarterGoods, { spices: 5 }, {})
     ).toBe(false)

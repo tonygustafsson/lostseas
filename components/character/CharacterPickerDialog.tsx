@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog"
 import type { Character } from "@/constants/characters"
 import { NATIONS } from "@/constants/locations"
+import { getNationName } from "@/utils/location"
 
 import CharacterGrid from "./CharacterGrid"
 
@@ -57,7 +58,7 @@ const CharacterPickerDialog = ({
               className="h-12 gap-2 text-sm sm:h-16 sm:gap-4 sm:text-lg"
             >
               <Flag nation={nation} className="size-6 sm:size-8" decorative />
-              {nation}
+              {getNationName(nation)}
             </Button>
           ))}
         </div>

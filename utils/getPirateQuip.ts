@@ -126,7 +126,7 @@ const generalQuips = [
   "Arrr, the horizon be callin', Cap'n! Treasure awaits those bold enough to seek it! Squawk!",
   "I once flew over a merchant ship loaded to the gunnels with silk and spices. Should've told ye sooner! Squawk!",
   "Squawk! Did ye know the best treasure ain't gold, Cap'n? It be the enemies we plundered along the way! Heh!",
-  "Arrr, they say Tortuga's tavern has the finest rum this side of the Atlantic! Not that I'd know... Squawk!",
+  "Arrr, they say Nassau's tavern has the finest rum this side of the Atlantic! Not that I'd know... Squawk!",
   "Squawk! A good pirate keeps one eye on the horizon and one on the crew. Good thing I've got two eyes! Heh!",
   "Fair winds and followin' seas, Cap'n! May yer cannons be true and yer rum never run dry! Squawk!",
   "The sea don't care about yer plans, Cap'n — she makes her own! Best be ready for anything! Squawk!",

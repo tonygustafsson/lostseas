@@ -2,6 +2,7 @@ import { GiHandcuffs, GiPirateCaptain } from "react-icons/gi"
 
 import { Card } from "@/components/ui/card"
 import { getPirateCrime } from "@/utils/createWantedPirate"
+import { getTownName } from "@/utils/location"
 import { formatGold } from "@/utils/number"
 
 type Props = {
@@ -39,7 +40,8 @@ export default function WantedPirateCard({ pirate }: Props) {
       )}
 
       <p className="relative mt-2 text-sm">
-        Bring them to the governor of {pirate.rewarder} for a bounty of{" "}
+        Bring them to the governor of {getTownName(pirate.rewarder)} for a
+        bounty of{" "}
         <span className="text-gold font-semibold">
           {formatGold(crime?.bounty)}
         </span>

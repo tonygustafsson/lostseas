@@ -16,7 +16,7 @@ describe("resolvePlaceholders", () => {
   it("fills player and town placeholders", () => {
     const text = resolvePlaceholders(
       "{name} {title} {town} {nation} {enemy} {playerNation}",
-      { player, town: "Havana" }
+      { player, town: "havana" }
     )
 
     expect(text).toBe("Test captain Havana Spain Holland England")
@@ -28,15 +28,18 @@ describe("resolvePlaceholders", () => {
     for (let i = 0; i < 50; i++) {
       const [other, nation, enemy] = resolvePlaceholders(
         "{otherTown}|{nationTown}|{enemyTown}",
-        { player, town: "Havana" },
+        { player, town: "havana" },
         random
       ).split("|")
 
       expect(other).not.toBe("Havana")
-      expect(["Panama", "Villa Hermosa", "San Juan"]).toContain(nation)
-      expect(["Bonaire", "Curacao", "St. Martin", "St. Eustatius"]).toContain(
-        enemy
-      )
+      expect(["Portobelo", "Campeche", "San Juan"]).toContain(nation)
+      expect([
+        "Savaneta",
+        "Willemstad",
+        "Simpson Bay",
+        "St. Eustatius",
+      ]).toContain(enemy)
     }
   })
 
@@ -44,22 +47,22 @@ describe("resolvePlaceholders", () => {
     const day70 = createTestPlayer({ character: { day: 70 } })
 
     expect(
-      resolvePlaceholders("{month} {year}", { player: day70, town: "Havana" })
-    ).toBe("March 1640")
+      resolvePlaceholders("{month} {year}", { player: day70, town: "havana" })
+    ).toBe("March 1715")
   })
 
   it("uses extra values", () => {
     expect(
       resolvePlaceholders("Take {parcel}", {
         player,
-        town: "Havana",
+        town: "havana",
         extra: { parcel: "a sealed letter" },
       })
     ).toBe("Take a sealed letter")
   })
 
   it("leaves unknown placeholders untouched", () => {
-    expect(resolvePlaceholders("{nope}", { player, town: "Havana" })).toBe(
+    expect(resolvePlaceholders("{nope}", { player, town: "havana" })).toBe(
       "{nope}"
     )
   })
@@ -68,16 +71,16 @@ describe("resolvePlaceholders", () => {
     expect(
       resolvePlaceholders(
         "{nationAdjective} {enemyAdjective} {playerNationAdjective}",
-        { player, town: "Havana" }
+        { player, town: "havana" }
       )
-    ).toBe("Spanish Dutch English")
+    ).toBe("Spanish Dutch British")
 
     const french = createTestPlayer({ character: { nationality: "France" } })
 
     expect(
       resolvePlaceholders("{playerNationAdjective}", {
         player: french,
-        town: "Havana",
+        town: "havana",
       })
     ).toBe("French")
   })
@@ -89,7 +92,7 @@ describe("resolvePlaceholders", () => {
     for (let i = 0; i < 200; i++) {
       const goods = resolvePlaceholders(
         "{merchandise}",
-        { player, town: "Havana" },
+        { player, town: "havana" },
         random
       )
 
@@ -100,7 +103,7 @@ describe("resolvePlaceholders", () => {
   it("capitalises a value at the start of a sentence or quote", () => {
     const context: { player: Player; town: Town } = {
       player,
-      town: "Havana",
+      town: "havana",
     }
 
     expect(resolvePlaceholders("{title} {name}, welcome.", context)).toBe(
@@ -116,7 +119,7 @@ describe("resolvePlaceholders", () => {
   })
 
   it("does not resolve inherited object keys", () => {
-    expect(resolvePlaceholders("{toString}", { player, town: "Havana" })).toBe(
+    expect(resolvePlaceholders("{toString}", { player, town: "havana" })).toBe(
       "{toString}"
     )
   })
@@ -125,7 +128,7 @@ describe("resolvePlaceholders", () => {
     expect(
       resolvePlaceholders("Ah, {title} {name}. Not a {title}.", {
         player,
-        town: "Havana",
+        town: "havana",
       })
     ).toBe("Ah, Captain Test. Not a captain.")
   })
@@ -134,7 +137,7 @@ describe("resolvePlaceholders", () => {
     expect(
       resolvePlaceholders("He said “{title}!”", {
         player,
-        town: "Havana",
+        town: "havana",
       })
     ).toBe("He said “Captain!”")
   })
@@ -145,7 +148,7 @@ describe("resolvePlaceholders", () => {
     for (let i = 0; i < 30; i++) {
       const [a, b, c, d] = resolvePlaceholders(
         "{merchandise}|{merchandise}|{otherTown}|{otherTown}",
-        { player, town: "Havana" },
+        { player, town: "havana" },
         random
       ).split("|")
 
@@ -160,14 +163,14 @@ describe("resolvePlaceholders", () => {
     for (let i = 0; i < 30; i++) {
       const values = pickPlaceholderValues(
         ["Buy {merchandise} in {otherTown}", "{nope} {toString} {merchandise}"],
-        { player, town: "Havana" },
+        { player, town: "havana" },
         random
       )
 
       expect(Object.keys(values).sort()).toEqual(["merchandise", "otherTown"])
 
       const resolved = ["x {merchandise}", "y {merchandise}"].map((text) =>
-        resolvePlaceholders(text, { player, town: "Havana", extra: values })
+        resolvePlaceholders(text, { player, town: "havana", extra: values })
       )
 
       expect(resolved[0].slice(2)).toBe(values.merchandise)

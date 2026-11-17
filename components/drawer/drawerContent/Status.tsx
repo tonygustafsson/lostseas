@@ -37,6 +37,7 @@ import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useQuest } from "@/hooks/queries/useQuest"
 import { useGetStatistics } from "@/hooks/queries/useStatistics"
 import { convertDaysToTimeSpan, getCurrentDate } from "@/utils/date"
+import { getNationName } from "@/utils/location"
 import { formatGold } from "@/utils/number"
 import { getScore } from "@/utils/score"
 import { getBattleTotals } from "@/utils/statistics"
@@ -141,12 +142,12 @@ const StatusDrawer = () => {
 
             <Badge variant="secondary" className={chipClass}>
               <Flag nation={character.nationality} size={16} decorative />
-              {character.nationality}
+              {getNationName(character.nationality)}
             </Badge>
 
             <Badge variant="secondary" className={chipClass}>
               <GiCrossedSwords />
-              War with {enemy}
+              War with {getNationName(enemy)}
               <Flag nation={enemy} size={16} decorative />
             </Badge>
           </div>

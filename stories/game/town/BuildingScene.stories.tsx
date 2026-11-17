@@ -26,7 +26,7 @@ const WEATHER: WeatherType[] = [
 const meta = {
   title: "game/Town/BuildingScene",
   component: BuildingScene,
-  args: { town: "Tortuga", location: "Tavern", weather: "partlySunny" },
+  args: { town: "cap-francais", location: "Tavern", weather: "partlySunny" },
   argTypes: {
     weather: { control: "radio", options: WEATHER },
     town: {

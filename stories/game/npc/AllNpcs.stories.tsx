@@ -171,7 +171,7 @@ type Story = StoryObj<typeof meta>
 export const AllTowns: Story = {}
 
 export const OneTown: Story = {
-  args: { town: "Port Royale" },
+  args: { town: "kingston" },
 }
 
 export const Governors: Story = {

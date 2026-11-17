@@ -418,7 +418,7 @@ export const CHARACTERS: Character[] = [
     gender: "Female",
     nationality: "England",
     description:
-      "Dark curls are tied back with a green headband, and gold hoops catch the light as she grins at the harbour. A tall ship flies the English flag behind her, with a sunlit town rising beyond the quay. Bold and warm, she keeps her crew laughing through the longest voyages and never leaves a debt unpaid.",
+      "Dark curls are tied back with a green headband, and gold hoops catch the light as she grins at the harbour. A tall ship flies the British flag behind her, with a sunlit town rising beyond the quay. Bold and warm, she keeps her crew laughing through the longest voyages and never leaves a debt unpaid.",
     image: "/img/characters/amara-cole.png",
   },
   {

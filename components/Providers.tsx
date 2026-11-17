@@ -7,6 +7,7 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import { usePathname } from "next/navigation"
 import React, { useState } from "react"
 
 import Modal from "@/components/Modal"
@@ -38,6 +39,9 @@ export default function Providers({ children, dehydratedState }: Props) {
       })
   )
 
+  // The guide often opens in a tab next to the game, so it stays silent
+  const isGuide = usePathname() === "/guide"
+
   return (
     <QueryClientProvider client={queryClient}>
       <HydrationBoundary state={dehydratedState}>
@@ -47,7 +51,7 @@ export default function Providers({ children, dehydratedState }: Props) {
 
             <Toast />
             <Modal />
-            <Sound />
+            {!isGuide && <Sound />}
             <WelcomeModal />
             <Drawer />
           </TooltipProvider>

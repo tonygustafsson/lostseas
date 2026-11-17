@@ -15,7 +15,7 @@ const meta = {
   args: {
     name: 'Jack "Mad" Flint',
     crimeId: "rum-warehouse",
-    rewarder: "Havana",
+    rewarder: "havana",
   },
   argTypes: {
     name: { control: "text" },
@@ -42,6 +42,6 @@ export const HighestBounty: Story = {
   args: {
     name: 'Grace "Bloody" Morgan',
     crimeId: "sacked-town",
-    rewarder: "Tortuga",
+    rewarder: "cap-francais",
   },
 }

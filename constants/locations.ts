@@ -1,6 +1,6 @@
-export const NATIONS: Record<Nation, { name: Nation; warWith: Nation }> = {
+export const NATIONS: Record<Nation, { name: string; warWith: Nation }> = {
   England: {
-    name: "England",
+    name: "Great Britain",
     warWith: "France",
   },
   France: {
@@ -46,13 +46,15 @@ export type TownBuilding = {
 export type TownLocations = Record<
   Town,
   {
+    name: string
     nation: Nation
+    summary: string
     harborDescription: string
     buildings: Record<TownLocation, TownBuilding>
     map: {
       x: number
       y: number
-      textAlign?: "bottom" | "right"
+      textAlign?: "bottom" | "right" | "left"
       // Open water next to the town, where sea routes start and end and the
       // ship docks
       harbor: { x: number; y: number }
@@ -60,18 +62,20 @@ export type TownLocations = Record<
   }
 >
 
-/** Kilometres per day at sea, about the speed of a real ship in 1640. */
+/** Kilometres per day at sea, about the speed of a real ship in 1715. */
 export const KM_PER_DAY = 200
 
 // Scale of the sea map. Distances follow the routes drawn on the map, so a
 // town that looks further away is further away.
-export const KM_PER_PIXEL = 5.7
+export const KM_PER_PIXEL = 4.9
 
 export const TOWNS: TownLocations = {
-  "Charles Towne": {
+  "st-georges": {
+    name: "St. George's",
     nation: "England",
+    summary: "Established fortified harbour town",
     harborDescription:
-      "Palmetto-log wharves line the mouth of the Cooper River, stacked high with barrels of rice and indigo bound for London, while redcoats watch from the battery and planters haggle with ship captains over the price of passage.",
+      "Ships pick their way through the reefs into St. George's Harbour, where cedar sloops built on the island crowd the quay beside the old stone houses, ready to carry salt, timber and news far out across the Atlantic from every other port.",
     buildings: {
       Shop: {
         name: "King's Mercantile",
@@ -90,7 +94,7 @@ export const TOWNS: TownLocations = {
       Bank: {
         name: "Crown Ledger Bank",
         description:
-          "Red brick and tall arched windows look out over the harbour from the Crown Ledger Bank, where planters come to deposit their rice and indigo money. Navy banners set with golden crowns hang above a polished counter of scales, quills and ledgers, and a great iron vault stamped with a crown guards the back of the marble hall.",
+          "Red brick and tall arched windows look out over the harbour from the Crown Ledger Bank, where planters come to deposit their tobacco money. Navy banners set with golden crowns hang above a polished counter of scales, quills and ledgers, and a great iron vault stamped with a crown guards the back of the marble hall.",
         desktop: { x: 39, y: 50, size: 10 },
         mobile: { x: 82, y: 63, size: 30 },
       },
@@ -117,16 +121,17 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 388,
-      y: 47,
-      textAlign: "bottom",
-      harbor: { x: 407, y: 62 },
+      x: 776,
+      y: 45,
+      harbor: { x: 796, y: 55 },
     },
   },
-  Barbados: {
+  bridgetown: {
+    name: "Bridgetown",
     nation: "England",
+    summary: "Established trading port",
     harborDescription:
-      "Coral-stone warehouses crowd the curve of Carlisle Bay, where hogsheads of sugar and molasses roll down to the waiting longboats and English merchantmen ride at anchor in water so clear you can count the shells on the sand.",
+      "Coral-stone warehouses crowd the curve of Carlisle Bay, where hogsheads of sugar and casks of rum roll down to the waiting longboats and British merchantmen ride at anchor in water so clear you can count the shells on the sand.",
     buildings: {
       Shop: {
         name: "Coral Crown Mercantile",
@@ -172,15 +177,17 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 778,
-      y: 393,
-      harbor: { x: 782, y: 407 },
+      x: 914,
+      y: 458,
+      harbor: { x: 920, y: 470 },
     },
   },
-  "Port Royale": {
+  kingston: {
+    name: "Kingston",
     nation: "England",
+    summary: "Established commercial harbour",
     harborDescription:
-      "Crammed onto a narrow spit of sand, the docks of Port Royale never sleep. Navy frigates moor beside battered privateers, and gold of uncertain origin changes hands in plain sight of the fort.",
+      "Ships anchor in the broad harbour behind the Palisadoes, where the drowned streets of old Port Royal lie beneath the water, and the young town of Kingston spreads out along new wharves busy with sugar, logwood and Spanish silver.",
     buildings: {
       Shop: {
         name: "Crown Compass Shop",
@@ -192,14 +199,14 @@ export const TOWNS: TownLocations = {
       Tavern: {
         name: "Mariner's Rest Tavern",
         description:
-          "A ship's wheel sits over the green sign of the Mariner's Rest Tavern, and lantern light fills every window from the dormers to the long gallery. Inside, a fire roars in the stone hearth, Union flags hang from the gallery and a naval coat is slung over a chair. Privateers and navy men drink side by side, each pretending not to know the other.",
+          "A ship's wheel sits over the green sign of the Mariner's Rest Tavern, and lantern light fills every window from the dormers to the long gallery. Inside, a fire roars in the stone hearth, Union flags hang from the gallery and a naval coat is slung over a chair. Planters and sailors drink side by side, trading news from home.",
         desktop: { x: 22, y: 52, size: 13 },
         mobile: { x: 49, y: 50, size: 32 },
       },
       Bank: {
         name: "Royal Exchange Bank",
         description:
-          "Tall white columns and golden crowns give the Royal Exchange Bank the look of a temple to money. Inside, portraits of a redcoat general and a naval officer flank a great barred vault heaped with gold, and a red carpet leads past chests of coin to the clerks' counter. Here gold of uncertain origin is quietly turned into respectable English coin.",
+          "Tall white columns and golden crowns give the Royal Exchange Bank the look of a temple to money. Inside, portraits of a redcoat general and a naval officer flank a great barred vault heaped with gold, and a red carpet leads past chests of coin to the clerks' counter. Here the island's sugar money is turned into respectable British coin.",
         desktop: { x: 37, y: 52, size: 10 },
         mobile: { x: 82, y: 50, size: 32 },
       },
@@ -220,21 +227,23 @@ export const TOWNS: TownLocations = {
       Shipyard: {
         name: "Queen's Dockyard",
         description:
-          "A golden anchor between two crowns decorates the sign of the Queen's Dockyard, a weathered timber shed facing the water and the fort. Inside, a long hull stands in its cradle among ladders, pulleys and ropes, while plans and a model ship lie on the workbench. Naval officers inspect every plank before it goes in, and barrels of tar line the slipway.",
+          "A golden anchor between two crowns decorates the sign of the Queen's Dockyard, a weathered timber shed facing the water and the fort. Inside, a long hull stands in its cradle among ladders, pulleys and ropes, while plans and a model ship lie on the workbench. The master shipwright inspects every plank before it goes in, and barrels of tar line the slipway.",
         desktop: { x: 90, y: 52, size: 14 },
         mobile: { x: 76, y: 73, size: 42 },
       },
     },
     map: {
-      x: 452,
-      y: 313,
-      harbor: { x: 461, y: 332 },
+      x: 538,
+      y: 367,
+      harbor: { x: 548, y: 381 },
     },
   },
-  Belize: {
+  nassau: {
+    name: "Nassau",
     nation: "England",
+    summary: "Pirate haven, a damaged and poorly developed town",
     harborDescription:
-      "Rough wooden jetties poke out between the mangroves, where Baymen float great rafts of logwood down the river and load them by hand onto ships that must pick their way carefully through the shallow reef beyond.",
+      "Rotting hulks and burned-out houses line the shore of New Providence, where pirate sloops careen on the beach beneath the crumbling fort, and nobody in the ragged town answers to any governor.",
     buildings: {
       Shop: {
         name: "Bay Crown Mercantile",
@@ -253,7 +262,7 @@ export const TOWNS: TownLocations = {
       Bank: {
         name: "Colonial Ledger Bank",
         description:
-          "Tall arched windows light the pale stone hall of the Colonial Ledger Bank, beneath the royal lion and unicorn. Bewigged clerks record every coin in great ledgers behind gleaming brass grilles, while logwood cutters queue across the chequered floor with their bundles, trading a season's hard work for silver. A redcoat guards the heavy iron vault, standing open on chests of gold.",
+          "Tall arched windows light the pale stone hall of the Colonial Ledger Bank, beneath the royal lion and unicorn. Bewigged clerks record every coin in great ledgers behind gleaming brass grilles, while planters queue across the chequered floor with their bundles of tobacco, trading a season's hard work for silver. A redcoat guards the heavy iron vault, standing open on chests of gold.",
         desktop: { x: 41, y: 47, size: 13 },
         mobile: { x: 18, y: 40, size: 32 },
       },
@@ -267,28 +276,30 @@ export const TOWNS: TownLocations = {
       Market: {
         name: "Mangrove Quay Market",
         description:
-          "Under the timber roof of the Mangrove Quay Market, bananas hang from the beams above stalls heaped with limes, cacao, coconuts and pineapples. Traders weigh fruit on swinging scales, snapper, grouper and jack glisten on beds of salt, and canoes from up the river unload their baskets straight onto the planks of the long jetty.",
+          "Under the timber roof of the Mangrove Quay Market, bananas hang from the beams above stalls heaped with limes, cacao, coconuts and pineapples. Traders weigh fruit on swinging scales, snapper, grouper and jack glisten on beds of salt, and fishing canoes from around the island unload their baskets straight onto the planks of the long jetty.",
         desktop: { x: 75, y: 50, size: 13 },
         mobile: { x: 26, y: 64, size: 40 },
       },
       Shipyard: {
-        name: "Belize Shipwrights",
+        name: "Providence Shipwrights",
         description:
-          "Crossed hammers mark the sign of Belize Shipwrights, a great timber shed that smells of fresh-cut mahogany and bubbling pine tar. Carpenters saw and hew beneath a half-built hull whose bare ribs rise above the slipway, and a crane swings cargo on the jetty outside. At the workbench, the master shipwright pores over plans with a captain.",
+          "Crossed hammers mark the sign of Providence Shipwrights, a great timber shed that smells of fresh-cut mahogany and bubbling pine tar. Carpenters saw and hew beneath a half-built hull whose bare ribs rise above the slipway, and a crane swings cargo on the jetty outside. At the workbench, the master shipwright pores over plans with a captain.",
         desktop: { x: 91, y: 48, size: 14 },
         mobile: { x: 80, y: 66, size: 38 },
       },
     },
     map: {
-      x: 214,
-      y: 308,
-      harbor: { x: 242, y: 308 },
+      x: 504,
+      y: 204,
+      harbor: { x: 508, y: 218 },
     },
   },
-  Tortuga: {
+  "cap-francais": {
+    name: "Cap-Français",
     nation: "France",
+    summary: "Established colonial harbour",
     harborDescription:
-      "Beneath the cliffs and the guns of the old fort, buccaneer sloops crowd a cramped little harbor where nobody asks where the cargo came from, and every second sailor on the quay seems to be looking for a new captain.",
+      "Beneath green mountains on the north coast of Saint-Domingue, French merchantmen crowd the roadstead to load sugar and indigo, while old buccaneers turned planters drink to the days when Tortuga lay just across the water.",
     buildings: {
       Shop: {
         name: "Harbor Shop",
@@ -334,15 +345,17 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 594,
-      y: 270,
-      harbor: { x: 593, y: 275 },
+      x: 658,
+      y: 332,
+      harbor: { x: 668, y: 321 },
     },
   },
-  Leogane: {
+  "basse-terre": {
+    name: "Basse-Terre",
     nation: "France",
+    summary: "Established fortified town",
     harborDescription:
-      "Flat-bottomed barges glide in from the sugar plains of Saint-Domingue, and French merchantmen load casks of indigo and raw sugar while customs officers in powdered wigs tally every crate in their leather ledgers.",
+      "Under the smoking heights of La Soufrière, the stone houses of Basse-Terre line the shore below Fort Saint-Charles, where French ships load sugar and the governor of Guadeloupe keeps a wary eye out for British sails.",
     buildings: {
       Shop: {
         name: "Quay Shop",
@@ -361,7 +374,7 @@ export const TOWNS: TownLocations = {
       Bank: {
         name: "Royal Bank",
         description:
-          "The white flag with golden lilies flies above the Royal Bank, a stately house of pale stone with a golden fleur-de-lis set into its slate roof. Inside, tall arched windows light a chequered marble hall where a brass-railed counter guards ledgers and gold bars, and an iron vault stands open beside potted palms for the sugar merchants counting their profits.",
+          "The white flag with golden lilies flies above the Royal Bank, a stately house of pale stone with a golden fleur-de-lis set into its slate roof. Inside, tall arched windows light a chequered marble hall where a brass-railed counter guards ledgers and gold bars, and an iron vault stands open beside potted palms for the tobacco merchants counting their profits.",
         desktop: { x: 40, y: 55, size: 10 },
         mobile: { x: 82, y: 72, size: 28 },
       },
@@ -373,9 +386,9 @@ export const TOWNS: TownLocations = {
         mobile: { x: 30, y: 40, size: 40 },
       },
       Market: {
-        name: "Saint Pierre Market",
+        name: "Basse-Terre Market",
         description:
-          "Beneath a terracotta roof and a row of stone arches, the Saint Pierre Market sets out its stalls under red and white striped awnings. Baskets of oranges, plantains, pineapples and coffee beans crowd the counters, with chillies and garlic hanging overhead, and through the arches the old stone aqueduct can be seen on the hill above the harbour.",
+          "Beneath a terracotta roof and a row of stone arches, the Basse-Terre Market sets out its stalls under red and white striped awnings. Baskets of oranges, plantains, pineapples and coffee beans crowd the counters, with chillies and garlic hanging overhead, and through the arches the old stone aqueduct can be seen on the hill above the harbour.",
         desktop: { x: 72, y: 58, size: 12 },
         mobile: { x: 75, y: 52, size: 38 },
       },
@@ -388,15 +401,18 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 524,
-      y: 307,
-      harbor: { x: 533, y: 323 },
+      x: 875,
+      y: 391,
+      textAlign: "right",
+      harbor: { x: 878, y: 400 },
     },
   },
-  Martinique: {
+  "saint-pierre": {
+    name: "Saint-Pierre",
     nation: "France",
+    summary: "Established trading town",
     harborDescription:
-      "Under the brooding shadow of Mount Pelée, the busy roadstead fills with French ships taking on rum and sugar, and the scent of cane smoke drifts down from the hillside distilleries to the crowded quays.",
+      "Under the brooding shadow of Mount Pelée, the busy roadstead fills with French ships taking on sugar and cocoa, and smoke from the sugar mills drifts down to the crowded quays.",
     buildings: {
       Shop: {
         name: "Coral Crown Shop",
@@ -442,16 +458,18 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 749,
-      y: 347,
+      x: 884,
+      y: 419,
       textAlign: "right",
-      harbor: { x: 752, y: 362 },
+      harbor: { x: 892, y: 431 },
     },
   },
-  Biloxi: {
+  "fort-louis": {
+    name: "Fort Louis",
     nation: "France",
+    summary: "Small colonial capital and river port",
     harborDescription:
-      "The sound is too shallow for deep-hulled ships, so longboats shuttle cargo across the calm water to a modest landing of pine planks, where French settlers trade furs and timber for supplies they cannot grow themselves.",
+      "French ships anchor off Dauphin Island and send their cargo up Mobile Bay by boat to Fort Louis, a small wooden capital where soldiers, settlers and traders bargain with the Mobile and Choctaw peoples for deerskins.",
     buildings: {
       Shop: {
         name: "Pelican Pearl Shop",
@@ -468,9 +486,9 @@ export const TOWNS: TownLocations = {
         mobile: { x: 54, y: 51, size: 34 },
       },
       Bank: {
-        name: "Gulf Crown Bank",
+        name: "Crown Isle Bank",
         description:
-          "A golden fleur-de-lis crowns the slate roof of the Gulf Crown Bank, a handsome cream building with teal shutters and flower-filled window boxes. Inside, brass posts and ropes guide customers to a carved counter with scales and quill, and an iron vault stands open on stacked gold bars, while bundles of furs and timber show the trade that settles its accounts here.",
+          "A golden fleur-de-lis crowns the slate roof of the Crown Isle Bank, a handsome cream building with teal shutters and flower-filled window boxes. Inside, brass posts and ropes guide customers to a carved counter with scales and quill, and an iron vault stands open on stacked gold bars, while bundles of tobacco and timber show the trade that settles its accounts here.",
         desktop: { x: 40, y: 50, size: 11 },
         mobile: { x: 24, y: 28, size: 36 },
       },
@@ -497,15 +515,17 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 259,
-      y: 72,
-      harbor: { x: 269, y: 92 },
+      x: 287,
+      y: 84,
+      harbor: { x: 295, y: 102 },
     },
   },
-  Panama: {
+  portobelo: {
+    name: "Portobelo",
     nation: "Spain",
+    summary: "Fortified trading port",
     harborDescription:
-      "Mule trains laden with Peruvian silver descend from the jungle road to the stone quays, where Spanish soldiers guard every chest until the treasure galleons are ready to carry the King's fortune home.",
+      "Mule trains laden with Peruvian silver come down the jungle road from Panama to the stone quays, where soldiers from the forts guard every chest until the great fair brings the galleons that carry the King's fortune home.",
     buildings: {
       Shop: {
         name: "Pearl Shop",
@@ -543,23 +563,25 @@ export const TOWNS: TownLocations = {
         mobile: { x: 86, y: 49, size: 30 },
       },
       Shipyard: {
-        name: "Panama Shipyard",
+        name: "Portobelo Shipyard",
         description:
-          "Under a long red-tiled roof held up by heavy beams, the Panama Shipyard keeps a great hull in its cradle, wrapped in scaffolding and ladders. Spanish banners hang from the posts above stacks of timber, an anvil, coils of rope and chains, and carpenters patch the battered ships of the treasure fleet here before they brave the long voyage home.",
+          "Under a long red-tiled roof held up by heavy beams, the Portobelo Shipyard keeps a great hull in its cradle, wrapped in scaffolding and ladders. Spanish banners hang from the posts above stacks of timber, an anvil, coils of rope and chains, and carpenters patch the battered ships of the treasure fleet here before they brave the long voyage home.",
         desktop: { x: 90, y: 52, size: 14 },
         mobile: { x: 80, y: 72, size: 36 },
       },
     },
     map: {
-      x: 374,
-      y: 467,
-      harbor: { x: 374, y: 476 },
+      x: 440,
+      y: 540,
+      harbor: { x: 441, y: 548 },
     },
   },
-  Havana: {
+  havana: {
+    name: "Havana",
     nation: "Spain",
+    summary: "Major commercial and naval port",
     harborDescription:
-      "Guarded by the great Morro fortress, the deep and sheltered bay holds the whole Spanish treasure fleet as it gathers for the crossing to Seville, while chandlers and caulkers grow rich preparing the galleons for the voyage.",
+      "Guarded by the great Morro fortress, the deep and sheltered bay holds the whole Spanish treasure fleet as it gathers for the crossing to Spain, while chandlers and caulkers grow rich preparing the galleons for the voyage.",
     buildings: {
       Shop: {
         name: "Harbor Shop",
@@ -605,15 +627,17 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 351,
-      y: 213,
-      harbor: { x: 374, y: 218 },
+      x: 413,
+      y: 247,
+      harbor: { x: 431, y: 249 },
     },
   },
-  "Villa Hermosa": {
+  campeche: {
+    name: "Campeche",
     nation: "Spain",
+    summary: "Established fortified port",
     harborDescription:
-      "Far up the muddy river, the small landing smells of wet earth and cacao, where dugout canoes bring sacks of beans and dyewood out of the swamps to be loaded aboard Spanish coasters bound for Veracruz.",
+      "Behind stout walls built against pirate raids, the port of Campeche loads logwood and salt onto Spanish ships, while lookouts on the bastions watch the shallow bay for British logwood cutters.",
     buildings: {
       Shop: {
         name: "Plaza Shop",
@@ -625,7 +649,7 @@ export const TOWNS: TownLocations = {
       Tavern: {
         name: "Sailor's Tavern",
         description:
-          "Vines and flowers climb the arches of the Sailor's Tavern, shaded outside by blue and white striped awnings. Inside, a great carved ship's wheel hangs on the wall above a bar faced with blue and white tiles, where tankards dangle over rows of bottles and barrels, and the lantern-lit tables are crowded with thirsty river men.",
+          "Vines and flowers climb the arches of the Sailor's Tavern, shaded outside by blue and white striped awnings. Inside, a great carved ship's wheel hangs on the wall above a bar faced with blue and white tiles, where tankards dangle over rows of bottles and barrels, and the lantern-lit tables are crowded with thirsty sailors.",
         desktop: { x: 23, y: 50, size: 13 },
         mobile: { x: 78, y: 42, size: 34 },
       },
@@ -651,21 +675,23 @@ export const TOWNS: TownLocations = {
         mobile: { x: 74, y: 58, size: 38 },
       },
       Shipyard: {
-        name: "Villa Hermosa Shipyard",
+        name: "Campeche Shipyard",
         description:
-          "A golden anchor marks the sign of the Villa Hermosa Shipyard, a broad timber shed with a stone tower beside it. Inside, a half-built hull rests in its scaffolding beneath chains and pulley blocks, river boats sit on the wet slipway among stacks of timber and tools, and tall masts sway at the pier outside.",
+          "A golden anchor marks the sign of the Campeche Shipyard, a broad timber shed with a stone tower beside it. Inside, a half-built hull rests in its scaffolding beneath chains and pulley blocks, small boats sit on the wet slipway among stacks of timber and tools, and tall masts sway at the pier outside.",
         desktop: { x: 87, y: 50, size: 16 },
         mobile: { x: 63, y: 78, size: 46 },
       },
     },
     map: {
-      x: 133,
-      y: 313,
-      harbor: { x: 155, y: 314 },
+      x: 215,
+      y: 324,
+      harbor: { x: 215, y: 334 },
     },
   },
-  "San Juan": {
+  "san-juan": {
+    name: "San Juan",
     nation: "Spain",
+    summary: "Established fortified port",
     harborDescription:
       "Ships slip past the towering walls of El Morro into a sheltered bay, where Spanish men-of-war take on fresh water and supplies and soldiers drill on the ramparts above the bustling waterfront.",
     buildings: {
@@ -713,15 +739,17 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 661,
-      y: 296,
-      harbor: { x: 683, y: 296 },
+      x: 776,
+      y: 343,
+      harbor: { x: 794, y: 342 },
     },
   },
-  Bonaire: {
+  savaneta: {
+    name: "Savaneta",
     nation: "Holland",
+    summary: "Small Dutch administrative outpost",
     harborDescription:
-      "Gleaming white pyramids of salt line the low shore, where flamingos wade in the shallow pans and Dutch ships anchor offshore to fill their holds with the island's only real treasure.",
+      "Few colonists live on this dry Dutch island, where Caquetío herders drive cattle and horses down to the beach at Savaneta for shipping to Curaçao, and West India Company sloops come and go with hides, salted meat and news.",
     buildings: {
       Shop: {
         name: "Oranje Trade House",
@@ -747,7 +775,7 @@ export const TOWNS: TownLocations = {
       "City hall": {
         name: "Stadholder's Hall",
         description:
-          "Golden stone, a slender bell tower and a broad flight of stone steps mark the Stadholder's Hall. Inside, a blue lion crest and red, white and blue banners hang above a great carved desk, while green shutters stand open to the harbour and the trade winds. Island officials pore over maps of Bonaire beneath a candle chandelier.",
+          "Golden stone, a slender bell tower and a broad flight of stone steps mark the Stadholder's Hall. Inside, a blue lion crest and red, white and blue banners hang above a great carved desk, while green shutters stand open to the harbour and the trade winds. Island officials pore over maps of Aruba beneath a candle chandelier.",
         desktop: { x: 56, y: 46, size: 13 },
         mobile: { x: 51, y: 22, size: 36 },
       },
@@ -767,13 +795,16 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 607,
-      y: 439,
-      harbor: { x: 617, y: 431 },
+      x: 702,
+      y: 477,
+      textAlign: "left",
+      harbor: { x: 718, y: 489 },
     },
   },
-  Curacao: {
+  willemstad: {
+    name: "Willemstad",
     nation: "Holland",
+    summary: "Established fortified port",
     harborDescription:
       "Brightly painted Dutch gabled houses crowd the waterfront of Willemstad, and the deep natural harbor is packed with merchantmen from every nation, all welcome as long as their trade pays the Company its share.",
     buildings: {
@@ -821,34 +852,36 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 561,
-      y: 419,
-      harbor: { x: 560, y: 431 },
+      x: 723,
+      y: 481,
+      harbor: { x: 725, y: 494 },
     },
   },
-  "St. Martin": {
+  "simpson-bay": {
+    name: "Simpson Bay",
     nation: "Holland",
+    summary: "Small fishing and anchorage settlement",
     harborDescription:
-      "Shared uneasily between the Dutch and the French, the island's harbor bustles with salt traders from the great ponds behind town, and sailors drink on both sides of a border nobody bothers to mark on the beach.",
+      "Fishing boats and the odd trading sloop anchor in the quiet lagoon of Simpson Bay, on the Dutch half of an island shared with France, where salt from the great pond is raked into white heaps along the shore.",
     buildings: {
       Shop: {
-        name: "Nassau Supply Shop",
+        name: "Salt Pond Supply Shop",
         description:
-          "A red and white striped awning hangs over the green door of the Nassau Supply Shop, a brick house with a stepped gable and flower boxes in every window. Inside, barrels and sacks brim with salt, hams, garlic and chillies hang from the beams, and bolts of cloth, coils of rope and crates of cannonballs crowd around a counter with brass scales.",
+          "A red and white striped awning hangs over the green door of the Salt Pond Supply Shop, a brick house with a stepped gable and flower boxes in every window. Inside, barrels and sacks brim with salt, hams, garlic and chillies hang from the beams, and bolts of cloth, coils of rope and crates of cannonballs crowd around a counter with brass scales.",
         desktop: { x: 8.5, y: 52, size: 10 },
         mobile: { x: 17, y: 38, size: 28 },
       },
       Tavern: {
         name: "Pelican Sail Tavern",
         description:
-          "Under a red-tiled roof and pale blue walls, the Pelican Sail Tavern opens its green doors onto a striped-awning veranda over the quay. A pelican figure perches above the bar, flowers trail from the beams beside Dutch flags, and salt rakers and sailors gather at long wooden tables, drinking until the stars come out over the bay.",
+          "Under a red-tiled roof and pale blue walls, the Pelican Sail Tavern opens its green doors onto a striped-awning veranda over the quay. A pelican figure perches above the bar, flowers trail from the beams beside Dutch flags, and herdsmen and sailors gather at long wooden tables, drinking until the stars come out over the bay.",
         desktop: { x: 22.5, y: 54, size: 11 },
         mobile: { x: 50, y: 46, size: 32 },
       },
       Bank: {
         name: "Island Ledger Bank",
         description:
-          "Painted a soft sage green, the Island Ledger Bank stands out with its stepped gable, flower boxes and green arched door. Inside, the Dutch flag hangs above rows of ledger drawers and an iron-barred vault, and clerks at the long counter weigh coin on brass scales and keep careful records of every sack of salt sold from the ponds.",
+          "Painted a soft sage green, the Island Ledger Bank stands out with its stepped gable, flower boxes and green arched door. Inside, the Dutch flag hangs above rows of ledger drawers and an iron-barred vault, and clerks at the long counter weigh coin on brass scales and keep careful records of every sack of salt shipped to Curaçao.",
         desktop: { x: 38, y: 52, size: 9 },
         mobile: { x: 85, y: 42, size: 26 },
       },
@@ -875,16 +908,18 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 715,
-      y: 308,
+      x: 837,
+      y: 340,
       textAlign: "right",
-      harbor: { x: 719, y: 323 },
+      harbor: { x: 840, y: 355 },
     },
   },
-  "St. Eustatius": {
+  "st-eustatius": {
+    name: "St. Eustatius",
     nation: "Holland",
+    summary: "Established village with harbour",
     harborDescription:
-      "Known to every smuggler as the Golden Rock, this tiny free port has warehouses packed along the Lower Town shore, where Dutch traders sell gunpowder, cloth and wine to any flag that can pay in coin.",
+      "A small Dutch village clusters below Fort Oranje on the cliff, and warehouses along the Lower Town shore sell gunpowder, cloth and wine to traders of any flag who can pay in coin.",
     buildings: {
       Shop: {
         name: "Quill Supply House",
@@ -930,10 +965,10 @@ export const TOWNS: TownLocations = {
       },
     },
     map: {
-      x: 746,
-      y: 333,
+      x: 840,
+      y: 357,
       textAlign: "right",
-      harbor: { x: 749, y: 347 },
+      harbor: { x: 841, y: 359 },
     },
   },
 }

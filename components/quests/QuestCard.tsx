@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { getNpcById, getNpcPlace } from "@/constants/npcs"
+import { getTownName } from "@/utils/location"
 import { formatReward, getQuestObjective } from "@/utils/npc/questText"
 
 type Props = {
@@ -91,7 +92,7 @@ const QuestCard = ({ quest, onAbandon, disabled }: Props) => {
 
           {ruledOut.map((town) => (
             <Badge key={town} variant="secondary">
-              {town}
+              {getTownName(town)}
             </Badge>
           ))}
         </div>

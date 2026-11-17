@@ -11,8 +11,8 @@ const meta = {
   component: JourneyProgress,
   args: {
     journey: {
-      origin: "Port Royale",
-      destination: "Havana",
+      origin: "kingston",
+      destination: "havana",
       day: 3,
       totalDays: 6,
     },
@@ -39,14 +39,14 @@ export const Underway: Story = {}
 
 export const FirstDay: Story = {
   args: {
-    journey: { destination: "Tortuga", day: 1, totalDays: 4 },
+    journey: { destination: "cap-francais", day: 1, totalDays: 4 },
     day: 13,
   },
 }
 
 export const ArrivingToday: Story = {
   args: {
-    journey: { destination: "Villa Hermosa", day: 8, totalDays: 8 },
+    journey: { destination: "campeche", day: 8, totalDays: 8 },
     day: 20,
   },
 }

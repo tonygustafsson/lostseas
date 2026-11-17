@@ -242,7 +242,7 @@ const CASES: FuzzCase[] = [
     location: "Tavern",
     run: (junk) => (p) =>
       npc.answerNpc(p, {
-        npcId: getNpcAt("Port Royale", "tavern").id,
+        npcId: getNpcAt("kingston", "tavern").id,
         answerIndex: junk,
       }),
   },
@@ -279,7 +279,7 @@ export const fuzzActions = (report: Report) => {
     {
       id: "fuzz",
       createdDate: 0,
-      startingTown: "Port Royale",
+      startingTown: "kingston",
       ship: createNewShip("Brig", 1),
     }
   )

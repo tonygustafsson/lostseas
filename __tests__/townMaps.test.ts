@@ -68,11 +68,11 @@ describe("building names", () => {
   })
 
   it("returns the town specific name", () => {
-    expect(getBuilding("Leogane", "Tavern")?.name).toBe("Blue Heron Tavern")
+    expect(getBuilding("basse-terre", "Tavern")?.name).toBe("Blue Heron Tavern")
   })
 
   it("returns nothing for places without a building", () => {
-    expect(getBuilding("Leogane", "Harbor")).toBeUndefined()
+    expect(getBuilding("basse-terre", "Harbor")).toBeUndefined()
     expect(getBuilding(undefined, "Tavern")).toBeUndefined()
   })
 })

@@ -123,7 +123,7 @@ export const SCHEMER: DialogueEntry[] = [
   },
   {
     id: "schemer-7",
-    text: "Cardinal Richelieu writes letters the way other men breathe. I admire him. I would never say so in a crowded room, but I admire him.",
+    text: "Old King Louis's ministers write letters the way other men breathe. I admire them. I would never say so in a crowded room, but I admire them.",
   },
   {
     id: "schemer-8",
@@ -247,7 +247,7 @@ export const SCHEMER: DialogueEntry[] = [
   },
   {
     id: "schemer-14",
-    text: "What do you make of the trouble between King Charles and his Parliament, {title}?",
+    text: "What do you make of King George and his quarrelling Parliament, {title}?",
     answers: [
       {
         text: "The king should stand firm.",
@@ -262,10 +262,10 @@ export const SCHEMER: DialogueEntry[] = [
       {
         text: "Parliament has a point about taxes.",
         replies: [
-          "Careful. Say that in London and you would lose an ear. Here you merely lose my good opinion. Temporarily.",
+          "Careful. Say that in London and you would stand in the pillory. Here you merely lose my good opinion. Temporarily.",
           "Interesting. Very interesting. Do you have friends who feel the same? Names would be lovely.",
           "Taxes. Everyone has a point about taxes until they need a navy.",
-          "Ship money, poll money, tonnage. The English invent new taxes faster than they invent new ships.",
+          "Land tax, malt tax, window tax. The British invent new taxes faster than they build new ships.",
           "I shall pretend I did not hear that, and remember it forever. A habit of mine.",
         ],
       },
@@ -392,18 +392,18 @@ export const SCHEMER: DialogueEntry[] = [
       {
         text: "Arrest them both and let God sort it out.",
         replies: [
-          "God is busy with the war in Germany, {title}. He has not answered my letters in years.",
+          "God is busy with the war in the north, {title}. He has not answered my letters in years.",
           "Tempting. But then who would I tax?",
           "The Inquisition would approve. That alone makes me hesitate.",
           "I like the efficiency. I dislike the paperwork.",
-          "Ha! A man after the Cardinal's own heart. Do not tell anyone I said that.",
+          "Ha! A man after King Louis's own heart. Do not tell anyone I said that.",
         ],
       },
     ],
   },
   {
     id: "schemer-21",
-    text: "In Europe, the Thirty Years' War has eaten armies whole. Out here, we play the same game with fewer soldiers and more mosquitoes.",
+    text: "In Europe, the war over the Spanish crown ate armies whole. Out here, we play the same game with fewer soldiers and more mosquitoes.",
   },
   {
     id: "schemer-22",
@@ -443,7 +443,7 @@ export const SCHEMER: DialogueEntry[] = [
   },
   {
     id: "schemer-23",
-    text: "Philip IV has Catalonia rising and Portugal sulking. A distracted king is a gift, {title}, and I never return gifts.",
+    text: "King George has Scots in the hills and a Pretender over the water. A distracted king is a gift, {title}, and I never return gifts.",
   },
   {
     id: "schemer-24",
@@ -603,7 +603,7 @@ export const SCHEMER: DialogueEntry[] = [
   },
   {
     id: "schemer-31",
-    text: "The buccaneers on Hispaniola and Tortuga are a nuisance to some, a weapon to others. I prefer weapons. They are easier to aim.",
+    text: "The pirates at Nassau are a nuisance to some, a weapon to others. I prefer weapons. They are easier to aim.",
   },
   {
     id: "schemer-32",
@@ -693,9 +693,9 @@ export const SCHEMER: DialogueEntry[] = [
         text: "No. Tell me.",
         replies: [
           "Hm. I would, but news is a currency and you have not paid.",
-          "Louis XIII is ill again, or well again, depending on which courier you believe.",
-          "The war in Germany drags on. Everyone is winning and nobody has any money left.",
-          "Rumour says Portugal may slip from Spain's fingers. Remember I told you first.",
+          "Old King Louis is ill again, or well again, depending on which courier you believe.",
+          "The war in the north drags on. Everyone is winning and nobody has any money left.",
+          "Rumour says the Scots will rise for James Stuart. Remember I told you first.",
           "Something about a marriage, a treaty and a missing duke. I am still working out which is the cause.",
         ],
       },
@@ -714,7 +714,7 @@ export const SCHEMER: DialogueEntry[] = [
         replies: [
           "A Frenchman. That explains a great deal. They claim credit for all cheese.",
           "Do not repeat that at court. They will tax it.",
-          "If the moon is cheese, I am sure Richelieu has already claimed it.",
+          "If the moon is cheese, I am sure King Louis has already claimed it.",
           "Ha! Better news than mine. Mine is all war and debt.",
           "I shall add the moon to my list of possible spies. It watches us every night, after all.",
         ],
@@ -803,7 +803,7 @@ export const SCHEMER: DialogueEntry[] = [
   },
   {
     id: "schemer-41",
-    text: "Barbados is turning from tobacco to sugar, they tell me. Mark my words, {title}, sugar will make some men very rich and many men very sorry.",
+    text: "Saint-Domingue is turning to sugar, they tell me. Mark my words, {title}, sugar will make some men very rich and many men very sorry.",
   },
   {
     id: "schemer-42",
@@ -1003,7 +1003,7 @@ export const SCHEMER: DialogueEntry[] = [
   },
   {
     id: "schemer-51",
-    text: "The Eighty Years' War has taught the Spanish and the Dutch to hate each other with great patience. Patience is the only virtue I truly admire.",
+    text: "Eighty years of war taught the Spanish and the Dutch to hate each other with great patience, and they still do it in peacetime. Patience is the only virtue I truly admire.",
   },
   {
     id: "schemer-52",

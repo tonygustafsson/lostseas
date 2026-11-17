@@ -18,7 +18,7 @@ const ship: Ship = {
 const createPlayer = (nationality: Nation = "England") =>
   createNewPlayer(
     { name: "Anne", nationality, characterId: "anne-calloway" },
-    { id: "player-1", createdDate: 123, startingTown: "Port Royale", ship }
+    { id: "player-1", createdDate: 123, startingTown: "kingston", ship }
   )
 
 describe("createNewPlayer", () => {
@@ -31,7 +31,7 @@ describe("createNewPlayer", () => {
         characterId: "anne-calloway",
         nationality: "England",
         title: "Pirate",
-        town: "Port Royale",
+        town: "kingston",
         location: "Harbor",
         gold: 300,
         day: 1,
@@ -50,7 +50,7 @@ describe("createNewPlayer", () => {
         nationality: "England",
         characterId: "anne-calloway",
       },
-      { id: "player-1", createdDate: 123, startingTown: "Port Royale", ship }
+      { id: "player-1", createdDate: 123, startingTown: "kingston", ship }
     )
 
     expect(player.character.characterId).toBe("anne-calloway")
@@ -94,14 +94,14 @@ describe("resetGame", () => {
       battles: { Pirate: { won: 12 } },
       loan: 200,
       day: 400,
-      town: "Tortuga",
+      town: "cap-francais",
     },
     inventory: { cannons: 40, rum: 30, sugar: 12, food: 300, water: 500 },
     crewMembers: { count: 120, health: 40, mood: 10 },
   })
 
   it("keeps who the player is and starts everything else over", () => {
-    const result = resetGame(veteran, { startingTown: "Martinique", ship })
+    const result = resetGame(veteran, { startingTown: "saint-pierre", ship })
 
     if ("error" in result) throw new Error(result.error)
 
@@ -111,7 +111,7 @@ describe("resetGame", () => {
         {
           id: "player-1",
           createdDate: 123,
-          startingTown: "Martinique",
+          startingTown: "saint-pierre",
           ship,
         }
       )
@@ -127,7 +127,10 @@ describe("resetGame", () => {
       character: { characterId: "anne-calloway" },
     })
 
-    const result = resetGame(withPortrait, { startingTown: "Martinique", ship })
+    const result = resetGame(withPortrait, {
+      startingTown: "saint-pierre",
+      ship,
+    })
 
     if ("error" in result) throw new Error(result.error)
 
@@ -135,7 +138,7 @@ describe("resetGame", () => {
   })
 
   it("does not change the original player", () => {
-    resetGame(veteran, { startingTown: "Martinique", ship })
+    resetGame(veteran, { startingTown: "saint-pierre", ship })
 
     expect(veteran.character.gold).toBe(90000)
   })

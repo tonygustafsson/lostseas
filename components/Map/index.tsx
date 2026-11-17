@@ -66,8 +66,9 @@ const Map = ({ currentTown }: Props) => {
   }
 
   return (
-    <div className="relative -mx-6 md:mx-0">
+    <div className="relative -mx-6 -mb-6">
       <SeaMapCanvas
+        className="aspect-auto size-full lg:max-w-none portrait:h-full"
         weather={player?.character.weather}
         currentTown={currentTown}
         selectedTown={destination}

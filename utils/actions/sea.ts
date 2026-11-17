@@ -5,6 +5,8 @@ import { getMannedCannons } from "@/utils/crew"
 import { getAdvisorWarnings } from "@/utils/getAdvisorWarnings"
 import { addToInventory } from "@/utils/inventory"
 import { getJourneyLength } from "@/utils/journey"
+import { getTownName } from "@/utils/location"
+import { getNationName } from "@/utils/location"
 import { patchDeep } from "@/utils/patchDeep"
 import {
   getBattleLosses,
@@ -92,7 +94,7 @@ export const startJourney = (
     }),
     log: {
       type: "voyage",
-      message: `Started journey to ${town}. Expected arrival in ${distance} days.`,
+      message: `Started journey to ${getTownName(town)}. Expected arrival in ${distance} days.`,
     },
     data: { distance },
   }
@@ -251,7 +253,7 @@ export const continueJourney = (
       }),
       log: {
         type: "voyage",
-        message: `Arrived at destination ${journey.destination}.`,
+        message: `Arrived at destination ${getTownName(journey.destination)}.`,
       },
       data: {
         ...journeyData,
@@ -361,7 +363,7 @@ export const attackShip = (
     }),
     log: {
       type: "attack",
-      message: `Attacked a ship from ${sea.shipMeeting.nation}.`,
+      message: `Attacked a ship from ${getNationName(sea.shipMeeting.nation)}.`,
     },
     data: { battle },
   }
@@ -416,7 +418,10 @@ export const fleeShip = (
       player: patchDeep<Player>(player, {
         locationStates: { sea: { shipMeeting: null, justMetAShip: true } },
       }),
-      log: { type: "voyage", message: `Escaped a ship from ${nation}.` },
+      log: {
+        type: "voyage",
+        message: `Escaped a ship from ${getNationName(nation)}.`,
+      },
       data: { escaped: true },
     }
   }
@@ -427,7 +432,10 @@ export const fleeShip = (
         sea: { battle: { ...startBattle(), failedToFlee: true } },
       },
     }),
-    log: { type: "attack", message: `Failed to escape a ship from ${nation}.` },
+    log: {
+      type: "attack",
+      message: `Failed to escape a ship from ${getNationName(nation)}.`,
+    },
     data: { escaped: false },
   }
 }

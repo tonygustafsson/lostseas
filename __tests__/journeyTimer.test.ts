@@ -9,8 +9,8 @@ const state = vi.hoisted(() => ({
       location: "Sea",
       day: 20,
       journey: {
-        origin: "Bonaire",
-        destination: "Villa Hermosa",
+        origin: "savaneta",
+        destination: "campeche",
         day: 6,
         totalDays: 7,
       },
@@ -52,8 +52,8 @@ describe("journey timer", () => {
     state.continueJourney.mockClear()
     state.player.character.location = "Sea"
     state.player.character.journey = {
-      origin: "Bonaire",
-      destination: "Villa Hermosa",
+      origin: "savaneta",
+      destination: "campeche",
       day: 6,
       totalDays: 7,
     }

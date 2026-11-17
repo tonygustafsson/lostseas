@@ -20,7 +20,7 @@ const victory: Player = {
     "story-treasure": {
       id: "story-treasure",
       name: "Inca mask",
-      rewarder: "Havana",
+      rewarder: "havana",
     },
   },
   locationStates: {
@@ -36,7 +36,7 @@ const victory: Player = {
         foundTreasure: {
           id: "story-treasure",
           name: "Inca mask",
-          rewarder: "Havana",
+          rewarder: "havana",
         },
       },
       lootOffer: { food: 12, water: 8, cannons: 1, repairKits: 2 },
@@ -113,7 +113,7 @@ const capturedPirate: WantedPirate = {
   id: "story-pirate",
   name: 'Anne "Black-eyed" Rourke',
   crimeId: "kidnapped-bishop",
-  rewarder: "Tortuga",
+  rewarder: "cap-francais",
 }
 
 const pirateVictory: Player = {
