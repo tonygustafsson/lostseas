@@ -1,21 +1,33 @@
 "use client"
 
 import { useQRCode } from "next-qrcode"
-import { FiSettings } from "react-icons/fi"
+import { FiLogOut, FiSettings } from "react-icons/fi"
 
 import SoundControls from "@/components/Sound/Controls"
+import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { useGetPlayer } from "@/hooks/queries/usePlayer"
+import { useGetPlayer, usePlayer } from "@/hooks/queries/usePlayer"
+import { reloadAtTop } from "@/utils/reloadAtTop"
 
 import PasskeySettings from "../../settings/PasskeySettings"
+import RemoveAccount from "../../settings/RemoveAccount"
 import ResetGame from "../../settings/ResetGame"
 import UserIdDisplay from "../../settings/UserIdDisplay"
 
 const SettingsDrawer = () => {
   const { data: player } = useGetPlayer()
+  const { logout } = usePlayer()
   const { SVG } = useQRCode()
 
   if (!player) return null
+
+  const handleLogout = async () => {
+    const response = await logout()
+
+    if (response?.status === 200) {
+      reloadAtTop()
+    }
+  }
 
   return (
     <>
@@ -25,6 +37,15 @@ const SettingsDrawer = () => {
       </h1>
 
       <div className="flex w-full max-w-xl flex-col gap-4">
+        <Button
+          variant="secondary"
+          className="lg:hidden"
+          onClick={handleLogout}
+        >
+          <FiLogOut />
+          Logout
+        </Button>
+
         <div className="lg:hidden">
           <h2 className="mb-4 font-serif text-xl">Sound</h2>
 
@@ -84,6 +105,12 @@ const SettingsDrawer = () => {
         <h2 className="font-serif text-2xl">Start over</h2>
 
         <ResetGame player={player} />
+
+        <Separator className="my-2" />
+
+        <h2 className="font-serif text-2xl">Remove account</h2>
+
+        <RemoveAccount player={player} />
       </div>
     </>
   )

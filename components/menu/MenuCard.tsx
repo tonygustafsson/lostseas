@@ -4,6 +4,7 @@ import { ChevronRight } from "lucide-react"
 import type { KeyboardEvent, ReactNode } from "react"
 
 import useDrawer, { type DrawerId } from "@/app/stores/drawer"
+import { cn } from "@/lib/utils"
 
 import { Card } from "../ui/card"
 
@@ -11,9 +12,10 @@ type Props = {
   ariaLabel: string
   drawerId: DrawerId
   children: ReactNode
+  className?: string
 }
 
-const MenuCard = ({ ariaLabel, drawerId, children }: Props) => {
+const MenuCard = ({ ariaLabel, drawerId, children, className }: Props) => {
   const { open: openDrawer } = useDrawer()
 
   const open = () => openDrawer(drawerId)
@@ -31,7 +33,10 @@ const MenuCard = ({ ariaLabel, drawerId, children }: Props) => {
       aria-label={ariaLabel}
       onClick={open}
       onKeyDown={handleKeyDown}
-      className="group/menu-card hover:bg-card hover:ring-gold/50 focus-visible:ring-ring bg-card w-full cursor-pointer gap-2 p-2 text-left transition-colors focus-visible:ring-2 focus-visible:outline-none"
+      className={cn(
+        "group/menu-card hover:bg-card hover:ring-gold/50 focus-visible:ring-ring bg-card w-full cursor-pointer gap-2 p-2 text-left transition-colors focus-visible:ring-2 focus-visible:outline-none",
+        className
+      )}
     >
       {children}
     </Card>

@@ -90,9 +90,9 @@ export default function Page() {
           <Section title="What we store">
             <p>
               When you create a character we store your game data, like your
-              captain&apos;s name, ships, crew, gold, cargo and log book, in a
-              database hosted on Google Firebase. You don&apos;t need to give us
-              your real name, email address or phone number.
+              captain&apos;s name, ships, crew, gold, cargo and ship&apos;s log,
+              in a database hosted on Google Firebase. You don&apos;t need to
+              give us your real name, email address or phone number.
             </p>
           </Section>
 
@@ -133,8 +133,10 @@ export default function Page() {
             <p>
               No personal information is asked for when you register, so your
               character can&apos;t be linked to you. You can stop playing at any
-              time. If you want your character deleted, open an issue on GitHub
-              and we&apos;ll remove it.
+              time. To delete your character, open Settings in the game and
+              choose Remove account. It deletes your game data, user ID and
+              passkeys for good. If you can&apos;t sign in, open an issue on
+              GitHub and we&apos;ll remove it for you.
             </p>
           </Section>
 

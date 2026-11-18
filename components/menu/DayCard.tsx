@@ -1,9 +1,12 @@
+"use client"
+
 import { cn } from "@/lib/utils"
 import { getDateOfDay, getLogDate } from "@/utils/date"
 import { WEATHER_NAMES } from "@/utils/weather"
 
-import { Card, CardContent } from "../ui/card"
+import { CardContent } from "../ui/card"
 import WeatherIcon from "../WeatherIcon"
+import MenuCard, { MenuCardChevron } from "./MenuCard"
 
 type Props = {
   day: Character["day"]
@@ -23,20 +26,28 @@ const ICON_COLORS: Record<WeatherType, string> = {
 const getWeekday = (day: Character["day"]) =>
   getDateOfDay(day).toLocaleDateString("en-GB", { weekday: "long" })
 
-const WeatherCard = ({ day, weather }: Props) => (
-  <Card className="bg-card relative overflow-hidden p-2">
+const DayCard = ({ day, weather }: Props) => (
+  <MenuCard
+    ariaLabel="Open ship's log"
+    drawerId="logs"
+    className="relative overflow-hidden"
+  >
     <WeatherIcon
       weather={weather}
       className={cn(
-        "pointer-events-none absolute -top-4 -right-4 size-28",
+        "pointer-events-none absolute -top-1 -right-4 size-28",
         ICON_COLORS[weather]
       )}
     />
 
     <CardContent className="relative flex min-w-0 flex-col px-2 py-2">
-      <span className="text-muted-foreground text-xs tracking-widest uppercase">
-        {getWeekday(day)}
-      </span>
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-muted-foreground text-xs tracking-widest uppercase">
+          {getWeekday(day)}
+        </span>
+
+        <MenuCardChevron />
+      </div>
 
       <span className="font-serif text-base leading-tight">
         {getLogDate(day)}
@@ -46,7 +57,7 @@ const WeatherCard = ({ day, weather }: Props) => (
         {WEATHER_NAMES[weather]}
       </span>
     </CardContent>
-  </Card>
+  </MenuCard>
 )
 
-export default WeatherCard
+export default DayCard

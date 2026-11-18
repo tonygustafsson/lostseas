@@ -2,7 +2,6 @@ import { RiTreasureMapLine } from "react-icons/ri"
 
 import AdvisorTips from "@/components/advisor/AdvisorTips"
 import Flag from "@/components/icons/Flag"
-import WeatherCard from "@/components/menu/WeatherCard"
 import { Button } from "@/components/ui/button"
 import { TOWNS } from "@/constants/locations"
 import { getTownMap } from "@/constants/townMaps"
@@ -86,13 +85,6 @@ const HarborScene = ({ town }: Props) => {
         </div>
 
         <div className="flex flex-col gap-4 lg:col-span-2">
-          {/* Desktop shows this in the side menu */}
-          {player && (
-            <div className="lg:hidden">
-              <WeatherCard day={day} weather={player.character.weather} />
-            </div>
-          )}
-
           <AdvisorTips
             heading={hasArrived ? "Land ho!" : "Back in town"}
             title={hasArrived ? arrivedQuip : townQuip}

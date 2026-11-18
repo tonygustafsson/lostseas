@@ -1,7 +1,6 @@
 "use client"
 
-import { useState } from "react"
-import { FiMenu } from "react-icons/fi"
+import { FiSettings } from "react-icons/fi"
 import {
   GiOpenedFoodCan,
   GiPirateCoat,
@@ -13,9 +12,7 @@ import useDrawer from "@/app/stores/drawer"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useMapModal } from "@/hooks/useMapModal"
 
-import DrawerBottom from "../DrawerBottom"
 import { Button } from "../ui/button"
-import MobileMenuContent from "./MobileMenuContent"
 
 type Props = {
   className?: string
@@ -25,8 +22,6 @@ const MobileBottomNav = ({ className }: Props) => {
   const { data: player } = useGetPlayer()
   const { showMap, canTravel } = useMapModal()
   const { open: openDrawer } = useDrawer()
-
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   if (!player) return null
 
@@ -79,22 +74,14 @@ const MobileBottomNav = ({ className }: Props) => {
 
           <Button
             variant="ghost"
-            onClick={() => setIsMenuOpen(true)}
+            onClick={() => openDrawer("settings")}
             className="hover:text-gold-light [&_svg]:text-gold h-auto flex-col gap-1 rounded-2xl px-1 py-2 text-xs leading-none font-semibold transition-all hover:bg-white/5 active:scale-90"
           >
-            <FiMenu className="h-5 w-5" />
-            Menu
+            <FiSettings className="h-5 w-5" />
+            Settings
           </Button>
         </div>
       </div>
-
-      <DrawerBottom
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-        maxHeightPercent={80}
-      >
-        <MobileMenuContent onClose={() => setIsMenuOpen(false)} />
-      </DrawerBottom>
     </>
   )
 }

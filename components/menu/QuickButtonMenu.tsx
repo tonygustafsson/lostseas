@@ -1,7 +1,6 @@
 "use client"
 
 import React from "react"
-import { FaBook } from "react-icons/fa6"
 import { FiLogOut, FiSettings } from "react-icons/fi"
 import { TbHelp } from "react-icons/tb"
 
@@ -39,22 +38,6 @@ const QuickButtonMenu = () => {
           </TooltipTrigger>
 
           <TooltipContent>Settings</TooltipContent>
-        </Tooltip>
-      </li>
-
-      <li>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => openDrawer("logs")}
-            >
-              <FaBook className="h-5 w-5" />
-            </Button>
-          </TooltipTrigger>
-
-          <TooltipContent>Log book</TooltipContent>
         </Tooltip>
       </li>
 

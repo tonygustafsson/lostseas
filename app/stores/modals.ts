@@ -14,6 +14,7 @@ export type ModalId =
   | "departureWarnings"
   | "removePasskey"
   | "resetGame"
+  | "removeAccount"
   | "sound"
 
 export type ModalProps = {

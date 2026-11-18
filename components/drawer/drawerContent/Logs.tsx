@@ -24,7 +24,7 @@ const LogsDrawer = () => {
     <>
       <h1 className="flex items-center gap-2 font-serif text-2xl">
         <FaBook className="text-gold" />
-        Log Book
+        Ship&apos;s log
       </h1>
 
       {player && (

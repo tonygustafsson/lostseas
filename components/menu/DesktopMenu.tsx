@@ -9,10 +9,10 @@ import SocialMedia from "../SocialMedia"
 import SoundButton from "../Sound/SoundButton"
 import { Sidebar, SidebarContent, SidebarGroup } from "../ui/sidebar"
 import CharacterCard from "./CharacterCard"
+import DayCard from "./DayCard"
 import FleetCard from "./FleetCard"
 import InventoryCard from "./InventoryCard"
 import QuickButtonMenu from "./QuickButtonMenu"
-import WeatherCard from "./WeatherCard"
 
 type Props = {
   className?: string
@@ -48,22 +48,24 @@ const DesktopMenu = ({ className }: Props) => {
           <div className="via-gold/70 absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent to-transparent" />
         </SidebarGroup>
 
-        <SidebarGroup className="gap-4">
+        <SidebarGroup className="flex-1 gap-4">
           <CharacterCard player={player} />
           <FleetCard player={player} />
           <InventoryCard player={player} />
-          <WeatherCard
+          <DayCard
             day={player.character.day}
             weather={player.character.weather}
           />
 
           <AdvisorDrawerTrigger />
 
-          <div className="mb-4 flex flex-col gap-8">
-            <QuickButtonMenu />
+          <div className="mb-4 flex flex-col gap-4">
             <SoundButton />
+            <QuickButtonMenu />
           </div>
-          <SocialMedia />
+          <div className="mt-auto pb-4">
+            <SocialMedia />
+          </div>
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>

@@ -4,10 +4,12 @@ import { GiShoonerSailboat } from "react-icons/gi"
 import { MdGroups } from "react-icons/md"
 
 import useDrawer from "@/app/stores/drawer"
+import AdvisorDrawerTrigger from "@/components/advisor/AdvisorDrawerTrigger"
 import CargoMeter from "@/components/CargoMeter"
 import type { StatisticsSeries } from "@/components/charts/chartConfig"
 import HoldChart from "@/components/charts/HoldChart"
 import StatisticsSeriesChart from "@/components/charts/StatisticsSeriesChart"
+import DayCard from "@/components/menu/DayCard"
 import RadialProgressBar from "@/components/RadialProgressBar"
 import FittingsList from "@/components/ships/FittingsList"
 import ShipList from "@/components/ships/ShipList"
@@ -44,6 +46,15 @@ const FleetDrawer = () => {
         <GiShoonerSailboat className="text-gold" />
         Crew & Fleet
       </h1>
+
+      <div className="mb-6 flex flex-col gap-4 lg:hidden">
+        <DayCard
+          day={player.character.day}
+          weather={player.character.weather}
+        />
+
+        <AdvisorDrawerTrigger />
+      </div>
 
       <span className="my-4 block font-serif text-xl">Ships</span>
 

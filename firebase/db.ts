@@ -103,6 +103,27 @@ export const savePlayer = async (
   return player
 }
 
+/** Removes the player and everything stored for it, in one atomic write */
+export const deletePlayer = async (
+  playerId: Player["id"],
+  passkeyIds: string[] = []
+) => {
+  validatePlayerId(playerId)
+
+  const updates: Record<string, null> = {
+    [`players/${playerId}`]: null,
+    [`leaderboard/${playerId}`]: null,
+    [`logs/${playerId}`]: null,
+    [`statistics/${playerId}`]: null,
+  }
+
+  passkeyIds.forEach((id) => {
+    updates[`passkeys/${id}`] = null
+  })
+
+  await adminDb.ref().update(updates)
+}
+
 /** The newest page of entries, or the page just older than the cursor */
 export const getLog = async (
   playerId: Player["id"],

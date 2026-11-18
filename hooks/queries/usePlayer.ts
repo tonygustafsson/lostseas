@@ -136,6 +136,12 @@ export const usePlayer = () => {
     onError: (error) => console.error(error),
   })
 
+  const { mutateAsync: deleteAccount, isPending: isDeletingAccount } =
+    useMutation({
+      mutationFn: () => apiRequest("/api/user/delete", {}, "POST"),
+      onError: (error) => console.error(error),
+    })
+
   const { mutateAsync: logout, isPending: isLoggingOut } = useMutation({
     mutationFn: () => apiRequest("/api/user/logout", {}, "POST"),
     onError: (error) => console.error(error),
@@ -169,6 +175,8 @@ export const usePlayer = () => {
     isAddingPasskey,
     resetGame,
     isResettingGame,
+    deleteAccount,
+    isDeletingAccount,
     logout,
     isLoggingOut,
     register,

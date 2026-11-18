@@ -20,14 +20,15 @@ const Records = () => (
         dismiss sailors.
       </li>
       <li>
-        <strong>Log book</strong> is your captain&apos;s journal, day by day.
-        Battles, trades, promotions and other notable moments end up there.
+        <strong>Ship&apos;s log</strong> is your captain&apos;s journal, day by
+        day. Battles, trades, promotions and other notable moments end up there.
+        Open it from the date card, which also shows the day and the weather. On
+        a phone, the card is at the top of Crew &amp; Fleet.
       </li>
     </ul>
 
     <p>
-      On a phone, the bottom bar holds the main drawers and Travel, and the menu
-      button holds the log book, settings and this guide.
+      On a phone, the bottom bar holds the main drawers, Travel and Settings.
     </p>
 
     <h3>Install it as an app</h3>

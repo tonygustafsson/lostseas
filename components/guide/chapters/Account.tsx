@@ -49,6 +49,15 @@ const Account = () => (
       Settings also lets you reset your game and begin again as a fresh Pirate.
       That one can&apos;t be undone, so be sure.
     </p>
+
+    <h3>Removing your account</h3>
+
+    <p>
+      At the bottom of Settings you can remove your account. It deletes your
+      captain and everything saved for them, including your user ID and
+      passkeys. That can&apos;t be undone either, and you&apos;ll be asked to
+      confirm first.
+    </p>
   </GuideChapter>
 )
 

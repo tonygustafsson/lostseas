@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
-import WeatherCard from "@/components/menu/WeatherCard"
+import DayCard from "@/components/menu/DayCard"
 import { WEATHER_NAMES } from "@/utils/weather"
 
 const meta = {
-  title: "game/Menu/WeatherCard",
-  component: WeatherCard,
+  title: "game/Menu/DayCard",
+  component: DayCard,
   args: { day: 3, weather: "partlySunny" },
   argTypes: {
     day: { control: { type: "number", min: 1 } },
@@ -18,7 +18,7 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<typeof WeatherCard>
+} satisfies Meta<typeof DayCard>
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -37,7 +37,7 @@ export const AllWeathers: Story = {
   render: ({ day }) => (
     <div className="flex flex-col gap-4">
       {(Object.keys(WEATHER_NAMES) as WeatherType[]).map((weather) => (
-        <WeatherCard key={weather} day={day} weather={weather} />
+        <DayCard key={weather} day={day} weather={weather} />
       ))}
     </div>
   ),

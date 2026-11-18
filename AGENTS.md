@@ -93,6 +93,6 @@ Voyage lengths follow the routes drawn on the sea map, so a town that looks furt
 ## Verification
 
 - Run relevant Vitest tests after changing game logic or behavior.
-- Run linting and formatting after code changes on touched files.
-- Run `npm run build` after significant changes involving routing, rendering, configuration, or production behavior.
+- Run linting and formatting on changed files.
+- Run `npm run build`, `npm test` and `npm run lint:fix` after significant changes involving routing, rendering, configuration, or production behavior.
 - Do not consider a task complete if the changes introduce lint, formatting, TypeScript, build, or test errors.
