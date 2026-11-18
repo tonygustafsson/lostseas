@@ -23,7 +23,7 @@ const WEATHER_AMBIENCE: Record<
     u_gulls: 1,
     u_sun: 1,
     u_gloom: 0,
-    u_wind: 0.8,
+    u_wind: 1.5,
   },
   partlySunny: {
     u_cloudCover: 0.375,
@@ -33,7 +33,7 @@ const WEATHER_AMBIENCE: Record<
     u_gulls: 1,
     u_sun: 1,
     u_gloom: 0,
-    u_wind: 0.8,
+    u_wind: 1.5,
   },
   cloudy: {
     u_cloudCover: 0.75,
@@ -43,7 +43,7 @@ const WEATHER_AMBIENCE: Record<
     u_gulls: 1,
     u_sun: 0,
     u_gloom: 0.2,
-    u_wind: 1,
+    u_wind: 1.75,
   },
   rainy: {
     u_cloudCover: 1,
@@ -53,7 +53,7 @@ const WEATHER_AMBIENCE: Record<
     u_gulls: 0,
     u_sun: 0,
     u_gloom: 0.4,
-    u_wind: 1.5,
+    u_wind: 2.75,
   },
   foggy: {
     u_cloudCover: 0.5,
@@ -63,7 +63,7 @@ const WEATHER_AMBIENCE: Record<
     u_gulls: 0.3,
     u_sun: 0,
     u_gloom: 0.1,
-    u_wind: 0.3,
+    u_wind: 0.375,
   },
 }
 
