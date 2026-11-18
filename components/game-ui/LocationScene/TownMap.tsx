@@ -59,13 +59,17 @@ const TownMap = ({ map, alt, weather, onMove, onPreview }: Props) => {
   const [highlighted, setHighlighted] = useState<TownMapBuilding | null>(null)
   const [isHovering, setIsHovering] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null)
-  // Rippling water, drifting clouds and seagulls, with rain or fog on bad days
+  // Rippling water, waving flags, drifting clouds and seagulls, with rain or fog on bad days
   const ambienceRef = useAmbienceCanvas(
     imageRef,
     createTownMapRenderer,
-    [map.desktop.waterMask, map.desktop.skyMask],
+    [map.desktop.waterMask, map.desktop.skyMask, map.desktop.flagMask],
     {
-      mobileMasks: [map.mobile.waterMask, map.mobile.skyMask],
+      mobileMasks: [
+        map.mobile.waterMask,
+        map.mobile.skyMask,
+        map.mobile.flagMask,
+      ],
       uniforms: getWeatherAmbience(weather),
     }
   )

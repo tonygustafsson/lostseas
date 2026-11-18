@@ -1,7 +1,7 @@
 // How the weather looks in the scenes and on the sea map. Every value runs from
 // 0 to 1: cloud cover and how grey the clouds are, how hard it rains, how thick
-// the fog is, how many seagulls brave it, whether the sun shines in
-// and how gloomy it is indoors.
+// the fog is, how many seagulls brave it, whether the sun shines in,
+// how gloomy it is indoors and how hard the wind makes flags wave.
 const WEATHER_AMBIENCE: Record<
   WeatherType,
   {
@@ -12,6 +12,7 @@ const WEATHER_AMBIENCE: Record<
     u_gulls: number
     u_sun: number
     u_gloom: number
+    u_wind: number
   }
 > = {
   sunny: {
@@ -22,6 +23,7 @@ const WEATHER_AMBIENCE: Record<
     u_gulls: 1,
     u_sun: 1,
     u_gloom: 0,
+    u_wind: 0.8,
   },
   partlySunny: {
     u_cloudCover: 0.375,
@@ -31,6 +33,7 @@ const WEATHER_AMBIENCE: Record<
     u_gulls: 1,
     u_sun: 1,
     u_gloom: 0,
+    u_wind: 0.8,
   },
   cloudy: {
     u_cloudCover: 0.75,
@@ -40,6 +43,7 @@ const WEATHER_AMBIENCE: Record<
     u_gulls: 1,
     u_sun: 0,
     u_gloom: 0.2,
+    u_wind: 1,
   },
   rainy: {
     u_cloudCover: 1,
@@ -49,6 +53,7 @@ const WEATHER_AMBIENCE: Record<
     u_gulls: 0,
     u_sun: 0,
     u_gloom: 0.4,
+    u_wind: 1.5,
   },
   foggy: {
     u_cloudCover: 0.5,
@@ -58,6 +63,7 @@ const WEATHER_AMBIENCE: Record<
     u_gulls: 0.3,
     u_sun: 0,
     u_gloom: 0.1,
+    u_wind: 0.3,
   },
 }
 

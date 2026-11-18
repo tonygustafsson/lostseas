@@ -9,6 +9,7 @@ export type TownMapImage = {
   src: string
   waterMask: string
   skyMask: string
+  flagMask: string
   width: number
   height: number
   buildings: TownMapBuilding[]
@@ -41,6 +42,11 @@ export const getTownWaterMaskSrc = (town: Town, variant: TownMapVariant) =>
 export const getTownSkyMaskSrc = (town: Town, variant: TownMapVariant) =>
   `/img/town-sky-masks/${town}-${variant}.png`
 
+// Transparent except the flags, where red is the distance from the pole, used
+// to make them wave
+export const getTownFlagMaskSrc = (town: Town, variant: TownMapVariant) =>
+  `/img/town-flag-masks/${town}-${variant}.png`
+
 const getTownMapImage = (
   town: Town,
   variant: TownMapVariant
@@ -48,6 +54,7 @@ const getTownMapImage = (
   src: getTownMapSrc(town, variant),
   waterMask: getTownWaterMaskSrc(town, variant),
   skyMask: getTownSkyMaskSrc(town, variant),
+  flagMask: getTownFlagMaskSrc(town, variant),
   ...IMAGE_SIZES[variant],
   buildings: Object.entries(TOWNS[town].buildings).map(
     ([location, building]) => ({

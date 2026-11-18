@@ -1,6 +1,6 @@
 // Brings a town map to life with WebGL, in a single pass over one canvas:
 // rippling water (where the water mask is), drifting clouds (where the sky
-// mask is) and a few seagulls flying over everything. The weather decides how
+// mask is), flags waving in the wind (where the flag mask is) and a few seagulls flying over everything. The weather decides how
 // cloudy it is, and can bring rain or fog over the whole town.
 
 import { createAmbienceRenderer, SHADER_COMMON } from "./ambienceRenderer"
@@ -10,6 +10,7 @@ ${SHADER_COMMON}
 
 uniform sampler2D u_water;
 uniform sampler2D u_sky;
+uniform sampler2D u_flag;
 
 // The weather, see weatherAmbience.ts
 uniform float u_cloudCover;
@@ -17,12 +18,35 @@ uniform float u_cloudShade;
 uniform float u_rain;
 uniform float u_fog;
 uniform float u_gulls;
+uniform float u_wind;
 
 // Water ripple strength in CSS pixels
 const float WATER_AMPLITUDE = 1.875;
 const int SEAGULLS = 5;
 const vec3 FOG_COLOR = vec3(0.9, 0.92, 0.94);
 const vec3 OVERCAST_COLOR = vec3(0.08, 0.1, 0.14);
+
+// A flag ripples from the pole to the free end, which is where the flag mask is
+// red. Pixels are pulled from a little up, down and sideways, but never from
+// outside the flag.
+vec4 flag(vec2 uv, float pole) {
+  float amplitude = max(1.5, u_size.x * 0.0015) * u_wind;
+  // The speed stays fixed, scaling time by the fading wind would make the
+  // flag whip around while the weather changes
+  float phase = u_time * 4.0 - pole * 7.0;
+  float wave = sin(phase) + 0.4 * sin(phase * 1.7 + 1.0);
+  vec2 offset = vec2(0.5 * cos(phase), wave) * amplitude * pole / u_size;
+  vec2 waved = uv + offset;
+
+  if (texture2D(u_flag, waved).a < 0.5) {
+    waved = uv;
+  }
+
+  // Crests catch the light, troughs fall into shade
+  vec3 color = texture2D(u_image, waved).rgb * (1.0 + 0.1 * wave * pole * min(u_wind, 1.0));
+
+  return vec4(color, 1.0);
+}
 
 // Fog rolls in from the sea, thickest in the distance at the top of the map
 // and over the open water and sky, thinning out towards the bottom
@@ -99,6 +123,12 @@ void main() {
     color = clouds(color, p, u_size.x, skyMask, u_cloudCover, u_cloudShade);
   }
 
+  vec4 flagMask = texture2D(u_flag, v_uv);
+
+  if (flagMask.a > 0.5) {
+    color = flag(v_uv, flagMask.r);
+  }
+
   if (u_rain > 0.0) {
     color = over(color, OVERCAST_COLOR, 0.2 * u_rain);
   }
@@ -122,8 +152,8 @@ void main() {
 }
 `
 
-const TEXTURES = ["u_image", "u_water", "u_sky"] as const
+const TEXTURES = ["u_image", "u_water", "u_sky", "u_flag"] as const
 
-// Textures in this order: image, water, sky. Uniforms from getWeatherAmbience.
+// Textures in this order: image, water, sky, flags. Uniforms from getWeatherAmbience.
 export const createTownMapRenderer = (canvas: HTMLCanvasElement) =>
   createAmbienceRenderer(canvas, FRAGMENT_SHADER, TEXTURES)
