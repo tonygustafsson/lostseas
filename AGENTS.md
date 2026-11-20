@@ -86,6 +86,10 @@ Voyage lengths follow the routes drawn on the sea map, so a town that looks furt
 - After moving a harbour or editing the mask, re-run `generate:sea-routes` and check the voyage length snapshot in `__tests__/journey.test.ts`. Days feed into supplies, quest rewards and the advisor.
 - The map art is `public/img/map/spanish-main.avif`. Positions are in map units, `MAP_WIDTH` by `MAP_HEIGHT` (`components/Map/constants.ts`), which keep the art's shape. The art is a 3000 px wide copy of `spanish-main-large.png`. The mask has the art's resolution, white for water and black for land, and the route generator and fish read it per map unit. If the art changes, make a new mask at the same size, check every town and harbour on it, and set `KM_PER_PIXEL` so voyages keep their real length.
 
+### Graphical ambience
+
+The harbour and building pictures get their life (water, clouds, flags, people, cats, flames) from shaders in `components/game-ui/LocationScene/`. They read mask pictures from `public/img` and data from `constants/harbor` (streets, what people walk behind, flag boxes). Both are made by hand in the `game/Harbor/Mask editor` story, there is no generator. See the `graphical-ambience` skill for the formats, the editor and how to make the data for a new picture, and keep it up to date when they change.
+
 ### Autoplay bot
 
 `npm run autoplay` plays hundreds of seeded games through the pure actions to find bugs and check balance. Run it before and after balance changes and compare the reports. See [`scripts/autoplay/README.md`](scripts/autoplay/README.md).

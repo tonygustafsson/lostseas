@@ -1,5 +1,8 @@
 import { type TownBuildingPosition, TOWNS } from "@/constants/locations"
 
+import frontConfig from "./harbor/front.json"
+import lanesConfig from "./harbor/lanes.json"
+
 export type TownMapBuilding = TownBuildingPosition & {
   location: TownLocation
   name: string
@@ -10,6 +13,12 @@ export type TownMapImage = {
   waterMask: string
   skyMask: string
   flagMask: string
+  // Street levels, [x start, x end, feet, half width, person size]
+  lanes: number[][]
+  // Boxes people walk behind, [x start, y start, x end, y end]
+  things: number[][]
+  // Shapes people walk behind, [x, y, x, y, ...] round the corners
+  shapes: number[][]
   width: number
   height: number
   buildings: TownMapBuilding[]
@@ -47,6 +56,23 @@ export const getTownSkyMaskSrc = (town: Town, variant: TownMapVariant) =>
 export const getTownFlagMaskSrc = (town: Town, variant: TownMapVariant) =>
   `/img/town-flag-masks/${town}-${variant}.png`
 
+// The same empty list every time, so it can be a dependency
+const NONE: number[][] = []
+
+// Edited in the mask editor story, see the ambience skill
+const getLanes = (town: Town, variant: TownMapVariant) =>
+  (lanesConfig.towns as Record<string, Record<string, number[][]>>)[town]?.[
+    variant
+  ] ?? NONE
+
+const getFront = (town: Town, variant: TownMapVariant) =>
+  (
+    frontConfig.towns as Record<
+      string,
+      Record<string, { things?: number[][]; shapes?: number[][] }>
+    >
+  )[town]?.[variant]
+
 const getTownMapImage = (
   town: Town,
   variant: TownMapVariant
@@ -55,6 +81,9 @@ const getTownMapImage = (
   waterMask: getTownWaterMaskSrc(town, variant),
   skyMask: getTownSkyMaskSrc(town, variant),
   flagMask: getTownFlagMaskSrc(town, variant),
+  lanes: getLanes(town, variant),
+  things: getFront(town, variant)?.things ?? NONE,
+  shapes: getFront(town, variant)?.shapes ?? NONE,
   ...IMAGE_SIZES[variant],
   buildings: Object.entries(TOWNS[town].buildings).map(
     ([location, building]) => ({

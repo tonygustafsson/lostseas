@@ -7,9 +7,11 @@ import {
 } from "@/constants/townMaps"
 import { cn } from "@/lib/utils"
 
+import { useFrontMask } from "./frontMask"
 import { getTownMapImageProps } from "./preloadTownMap"
 import { createTownMapRenderer } from "./townMapShader"
 import { useAmbienceCanvas } from "./useAmbienceCanvas"
+import { getWalkArrays } from "./walkUniforms"
 import { getWeatherAmbience } from "./weatherAmbience"
 
 type PictureProps = {
@@ -60,17 +62,38 @@ const TownMap = ({ map, alt, weather, onMove, onPreview }: Props) => {
   const [isHovering, setIsHovering] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null)
   // Rippling water, waving flags, drifting clouds and seagulls, with rain or fog on bad days
+  const frontMask = useFrontMask(map)
   const ambienceRef = useAmbienceCanvas(
     imageRef,
     createTownMapRenderer,
-    [map.desktop.waterMask, map.desktop.skyMask, map.desktop.flagMask],
+    frontMask
+      ? [
+          map.desktop.waterMask,
+          map.desktop.skyMask,
+          map.desktop.flagMask,
+          frontMask,
+        ]
+      : undefined,
     {
       mobileMasks: [
         map.mobile.waterMask,
         map.mobile.skyMask,
         map.mobile.flagMask,
+        frontMask ?? "",
       ],
       uniforms: getWeatherAmbience(weather),
+      arrays: {
+        desktop: getWalkArrays(
+          map.desktop.lanes,
+          map.desktop.width,
+          map.desktop.height
+        ),
+        mobile: getWalkArrays(
+          map.mobile.lanes,
+          map.mobile.width,
+          map.mobile.height
+        ),
+      },
     }
   )
 

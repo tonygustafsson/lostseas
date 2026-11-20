@@ -2,6 +2,7 @@ import { existsSync } from "fs"
 import { join } from "path"
 import { describe, expect, it } from "vitest"
 
+import { MAX_LEVELS } from "@/components/game-ui/LocationScene/walkUniforms"
 import { TOWNS } from "@/constants/locations"
 import { getBuilding, getTownMap } from "@/constants/townMaps"
 
@@ -42,6 +43,13 @@ describe("town maps", () => {
   it.each(allImages)("$flagMask exists", ({ flagMask }) => {
     expect(existsSync(join(process.cwd(), "public", flagMask))).toBe(true)
   })
+
+  it.each(allImages)(
+    "$src has no more streets than the shader holds",
+    (image) => {
+      expect(image.lanes.length).toBeLessThanOrEqual(MAX_LEVELS)
+    }
+  )
 
   it.each(allImages)("$src has every building once", ({ buildings }) => {
     const locations = buildings.map(({ location }) => location)

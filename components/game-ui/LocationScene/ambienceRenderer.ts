@@ -196,6 +196,13 @@ const fitTextureSize = (source: TexImageSource, maxSize: number) => {
 
 export type AmbienceUniforms = Record<string, number>
 
+// A uniform array of floats (size 1) or vec4s (size 4), for the values that
+// belong to one picture and do not fade
+export type AmbienceArrays = Record<
+  string,
+  { size: 1 | 2 | 4; values: number[] }
+>
+
 // How long a change of uniforms, like the weather, takes to fade in
 const UNIFORM_FADE = 1500
 
@@ -365,6 +372,25 @@ export const createAmbienceRenderer = (
           const location = gl.getUniformLocation(program, name)
           uniforms[name] = { location, value: target, target }
           gl.uniform1f(location, target)
+        }
+      })
+    },
+    // Uniform arrays, like a list of boxes. Size is the numbers in one entry.
+    setArrays: (arrays: AmbienceArrays) => {
+      Object.entries(arrays).forEach(([name, { size, values }]) => {
+        const location = gl.getUniformLocation(program, name)
+
+        // The count says how many are used, an empty list is not allowed
+        if (!values.length) {
+          return
+        }
+
+        if (size === 1) {
+          gl.uniform1fv(location, values)
+        } else if (size === 2) {
+          gl.uniform2fv(location, values)
+        } else {
+          gl.uniform4fv(location, values)
         }
       })
     },
