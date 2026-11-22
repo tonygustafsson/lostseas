@@ -1,16 +1,21 @@
 // Brings a town map to life with WebGL, in a single pass over one canvas:
 // rippling water (where the water mask is), drifting clouds (where the sky
-// mask is), flags waving in the wind (where the flag mask is) and a few seagulls flying over everything. The weather decides how
-// cloudy it is, and can bring rain or fog over the whole town.
+// mask is), flags drawn in the wind (from the data in flagSprites.json), the
+// people, cats and rats on the streets and a few seagulls flying over
+// everything. The weather decides how cloudy it is, and can bring rain or fog
+// over the whole town.
 
-import { createAmbienceRenderer, SHADER_COMMON } from "./ambienceRenderer"
+import {
+  createAmbienceRenderer,
+  SHADER_COMMON,
+  warmUpShader,
+} from "./ambienceRenderer"
 
 const FRAGMENT_SHADER = `
 ${SHADER_COMMON}
 
 uniform sampler2D u_water;
 uniform sampler2D u_sky;
-uniform sampler2D u_flag;
 // What people walk behind: alpha marks it, red and green hold the height where
 // it meets the ground in 1/16 pixels, see frontMask.ts
 uniform sampler2D u_walkFront;
@@ -27,6 +32,14 @@ uniform vec4 u_laneBox[MAX_LEVELS];
 uniform float u_laneSize[MAX_LEVELS];
 uniform float u_laneCount;
 
+// Flags drawn by the shader, in pixels of the harbour picture. Each is four
+// corners (x start and end, top and bottom at the pole, top and bottom at the
+// free end), a nation and whether it has a pole, see flagUniforms.ts
+const int MAX_FLAGS = 12;
+uniform vec4 u_flagEdges[MAX_FLAGS];
+uniform vec4 u_flagFar[MAX_FLAGS];
+uniform float u_flagCount;
+
 // The weather, see weatherAmbience.ts
 uniform float u_cloudCover;
 uniform float u_cloudShade;
@@ -42,36 +55,422 @@ const int SEAGULLS = 5;
 const vec3 FOG_COLOR = vec3(0.9, 0.92, 0.94);
 const vec3 OVERCAST_COLOR = vec3(0.08, 0.1, 0.14);
 
-// A flag ripples from the pole to the free end, which is where the flag mask is
-// red. Pixels are pulled from a little up, down and sideways, but never from
-// outside the flag.
-vec4 flag(vec2 uv, float pole) {
-  float amplitude = max(1.5, u_size.x * 0.0015) * u_wind;
-  // The speed stays fixed, scaling time by the fading wind would make the
-  // flag whip around while the weather changes
-  float phase = u_time * 4.0 - pole * 7.0;
-  float wave = sin(phase) + 0.4 * sin(phase * 1.7 + 1.0);
-  vec2 offset = vec2(0.5 * cos(phase), wave) * amplitude * pole / u_size;
-  vec2 waved = uv + offset;
+// The Union Flag as it was after 1707. A tile is as high as p.y goes to 1 and
+// w wide, the diagonals run from corner to corner.
+vec3 flagEngland(vec2 p, float w) {
+  float len = sqrt(1.0 + w * w);
+  float saltire = min(abs(p.x - p.y * w), abs(p.x + p.y * w - w)) / len;
+  vec2 q = abs(p - vec2(w, 1.0) * 0.5);
+  float cross = min(q.x, q.y);
 
-  if (texture2D(u_flag, waved).a < 0.5) {
-    waved = uv;
+  vec3 color = vec3(0.05, 0.13, 0.43);
+  color = mix(color, vec3(0.95, 0.94, 0.9), step(saltire, 0.1));
+  color = mix(color, vec3(0.95, 0.94, 0.9), step(cross, 0.15));
+
+  return mix(color, vec3(0.78, 0.1, 0.14), step(cross, 0.08));
+}
+
+// The pixels of a fleur-de-lis, 13 wide and 14 tall. A row is a number with a bit
+// for every pixel, the left one first.
+float fleurPixel(float column, float row) {
+  float bits = 0.0;
+
+  if (row < 0.5) {
+    bits = 64.0;
+  } else if (row < 1.5) {
+    bits = 224.0;
+  } else if (row < 2.5) {
+    bits = 496.0;
+  } else if (row < 3.5) {
+    bits = 496.0;
+  } else if (row < 4.5) {
+    bits = 2546.0;
+  } else if (row < 5.5) {
+    bits = 7671.0;
+  } else if (row < 6.5) {
+    bits = 7919.0;
+  } else if (row < 7.5) {
+    bits = 3822.0;
+  } else if (row < 8.5) {
+    bits = 1772.0;
+  } else if (row < 9.5) {
+    bits = 496.0;
+  } else if (row < 10.5) {
+    bits = 4094.0;
+  } else if (row < 11.5) {
+    bits = 1016.0;
+  } else if (row < 12.5) {
+    bits = 224.0;
+  } else if (row < 13.5) {
+    bits = 432.0;
   }
 
-  // Crests catch the light, troughs fall into shade
-  vec3 color = texture2D(u_image, waved).rgb * (1.0 + 0.1 * wave * pole * min(u_wind, 1.0));
+  return mod(floor(bits / pow(2.0, column)), 2.0);
+}
+
+// White with golden fleurs-de-lis in staggered rows. Cell is the space one
+// fleur has, cloth the position on the flag in picture pixels.
+vec3 flagFrance(vec2 cloth, float cell) {
+  vec2 grid = cloth / cell;
+  grid.x += 0.5 * mod(floor(grid.y), 2.0);
+  vec2 c = fract(grid) - 0.5;
+
+  // A fleur is 14 pixels tall and takes up 70% of the cell
+  float size = 0.7 / 14.0;
+  vec2 pixel = vec2(c.x + 13.0 * 0.5 * size, c.y + 0.35) / size;
+  float fleur = 0.0;
+
+  if (pixel.x >= 0.0 && pixel.x < 13.0 && pixel.y >= 0.0 && pixel.y < 14.0) {
+    fleur = fleurPixel(floor(pixel.x), floor(pixel.y));
+  }
+
+  return mix(vec3(0.94, 0.92, 0.86), vec3(0.86, 0.64, 0.14), fleur);
+}
+
+// The coat of arms of Spain, q is the position from its middle in heights of
+// the arms, about -0.5 to 0.5. A simple version: a crown, a shield in four
+// parts with a blue oval, and a pillar with a red ribbon on each side. Returns
+// the colour and 1 where something is drawn.
+vec4 flagSpainArms(vec2 q) {
+  float side = abs(q.x);
+
+  // The crown, with three points and a red jewel
+  if (q.y > -0.5 && q.y < -0.3 && side < 0.19) {
+    bool points = q.y > -0.42;
+
+    if (!points || side < 0.03 || (side > 0.1 && side < 0.16)) {
+      return vec4(0.95, 0.72, 0.1, 1.0);
+    }
+  }
+
+  if (q.y > -0.32 && q.y < -0.29 && side < 0.2) {
+    return vec4(0.7, 0.1, 0.12, 1.0);
+  }
+
+  // The pillars, white with a red ribbon winding round them
+  if (side > 0.26 && side < 0.35 && q.y > -0.24 && q.y < 0.36) {
+    if (q.y < -0.19) {
+      return vec4(0.95, 0.72, 0.1, 1.0);
+    }
+
+    if (fract(q.y * 5.0 + 0.4 * q.x) < 0.35) {
+      return vec4(0.72, 0.1, 0.12, 1.0);
+    }
+
+    return vec4(0.93, 0.9, 0.83, 1.0);
+  }
+
+  // The shield, straight at the top and pointed at the bottom
+  float reach = q.y < 0.2 ? 0.21 : 0.21 * (0.42 - q.y) / 0.22;
+
+  if (q.y > -0.27 && q.y < 0.42 && side < reach) {
+    if (side > reach - 0.015 || q.y < -0.255) {
+      return vec4(0.35, 0.1, 0.05, 1.0);
+    }
+
+    // The blue oval in the middle with a golden jewel
+    vec2 oval = vec2(q.x / 0.07, (q.y - 0.02) / 0.095);
+
+    if (length(oval) < 1.0) {
+      return length(oval) < 0.35 ? vec4(0.95, 0.72, 0.1, 1.0) : vec4(0.1, 0.2, 0.6, 1.0);
+    }
+
+    if (q.y < 0.06) {
+      if (q.x < 0.0) {
+        // Castile, a golden tower on red
+        bool tower = abs(q.x + 0.11) < 0.045 && q.y > -0.17 && q.y < -0.06;
+
+        return tower ? vec4(0.95, 0.72, 0.1, 1.0) : vec4(0.72, 0.1, 0.12, 1.0);
+      }
+
+      // Leon, a lion on silver
+      bool lion = length(vec2(q.x - 0.11, (q.y + 0.1) * 0.8)) < 0.055;
+
+      return lion ? vec4(0.5, 0.15, 0.45, 1.0) : vec4(0.93, 0.92, 0.88, 1.0);
+    }
+
+    if (q.x < 0.0) {
+      // Aragon, red stripes on gold
+      bool stripe = fract(q.x * 16.0) < 0.5;
+
+      return stripe ? vec4(0.72, 0.1, 0.12, 1.0) : vec4(0.95, 0.72, 0.1, 1.0);
+    }
+
+    // Navarre, golden chains on red
+    bool chain = fract((q.x + q.y) * 11.0) < 0.2;
+
+    return chain ? vec4(0.95, 0.72, 0.1, 1.0) : vec4(0.72, 0.1, 0.12, 1.0);
+  }
+
+  return vec4(0.0);
+}
+
+// Red, yellow and red stripes with the coat of arms by the pole. Not the flag
+// of 1715, it is the one that is wanted for now.
+vec3 flagSpain(vec2 p, float w) {
+  vec3 red = vec3(0.72, 0.05, 0.1);
+  vec3 yellow = vec3(0.98, 0.75, 0.08);
+  vec3 color = (p.y < 0.25 || p.y > 0.75) ? red : yellow;
+
+  vec4 arms = flagSpainArms((p - vec2(0.36 * w, 0.54)) / 0.72);
+
+  return mix(color, arms.rgb, arms.a);
+}
+
+// Red, white and blue stripes
+vec3 flagHolland(vec2 p) {
+  if (p.y < 0.3333) {
+    return vec3(0.68, 0.13, 0.15);
+  }
+
+  if (p.y < 0.6667) {
+    return vec3(0.95, 0.94, 0.9);
+  }
+
+  return vec3(0.12, 0.25, 0.55);
+}
+
+// The size of a pixel of a drawn flag in picture pixels, close to the pixels of
+// the painted picture so the flags do not look cleaner than what is round them
+const float FLAG_PIXEL = 1.75;
+
+// The cloth of a drawn flag: nation 0 England, 1 France, 2 Spain, 3 Holland.
+// Cloth is the position on it in picture pixels from the pole and the top.
+// The pattern covers the whole flag, a French flag gets fleurs a little over a
+// third of its height apart.
+vec3 flagDesign(float nation, vec2 cloth, vec2 flagSize) {
+  if (nation > 0.5 && nation < 1.5) {
+    return flagFrance(cloth, flagSize.y * 0.35);
+  }
+
+  vec2 tile = cloth / flagSize;
+  float w = flagSize.x / flagSize.y;
+  vec2 p = vec2(tile.x * w, tile.y);
+
+  if (nation < 0.5) {
+    return flagEngland(p, w);
+  }
+
+  if (nation < 2.5) {
+    return flagSpain(p, w);
+  }
+
+  return flagHolland(p);
+}
+
+// How a pole is sized from the flag it holds: the width and the height of the
+// flag at the pole, the pole reaches a little above and well below it
+float poleWidth(float height) {
+  return max(4.0, height * 0.11);
+}
+
+// The wooden pole of a flag with a golden ball on top, painted like the ones in
+// Basse-Terre. It stands against the pole side of the cloth and grows with the
+// flag. Returns the colour and 1 where the pole is, 0 elsewhere.
+vec4 flagPole(vec2 pixel) {
+  vec4 e = vec4(0.0);
+  bool found = false;
+
+  // Only finds the flag. The drawing is after the loop, the loop is repeated
+  // for every flag by the compiler and the drawing should not be.
+  for (int i = 0; i < MAX_FLAGS; i++) {
+    if (float(i) >= u_flagCount) {
+      break;
+    }
+
+    vec4 candidate = u_flagEdges[i];
+    float height = candidate.w - candidate.z;
+    float width = poleWidth(height);
+
+    if (
+      u_flagFar[i].w > 0.5 &&
+      pixel.x >= candidate.x - width - height * 0.075 &&
+      pixel.x <= candidate.x + height * 0.075 &&
+      pixel.y > candidate.z - height * 0.4 && pixel.y < candidate.w + height * 0.7
+    ) {
+      e = candidate;
+      found = true;
+      break;
+    }
+  }
+
+  if (!found) {
+    return vec4(0.0);
+  }
+
+  float height = e.w - e.z;
+  float width = poleWidth(height);
+  float across = (pixel.x - (e.x - width)) / width;
+  float ball = height * 0.075;
+  float ballY = e.z - height * 0.17 + ball;
+
+  // The ball, with a bright spot top left and a dark rim
+  vec2 fromBall = vec2(pixel.x - (e.x - width * 0.5), pixel.y - ballY);
+
+  if (length(fromBall) < ball) {
+    vec3 gold = vec3(0.93, 0.6, 0.08);
+
+    if (length(fromBall) > ball - 1.0) {
+      gold = vec3(0.35, 0.16, 0.03);
+    } else if (length(fromBall - vec2(-ball * 0.3, -ball * 0.3)) < ball * 0.35) {
+      gold = vec3(1.0, 0.85, 0.4);
+    }
+
+    return vec4(gold, 1.0);
+  }
+
+  if (across >= 0.0 && across <= 1.0 && pixel.y > ballY && pixel.y < e.w + height * 0.6) {
+    // From the left: brown edge, orange, bright, dark, black outline
+    vec3 wood = vec3(0.5, 0.35, 0.16);
+
+    if (across > 0.15) {
+      wood = vec3(0.69, 0.43, 0.04);
+    }
+
+    if (across > 0.4) {
+      wood = vec3(0.85, 0.58, 0.05);
+    }
+
+    if (across > 0.62) {
+      wood = vec3(0.29, 0.17, 0.04);
+    }
+
+    if (across > 0.8) {
+      wood = vec3(0.07, 0.03, 0.01);
+    }
+
+    return vec4(wood, 1.0);
+  }
+
+  return vec4(0.0);
+}
+
+// Whether a pixel is near a flag or its pole, the rest of the picture skips
+// the flag drawing
+bool nearFlag(vec2 pixel) {
+  for (int i = 0; i < MAX_FLAGS; i++) {
+    if (float(i) >= u_flagCount) {
+      break;
+    }
+
+    vec4 e = u_flagEdges[i];
+    vec4 f = u_flagFar[i];
+    float sway = (e.w - e.z + f.y - f.x) * 0.5 * 0.2;
+
+    if (
+      pixel.x > e.x - 14.0 && pixel.x < e.y + 6.0 &&
+      pixel.y > min(e.z, f.x) - sway - 6.0 &&
+      pixel.y < max(e.w, f.y) + sway + 6.0
+    ) {
+      return true;
+    }
+
+    // A pole reaches above and below the flag
+    float height = e.w - e.z;
+
+    if (
+      f.w > 0.5 &&
+      pixel.x > e.x - 14.0 && pixel.x < e.x + 2.0 &&
+      pixel.y > e.z - height * 0.4 && pixel.y < e.w + height * 0.7
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+// A flag waves from the pole to the free end, the top and bottom edges move
+// with the cloth. Returns the colour and how much of the pixel the cloth covers.
+vec4 flagCloth(vec2 pixel) {
+  bool found = false;
+  float t = 0.0;
+  float span = 1.0;
+  float height = 1.0;
+  float nation = 0.0;
+  float phase = 0.0;
+  float top = 0.0;
+  float edge = 0.0;
+
+  // Only finds the flag and where on it the pixel is. The colour is worked out
+  // once after the loop, the compiler repeats the loop for every flag and the
+  // nations are a lot of code.
+  for (int i = 0; i < MAX_FLAGS; i++) {
+    if (float(i) >= u_flagCount) {
+      break;
+    }
+
+    vec4 e = u_flagEdges[i];
+    vec4 f = u_flagFar[i];
+    float candidateSpan = e.y - e.x;
+    float candidateT = (pixel.x - e.x) / candidateSpan;
+
+    if (candidateT < 0.0 || candidateT > 1.0) {
+      continue;
+    }
+
+    // Same rhythm as the painted flags had, the stronger the wind the more it waves
+    float candidatePhase = u_time * 4.0 - candidateT * 7.0;
+    float wave = sin(candidatePhase) + 0.4 * sin(candidatePhase * 1.7 + 1.0);
+    float candidateHeight = (e.w - e.z + f.y - f.x) * 0.5;
+    float sway = candidateHeight * 0.06 * (0.4 + 0.6 * min(u_wind, 2.0));
+    float shift = wave * sway * candidateT;
+
+    float candidateTop = mix(e.z, f.x, candidateT) + shift;
+    float candidateBottom = mix(e.w, f.y, candidateT) + shift;
+    float candidateEdge = min(pixel.y - candidateTop, candidateBottom - pixel.y);
+
+    // Hard edges, like the pixel art round it
+    if (candidateEdge < 0.0) {
+      continue;
+    }
+
+    found = true;
+    t = candidateT;
+    span = candidateSpan;
+    height = candidateHeight;
+    nation = f.z;
+    phase = candidatePhase;
+    top = candidateTop;
+    edge = candidateEdge;
+    break;
+  }
+
+  if (!found) {
+    return vec4(0.0);
+  }
+
+  vec3 color = flagDesign(nation, vec2(t * span, pixel.y - top), vec2(span, height));
+
+  // Crests catch the light, troughs fall into shade, in a few steps
+  float shade = 1.0 + 0.16 * cos(phase + 0.6) * t * min(u_wind, 1.0);
+  color *= floor(shade / 0.05 + 0.5) * 0.05;
+
+  // A darker line along the top and the bottom, as the painted flags have
+  if (edge < FLAG_PIXEL) {
+    color *= 0.82;
+  }
 
   return vec4(color, 1.0);
+}
+
+// The pixel itself and the four next to it, the outline of a sprite is where a
+// neighbour is drawn and the pixel is not. Each sprite is asked for in one loop,
+// asking five times in a row makes the GPU compile its code five times, which
+// took the shader over 20 seconds to build.
+vec2 neighbourOffset(int i) {
+  return vec2(
+    i == 1 ? -1.0 : (i == 2 ? 1.0 : 0.0),
+    i == 3 ? -1.0 : (i == 4 ? 1.0 : 0.0)
+  );
 }
 
 // One pixel of a townsperson in 1715, on a grid 7 wide and 21 tall with the
 // head at the top. Frame 0 and 2 are the two strides, frame 1 has the feet
 // together. Seed picks the clothes. A gentleman wears a tricorn hat or a
-// powdered wig with a long coat, a woman a cap and a long skirt. Role 1 is a
-// porter carrying a crate and role 2 a porter with empty hands.
-vec4 person(float col, float row, float frame, float seed, float role) {
+// powdered wig with a long coat, a woman a cap and a long skirt.
+vec4 person(float col, float row, float frame, float seed) {
   float r = row - 1.0;
-  bool porter = role > 0.5;
   float pick = floor(hash(seed + 20.0) * 6.0);
   vec3 coat = pick < 1.0 ? vec3(0.45, 0.28, 0.2)
     : pick < 2.0 ? vec3(0.2, 0.27, 0.42)
@@ -81,19 +480,13 @@ vec4 person(float col, float row, float frame, float seed, float role) {
     : vec3(0.36, 0.34, 0.33);
   float tone = hash(seed + 21.0);
   vec3 skin = mix(vec3(0.86, 0.66, 0.52), vec3(0.45, 0.3, 0.2), tone * tone);
-  bool woman = !porter && hash(seed + 22.0) > 0.5;
-  bool wig = !woman && !porter && hash(seed + 23.0) > 0.7;
+  bool woman = hash(seed + 22.0) > 0.5;
+  bool wig = !woman && hash(seed + 23.0) > 0.7;
   vec3 hat = mix(vec3(0.13, 0.11, 0.1), vec3(0.24, 0.2, 0.3), hash(seed + 24.0));
   vec3 hair = mix(vec3(0.25, 0.15, 0.08), vec3(0.7, 0.55, 0.3), hash(seed + 25.0));
   vec3 wigColor = vec3(0.82, 0.8, 0.78);
   vec3 dark = vec3(0.12, 0.1, 0.1);
   vec3 linen = vec3(0.86, 0.82, 0.72);
-  vec3 trousers = vec3(0.32, 0.25, 0.18);
-
-  // Porters wear rolled sleeves and a plain shirt
-  if (porter) {
-    coat = mix(linen * 0.9, coat, 0.3);
-  }
 
   // Face, with hair or a wig at the sides
   if (r >= 1.0 && r <= 3.0) {
@@ -114,14 +507,10 @@ vec4 person(float col, float row, float frame, float seed, float role) {
 
   // Top of the head, a crown and a wide brim for the tricorn
   if (r == -1.0 && col >= 2.0 && col <= 4.0) {
-    return vec4(woman ? linen : (wig ? wigColor : (porter ? vec3(0.0) : hat)), porter ? 0.0 : 1.0);
+    return vec4(woman ? linen : (wig ? wigColor : hat), 1.0);
   }
 
   if (r == 0.0) {
-    if (porter && col >= 1.0 && col <= 5.0) {
-      return vec4(hair * 0.8, 1.0);
-    }
-
     if (woman && col >= 1.0 && col <= 5.0) {
       return vec4(linen, 1.0);
     }
@@ -130,7 +519,7 @@ vec4 person(float col, float row, float frame, float seed, float role) {
       return vec4(wigColor, 1.0);
     }
 
-    if (!woman && !wig && !porter) {
+    if (!woman && !wig) {
       return vec4(col == 0.0 || col == 6.0 ? hat * 1.7 : hat, 1.0);
     }
   }
@@ -138,13 +527,6 @@ vec4 person(float col, float row, float frame, float seed, float role) {
   // Shoulders
   if (r == 4.0 && col >= 1.0 && col <= 5.0) {
     return vec4(coat, 1.0);
-  }
-
-  // A crate held in front, with the hands under it
-  if (role > 0.5 && role < 1.5 && col >= 4.0 && col <= 6.0 && r >= 6.0 && r <= 9.0) {
-    bool edge = r == 6.0 || r == 9.0 || col == 6.0;
-
-    return vec4(edge ? vec3(0.4, 0.27, 0.14) : vec3(0.62, 0.44, 0.24), 1.0);
   }
 
   // Arms swing with the stride, one step longer when forward
@@ -200,13 +582,9 @@ vec4 person(float col, float row, float frame, float seed, float role) {
 
   // A long coat to the knee, a touch fuller at the hem, or plain trousers
   if (r >= 10.0 && r <= 14.0) {
-    float hem = (r >= 13.0 && !porter) ? 1.0 : 0.0;
+    float hem = r >= 13.0 ? 1.0 : 0.0;
 
     if (col >= 2.0 - hem && col <= 4.0 + hem) {
-      if (porter) {
-        return vec4(trousers, 1.0);
-      }
-
       return vec4(coat * (col == 2.0 - hem || col == 4.0 + hem ? 0.8 : 1.0), 1.0);
     }
   }
@@ -214,15 +592,14 @@ vec4 person(float col, float row, float frame, float seed, float role) {
   // White stockings and shoes, the far leg in shade
   float farLeg = frame < 0.5 ? 1.0 : (frame > 1.5 ? 5.0 : 2.0);
   float nearLeg = frame < 0.5 ? 5.0 : (frame > 1.5 ? 1.0 : 4.0);
-  vec3 legs = porter ? trousers : linen;
 
   if (r >= 15.0 && r <= 18.0) {
     if (col == nearLeg) {
-      return vec4(legs, 1.0);
+      return vec4(linen, 1.0);
     }
 
     if (col == farLeg) {
-      return vec4(legs * 0.72, 1.0);
+      return vec4(linen * 0.72, 1.0);
     }
   }
 
@@ -240,17 +617,24 @@ vec4 person(float col, float row, float frame, float seed, float role) {
 }
 
 // The sprite with a dark outline and a little shadow underneath
-vec4 personPixel(float col, float row, float frame, float seed, float role) {
-  vec4 here = person(col, row, frame, seed, role);
+vec4 personPixel(float col, float row, float frame, float seed) {
+  vec4 here = vec4(0.0);
+  float near = 0.0;
+
+  for (int i = 0; i < 5; i++) {
+    vec2 shift = neighbourOffset(i);
+    vec4 other = person(col + shift.x, row + shift.y, frame, seed);
+
+    if (i == 0) {
+      here = other;
+    } else {
+      near += other.a;
+    }
+  }
 
   if (here.a > 0.5) {
     return here;
   }
-
-  float near = person(col - 1.0, row, frame, seed, role).a +
-    person(col + 1.0, row, frame, seed, role).a +
-    person(col, row - 1.0, frame, seed, role).a +
-    person(col, row + 1.0, frame, seed, role).a;
 
   if (near > 0.5) {
     return vec4(0.08, 0.06, 0.05, 0.9);
@@ -357,16 +741,23 @@ vec4 cat(float col, float row, float frame, float kind) {
 
 // The cat with a dark outline and a little shadow underneath
 vec4 catPixel(float col, float row, float frame, float kind) {
-  vec4 here = cat(col, row, frame, kind);
+  vec4 here = vec4(0.0);
+  float near = 0.0;
+
+  for (int i = 0; i < 5; i++) {
+    vec2 shift = neighbourOffset(i);
+    vec4 other = cat(col + shift.x, row + shift.y, frame, kind);
+
+    if (i == 0) {
+      here = other;
+    } else {
+      near += other.a;
+    }
+  }
 
   if (here.a > 0.5) {
     return here;
   }
-
-  float near = cat(col - 1.0, row, frame, kind).a +
-    cat(col + 1.0, row, frame, kind).a +
-    cat(col, row - 1.0, frame, kind).a +
-    cat(col, row + 1.0, frame, kind).a;
 
   if (near > 0.5) {
     return vec4(0.08, 0.06, 0.05, 0.85);
@@ -435,99 +826,26 @@ vec4 rat(float col, float row, float frame) {
 }
 
 vec4 ratPixel(float col, float row, float frame) {
-  vec4 here = rat(col, row, frame);
+  vec4 here = vec4(0.0);
+  float near = 0.0;
+
+  for (int i = 0; i < 5; i++) {
+    vec2 shift = neighbourOffset(i);
+    vec4 other = rat(col + shift.x, row + shift.y, frame);
+
+    if (i == 0) {
+      here = other;
+    } else {
+      near += other.a;
+    }
+  }
 
   if (here.a > 0.5) {
     return here;
   }
-
-  float near = rat(col - 1.0, row, frame).a + rat(col + 1.0, row, frame).a +
-    rat(col, row - 1.0, frame).a + rat(col, row + 1.0, frame).a;
 
   if (near > 0.5) {
     return vec4(0.07, 0.05, 0.04, 0.8);
-  }
-
-  return vec4(0.0);
-}
-
-// A bird on a grid 8 wide and 5 tall, facing right. Frame 0 stands, frame 1
-// pecks at the ground and frame 2 flutters up. Kind 0 is a grey pigeon and
-// kind 1 a brown hen with a red comb.
-vec4 bird(float col, float row, float frame, float kind) {
-  vec3 body = kind < 0.5 ? vec3(0.5, 0.52, 0.58) : vec3(0.58, 0.38, 0.2);
-  vec3 head = kind < 0.5 ? vec3(0.32, 0.4, 0.5) : vec3(0.92, 0.88, 0.8);
-  vec3 beak = vec3(0.9, 0.62, 0.2);
-
-  // Wings up when fluttering
-  if (frame > 1.5) {
-    if (row <= 1.0 && col >= 2.0 && col <= 4.0) {
-      return vec4(body * 0.8, 1.0);
-    }
-
-    if (row >= 2.0 && row <= 3.0 && col >= 1.0 && col <= 5.0) {
-      return vec4(body, 1.0);
-    }
-
-    if (row >= 1.0 && row <= 2.0 && col >= 5.0 && col <= 6.0) {
-      return vec4(head, 1.0);
-    }
-
-    if (row == 2.0 && col == 7.0) {
-      return vec4(beak, 1.0);
-    }
-
-    return vec4(0.0);
-  }
-
-  // Tail and body
-  if (row == 2.0 && col == 0.0) {
-    return vec4(body * 0.7, 1.0);
-  }
-
-  if (row >= 2.0 && row <= 3.0 && col >= 1.0 && col <= 5.0) {
-    return vec4(row == 2.0 ? body * 1.1 : body * 0.9, 1.0);
-  }
-
-  // Head up, or down at the ground when pecking
-  if (frame < 0.5) {
-    if (row >= 0.0 && row <= 1.0 && col >= 5.0 && col <= 6.0) {
-      return vec4(row == 0.0 && kind > 0.5 && col == 5.0 ? vec3(0.8, 0.15, 0.12) : head, 1.0);
-    }
-
-    if (row == 1.0 && col == 7.0) {
-      return vec4(beak, 1.0);
-    }
-
-    if (row == 2.0 && col == 5.0) {
-      return vec4(head, 1.0);
-    }
-  } else {
-    if (row >= 3.0 && row <= 4.0 && col >= 6.0 && col <= 7.0) {
-      return vec4(row == 4.0 && col == 7.0 ? beak : head, 1.0);
-    }
-  }
-
-  // Thin legs
-  if (row == 4.0 && (col == 3.0 || col == 4.0)) {
-    return vec4(0.45, 0.3, 0.25, 1.0);
-  }
-
-  return vec4(0.0);
-}
-
-vec4 birdPixel(float col, float row, float frame, float kind) {
-  vec4 here = bird(col, row, frame, kind);
-
-  if (here.a > 0.5) {
-    return here;
-  }
-
-  float near = bird(col - 1.0, row, frame, kind).a + bird(col + 1.0, row, frame, kind).a +
-    bird(col, row - 1.0, frame, kind).a + bird(col, row + 1.0, frame, kind).a;
-
-  if (near > 0.5) {
-    return vec4(0.08, 0.06, 0.05, 0.8);
   }
 
   return vec4(0.0);
@@ -607,17 +925,11 @@ float presenceOf(float slot) {
 }
 
 const int WALKERS = 8;
-const int PAIRS = 2;
-const int PORTERS = 2;
 const int CATS = 2;
 const int RATS = 2;
-const int FLOCKS = 2;
 const float WALK_SLOT = 110.0;
-const float TALK_SLOT = 120.0;
-const float PORTER_SLOT = 90.0;
 const float CAT_SLOT = 55.0;
 const float RAT_SLOT = 40.0;
-const float FLOCK_SLOT = 70.0;
 
 // Where somebody out for a stroll is at this moment
 struct Walk {
@@ -711,7 +1023,7 @@ Walk walkOf(float index, float pixelX, float margin) {
 
 // Draws one person with their feet at (x, y), size picture pixels to a sprite
 // pixel. Returns the colour and how much of it covers the pixel at p.
-vec4 drawPerson(vec2 p, float x, float y, float size, float facing, float frame, float seed, float role) {
+vec4 drawPerson(vec2 p, float x, float y, float size, float facing, float frame, float seed) {
   // Snapped to the sprite's own pixels, or it shimmers as it moves
   vec2 feet = floor(vec2(x, y) / size) * size;
   float column = (p.x - feet.x) / size * facing + 3.5;
@@ -721,7 +1033,7 @@ vec4 drawPerson(vec2 p, float x, float y, float size, float facing, float frame,
     return vec4(0.0);
   }
 
-  vec4 pixel = personPixel(floor(column), floor(row), frame, seed, role);
+  vec4 pixel = personPixel(floor(column), floor(row), frame, seed);
 
   // Behind a lamppost or a cannon when standing further back than where it
   // touches the ground
@@ -747,152 +1059,12 @@ vec4 walker(vec2 p, float index) {
   }
 
   float frame = w.paused ? 1.0 : strideFrame(w.travelled, w.size);
-  vec4 pixel = drawPerson(p, w.x, w.y, w.size, w.facing, frame, w.slot, 0.0);
+  vec4 pixel = drawPerson(p, w.x, w.y, w.size, w.facing, frame, w.slot);
 
   // Fades in and out at the ends of the lane
   float fade = clamp(w.elapsed / 0.6, 0.0, 1.0) * clamp((w.pathLength - w.travelled) / (w.speed * 0.6), 0.0, 1.0);
 
   return vec4(pixel.rgb, pixel.a * fade * w.presence);
-}
-
-// Two people meet, face each other and talk for a good while, waving their
-// arms now and then, and then each goes back the way they came. Who 0 comes in
-// from the start of the street and who 1 from the end.
-vec4 talker(vec2 p, float pair, float who) {
-  float time = u_time + pair * 41.0;
-  float cycle = floor(time / TALK_SLOT);
-  float local = time - cycle * TALK_SLOT;
-  float slot = cycle + 401.0 + pair * 173.0;
-  float count = gLevels;
-  float level = floor(walkRandom(slot, 12.0) * count);
-  vec2 extent = levelExtent(level);
-  float size = levelSize(level);
-  float lane = extent.y - extent.x;
-  float meet = extent.x + mix(0.35, 0.65, walkRandom(slot, 2.0)) * lane;
-  float gap = 9.0 * size;
-  bool first = who < 0.5;
-  float speedA = mix(26.0, 38.0, walkRandom(slot, 3.0)) * size / REFERENCE_SIZE;
-  float speedB = mix(26.0, 38.0, walkRandom(slot, 4.0)) * size / REFERENCE_SIZE;
-  float distanceA = meet - gap * 0.5 - extent.x;
-  float distanceB = extent.y - meet - gap * 0.5;
-  float arrive = max(distanceA / speedA, distanceB / speedB) + walkRandom(slot, 5.0) * 8.0;
-  float talkFor = mix(8.0, 16.0, walkRandom(slot, 6.0));
-
-  float speed = first ? speedA : speedB;
-  float travel = first ? distanceA : distanceB;
-  float direction = first ? 1.0 : -1.0;
-  float home = first ? extent.x : extent.y;
-  float stand = first ? meet - gap * 0.5 : meet + gap * 0.5;
-  float startAt = arrive - travel / speed;
-  float leaveAt = arrive + talkFor;
-  float x = stand;
-  float facing = direction;
-  float travelled = travel;
-  float fade = 1.0;
-  bool talking = false;
-
-  if (count < 0.5 || local < startAt) {
-    return vec4(0.0);
-  }
-
-  if (local < arrive) {
-    travelled = (local - startAt) * speed;
-    x = home + direction * travelled;
-    fade = clamp((local - startAt) / 0.6, 0.0, 1.0);
-  } else if (local < leaveAt) {
-    talking = true;
-  } else {
-    float back = (local - leaveAt) * speed;
-
-    if (back > travel) {
-      return vec4(0.0);
-    }
-
-    x = stand - direction * back;
-    facing = -direction;
-    travelled = travel + back;
-    fade = clamp((travel - back) / (speed * 0.6), 0.0, 1.0);
-  }
-
-  if (abs(p.x - x) > 30.0) {
-    return vec4(0.0);
-  }
-
-  vec3 laneHere = laneAt(x, level);
-
-  if (laneHere.z < 0.5) {
-    return vec4(0.0);
-  }
-
-  float y = laneHere.x + (walkRandom(slot, 8.0) * 2.0 - 1.0) * laneHere.y;
-
-  // Waving a hand now and then, each in their own time
-  float gesture = sin(u_time * 1.9 + who * 2.7 + slot) + 0.6 * sin(u_time * 3.1 + who * 1.3);
-  float frame = talking ? (gesture > 0.9 ? 0.0 : (gesture < -0.9 ? 2.0 : 1.0)) : strideFrame(travelled, size);
-  vec4 pixel = drawPerson(p, x, y, size, facing, frame, slot * 2.0 + who + 3.0, 0.0);
-
-  return vec4(pixel.rgb, pixel.a * fade * presenceOf(slot));
-}
-
-// A porter carries a crate from one place to another, puts it down, walks back
-// empty handed, and does it all again.
-vec4 porter(vec2 p, float index) {
-  float time = u_time + index * 29.0;
-  float cycle = floor(time / PORTER_SLOT);
-  float local = time - cycle * PORTER_SLOT;
-  float slot = cycle + 601.0 + index * 157.0;
-  float count = gLevels;
-  float level = floor(walkRandom(slot, 12.0) * count);
-  vec2 extent = levelExtent(level);
-  float size = levelSize(level);
-  float lane = extent.y - extent.x;
-  float speed = mix(18.0, 26.0, walkRandom(slot, 2.0)) * size / REFERENCE_SIZE;
-  float distance = min(mix(220.0, 480.0, walkRandom(slot, 3.0)) * size / REFERENCE_SIZE, lane * 0.6);
-  float from = mix(extent.x + 40.0, extent.y - 40.0 - distance, walkRandom(slot, 4.0));
-  float rest = mix(2.5, 5.0, walkRandom(slot, 5.0));
-  float leg = distance / speed;
-  float t = mod(local, 2.0 * (leg + rest));
-
-  if (count < 0.5) {
-    return vec4(0.0);
-  }
-
-  float x = from;
-  float facing = 1.0;
-  float travelled = 0.0;
-  float role = 2.0;
-
-  if (t < leg) {
-    x = from + t * speed;
-    travelled = t * speed;
-    role = 1.0;
-  } else if (t < leg + rest) {
-    x = from + distance;
-  } else if (t < 2.0 * leg + rest) {
-    x = from + distance - (t - leg - rest) * speed;
-    travelled = (t - leg - rest) * speed;
-    facing = -1.0;
-  } else {
-    facing = -1.0;
-  }
-
-  if (abs(p.x - x) > 30.0) {
-    return vec4(0.0);
-  }
-
-  vec3 laneHere = laneAt(x, level);
-
-  if (laneHere.z < 0.5) {
-    return vec4(0.0);
-  }
-
-  float y = laneHere.x + (walkRandom(slot, 8.0) * 2.0 - 1.0) * laneHere.y;
-  bool standing = t >= leg && t < leg + rest || t >= 2.0 * leg + rest;
-  float frame = standing ? 1.0 : strideFrame(travelled, size);
-  vec4 pixel = drawPerson(p, x, y, size, facing, frame, slot * 3.0, role);
-  float fade = clamp(local / 0.8, 0.0, 1.0) * clamp((PORTER_SLOT - local) / 0.8, 0.0, 1.0);
-
-  return vec4(pixel.rgb, pixel.a * fade * presenceOf(slot));
 }
 
 // A cat turns up somewhere on a lane, sits for a while, wanders a short way
@@ -1022,78 +1194,6 @@ vec4 vermin(vec2 p, float index) {
   return vec4(pixel.rgb, pixel.a * fade * presenceOf(slot));
 }
 
-// Two flocks of three birds peck about on the street. Somebody walking by
-// startles them, they flutter up and spread out, and settle again when the
-// person has gone. Flock 0 are pigeons and flock 1 are hens.
-vec4 flocks(vec4 base, vec2 p) {
-  vec4 color = base;
-
-  for (int f = 0; f < FLOCKS; f++) {
-    float time = u_time + float(f) * 37.0;
-    float cycle = floor(time / FLOCK_SLOT);
-    float local = time - cycle * FLOCK_SLOT;
-    float slot = cycle + 801.0 + float(f) * 191.0;
-    float count = gLevels;
-    float level = floor(walkRandom(slot, 12.0) * count);
-    vec2 extent = levelExtent(level);
-    float personSize = levelSize(level);
-    float scale = personSize / REFERENCE_SIZE;
-    float centre = mix(extent.x + 120.0, extent.y - 120.0, walkRandom(slot, 3.0));
-
-    // Nothing to do unless the pixel is near the flock
-    if (count < 0.5 || abs(p.x - centre) > 140.0 * scale) {
-      continue;
-    }
-
-    float reach = 90.0 * scale;
-    float startle = 0.0;
-
-    for (int i = 0; i < WALKERS; i++) {
-      Walk w = walkOf(float(i), 0.0, 100000.0);
-
-      if (w.active && w.level == level) {
-        startle = max(startle, clamp((reach - abs(w.x - centre)) / reach, 0.0, 1.0) * w.presence);
-      }
-    }
-
-    vec3 laneHere = laneAt(centre, level);
-
-    if (laneHere.z < 0.5) {
-      continue;
-    }
-
-    float fade = clamp(local / 0.8, 0.0, 1.0) * clamp((FLOCK_SLOT - local) / 0.8, 0.0, 1.0) * presenceOf(slot);
-
-    for (int b = 0; b < 3; b++) {
-      float bb = float(b);
-      float spot = (bb - 1.0) * mix(16.0, 24.0, walkRandom(slot, 30.0 + bb)) * scale;
-      float x = centre + spot * (1.0 + 2.5 * startle);
-      float lift = startle * mix(25.0, 45.0, walkRandom(slot, 40.0 + bb)) * scale;
-      float flutter = startle > 0.1 ? sin(u_time * 18.0 + bb * 2.0) * 1.5 * scale : 0.0;
-      float y = laneHere.x + (walkRandom(slot, 50.0 + bb) * 2.0 - 1.0) * laneHere.y - lift + flutter;
-      float facing = walkRandom(slot, 60.0 + bb) > 0.5 ? 1.0 : -1.0;
-      float peck = hash(floor(u_time * 2.5 + bb * 3.0) + slot) > 0.45 ? 1.0 : 0.0;
-      float frame = startle > 0.15 ? 2.0 : peck;
-      float size = personSize * 0.55;
-      vec2 feet = floor(vec2(x, y) / size) * size;
-      float column = (p.x - feet.x) / size * facing + 4.0;
-      float row = 5.0 - (feet.y - p.y) / size;
-
-      if (column < -1.0 || column > 9.0 || row < -1.0 || row > 6.0) {
-        continue;
-      }
-
-      vec4 pixel = birdPixel(floor(column), floor(row), frame, float(f));
-
-      if (pixel.a > 0.0 && !hiddenBehind(p, feet.y + lift)) {
-        color = over(color, pixel.rgb, pixel.a * fade);
-      }
-    }
-  }
-
-  return color;
-}
-
 // Fog rolls in from the sea, thickest in the distance at the top of the map
 // and over the open water and sky, thinning out towards the bottom
 vec4 fog(vec4 base, vec2 p, float skyMask, float waterMask) {
@@ -1169,10 +1269,16 @@ void main() {
     color = clouds(color, p, u_size.x, skyMask, u_cloudCover, u_cloudShade);
   }
 
-  vec4 flagMask = texture2D(u_flag, v_uv);
+  // The drawn flags wave over the picture, which has none of its own
+  vec2 flagPixel = v_uv * u_mapSize;
+  vec2 flagBlock = (floor(flagPixel / FLAG_PIXEL) + 0.5) * FLAG_PIXEL;
 
-  if (flagMask.a > 0.5) {
-    color = flag(v_uv, flagMask.r);
+  if (u_flagCount > 0.5 && nearFlag(flagPixel)) {
+    vec4 pole = flagPole(flagBlock);
+    color = mix(color, vec4(pole.rgb, 1.0), pole.a);
+
+    vec4 cloth = flagCloth(flagBlock);
+    color = mix(color, vec4(cloth.rgb, 1.0), cloth.a);
   }
 
   // Only look for people and cats near a lane, most of the picture never does
@@ -1192,8 +1298,6 @@ void main() {
   }
 
   if (nearLane) {
-    color = flocks(color, pixel);
-
     for (int i = 0; i < RATS; i++) {
       vec4 animal = vermin(pixel, float(i));
       color = over(color, animal.rgb, animal.a);
@@ -1204,22 +1308,9 @@ void main() {
       color = over(color, animal.rgb, animal.a);
     }
 
-    for (int i = 0; i < PORTERS; i++) {
-      vec4 person = porter(pixel, float(i));
-      color = over(color, person.rgb, person.a);
-    }
-
     for (int i = 0; i < WALKERS; i++) {
       vec4 person = walker(pixel, float(i));
       color = over(color, person.rgb, person.a);
-    }
-
-    // Whoever is nearer, the first of a pair is drawn last
-    for (int i = 0; i < PAIRS; i++) {
-      vec4 second = talker(pixel, float(i), 1.0);
-      color = over(color, second.rgb, second.a);
-      vec4 first = talker(pixel, float(i), 0.0);
-      color = over(color, first.rgb, first.a);
     }
   }
 
@@ -1246,15 +1337,12 @@ void main() {
 }
 `
 
-const TEXTURES = [
-  "u_image",
-  "u_water",
-  "u_sky",
-  "u_flag",
-  "u_walkFront",
-] as const
+const TEXTURES = ["u_image", "u_water", "u_sky", "u_walkFront"] as const
 
-// Textures in this order: image, water, sky, flags, what people walk behind.
+// Textures in this order: image, water, sky, what people walk behind.
 // Uniforms from getWeatherAmbience.
 export const createTownMapRenderer = (canvas: HTMLCanvasElement) =>
   createAmbienceRenderer(canvas, FRAGMENT_SHADER, TEXTURES)
+
+// Builds the shader in the background, for when a harbour is about to be shown
+export const warmUpTownMapShader = () => warmUpShader(FRAGMENT_SHADER)

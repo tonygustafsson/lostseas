@@ -40,10 +40,6 @@ describe("town maps", () => {
     expect(existsSync(join(process.cwd(), "public", skyMask))).toBe(true)
   })
 
-  it.each(allImages)("$flagMask exists", ({ flagMask }) => {
-    expect(existsSync(join(process.cwd(), "public", flagMask))).toBe(true)
-  })
-
   it.each(allImages)(
     "$src has no more streets than the shader holds",
     (image) => {

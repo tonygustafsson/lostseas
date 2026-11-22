@@ -5,8 +5,8 @@ import * as prettier from "prettier"
 import type { Plugin } from "vite"
 
 // Lets the mask editor story save what was changed into the harbour data in
-// constants/harbor, and the flag mask that is made from it. Only while
-// Storybook runs locally, a built Storybook has no server.
+// constants/harbor. Only while Storybook runs locally, a built Storybook has no
+// server.
 export const SAVE_PATH = "/__mask-editor/save"
 
 const FOLDER = "constants/harbor"
@@ -35,12 +35,14 @@ const KINDS = {
       }
     },
   },
-  // Boxes round the flags
-  flags: {
-    file: "flags.json",
-    size: 4,
+  // Flags the shader draws, [x start, x end, top and bottom at the pole, top
+  // and bottom at the free end, nation, pole]. A town may not have any
+  // yet.
+  sprites: {
+    file: "flagSprites.json",
+    size: 8,
     set: (config: Config, town: string, variant: string, data: unknown) => {
-      config[town][variant] = data
+      config[town] = { ...config[town], [variant]: data }
     },
   },
   // Street levels, [x start, x end, feet, half width, person size]
@@ -63,7 +65,7 @@ export const format = async (config: unknown, path: string) =>
   })
 
 const save = async (body: string, root: string) => {
-  const { kind, town, variant, data, mask } = JSON.parse(body)
+  const { kind, town, variant, data } = JSON.parse(body)
   const settings = KINDS[kind as keyof typeof KINDS]
 
   if (
@@ -74,11 +76,9 @@ const save = async (body: string, root: string) => {
     !data.every(
       (entry) =>
         Array.isArray(entry) &&
-        // A flag box may end with a 1, to wave the whole box as it is
         // A shape has at least three corners
         (entry.length === settings.size ||
-          (kind === "shapes" && entry.length >= 6 && entry.length % 2 === 0) ||
-          (kind === "flags" && entry.length === 5 && entry[4] === 1)) &&
+          (kind === "shapes" && entry.length >= 6 && entry.length % 2 === 0)) &&
         entry.every((value) => Number.isFinite(value) && value >= 0)
     )
   ) {
@@ -88,24 +88,12 @@ const save = async (body: string, root: string) => {
   const path = join(root, FOLDER, settings.file)
   const config = JSON.parse(await readFile(path, "utf8"))
 
-  if (!(config.towns ?? config)[town]) {
+  if (kind !== "sprites" && !(config.towns ?? config)[town]) {
     throw new Error(`There is no ${town} in ${settings.file}`)
   }
 
   settings.set(config, town, variant, data)
   await writeFile(path, await format(config, path))
-
-  // The flags are also a picture, made in the editor from the same boxes
-  if (kind === "flags") {
-    if (typeof mask !== "string") {
-      throw new Error("The flag mask is missing")
-    }
-
-    await writeFile(
-      join(root, "public/img/town-flag-masks", `${town}-${variant}.png`),
-      Buffer.from(mask, "base64")
-    )
-  }
 
   return `Saved ${settings.file}`
 }

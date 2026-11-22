@@ -1,5 +1,6 @@
 import { type TownBuildingPosition, TOWNS } from "@/constants/locations"
 
+import flagSpritesConfig from "./harbor/flagSprites.json"
 import frontConfig from "./harbor/front.json"
 import lanesConfig from "./harbor/lanes.json"
 
@@ -12,7 +13,8 @@ export type TownMapImage = {
   src: string
   waterMask: string
   skyMask: string
-  flagMask: string
+  // Flags the shader draws, see flagUniforms.ts
+  flagSprites: number[][]
   // Street levels, [x start, x end, feet, half width, person size]
   lanes: number[][]
   // Boxes people walk behind, [x start, y start, x end, y end]
@@ -40,6 +42,7 @@ const IMAGE_SIZES: Record<TownMapVariant, { width: number; height: number }> = {
   mobile: { width: 941, height: 1672 },
 }
 
+// The pictures have no flags, the shader draws and waves them
 export const getTownMapSrc = (town: Town, variant: TownMapVariant) =>
   `/img/towns/${town}-${variant}.png`
 
@@ -51,17 +54,17 @@ export const getTownWaterMaskSrc = (town: Town, variant: TownMapVariant) =>
 export const getTownSkyMaskSrc = (town: Town, variant: TownMapVariant) =>
   `/img/town-sky-masks/${town}-${variant}.png`
 
-// Transparent except the flags, where red is the distance from the pole, used
-// to make them wave
-export const getTownFlagMaskSrc = (town: Town, variant: TownMapVariant) =>
-  `/img/town-flag-masks/${town}-${variant}.png`
-
 // The same empty list every time, so it can be a dependency
 const NONE: number[][] = []
 
 // Edited in the mask editor story, see the ambience skill
 const getLanes = (town: Town, variant: TownMapVariant) =>
   (lanesConfig.towns as Record<string, Record<string, number[][]>>)[town]?.[
+    variant
+  ] ?? NONE
+
+const getFlagSprites = (town: Town, variant: TownMapVariant) =>
+  (flagSpritesConfig as Record<string, Record<string, number[][]>>)[town]?.[
     variant
   ] ?? NONE
 
@@ -80,7 +83,7 @@ const getTownMapImage = (
   src: getTownMapSrc(town, variant),
   waterMask: getTownWaterMaskSrc(town, variant),
   skyMask: getTownSkyMaskSrc(town, variant),
-  flagMask: getTownFlagMaskSrc(town, variant),
+  flagSprites: getFlagSprites(town, variant),
   lanes: getLanes(town, variant),
   things: getFront(town, variant)?.things ?? NONE,
   shapes: getFront(town, variant)?.shapes ?? NONE,

@@ -35,11 +35,6 @@ Read as textures. The channels carry the meaning.
   cover. Half the size of the picture. Painted clouds and flags are left out.
 - `town-water-masks/<town>-<variant>.png`, alpha marks the water that ripples.
   Half the size of the picture. Boats and piers are left out.
-- `town-flag-masks/<town>-<variant>.png`, same size as the picture. Alpha marks
-  the flag, red is how far from the pole a pixel is, so the free end moves most.
-  The editor makes it from the boxes in `constants/harbor/flags.json`, cutting
-  the flag out by the colours of the nation (`stories/game/harbor/detectFlags.mjs`).
-  This will be replaced by polygons in the editor, like the walk behind shapes.
 - `location-sky-masks`, `location-water-masks` and `location-light-masks` for
   the building interiors: sky and sea seen through windows and arches, and
   light, where red is a flame or lantern glass, green the glow round it and
@@ -66,8 +61,44 @@ pixels of the original harbour picture, not of the copy the browser loads
   hidden by it. The game draws these into a mask in the browser
   (`frontMask.ts`), exactly, with no colour matching. Where objects overlap
   the one with the lower ground wins.
-- `flags.json`, rough boxes `[x start, y start, x end, y end]` round each flag,
-  with a fifth value of 1 for a box used as it is. Only the editor reads it.
+- `flagSprites.json`, the flags the shader draws and waves itself, per town and
+  variant `[x start, x end, top and bottom at the pole, top and bottom at the
+free end, nation, pole]`, in picture pixels. Nation is an index in
+  `FLAG_NATIONS` (`flagUniforms.ts`): 0 England, 1 France, 2 Spain, 3 Holland.
+  The pole is 1 when the shader draws a wooden pole with a golden ball for the
+  flag, sized from the flag (a pole stands against the pole side of the cloth,
+  reaches above it and well below it), and 0 when the picture already has one.
+  The pattern covers the whole flag (a French flag gets fleurs a little over a
+  third of its height apart). The shader draws the four nations in `flagDesign`
+  (`townMapShader.ts`). There is no flag mask any more.
+
+  The pictures in `public/img/towns` have no flags, wall banners or poles, the
+  sprites are drawn over them (pole switch on where a pole is needed). The
+  flag-free pictures were made by asking ChatGPT to give each picture back
+  without them. It redraws the whole picture, so for a new one check that the
+  size is exactly the same and that nothing but the flags changed, ships and
+  sails included. The painted originals are in the git history.
+
+## Keeping the shader quick to build
+
+The GPU driver turns the whole shader into one program, and every function is
+copied in at each place it is called. A long function called five times is five
+copies. The people code once took over 20 seconds to build on a Windows GPU
+because each sprite was asked for five times in a row (the pixel and its four
+neighbours, for the outline). Asking in a loop cut it to under 10 seconds.
+
+- Call a big function from one place, in a loop if it has to run several times.
+  Do not put a `break` in such a loop, it can stop the shader from building.
+- `ambienceRenderer.ts` does not wait for the build when the browser says when
+  it is done (`KHR_parallel_shader_compile`), so a slow build no longer freezes
+  the page. The scene just starts drawing when the program is ready.
+- The first build is also done early, in the background, while the ship is at
+  sea (`warmUpTownMapShader`, called by `Sea`). The browser keeps the result, so
+  the harbour then gets the shader in a few milliseconds. Add the call wherever
+  a scene is known to be coming.
+- To see what a change costs, time `linkProgram` and the first draw on a
+  shader nobody has built before, the browser keeps built programs, so an
+  unchanged shader looks fast.
 
 ## The mask editor
 
@@ -79,9 +110,14 @@ with the unsaved data, so people and flags move as they will in the game.
 - Walk behind tab: Box and Polygon tools. Polygons close by clicking the first
   dot. Double-click a line to add a corner, double-click a box edge to turn it
   into a polygon.
-- Flags and streets tabs: drag boxes and street bands.
+- Streets tab: drag street bands.
+- Flags tab: drag on the picture to draw a flag, four corner handles shape it
+  (the two at the pole share their x, so do the two at the free end), drag the
+  inside to move it. Nation and the pole switch of the selected flag are beside the
+  buttons. Saves `flagSprites.json`.
 - Save posts to `.storybook/maskEditorServer.ts`, which writes `constants/harbor`
-  and, for flags, the flag mask PNG. It only works in Storybook started locally.
+  (restart Storybook after changing that file). It only works in Storybook
+  started locally.
   Check the saved diff before moving on, the JSON is formatted by Prettier.
 
 ## Seeing what the shader sees
@@ -103,7 +139,7 @@ check.
    feet on the ground line, person size from how big a person would be there.
 3. Add `things` for big objects like barrels and posts, `shapes` for thin or
    odd ones like lampposts. Use boxes first, they are easy to refine.
-4. Add rough flag boxes to `flags.json`.
+4. Draw the flags in the editor, Flags tab (they go in `flagSprites.json`).
 5. Make sky and water masks. Sky is the blue that reaches the top edge, water is
    the part that reaches the bottom edge, found by its main colour. Leave out
    painted clouds, flags, boats and piers. Save at half size.
@@ -113,4 +149,4 @@ check.
 
 Keep data backward compatible with what the game reads in `constants/townMaps.ts`,
 run `npm test` and `npm run lint:fix` afterwards. Update this skill when the
-formats or the editor change, for example when flags move to polygons.
+formats or the editor change.

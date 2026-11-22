@@ -1,5 +1,10 @@
 import { MouseEvent, PointerEvent, useEffect, useRef, useState } from "react"
 
+import {
+  FLAG_NATIONS,
+  getFlagArrays,
+  MAX_FLAGS,
+} from "@/components/game-ui/LocationScene/flagUniforms"
 import { makeFrontMaskUrl } from "@/components/game-ui/LocationScene/frontMask"
 import { createTownMapRenderer } from "@/components/game-ui/LocationScene/townMapShader"
 import { useAmbienceCanvas } from "@/components/game-ui/LocationScene/useAmbienceCanvas"
@@ -8,16 +13,21 @@ import { getWeatherAmbience } from "@/components/game-ui/LocationScene/weatherAm
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
-import flagsConfig from "@/constants/harbor/flags.json"
+import flagSpritesConfig from "@/constants/harbor/flagSprites.json"
 import frontConfig from "@/constants/harbor/front.json"
 import lanesConfig from "@/constants/harbor/lanes.json"
 import { TOWNS } from "@/constants/locations"
 import { getTownMap } from "@/constants/townMaps"
 import { cn } from "@/lib/utils"
-
-import { detectFlags } from "./detectFlags.mjs"
 
 // Served by .storybook/maskEditorServer.ts
 const SAVE_PATH = "/__mask-editor/save"
@@ -25,7 +35,7 @@ const SAVE_PATH = "/__mask-editor/save"
 // x0, y0, x1, y1, and for a flag a 1 when the whole box waves
 type Box = [number, number, number, number, ...number[]]
 type Variant = "desktop" | "mobile"
-type Kind = "things" | "flags" | "lanes"
+type Kind = "things" | "sprites" | "lanes"
 type Tool = "box" | "polygon"
 type Edges = { left: boolean; top: boolean; right: boolean; bottom: boolean }
 type Drag = {
@@ -34,19 +44,22 @@ type Drag = {
   start: [number, number]
   origin: Box
 }
-type Mask = {
-  width: number
-  height: number
-  data: Uint8ClampedArray<ArrayBuffer>
+// A drawn flag is dragged by one of its four corners (pole top, free end top,
+// free end bottom, pole bottom), or as a whole
+type SpriteDrag = {
+  index: number
+  corner: number | null
+  start: [number, number]
+  origin: number[]
 }
-
 // Everything that can be changed. A street level is edited as a box round its
 // lane, the feet in the middle, with the size of a person kept beside it.
 type Data = {
   things: Box[]
   // [x, y, x, y, ...] round the corners
   shapes: number[][]
-  flags: Box[]
+  // The flags the shader draws, see flagUniforms.ts
+  sprites: number[][]
   lanes: Box[]
   sizes: number[]
 }
@@ -58,9 +71,9 @@ const KINDS: { kind: Kind; label: string; help: string }[] = [
     help: "What people walk behind. A box hides people exactly where it is, the red bottom is where it stands: people whose feet are above it go behind. For what a box gets wrong, like lampposts, use a polygon: click to start, click for every corner and click the first dot to close it. Drag a corner or a polygon to change it, double-click an edge to add a corner. Double-click the edge of a box to turn it into a polygon. Orange is what hides people.",
   },
   {
-    kind: "flags",
+    kind: "sprites",
     label: "Flags",
-    help: "A loose box round every flag, the flag itself is found inside it by the colours of the nation, so a box away from a flag waves nothing. When a flag is not found, turn on Wave the whole box (dashed) and fit the box tightly. Blue is what waves.",
+    help: "Flags the shader draws and waves. Drag on the picture to draw a new one, drag a corner to shape it (the two corners at the pole share their x, so do the two at the free end), drag the inside to move it. Pick the nation, and turn the pole on when the picture has none there (it grows with the flag). Put the flag where the old one was, the picture without flags (if there is one) shows around it.",
   },
   {
     kind: "lanes",
@@ -98,7 +111,10 @@ const loadData = (town: Town, variant: Variant): Data => {
       Record<string, { things?: Box[]; shapes?: number[][] }>
     >
   }
-  const flags = flagsConfig as unknown as Record<string, Record<string, Box[]>>
+  const sprites = flagSpritesConfig as Record<
+    string,
+    Record<string, number[][]>
+  >
   const lanes = lanesConfig as unknown as {
     towns: Record<string, Record<string, number[][]>>
   }
@@ -107,7 +123,7 @@ const loadData = (town: Town, variant: Variant): Data => {
   return {
     things: front.towns[town]?.[variant]?.things ?? [],
     shapes: front.towns[town]?.[variant]?.shapes ?? [],
-    flags: flags[town]?.[variant] ?? [],
+    sprites: sprites[town]?.[variant] ?? [],
     lanes: levels.map(
       ([x0, x1, feet, half]) => [x0, feet - half, x1, feet + half] as Box
     ),
@@ -135,17 +151,6 @@ const normalise = ([x0, y0, x1, y1]: number[], from?: Box): Box => [
   ...(from ?? []).slice(4),
 ]
 
-const toUrl = (mask: Mask) =>
-  new Promise<string>((resolve) => {
-    const canvas = document.createElement("canvas")
-    canvas.width = mask.width
-    canvas.height = mask.height
-    canvas
-      .getContext("2d")!
-      .putImageData(new ImageData(mask.data, mask.width, mask.height), 0, 0)
-    canvas.toBlob((blob) => resolve(URL.createObjectURL(blob!)))
-  })
-
 const CURSORS: Record<string, string> = {
   move: "move",
   left: "ew-resize",
@@ -172,6 +177,56 @@ const moveShape = (
     )
   )
 
+// The corners of a drawn flag as x, y pairs: pole top, free end top, free end
+// bottom, pole bottom. Corners at the same end share their x.
+const getSpriteCorners = ([
+  x0,
+  x1,
+  topStart,
+  bottomStart,
+  topEnd,
+  bottomEnd,
+]: number[]) => [x0, topStart, x1, topEnd, x1, bottomEnd, x0, bottomStart]
+
+// A drawn flag moved as a whole, or one corner of it, in whole pixels
+const moveSprite = (
+  sprite: number[],
+  dx: number,
+  dy: number,
+  corner: number | null = null
+) => {
+  const [x0, x1, topStart, bottomStart, topEnd, bottomEnd, ...rest] = sprite
+  const round = (value: number) => Math.max(0, Math.round(value))
+
+  if (corner === null) {
+    return [
+      round(x0 + dx),
+      round(x1 + dx),
+      round(topStart + dy),
+      round(bottomStart + dy),
+      round(topEnd + dy),
+      round(bottomEnd + dy),
+      ...rest,
+    ]
+  }
+
+  // The pole and the free end each stay straight, so a corner moves the x of
+  // both corners at its end
+  const next = [x0, x1, topStart, bottomStart, topEnd, bottomEnd, ...rest]
+
+  if (corner === 0 || corner === 3) {
+    next[0] = Math.min(round(x0 + dx), x1 - 4)
+    next[corner === 0 ? 2 : 3] = round(
+      (corner === 0 ? topStart : bottomStart) + dy
+    )
+  } else {
+    next[1] = Math.max(round(x1 + dx), x0 + 4)
+    next[corner === 1 ? 4 : 5] = round((corner === 1 ? topEnd : bottomEnd) + dy)
+  }
+
+  return next
+}
+
 // Even-odd test, the same rule the mask is drawn with
 const isInsideShape = (shape: number[], x: number, y: number) => {
   let isInside = false
@@ -197,13 +252,12 @@ type Props = {
 
 // Draw, move and resize the harbour data of a picture: what people walk behind
 // (boxes and shapes), the flags and the streets. The walkers and the flags show
-// the result live. Saving writes constants/harbor, and the flag mask picture.
+// the result live. Saving writes constants/harbor.
 const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
   const map = getTownMap(town)![variant]
   const imageRef = useRef<HTMLImageElement>(null)
   const svgRef = useRef<SVGSVGElement>(null)
   const [kind, setKind] = useState<Kind>("things")
-  const [picture, setPicture] = useState<ImageData | null>(null)
   const [data, setData] = useState(() => loadData(town, variant))
   const [saved, setSaved] = useState(data)
   const [history, setHistory] = useState<Data[]>([])
@@ -213,7 +267,6 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
   const [drag, setDrag] = useState<Drag | null>(null)
   const [draft, setDraft] = useState<Box | null>(null)
   const [cursor, setCursor] = useState("crosshair")
-  const [flagUrl, setFlagUrl] = useState<string>()
   const [frontUrl, setFrontUrl] = useState<string>()
   // A shape being drawn, the pointer for its next line and a corner or shape
   // being dragged
@@ -226,11 +279,13 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
     origin: number[]
   } | null>(null)
   const [draftShape, setDraftShape] = useState<number[] | null>(null)
+  const [spriteDrag, setSpriteDrag] = useState<SpriteDrag | null>(null)
+  const [draftSprite, setDraftSprite] = useState<number[] | null>(null)
   const [showBoxes, setShowBoxes] = useState(true)
   const [showShapes, setShowShapes] = useState(true)
   const [status, setStatus] = useState("")
   const [view, setView] = useState<View | null>(null)
-  const boxes = view ? [] : data[kind]
+  const boxes = view || kind === "sprites" ? [] : data[kind]
 
   // A box or a street never reaches past the edge of the picture
   const within = (box: number[], from?: Box): Box => {
@@ -239,59 +294,29 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
     return [x0, y0, Math.min(x1, map.width), Math.min(y1, map.height), ...rest]
   }
 
+  // The flags as they are while one is being dragged
+  const shownSprites = data.sprites.map((sprite, i) =>
+    draftSprite && spriteDrag?.index === i ? draftSprite : sprite
+  )
+
+  if (draftSprite && spriteDrag?.index === -1) {
+    shownSprites.push(draftSprite)
+  }
+
   const ambienceRef = useAmbienceCanvas(
     imageRef,
     createTownMapRenderer,
-    flagUrl && frontUrl
-      ? [map.waterMask, map.skyMask, flagUrl, frontUrl]
-      : undefined,
+    frontUrl ? [map.waterMask, map.skyMask, frontUrl] : undefined,
     {
       uniforms: getWeatherAmbience(weather),
       arrays: {
-        desktop: getWalkArrays(toLevels(data), map.width, map.height),
+        desktop: {
+          ...getWalkArrays(toLevels(data), map.width, map.height),
+          ...getFlagArrays(shownSprites),
+        },
       },
     }
   )
-
-  // The pixels of the picture, to find the things and the flags in
-  useEffect(() => {
-    const image = new Image()
-    image.onload = () => {
-      const canvas = document.createElement("canvas")
-      canvas.width = image.naturalWidth
-      canvas.height = image.naturalHeight
-      const context = canvas.getContext("2d", { willReadFrequently: true })!
-      context.drawImage(image, 0, 0)
-      setPicture(context.getImageData(0, 0, canvas.width, canvas.height))
-    }
-    image.src = map.src
-  }, [map.src])
-
-  // The flag mask made from the data the same way the generator makes it. The
-  // streets and what people walk behind go to the shader as they are.
-  useEffect(() => {
-    if (!picture) {
-      return
-    }
-
-    let made = ""
-    let isCancelled = false
-
-    toUrl(detectFlags(picture, TOWNS[town].nation, data.flags)).then((url) => {
-      made = url
-
-      if (!isCancelled) {
-        setFlagUrl(url)
-      }
-    })
-
-    return () => {
-      isCancelled = true
-
-      // Kept a moment, the renderer may still be loading it
-      setTimeout(() => URL.revokeObjectURL(made), 5000)
-    }
-  }, [picture, data.flags, town])
 
   // What people walk behind, made the way the game makes it
   useEffect(() => {
@@ -320,6 +345,8 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
   }
 
   const setShapes = (next: number[][]) => commit({ ...data, shapes: next })
+
+  const setSprites = (next: number[][]) => commit({ ...data, sprites: next })
 
   const setBoxes = (next: Box[], sizes = data.sizes) =>
     commit({
@@ -363,6 +390,15 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
       return
     }
 
+    if (kind === "sprites") {
+      if (selected !== null) {
+        setSprites(data.sprites.filter((_, i) => i !== selected))
+        select(null)
+      }
+
+      return
+    }
+
     if (selectedShape !== null) {
       setShapes(data.shapes.filter((_, i) => i !== selectedShape))
       select(null)
@@ -382,6 +418,18 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
   }
 
   const nudge = (dx: number, dy: number) => {
+    if (kind === "sprites") {
+      if (selected !== null) {
+        setSprites(
+          data.sprites.map((sprite, i) =>
+            i === selected ? moveSprite(sprite, dx, dy) : sprite
+          )
+        )
+      }
+
+      return
+    }
+
     if (selectedShape !== null) {
       setShapes(
         data.shapes.map((shape, i) =>
@@ -743,8 +791,169 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
     setDraftShape(null)
   }
 
+  // The corner, or the inside, of a drawn flag under the pointer. The corners
+  // of the selected flag come first.
+  const hitSprite = (x: number, y: number) => {
+    const rect = svgRef.current!.getBoundingClientRect()
+    const near = (8 * map.width) / rect.width
+    const order = data.sprites
+      .map((_, i) => i)
+      .sort((a, b) => Number(b === selected) - Number(a === selected))
+
+    for (const index of order) {
+      const corners = getSpriteCorners(data.sprites[index])
+
+      for (let corner = 0; corner < 4; corner++) {
+        if (
+          Math.hypot(corners[corner * 2] - x, corners[corner * 2 + 1] - y) <
+          near
+        ) {
+          return { index, corner }
+        }
+      }
+    }
+
+    const inside = [...order]
+      .sort((a, b) => b - a)
+      .find((index) =>
+        isInsideShape(getSpriteCorners(data.sprites[index]), x, y)
+      )
+
+    return inside === undefined ? null : { index: inside, corner: null }
+  }
+
+  const handleSpriteDown = (event: PointerEvent<SVGSVGElement>) => {
+    event.currentTarget.setPointerCapture(event.pointerId)
+    const [x, y] = toPicture(event)
+    const hit = hitSprite(x, y)
+
+    if (!hit) {
+      // A new flag, drawn as a box from the corner where the pointer went down
+      select(null)
+      setSpriteDrag({
+        index: -1,
+        corner: null,
+        start: [x, y],
+        origin: [x, x, y, y, y, y, getTownNation(), 1],
+      })
+
+      return
+    }
+
+    select(hit.index)
+    setSpriteDrag({ ...hit, start: [x, y], origin: data.sprites[hit.index] })
+  }
+
+  const handleSpriteMove = (event: PointerEvent<SVGSVGElement>) => {
+    const [x, y] = toPicture(event)
+
+    if (!spriteDrag) {
+      const hit = hitSprite(x, y)
+
+      setCursor(hit ? (hit.corner === null ? "move" : "pointer") : "default")
+
+      return
+    }
+
+    if (spriteDrag.index === -1) {
+      const [startX, startY] = spriteDrag.start
+      const [x0, x1] = [Math.min(startX, x), Math.max(startX, x)]
+      const [y0, y1] = [Math.min(startY, y), Math.max(startY, y)]
+      const [, , , , , , nation, pole] = spriteDrag.origin
+
+      setDraftSprite(
+        [x0, x1, y0, y1, y0, y1, nation, pole].map((value) =>
+          Math.max(0, Math.round(value))
+        )
+      )
+
+      return
+    }
+
+    setDraftSprite(
+      moveSprite(
+        spriteDrag.origin,
+        x - spriteDrag.start[0],
+        y - spriteDrag.start[1],
+        spriteDrag.corner
+      )
+    )
+  }
+
+  const handleSpriteUp = () => {
+    if (spriteDrag && draftSprite) {
+      if (spriteDrag.index === -1) {
+        // A click without a drag only clears the selection
+        if (
+          draftSprite[1] - draftSprite[0] >= 6 &&
+          draftSprite[3] - draftSprite[2] >= 6
+        ) {
+          if (data.sprites.length < MAX_FLAGS) {
+            setSprites([...data.sprites, draftSprite])
+            select(data.sprites.length)
+          } else {
+            setStatus(`A picture can have at most ${MAX_FLAGS} flags`)
+          }
+        }
+      } else if (
+        JSON.stringify(draftSprite) !== JSON.stringify(spriteDrag.origin)
+      ) {
+        setSprites(
+          data.sprites.map((sprite, i) =>
+            i === spriteDrag.index ? draftSprite : sprite
+          )
+        )
+      }
+    }
+
+    setSpriteDrag(null)
+    setDraftSprite(null)
+  }
+
+  // The nation of the town, as the index the flag stores
+  const getTownNation = () =>
+    Math.max(0, FLAG_NATIONS.indexOf(TOWNS[town].nation))
+
+  // A new flag in the upper middle of the picture, for when drawing one on
+  // the picture is awkward
+  const addSprite = () => {
+    if (data.sprites.length >= MAX_FLAGS) {
+      setStatus(`A picture can have at most ${MAX_FLAGS} flags`)
+
+      return
+    }
+
+    const x = Math.round(map.width / 2)
+    const y = Math.round(map.height / 3)
+
+    setSprites([
+      ...data.sprites,
+      [x, x + 60, y, y + 30, y, y + 30, getTownNation(), 1],
+    ])
+    select(data.sprites.length)
+  }
+
+  // Changes one value of the selected flag, the nation or whether it has a pole
+  const setSpriteValue = (position: 6 | 7, value: number) => {
+    if (selected !== null && Number.isFinite(value) && value >= 0) {
+      setSprites(
+        data.sprites.map((sprite, i) =>
+          i === selected
+            ? sprite.map((old, k) => (k === position ? Math.round(value) : old))
+            : sprite
+        )
+      )
+    }
+  }
+
   const handlePointerDown = (event: PointerEvent<SVGSVGElement>) => {
     if (event.button !== 0) {
+      return
+    }
+
+    if (kind === "sprites" && !view) {
+      handleSpriteDown(event)
+
       return
     }
 
@@ -790,6 +999,12 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
   }
 
   const handlePointerMove = (event: PointerEvent<SVGSVGElement>) => {
+    if (kind === "sprites" && !view) {
+      handleSpriteMove(event)
+
+      return
+    }
+
     if (kind === "things" && !view) {
       handleShapeMove(event)
     }
@@ -843,6 +1058,12 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
   }
 
   const handlePointerUp = () => {
+    if (spriteDrag) {
+      handleSpriteUp()
+
+      return
+    }
+
     if (shapeDrag) {
       handleShapeUp()
 
@@ -870,21 +1091,11 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
   const changed = {
     things: JSON.stringify(data.things) !== JSON.stringify(saved.things),
     shapes: JSON.stringify(data.shapes) !== JSON.stringify(saved.shapes),
-    flags: JSON.stringify(data.flags) !== JSON.stringify(saved.flags),
+    sprites: JSON.stringify(data.sprites) !== JSON.stringify(saved.sprites),
     lanes: JSON.stringify(toLevels(data)) !== JSON.stringify(toLevels(saved)),
   }
   const isChanged =
-    changed.things || changed.shapes || changed.flags || changed.lanes
-
-  // The flag mask as it is shown, for the server to keep as a picture
-  const getFlagMask = async () => {
-    const blob = await (await fetch(flagUrl!)).blob()
-    const bytes = new Uint8Array(await blob.arrayBuffer())
-
-    return btoa(
-      bytes.reduce((text, byte) => text + String.fromCharCode(byte), "")
-    )
-  }
+    changed.things || changed.shapes || changed.sprites || changed.lanes
 
   const save = async () => {
     setStatus("Saving…")
@@ -892,12 +1103,12 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
     const payloads = {
       things: data.things,
       shapes: data.shapes,
-      flags: data.flags,
+      sprites: data.sprites,
       lanes: toLevels(data),
     }
 
     try {
-      for (const name of ["lanes", "things", "shapes", "flags"] as const) {
+      for (const name of ["lanes", "things", "shapes", "sprites"] as const) {
         if (!changed[name]) {
           continue
         }
@@ -909,7 +1120,6 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
             town,
             variant,
             data: payloads[name],
-            mask: name === "flags" ? await getFlagMask() : undefined,
           }),
         })
         const result = await response.json()
@@ -943,14 +1153,10 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
   const viewing = VIEWS.find((option) => option.view === view)
   const shapeUrl = view
     ? map[view === "sky" ? "skyMask" : "waterMask"]
-    : kind === "flags"
-      ? flagUrl
-      : kind === "things"
-        ? frontUrl
-        : undefined
-  const shapeClass =
-    // Flags are often orange themselves
-    viewing?.className ?? (kind === "flags" ? "bg-info/70" : "bg-warning/50")
+    : kind === "things"
+      ? frontUrl
+      : undefined
+  const shapeClass = viewing?.className ?? "bg-warning/50"
   const streets = !view && kind === "lanes" ? [] : toLevels(data)
 
   return (
@@ -1045,6 +1251,12 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
           </div>
         )}
 
+        {kind === "sprites" && !view && (
+          <Button variant="secondary" onClick={addSprite}>
+            Add flag
+          </Button>
+        )}
+
         {[
           ["Boxes", showBoxes, setShowBoxes],
           ["Shapes", showShapes, setShowShapes],
@@ -1063,7 +1275,9 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
       <p className="text-muted-foreground text-sm">
         {viewing
           ? viewing.help
-          : `${KINDS.find((option) => option.kind === kind)!.help} Drag on the picture to draw a new one, drag one to move it and its edges to resize it. Delete removes it (the last corner of a polygon being drawn), Escape stops a polygon, arrows nudge it (Shift for 10 px), Ctrl+Z undoes.`}
+          : kind === "sprites"
+            ? `${KINDS.find((option) => option.kind === kind)!.help} Delete removes the selected flag, arrows nudge it (Shift for 10 px), Ctrl+Z undoes.`
+            : `${KINDS.find((option) => option.kind === kind)!.help} Drag on the picture to draw a new one, drag one to move it and its edges to resize it. Delete removes it (the last corner of a polygon being drawn), Escape stops a polygon, arrows nudge it (Shift for 10 px), Ctrl+Z undoes.`}
       </p>
 
       {/* Always one line high, so the picture never moves under the pointer */}
@@ -1071,7 +1285,9 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
         <span className="text-muted-foreground">
           {view
             ? "Only shown"
-            : `${boxes.length} ${kind === "lanes" ? "streets" : "boxes"}${kind === "things" ? `, ${data.shapes.length} polygons` : ""}`}
+            : kind === "sprites"
+              ? `${data.sprites.length} flags`
+              : `${boxes.length} ${kind === "lanes" ? "streets" : "boxes"}${kind === "things" ? `, ${data.shapes.length} polygons` : ""}`}
           {selectedBox && `, selected [${selectedBox.join(", ")}]`}
           {isChanged && ", not saved"}
         </span>
@@ -1091,23 +1307,37 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
           </div>
         )}
 
-        {kind === "flags" && selectedBox && (
-          <div className="flex items-center gap-2">
-            <Switch
-              id="editor-whole"
-              checked={selectedBox[4] === 1}
-              onCheckedChange={(whole) =>
-                setBoxes(
-                  boxes.map((box, i) =>
-                    i === selected
-                      ? ([...box.slice(0, 4), ...(whole ? [1] : [])] as Box)
-                      : box
-                  )
-                )
-              }
-            />
-            <Label htmlFor="editor-whole">Wave the whole box</Label>
-          </div>
+        {kind === "sprites" && selected !== null && data.sprites[selected] && (
+          <>
+            <div className="flex items-center gap-2">
+              <Label>Nation</Label>
+              <Select
+                value={String(data.sprites[selected][6] ?? 0)}
+                onValueChange={(value) => setSpriteValue(6, Number(value))}
+              >
+                <SelectTrigger className="w-32">
+                  <SelectValue />
+                </SelectTrigger>
+
+                <SelectContent>
+                  {FLAG_NATIONS.map((nation, index) => (
+                    <SelectItem key={nation} value={String(index)}>
+                      {nation}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Switch
+                id="editor-pole"
+                checked={data.sprites[selected][7] === 1}
+                onCheckedChange={(pole) => setSpriteValue(7, pole ? 1 : 0)}
+              />
+              <Label htmlFor="editor-pole">Pole</Label>
+            </div>
+          </>
         )}
 
         <span className="truncate" title={status}>
@@ -1261,6 +1491,43 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
                           cx={x}
                           cy={ys[k]}
                           r={3}
+                          className="fill-gold stroke-none"
+                        />
+                      ))}
+                  </g>
+                )
+              })}
+
+            {kind === "sprites" &&
+              !view &&
+              shownSprites.map((sprite, i) => {
+                const corners = getSpriteCorners(sprite)
+                const points = [0, 1, 2, 3]
+                  .map(
+                    (corner) =>
+                      `${corners[corner * 2]},${corners[corner * 2 + 1]}`
+                  )
+                  .join(" ")
+
+                return (
+                  <g
+                    key={`sprite-${i}`}
+                    className={i === selected ? "stroke-gold" : "stroke-sea"}
+                  >
+                    <polygon
+                      points={points}
+                      fill="none"
+                      strokeWidth={i === selected ? 2 : 1}
+                      vectorEffect="non-scaling-stroke"
+                    />
+
+                    {i === selected &&
+                      [0, 1, 2, 3].map((corner) => (
+                        <circle
+                          key={corner}
+                          cx={corners[corner * 2]}
+                          cy={corners[corner * 2 + 1]}
+                          r={6}
                           className="fill-gold stroke-none"
                         />
                       ))}

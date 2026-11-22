@@ -194,6 +194,70 @@ const fitTextureSize = (source: TexImageSource, maxSize: number) => {
   return canvas
 }
 
+const buildProgram = (gl: WebGLRenderingContext, fragmentShader: string) => {
+  const program = gl.createProgram()
+  const shaders = [
+    compile(gl, gl.VERTEX_SHADER, VERTEX_SHADER),
+    compile(gl, gl.FRAGMENT_SHADER, fragmentShader),
+  ]
+  shaders.forEach((shader) => gl.attachShader(program, shader))
+  gl.linkProgram(program)
+
+  // The program keeps what it needs, the shaders can go
+  shaders.forEach((shader) => gl.deleteShader(shader))
+
+  return program
+}
+
+const warmedUp = new Set<string>()
+
+// Builds a shader on a canvas nobody sees, so the browser already has the
+// result when a scene asks for it. The first build of a big shader takes a few
+// seconds and the browser keeps what it built, a later scene gets it in a few
+// milliseconds. Only where the browser builds in the background, anywhere else
+// this would freeze the page just like the scene would.
+export const warmUpShader = (fragmentShader: string) => {
+  if (typeof document === "undefined" || warmedUp.has(fragmentShader)) {
+    return
+  }
+
+  warmedUp.add(fragmentShader)
+
+  const gl = document
+    .createElement("canvas")
+    .getContext("webgl", { antialias: false })
+  const parallelCompile = gl?.getExtension("KHR_parallel_shader_compile")
+
+  if (!gl) {
+    return
+  }
+
+  const release = () => gl.getExtension("WEBGL_lose_context")?.loseContext()
+
+  if (!parallelCompile) {
+    release()
+
+    return
+  }
+
+  const program = buildProgram(gl, fragmentShader)
+
+  const finish = () => {
+    if (
+      !gl.getProgramParameter(program, parallelCompile.COMPLETION_STATUS_KHR)
+    ) {
+      setTimeout(finish, 100)
+
+      return
+    }
+
+    gl.deleteProgram(program)
+    release()
+  }
+
+  finish()
+}
+
 export type AmbienceUniforms = Record<string, number>
 
 // A uniform array of floats (size 1) or vec4s (size 4), for the values that
@@ -223,58 +287,98 @@ export const createAmbienceRenderer = (
   const releaseContext = () =>
     gl.getExtension("WEBGL_lose_context")?.loseContext()
 
-  const program = gl.createProgram()
-  const shaders = [
-    compile(gl, gl.VERTEX_SHADER, VERTEX_SHADER),
-    compile(gl, gl.FRAGMENT_SHADER, fragmentShader),
-  ]
-  shaders.forEach((shader) => gl.attachShader(program, shader))
-  gl.linkProgram(program)
+  const program = buildProgram(gl, fragmentShader)
 
-  // The program keeps what it needs, the shaders can go
-  shaders.forEach((shader) => gl.deleteShader(shader))
+  // A big shader takes the GPU driver seconds to build. Asking for the result
+  // right away freezes the whole page for that long, so where the browser can
+  // say when the program is done, nothing touches it until it is.
+  const parallelCompile = gl.getExtension("KHR_parallel_shader_compile")
 
-  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-    console.warn("Ambience shader failed:", gl.getProgramInfoLog(program))
-    gl.deleteProgram(program)
-    releaseContext()
-
-    return null
-  }
-
-  gl.useProgram(program)
-  gl.enable(gl.SCISSOR_TEST)
-
-  // Two triangles covering the whole canvas
-  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer())
-  gl.bufferData(
-    gl.ARRAY_BUFFER,
-    new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
-    gl.STATIC_DRAW
-  )
-  const position = gl.getAttribLocation(program, "a_position")
-  gl.enableVertexAttribArray(position)
-  gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0)
-
-  const textures = textureNames.map((name, unit) => {
-    gl.uniform1i(gl.getUniformLocation(program, name), unit)
-
-    return createTexture(gl, unit)
-  })
-
-  const timeLocation = gl.getUniformLocation(program, "u_time")
-  const sizeLocation = gl.getUniformLocation(program, "u_size")
-  const imageSizeLocation = gl.getUniformLocation(program, "u_imageSize")
-
+  let textures: (WebGLTexture | null)[] = []
+  let timeLocation: WebGLUniformLocation | null = null
+  let sizeLocation: WebGLUniformLocation | null = null
+  let imageSizeLocation: WebGLUniformLocation | null = null
+  let isReady = false
   let hasTextures = false
   let imageWidth = 0
   let frame = 0
+  let compileFrame = 0
   let lastDraw = 0
+  // What was asked of the renderer before the program was ready, in order
+  let waiting: (() => void)[] = []
   // Float uniforms ease from their current value towards the target
   const uniforms: Record<
     string,
     { location: WebGLUniformLocation | null; value: number; target: number }
   > = {}
+
+  const whenReady = (action: () => void) => {
+    if (isReady) {
+      action()
+    } else {
+      waiting.push(action)
+    }
+  }
+
+  // Returns false when the program did not build
+  const setUp = () => {
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      console.warn("Ambience shader failed:", gl.getProgramInfoLog(program))
+      gl.deleteProgram(program)
+      releaseContext()
+
+      return false
+    }
+
+    gl.useProgram(program)
+    gl.enable(gl.SCISSOR_TEST)
+
+    // Two triangles covering the whole canvas
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer())
+    gl.bufferData(
+      gl.ARRAY_BUFFER,
+      new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
+      gl.STATIC_DRAW
+    )
+    const position = gl.getAttribLocation(program, "a_position")
+    gl.enableVertexAttribArray(position)
+    gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0)
+
+    textures = textureNames.map((name, unit) => {
+      gl.uniform1i(gl.getUniformLocation(program, name), unit)
+
+      return createTexture(gl, unit)
+    })
+
+    timeLocation = gl.getUniformLocation(program, "u_time")
+    sizeLocation = gl.getUniformLocation(program, "u_size")
+    imageSizeLocation = gl.getUniformLocation(program, "u_imageSize")
+
+    isReady = true
+    waiting.forEach((action) => action())
+    waiting = []
+
+    return true
+  }
+
+  const waitForProgram = () => {
+    if (
+      parallelCompile &&
+      !gl.getProgramParameter(program, parallelCompile.COMPLETION_STATUS_KHR)
+    ) {
+      compileFrame = requestAnimationFrame(waitForProgram)
+
+      return
+    }
+
+    setUp()
+  }
+
+  if (parallelCompile) {
+    waitForProgram()
+  } else if (!setUp()) {
+    return null
+  }
 
   const updateUniforms = (elapsed: number) => {
     const step = Math.min(1, elapsed / UNIFORM_FADE)
@@ -288,7 +392,7 @@ export const createAmbienceRenderer = (
   const draw = (now: number) => {
     frame = requestAnimationFrame(draw)
 
-    if (!hasTextures || now - lastDraw < FRAME_INTERVAL) return
+    if (!isReady || !hasTextures || now - lastDraw < FRAME_INTERVAL) return
     updateUniforms(lastDraw ? now - lastDraw : 0)
     lastDraw = now
 
@@ -339,61 +443,64 @@ export const createAmbienceRenderer = (
 
   return {
     // In the same order as the texture names
-    setTextures: (sources: [HTMLImageElement, ...TexImageSource[]]) => {
-      const maxSize: number = gl.getParameter(gl.MAX_TEXTURE_SIZE)
+    setTextures: (sources: [HTMLImageElement, ...TexImageSource[]]) =>
+      whenReady(() => {
+        const maxSize: number = gl.getParameter(gl.MAX_TEXTURE_SIZE)
 
-      sources.forEach((source, unit) => {
-        gl.activeTexture(gl.TEXTURE0 + unit)
-        gl.bindTexture(gl.TEXTURE_2D, textures[unit])
-        gl.texImage2D(
-          gl.TEXTURE_2D,
-          0,
-          gl.RGBA,
-          gl.RGBA,
-          gl.UNSIGNED_BYTE,
-          fitTextureSize(source, maxSize)
+        sources.forEach((source, unit) => {
+          gl.activeTexture(gl.TEXTURE0 + unit)
+          gl.bindTexture(gl.TEXTURE_2D, textures[unit])
+          gl.texImage2D(
+            gl.TEXTURE_2D,
+            0,
+            gl.RGBA,
+            gl.RGBA,
+            gl.UNSIGNED_BYTE,
+            fitTextureSize(source, maxSize)
+          )
+        })
+
+        imageWidth = sources[0].naturalWidth
+        gl.uniform2f(
+          imageSizeLocation,
+          sources[0].naturalWidth,
+          sources[0].naturalHeight
         )
-      })
-
-      imageWidth = sources[0].naturalWidth
-      gl.uniform2f(
-        imageSizeLocation,
-        sources[0].naturalWidth,
-        sources[0].naturalHeight
-      )
-      hasTextures = true
-    },
+        hasTextures = true
+      }),
     // New values fade in, the first ones apply straight away
-    setUniforms: (values: AmbienceUniforms) => {
-      Object.entries(values).forEach(([name, target]) => {
-        if (uniforms[name]) {
-          uniforms[name].target = target
-        } else {
-          const location = gl.getUniformLocation(program, name)
-          uniforms[name] = { location, value: target, target }
-          gl.uniform1f(location, target)
-        }
-      })
-    },
+    setUniforms: (values: AmbienceUniforms) =>
+      whenReady(() => {
+        Object.entries(values).forEach(([name, target]) => {
+          if (uniforms[name]) {
+            uniforms[name].target = target
+          } else {
+            const location = gl.getUniformLocation(program, name)
+            uniforms[name] = { location, value: target, target }
+            gl.uniform1f(location, target)
+          }
+        })
+      }),
     // Uniform arrays, like a list of boxes. Size is the numbers in one entry.
-    setArrays: (arrays: AmbienceArrays) => {
-      Object.entries(arrays).forEach(([name, { size, values }]) => {
-        const location = gl.getUniformLocation(program, name)
+    setArrays: (arrays: AmbienceArrays) =>
+      whenReady(() => {
+        Object.entries(arrays).forEach(([name, { size, values }]) => {
+          const location = gl.getUniformLocation(program, name)
 
-        // The count says how many are used, an empty list is not allowed
-        if (!values.length) {
-          return
-        }
+          // The count says how many are used, an empty list is not allowed
+          if (!values.length) {
+            return
+          }
 
-        if (size === 1) {
-          gl.uniform1fv(location, values)
-        } else if (size === 2) {
-          gl.uniform2fv(location, values)
-        } else {
-          gl.uniform4fv(location, values)
-        }
-      })
-    },
+          if (size === 1) {
+            gl.uniform1fv(location, values)
+          } else if (size === 2) {
+            gl.uniform2fv(location, values)
+          } else {
+            gl.uniform4fv(location, values)
+          }
+        })
+      }),
     start: () => {
       cancelAnimationFrame(frame)
       frame = requestAnimationFrame(draw)
@@ -402,6 +509,7 @@ export const createAmbienceRenderer = (
     // Frees the GPU memory and the context
     destroy: () => {
       cancelAnimationFrame(frame)
+      cancelAnimationFrame(compileFrame)
       textures.forEach((texture) => gl.deleteTexture(texture))
       gl.deleteProgram(program)
       releaseContext()

@@ -7,6 +7,7 @@ import {
 } from "@/constants/townMaps"
 import { cn } from "@/lib/utils"
 
+import { getFlagArrays } from "./flagUniforms"
 import { useFrontMask } from "./frontMask"
 import { getTownMapImageProps } from "./preloadTownMap"
 import { createTownMapRenderer } from "./townMapShader"
@@ -61,38 +62,34 @@ const TownMap = ({ map, alt, weather, onMove, onPreview }: Props) => {
   const [highlighted, setHighlighted] = useState<TownMapBuilding | null>(null)
   const [isHovering, setIsHovering] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null)
-  // Rippling water, waving flags, drifting clouds and seagulls, with rain or fog on bad days
+  // Rippling water, drawn flags, drifting clouds and seagulls, with rain or fog on bad days
   const frontMask = useFrontMask(map)
   const ambienceRef = useAmbienceCanvas(
     imageRef,
     createTownMapRenderer,
     frontMask
-      ? [
-          map.desktop.waterMask,
-          map.desktop.skyMask,
-          map.desktop.flagMask,
-          frontMask,
-        ]
+      ? [map.desktop.waterMask, map.desktop.skyMask, frontMask]
       : undefined,
     {
-      mobileMasks: [
-        map.mobile.waterMask,
-        map.mobile.skyMask,
-        map.mobile.flagMask,
-        frontMask ?? "",
-      ],
+      mobileMasks: [map.mobile.waterMask, map.mobile.skyMask, frontMask ?? ""],
       uniforms: getWeatherAmbience(weather),
       arrays: {
-        desktop: getWalkArrays(
-          map.desktop.lanes,
-          map.desktop.width,
-          map.desktop.height
-        ),
-        mobile: getWalkArrays(
-          map.mobile.lanes,
-          map.mobile.width,
-          map.mobile.height
-        ),
+        desktop: {
+          ...getWalkArrays(
+            map.desktop.lanes,
+            map.desktop.width,
+            map.desktop.height
+          ),
+          ...getFlagArrays(map.desktop.flagSprites),
+        },
+        mobile: {
+          ...getWalkArrays(
+            map.mobile.lanes,
+            map.mobile.width,
+            map.mobile.height
+          ),
+          ...getFlagArrays(map.mobile.flagSprites),
+        },
       },
     }
   )
