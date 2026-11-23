@@ -8,6 +8,8 @@ import {
 import { makeFrontMaskUrl } from "@/components/game-ui/LocationScene/frontMask"
 import { createTownMapRenderer } from "@/components/game-ui/LocationScene/townMapShader"
 import { useAmbienceCanvas } from "@/components/game-ui/LocationScene/useAmbienceCanvas"
+import { getWalkerArrays } from "@/components/game-ui/LocationScene/walkers"
+import { WALKER_SHEET } from "@/components/game-ui/LocationScene/walkSprites"
 import { getWalkArrays } from "@/components/game-ui/LocationScene/walkUniforms"
 import { getWeatherAmbience } from "@/components/game-ui/LocationScene/weatherAmbience"
 import { Button } from "@/components/ui/button"
@@ -306,7 +308,9 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
   const ambienceRef = useAmbienceCanvas(
     imageRef,
     createTownMapRenderer,
-    frontUrl ? [map.waterMask, map.skyMask, frontUrl] : undefined,
+    frontUrl
+      ? [map.waterMask, map.skyMask, frontUrl, WALKER_SHEET.url]
+      : undefined,
     {
       uniforms: getWeatherAmbience(weather),
       arrays: {
@@ -314,6 +318,14 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
           ...getWalkArrays(toLevels(data), map.width, map.height),
           ...getFlagArrays(shownSprites),
         },
+      },
+      frameArrays: {
+        desktop: (time) =>
+          getWalkerArrays(
+            time,
+            toLevels(data),
+            getWeatherAmbience(weather)?.u_activity ?? 1
+          ),
       },
     }
   )

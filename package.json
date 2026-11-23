@@ -12,6 +12,7 @@
     "storybook": "storybook dev -p 6010 --exact-port",
     "storybook:build": "storybook build",
     "generate:sea-routes": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/generate-sea-routes/index.mjs",
+    "generate:walker-sprites": "node scripts/generate-walker-sprites/index.mjs",
     "scan:colors": "node scripts/scan-colors/index.mjs",
     "autoplay": "vitest run --config scripts/autoplay/vitest.config.ts"
   },

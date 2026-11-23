@@ -10,6 +10,8 @@ import {
   SHADER_COMMON,
   warmUpShader,
 } from "./ambienceRenderer"
+import { WALKER_COUNT } from "./walkers"
+import { WALKER_SHEET, WALKER_SHEET_ROWS } from "./walkSprites"
 
 const FRAGMENT_SHADER = `
 ${SHADER_COMMON}
@@ -28,8 +30,6 @@ uniform vec2 u_mapSize;
 const int MAX_LEVELS = 7;
 // x start, x end, feet and half the width of a lane
 uniform vec4 u_laneBox[MAX_LEVELS];
-// Picture pixels to a sprite pixel of a person on the level
-uniform float u_laneSize[MAX_LEVELS];
 uniform float u_laneCount;
 
 // Flags drawn by the shader, in pixels of the harbour picture. Each is four
@@ -47,7 +47,6 @@ uniform float u_rain;
 uniform float u_fog;
 uniform float u_gulls;
 uniform float u_wind;
-uniform float u_activity;
 
 // Water ripple strength in CSS pixels
 const float WATER_AMPLITUDE = 1.875;
@@ -454,460 +453,6 @@ vec4 flagCloth(vec2 pixel) {
   return vec4(color, 1.0);
 }
 
-// The pixel itself and the four next to it, the outline of a sprite is where a
-// neighbour is drawn and the pixel is not. Each sprite is asked for in one loop,
-// asking five times in a row makes the GPU compile its code five times, which
-// took the shader over 20 seconds to build.
-vec2 neighbourOffset(int i) {
-  return vec2(
-    i == 1 ? -1.0 : (i == 2 ? 1.0 : 0.0),
-    i == 3 ? -1.0 : (i == 4 ? 1.0 : 0.0)
-  );
-}
-
-// One pixel of a townsperson in 1715, on a grid 7 wide and 21 tall with the
-// head at the top. Frame 0 and 2 are the two strides, frame 1 has the feet
-// together. Seed picks the clothes. A gentleman wears a tricorn hat or a
-// powdered wig with a long coat, a woman a cap and a long skirt.
-vec4 person(float col, float row, float frame, float seed) {
-  float r = row - 1.0;
-  float pick = floor(hash(seed + 20.0) * 6.0);
-  vec3 coat = pick < 1.0 ? vec3(0.45, 0.28, 0.2)
-    : pick < 2.0 ? vec3(0.2, 0.27, 0.42)
-    : pick < 3.0 ? vec3(0.55, 0.48, 0.34)
-    : pick < 4.0 ? vec3(0.28, 0.38, 0.26)
-    : pick < 5.0 ? vec3(0.5, 0.22, 0.2)
-    : vec3(0.36, 0.34, 0.33);
-  float tone = hash(seed + 21.0);
-  vec3 skin = mix(vec3(0.86, 0.66, 0.52), vec3(0.45, 0.3, 0.2), tone * tone);
-  bool woman = hash(seed + 22.0) > 0.5;
-  bool wig = !woman && hash(seed + 23.0) > 0.7;
-  vec3 hat = mix(vec3(0.13, 0.11, 0.1), vec3(0.24, 0.2, 0.3), hash(seed + 24.0));
-  vec3 hair = mix(vec3(0.25, 0.15, 0.08), vec3(0.7, 0.55, 0.3), hash(seed + 25.0));
-  vec3 wigColor = vec3(0.82, 0.8, 0.78);
-  vec3 dark = vec3(0.12, 0.1, 0.1);
-  vec3 linen = vec3(0.86, 0.82, 0.72);
-
-  // Face, with hair or a wig at the sides
-  if (r >= 1.0 && r <= 3.0) {
-    if (col >= 2.0 && col <= 4.0) {
-      return vec4(skin, 1.0);
-    }
-
-    if (col == 1.0 || col == 5.0) {
-      if (wig) {
-        return vec4(wigColor, 1.0);
-      }
-
-      if (woman && r <= 2.0) {
-        return vec4(hair, 1.0);
-      }
-    }
-  }
-
-  // Top of the head, a crown and a wide brim for the tricorn
-  if (r == -1.0 && col >= 2.0 && col <= 4.0) {
-    return vec4(woman ? linen : (wig ? wigColor : hat), 1.0);
-  }
-
-  if (r == 0.0) {
-    if (woman && col >= 1.0 && col <= 5.0) {
-      return vec4(linen, 1.0);
-    }
-
-    if (wig && col >= 1.0 && col <= 5.0) {
-      return vec4(wigColor, 1.0);
-    }
-
-    if (!woman && !wig) {
-      return vec4(col == 0.0 || col == 6.0 ? hat * 1.7 : hat, 1.0);
-    }
-  }
-
-  // Shoulders
-  if (r == 4.0 && col >= 1.0 && col <= 5.0) {
-    return vec4(coat, 1.0);
-  }
-
-  // Arms swing with the stride, one step longer when forward
-  float armLeft = frame > 1.5 ? 1.0 : 0.0;
-  float armRight = frame < 0.5 ? 1.0 : 0.0;
-
-  if (r >= 5.0 && r <= 9.0 && col >= 2.0 && col <= 4.0) {
-    return vec4(r == 5.0 && woman ? linen : coat, 1.0);
-  }
-
-  if (col == 1.0) {
-    if (r >= 5.0 && r <= 8.0 + armLeft) {
-      return vec4(coat * 0.85, 1.0);
-    }
-
-    if (r == 9.0 + armLeft) {
-      return vec4(skin, 1.0);
-    }
-  }
-
-  if (col == 5.0) {
-    if (r >= 5.0 && r <= 8.0 + armRight) {
-      return vec4(coat, 1.0);
-    }
-
-    if (r == 9.0 + armRight) {
-      return vec4(skin, 1.0);
-    }
-  }
-
-  // Waist
-  if (r == 9.0 && col >= 2.0 && col <= 4.0) {
-    return vec4(woman ? linen : dark, 1.0);
-  }
-
-  if (woman) {
-    // A long skirt to the ankles, widening towards the hem
-    float flare = r >= 13.0 ? 1.0 : 0.0;
-
-    if (r >= 10.0 && r <= 18.0 && col >= 2.0 - flare && col <= 4.0 + flare) {
-      return vec4(r >= 17.0 ? coat * 0.7 : coat * 0.9, 1.0);
-    }
-
-    // Shoes peeking out, one forward and one back
-    float shoes = frame < 0.5 ? 1.0 : (frame > 1.5 ? 3.0 : 2.0);
-
-    if (r == 19.0 && (col == shoes || col == shoes + 2.0)) {
-      return vec4(dark, 1.0);
-    }
-
-    return vec4(0.0);
-  }
-
-  // A long coat to the knee, a touch fuller at the hem, or plain trousers
-  if (r >= 10.0 && r <= 14.0) {
-    float hem = r >= 13.0 ? 1.0 : 0.0;
-
-    if (col >= 2.0 - hem && col <= 4.0 + hem) {
-      return vec4(coat * (col == 2.0 - hem || col == 4.0 + hem ? 0.8 : 1.0), 1.0);
-    }
-  }
-
-  // White stockings and shoes, the far leg in shade
-  float farLeg = frame < 0.5 ? 1.0 : (frame > 1.5 ? 5.0 : 2.0);
-  float nearLeg = frame < 0.5 ? 5.0 : (frame > 1.5 ? 1.0 : 4.0);
-
-  if (r >= 15.0 && r <= 18.0) {
-    if (col == nearLeg) {
-      return vec4(linen, 1.0);
-    }
-
-    if (col == farLeg) {
-      return vec4(linen * 0.72, 1.0);
-    }
-  }
-
-  if (r == 19.0) {
-    if (col == nearLeg || col == nearLeg + 1.0) {
-      return vec4(dark, 1.0);
-    }
-
-    if (col == farLeg || col == farLeg + 1.0) {
-      return vec4(dark * 1.4, 1.0);
-    }
-  }
-
-  return vec4(0.0);
-}
-
-// The sprite with a dark outline and a little shadow underneath
-vec4 personPixel(float col, float row, float frame, float seed) {
-  vec4 here = vec4(0.0);
-  float near = 0.0;
-
-  for (int i = 0; i < 5; i++) {
-    vec2 shift = neighbourOffset(i);
-    vec4 other = person(col + shift.x, row + shift.y, frame, seed);
-
-    if (i == 0) {
-      here = other;
-    } else {
-      near += other.a;
-    }
-  }
-
-  if (here.a > 0.5) {
-    return here;
-  }
-
-  if (near > 0.5) {
-    return vec4(0.08, 0.06, 0.05, 0.9);
-  }
-
-  if (row == 21.0 && col >= 1.0 && col <= 5.0) {
-    return vec4(0.0, 0.0, 0.0, 0.22);
-  }
-
-  return vec4(0.0);
-}
-
-// A cat on a grid 10 wide and 6 tall, facing right. Frames 0 to 2 are the
-// strides of a walking cat and frame 3 a cat sitting up. Kind 0 is a ginger
-// tabby and kind 1 is black with white socks and chest.
-vec4 cat(float col, float row, float frame, float kind) {
-  vec3 base = kind < 0.5 ? vec3(0.84, 0.52, 0.24) : vec3(0.17, 0.17, 0.19);
-  vec3 stripe = kind < 0.5 ? vec3(0.6, 0.32, 0.13) : vec3(0.26, 0.26, 0.29);
-  vec3 light = kind < 0.5 ? vec3(0.95, 0.84, 0.68) : vec3(0.92, 0.92, 0.9);
-  bool striped = mod(col, 2.0) < 0.5;
-
-  if (frame > 2.5) {
-    // Sitting up with the tail along the ground
-    if (row == 0.0 && (col == 6.0 || col == 8.0)) {
-      return vec4(base, 1.0);
-    }
-
-    if (row >= 1.0 && row <= 2.0 && col >= 6.0 && col <= 8.0) {
-      return vec4(row == 2.0 && col == 8.0 ? light : base, 1.0);
-    }
-
-    if (row >= 3.0 && row <= 4.0 && col >= 6.0 && col <= 7.0) {
-      return vec4(kind < 0.5 ? base : light, 1.0);
-    }
-
-    if (row == 3.0 && col >= 4.0 && col <= 5.0) {
-      return vec4(striped ? stripe : base, 1.0);
-    }
-
-    if (row == 4.0 && col >= 3.0 && col <= 5.0) {
-      return vec4(striped ? stripe : base, 1.0);
-    }
-
-    if (row == 5.0 && col >= 3.0 && col <= 6.0) {
-      return vec4(base * 0.9, 1.0);
-    }
-
-    if (row == 5.0 && col >= 7.0 && col <= 8.0) {
-      return vec4(light, 1.0);
-    }
-
-    if (row == 5.0 && col >= 0.0 && col <= 2.0) {
-      return vec4(striped ? stripe : base, 1.0);
-    }
-
-    if (row == 4.0 && col == 0.0) {
-      return vec4(base, 1.0);
-    }
-
-    return vec4(0.0);
-  }
-
-  // Tail up
-  if (col == 0.0 && row >= 0.0 && row <= 2.0) {
-    return vec4(row == 1.0 ? stripe : base, 1.0);
-  }
-
-  // Head with ears and a pale muzzle
-  if (row == 0.0 && (col == 7.0 || col == 9.0)) {
-    return vec4(base, 1.0);
-  }
-
-  if (row >= 1.0 && row <= 3.0 && col >= 7.0 && col <= 9.0) {
-    return vec4(row == 3.0 && col >= 8.0 ? light : base, 1.0);
-  }
-
-  // Body
-  if (row == 2.0 && col >= 1.0 && col <= 6.0) {
-    return vec4(striped ? stripe : base, 1.0);
-  }
-
-  if (row == 3.0 && col >= 1.0 && col <= 6.0) {
-    return vec4(kind < 0.5 ? light : base, 1.0);
-  }
-
-  // Legs, the far pair in shade
-  float rear = frame < 0.5 ? 1.0 : (frame > 1.5 ? 3.0 : 2.0);
-  float front = frame < 0.5 ? 7.0 : (frame > 1.5 ? 5.0 : 6.0);
-
-  if (row >= 4.0 && row <= 5.0) {
-    bool paw = row == 5.0;
-
-    if (col == rear + 1.0 || col == front + 1.0) {
-      return vec4(paw ? light : base, 1.0);
-    }
-
-    if (col == rear || col == front) {
-      return vec4((paw ? light : base) * 0.75, 1.0);
-    }
-  }
-
-  return vec4(0.0);
-}
-
-// The cat with a dark outline and a little shadow underneath
-vec4 catPixel(float col, float row, float frame, float kind) {
-  vec4 here = vec4(0.0);
-  float near = 0.0;
-
-  for (int i = 0; i < 5; i++) {
-    vec2 shift = neighbourOffset(i);
-    vec4 other = cat(col + shift.x, row + shift.y, frame, kind);
-
-    if (i == 0) {
-      here = other;
-    } else {
-      near += other.a;
-    }
-  }
-
-  if (here.a > 0.5) {
-    return here;
-  }
-
-  if (near > 0.5) {
-    return vec4(0.08, 0.06, 0.05, 0.85);
-  }
-
-  if (row == 6.0 && col >= 1.0 && col <= 8.0) {
-    return vec4(0.0, 0.0, 0.0, 0.2);
-  }
-
-  return vec4(0.0);
-}
-
-// A rat on a grid 8 wide and 4 tall, facing right. Frames 0 to 2 are the
-// scurrying strides and frame 3 a rat frozen in a hunch.
-vec4 rat(float col, float row, float frame) {
-  vec3 fur = vec3(0.34, 0.29, 0.26);
-  vec3 pink = vec3(0.72, 0.5, 0.48);
-
-  if (frame > 2.5) {
-    if (row == 3.0 && col >= 0.0 && col <= 2.0) {
-      return vec4(pink, 1.0);
-    }
-
-    if (row >= 1.0 && row <= 3.0 && col >= 3.0 && col <= 5.0) {
-      return vec4(fur * (row == 1.0 ? 1.1 : 0.9), 1.0);
-    }
-
-    if (row >= 2.0 && row <= 3.0 && col >= 6.0 && col <= 7.0) {
-      return vec4(col == 7.0 && row == 3.0 ? pink : fur, 1.0);
-    }
-
-    if (row == 1.0 && col == 6.0) {
-      return vec4(fur * 0.8, 1.0);
-    }
-
-    return vec4(0.0);
-  }
-
-  // Long thin tail
-  if (row == 2.0 && col <= 1.0) {
-    return vec4(pink, 1.0);
-  }
-
-  // Body and a pointed head with an ear
-  if (row >= 1.0 && row <= 2.0 && col >= 2.0 && col <= 5.0) {
-    return vec4(row == 1.0 ? fur * 1.1 : fur * 0.9, 1.0);
-  }
-
-  if (row == 2.0 && col >= 6.0 && col <= 7.0) {
-    return vec4(col == 7.0 ? pink : fur, 1.0);
-  }
-
-  if (row == 1.0 && col == 6.0) {
-    return vec4(fur * 0.8, 1.0);
-  }
-
-  // Four quick legs
-  float back = frame < 0.5 ? 2.0 : (frame > 1.5 ? 3.0 : 2.5);
-  float front = frame < 0.5 ? 6.0 : (frame > 1.5 ? 5.0 : 5.5);
-
-  if (row == 3.0 && (col == floor(back) || col == floor(front))) {
-    return vec4(fur * 0.7, 1.0);
-  }
-
-  return vec4(0.0);
-}
-
-vec4 ratPixel(float col, float row, float frame) {
-  vec4 here = vec4(0.0);
-  float near = 0.0;
-
-  for (int i = 0; i < 5; i++) {
-    vec2 shift = neighbourOffset(i);
-    vec4 other = rat(col + shift.x, row + shift.y, frame);
-
-    if (i == 0) {
-      here = other;
-    } else {
-      near += other.a;
-    }
-  }
-
-  if (here.a > 0.5) {
-    return here;
-  }
-
-  if (near > 0.5) {
-    return vec4(0.07, 0.05, 0.04, 0.8);
-  }
-
-  return vec4(0.0);
-}
-
-// A random number for every walk, so nobody repeats
-float walkRandom(float slot, float k) {
-  return hash(slot * 13.37 + k * 71.13 + 3.0);
-}
-
-float gLevels = 0.0;
-
-// Picture pixels in a pixel of a person on the reference level, speeds and
-// distances were tuned there and scale with the level's size
-const float REFERENCE_SIZE = 2.26;
-
-// Uniform arrays can only be indexed by a loop counter on some GPUs
-vec4 laneBox(float level) {
-  vec4 box = vec4(0.0);
-
-  for (int i = 0; i < MAX_LEVELS; i++) {
-    if (float(i) == level) {
-      box = u_laneBox[i];
-    }
-  }
-
-  return box;
-}
-
-// How many street levels there are, none without a lane
-float levelCount() {
-  return u_laneCount;
-}
-
-// Where a level starts and ends
-vec2 levelExtent(float level) {
-  return laneBox(level).xy;
-}
-
-// How many picture pixels a pixel of a person is on a level, nearer is bigger
-float levelSize(float level) {
-  float size = 0.0;
-
-  for (int i = 0; i < MAX_LEVELS; i++) {
-    if (float(i) == level) {
-      size = u_laneSize[i];
-    }
-  }
-
-  return size;
-}
-
-// The lane on a level at picture column x, with the height of the feet, half the
-// width and whether it can be walked at all. A street stops a little short of
-// its ends.
-vec3 laneAt(float x, float level) {
-  vec4 box = laneBox(level);
-  float isInside = step(box.x + 2.0, x) * step(x, box.y - 2.0);
-
-  return vec3(box.z, box.w, isInside);
-}
-
 // Whether the object in the front mask hides somebody whose feet are at feetY
 bool hiddenBehind(vec2 p, float feetY) {
   vec4 front = texture2D(u_walkFront, p / u_mapSize);
@@ -916,282 +461,50 @@ bool hiddenBehind(vec2 p, float feetY) {
   return front.a > 0.5 && feetY < base;
 }
 
-// How many of the town's people are about, from 1 on a fine day down to a few
-// in the rain. Every walk draws its own number and shows up only when the
-// weather allows it. It is all or nothing, a soft edge here would leave the
-// walks whose number is close to the weather's half see-through.
-float presenceOf(float slot) {
-  return step(walkRandom(slot, 13.0), u_activity);
-}
+// The people, cats and rats on the streets. Where they are and which pose of
+// the sheet they have is worked out in walkers.ts and arrives as two uniform
+// lists, in the order they are drawn (A: feet x and y, picture pixels to a sprite
+// pixel, facing. B: sheet column and row, opacity, middle of the sprite).
+// Everything is in this one loop on purpose, see the notes on build time in
+// the graphical-ambience skill.
+const int WALKER_COUNT = ${WALKER_COUNT};
+uniform vec4 u_walkA[WALKER_COUNT];
+uniform vec4 u_walkB[WALKER_COUNT];
+uniform sampler2D u_walkSprites;
 
-const int WALKERS = 8;
-const int CATS = 2;
-const int RATS = 2;
-const float WALK_SLOT = 110.0;
-const float CAT_SLOT = 55.0;
-const float RAT_SLOT = 40.0;
+const vec2 CELL = vec2(${WALKER_SHEET.cellWidth}.0, ${WALKER_SHEET.cellHeight}.0);
+const vec2 SHEET = vec2(${WALKER_SHEET.columns * WALKER_SHEET.cellWidth}.0, ${WALKER_SHEET_ROWS * WALKER_SHEET.cellHeight}.0);
+const float FEET_ROW = ${WALKER_SHEET.feetRow}.0;
 
-// Where somebody out for a stroll is at this moment
-struct Walk {
-  float x;
-  float y;
-  float level;
-  float size;
-  float facing;
-  float travelled;
-  float speed;
-  float pathLength;
-  float elapsed;
-  float presence;
-  float slot;
-  bool paused;
-  bool active;
-};
+vec4 walkerLayer(vec4 color, vec2 p) {
+  for (int i = 0; i < WALKER_COUNT; i++) {
+    vec4 a = u_walkA[i];
+    vec4 b = u_walkB[i];
+    float size = a.z;
 
-// People stroll along the lanes in the walk mask. Every slot of time starts a
-// new walk with its own person, street level, direction, speed, stops and
-// turning back, so nothing repeats in a way the eye can follow.
-Walk walkOf(float index, float pixelX, float margin) {
-  Walk w;
-  w.active = false;
-  w.x = 0.0;
-  w.y = 0.0;
+    if (b.z > 0.0 && abs(p.x - a.x) < CELL.x * size && abs(p.y - a.y) < CELL.y * size) {
+      // Snapped to the sprite's own pixels, or it shimmers as it moves
+      vec2 feet = floor(a.xy / size) * size;
+      vec2 cell = floor(vec2(
+        (p.x - feet.x) / size * a.w + b.w,
+        FEET_ROW - (feet.y - p.y) / size
+      ));
 
-  // Each walker runs on its own clock, so they set off at different moments
-  float time = u_time + index * 17.0;
-  float cycle = floor(time / WALK_SLOT);
-  float local = time - cycle * WALK_SLOT;
-  float slot = cycle + index * 97.0;
-  float count = gLevels;
-  float level = floor(walkRandom(slot, 12.0) * count);
-  vec2 extent = levelExtent(level);
-  float size = levelSize(level);
-  float direction = walkRandom(slot, 1.0) > 0.5 ? 1.0 : -1.0;
-  // A stroll, about 1.2 metres a second for a person this tall
-  float speed = mix(26.0, 38.0, walkRandom(slot, 2.0)) * size / REFERENCE_SIZE;
-  float delay = walkRandom(slot, 3.0) * 12.0;
-  bool turnsBack = walkRandom(slot, 5.0) > 0.55;
-  float lane = extent.y - extent.x;
-  float reach = mix(0.25, 0.5, walkRandom(slot, 7.0)) * lane;
-  float pathLength = turnsBack ? 2.0 * reach : lane;
-  float walkTime = pathLength / speed;
+      if (cell.x >= 0.0 && cell.x < CELL.x && cell.y >= 0.0 && cell.y < CELL.y) {
+        // The middle of a texel, so the sheet is not blurred
+        vec2 texel = (vec2(b.x, b.y) * CELL + cell + 0.5) / SHEET;
+        vec4 sprite = texture2D(u_walkSprites, texel);
 
-  // Stops once or twice for a good while, to look around or talk
-  float stopAt = mix(0.1, 0.45, walkRandom(slot, 4.0)) * walkTime;
-  float stopFor = mix(3.0, 9.0, walkRandom(slot, 6.0));
-  float laterAt = mix(0.55, 0.9, walkRandom(slot, 9.0)) * walkTime + stopFor;
-  float laterFor = walkRandom(slot, 10.0) > 0.45 ? mix(3.0, 8.0, walkRandom(slot, 11.0)) : 0.0;
-  float elapsed = local - delay;
-  float held = clamp(elapsed - stopAt, 0.0, stopFor);
-  float heldLater = clamp(elapsed - laterAt, 0.0, laterFor);
-  float travelled = speed * (elapsed - held - heldLater);
-
-  if (count < 0.5 || elapsed < 0.0 || travelled > pathLength) {
-    return w;
-  }
-
-  bool returning = turnsBack && travelled > reach;
-  float along = returning ? 2.0 * reach - travelled : travelled;
-  float x = (direction > 0.0 ? extent.x : extent.y) + direction * along;
-
-  if (abs(x - pixelX) > margin) {
-    return w;
-  }
-
-  vec3 laneHere = laneAt(x, level);
-
-  if (laneHere.z < 0.5) {
-    return w;
-  }
-
-  w.active = true;
-  w.x = x;
-  w.y = laneHere.x + (walkRandom(slot, 8.0) * 2.0 - 1.0) * laneHere.y;
-  w.level = level;
-  w.size = size;
-  w.facing = returning ? -direction : direction;
-  w.travelled = travelled;
-  w.speed = speed;
-  w.pathLength = pathLength;
-  w.elapsed = elapsed;
-  w.presence = presenceOf(slot);
-  w.slot = slot;
-  w.paused = (held > 0.0 && held < stopFor) || (heldLater > 0.0 && heldLater < laterFor);
-
-  return w;
-}
-
-// Draws one person with their feet at (x, y), size picture pixels to a sprite
-// pixel. Returns the colour and how much of it covers the pixel at p.
-vec4 drawPerson(vec2 p, float x, float y, float size, float facing, float frame, float seed) {
-  // Snapped to the sprite's own pixels, or it shimmers as it moves
-  vec2 feet = floor(vec2(x, y) / size) * size;
-  float column = (p.x - feet.x) / size * facing + 3.5;
-  float row = 21.0 - (feet.y - p.y) / size;
-
-  if (column < -1.0 || column > 8.0 || row < -1.0 || row > 22.0) {
-    return vec4(0.0);
-  }
-
-  vec4 pixel = personPixel(floor(column), floor(row), frame, seed);
-
-  // Behind a lamppost or a cannon when standing further back than where it
-  // touches the ground
-  if (pixel.a > 0.0 && hiddenBehind(p, feet.y)) {
-    return vec4(0.0);
-  }
-
-  return pixel;
-}
-
-// Four poses to a double step, about 0.7 metres of walking each
-float strideFrame(float travelled, float size) {
-  float stride = mod(floor(travelled / (4.1 * size)), 4.0);
-
-  return stride < 0.5 ? 0.0 : (stride < 1.5 ? 1.0 : (stride < 2.5 ? 2.0 : 1.0));
-}
-
-vec4 walker(vec2 p, float index) {
-  Walk w = walkOf(index, p.x, 30.0);
-
-  if (!w.active) {
-    return vec4(0.0);
-  }
-
-  float frame = w.paused ? 1.0 : strideFrame(w.travelled, w.size);
-  vec4 pixel = drawPerson(p, w.x, w.y, w.size, w.facing, frame, w.slot);
-
-  // Fades in and out at the ends of the lane
-  float fade = clamp(w.elapsed / 0.6, 0.0, 1.0) * clamp((w.pathLength - w.travelled) / (w.speed * 0.6), 0.0, 1.0);
-
-  return vec4(pixel.rgb, pixel.a * fade * w.presence);
-}
-
-// A cat turns up somewhere on a lane, sits for a while, wanders a short way
-// and sits down again until it is time to move on. Cat 0 is a ginger tabby
-// and cat 1 a black cat.
-vec4 stray(vec2 p, float index) {
-  float time = u_time + index * 23.0;
-  float cycle = floor(time / CAT_SLOT);
-  float local = time - cycle * CAT_SLOT;
-  float slot = cycle + 211.0 + index * 131.0;
-  float count = gLevels;
-  float level = floor(walkRandom(slot, 12.0) * count);
-  vec2 extent = levelExtent(level);
-  float personSize = levelSize(level);
-  float direction = walkRandom(slot, 1.0) > 0.5 ? 1.0 : -1.0;
-  float speed = mix(22.0, 42.0, walkRandom(slot, 2.0)) * personSize / REFERENCE_SIZE;
-  float startX = mix(extent.x + 150.0, extent.y - 150.0, walkRandom(slot, 3.0));
-  float distance = mix(120.0, 520.0, walkRandom(slot, 4.0)) * personSize / REFERENCE_SIZE;
-  float sitFor = mix(3.0, 10.0, walkRandom(slot, 5.0));
-
-  float travelled = clamp((local - sitFor) * speed, 0.0, distance);
-  bool walking = local > sitFor && travelled < distance;
-  float x = clamp(startX + direction * travelled, extent.x + 20.0, extent.y - 20.0);
-
-  if (abs(p.x - x) > 30.0) {
-    return vec4(0.0);
-  }
-
-  vec3 laneHere = laneAt(x, level);
-
-  if (count < 0.5 || laneHere.z < 0.5) {
-    return vec4(0.0);
-  }
-
-  float y = laneHere.x + (walkRandom(slot, 8.0) * 2.0 - 1.0) * laneHere.y;
-
-  // Slightly finer pixels than a person, a cat is smaller
-  float size = personSize * 0.9;
-  vec2 feet = floor(vec2(x, y) / size) * size;
-  float column = (p.x - feet.x) / size * direction + 5.0;
-  float row = 6.0 - (feet.y - p.y) / size;
-
-  if (column < -1.0 || column > 11.0 || row < -1.0 || row > 7.0) {
-    return vec4(0.0);
-  }
-
-  float stride = mod(floor(travelled / (5.0 * size)), 4.0);
-  float frame = !walking ? 3.0 : (stride < 0.5 ? 0.0 : (stride < 1.5 ? 1.0 : (stride < 2.5 ? 2.0 : 1.0)));
-  vec4 pixel = catPixel(floor(column), floor(row), frame, index);
-
-  if (pixel.a > 0.0 && hiddenBehind(p, feet.y)) {
-    return vec4(0.0);
-  }
-
-  float fade = clamp(local / 0.8, 0.0, 1.0) * clamp((CAT_SLOT - local) / 0.8, 0.0, 1.0);
-
-  return vec4(pixel.rgb, pixel.a * fade * presenceOf(slot));
-}
-
-// A rat freezes, then darts a short way along the foot of the wall, freezes
-// again, and so on, four times in a row.
-vec4 vermin(vec2 p, float index) {
-  float time = u_time + index * 11.0;
-  float cycle = floor(time / RAT_SLOT);
-  float local = time - cycle * RAT_SLOT;
-  float slot = cycle + 1001.0 + index * 113.0;
-  float count = gLevels;
-  float level = floor(walkRandom(slot, 12.0) * count);
-  vec2 extent = levelExtent(level);
-  float personSize = levelSize(level);
-  float scale = personSize / REFERENCE_SIZE;
-  float x = mix(extent.x + 100.0, extent.y - 100.0, walkRandom(slot, 3.0));
-  float facing = walkRandom(slot, 4.0) > 0.5 ? 1.0 : -1.0;
-  bool moving = false;
-  float travelled = 0.0;
-
-  for (int k = 0; k < 4; k++) {
-    float kk = float(k);
-    float startAt = kk * 9.0 + walkRandom(slot, 20.0 + kk) * 3.0;
-    float dash = mix(40.0, 170.0, walkRandom(slot, 30.0 + kk)) * scale;
-    float direction = walkRandom(slot, 40.0 + kk) > 0.5 ? 1.0 : -1.0;
-    float speed = mix(90.0, 140.0, walkRandom(slot, 50.0 + kk)) * scale;
-    float moved = clamp((local - startAt) * speed, 0.0, dash);
-
-    x += direction * moved;
-
-    if (local > startAt) {
-      facing = direction;
-      moving = moved < dash;
-      travelled = moved;
+        // Behind a lamppost or a cannon when standing further back than where
+        // it touches the ground
+        if (sprite.a > 0.0 && !hiddenBehind(p, feet.y)) {
+          color = over(color, sprite.rgb, sprite.a * b.z);
+        }
+      }
     }
   }
 
-  x = clamp(x, extent.x + 20.0, extent.y - 20.0);
-
-  if (abs(p.x - x) > 30.0) {
-    return vec4(0.0);
-  }
-
-  vec3 laneHere = laneAt(x, level);
-
-  if (count < 0.5 || laneHere.z < 0.5) {
-    return vec4(0.0);
-  }
-
-  // Along the foot of the wall, at the near edge of the lane
-  float y = laneHere.x + laneHere.y * 0.9;
-  float size = personSize * 0.6;
-  vec2 feet = floor(vec2(x, y) / size) * size;
-  float column = (p.x - feet.x) / size * facing + 4.0;
-  float row = 4.0 - (feet.y - p.y) / size;
-
-  if (column < -1.0 || column > 9.0 || row < -1.0 || row > 5.0) {
-    return vec4(0.0);
-  }
-
-  float stride = mod(floor(travelled / (3.0 * size)), 4.0);
-  float frame = !moving ? 3.0 : (stride < 0.5 ? 0.0 : (stride < 1.5 ? 1.0 : (stride < 2.5 ? 2.0 : 1.0)));
-  vec4 pixel = ratPixel(floor(column), floor(row), frame);
-
-  if (pixel.a > 0.0 && hiddenBehind(p, feet.y)) {
-    return vec4(0.0);
-  }
-
-  float fade = clamp(local / 0.8, 0.0, 1.0) * clamp((RAT_SLOT - local) / 0.8, 0.0, 1.0);
-
-  return vec4(pixel.rgb, pixel.a * fade * presenceOf(slot));
+  return color;
 }
 
 // Fog rolls in from the sea, thickest in the distance at the top of the map
@@ -1282,36 +595,21 @@ void main() {
   }
 
   // Only look for people and cats near a lane, most of the picture never does
-  gLevels = levelCount();
-  float levels = gLevels;
   vec2 pixel = v_uv * u_mapSize;
   bool nearLane = false;
 
-  for (int i = 0; i < 7; i++) {
-    if (float(i) < levels) {
-      vec3 lane = laneAt(pixel.x, float(i));
+  for (int i = 0; i < MAX_LEVELS; i++) {
+    if (float(i) < u_laneCount) {
+      vec4 lane = u_laneBox[i];
 
-      if (lane.z > 0.5 && pixel.y > lane.x - 80.0 && pixel.y < lane.x + 20.0) {
+      if (pixel.x > lane.x + 2.0 && pixel.x < lane.y - 2.0 && pixel.y > lane.z - 80.0 && pixel.y < lane.z + 20.0) {
         nearLane = true;
       }
     }
   }
 
   if (nearLane) {
-    for (int i = 0; i < RATS; i++) {
-      vec4 animal = vermin(pixel, float(i));
-      color = over(color, animal.rgb, animal.a);
-    }
-
-    for (int i = 0; i < CATS; i++) {
-      vec4 animal = stray(pixel, float(i));
-      color = over(color, animal.rgb, animal.a);
-    }
-
-    for (int i = 0; i < WALKERS; i++) {
-      vec4 person = walker(pixel, float(i));
-      color = over(color, person.rgb, person.a);
-    }
+    color = walkerLayer(color, pixel);
   }
 
   if (u_rain > 0.0) {
@@ -1337,9 +635,16 @@ void main() {
 }
 `
 
-const TEXTURES = ["u_image", "u_water", "u_sky", "u_walkFront"] as const
+const TEXTURES = [
+  "u_image",
+  "u_water",
+  "u_sky",
+  "u_walkFront",
+  "u_walkSprites",
+] as const
 
-// Textures in this order: image, water, sky, what people walk behind.
+// Textures in this order: image, water, sky, what people walk behind, the
+// sheet of people, cats and rats.
 // Uniforms from getWeatherAmbience.
 export const createTownMapRenderer = (canvas: HTMLCanvasElement) =>
   createAmbienceRenderer(canvas, FRAGMENT_SHADER, TEXTURES)

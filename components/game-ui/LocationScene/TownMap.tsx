@@ -12,6 +12,8 @@ import { useFrontMask } from "./frontMask"
 import { getTownMapImageProps } from "./preloadTownMap"
 import { createTownMapRenderer } from "./townMapShader"
 import { useAmbienceCanvas } from "./useAmbienceCanvas"
+import { getWalkerArrays } from "./walkers"
+import { WALKER_SHEET } from "./walkSprites"
 import { getWalkArrays } from "./walkUniforms"
 import { getWeatherAmbience } from "./weatherAmbience"
 
@@ -64,15 +66,27 @@ const TownMap = ({ map, alt, weather, onMove, onPreview }: Props) => {
   const imageRef = useRef<HTMLImageElement>(null)
   // Rippling water, drawn flags, drifting clouds and seagulls, with rain or fog on bad days
   const frontMask = useFrontMask(map)
+  const uniforms = getWeatherAmbience(weather)
+  const activity = uniforms?.u_activity ?? 1
   const ambienceRef = useAmbienceCanvas(
     imageRef,
     createTownMapRenderer,
     frontMask
-      ? [map.desktop.waterMask, map.desktop.skyMask, frontMask]
+      ? [
+          map.desktop.waterMask,
+          map.desktop.skyMask,
+          frontMask,
+          WALKER_SHEET.url,
+        ]
       : undefined,
     {
-      mobileMasks: [map.mobile.waterMask, map.mobile.skyMask, frontMask ?? ""],
-      uniforms: getWeatherAmbience(weather),
+      mobileMasks: [
+        map.mobile.waterMask,
+        map.mobile.skyMask,
+        frontMask ?? "",
+        WALKER_SHEET.url,
+      ],
+      uniforms,
       arrays: {
         desktop: {
           ...getWalkArrays(
@@ -90,6 +104,10 @@ const TownMap = ({ map, alt, weather, onMove, onPreview }: Props) => {
           ),
           ...getFlagArrays(map.mobile.flagSprites),
         },
+      },
+      frameArrays: {
+        desktop: (time) => getWalkerArrays(time, map.desktop.lanes, activity),
+        mobile: (time) => getWalkerArrays(time, map.mobile.lanes, activity),
       },
     }
   )

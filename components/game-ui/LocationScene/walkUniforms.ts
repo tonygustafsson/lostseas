@@ -22,7 +22,6 @@ export const getWalkArrays = (
       size: 4,
       values: levels.flatMap(([x0, x1, feet, half]) => [x0, x1, feet, half]),
     },
-    u_laneSize: { size: 1, values: levels.map((level) => level[4]) },
     u_laneCount: { size: 1, values: [levels.length] },
   }
 }

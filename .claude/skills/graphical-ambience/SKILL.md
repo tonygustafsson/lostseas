@@ -79,13 +79,33 @@ free end, nation, pole]`, in picture pixels. Nation is an index in
   size is exactly the same and that nothing but the flags changed, ships and
   sails included. The painted originals are in the git history.
 
+## People, cats and rats are a sprite sheet
+
+The walkers are not drawn by the shader any more. Drawing them in GLSL (every
+sprite pixel an if-chain, plus an outline pass) made the shader take over 20
+seconds to build on a Windows GPU.
+
+- `public/img/town-walkers.png` holds every pose, with outline and shadow baked
+  in. `npm run generate:walker-sprites` (`scripts/generate-walker-sprites`) draws
+  it. Twelve people (each coat once on a man and once on a woman), two cats, one
+  rat. Change the pixel art there, then run the script.
+- The layout is in `walkSprites.ts`, repeat it in the script when it changes.
+  `__tests__/walkers.test.ts` checks the PNG size.
+- `walkers.ts` works out where every walker is on every frame (paths, stops,
+  turning back, fades, weather) and gives the shader two uniform lists, `u_walkA`
+  and `u_walkB`. It reaches the renderer through `frameArrays` of
+  `useAmbienceCanvas` (`setFrameArrays` in `ambienceRenderer.ts`).
+- `walkerLayer` in `townMapShader.ts` is one loop over the list that looks up the
+  sheet and hides walkers behind the front mask. The sheet is texture
+  `u_walkSprites`, last in `TEXTURES`.
+- The sheet is shown in the `game/Harbor/Walker sprites` story.
+
 ## Keeping the shader quick to build
 
 The GPU driver turns the whole shader into one program, and every function is
 copied in at each place it is called. A long function called five times is five
-copies. The people code once took over 20 seconds to build on a Windows GPU
-because each sprite was asked for five times in a row (the pixel and its four
-neighbours, for the outline). Asking in a loop cut it to under 10 seconds.
+copies. Keep big things out of GLSL where they can be data (a texture, a
+uniform list), as with the walkers.
 
 - Call a big function from one place, in a loop if it has to run several times.
   Do not put a `break` in such a loop, it can stop the shader from building.

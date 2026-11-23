@@ -296,6 +296,7 @@ export const createAmbienceRenderer = (
 
   let textures: (WebGLTexture | null)[] = []
   let timeLocation: WebGLUniformLocation | null = null
+  let frameArrays: ((time: number) => AmbienceArrays) | null = null
   let sizeLocation: WebGLUniformLocation | null = null
   let imageSizeLocation: WebGLUniformLocation | null = null
   let isReady = false
@@ -389,6 +390,31 @@ export const createAmbienceRenderer = (
     })
   }
 
+  const arrayLocations = new Map<string, WebGLUniformLocation | null>()
+
+  const applyArrays = (arrays: AmbienceArrays) => {
+    Object.entries(arrays).forEach(([name, { size, values }]) => {
+      // The count says how many are used, an empty list is not allowed
+      if (!values.length) {
+        return
+      }
+
+      if (!arrayLocations.has(name)) {
+        arrayLocations.set(name, gl.getUniformLocation(program, name))
+      }
+
+      const location = arrayLocations.get(name)!
+
+      if (size === 1) {
+        gl.uniform1fv(location, values)
+      } else if (size === 2) {
+        gl.uniform2fv(location, values)
+      } else {
+        gl.uniform4fv(location, values)
+      }
+    })
+  }
+
   const draw = (now: number) => {
     frame = requestAnimationFrame(draw)
 
@@ -437,6 +463,11 @@ export const createAmbienceRenderer = (
     // The scissor box is measured from the bottom of the canvas
     gl.scissor(left, height - bottom, right - left, bottom - top)
     gl.uniform1f(timeLocation, now / 1000)
+
+    if (frameArrays) {
+      applyArrays(frameArrays(now / 1000))
+    }
+
     gl.uniform2f(sizeLocation, canvas.clientWidth, canvas.clientHeight)
     gl.drawArrays(gl.TRIANGLES, 0, 6)
   }
@@ -482,25 +513,12 @@ export const createAmbienceRenderer = (
         })
       }),
     // Uniform arrays, like a list of boxes. Size is the numbers in one entry.
-    setArrays: (arrays: AmbienceArrays) =>
-      whenReady(() => {
-        Object.entries(arrays).forEach(([name, { size, values }]) => {
-          const location = gl.getUniformLocation(program, name)
-
-          // The count says how many are used, an empty list is not allowed
-          if (!values.length) {
-            return
-          }
-
-          if (size === 1) {
-            gl.uniform1fv(location, values)
-          } else if (size === 2) {
-            gl.uniform2fv(location, values)
-          } else {
-            gl.uniform4fv(location, values)
-          }
-        })
-      }),
+    setArrays: (arrays: AmbienceArrays) => whenReady(() => applyArrays(arrays)),
+    // Arrays that change with time, like where everybody walks. Asked for on
+    // every frame with the time in seconds, the same as u_time.
+    setFrameArrays: (get: ((time: number) => AmbienceArrays) | null) => {
+      frameArrays = get
+    },
     start: () => {
       cancelAnimationFrame(frame)
       frame = requestAnimationFrame(draw)

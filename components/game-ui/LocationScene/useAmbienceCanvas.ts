@@ -19,6 +19,12 @@ type Options = {
   uniforms: AmbienceUniforms | undefined
   // Uniform arrays for the picture, the mobile ones when the image switches
   arrays?: { desktop: AmbienceArrays; mobile?: AmbienceArrays }
+  // Arrays asked for on every frame with the time in seconds, like where
+  // people walk. Same desktop and mobile split as arrays.
+  frameArrays?: {
+    desktop: (time: number) => AmbienceArrays
+    mobile?: (time: number) => AmbienceArrays
+  }
 }
 
 // Draws an animated scene on the GPU over an already loaded image, using the
@@ -34,7 +40,7 @@ export const useAmbienceCanvas = (
   imageRef: RefObject<HTMLImageElement | null>,
   createRenderer: (canvas: HTMLCanvasElement) => AmbienceRenderer | null,
   masks: string[] | undefined,
-  { mobileMasks, uniforms, arrays }: Options
+  { mobileMasks, uniforms, arrays, frameArrays }: Options
 ) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const rendererRef = useRef<AmbienceRenderer | null>(null)
@@ -164,6 +170,25 @@ export const useAmbienceCanvas = (
 
     return () => query.removeEventListener("change", apply)
   }, [arrays, createRenderer, masksKey, mobileMasksKey, hasUniforms])
+
+  // Replaced with every render, so it always sees the latest weather and lanes
+  useEffect(() => {
+    const renderer = rendererRef.current
+
+    if (!frameArrays || !renderer) {
+      return
+    }
+
+    const query = window.matchMedia(TOWN_MAP_DESKTOP_MEDIA)
+
+    renderer.setFrameArrays((time) =>
+      (query.matches || !frameArrays.mobile
+        ? frameArrays.desktop
+        : frameArrays.mobile)(time)
+    )
+
+    return () => renderer.setFrameArrays(null)
+  }, [frameArrays, createRenderer, masksKey, mobileMasksKey, hasUniforms])
 
   return containerRef
 }
