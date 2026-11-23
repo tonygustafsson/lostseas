@@ -28,6 +28,8 @@ uniform float u_gloom;
 const float WATER_AMPLITUDE = 1.25;
 const vec3 GLOW_COLOR = vec3(1.0, 0.72, 0.36);
 const vec3 DUST_COLOR = vec3(1.0, 0.96, 0.86);
+// Share of grid cells that hold a mote in full dust
+const float DUST_DENSITY = 0.19;
 const vec3 FOG_COLOR = vec3(0.86, 0.88, 0.9);
 const vec3 GLOOM_COLOR = vec3(0.04, 0.05, 0.08);
 
@@ -43,14 +45,16 @@ float flicker(vec2 p) {
 }
 
 // Some cells of a grid, cell CSS pixels wide, hold a mote drifting slowly up
-// and sideways, circling a little and catching the light now and then
+// and sideways, circling a little and catching the light now and then. The
+// thinner the dust (zone, up to 1), the fewer cells hold one, so it fades out
+// into the room instead of covering all of it.
 vec4 dust(vec4 base, vec2 p, float cell, float speed, float seed, float zone) {
   float t = u_time;
   vec2 q = p / cell + vec2(t * speed * 0.4, t * speed);
   vec2 id = floor(q);
   float h = hash(id + seed);
 
-  if (h > 0.4) {
+  if (h > DUST_DENSITY * zone) {
     return base;
   }
 
@@ -60,7 +64,7 @@ vec4 dust(vec4 base, vec2 p, float cell, float speed, float seed, float zone) {
   float twinkle = 0.35 + 0.65 * (0.5 + 0.5 * sin(t * (0.8 + h * 3.0) + h * 30.0));
   float core = 1.0 - smoothstep(radius * 0.4, radius + 0.7, d);
   float halo = 1.0 - smoothstep(radius, radius * 2.5, d);
-  float alpha = (core * 0.85 + halo * 0.25) * twinkle * zone;
+  float alpha = (core * 0.5 + halo * 0.14) * twinkle * (0.4 + 0.6 * zone);
 
   return over(base, DUST_COLOR, min(alpha, 1.0));
 }

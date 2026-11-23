@@ -4,6 +4,7 @@ import { preload } from "react-dom"
 import {
   getLocationAmbience,
   getLocationBackground,
+  getLocationDust,
   getLocationFires,
 } from "@/utils/location"
 
@@ -31,8 +32,11 @@ export const preloadBuildingScene = (
   if (ambience) {
     const sources = [ambience.water, ambience.sky]
 
-    // A building with fires makes its light in the browser instead
-    if (!getLocationFires(town, location).length) {
+    // A building with fires or dust makes its light in the browser instead
+    if (
+      !getLocationFires(town, location).length &&
+      !getLocationDust(town, location).length
+    ) {
       sources.push(ambience.light)
     }
 

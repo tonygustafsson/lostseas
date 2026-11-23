@@ -4,6 +4,7 @@ import { TOWNS } from "@/constants/locations"
 import {
   getLocationAmbience,
   getLocationBackground,
+  getLocationDust,
   getLocationFires,
   getRandomTown,
   getTownsNationality,
@@ -40,6 +41,28 @@ describe("location utils", () => {
   it("getLocationFires is empty without a town or fires, so the light picture is used", () => {
     expect(getLocationFires(undefined, "Shop")).toEqual([])
     expect(getLocationFires("not-a-town" as any, "Shop")).toEqual([])
+  })
+
+  it("getLocationDust is empty without a town or sources, so the light picture is used", () => {
+    expect(getLocationDust(undefined, "Shop")).toEqual([])
+    expect(getLocationDust("not-a-town" as any, "Shop")).toEqual([])
+  })
+
+  it("getLocationDust gives polygons inside the building picture", () => {
+    const dust = getLocationDust("kingston", "Tavern")
+
+    expect(dust.length).toBeGreaterThan(0)
+
+    for (const polygon of dust) {
+      // At least three corners, as x and y pairs
+      expect(polygon.length).toBeGreaterThanOrEqual(6)
+      expect(polygon.length % 2).toBe(0)
+
+      polygon.forEach((value, i) => {
+        expect(value).toBeGreaterThanOrEqual(0)
+        expect(value).toBeLessThanOrEqual(i % 2 ? 980 : 1605)
+      })
+    }
   })
 
   it("getLocationFires gives circles inside the building picture", () => {

@@ -48,23 +48,41 @@ A building with fires in `constants/buildings/fires.json` does not use its
 light PNG, see the next section. Buildings without fires work as described
 above.
 
-## Fires in buildings (`constants/buildings/fires.json`)
+## Fires and dust in buildings (`constants/buildings`)
 
-Per town and building slug (`tavern`, `city-hall`) a list of circles
-`[x, y, radius]` in pixels of the building picture (1605x980). Light is
-strongest in the middle and fades to nothing at the radius. `makeFireMaskUrl`
-(`fireMask.ts`) draws them in the browser into a light mask in the same
-channels as the PNGs: green glow, and red in the middle 30 % for the flame
-brightening. `useBuildingMasks` gives `BuildingScene` its masks, the fire
-light when a building has fires and the three PNGs when it has none. With
-fires there is no blue, so no dust yet.
+Both are per town and building slug (`tavern`, `city-hall`), in pixels of the
+building picture (1605x980).
 
-Place them in the `Ambience editors/Building` story
-(`stories/ambience-editors/BuildingSceneEditor.tsx`). Click or drag to place, drag to
-move, drag the edge to resize. The "Old light picture" switch shows the PNG as
-a guide. Save writes the JSON through `.storybook/maskEditorServer.ts` (kind
-`fires`, the building slug in place of the variant, restart Storybook after
-changing that file).
+- `fires.json`, circles `[x, y, radius]`. Light is strongest in the middle and
+  fades to nothing at the radius.
+- `dust.json`, polygons `[x, y, x, y, ...]` round windows and openings. Dust
+  floats out of them into the room and thins as it goes, so it also shows
+  where the light is dim. It only shows in sunny weather (`u_sun`).
+
+`makeLightMaskUrl` (`lightMask.ts`) draws both in the browser into a light mask
+in the same channels as the PNGs: green glow and red flame (the middle 40 % of
+a fire, where the shader brightens the picture) for fires, and blue for dust.
+Dust is the polygon at full strength plus copies grown and blurred a little
+more each (`DUST_SPREAD`), so the spread is tuned there. The shader
+(`buildingSceneShader.ts`) puts a mote in fewer grid cells where the dust is
+weaker, `DUST_DENSITY` is the share of cells in full dust, so that is the knob
+for how much dust there is. `useBuildingMasks`
+gives `BuildingScene` its masks, the generated light when a building has fires
+or dust, and the three PNGs when it has neither. A building with only one of
+the two has none of the other, so give both.
+
+The first dust polygons were made from the sky and water masks (the openings
+where outdoors shows), which is why they follow window panes and sea views.
+Fix them by hand in the editor.
+
+Place both in the `Ambience editors/Building` story
+(`stories/ambience-editors/BuildingSceneEditor.tsx`), Fires and Dust tabs.
+Fires: click or drag to place, drag to move, drag the edge to resize. Dust:
+click corners, click the first one to close, drag a corner or the inside to
+move. The "Old light picture" switch shows the PNG as a guide. Save writes the
+JSON through `.storybook/maskEditorServer.ts` (kinds `fires` and `dust`, the
+building slug in place of the variant, restart Storybook after changing that
+file).
 
 ## JSON data (`constants/harbor`)
 

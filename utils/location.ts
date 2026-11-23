@@ -1,3 +1,4 @@
+import dustConfig from "@/constants/buildings/dust.json"
 import firesConfig from "@/constants/buildings/fires.json"
 import { NATIONS, TOWNS } from "@/constants/locations"
 
@@ -69,3 +70,17 @@ export const getLocationFires = (
   town: Character["town"],
   location: Character["location"]
 ) => (town && FIRES[town]?.[toSlug(location)]) || NO_FIRES
+
+// A dust source is a polygon round a window or opening, [x, y, x, y, ...] in
+// pixels of the building picture. Dust floats from it into the room.
+export type DustSource = number[]
+
+const DUST = dustConfig as Record<string, Record<string, DustSource[]>>
+const NO_DUST: DustSource[] = []
+
+// The dust sources of a building. Without any, its light mask picture decides
+// where dust floats.
+export const getLocationDust = (
+  town: Character["town"],
+  location: Character["location"]
+) => (town && DUST[town]?.[toSlug(location)]) || NO_DUST

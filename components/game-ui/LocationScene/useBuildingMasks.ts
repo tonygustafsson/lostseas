@@ -1,35 +1,44 @@
 import { useEffect, useState } from "react"
 
 import {
+  type DustSource,
   type Fire,
   getLocationAmbience,
+  getLocationDust,
   getLocationFires,
 } from "@/utils/location"
 
-import { makeFireMaskUrl } from "./fireMask"
+import { makeLightMaskUrl } from "./lightMask"
 
 // The water, sky and light masks of a building, in the order the shader wants
-// them. A building with fires gets its light made from them in the browser
-// and its light picture is not used. Undefined while that is made, and when
-// there is no town. Pass fires to try ones that are not saved yet.
+// them. A building with fires or dust sources gets its light made from them in
+// the browser and its light picture is not used. Undefined while that is made,
+// and when there is no town. Pass fires and dust to try ones that are not saved
+// yet.
 export const useBuildingMasks = (
   town: Character["town"],
   location: Character["location"],
-  fires: Fire[] = getLocationFires(town, location)
+  fires: Fire[] = getLocationFires(town, location),
+  dust: DustSource[] = getLocationDust(town, location)
 ) => {
   const ambience = getLocationAmbience(town, location)
-  const [made, setMade] = useState<{ fires: Fire[]; url: string }>()
+  const hasLight = fires.length > 0 || dust.length > 0
+  const [made, setMade] = useState<{
+    fires: Fire[]
+    dust: DustSource[]
+    url: string
+  }>()
 
   // Effect because the mask is made asynchronously on a canvas
   useEffect(() => {
-    if (!fires.length) {
+    if (!hasLight) {
       return
     }
 
     let isCancelled = false
     let url: string | undefined
 
-    makeFireMaskUrl(fires).then((madeUrl) => {
+    makeLightMaskUrl(fires, dust).then((madeUrl) => {
       if (isCancelled) {
         URL.revokeObjectURL(madeUrl)
 
@@ -37,7 +46,7 @@ export const useBuildingMasks = (
       }
 
       url = madeUrl
-      setMade({ fires, url })
+      setMade({ fires, dust, url })
     })
 
     return () => {
@@ -47,17 +56,17 @@ export const useBuildingMasks = (
         URL.revokeObjectURL(url)
       }
     }
-  }, [fires])
+  }, [hasLight, fires, dust])
 
   if (!ambience) {
     return undefined
   }
 
-  if (!fires.length) {
+  if (!hasLight) {
     return [ambience.water, ambience.sky, ambience.light]
   }
 
-  return made?.fires === fires
+  return made?.fires === fires && made.dust === dust
     ? [ambience.water, ambience.sky, made.url]
     : undefined
 }
