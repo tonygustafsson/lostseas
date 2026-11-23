@@ -44,6 +44,28 @@ per town and building, `<town>/<building>.png` (see `getLocationAmbience` in
 The harbour pictures have `desktop` and `mobile` variants, they are different
 pictures with different data.
 
+A building with fires in `constants/buildings/fires.json` does not use its
+light PNG, see the next section. Buildings without fires work as described
+above.
+
+## Fires in buildings (`constants/buildings/fires.json`)
+
+Per town and building slug (`tavern`, `city-hall`) a list of circles
+`[x, y, radius]` in pixels of the building picture (1605x980). Light is
+strongest in the middle and fades to nothing at the radius. `makeFireMaskUrl`
+(`fireMask.ts`) draws them in the browser into a light mask in the same
+channels as the PNGs: green glow, and red in the middle 30 % for the flame
+brightening. `useBuildingMasks` gives `BuildingScene` its masks, the fire
+light when a building has fires and the three PNGs when it has none. With
+fires there is no blue, so no dust yet.
+
+Place them in the `Ambience editors/Building` story
+(`stories/ambience-editors/BuildingSceneEditor.tsx`). Click or drag to place, drag to
+move, drag the edge to resize. The "Old light picture" switch shows the PNG as
+a guide. Save writes the JSON through `.storybook/maskEditorServer.ts` (kind
+`fires`, the building slug in place of the variant, restart Storybook after
+changing that file).
+
 ## JSON data (`constants/harbor`)
 
 Imported straight into the game, no mask picture in between. All numbers are
@@ -135,8 +157,8 @@ uniform list), as with the walkers.
 
 ## The mask editor
 
-Storybook story `game/Harbor/Mask editor`
-(`stories/game/harbor/TownMaskEditor.tsx`), on http://localhost:6010 after
+Storybook story `Ambience editors/Harbor`
+(`stories/ambience-editors/TownMaskEditor.tsx`), on http://localhost:6010 after
 `npm run storybook`. Pick a town, variant and weather and see the real shader
 with the unsaved data, so people and flags move as they will in the game.
 

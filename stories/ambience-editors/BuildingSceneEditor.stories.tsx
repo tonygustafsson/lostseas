@@ -2,7 +2,16 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import { TOWNS } from "@/constants/locations"
 
-import TownMaskEditor from "./TownMaskEditor"
+import BuildingSceneEditor from "./BuildingSceneEditor"
+
+const LOCATIONS: TownLocation[] = [
+  "Bank",
+  "City hall",
+  "Market",
+  "Shipyard",
+  "Shop",
+  "Tavern",
+]
 
 const WEATHER: WeatherType[] = [
   "sunny",
@@ -14,18 +23,20 @@ const WEATHER: WeatherType[] = [
 
 type Args = {
   town: Town
+  location: TownLocation
   weather: WeatherType
   zoom: number
 }
 
-// A tool for fixing what people walk behind, the flags and the streets of the
-// harbour pictures. Saving writes the data in constants/harbor and the flag
-// mask picture, so it only works in Storybook started locally.
+// A tool for placing fires in building pictures. Saving writes
+// constants/buildings/fires.json, so it only works in Storybook started
+// locally.
 const meta = {
-  title: "game/Harbor/Mask editor",
+  title: "Ambience editors/Building",
   parameters: { layout: "fullscreen" },
   args: {
-    town: "kingston",
+    town: "nassau",
+    location: "Tavern",
     weather: "sunny",
     zoom: 1,
   },
@@ -34,16 +45,22 @@ const meta = {
       control: "select",
       options: Object.keys(TOWNS).sort(),
     },
+    location: {
+      control: "select",
+      options: LOCATIONS,
+    },
     weather: {
       control: "radio",
       options: WEATHER,
     },
     zoom: {
       control: "radio",
-      options: [1, 1.5, 2, 3],
+      options: [1, 1.5, 2],
     },
   },
-  render: (args) => <TownMaskEditor key={args.town} {...args} />,
+  render: (args) => (
+    <BuildingSceneEditor key={`${args.town}-${args.location}`} {...args} />
+  ),
 } satisfies Meta<Args>
 
 export default meta

@@ -7,6 +7,7 @@ import BackToTown from "./BackToTown"
 import BuildingIntro from "./BuildingIntro"
 import { createBuildingSceneRenderer } from "./buildingSceneShader"
 import { useAmbienceCanvas } from "./useAmbienceCanvas"
+import { useBuildingMasks } from "./useBuildingMasks"
 import { getWeatherAmbience } from "./weatherAmbience"
 
 type Props = {
@@ -18,11 +19,12 @@ type Props = {
 const BuildingScene = ({ town, location, weather }: Props) => {
   const imageRef = useRef<HTMLImageElement>(null)
   const ambience = getLocationAmbience(town, location)
+  const masks = useBuildingMasks(town, location)
   // Rippling water, the weather outside, dust and flickering lights
   const ambienceRef = useAmbienceCanvas(
     imageRef,
     createBuildingSceneRenderer,
-    ambience && [ambience.water, ambience.sky, ambience.light],
+    masks,
     { uniforms: getWeatherAmbience(weather) }
   )
 

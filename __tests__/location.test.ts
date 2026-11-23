@@ -4,6 +4,7 @@ import { TOWNS } from "@/constants/locations"
 import {
   getLocationAmbience,
   getLocationBackground,
+  getLocationFires,
   getRandomTown,
   getTownsNationality,
 } from "@/utils/location"
@@ -34,5 +35,24 @@ describe("location utils", () => {
 
   it("getLocationAmbience returns undefined without a town", () => {
     expect(getLocationAmbience(undefined, "Shop")).toBeUndefined()
+  })
+
+  it("getLocationFires is empty without a town or fires, so the light picture is used", () => {
+    expect(getLocationFires(undefined, "Shop")).toEqual([])
+    expect(getLocationFires("not-a-town" as any, "Shop")).toEqual([])
+  })
+
+  it("getLocationFires gives circles inside the building picture", () => {
+    const fires = getLocationFires("kingston", "Tavern")
+
+    expect(fires.length).toBeGreaterThan(0)
+
+    for (const [x, y, radius] of fires) {
+      expect(x).toBeGreaterThanOrEqual(0)
+      expect(x).toBeLessThanOrEqual(1605)
+      expect(y).toBeGreaterThanOrEqual(0)
+      expect(y).toBeLessThanOrEqual(980)
+      expect(radius).toBeGreaterThan(0)
+    }
   })
 })

@@ -1,3 +1,4 @@
+import firesConfig from "@/constants/buildings/fires.json"
 import { NATIONS, TOWNS } from "@/constants/locations"
 
 export const getTownsNationality = (
@@ -56,3 +57,15 @@ export const getLocationAmbience = (
     light: `/img/location-light-masks/${path}`,
   }
 }
+
+// A fire is a circle in pixels of the building picture, [x, y, radius]
+export type Fire = [x: number, y: number, radius: number]
+
+const FIRES = firesConfig as unknown as Record<string, Record<string, Fire[]>>
+const NO_FIRES: Fire[] = []
+
+// The fires of a building. Without any, its light mask picture is used instead.
+export const getLocationFires = (
+  town: Character["town"],
+  location: Character["location"]
+) => (town && FIRES[town]?.[toSlug(location)]) || NO_FIRES

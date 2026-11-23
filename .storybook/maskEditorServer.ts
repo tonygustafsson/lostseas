@@ -5,7 +5,7 @@ import * as prettier from "prettier"
 import type { Plugin } from "vite"
 
 // Lets the mask editor story save what was changed into the harbour data in
-// constants/harbor. Only while Storybook runs locally, a built Storybook has no
+// constants/harbor, and the fire editor story into constants/buildings. Only while Storybook runs locally, a built Storybook has no
 // server.
 export const SAVE_PATH = "/__mask-editor/save"
 
@@ -61,6 +61,15 @@ const KINDS = {
       config[town] = { ...config[town], [variant]: data }
     },
   },
+  // Fires in a building, [x, y, radius]. Buildings have no variant, the
+  // location takes its place. A town may not have any yet.
+  fires: {
+    file: "../buildings/fires.json",
+    size: 3,
+    set: (config: Config, town: string, location: string, data: unknown) => {
+      config[town] = { ...config[town], [location]: data }
+    },
+  },
   // Street levels, [x start, x end, feet, half width, person size]
   lanes: {
     file: "lanes.json",
@@ -70,6 +79,8 @@ const KINDS = {
     },
   },
 } as const
+
+const BUILDINGS = ["bank", "city-hall", "market", "shipyard", "shop", "tavern"]
 
 type Config = Record<string, any>
 
@@ -87,7 +98,7 @@ const save = async (body: string, root: string) => {
   if (
     !settings ||
     !/^[a-z-]+$/.test(town) ||
-    !["desktop", "mobile"].includes(variant) ||
+    !(kind === "fires" ? BUILDINGS : ["desktop", "mobile"]).includes(variant) ||
     !Array.isArray(data) ||
     !data.every(
       (entry) =>
@@ -107,7 +118,7 @@ const save = async (body: string, root: string) => {
   const config = JSON.parse(await readFile(path, "utf8"))
 
   if (
-    !["sprites", "water", "sky"].includes(kind) &&
+    !["sprites", "water", "sky", "fires"].includes(kind) &&
     !(config.towns ?? config)[town]
   ) {
     throw new Error(`There is no ${town} in ${settings.file}`)

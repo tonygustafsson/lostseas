@@ -1,5 +1,5 @@
 {
-  "//": "Street levels per town and variant, edited in the mask editor story (game/Harbor/Mask editor): x start, x end, height of the feet, half the width of the lane, picture pixels per sprite pixel of a person.",
+  "//": "Street levels per town and variant, edited in the mask editor story (Ambience editors/Harbor): x start, x end, height of the feet, half the width of the lane, picture pixels per sprite pixel of a person.",
   "towns": {
     "basse-terre": {
       "desktop": [[220, 1750, 572, 7, 2.26]],

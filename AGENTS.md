@@ -88,7 +88,7 @@ Voyage lengths follow the routes drawn on the sea map, so a town that looks furt
 
 ### Graphical ambience
 
-The harbour and building pictures get their life (water, clouds, flags, people, cats, flames) from shaders in `components/game-ui/LocationScene/`. They read mask pictures from `public/img` and data from `constants/harbor` (streets, what people walk behind, flag boxes). Both are made by hand in the `game/Harbor/Mask editor` story, there is no generator. See the `graphical-ambience` skill for the formats, the editor and how to make the data for a new picture, and keep it up to date when they change.
+The harbour and building pictures get their life (water, clouds, flags, people, cats, flames) from shaders in `components/game-ui/LocationScene/`. They read mask pictures from `public/img` and data from `constants/harbor` (streets, what people walk behind, flag boxes). Both are made by hand in the `Ambience editors/Harbor` story, there is no generator. See the `graphical-ambience` skill for the formats, the editor and how to make the data for a new picture, and keep it up to date when they change.
 
 ### Autoplay bot
 
