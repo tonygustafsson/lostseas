@@ -139,8 +139,11 @@ vec4 rain(vec4 base, vec2 p, vec2 cell, float speed, float seed, float strength)
 }
 `
 
-// Everything moves slowly, 30 frames per second is plenty and halves the work
-const FRAME_INTERVAL = 1000 / 30
+// Everything moves slowly, 30 frames per second is plenty and halves the work.
+// A few milliseconds are taken off because screen frames come 16.7 ms apart
+// with some jitter, so a threshold of exactly 33.3 ms is often missed by a hair
+// and skips to every third frame, about 22 per second.
+const FRAME_INTERVAL = 1000 / 30 - 4
 
 export const loadImage = (src: string) => {
   const image = new Image()
