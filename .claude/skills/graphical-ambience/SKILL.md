@@ -33,8 +33,6 @@ Read as textures. The channels carry the meaning.
 
 - `town-sky-masks/<town>-<variant>.png`, alpha marks the sky that clouds may
   cover. Half the size of the picture. Painted clouds and flags are left out.
-- `town-water-masks/<town>-<variant>.png`, alpha marks the water that ripples.
-  Half the size of the picture. Boats and piers are left out.
 - `location-sky-masks`, `location-water-masks` and `location-light-masks` for
   the building interiors: sky and sea seen through windows and arches, and
   light, where red is a flame or lantern glass, green the glow round it and
@@ -61,6 +59,12 @@ pixels of the original harbour picture, not of the copy the browser loads
   hidden by it. The game draws these into a mask in the browser
   (`frontMask.ts`), exactly, with no colour matching. Where objects overlap
   the one with the lower ground wins.
+- `water.json`, the water that ripples, per town and variant a list of polygons
+  `[x, y, x, y, ...]`. The game draws them into a mask in the browser
+  (`makeWaterMaskUrl` in `frontMask.ts`) at half size, slightly blurred. Even-odd,
+  so a polygon inside another is a hole (boats, piers). Water that reaches the
+  edge of the picture carries on past it, so the edge is not blurred. The
+  ripples, the ripple edge guard and the fog read this mask like the old PNG.
 - `flagSprites.json`, the flags the shader draws and waves itself, per town and
   variant `[x start, x end, top and bottom at the pole, top and bottom at the
 free end, nation, pole]`, in picture pixels. Nation is an index in
@@ -135,6 +139,8 @@ with the unsaved data, so people and flags move as they will in the game.
   (the two at the pole share their x, so do the two at the free end), drag the
   inside to move it. Nation and the pole switch of the selected flag are beside the
   buttons. Saves `flagSprites.json`.
+- Water tab: the same polygon tool for `water.json`. A picture without
+  polygons has no rippling water.
 - Save posts to `.storybook/maskEditorServer.ts`, which writes `constants/harbor`
   (restart Storybook after changing that file). It only works in Storybook
   started locally.
@@ -160,9 +166,10 @@ check.
 3. Add `things` for big objects like barrels and posts, `shapes` for thin or
    odd ones like lampposts. Use boxes first, they are easy to refine.
 4. Draw the flags in the editor, Flags tab (they go in `flagSprites.json`).
-5. Make sky and water masks. Sky is the blue that reaches the top edge, water is
-   the part that reaches the bottom edge, found by its main colour. Leave out
-   painted clouds, flags, boats and piers. Save at half size.
+5. Draw the water in the editor, Water tab (it goes in `water.json`), leaving
+   boats and piers out as holes. Make the sky mask, the blue that reaches the
+   top edge, found by its main colour. Leave out painted clouds and flags. Save
+   it at half size.
 6. Open the editor, look at every town variant with sunny and rainy weather,
    and let the user fix what is left. Never claim a mask is right without having
    looked at it on the picture.

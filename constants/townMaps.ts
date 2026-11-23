@@ -3,6 +3,7 @@ import { type TownBuildingPosition, TOWNS } from "@/constants/locations"
 import flagSpritesConfig from "./harbor/flagSprites.json"
 import frontConfig from "./harbor/front.json"
 import lanesConfig from "./harbor/lanes.json"
+import waterConfig from "./harbor/water.json"
 
 export type TownMapBuilding = TownBuildingPosition & {
   location: TownLocation
@@ -11,8 +12,10 @@ export type TownMapBuilding = TownBuildingPosition & {
 
 export type TownMapImage = {
   src: string
-  waterMask: string
   skyMask: string
+  // Where the water ripples, [x, y, x, y, ...] round the corners. A polygon
+  // inside another is a hole.
+  water: number[][]
   // Flags the shader draws, see flagUniforms.ts
   flagSprites: number[][]
   // Street levels, [x start, x end, feet, half width, person size]
@@ -46,10 +49,6 @@ const IMAGE_SIZES: Record<TownMapVariant, { width: number; height: number }> = {
 export const getTownMapSrc = (town: Town, variant: TownMapVariant) =>
   `/img/towns/${town}-${variant}.png`
 
-// Transparent everywhere except the water, used to animate only the sea
-export const getTownWaterMaskSrc = (town: Town, variant: TownMapVariant) =>
-  `/img/town-water-masks/${town}-${variant}.png`
-
 // Transparent everywhere except the sky, used to draw clouds behind the town
 export const getTownSkyMaskSrc = (town: Town, variant: TownMapVariant) =>
   `/img/town-sky-masks/${town}-${variant}.png`
@@ -68,6 +67,11 @@ const getFlagSprites = (town: Town, variant: TownMapVariant) =>
     variant
   ] ?? NONE
 
+const getWater = (town: Town, variant: TownMapVariant) =>
+  (waterConfig as Record<string, Record<string, number[][]>>)[town]?.[
+    variant
+  ] ?? NONE
+
 const getFront = (town: Town, variant: TownMapVariant) =>
   (
     frontConfig.towns as Record<
@@ -81,8 +85,8 @@ const getTownMapImage = (
   variant: TownMapVariant
 ): TownMapImage => ({
   src: getTownMapSrc(town, variant),
-  waterMask: getTownWaterMaskSrc(town, variant),
   skyMask: getTownSkyMaskSrc(town, variant),
+  water: getWater(town, variant),
   flagSprites: getFlagSprites(town, variant),
   lanes: getLanes(town, variant),
   things: getFront(town, variant)?.things ?? NONE,

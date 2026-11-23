@@ -93,6 +93,69 @@ export const makeFrontMaskUrl = (
     canvas.toBlob((blob) => resolve(URL.createObjectURL(blob!)))
   })
 
+// Room round the water mask, so the feathering has something to blur into
+const WATER_PADDING = 4
+const WATER_FEATHER = 1
+
+// The water the shader ripples, drawn from the polygons in
+// constants/harbor/water.json at half the size of the picture, like the other
+// masks. Polygons inside polygons are holes. Without polygons there is no
+// water.
+export const makeWaterMaskUrl = (
+  width: number,
+  height: number,
+  polygons: Shape[]
+) => {
+  const [halfWidth, halfHeight] = [
+    Math.round(width / 2),
+    Math.round(height / 2),
+  ]
+  const padded = document.createElement("canvas")
+  padded.width = halfWidth + WATER_PADDING * 2
+  padded.height = halfHeight + WATER_PADDING * 2
+
+  const context = padded.getContext("2d")!
+  context.translate(WATER_PADDING, WATER_PADDING)
+  context.scale(0.5, 0.5)
+  context.filter = `blur(${WATER_FEATHER}px)`
+  context.beginPath()
+
+  // Water that reaches the edge of the picture carries on past it, so the edge
+  // is not feathered
+  const extend = (value: number, max: number) =>
+    value <= 0
+      ? -WATER_PADDING * 2
+      : value >= max
+        ? max + WATER_PADDING * 2
+        : value
+
+  for (const polygon of polygons) {
+    for (let i = 0; i < polygon.length; i += 2) {
+      const x = extend(polygon[i], width)
+      const y = extend(polygon[i + 1], height)
+
+      if (i === 0) {
+        context.moveTo(x, y)
+      } else {
+        context.lineTo(x, y)
+      }
+    }
+
+    context.closePath()
+  }
+
+  context.fill("evenodd")
+
+  const canvas = document.createElement("canvas")
+  canvas.width = halfWidth
+  canvas.height = halfHeight
+  canvas.getContext("2d")!.drawImage(padded, -WATER_PADDING, -WATER_PADDING)
+
+  return new Promise<string>((resolve) => {
+    canvas.toBlob((blob) => resolve(URL.createObjectURL(blob!)))
+  })
+}
+
 const subscribe = (onChange: () => void) => {
   const query = window.matchMedia(TOWN_MAP_DESKTOP_MEDIA)
   query.addEventListener("change", onChange)
@@ -102,32 +165,42 @@ const subscribe = (onChange: () => void) => {
 
 const getIsDesktop = () => window.matchMedia(TOWN_MAP_DESKTOP_MEDIA).matches
 
-// The front mask of the picture that is shown, made in the browser. Only that
-// one, the other is made when the screen switches. Undefined until it is ready.
+// The front and water masks of the picture that is shown, made in the browser.
+// Only that picture, the other is made when the screen switches. Undefined
+// until they are ready.
 export const useFrontMask = ({ desktop, mobile }: TownMap) => {
   const isDesktop = useSyncExternalStore(subscribe, getIsDesktop, () => true)
-  const { src, width, height, things, shapes } = isDesktop ? desktop : mobile
-  const [made, setMade] = useState<{ src: string; url: string }>()
+  const { src, width, height, things, shapes, water } = isDesktop
+    ? desktop
+    : mobile
+  const [made, setMade] = useState<{
+    src: string
+    front: string
+    water: string
+  }>()
 
   useEffect(() => {
     let isCancelled = false
-    let url = ""
+    let urls: string[] = []
 
-    makeFrontMaskUrl(width, height, things, shapes).then((result) => {
-      url = result
+    Promise.all([
+      makeFrontMaskUrl(width, height, things, shapes),
+      makeWaterMaskUrl(width, height, water),
+    ]).then(([front, waterUrl]) => {
+      urls = [front, waterUrl]
 
       if (!isCancelled) {
-        setMade({ src, url })
+        setMade({ src, front, water: waterUrl })
       }
     })
 
     return () => {
       isCancelled = true
 
-      // Kept a moment, the renderer may still be loading it
-      setTimeout(() => URL.revokeObjectURL(url), 5000)
+      // Kept a moment, the renderer may still be loading them
+      setTimeout(() => urls.forEach((url) => URL.revokeObjectURL(url)), 5000)
     }
-  }, [src, width, height, things, shapes])
+  }, [src, width, height, things, shapes, water])
 
-  return made?.src === src ? made.url : undefined
+  return made?.src === src ? made : undefined
 }

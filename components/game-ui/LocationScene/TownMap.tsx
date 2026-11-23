@@ -65,25 +65,20 @@ const TownMap = ({ map, alt, weather, onMove, onPreview }: Props) => {
   const [isHovering, setIsHovering] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null)
   // Rippling water, drawn flags, drifting clouds and seagulls, with rain or fog on bad days
-  const frontMask = useFrontMask(map)
+  const masks = useFrontMask(map)
   const uniforms = getWeatherAmbience(weather)
   const activity = uniforms?.u_activity ?? 1
   const ambienceRef = useAmbienceCanvas(
     imageRef,
     createTownMapRenderer,
-    frontMask
-      ? [
-          map.desktop.waterMask,
-          map.desktop.skyMask,
-          frontMask,
-          WALKER_SHEET.url,
-        ]
+    masks
+      ? [masks.water, map.desktop.skyMask, masks.front, WALKER_SHEET.url]
       : undefined,
     {
       mobileMasks: [
-        map.mobile.waterMask,
+        masks?.water ?? "",
         map.mobile.skyMask,
-        frontMask ?? "",
+        masks?.front ?? "",
         WALKER_SHEET.url,
       ],
       uniforms,

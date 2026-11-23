@@ -5,7 +5,10 @@ import {
   getFlagArrays,
   MAX_FLAGS,
 } from "@/components/game-ui/LocationScene/flagUniforms"
-import { makeFrontMaskUrl } from "@/components/game-ui/LocationScene/frontMask"
+import {
+  makeFrontMaskUrl,
+  makeWaterMaskUrl,
+} from "@/components/game-ui/LocationScene/frontMask"
 import { createTownMapRenderer } from "@/components/game-ui/LocationScene/townMapShader"
 import { useAmbienceCanvas } from "@/components/game-ui/LocationScene/useAmbienceCanvas"
 import { getWalkerArrays } from "@/components/game-ui/LocationScene/walkers"
@@ -27,6 +30,7 @@ import { Switch } from "@/components/ui/switch"
 import flagSpritesConfig from "@/constants/harbor/flagSprites.json"
 import frontConfig from "@/constants/harbor/front.json"
 import lanesConfig from "@/constants/harbor/lanes.json"
+import waterConfig from "@/constants/harbor/water.json"
 import { TOWNS } from "@/constants/locations"
 import { getTownMap } from "@/constants/townMaps"
 import { cn } from "@/lib/utils"
@@ -37,7 +41,7 @@ const SAVE_PATH = "/__mask-editor/save"
 // x0, y0, x1, y1, and for a flag a 1 when the whole box waves
 type Box = [number, number, number, number, ...number[]]
 type Variant = "desktop" | "mobile"
-type Kind = "things" | "sprites" | "lanes"
+type Kind = "things" | "sprites" | "lanes" | "water"
 type Tool = "box" | "polygon"
 type Edges = { left: boolean; top: boolean; right: boolean; bottom: boolean }
 type Drag = {
@@ -60,6 +64,8 @@ type Data = {
   things: Box[]
   // [x, y, x, y, ...] round the corners
   shapes: number[][]
+  // Where the water ripples, polygons like the shapes
+  water: number[][]
   // The flags the shader draws, see flagUniforms.ts
   sprites: number[][]
   lanes: Box[]
@@ -78,14 +84,19 @@ const KINDS: { kind: Kind; label: string; help: string }[] = [
     help: "Flags the shader draws and waves. Drag on the picture to draw a new one, drag a corner to shape it (the two corners at the pole share their x, so do the two at the free end), drag the inside to move it. Pick the nation, and turn the pole on when the picture has none there (it grows with the flag). Put the flag where the old one was, the picture without flags (if there is one) shows around it.",
   },
   {
+    kind: "water",
+    label: "Water",
+    help: "Where the water ripples. Click to start a polygon, click for every corner and click the first dot to close it. Leave out boats and piers by drawing a polygon inside the water, it makes a hole. Drag a corner or a polygon to change it, double-click an edge to add a corner.",
+  },
+  {
     kind: "lanes",
     label: "Streets",
     help: "One band for every street level, at most 7. People walk with their feet inside the band. Drag it up and down, its ends to shorten it and its top or bottom to make it wider.",
   },
 ]
 
-// Masks found by colour alone, shown over the picture but not edited here
-type View = "sky" | "water"
+// The mask found by colour alone, shown over the picture but not edited here
+type View = "sky"
 
 const VIEWS: { view: View; label: string; help: string; className: string }[] =
   [
@@ -94,12 +105,6 @@ const VIEWS: { view: View; label: string; help: string; className: string }[] =
       label: "Sky",
       help: "Where clouds drift, found by colour. Only shown here: change the colours in harbor/sky.mjs.",
       className: "bg-warning/60",
-    },
-    {
-      view: "water",
-      label: "Water",
-      help: "Where the water ripples, found by colour. Only shown here: change the colours in harbor/water.mjs.",
-      className: "bg-error/50",
     },
   ]
 
@@ -120,11 +125,13 @@ const loadData = (town: Town, variant: Variant): Data => {
   const lanes = lanesConfig as unknown as {
     towns: Record<string, Record<string, number[][]>>
   }
+  const water = waterConfig as Record<string, Record<string, number[][]>>
   const levels = lanes.towns[town]?.[variant] ?? []
 
   return {
     things: front.towns[town]?.[variant]?.things ?? [],
     shapes: front.towns[town]?.[variant]?.shapes ?? [],
+    water: water[town]?.[variant] ?? [],
     sprites: sprites[town]?.[variant] ?? [],
     lanes: levels.map(
       ([x0, x1, feet, half]) => [x0, feet - half, x1, feet + half] as Box
@@ -270,6 +277,7 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
   const [draft, setDraft] = useState<Box | null>(null)
   const [cursor, setCursor] = useState("crosshair")
   const [frontUrl, setFrontUrl] = useState<string>()
+  const [waterUrl, setWaterUrl] = useState<string>()
   // A shape being drawn, the pointer for its next line and a corner or shape
   // being dragged
   const [points, setPoints] = useState<[number, number][]>([])
@@ -287,7 +295,11 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
   const [showShapes, setShowShapes] = useState(true)
   const [status, setStatus] = useState("")
   const [view, setView] = useState<View | null>(null)
-  const boxes = view || kind === "sprites" ? [] : data[kind]
+  const isPolygonKind = kind === "things" || kind === "water"
+  // The shapes people walk behind, or the water, are edited the same way
+  const polygonKey = kind === "water" ? "water" : "shapes"
+  const polygons = data[polygonKey]
+  const boxes = view || kind === "sprites" || kind === "water" ? [] : data[kind]
 
   // A box or a street never reaches past the edge of the picture
   const within = (box: number[], from?: Box): Box => {
@@ -308,8 +320,8 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
   const ambienceRef = useAmbienceCanvas(
     imageRef,
     createTownMapRenderer,
-    frontUrl
-      ? [map.waterMask, map.skyMask, frontUrl, WALKER_SHEET.url]
+    frontUrl && waterUrl
+      ? [waterUrl, map.skyMask, frontUrl, WALKER_SHEET.url]
       : undefined,
     {
       uniforms: getWeatherAmbience(weather),
@@ -351,12 +363,32 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
     }
   }, [map.width, map.height, data.things, data.shapes])
 
+  // The water, made the way the game makes it
+  useEffect(() => {
+    let made = ""
+    let isCancelled = false
+
+    makeWaterMaskUrl(map.width, map.height, data.water).then((url) => {
+      made = url
+
+      if (!isCancelled) {
+        setWaterUrl(url)
+      }
+    })
+
+    return () => {
+      isCancelled = true
+      setTimeout(() => URL.revokeObjectURL(made), 5000)
+    }
+  }, [map.width, map.height, data.water])
+
   const commit = (next: Data) => {
     setHistory((past) => [...past, data])
     setData(next)
   }
 
-  const setShapes = (next: number[][]) => commit({ ...data, shapes: next })
+  const setShapes = (next: number[][]) =>
+    commit({ ...data, [polygonKey]: next })
 
   const setSprites = (next: number[][]) => commit({ ...data, sprites: next })
 
@@ -412,7 +444,7 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
     }
 
     if (selectedShape !== null) {
-      setShapes(data.shapes.filter((_, i) => i !== selectedShape))
+      setShapes(polygons.filter((_, i) => i !== selectedShape))
       select(null)
 
       return
@@ -444,7 +476,7 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
 
     if (selectedShape !== null) {
       setShapes(
-        data.shapes.map((shape, i) =>
+        polygons.map((shape, i) =>
           i === selectedShape ? moveShape(shape, dx, dy) : shape
         )
       )
@@ -584,14 +616,14 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
 
   // The edge of a polygon nearest to a point, if it is near enough: the corner
   // it starts at and the nearest point on it
-  const nearestEdge = (x: number, y: number, polygons = data.shapes) => {
+  const nearestEdge = (x: number, y: number, list = polygons) => {
     const rect = svgRef.current!.getBoundingClientRect()
     const near = (5 * map.width) / rect.width
     let best: { index: number; corner: number; at: [number, number] } | null =
       null
     let bestDistance = near
 
-    polygons.forEach((shape, index) => {
+    list.forEach((shape, index) => {
       const count = shape.length / 2
 
       for (let corner = 0; corner < count; corner++) {
@@ -633,12 +665,12 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
   const hitShape = (x: number, y: number) => {
     const rect = svgRef.current!.getBoundingClientRect()
     const near = (6 * map.width) / rect.width
-    const order = data.shapes
+    const order = polygons
       .map((_, i) => i)
       .sort((a, b) => Number(b === selectedShape) - Number(a === selectedShape))
 
     for (const index of order) {
-      const shape = data.shapes[index]
+      const shape = polygons[index]
 
       for (let i = 0; i < shape.length; i += 2) {
         if (Math.hypot(shape[i] - x, shape[i + 1] - y) < near) {
@@ -656,13 +688,13 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
     // The last drawn is on top
     const inside = [...order]
       .sort((a, b) => b - a)
-      .find((index) => isInsideShape(data.shapes[index], x, y))
+      .find((index) => isInsideShape(polygons[index], x, y))
 
     return inside === undefined ? null : { index: inside, corner: null }
   }
 
   const handleDoubleClick = (event: MouseEvent<SVGSVGElement>) => {
-    if (kind !== "things" || view) {
+    if (!isPolygonKind || view) {
       return
     }
 
@@ -670,6 +702,11 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
     const edge = nearestEdge(x, y)
 
     if (!edge) {
+      // Only a box can become a polygon
+      if (kind !== "things") {
+        return
+      }
+
       // A box becomes a polygon with the same corners and one more, to be
       // refined from there
       const corners = data.things.map(([x0, y0, x1, y1]) => [
@@ -706,7 +743,7 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
     }
 
     setShapes(
-      data.shapes.map((shape, i) =>
+      polygons.map((shape, i) =>
         i === edge.index
           ? [
               ...shape.slice(0, edge.corner * 2 + 2),
@@ -734,8 +771,8 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
         points.length >= 3 &&
         Math.hypot(x - firstX, y - firstY) < (8 * map.width) / rect.width
       ) {
-        setShapes([...data.shapes, points.flat()])
-        select(null, data.shapes.length)
+        setShapes([...polygons, points.flat()])
+        select(null, polygons.length)
         setPoints([])
       } else {
         setPoints([...points, [x, y]])
@@ -751,7 +788,7 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
       setShapeDrag({
         ...hit,
         start: [px, py],
-        origin: data.shapes[hit.index],
+        origin: polygons[hit.index],
       })
 
       return
@@ -793,9 +830,7 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
       JSON.stringify(draftShape) !== JSON.stringify(shapeDrag.origin)
     ) {
       setShapes(
-        data.shapes.map((shape, i) =>
-          i === shapeDrag.index ? draftShape : shape
-        )
+        polygons.map((shape, i) => (i === shapeDrag.index ? draftShape : shape))
       )
     }
 
@@ -974,10 +1009,12 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
       return
     }
 
-    // A polygon, or something that is already one, is not a box
+    // Water is only polygons. For what people walk behind, a polygon or
+    // something that is already one is not a box.
     if (
-      kind === "things" &&
-      (tool === "polygon" || points.length || hitShape(...toPicture(event)))
+      kind === "water" ||
+      (kind === "things" &&
+        (tool === "polygon" || points.length || hitShape(...toPicture(event))))
     ) {
       handleShapeDown(event)
 
@@ -1017,7 +1054,7 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
       return
     }
 
-    if (kind === "things" && !view) {
+    if (isPolygonKind && !view) {
       handleShapeMove(event)
     }
 
@@ -1029,7 +1066,7 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
       const [x, y] = toPicture(event)
 
       setCursor(
-        kind === "things" && hitShape(x, y)
+        isPolygonKind && hitShape(x, y)
           ? "move"
           : tool === "polygon" && kind === "things"
             ? "crosshair"
@@ -1103,11 +1140,16 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
   const changed = {
     things: JSON.stringify(data.things) !== JSON.stringify(saved.things),
     shapes: JSON.stringify(data.shapes) !== JSON.stringify(saved.shapes),
+    water: JSON.stringify(data.water) !== JSON.stringify(saved.water),
     sprites: JSON.stringify(data.sprites) !== JSON.stringify(saved.sprites),
     lanes: JSON.stringify(toLevels(data)) !== JSON.stringify(toLevels(saved)),
   }
   const isChanged =
-    changed.things || changed.shapes || changed.sprites || changed.lanes
+    changed.things ||
+    changed.shapes ||
+    changed.water ||
+    changed.sprites ||
+    changed.lanes
 
   const save = async () => {
     setStatus("Saving…")
@@ -1115,12 +1157,19 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
     const payloads = {
       things: data.things,
       shapes: data.shapes,
+      water: data.water,
       sprites: data.sprites,
       lanes: toLevels(data),
     }
 
     try {
-      for (const name of ["lanes", "things", "shapes", "sprites"] as const) {
+      for (const name of [
+        "lanes",
+        "things",
+        "shapes",
+        "water",
+        "sprites",
+      ] as const) {
         if (!changed[name]) {
           continue
         }
@@ -1158,16 +1207,12 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
     shown.push(draft)
   }
 
-  const shownShapes = data.shapes.map((shape, i) =>
+  const shownShapes = polygons.map((shape, i) =>
     draftShape && shapeDrag?.index === i ? draftShape : shape
   )
   const selectedBox = selected !== null ? shown[selected] : null
   const viewing = VIEWS.find((option) => option.view === view)
-  const shapeUrl = view
-    ? map[view === "sky" ? "skyMask" : "waterMask"]
-    : kind === "things"
-      ? frontUrl
-      : undefined
+  const shapeUrl = view ? map.skyMask : kind === "things" ? frontUrl : undefined
   const shapeClass = viewing?.className ?? "bg-warning/50"
   const streets = !view && kind === "lanes" ? [] : toLevels(data)
 
@@ -1230,7 +1275,7 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
         <Button
           variant="secondary"
           onClick={remove}
-          disabled={selected === null}
+          disabled={selected === null && selectedShape === null}
         >
           Delete
         </Button>
@@ -1289,7 +1334,9 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
           ? viewing.help
           : kind === "sprites"
             ? `${KINDS.find((option) => option.kind === kind)!.help} Delete removes the selected flag, arrows nudge it (Shift for 10 px), Ctrl+Z undoes.`
-            : `${KINDS.find((option) => option.kind === kind)!.help} Drag on the picture to draw a new one, drag one to move it and its edges to resize it. Delete removes it (the last corner of a polygon being drawn), Escape stops a polygon, arrows nudge it (Shift for 10 px), Ctrl+Z undoes.`}
+            : kind === "water"
+              ? `${KINDS.find((option) => option.kind === kind)!.help} Delete removes the selected polygon (the last corner of one being drawn), Escape stops a polygon, arrows nudge it (Shift for 10 px), Ctrl+Z undoes.`
+              : `${KINDS.find((option) => option.kind === kind)!.help} Drag on the picture to draw a new one, drag one to move it and its edges to resize it. Delete removes it (the last corner of a polygon being drawn), Escape stops a polygon, arrows nudge it (Shift for 10 px), Ctrl+Z undoes.`}
       </p>
 
       {/* Always one line high, so the picture never moves under the pointer */}
@@ -1299,7 +1346,9 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
             ? "Only shown"
             : kind === "sprites"
               ? `${data.sprites.length} flags`
-              : `${boxes.length} ${kind === "lanes" ? "streets" : "boxes"}${kind === "things" ? `, ${data.shapes.length} polygons` : ""}`}
+              : kind === "water"
+                ? `${data.water.length} polygons`
+                : `${boxes.length} ${kind === "lanes" ? "streets" : "boxes"}${kind === "things" ? `, ${data.shapes.length} polygons` : ""}`}
           {selectedBox && `, selected [${selectedBox.join(", ")}]`}
           {isChanged && ", not saved"}
         </span>
@@ -1466,7 +1515,7 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
               ))}
 
             {showBoxes &&
-              kind === "things" &&
+              isPolygonKind &&
               shownShapes.map((shape, i) => {
                 const xs = shape.filter((_, k) => k % 2 === 0)
                 const ys = shape.filter((_, k) => k % 2 === 1)
@@ -1481,20 +1530,24 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
                   >
                     <polygon
                       points={xs.map((x, k) => `${x},${ys[k]}`).join(" ")}
-                      className="fill-warning/20"
+                      className={
+                        kind === "water" ? "fill-sea/20" : "fill-warning/20"
+                      }
                       strokeWidth={i === selectedShape ? 2 : 1}
                       vectorEffect="non-scaling-stroke"
                     />
 
-                    <line
-                      x1={Math.min(...xs)}
-                      x2={Math.max(...xs)}
-                      y1={base}
-                      y2={base}
-                      className="stroke-error"
-                      strokeWidth={3}
-                      vectorEffect="non-scaling-stroke"
-                    />
+                    {kind === "things" && (
+                      <line
+                        x1={Math.min(...xs)}
+                        x2={Math.max(...xs)}
+                        y1={base}
+                        y2={base}
+                        className="stroke-error"
+                        strokeWidth={3}
+                        vectorEffect="non-scaling-stroke"
+                      />
+                    )}
 
                     {i === selectedShape &&
                       xs.map((x, k) => (
@@ -1547,7 +1600,7 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
                 )
               })}
 
-            {kind === "things" && points.length > 0 && (
+            {isPolygonKind && points.length > 0 && (
               <g className="stroke-gold">
                 <polyline
                   points={[...points, ...(pointer ? [pointer] : [])]

@@ -52,7 +52,6 @@ export const preloadTownMap = (map: TownMapData) => {
       media,
     })
 
-    preload(masks.waterMask, { as: "image", media })
     preload(masks.skyMask, { as: "image", media })
   })
 }

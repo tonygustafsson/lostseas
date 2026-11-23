@@ -32,8 +32,16 @@ describe("town maps", () => {
     expect(existsSync(join(process.cwd(), "public", src))).toBe(true)
   })
 
-  it.each(allImages)("$waterMask exists", ({ waterMask }) => {
-    expect(existsSync(join(process.cwd(), "public", waterMask))).toBe(true)
+  it.each(allImages)("$src has water polygons inside the image", (image) => {
+    image.water.forEach((polygon) => {
+      expect(polygon.length).toBeGreaterThanOrEqual(6)
+      expect(polygon.length % 2).toBe(0)
+
+      polygon.forEach((value, i) => {
+        expect(value).toBeGreaterThanOrEqual(0)
+        expect(value).toBeLessThanOrEqual(i % 2 ? image.height : image.width)
+      })
+    })
   })
 
   it.each(allImages)("$skyMask exists", ({ skyMask }) => {
