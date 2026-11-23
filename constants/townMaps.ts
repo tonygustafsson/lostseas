@@ -1,5 +1,11 @@
 import { type TownBuildingPosition, TOWNS } from "@/constants/locations"
 
+import flagSpritesConfig from "./harbor/flagSprites.json"
+import frontConfig from "./harbor/front.json"
+import lanesConfig from "./harbor/lanes.json"
+import skyConfig from "./harbor/sky.json"
+import waterConfig from "./harbor/water.json"
+
 export type TownMapBuilding = TownBuildingPosition & {
   location: TownLocation
   name: string
@@ -7,9 +13,19 @@ export type TownMapBuilding = TownBuildingPosition & {
 
 export type TownMapImage = {
   src: string
-  waterMask: string
-  skyMask: string
-  flagMask: string
+  // Where clouds drift, in the same format as water
+  sky: number[][]
+  // Where the water ripples, [x, y, x, y, ...] round the corners. A polygon
+  // inside another is a hole.
+  water: number[][]
+  // Flags the shader draws, see flagUniforms.ts
+  flagSprites: number[][]
+  // Street levels, [x start, x end, feet, half width, person size]
+  lanes: number[][]
+  // Boxes people walk behind, [x start, y start, x end, y end]
+  things: number[][]
+  // Shapes people walk behind, [x, y, x, y, ...] round the corners
+  shapes: number[][]
   width: number
   height: number
   buildings: TownMapBuilding[]
@@ -31,30 +47,49 @@ const IMAGE_SIZES: Record<TownMapVariant, { width: number; height: number }> = {
   mobile: { width: 941, height: 1672 },
 }
 
+// The pictures have no flags, the shader draws and waves them
 export const getTownMapSrc = (town: Town, variant: TownMapVariant) =>
   `/img/towns/${town}-${variant}.png`
 
-// Transparent everywhere except the water, used to animate only the sea
-export const getTownWaterMaskSrc = (town: Town, variant: TownMapVariant) =>
-  `/img/town-water-masks/${town}-${variant}.png`
+// The same empty list every time, so it can be a dependency
+const NONE: number[][] = []
 
-// Transparent everywhere except the sky, used to draw clouds behind the town
-export const getTownSkyMaskSrc = (town: Town, variant: TownMapVariant) =>
-  `/img/town-sky-masks/${town}-${variant}.png`
+// Harbour data from constants/harbor, edited in the mask editor story (see the
+// ambience skill). A town without data gets the empty list.
+const fromConfig = <T>(
+  config: Record<string, Record<string, T>>,
+  town: Town,
+  variant: TownMapVariant
+) => config[town]?.[variant]
 
-// Transparent except the flags, where red is the distance from the pole, used
-// to make them wave
-export const getTownFlagMaskSrc = (town: Town, variant: TownMapVariant) =>
-  `/img/town-flag-masks/${town}-${variant}.png`
+const getFront = (town: Town, variant: TownMapVariant) =>
+  fromConfig(
+    frontConfig.towns as Record<
+      string,
+      Record<string, { things?: number[][]; shapes?: number[][] }>
+    >,
+    town,
+    variant
+  )
+
+const getPolygons = (config: unknown, town: Town, variant: TownMapVariant) =>
+  fromConfig(
+    config as Record<string, Record<string, number[][]>>,
+    town,
+    variant
+  ) ?? NONE
 
 const getTownMapImage = (
   town: Town,
   variant: TownMapVariant
 ): TownMapImage => ({
   src: getTownMapSrc(town, variant),
-  waterMask: getTownWaterMaskSrc(town, variant),
-  skyMask: getTownSkyMaskSrc(town, variant),
-  flagMask: getTownFlagMaskSrc(town, variant),
+  sky: getPolygons(skyConfig, town, variant),
+  water: getPolygons(waterConfig, town, variant),
+  flagSprites: getPolygons(flagSpritesConfig, town, variant),
+  lanes: getPolygons(lanesConfig.towns, town, variant),
+  things: getFront(town, variant)?.things ?? NONE,
+  shapes: getFront(town, variant)?.shapes ?? NONE,
   ...IMAGE_SIZES[variant],
   buildings: Object.entries(TOWNS[town].buildings).map(
     ([location, building]) => ({

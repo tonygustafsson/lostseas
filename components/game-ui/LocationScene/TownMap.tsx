@@ -7,9 +7,15 @@ import {
 } from "@/constants/townMaps"
 import { cn } from "@/lib/utils"
 
+import type { AmbienceArrays } from "./ambienceRenderer"
+import { getFlagArrays } from "./flagUniforms"
+import { useFrontMask } from "./frontMask"
 import { getTownMapImageProps } from "./preloadTownMap"
 import { createTownMapRenderer } from "./townMapShader"
 import { useAmbienceCanvas } from "./useAmbienceCanvas"
+import { getWalkerArrays } from "./walkers"
+import { WALKER_SHEET } from "./walkSprites"
+import { getWalkArrays } from "./walkUniforms"
 import { getWeatherAmbience } from "./weatherAmbience"
 
 type PictureProps = {
@@ -55,22 +61,56 @@ type Props = {
   onPreview?: (location: TownLocation) => void
 }
 
+const arraysByTown = new Map<
+  string,
+  Record<"desktop" | "mobile", AmbienceArrays>
+>()
+
+// The map object is new on every call, the town's picture is the same one. A
+// stable result keeps the ambience hook from setting the arrays on every render.
+const getTownArrays = ({ desktop, mobile }: TownMapData) => {
+  const key = desktop.src
+
+  if (!arraysByTown.has(key)) {
+    const make = ({ lanes, width, height, flagSprites }: typeof desktop) => ({
+      ...getWalkArrays(lanes, width, height),
+      ...getFlagArrays(flagSprites),
+    })
+
+    arraysByTown.set(key, { desktop: make(desktop), mobile: make(mobile) })
+  }
+
+  return arraysByTown.get(key)!
+}
+
 const TownMap = ({ map, alt, weather, onMove, onPreview }: Props) => {
   const [highlighted, setHighlighted] = useState<TownMapBuilding | null>(null)
   const [isHovering, setIsHovering] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null)
-  // Rippling water, waving flags, drifting clouds and seagulls, with rain or fog on bad days
+  // Rippling water, drawn flags, drifting clouds and seagulls, with rain or fog on bad days
+  const masks = useFrontMask(map)
+  const uniforms = getWeatherAmbience(weather)
+  const activity = uniforms?.u_activity ?? 1
   const ambienceRef = useAmbienceCanvas(
     imageRef,
     createTownMapRenderer,
-    [map.desktop.waterMask, map.desktop.skyMask, map.desktop.flagMask],
+    masks
+      ? [masks.water, masks.sky, masks.gloom, masks.front, WALKER_SHEET.url]
+      : undefined,
     {
       mobileMasks: [
-        map.mobile.waterMask,
-        map.mobile.skyMask,
-        map.mobile.flagMask,
+        masks?.water ?? "",
+        masks?.sky ?? "",
+        masks?.gloom ?? "",
+        masks?.front ?? "",
+        WALKER_SHEET.url,
       ],
-      uniforms: getWeatherAmbience(weather),
+      uniforms,
+      arrays: getTownArrays(map),
+      frameArrays: {
+        desktop: (time) => getWalkerArrays(time, map.desktop.lanes, activity),
+        mobile: (time) => getWalkerArrays(time, map.mobile.lanes, activity),
+      },
     }
   )
 

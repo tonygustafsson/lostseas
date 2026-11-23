@@ -2,6 +2,7 @@ import { existsSync } from "fs"
 import { join } from "path"
 import { describe, expect, it } from "vitest"
 
+import { MAX_LEVELS } from "@/components/game-ui/LocationScene/walkUniforms"
 import { TOWNS } from "@/constants/locations"
 import { getBuilding, getTownMap } from "@/constants/townMaps"
 
@@ -31,17 +32,36 @@ describe("town maps", () => {
     expect(existsSync(join(process.cwd(), "public", src))).toBe(true)
   })
 
-  it.each(allImages)("$waterMask exists", ({ waterMask }) => {
-    expect(existsSync(join(process.cwd(), "public", waterMask))).toBe(true)
+  it.each(allImages)("$src has water polygons inside the image", (image) => {
+    image.water.forEach((polygon) => {
+      expect(polygon.length).toBeGreaterThanOrEqual(6)
+      expect(polygon.length % 2).toBe(0)
+
+      polygon.forEach((value, i) => {
+        expect(value).toBeGreaterThanOrEqual(0)
+        expect(value).toBeLessThanOrEqual(i % 2 ? image.height : image.width)
+      })
+    })
   })
 
-  it.each(allImages)("$skyMask exists", ({ skyMask }) => {
-    expect(existsSync(join(process.cwd(), "public", skyMask))).toBe(true)
+  it.each(allImages)("$src has sky polygons inside the image", (image) => {
+    image.sky.forEach((polygon) => {
+      expect(polygon.length).toBeGreaterThanOrEqual(6)
+      expect(polygon.length % 2).toBe(0)
+
+      polygon.forEach((value, i) => {
+        expect(value).toBeGreaterThanOrEqual(0)
+        expect(value).toBeLessThanOrEqual(i % 2 ? image.height : image.width)
+      })
+    })
   })
 
-  it.each(allImages)("$flagMask exists", ({ flagMask }) => {
-    expect(existsSync(join(process.cwd(), "public", flagMask))).toBe(true)
-  })
+  it.each(allImages)(
+    "$src has no more streets than the shader holds",
+    (image) => {
+      expect(image.lanes.length).toBeLessThanOrEqual(MAX_LEVELS)
+    }
+  )
 
   it.each(allImages)("$src has every building once", ({ buildings }) => {
     const locations = buildings.map(({ location }) => location)

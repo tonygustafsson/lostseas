@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 
 import { preloadTownMap } from "@/components/game-ui/LocationScene/preloadTownMap"
+import { warmUpTownMapShader } from "@/components/game-ui/LocationScene/townMapShader"
 import SeaMapCanvas from "@/components/Map/SeaMapCanvas"
 import { SEA_TRAVEL_SPEED } from "@/constants/sea"
 import { getTownMap } from "@/constants/townMaps"
@@ -21,6 +22,12 @@ const Sea = () => {
     seaState?.attackSuccessReport ||
     seaState?.attackFailureReport
   )
+
+  // The harbour's shader takes a few seconds to build the first time, the
+  // voyage is the time to do it
+  useEffect(() => {
+    warmUpTownMapShader()
+  }, [])
 
   // Each day is advanced optimistically, so the timer follows the day and
   // runs alongside the request instead of waiting for it
