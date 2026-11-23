@@ -1,6 +1,6 @@
 import type { AmbienceArrays } from "./ambienceRenderer"
 
-// The same sizes as in townMapShader.ts
+// The size of the lane lists in townMapShader.ts
 export const MAX_LEVELS = 7
 
 // [x start, x end, feet, half width, person size]

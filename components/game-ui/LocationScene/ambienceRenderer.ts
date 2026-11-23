@@ -210,6 +210,7 @@ const buildProgram = (gl: WebGLRenderingContext, fragmentShader: string) => {
 }
 
 const warmedUp = new Set<string>()
+const WARM_UP_TIMEOUT = 30000
 
 // Builds a shader on a canvas nobody sees, so the browser already has the
 // result when a scene asks for it. The first build of a big shader takes a few
@@ -242,9 +243,13 @@ export const warmUpShader = (fragmentShader: string) => {
 
   const program = buildProgram(gl, fragmentShader)
 
+  const startedAt = Date.now()
+
   const finish = () => {
+    // Gives up on a build that never completes, like one on a lost context
     if (
-      !gl.getProgramParameter(program, parallelCompile.COMPLETION_STATUS_KHR)
+      !gl.getProgramParameter(program, parallelCompile.COMPLETION_STATUS_KHR) &&
+      Date.now() - startedAt < WARM_UP_TIMEOUT
     ) {
       setTimeout(finish, 100)
 
@@ -300,6 +305,7 @@ export const createAmbienceRenderer = (
   let sizeLocation: WebGLUniformLocation | null = null
   let imageSizeLocation: WebGLUniformLocation | null = null
   let isReady = false
+  let hasFailed = false
   let hasTextures = false
   let imageWidth = 0
   let frame = 0
@@ -372,7 +378,8 @@ export const createAmbienceRenderer = (
       return
     }
 
-    setUp()
+    // A program that did not build leaves the canvas empty, nothing to draw
+    hasFailed = !setUp()
   }
 
   if (parallelCompile) {
@@ -416,6 +423,10 @@ export const createAmbienceRenderer = (
   }
 
   const draw = (now: number) => {
+    if (hasFailed) {
+      return
+    }
+
     frame = requestAnimationFrame(draw)
 
     if (!isReady || !hasTextures || now - lastDraw < FRAME_INTERVAL) return

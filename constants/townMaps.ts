@@ -54,43 +54,40 @@ export const getTownMapSrc = (town: Town, variant: TownMapVariant) =>
 // The same empty list every time, so it can be a dependency
 const NONE: number[][] = []
 
-// Edited in the mask editor story, see the ambience skill
-const getLanes = (town: Town, variant: TownMapVariant) =>
-  (lanesConfig.towns as Record<string, Record<string, number[][]>>)[town]?.[
-    variant
-  ] ?? NONE
-
-const getFlagSprites = (town: Town, variant: TownMapVariant) =>
-  (flagSpritesConfig as Record<string, Record<string, number[][]>>)[town]?.[
-    variant
-  ] ?? NONE
-
-const getWater = (town: Town, variant: TownMapVariant) =>
-  (waterConfig as Record<string, Record<string, number[][]>>)[town]?.[
-    variant
-  ] ?? NONE
-
-const getSky = (town: Town, variant: TownMapVariant) =>
-  (skyConfig as Record<string, Record<string, number[][]>>)[town]?.[variant] ??
-  NONE
+// Harbour data from constants/harbor, edited in the mask editor story (see the
+// ambience skill). A town without data gets the empty list.
+const fromConfig = <T>(
+  config: Record<string, Record<string, T>>,
+  town: Town,
+  variant: TownMapVariant
+) => config[town]?.[variant]
 
 const getFront = (town: Town, variant: TownMapVariant) =>
-  (
+  fromConfig(
     frontConfig.towns as Record<
       string,
       Record<string, { things?: number[][]; shapes?: number[][] }>
-    >
-  )[town]?.[variant]
+    >,
+    town,
+    variant
+  )
+
+const getPolygons = (config: unknown, town: Town, variant: TownMapVariant) =>
+  fromConfig(
+    config as Record<string, Record<string, number[][]>>,
+    town,
+    variant
+  ) ?? NONE
 
 const getTownMapImage = (
   town: Town,
   variant: TownMapVariant
 ): TownMapImage => ({
   src: getTownMapSrc(town, variant),
-  sky: getSky(town, variant),
-  water: getWater(town, variant),
-  flagSprites: getFlagSprites(town, variant),
-  lanes: getLanes(town, variant),
+  sky: getPolygons(skyConfig, town, variant),
+  water: getPolygons(waterConfig, town, variant),
+  flagSprites: getPolygons(flagSpritesConfig, town, variant),
+  lanes: getPolygons(lanesConfig.towns, town, variant),
   things: getFront(town, variant)?.things ?? NONE,
   shapes: getFront(town, variant)?.shapes ?? NONE,
   ...IMAGE_SIZES[variant],

@@ -1,6 +1,6 @@
 import type { AmbienceArrays } from "./ambienceRenderer"
 
-// The same size as in townMapShader.ts
+// The size of the flag lists in townMapShader.ts
 export const MAX_FLAGS = 12
 
 // In the order the shader knows them, a flag stores the index

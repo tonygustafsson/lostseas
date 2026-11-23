@@ -7,6 +7,7 @@ import {
 } from "@/constants/townMaps"
 import { cn } from "@/lib/utils"
 
+import type { AmbienceArrays } from "./ambienceRenderer"
 import { getFlagArrays } from "./flagUniforms"
 import { useFrontMask } from "./frontMask"
 import { getTownMapImageProps } from "./preloadTownMap"
@@ -60,6 +61,28 @@ type Props = {
   onPreview?: (location: TownLocation) => void
 }
 
+const arraysByTown = new Map<
+  string,
+  Record<"desktop" | "mobile", AmbienceArrays>
+>()
+
+// The map object is new on every call, the town's picture is the same one. A
+// stable result keeps the ambience hook from setting the arrays on every render.
+const getTownArrays = ({ desktop, mobile }: TownMapData) => {
+  const key = desktop.src
+
+  if (!arraysByTown.has(key)) {
+    const make = ({ lanes, width, height, flagSprites }: typeof desktop) => ({
+      ...getWalkArrays(lanes, width, height),
+      ...getFlagArrays(flagSprites),
+    })
+
+    arraysByTown.set(key, { desktop: make(desktop), mobile: make(mobile) })
+  }
+
+  return arraysByTown.get(key)!
+}
+
 const TownMap = ({ map, alt, weather, onMove, onPreview }: Props) => {
   const [highlighted, setHighlighted] = useState<TownMapBuilding | null>(null)
   const [isHovering, setIsHovering] = useState(false)
@@ -83,24 +106,7 @@ const TownMap = ({ map, alt, weather, onMove, onPreview }: Props) => {
         WALKER_SHEET.url,
       ],
       uniforms,
-      arrays: {
-        desktop: {
-          ...getWalkArrays(
-            map.desktop.lanes,
-            map.desktop.width,
-            map.desktop.height
-          ),
-          ...getFlagArrays(map.desktop.flagSprites),
-        },
-        mobile: {
-          ...getWalkArrays(
-            map.mobile.lanes,
-            map.mobile.width,
-            map.mobile.height
-          ),
-          ...getFlagArrays(map.mobile.flagSprites),
-        },
-      },
+      arrays: getTownArrays(map),
       frameArrays: {
         desktop: (time) => getWalkerArrays(time, map.desktop.lanes, activity),
         mobile: (time) => getWalkerArrays(time, map.mobile.lanes, activity),

@@ -10,8 +10,10 @@ import {
   SHADER_COMMON,
   warmUpShader,
 } from "./ambienceRenderer"
+import { MAX_FLAGS } from "./flagUniforms"
 import { WALKER_COUNT } from "./walkers"
 import { WALKER_SHEET, WALKER_SHEET_ROWS } from "./walkSprites"
+import { MAX_LEVELS } from "./walkUniforms"
 
 const FRAGMENT_SHADER = `
 ${SHADER_COMMON}
@@ -30,7 +32,7 @@ uniform vec2 u_imageSize;
 uniform vec2 u_mapSize;
 
 // Street levels, see walkUniforms.ts
-const int MAX_LEVELS = 7;
+const int MAX_LEVELS = ${MAX_LEVELS};
 // x start, x end, feet and half the width of a lane
 uniform vec4 u_laneBox[MAX_LEVELS];
 uniform float u_laneCount;
@@ -38,7 +40,7 @@ uniform float u_laneCount;
 // Flags drawn by the shader, in pixels of the harbour picture. Each is four
 // corners (x start and end, top and bottom at the pole, top and bottom at the
 // free end), a nation and whether it has a pole, see flagUniforms.ts
-const int MAX_FLAGS = 12;
+const int MAX_FLAGS = ${MAX_FLAGS};
 uniform vec4 u_flagEdges[MAX_FLAGS];
 uniform vec4 u_flagFar[MAX_FLAGS];
 uniform float u_flagCount;

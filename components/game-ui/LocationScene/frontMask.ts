@@ -196,6 +196,7 @@ export const useFrontMask = ({ desktop, mobile }: TownMap) => {
     gloom: string
   }>()
 
+  // Effect because the masks are made asynchronously on canvases
   useEffect(() => {
     let isCancelled = false
     let urls: string[] = []
@@ -208,9 +209,14 @@ export const useFrontMask = ({ desktop, mobile }: TownMap) => {
     ]).then(([front, waterUrl, skyUrl, gloomUrl]) => {
       urls = [front, waterUrl, skyUrl, gloomUrl]
 
-      if (!isCancelled) {
-        setMade({ src, front, water: waterUrl, sky: skyUrl, gloom: gloomUrl })
+      if (isCancelled) {
+        // The cleanup already ran, nothing will free these later
+        urls.forEach((url) => URL.revokeObjectURL(url))
+
+        return
       }
+
+      setMade({ src, front, water: waterUrl, sky: skyUrl, gloom: gloomUrl })
     })
 
     return () => {
