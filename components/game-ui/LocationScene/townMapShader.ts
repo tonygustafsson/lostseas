@@ -18,6 +18,9 @@ ${SHADER_COMMON}
 
 uniform sampler2D u_water;
 uniform sampler2D u_sky;
+// The sky grown a little and blurred, for the darkness of a gloomy day
+uniform sampler2D u_skyGloom;
+uniform float u_gloom;
 // What people walk behind: alpha marks it, red and green hold the height where
 // it meets the ground in 1/16 pixels, see frontMask.ts
 uniform sampler2D u_walkFront;
@@ -53,6 +56,8 @@ const float WATER_AMPLITUDE = 1.875;
 const int SEAGULLS = 5;
 const vec3 FOG_COLOR = vec3(0.9, 0.92, 0.94);
 const vec3 OVERCAST_COLOR = vec3(0.08, 0.1, 0.14);
+// How much darker the sky and water get on a gloomy day, a bit more than indoors
+const float OPEN_GLOOM = 1.25;
 
 // The Union Flag as it was after 1707. A tile is as high as p.y goes to 1 and
 // w wide, the diagonals run from corner to corner.
@@ -582,6 +587,12 @@ void main() {
     color = clouds(color, p, u_size.x, skyMask, u_cloudCover, u_cloudShade);
   }
 
+  // The sky and water darken as a whole, also where there is no cloud
+  if (u_gloom > 0.0) {
+    float gloomMask = max(texture2D(u_skyGloom, v_uv).a, waterMask);
+    color = over(color, OVERCAST_COLOR, u_gloom * OPEN_GLOOM * gloomMask);
+  }
+
   // The drawn flags wave over the picture, which has none of its own
   vec2 flagPixel = v_uv * u_mapSize;
   vec2 flagBlock = (floor(flagPixel / FLAG_PIXEL) + 0.5) * FLAG_PIXEL;
@@ -639,12 +650,13 @@ const TEXTURES = [
   "u_image",
   "u_water",
   "u_sky",
+  "u_skyGloom",
   "u_walkFront",
   "u_walkSprites",
 ] as const
 
-// Textures in this order: image, water, sky, what people walk behind, the
-// sheet of people, cats and rats.
+// Textures in this order: image, water, sky, the sky for the gloom, what people
+// walk behind, the sheet of people, cats and rats.
 // Uniforms from getWeatherAmbience.
 export const createTownMapRenderer = (canvas: HTMLCanvasElement) =>
   createAmbienceRenderer(canvas, FRAGMENT_SHADER, TEXTURES)

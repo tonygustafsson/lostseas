@@ -43,6 +43,14 @@ const KINDS = {
       config[town] = { ...config[town], [variant]: data }
     },
   },
+  // Polygons round the sky that clouds drift in. A town may not have any yet.
+  sky: {
+    file: "sky.json",
+    size: 0,
+    set: (config: Config, town: string, variant: string, data: unknown) => {
+      config[town] = { ...config[town], [variant]: data }
+    },
+  },
   // Flags the shader draws, [x start, x end, top and bottom at the pole, top
   // and bottom at the free end, nation, pole]. A town may not have any
   // yet.
@@ -98,7 +106,10 @@ const save = async (body: string, root: string) => {
   const path = join(root, FOLDER, settings.file)
   const config = JSON.parse(await readFile(path, "utf8"))
 
-  if (!["sprites", "water"].includes(kind) && !(config.towns ?? config)[town]) {
+  if (
+    !["sprites", "water", "sky"].includes(kind) &&
+    !(config.towns ?? config)[town]
+  ) {
     throw new Error(`There is no ${town} in ${settings.file}`)
   }
 

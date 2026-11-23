@@ -33,25 +33,23 @@ export const getTownMapImageProps = (map: TownMapData, alt: string) => {
   return { desktopProps, mobileProps }
 }
 
-// Starts loading the town map and its masks while still at sea, so the harbour
+// Starts loading the town map while still at sea, so the harbour
 // shows up with its weather straight away. Only the version for this screen
 // size is fetched.
 export const preloadTownMap = (map: TownMapData) => {
   const { desktopProps, mobileProps } = getTownMapImageProps(map, "")
 
   const versions = [
-    { props: desktopProps, masks: map.desktop, media: TOWN_MAP_DESKTOP_MEDIA },
-    { props: mobileProps, masks: map.mobile, media: TOWN_MAP_MOBILE_MEDIA },
+    { props: desktopProps, media: TOWN_MAP_DESKTOP_MEDIA },
+    { props: mobileProps, media: TOWN_MAP_MOBILE_MEDIA },
   ]
 
-  versions.forEach(({ props, masks, media }) => {
+  versions.forEach(({ props, media }) => {
     preload(props.src, {
       as: "image",
       imageSrcSet: props.srcSet,
       imageSizes: props.sizes,
       media,
     })
-
-    preload(masks.skyMask, { as: "image", media })
   })
 }

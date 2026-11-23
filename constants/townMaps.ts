@@ -3,6 +3,7 @@ import { type TownBuildingPosition, TOWNS } from "@/constants/locations"
 import flagSpritesConfig from "./harbor/flagSprites.json"
 import frontConfig from "./harbor/front.json"
 import lanesConfig from "./harbor/lanes.json"
+import skyConfig from "./harbor/sky.json"
 import waterConfig from "./harbor/water.json"
 
 export type TownMapBuilding = TownBuildingPosition & {
@@ -12,7 +13,8 @@ export type TownMapBuilding = TownBuildingPosition & {
 
 export type TownMapImage = {
   src: string
-  skyMask: string
+  // Where clouds drift, in the same format as water
+  sky: number[][]
   // Where the water ripples, [x, y, x, y, ...] round the corners. A polygon
   // inside another is a hole.
   water: number[][]
@@ -49,10 +51,6 @@ const IMAGE_SIZES: Record<TownMapVariant, { width: number; height: number }> = {
 export const getTownMapSrc = (town: Town, variant: TownMapVariant) =>
   `/img/towns/${town}-${variant}.png`
 
-// Transparent everywhere except the sky, used to draw clouds behind the town
-export const getTownSkyMaskSrc = (town: Town, variant: TownMapVariant) =>
-  `/img/town-sky-masks/${town}-${variant}.png`
-
 // The same empty list every time, so it can be a dependency
 const NONE: number[][] = []
 
@@ -72,6 +70,10 @@ const getWater = (town: Town, variant: TownMapVariant) =>
     variant
   ] ?? NONE
 
+const getSky = (town: Town, variant: TownMapVariant) =>
+  (skyConfig as Record<string, Record<string, number[][]>>)[town]?.[variant] ??
+  NONE
+
 const getFront = (town: Town, variant: TownMapVariant) =>
   (
     frontConfig.towns as Record<
@@ -85,7 +87,7 @@ const getTownMapImage = (
   variant: TownMapVariant
 ): TownMapImage => ({
   src: getTownMapSrc(town, variant),
-  skyMask: getTownSkyMaskSrc(town, variant),
+  sky: getSky(town, variant),
   water: getWater(town, variant),
   flagSprites: getFlagSprites(town, variant),
   lanes: getLanes(town, variant),

@@ -31,8 +31,6 @@ section).
 
 Read as textures. The channels carry the meaning.
 
-- `town-sky-masks/<town>-<variant>.png`, alpha marks the sky that clouds may
-  cover. Half the size of the picture. Painted clouds and flags are left out.
 - `location-sky-masks`, `location-water-masks` and `location-light-masks` for
   the building interiors: sky and sea seen through windows and arches, and
   light, where red is a flame or lantern glass, green the glow round it and
@@ -65,6 +63,13 @@ pixels of the original harbour picture, not of the copy the browser loads
   so a polygon inside another is a hole (boats, piers). Water that reaches the
   edge of the picture carries on past it, so the edge is not blurred. The
   ripples, the ripple edge guard and the fog read this mask like the old PNG.
+- `sky.json`, the sky clouds may cover, same format as `water.json` and drawn
+  by the same function (`makeAreaMaskUrl`). Polygons inside polygons are holes
+  (roofs, masts, painted clouds). A picture without polygons has no clouds.
+  Fog and rain on the sky read this mask too. The darkness of a gloomy day uses
+  a second mask from the same polygons (`GLOOM_AREA`, `u_skyGloom`), grown a few
+  pixels and blurred, so it does not shine through trees and round mountains
+  where the polygon is not exact. Clouds use the sharp one.
 - `flagSprites.json`, the flags the shader draws and waves itself, per town and
   variant `[x start, x end, top and bottom at the pole, top and bottom at the
 free end, nation, pole]`, in picture pixels. Nation is an index in
@@ -141,6 +146,7 @@ with the unsaved data, so people and flags move as they will in the game.
   buttons. Saves `flagSprites.json`.
 - Water tab: the same polygon tool for `water.json`. A picture without
   polygons has no rippling water.
+- Sky tab: the same polygon tool for `sky.json`.
 - Save posts to `.storybook/maskEditorServer.ts`, which writes `constants/harbor`
   (restart Storybook after changing that file). It only works in Storybook
   started locally.
@@ -167,9 +173,9 @@ check.
    odd ones like lampposts. Use boxes first, they are easy to refine.
 4. Draw the flags in the editor, Flags tab (they go in `flagSprites.json`).
 5. Draw the water in the editor, Water tab (it goes in `water.json`), leaving
-   boats and piers out as holes. Make the sky mask, the blue that reaches the
-   top edge, found by its main colour. Leave out painted clouds and flags. Save
-   it at half size.
+   boats and piers out as holes. Draw the sky in the Sky tab (it goes in
+   `sky.json`), the blue that reaches the top edge, leaving out painted clouds
+   and flags.
 6. Open the editor, look at every town variant with sunny and rainy weather,
    and let the user fix what is left. Never claim a mask is right without having
    looked at it on the picture.

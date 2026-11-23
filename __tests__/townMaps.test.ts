@@ -44,8 +44,16 @@ describe("town maps", () => {
     })
   })
 
-  it.each(allImages)("$skyMask exists", ({ skyMask }) => {
-    expect(existsSync(join(process.cwd(), "public", skyMask))).toBe(true)
+  it.each(allImages)("$src has sky polygons inside the image", (image) => {
+    image.sky.forEach((polygon) => {
+      expect(polygon.length).toBeGreaterThanOrEqual(6)
+      expect(polygon.length % 2).toBe(0)
+
+      polygon.forEach((value, i) => {
+        expect(value).toBeGreaterThanOrEqual(0)
+        expect(value).toBeLessThanOrEqual(i % 2 ? image.height : image.width)
+      })
+    })
   })
 
   it.each(allImages)(

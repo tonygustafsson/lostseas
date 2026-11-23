@@ -72,12 +72,13 @@ const TownMap = ({ map, alt, weather, onMove, onPreview }: Props) => {
     imageRef,
     createTownMapRenderer,
     masks
-      ? [masks.water, map.desktop.skyMask, masks.front, WALKER_SHEET.url]
+      ? [masks.water, masks.sky, masks.gloom, masks.front, WALKER_SHEET.url]
       : undefined,
     {
       mobileMasks: [
         masks?.water ?? "",
-        map.mobile.skyMask,
+        masks?.sky ?? "",
+        masks?.gloom ?? "",
         masks?.front ?? "",
         WALKER_SHEET.url,
       ],

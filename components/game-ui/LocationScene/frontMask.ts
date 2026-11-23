@@ -93,41 +93,50 @@ export const makeFrontMaskUrl = (
     canvas.toBlob((blob) => resolve(URL.createObjectURL(blob!)))
   })
 
-// Room round the water mask, so the feathering has something to blur into
-const WATER_PADDING = 4
-const WATER_FEATHER = 1
+type AreaOptions = {
+  // Picture pixels the area grows past its polygons
+  bleed: number
+  // Blur in pixels of the half size mask
+  feather: number
+}
 
-// The water the shader ripples, drawn from the polygons in
-// constants/harbor/water.json at half the size of the picture, like the other
-// masks. Polygons inside polygons are holes. Without polygons there is no
-// water.
-export const makeWaterMaskUrl = (
+const WATER_AREA: AreaOptions = { bleed: 0, feather: 1 }
+
+// The sky is drawn by hand and never exact, so the darkness of a gloomy day
+// uses a copy that grows a little past it and fades, instead of shining
+// through trees and round mountains. The clouds use the sharp sky.
+export const GLOOM_AREA: AreaOptions = { bleed: 6, feather: 3 }
+
+// The water the shader ripples or the sky it draws clouds in, drawn from the
+// polygons in constants/harbor/water.json or sky.json at half the size of the
+// picture, like the other masks. Polygons inside polygons are holes. Without
+// polygons there is nothing.
+export const makeAreaMaskUrl = (
   width: number,
   height: number,
-  polygons: Shape[]
+  polygons: Shape[],
+  { bleed, feather }: AreaOptions = WATER_AREA
 ) => {
+  // Room round the mask, so the feathering has something to blur into
+  const padding = Math.max(4, feather * 3)
   const [halfWidth, halfHeight] = [
     Math.round(width / 2),
     Math.round(height / 2),
   ]
   const padded = document.createElement("canvas")
-  padded.width = halfWidth + WATER_PADDING * 2
-  padded.height = halfHeight + WATER_PADDING * 2
+  padded.width = halfWidth + padding * 2
+  padded.height = halfHeight + padding * 2
 
   const context = padded.getContext("2d")!
-  context.translate(WATER_PADDING, WATER_PADDING)
+  context.translate(padding, padding)
   context.scale(0.5, 0.5)
-  context.filter = `blur(${WATER_FEATHER}px)`
+  context.filter = `blur(${feather}px)`
   context.beginPath()
 
   // Water that reaches the edge of the picture carries on past it, so the edge
   // is not feathered
   const extend = (value: number, max: number) =>
-    value <= 0
-      ? -WATER_PADDING * 2
-      : value >= max
-        ? max + WATER_PADDING * 2
-        : value
+    value <= 0 ? -padding * 2 : value >= max ? max + padding * 2 : value
 
   for (const polygon of polygons) {
     for (let i = 0; i < polygon.length; i += 2) {
@@ -146,10 +155,16 @@ export const makeWaterMaskUrl = (
 
   context.fill("evenodd")
 
+  if (bleed > 0) {
+    context.lineWidth = bleed * 2
+    context.lineJoin = "round"
+    context.stroke()
+  }
+
   const canvas = document.createElement("canvas")
   canvas.width = halfWidth
   canvas.height = halfHeight
-  canvas.getContext("2d")!.drawImage(padded, -WATER_PADDING, -WATER_PADDING)
+  canvas.getContext("2d")!.drawImage(padded, -padding, -padding)
 
   return new Promise<string>((resolve) => {
     canvas.toBlob((blob) => resolve(URL.createObjectURL(blob!)))
@@ -165,18 +180,20 @@ const subscribe = (onChange: () => void) => {
 
 const getIsDesktop = () => window.matchMedia(TOWN_MAP_DESKTOP_MEDIA).matches
 
-// The front and water masks of the picture that is shown, made in the browser.
+// The front, water and sky masks of the picture that is shown, made in the browser.
 // Only that picture, the other is made when the screen switches. Undefined
 // until they are ready.
 export const useFrontMask = ({ desktop, mobile }: TownMap) => {
   const isDesktop = useSyncExternalStore(subscribe, getIsDesktop, () => true)
-  const { src, width, height, things, shapes, water } = isDesktop
+  const { src, width, height, things, shapes, water, sky } = isDesktop
     ? desktop
     : mobile
   const [made, setMade] = useState<{
     src: string
     front: string
     water: string
+    sky: string
+    gloom: string
   }>()
 
   useEffect(() => {
@@ -185,12 +202,14 @@ export const useFrontMask = ({ desktop, mobile }: TownMap) => {
 
     Promise.all([
       makeFrontMaskUrl(width, height, things, shapes),
-      makeWaterMaskUrl(width, height, water),
-    ]).then(([front, waterUrl]) => {
-      urls = [front, waterUrl]
+      makeAreaMaskUrl(width, height, water),
+      makeAreaMaskUrl(width, height, sky),
+      makeAreaMaskUrl(width, height, sky, GLOOM_AREA),
+    ]).then(([front, waterUrl, skyUrl, gloomUrl]) => {
+      urls = [front, waterUrl, skyUrl, gloomUrl]
 
       if (!isCancelled) {
-        setMade({ src, front, water: waterUrl })
+        setMade({ src, front, water: waterUrl, sky: skyUrl, gloom: gloomUrl })
       }
     })
 
@@ -200,7 +219,7 @@ export const useFrontMask = ({ desktop, mobile }: TownMap) => {
       // Kept a moment, the renderer may still be loading them
       setTimeout(() => urls.forEach((url) => URL.revokeObjectURL(url)), 5000)
     }
-  }, [src, width, height, things, shapes, water])
+  }, [src, width, height, things, shapes, water, sky])
 
   return made?.src === src ? made : undefined
 }
