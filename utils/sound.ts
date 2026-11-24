@@ -1,13 +1,13 @@
 import useSound, { type SoundEffect } from "@/app/stores/sound"
 
 export const TOWN_SONGS = Array.from(
-  { length: 10 },
-  (_, i) => `/music/town/song${i + 1}.opus`
+  { length: 94 },
+  (_, i) => `/music/town/town${i + 1}.opus`
 )
 
 export const SEA_SONGS = Array.from(
-  { length: 8 },
-  (_, i) => `/music/sea/song${i + 1}.opus`
+  { length: 49 },
+  (_, i) => `/music/sea/sea${i + 1}.opus`
 )
 
 export const AMBIENCE_SOUNDS: Partial<Record<Character["location"], string[]>> =
