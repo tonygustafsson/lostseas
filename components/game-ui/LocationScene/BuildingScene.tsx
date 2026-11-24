@@ -105,7 +105,7 @@ const BuildingScene = ({ town, location, weather, hide }: Props) => {
   }, [dustRef, introHidden, town])
 
   return (
-    <div className="bg-background relative flex min-h-[80vh] flex-col justify-end overflow-hidden rounded-xl border lg:min-h-120">
+    <div className="bg-background relative flex min-h-[75dvh] flex-col justify-end overflow-hidden rounded-xl border lg:min-h-130">
       <div className="absolute inset-0 opacity-80">
         <Image
           ref={imageRef}
@@ -139,7 +139,7 @@ const BuildingScene = ({ town, location, weather, hide }: Props) => {
         <div className="z-20 flex w-full justify-center px-4 pb-4 text-center sm:px-6 sm:pb-6 lg:px-12 lg:pb-8">
           <div
             ref={cardRef}
-            className="border-border w-full max-w-3xl rounded-3xl border bg-black/35 px-6 py-6 backdrop-blur-[2px] backdrop-brightness-75 backdrop-saturate-50 sm:px-8 lg:max-w-2xl lg:min-w-150 lg:px-16"
+            className="border-border w-full max-w-3xl rounded-3xl border bg-black/35 px-6 py-6 backdrop-blur-[2px] backdrop-brightness-75 backdrop-saturate-50 sm:px-8 lg:max-w-2xl lg:px-16 xl:min-w-150"
           >
             <BuildingIntro
               town={town}

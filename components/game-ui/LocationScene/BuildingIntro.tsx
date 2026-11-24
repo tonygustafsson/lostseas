@@ -18,18 +18,24 @@ const BuildingIntro = ({ town, location, expanded = false }: Props) => {
 
   return (
     <>
-      <h1 className="text-parchment mb-4 font-serif text-3xl tracking-wide lg:text-5xl">
+      <h1 className="text-parchment mb-2 font-serif text-3xl tracking-wide lg:mb-4 lg:text-5xl">
         {building?.name ?? `The ${location}`}
       </h1>
 
       <h2
         className={cn(
-          "text-parchment flex items-center justify-center gap-2 font-serif text-xl transition-[margin] duration-300 motion-reduce:transition-none lg:text-2xl",
+          "text-parchment font-serif text-xl transition-[margin] duration-300 motion-reduce:transition-none lg:text-2xl",
           expanded && "mb-4"
         )}
       >
-        <Flag nation={nation} className="h-5 w-5 opacity-80 lg:h-7 lg:w-7" />
-        {getTownName(town)}, {nation && getNationName(nation)}
+        {/* On desktop the flag hangs outside the text so the text stays centred */}
+        <span className="relative inline-flex items-center gap-2 lg:inline">
+          <Flag
+            nation={nation}
+            className="h-5 w-5 opacity-80 lg:absolute lg:top-1/2 lg:right-full lg:mr-2 lg:h-7 lg:w-7 lg:-translate-y-1/2"
+          />
+          {getTownName(town)}, {nation && getNationName(nation)}
+        </span>
       </h2>
 
       {/* Grid row animates from 0 to its content height, so the card grows upwards */}
