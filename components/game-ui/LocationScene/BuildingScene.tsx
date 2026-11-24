@@ -1,6 +1,6 @@
 import { ScrollText } from "lucide-react"
 import Image from "next/image"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { getBuilding } from "@/constants/townMaps"
@@ -60,20 +60,12 @@ const BuildingScene = ({ town, location, weather, hide }: Props) => {
 
     return { u_fires: { size: 4 as const, values } }
   }
-  const getCardArray = () => {
-    const card = cardRef.current?.getBoundingClientRect()
-    const scene = dustRef.current?.getBoundingClientRect()
-
-    return {
-      u_card: {
-        size: 4 as const,
-        values:
-          card && scene
-            ? [card.x - scene.x, card.y - scene.y, card.width, card.height]
-            : [0, 0, 0, 0],
-      },
-    }
-  }
+  // Measured when the card or scene changes size, not on every frame, as
+  // reading the layout that often can force the browser to redo it
+  const cardRect = useRef([0, 0, 0, 0])
+  const getCardArray = () => ({
+    u_card: { size: 4 as const, values: cardRect.current },
+  })
   const dustRef = useAmbienceCanvas(
     imageRef,
     createBuildingDustRenderer,
@@ -84,6 +76,33 @@ const BuildingScene = ({ town, location, weather, hide }: Props) => {
       frameArrays: { desktop: getCardArray },
     }
   )
+
+  const introHidden = isHidden("intro")
+
+  useEffect(() => {
+    const card = cardRef.current
+    const scene = dustRef.current
+
+    if (!card || !scene) {
+      cardRect.current = [0, 0, 0, 0]
+
+      return
+    }
+
+    const measure = () => {
+      const c = card.getBoundingClientRect()
+      const s = scene.getBoundingClientRect()
+
+      cardRect.current = [c.x - s.x, c.y - s.y, c.width, c.height]
+    }
+    const observer = new ResizeObserver(measure)
+
+    observer.observe(card)
+    observer.observe(scene)
+    measure()
+
+    return () => observer.disconnect()
+  }, [dustRef, introHidden, town])
 
   return (
     <div className="bg-background relative flex min-h-[80vh] flex-col justify-end overflow-hidden rounded-xl border lg:min-h-120">
@@ -116,7 +135,7 @@ const BuildingScene = ({ town, location, weather, hide }: Props) => {
         />
       )}
 
-      {!isHidden("intro") && (
+      {!introHidden && (
         <div className="z-20 flex w-full justify-center px-4 pb-4 text-center sm:px-6 sm:pb-6 lg:px-12 lg:pb-8">
           <div
             ref={cardRef}

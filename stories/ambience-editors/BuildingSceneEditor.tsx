@@ -1,6 +1,9 @@
 import { MouseEvent, PointerEvent, useEffect, useRef, useState } from "react"
 
-import { createBuildingSceneRenderer } from "@/components/game-ui/LocationScene/buildingSceneShader"
+import {
+  createBuildingSceneRenderer,
+  MAX_FIRES,
+} from "@/components/game-ui/LocationScene/buildingSceneShader"
 import {
   BUILDING_HEIGHT,
   BUILDING_WIDTH,
@@ -488,8 +491,11 @@ const Editor = ({
       const fire: Fire =
         draft[2] < MIN_RADIUS ? [draft[0], draft[1], DEFAULT_RADIUS] : draft
 
-      commit({ ...data, fires: [...data.fires, fire] })
-      setSelected(data.fires.length)
+      // The shader has a fixed number of fire slots, so more would be ignored
+      if (data.fires.length < MAX_FIRES) {
+        commit({ ...data, fires: [...data.fires, fire] })
+        setSelected(data.fires.length)
+      }
     } else if (JSON.stringify(draft) !== JSON.stringify(drag.origin)) {
       commit({
         ...data,

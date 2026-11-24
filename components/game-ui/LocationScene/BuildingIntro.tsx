@@ -39,7 +39,10 @@ const BuildingIntro = ({ town, location, expanded = false }: Props) => {
           expanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
         )}
       >
-        <p className="lg:text-md text-parchment/80 overflow-hidden text-left text-sm">
+        <p
+          inert={!expanded}
+          className="lg:text-md text-parchment/80 overflow-hidden text-left text-sm"
+        >
           {description}
         </p>
       </div>
