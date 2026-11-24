@@ -23,6 +23,15 @@ const Flag = ({ nation, size = 32, className, decorative }: Props) => {
       aria-hidden={decorative}
       className={className}
     >
+      <defs>
+        <symbol id="flag-fleur" viewBox="0 0 100 100" fill="#d4a017">
+          <path d="M50 5c10 15 12 33 0 53C38 38 40 20 50 5z" />
+          <path d="M46 55C40 30 15 25 10 45c-3 15 15 23 28 13-8-2-14-8-10-14 6-2 14 8 18 18z" />
+          <path d="M54 55c6-25 31-30 36-10 3 15-15 23-28 13 8-2 14-8 10-14-6-2-14 8-18 18z" />
+          <path d="M30 62h40v8H30zM42 70h16l4 20-12-8-12 8z" />
+        </symbol>
+      </defs>
+
       {nation === "England" && (
         <>
           {/* The Union flag of 1707, before the cross of St Patrick */}
@@ -35,9 +44,16 @@ const Flag = ({ nation, size = 32, className, decorative }: Props) => {
 
       {nation === "France" && (
         <>
+          {/* The white Bourbon flag with golden fleurs-de-lis */}
           <path fill="#fff" d="M0 0h640v480H0z" />
-          <path fill="#002654" d="M0 0h213.3v480H0z" />
-          <path fill="#ce1126" d="M426.7 0H640v480H426.7z" />
+          <use href="#flag-fleur" x="70" y="50" width="100" height="100" />
+          <use href="#flag-fleur" x="270" y="50" width="100" height="100" />
+          <use href="#flag-fleur" x="470" y="50" width="100" height="100" />
+          <use href="#flag-fleur" x="170" y="190" width="100" height="100" />
+          <use href="#flag-fleur" x="370" y="190" width="100" height="100" />
+          <use href="#flag-fleur" x="70" y="330" width="100" height="100" />
+          <use href="#flag-fleur" x="270" y="330" width="100" height="100" />
+          <use href="#flag-fleur" x="470" y="330" width="100" height="100" />
         </>
       )}
 
@@ -45,6 +61,24 @@ const Flag = ({ nation, size = 32, className, decorative }: Props) => {
         <>
           <path fill="#aa151b" d="M0 0h640v480H0Z" />
           <path fill="#f1bf00" d="M0 120h640v240H0Z" />
+
+          {/* Royal arms: a crowned shield bearing a fleur-de-lis */}
+          <g transform="translate(210 240) scale(1.4) translate(-180 -230)">
+            <path
+              fill="#aa151b"
+              stroke="#8a6a00"
+              strokeWidth="6"
+              d="M140 205h80v50c0 30-40 50-40 50s-40-20-40-50z"
+            />
+            <use href="#flag-fleur" x="160" y="222" width="40" height="40" />
+            <path
+              fill="#d4a017"
+              stroke="#8a6a00"
+              strokeWidth="6"
+              strokeLinejoin="round"
+              d="M148 195l-6-40 22 18 16-28 16 28 22-18-6 40z"
+            />
+          </g>
         </>
       )}
 
