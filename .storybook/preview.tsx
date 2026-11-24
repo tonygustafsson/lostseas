@@ -42,6 +42,7 @@ const preview: Preview = {
           "components",
           "ui",
           "design",
+          "Ambience editors",
         ],
       },
     },

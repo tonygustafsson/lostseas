@@ -11,6 +11,7 @@ import {
   warmUpShader,
 } from "./ambienceRenderer"
 import { MAX_FLAGS } from "./flagUniforms"
+import { HARBOUR_GULLS } from "./gulls"
 import { WALKER_COUNT } from "./walkers"
 import { WALKER_SHEET, WALKER_SHEET_ROWS } from "./walkSprites"
 import { MAX_LEVELS } from "./walkUniforms"
@@ -55,7 +56,9 @@ uniform float u_wind;
 
 // Water ripple strength in CSS pixels
 const float WATER_AMPLITUDE = 1.875;
-const int SEAGULLS = 5;
+// The gulls in the air, their flight is in gulls.ts
+const int GULL_COUNT = ${HARBOUR_GULLS.count};
+uniform vec4 u_gull[GULL_COUNT];
 const vec3 FOG_COLOR = vec3(0.9, 0.92, 0.94);
 const vec3 OVERCAST_COLOR = vec3(0.08, 0.1, 0.14);
 // How much darker the sky and water get on a gloomy day, a bit more than indoors
@@ -527,52 +530,6 @@ vec4 fog(vec4 base, vec2 p, float skyMask, float waterMask) {
   return over(base, FOG_COLOR, clamp(density, 0.0, 0.9) * u_fog);
 }
 
-vec4 seagull(vec4 base, vec2 p, float i) {
-  float t = u_time;
-  float size = clamp(u_size.x * 0.012, 8.0, 18.0) * (0.75 + 0.5 * hash(i + 3.0));
-  float speed = 25.0 + 20.0 * hash(i + 1.0);
-  float span = u_size.x + size * 4.0;
-
-  float x = mod(t * speed + hash(i + 7.0) * span, span) - size * 2.0;
-  x = hash(i + 11.0) > 0.5 ? x : u_size.x - x;
-  float y = u_size.y * (0.06 + 0.3 * hash(i + 5.0)) + sin(t * 0.4 + i * 2.0) * size * 1.5;
-
-  // Local coordinates, wing tips at x = -1 and 1, y pointing up
-  vec2 q = vec2(p.x - x, y - p.y) / size;
-
-  if (abs(q.x) > 1.2 || abs(q.y) > 1.2) {
-    return base;
-  }
-
-  // A few wing beats, then a glide with the wings held up
-  float beat = sin(t * (7.0 + 2.0 * hash(i + 13.0)) + i * 3.0);
-  float glide = smoothstep(0.2, 0.7, sin(t * 0.5 + i * 1.7));
-  float flap = mix(beat, 0.7, glide);
-
-  // Wings rise to an elbow and drop to the tips, tapering as they go
-  float ax = abs(q.x);
-  float wingY = flap * (1.2167 * ax - 1.1667 * ax * ax);
-  float thickness = mix(0.16, 0.03, ax);
-  float wing = (abs(q.y - wingY) - thickness) * size;
-  wing = max(wing, (ax - 1.0) * size);
-
-  float body = (length(q / vec2(0.17, 0.11)) - 1.0) * size * 0.11;
-  float dist = min(wing, body);
-  float alpha = (1.0 - smoothstep(-0.5, 0.5, dist)) * u_gulls;
-
-  if (alpha <= 0.0) {
-    return base;
-  }
-
-  vec3 wingColor = mix(vec3(0.82, 0.84, 0.87), vec3(0.18, 0.18, 0.2), smoothstep(0.72, 0.85, ax));
-  vec3 color = mix(wingColor, vec3(0.97), 1.0 - smoothstep(-0.5, 0.5, body));
-
-  // Darker edges keep the gulls visible against clouds and white walls
-  color = mix(color * 0.6, color, smoothstep(0.0, 0.8, -dist));
-
-  return over(base, color, alpha);
-}
-
 void main() {
   vec2 p = v_uv * u_size;
   float waterMask = texture2D(u_water, v_uv).a;
@@ -630,8 +587,8 @@ void main() {
   }
 
   if (u_gulls > 0.0) {
-    for (int i = 0; i < SEAGULLS; i++) {
-      color = seagull(color, p, float(i));
+    for (int i = 0; i < GULL_COUNT; i++) {
+      color = seagull(color, p, u_gull[i], u_size, u_gulls);
     }
   }
 
@@ -655,10 +612,11 @@ const TEXTURES = [
   "u_skyGloom",
   "u_walkFront",
   "u_walkSprites",
+  "u_gullSprites",
 ] as const
 
 // Textures in this order: image, water, sky, the sky for the gloom, what people
-// walk behind, the sheet of people, cats and rats.
+// walk behind, the sheet of people, cats and rats, the sheet of gulls.
 // Uniforms from getWeatherAmbience.
 export const createTownMapRenderer = (canvas: HTMLCanvasElement) =>
   createAmbienceRenderer(canvas, FRAGMENT_SHADER, TEXTURES)

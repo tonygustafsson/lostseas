@@ -1,6 +1,8 @@
 // Shared WebGL setup for the animated scenes: draws one fragment shader over
 // the whole canvas, with an image and its masks as textures.
 
+import { GULL_SHEET } from "./gullSprites"
+
 const VERTEX_SHADER = `
 attribute vec2 a_position;
 varying vec2 v_uv;
@@ -65,6 +67,29 @@ float fbm(vec2 p) {
 // Premultiplied "over" blending
 vec4 over(vec4 base, vec3 color, float alpha) {
   return vec4(color * alpha + base.rgb * (1.0 - alpha), alpha + base.a * (1.0 - alpha));
+}
+
+// One seagull of a list worked out in gulls.ts, as x and y (shares of the area
+// it flies over, which p is in pixels of), size and wing position. It is a
+// sprite whose pixels are as big as the pictures' own, and moves in steps of
+// them. Strength fades it, 0 hides it.
+uniform sampler2D u_gullSprites;
+const vec2 GULL_CELL = vec2(${GULL_SHEET.cellWidth}.0, ${GULL_SHEET.cellHeight}.0);
+const vec2 GULL_SHEET_SIZE = vec2(${GULL_SHEET.cellWidth * GULL_SHEET.frames}.0, ${GULL_SHEET.cellHeight}.0);
+
+vec4 seagull(vec4 base, vec2 p, vec4 gull, vec2 area, float strength) {
+  float pixel = clamp(area.x * 0.0011, 1.0, 2.0) * gull.z;
+  vec2 middle = floor(gull.xy * area / pixel) * pixel;
+  vec2 cell = floor((p - middle) / pixel + GULL_CELL * 0.5);
+
+  if (cell.x < 0.0 || cell.y < 0.0 || cell.x >= GULL_CELL.x || cell.y >= GULL_CELL.y) {
+    return base;
+  }
+
+  // The middle of a texel, so the sheet is not blurred
+  vec4 sprite = texture2D(u_gullSprites, (vec2(gull.w, 0.0) * GULL_CELL + cell + 0.5) / GULL_SHEET_SIZE);
+
+  return over(base, sprite.rgb, sprite.a * strength);
 }
 
 // Rippling water at image position uv, where the image is shown at size.
@@ -311,6 +336,7 @@ export const createAmbienceRenderer = (
   let hasFailed = false
   let hasTextures = false
   let imageWidth = 0
+  let imageHeight = 0
   let frame = 0
   let compileFrame = 0
   let lastDraw = 0
@@ -444,7 +470,12 @@ export const createAmbienceRenderer = (
     // More pixels than the image has add no detail, they only cost GPU time.
     // Nor do more than the screen shows of a scaled up scene.
     const rect = canvas.getBoundingClientRect()
-    const imageRatio = imageWidth / canvas.clientWidth
+    // Image pixels per CSS pixel. A picture that covers a box taller than it
+    // is shown cropped and bigger, so the height can be what counts.
+    const imageRatio = Math.min(
+      imageWidth / canvas.clientWidth,
+      imageHeight / canvas.clientHeight
+    )
     const screenRatio =
       (rect.width / canvas.clientWidth) * Math.min(window.devicePixelRatio, 2)
     const pixelRatio = imageResolution
@@ -506,6 +537,7 @@ export const createAmbienceRenderer = (
         })
 
         imageWidth = sources[0].naturalWidth
+        imageHeight = sources[0].naturalHeight
         gl.uniform2f(
           imageSizeLocation,
           sources[0].naturalWidth,

@@ -1,7 +1,9 @@
 import { getImageProps } from "next/image"
 import { preload } from "react-dom"
 
-import { getLocationAmbience, getLocationBackground } from "@/utils/location"
+import { getLocationBackground, loadLocationAreas } from "@/utils/location"
+
+import { warmUpBuildingSceneShader } from "./buildingSceneShader"
 
 // Starts loading a building's picture and masks before the player walks in,
 // so the scene shows up with its weather straight away. The image props must
@@ -22,9 +24,11 @@ export const preloadBuildingScene = (
     imageSizes: props.sizes,
   })
 
-  const ambience = getLocationAmbience(town, location)
+  // The water, sky and light are drawn in the browser from the polygons of the
+  // town, so those are what to get ready. The browser keeps the loaded file.
+  loadLocationAreas(town, location)
 
-  if (ambience) {
-    Object.values(ambience).forEach((src) => preload(src, { as: "image" }))
-  }
+  // And the shader that draws them, which the first building takes a while to
+  // build
+  warmUpBuildingSceneShader()
 }

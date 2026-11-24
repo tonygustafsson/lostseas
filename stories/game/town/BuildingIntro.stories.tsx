@@ -34,6 +34,10 @@ type Story = StoryObj<typeof meta>
 
 export const Tavern: Story = {}
 
+export const Expanded: Story = {
+  args: { expanded: true },
+}
+
 export const Shipyard: Story = {
   args: { town: "havana", location: "Shipyard" },
 }

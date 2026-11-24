@@ -5,7 +5,7 @@ import * as prettier from "prettier"
 import type { Plugin } from "vite"
 
 // Lets the mask editor story save what was changed into the harbour data in
-// constants/harbor. Only while Storybook runs locally, a built Storybook has no
+// constants/harbor, and the building editor story into constants/buildings. Only while Storybook runs locally, a built Storybook has no
 // server.
 export const SAVE_PATH = "/__mask-editor/save"
 
@@ -61,6 +61,32 @@ const KINDS = {
       config[town] = { ...config[town], [variant]: data }
     },
   },
+  // Fires in a building, [x, y, radius]. Buildings have no variant, the
+  // location takes its place. A town may not have any yet.
+  fires: {
+    file: "../buildings/fires.json",
+    size: 3,
+    set: (config: Config, town: string, location: string, data: unknown) => {
+      config[town] = { ...config[town], [location]: data }
+    },
+  },
+  // Polygons round the sky and the water seen from inside a building. They
+  // are in a file for each town, which the game loads on demand, and the
+  // location takes the place of the variant.
+  buildingSky: {
+    file: "../buildings/areas/{town}.json",
+    size: 0,
+    set: (config: Config, town: string, location: string, data: unknown) => {
+      config[location] = { ...config[location], sky: data }
+    },
+  },
+  buildingWater: {
+    file: "../buildings/areas/{town}.json",
+    size: 0,
+    set: (config: Config, town: string, location: string, data: unknown) => {
+      config[location] = { ...config[location], water: data }
+    },
+  },
   // Street levels, [x start, x end, feet, half width, person size]
   lanes: {
     file: "lanes.json",
@@ -70,6 +96,11 @@ const KINDS = {
     },
   },
 } as const
+
+const BUILDINGS = ["bank", "city-hall", "market", "shipyard", "shop", "tavern"]
+
+// Kinds that belong to a building, the location takes the place of the variant
+const BUILDING_KINDS = { fires: true, buildingSky: true, buildingWater: true }
 
 type Config = Record<string, any>
 
@@ -87,7 +118,9 @@ const save = async (body: string, root: string) => {
   if (
     !settings ||
     !/^[a-z-]+$/.test(town) ||
-    !["desktop", "mobile"].includes(variant) ||
+    !(
+      Object.hasOwn(BUILDING_KINDS, kind) ? BUILDINGS : ["desktop", "mobile"]
+    ).includes(variant) ||
     !Array.isArray(data) ||
     !data.every(
       (entry) =>
@@ -103,11 +136,17 @@ const save = async (body: string, root: string) => {
     throw new Error("Not a kind, a town, a variant and a list of numbers")
   }
 
-  const path = join(root, FOLDER, settings.file)
+  const path = join(root, FOLDER, settings.file.replace("{town}", town))
   const config = JSON.parse(await readFile(path, "utf8"))
 
   if (
-    !["sprites", "water", "sky"].includes(kind) &&
+    ![
+      "sprites",
+      "water",
+      "sky",
+      "fires",
+      ...Object.keys(BUILDING_KINDS),
+    ].includes(kind) &&
     !(config.towns ?? config)[town]
   ) {
     throw new Error(`There is no ${town} in ${settings.file}`)

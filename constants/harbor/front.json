@@ -1,5 +1,5 @@
 {
-  "//": "What people walk behind, per town and variant, drawn in the mask editor story (game/Harbor/Mask editor). \"things\" are boxes [x start, y start, x end, y end] and \"shapes\" are polygons [x, y, x, y, ...], in pixels of the harbour picture. The bottom of a box, or the lowest corner of a shape, is where it meets the ground.",
+  "//": "What people walk behind, per town and variant, drawn in the mask editor story (Ambience editors/Harbor). \"things\" are boxes [x start, y start, x end, y end] and \"shapes\" are polygons [x, y, x, y, ...], in pixels of the harbour picture. The bottom of a box, or the lowest corner of a shape, is where it meets the ground.",
   "towns": {
     "kingston": {
       "desktop": {
