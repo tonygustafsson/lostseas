@@ -9,8 +9,100 @@ import {
   SHADER_COMMON,
   warmUpShader,
 } from "./ambienceRenderer"
+import { BUILDING_HEIGHT, BUILDING_WIDTH } from "./lightMask"
 
-const FRAGMENT_SHADER = `
+// Fires that can heat the border of the intro card, the most any building has
+export const MAX_FIRES = 32
+
+// The parts of main(), in the order they are drawn
+const WEATHER_PART = `
+  float waterMask = texture2D(u_water, uv).a;
+  if (waterMask > 0.01) {
+    color = water(u_water, uv, shown, waterMask, WATER_AMPLITUDE);
+  }
+
+  // Rain falls in the sky and fog hangs over the sky and the sea, neither comes
+  // inside
+  float outside = max(skyMask, waterMask);
+
+  if (skyMask > 0.01) {
+    color = clouds(color, p, shown.x, skyMask, u_cloudCover, u_cloudShade);
+  }
+
+  if (outside > 0.01 && u_fog > 0.0) {
+    float density = mist(p / shown.x * vec2(4.0, 8.0) + vec2(-u_time * 0.04, 0.0));
+    color = over(color, FOG_COLOR, min(0.6 + 0.4 * density, 0.95) * u_fog * outside);
+  }
+
+  if (skyMask > 0.01 && u_rain > 0.0) {
+    color = rain(color, p, vec2(6.0, 50.0), 2.4, 0.0, u_rain * skyMask);
+    color = rain(color, p, vec2(9.0, 80.0), 1.8, 41.0, u_rain * skyMask);
+  }
+
+  // Grey skies leave the room a little gloomier and rain more so, the lights
+  // below still glow
+  if (u_gloom > 0.0) {
+    color = over(color, GLOOM_COLOR, u_gloom * (1.0 - skyMask));
+  }
+`
+
+const DUST_PART = `
+  // Less dust over the sky itself, it floats inside. It only shows in
+  // sunlight.
+  float dustZone = light.b * (1.0 - 0.6 * skyMask) * u_sun;
+
+  if (dustZone > 0.01) {
+    color = dust(color, p, 14.0, 0.08, 31.0, dustZone);
+    color = dust(color, p, 22.0, 0.12, 0.0, dustZone);
+    color = dust(color, p, 36.0, 0.2, 17.0, dustZone);
+  }
+`
+
+const LIGHTS_PART = `
+  if (light.g > 0.01) {
+    float f = flicker(p);
+
+    if (light.r > 0.01) {
+      vec3 flame = texture2D(u_image, uv).rgb;
+      flame *= vec3(1.2 + 0.4 * f, 1.12 + 0.3 * f, 1.0 + 0.15 * f);
+      color = over(color, min(flame, vec3(1.0)), light.r);
+    }
+
+    color = over(color, GLOW_COLOR, light.g * (0.24 + 0.14 * f));
+  }
+`
+
+// Fires near the card make its border glow like embers, licking upwards
+const FIRE_BORDER_PART = `
+  float edge = cardEdge(v_uv * u_size);
+
+  if (abs(edge) < 9.0) {
+    float heat = 0.0;
+
+    for (int i = 0; i < MAX_FIRES; i++) {
+      vec4 fire = u_fires[i];
+
+      if (fire.z > 0.0) {
+        vec2 at = fire.xy / PICTURE_SIZE * shown + (u_size - shown) * 0.5;
+        float reach = fire.z / PICTURE_SIZE.x * shown.x * FIRE_REACH;
+        float closeness = 1.0 - smoothstep(0.0, reach, length(v_uv * u_size - at));
+
+        heat += closeness * closeness * (0.75 + 0.25 * flicker(fire.xy));
+      }
+    }
+
+    float lick = 0.6 + 0.4 * noise(v_uv * u_size / 8.0 - vec2(0.0, u_time * 3.0));
+    float glow = exp(-abs(edge) / 2.1) * min(heat * 1.75, 1.0) * lick;
+
+    color = over(color, mix(EMBER_COLOR, FLAME_COLOR, glow), glow * 0.68);
+  }
+`
+
+// The dust can be left out or drawn alone, for a canvas of its own over the
+// intro card. The editor draws everything on one canvas.
+type Layer = "all" | "scene" | "dust"
+
+const buildShader = (layer: Layer) => `
 ${SHADER_COMMON}
 
 uniform sampler2D u_water;
@@ -19,6 +111,13 @@ uniform sampler2D u_sky;
 // where dust floats in the light coming in from outside
 uniform sampler2D u_light;
 uniform vec2 u_imageSize;
+// The intro card in CSS pixels on the canvas: x, y, width and height. Dust
+// over it is dimmer, as the dark card makes it stand out.
+uniform vec4 u_card;
+const int MAX_FIRES = ${MAX_FIRES};
+// The fires of the building as x, y and radius in pixels of its picture. A
+// radius of 0 is an unused slot.
+uniform vec4 u_fires[MAX_FIRES];
 
 // The weather, see weatherAmbience.ts
 uniform float u_cloudCover;
@@ -35,7 +134,28 @@ const vec3 DUST_COLOR = vec3(1.0, 0.96, 0.86);
 // Share of grid cells that hold a mote in full dust
 const float DUST_DENSITY = 0.19;
 const vec3 FOG_COLOR = vec3(0.86, 0.88, 0.9);
+const vec2 PICTURE_SIZE = vec2(${BUILDING_WIDTH}.0, ${BUILDING_HEIGHT}.0);
+// How far from a fire its heat reaches the card, in radiuses of the fire
+const float FIRE_REACH = 5.0;
+const vec3 EMBER_COLOR = vec3(1.0, 0.28, 0.04);
+const vec3 FLAME_COLOR = vec3(1.0, 0.8, 0.35);
 const vec3 GLOOM_COLOR = vec3(0.04, 0.05, 0.08);
+// Matches the card's rounded corners and how much of the dust shows over it
+const float CARD_RADIUS = 24.0;
+const float DUST_OVER_CARD = 0.45;
+
+// Distance in CSS pixels from the card's edge, negative inside it
+float cardEdge(vec2 point) {
+  vec2 halfSize = u_card.zw * 0.5;
+  vec2 q = abs(point - u_card.xy - halfSize) - halfSize + CARD_RADIUS;
+
+  return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - CARD_RADIUS;
+}
+
+// How much of the dust shows at a point, less over the card
+float dustVisibility(vec2 point) {
+  return mix(1.0, DUST_OVER_CARD, 1.0 - smoothstep(-1.0, 1.0, cardEdge(point)));
+}
 
 // Mist is soft, a few layers of noise are enough and the fog was the most
 // expensive weather with five
@@ -86,7 +206,11 @@ vec4 dust(vec4 base, vec2 p, float cell, float speed, float seed, float zone) {
   float halo = 1.0 - smoothstep(radius, radius * 2.5, d);
   float alpha = (core * 0.5 + halo * 0.14) * twinkle * (0.4 + 0.6 * zone);
 
-  return over(base, DUST_COLOR, min(alpha, 1.0));
+  return over(
+    base,
+    DUST_COLOR,
+    min(alpha * dustVisibility(v_uv * u_size), 1.0)
+  );
 }
 
 void main() {
@@ -96,72 +220,41 @@ void main() {
   vec2 uv = (v_uv * u_size - (u_size - shown) * 0.5) / shown;
   vec2 p = uv * shown;
 
-  float waterMask = texture2D(u_water, uv).a;
   float skyMask = texture2D(u_sky, uv).a;
   vec3 light = texture2D(u_light, uv).rgb;
   vec4 color = vec4(0.0);
 
-  if (waterMask > 0.01) {
-    color = water(u_water, uv, shown, waterMask, WATER_AMPLITUDE);
-  }
-
-  // Rain falls in the sky and fog hangs over the sky and the sea, neither comes
-  // inside
-  float outside = max(skyMask, waterMask);
-
-  if (skyMask > 0.01) {
-    color = clouds(color, p, shown.x, skyMask, u_cloudCover, u_cloudShade);
-  }
-
-  if (outside > 0.01 && u_fog > 0.0) {
-    float density = mist(p / shown.x * vec2(4.0, 8.0) + vec2(-u_time * 0.04, 0.0));
-    color = over(color, FOG_COLOR, min(0.6 + 0.4 * density, 0.95) * u_fog * outside);
-  }
-
-  if (skyMask > 0.01 && u_rain > 0.0) {
-    color = rain(color, p, vec2(6.0, 50.0), 2.4, 0.0, u_rain * skyMask);
-    color = rain(color, p, vec2(9.0, 80.0), 1.8, 41.0, u_rain * skyMask);
-  }
-
-  // Grey skies leave the room a little gloomier and rain more so, the lights
-  // below still glow
-  if (u_gloom > 0.0) {
-    color = over(color, GLOOM_COLOR, u_gloom * (1.0 - skyMask));
-  }
-
-  // Less dust over the sky itself, it floats inside. It only shows in
-  // sunlight.
-  float dustZone = light.b * (1.0 - 0.6 * skyMask) * u_sun;
-
-  if (dustZone > 0.01) {
-    color = dust(color, p, 14.0, 0.08, 31.0, dustZone);
-    color = dust(color, p, 22.0, 0.12, 0.0, dustZone);
-    color = dust(color, p, 36.0, 0.2, 17.0, dustZone);
-  }
-
-  if (light.g > 0.01) {
-    float f = flicker(p);
-
-    if (light.r > 0.01) {
-      vec3 flame = texture2D(u_image, uv).rgb;
-      flame *= vec3(1.2 + 0.4 * f, 1.12 + 0.3 * f, 1.0 + 0.15 * f);
-      color = over(color, min(flame, vec3(1.0)), light.r);
-    }
-
-    color = over(color, GLOW_COLOR, light.g * (0.24 + 0.14 * f));
-  }
+${layer !== "dust" ? WEATHER_PART : ""}
+${layer !== "scene" ? DUST_PART + FIRE_BORDER_PART : ""}
+${layer !== "dust" ? LIGHTS_PART : ""}
 
   gl_FragColor = color;
 }
 `
+
+const FULL_SHADER = buildShader("all")
+const SCENE_SHADER = buildShader("scene")
+const DUST_SHADER = buildShader("dust")
 
 const TEXTURES = ["u_image", "u_water", "u_sky", "u_light"] as const
 
 // Textures in this order: image, water, sky, light. Uniforms from
 // getWeatherAmbience.
 export const createBuildingSceneRenderer = (canvas: HTMLCanvasElement) =>
-  createAmbienceRenderer(canvas, FRAGMENT_SHADER, TEXTURES)
+  createAmbienceRenderer(canvas, FULL_SHADER, TEXTURES)
+
+// The same without the dust, which a canvas of its own draws over the intro
+// card
+export const createBuildingBackRenderer = (canvas: HTMLCanvasElement) =>
+  createAmbienceRenderer(canvas, SCENE_SHADER, TEXTURES)
+
+// Only the dust, for a canvas over the intro card. Same textures and uniforms.
+export const createBuildingDustRenderer = (canvas: HTMLCanvasElement) =>
+  createAmbienceRenderer(canvas, DUST_SHADER, TEXTURES)
 
 // Builds the shader in the background before a building is entered, so the
 // scene gets it ready. See warmUpShader.
-export const warmUpBuildingSceneShader = () => warmUpShader(FRAGMENT_SHADER)
+export const warmUpBuildingSceneShader = () => {
+  warmUpShader(SCENE_SHADER)
+  warmUpShader(DUST_SHADER)
+}
