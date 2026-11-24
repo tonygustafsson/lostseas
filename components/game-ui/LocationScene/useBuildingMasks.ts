@@ -8,6 +8,7 @@ import {
 } from "@/utils/location"
 
 import { BUILDING_AREA, drawAreaMask } from "./areaMask"
+import { GULL_SHEET } from "./gullSprites"
 import {
   BUILDING_HEIGHT,
   BUILDING_WIDTH,
@@ -21,14 +22,14 @@ type Made = {
   location: Character["location"]
   fires: Fire[]
   areas: BuildingAreas | undefined
-  masks: CanvasMask[]
+  masks: (CanvasMask | string)[]
 }
 
 // Every set of masks gets keys of its own, they say which canvases are which
 let generation = 0
 
-// The water, sky and light masks of a building, in the order the shader wants
-// them. They are drawn in the browser from the sky and water polygons of the
+// The water, sky and light masks of a building and the sheet of gulls, in the
+// order the shader wants them. They are drawn in the browser from the sky and water polygons of the
 // building and its fires, a building without any gets an empty mask, and are
 // used as textures straight from the canvas. Undefined while the polygons are
 // loaded, and when there is no town. Pass fires and areas to try ones that are
@@ -77,10 +78,13 @@ export const useBuildingMasks = (
         location,
         fires,
         areas: liveAreas,
-        masks: canvases.map((canvas, i) => ({
-          key: `building-mask-${id}-${i}`,
-          canvas,
-        })),
+        masks: [
+          ...canvases.map((canvas, i) => ({
+            key: `building-mask-${id}-${i}`,
+            canvas,
+          })),
+          GULL_SHEET.url,
+        ],
       })
     }
 

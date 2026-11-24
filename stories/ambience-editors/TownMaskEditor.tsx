@@ -10,6 +10,11 @@ import {
   makeAreaMaskUrl,
   makeFrontMaskUrl,
 } from "@/components/game-ui/LocationScene/frontMask"
+import {
+  getGullArrays,
+  HARBOUR_GULLS,
+} from "@/components/game-ui/LocationScene/gulls"
+import { GULL_SHEET } from "@/components/game-ui/LocationScene/gullSprites"
 import { createTownMapRenderer } from "@/components/game-ui/LocationScene/townMapShader"
 import { useAmbienceCanvas } from "@/components/game-ui/LocationScene/useAmbienceCanvas"
 import { getWalkerArrays } from "@/components/game-ui/LocationScene/walkers"
@@ -323,7 +328,14 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
     imageRef,
     createTownMapRenderer,
     frontUrl && waterUrl && skyUrls
-      ? [waterUrl, skyUrls.sky, skyUrls.gloom, frontUrl, WALKER_SHEET.url]
+      ? [
+          waterUrl,
+          skyUrls.sky,
+          skyUrls.gloom,
+          frontUrl,
+          WALKER_SHEET.url,
+          GULL_SHEET.url,
+        ]
       : undefined,
     {
       uniforms: getWeatherAmbience(weather),
@@ -334,12 +346,14 @@ const Editor = ({ town, variant, weather, zoom, onVariantChange }: Props) => {
         },
       },
       frameArrays: {
-        desktop: (time) =>
-          getWalkerArrays(
+        desktop: (time) => ({
+          ...getWalkerArrays(
             time,
             toLevels(data),
             getWeatherAmbience(weather)?.u_activity ?? 1
           ),
+          ...getGullArrays(time, HARBOUR_GULLS),
+        }),
       },
     }
   )

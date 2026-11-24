@@ -37,6 +37,10 @@ const meta = {
       control: "select",
       options: LOCATIONS,
     },
+    hide: {
+      control: "check",
+      options: ["water", "sky", "dust", "fire", "intro"],
+    },
   },
   decorators: [
     (Story, context) => (

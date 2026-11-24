@@ -156,6 +156,23 @@ seconds to build on a Windows GPU.
   sheet and hides walkers behind the front mask. The sheet is texture
   `u_walkSprites`, last in `TEXTURES`.
 
+## Seagulls are a sprite sheet too
+
+- `public/img/town-gulls.png` holds one gull seen from the front in each of
+  five wing positions, from wings down to wings up. `npm run generate:gull-sprites`
+  (`scripts/generate-gull-sprites`) draws it, the layout is in `gullSprites.ts`.
+  The PNG writer is shared with the walker script in `scripts/lib/png.mjs`.
+- `gulls.ts` works out where every gull is on every frame (flight, wobble, wing
+  beats and glides) as shares of the picture, and gives the shader one uniform
+  list, `u_gull`. The flocks are `HARBOUR_GULLS` and `BUILDING_GULLS`, the count
+  and how far down they fly. The harbour gets the list through `frameArrays`
+  next to the walkers, the building renderers set it themselves
+  (`withGulls`), and the sheet is the last texture of both shaders.
+- `seagull` in `ambienceRenderer.ts` draws one gull from the list. Its sprite
+  pixels are 1 to 2 picture pixels big and it moves in steps of them, so it
+  looks like the rest of the art. Buildings only show gulls over the sky
+  polygons, in the weather's `u_gulls` strength.
+
 ## Keeping it quick to run
 
 The renderer draws only while on screen, at most 30 times a second, only the

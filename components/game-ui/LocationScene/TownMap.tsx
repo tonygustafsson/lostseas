@@ -10,6 +10,8 @@ import { cn } from "@/lib/utils"
 import type { AmbienceArrays } from "./ambienceRenderer"
 import { getFlagArrays } from "./flagUniforms"
 import { useFrontMask } from "./frontMask"
+import { getGullArrays, HARBOUR_GULLS } from "./gulls"
+import { GULL_SHEET } from "./gullSprites"
 import { getTownMapImageProps } from "./preloadTownMap"
 import { createTownMapRenderer } from "./townMapShader"
 import { useAmbienceCanvas } from "./useAmbienceCanvas"
@@ -95,7 +97,14 @@ const TownMap = ({ map, alt, weather, onMove, onPreview }: Props) => {
     imageRef,
     createTownMapRenderer,
     masks
-      ? [masks.water, masks.sky, masks.gloom, masks.front, WALKER_SHEET.url]
+      ? [
+          masks.water,
+          masks.sky,
+          masks.gloom,
+          masks.front,
+          WALKER_SHEET.url,
+          GULL_SHEET.url,
+        ]
       : undefined,
     {
       mobileMasks: [
@@ -104,12 +113,19 @@ const TownMap = ({ map, alt, weather, onMove, onPreview }: Props) => {
         masks?.gloom ?? "",
         masks?.front ?? "",
         WALKER_SHEET.url,
+        GULL_SHEET.url,
       ],
       uniforms,
       arrays: getTownArrays(map),
       frameArrays: {
-        desktop: (time) => getWalkerArrays(time, map.desktop.lanes, activity),
-        mobile: (time) => getWalkerArrays(time, map.mobile.lanes, activity),
+        desktop: (time) => ({
+          ...getWalkerArrays(time, map.desktop.lanes, activity),
+          ...getGullArrays(time, HARBOUR_GULLS),
+        }),
+        mobile: (time) => ({
+          ...getWalkerArrays(time, map.mobile.lanes, activity),
+          ...getGullArrays(time, HARBOUR_GULLS),
+        }),
       },
     }
   )

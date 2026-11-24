@@ -17,23 +17,36 @@ import { useAmbienceCanvas } from "./useAmbienceCanvas"
 import { useBuildingMasks } from "./useBuildingMasks"
 import { getWeatherAmbience } from "./weatherAmbience"
 
+export type HiddenPart = "water" | "sky" | "dust" | "fire" | "intro"
+
 type Props = {
   town: Character["town"]
   location: Character["location"]
   weather?: WeatherType
+  // For the story, to look at the parts of the ambience one by one
+  hide?: HiddenPart[]
 }
 
-const BuildingScene = ({ town, location, weather }: Props) => {
+const BuildingScene = ({ town, location, weather, hide }: Props) => {
   const [expanded, setExpanded] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null)
   const hasDescription = !!getBuilding(town, location)?.description
   const masks = useBuildingMasks(town, location)
-  // Rippling water, the weather outside, dust and flickering lights
+  const isHidden = (part: HiddenPart) => (hide?.includes(part) ? 1 : 0)
+  const weatherAmbience = getWeatherAmbience(weather)
+  const uniforms = weatherAmbience && {
+    ...weatherAmbience,
+    u_hideWater: isHidden("water"),
+    u_hideSky: isHidden("sky"),
+    u_hideDust: isHidden("dust"),
+    u_hideFire: isHidden("fire"),
+  }
+  // Rippling water, the weather and gulls outside, dust and flickering lights
   const ambienceRef = useAmbienceCanvas(
     imageRef,
     createBuildingBackRenderer,
     masks,
-    { uniforms: getWeatherAmbience(weather) }
+    { uniforms }
   )
   // The dust drifts over the intro card as well, dimmer there
   const cardRef = useRef<HTMLDivElement>(null)
@@ -66,7 +79,7 @@ const BuildingScene = ({ town, location, weather }: Props) => {
     createBuildingDustRenderer,
     masks,
     {
-      uniforms: getWeatherAmbience(weather),
+      uniforms,
       arrays: { desktop: getFireArray() },
       frameArrays: { desktop: getCardArray },
     }
@@ -103,29 +116,35 @@ const BuildingScene = ({ town, location, weather }: Props) => {
         />
       )}
 
-      <div className="z-20 flex w-full justify-center px-4 pb-4 text-center sm:px-6 sm:pb-6 lg:px-12 lg:pb-8">
-        <div
-          ref={cardRef}
-          className="border-border w-full max-w-3xl rounded-3xl border bg-black/35 px-6 py-6 backdrop-blur-[2px] backdrop-brightness-75 backdrop-saturate-50 sm:px-8 lg:max-w-2xl lg:min-w-150 lg:px-16"
-        >
-          <BuildingIntro town={town} location={location} expanded={expanded} />
+      {!isHidden("intro") && (
+        <div className="z-20 flex w-full justify-center px-4 pb-4 text-center sm:px-6 sm:pb-6 lg:px-12 lg:pb-8">
+          <div
+            ref={cardRef}
+            className="border-border w-full max-w-3xl rounded-3xl border bg-black/35 px-6 py-6 backdrop-blur-[2px] backdrop-brightness-75 backdrop-saturate-50 sm:px-8 lg:max-w-2xl lg:min-w-150 lg:px-16"
+          >
+            <BuildingIntro
+              town={town}
+              location={location}
+              expanded={expanded}
+            />
 
-          <BackToTown>
-            {hasDescription && (
-              <Button
-                variant="secondary"
-                size="icon-lg"
-                className="aria-expanded:bg-sea aria-expanded:text-foreground size-11"
-                aria-label="Description"
-                aria-expanded={expanded}
-                onClick={() => setExpanded(!expanded)}
-              >
-                <ScrollText />
-              </Button>
-            )}
-          </BackToTown>
+            <BackToTown>
+              {hasDescription && (
+                <Button
+                  variant="secondary"
+                  size="icon-lg"
+                  className="aria-expanded:bg-sea aria-expanded:text-foreground size-11"
+                  aria-label="Description"
+                  aria-expanded={expanded}
+                  onClick={() => setExpanded(!expanded)}
+                >
+                  <ScrollText />
+                </Button>
+              )}
+            </BackToTown>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

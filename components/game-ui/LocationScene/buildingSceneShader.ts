@@ -5,10 +5,12 @@
 // room a little darker.
 
 import {
+  type AmbienceRenderer,
   createAmbienceRenderer,
   SHADER_COMMON,
   warmUpShader,
 } from "./ambienceRenderer"
+import { BUILDING_GULLS, getGullArrays } from "./gulls"
 import { BUILDING_HEIGHT, BUILDING_WIDTH } from "./lightMask"
 
 // Fires that can heat the border of the intro card, the most any building has
@@ -16,9 +18,16 @@ export const MAX_FIRES = 32
 
 // The parts of main(), in the order they are drawn
 const WEATHER_PART = `
-  float waterMask = texture2D(u_water, uv).a;
+  float waterMask = texture2D(u_water, uv).a * (1.0 - u_hideWater);
   if (waterMask > 0.01) {
     color = water(u_water, uv, shown, waterMask, WATER_AMPLITUDE);
+  }
+
+  // A few gulls fly past, only seen where the sky shows
+  if (skyMask > 0.01 && u_gulls > 0.0) {
+    for (int i = 0; i < GULL_COUNT; i++) {
+      color = seagull(color, p, u_gull[i], shown, u_gulls * skyMask);
+    }
   }
 
   // Rain falls in the sky and fog hangs over the sky and the sea, neither comes
@@ -42,14 +51,14 @@ const WEATHER_PART = `
   // Grey skies leave the room a little gloomier and rain more so, the lights
   // below still glow
   if (u_gloom > 0.0) {
-    color = over(color, GLOOM_COLOR, u_gloom * (1.0 - skyMask));
+    color = over(color, GLOOM_COLOR, u_gloom * (1.0 - skyMask) * (1.0 - u_hideSky));
   }
 `
 
 const DUST_PART = `
   // Less dust over the sky itself, it floats inside. It only shows in
   // sunlight.
-  float dustZone = light.b * (1.0 - 0.6 * skyMask) * u_sun;
+  float dustZone = light.b * (1.0 - 0.6 * skyMask) * u_sun * (1.0 - u_hideDust);
 
   if (dustZone > 0.01) {
     color = dust(color, p, 14.0, 0.08, 31.0, dustZone);
@@ -59,7 +68,7 @@ const DUST_PART = `
 `
 
 const LIGHTS_PART = `
-  if (light.g > 0.01) {
+  if (light.g > 0.01 && u_hideFire < 1.0) {
     float f = flicker(p);
 
     if (light.r > 0.01) {
@@ -92,7 +101,7 @@ const FIRE_BORDER_PART = `
     }
 
     float lick = 0.6 + 0.4 * noise(v_uv * u_size / 8.0 - vec2(0.0, u_time * 3.0));
-    float glow = exp(-abs(edge) / 2.1) * min(heat * 1.75, 1.0) * lick;
+    float glow = exp(-abs(edge) / 2.1) * min(heat * 1.75, 1.0) * lick * (1.0 - u_hideFire);
 
     color = over(color, mix(EMBER_COLOR, FLAME_COLOR, glow), glow * 0.68);
   }
@@ -126,6 +135,17 @@ uniform float u_rain;
 uniform float u_fog;
 uniform float u_sun;
 uniform float u_gloom;
+uniform float u_gulls;
+// The gulls in the air, their flight is in gulls.ts
+const int GULL_COUNT = ${BUILDING_GULLS.count};
+uniform vec4 u_gull[GULL_COUNT];
+
+// 1 hides a part of the ambience, for the story to look at them one by one.
+// Unset is 0, everything shows.
+uniform float u_hideWater;
+uniform float u_hideSky;
+uniform float u_hideDust;
+uniform float u_hideFire;
 
 // Water ripple strength in CSS pixels, the sea is far away in most interiors
 const float WATER_AMPLITUDE = 1.25;
@@ -220,7 +240,7 @@ void main() {
   vec2 uv = (v_uv * u_size - (u_size - shown) * 0.5) / shown;
   vec2 p = uv * shown;
 
-  float skyMask = texture2D(u_sky, uv).a;
+  float skyMask = texture2D(u_sky, uv).a * (1.0 - u_hideSky);
   vec3 light = texture2D(u_light, uv).rgb;
   vec4 color = vec4(0.0);
 
@@ -236,17 +256,31 @@ const FULL_SHADER = buildShader("all")
 const SCENE_SHADER = buildShader("scene")
 const DUST_SHADER = buildShader("dust")
 
-const TEXTURES = ["u_image", "u_water", "u_sky", "u_light"] as const
+const TEXTURES = [
+  "u_image",
+  "u_water",
+  "u_sky",
+  "u_light",
+  "u_gullSprites",
+] as const
 
-// Textures in this order: image, water, sky, light. Uniforms from
-// getWeatherAmbience.
+// The gulls fly on every frame. A canvas that asks for arrays of its own, like
+// the dust over the intro card, takes their place.
+const withGulls = (renderer: AmbienceRenderer | null) => {
+  renderer?.setFrameArrays((time) => getGullArrays(time, BUILDING_GULLS))
+
+  return renderer
+}
+
+// Textures in this order: image, water, sky, light, the sheet of gulls.
+// Uniforms from getWeatherAmbience.
 export const createBuildingSceneRenderer = (canvas: HTMLCanvasElement) =>
-  createAmbienceRenderer(canvas, FULL_SHADER, TEXTURES)
+  withGulls(createAmbienceRenderer(canvas, FULL_SHADER, TEXTURES))
 
 // The same without the dust, which a canvas of its own draws over the intro
 // card
 export const createBuildingBackRenderer = (canvas: HTMLCanvasElement) =>
-  createAmbienceRenderer(canvas, SCENE_SHADER, TEXTURES)
+  withGulls(createAmbienceRenderer(canvas, SCENE_SHADER, TEXTURES))
 
 // Only the dust, for a canvas over the intro card. Same textures and uniforms.
 export const createBuildingDustRenderer = (canvas: HTMLCanvasElement) =>
