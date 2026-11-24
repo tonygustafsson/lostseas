@@ -1,9 +1,10 @@
-import { ScrollText } from "lucide-react"
+import { MoveHorizontal, ScrollText } from "lucide-react"
 import Image from "next/image"
-import { useEffect, useRef, useState } from "react"
+import { ReactNode, useEffect, useRef, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { getBuilding } from "@/constants/townMaps"
+import { cn } from "@/lib/utils"
 import { getLocationBackground, getLocationFires } from "@/utils/location"
 
 import BackToTown from "./BackToTown"
@@ -13,8 +14,10 @@ import {
   createBuildingDustRenderer,
   MAX_FIRES,
 } from "./buildingSceneShader"
+import { BUILDING_HEIGHT, BUILDING_WIDTH } from "./lightMask"
 import { useAmbienceCanvas } from "./useAmbienceCanvas"
 import { useBuildingMasks } from "./useBuildingMasks"
+import { usePanScene } from "./usePanScene"
 import { getWeatherAmbience } from "./weatherAmbience"
 
 export type HiddenPart = "water" | "sky" | "dust" | "fire" | "intro"
@@ -27,9 +30,27 @@ type Props = {
   hide?: HiddenPart[]
 }
 
+// As wide as the whole picture, at least the width of the scene, and as high
+const PanLayer = ({
+  className,
+  children,
+}: {
+  className?: string
+  children: ReactNode
+}) => (
+  <div
+    data-pan-layer
+    style={{ aspectRatio: `${BUILDING_WIDTH} / ${BUILDING_HEIGHT}` }}
+    className={cn("absolute top-0 left-0 h-full min-w-full", className)}
+  >
+    {children}
+  </div>
+)
+
 const BuildingScene = ({ town, location, weather, hide }: Props) => {
   const [expanded, setExpanded] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null)
+  const { rootRef, panRef, canPan, hasPanned, handlers } = usePanScene()
   const hasDescription = !!getBuilding(town, location)?.description
   const masks = useBuildingMasks(town, location)
   const isHidden = (part: HiddenPart) => (hide?.includes(part) ? 1 : 0)
@@ -60,12 +81,20 @@ const BuildingScene = ({ town, location, weather, hide }: Props) => {
 
     return { u_fires: { size: 4 as const, values } }
   }
-  // Measured when the card or scene changes size, not on every frame, as
-  // reading the layout that often can force the browser to redo it
+  // Measured on the box when the card or scene changes size, not on every
+  // frame, as reading the layout that often can force the browser to redo it.
+  // The canvas pans under the card, so the pan is added on every frame.
   const cardRect = useRef([0, 0, 0, 0])
-  const getCardArray = () => ({
-    u_card: { size: 4 as const, values: cardRect.current },
-  })
+  const getCardArray = () => {
+    const [x, y, width, height] = cardRect.current
+
+    return {
+      u_card: {
+        size: 4 as const,
+        values: [x + panRef.current, y, width, height],
+      },
+    }
+  }
   const dustRef = useAmbienceCanvas(
     imageRef,
     createBuildingDustRenderer,
@@ -81,7 +110,7 @@ const BuildingScene = ({ town, location, weather, hide }: Props) => {
 
   useEffect(() => {
     const card = cardRef.current
-    const scene = dustRef.current
+    const scene = rootRef.current
 
     if (!card || !scene) {
       cardRect.current = [0, 0, 0, 0]
@@ -102,37 +131,61 @@ const BuildingScene = ({ town, location, weather, hide }: Props) => {
     measure()
 
     return () => observer.disconnect()
-  }, [dustRef, introHidden, town])
+  }, [rootRef, introHidden, town])
 
   return (
-    <div className="bg-background relative flex min-h-[75dvh] flex-col justify-end overflow-hidden rounded-xl border lg:min-h-130">
-      <div className="absolute inset-0 opacity-80">
-        <Image
-          ref={imageRef}
-          src={getLocationBackground(town, location)}
-          fill
-          priority
-          loading="eager"
-          draggable={false}
-          alt="Background image"
-          className="object-cover select-none"
-        />
-
-        {town && (
-          <div
-            ref={ambienceRef}
-            aria-hidden
-            className="pointer-events-none absolute inset-0 motion-reduce:hidden"
+    <div
+      ref={rootRef}
+      {...handlers}
+      className="bg-background relative flex min-h-[75dvh] touch-pan-y flex-col justify-end overflow-hidden rounded-xl border lg:min-h-130"
+    >
+      {/* The layers are as wide as the picture, wider than a phone, and pan together */}
+      <PanLayer>
+        <div className="absolute inset-0 opacity-80">
+          <Image
+            ref={imageRef}
+            src={getLocationBackground(town, location)}
+            fill
+            priority
+            loading="eager"
+            draggable={false}
+            alt="Background image"
+            className="object-cover select-none"
           />
-        )}
-      </div>
+
+          {town && (
+            <div
+              ref={ambienceRef}
+              aria-hidden
+              className="pointer-events-none absolute inset-0 motion-reduce:hidden"
+            />
+          )}
+        </div>
+      </PanLayer>
 
       {town && (
+        <PanLayer className="pointer-events-none z-30">
+          <div
+            ref={dustRef}
+            aria-hidden
+            className="absolute inset-0 motion-reduce:hidden"
+          />
+        </PanLayer>
+      )}
+
+      {canPan && (
         <div
-          ref={dustRef}
           aria-hidden
-          className="pointer-events-none absolute inset-0 z-30 motion-reduce:hidden"
-        />
+          className={cn(
+            "text-parchment pointer-events-none absolute inset-x-0 top-4 z-20 flex justify-center transition-opacity duration-500",
+            hasPanned && "opacity-0"
+          )}
+        >
+          <div className="flex items-center gap-2 rounded-full bg-black/35 px-4 py-1 text-sm backdrop-blur-[2px]">
+            <MoveHorizontal className="size-4" />
+            Swipe to look around
+          </div>
+        </div>
       )}
 
       {!introHidden && (
