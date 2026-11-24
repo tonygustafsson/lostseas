@@ -311,6 +311,7 @@ export const createAmbienceRenderer = (
   let hasFailed = false
   let hasTextures = false
   let imageWidth = 0
+  let imageHeight = 0
   let frame = 0
   let compileFrame = 0
   let lastDraw = 0
@@ -444,7 +445,12 @@ export const createAmbienceRenderer = (
     // More pixels than the image has add no detail, they only cost GPU time.
     // Nor do more than the screen shows of a scaled up scene.
     const rect = canvas.getBoundingClientRect()
-    const imageRatio = imageWidth / canvas.clientWidth
+    // Image pixels per CSS pixel. A picture that covers a box taller than it
+    // is shown cropped and bigger, so the height can be what counts.
+    const imageRatio = Math.min(
+      imageWidth / canvas.clientWidth,
+      imageHeight / canvas.clientHeight
+    )
     const screenRatio =
       (rect.width / canvas.clientWidth) * Math.min(window.devicePixelRatio, 2)
     const pixelRatio = imageResolution
@@ -506,6 +512,7 @@ export const createAmbienceRenderer = (
         })
 
         imageWidth = sources[0].naturalWidth
+        imageHeight = sources[0].naturalHeight
         gl.uniform2f(
           imageSizeLocation,
           sources[0].naturalWidth,

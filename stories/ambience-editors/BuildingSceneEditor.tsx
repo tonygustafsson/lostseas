@@ -1,4 +1,4 @@
-import { PointerEvent, useEffect, useRef, useState } from "react"
+import { MouseEvent, PointerEvent, useEffect, useRef, useState } from "react"
 
 import { createBuildingSceneRenderer } from "@/components/game-ui/LocationScene/buildingSceneShader"
 import {
@@ -12,12 +12,12 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import {
-  type DustSource,
+  type BuildingAreas,
   type Fire,
-  getLocationAmbience,
   getLocationBackground,
-  getLocationDust,
   getLocationFires,
+  loadLocationAreas,
+  type Polygon,
   toSlug,
 } from "@/utils/location"
 
@@ -33,10 +33,11 @@ const MAX_RADIUS = 600
 // the polygon being drawn
 const CORNER_REACH = 10
 
-type Kind = "fires" | "dust"
+type Kind = "fires" | "water" | "sky"
+type AreaKind = Exclude<Kind, "fires">
 type Point = [number, number]
 
-type Data = { fires: Fire[]; dust: DustSource[] }
+type Data = { fires: Fire[]; areas: BuildingAreas }
 
 type FireDrag = {
   // -1 for a fire being made
@@ -51,7 +52,7 @@ type ShapeDrag = {
   // The corner being moved, or null for the whole polygon
   corner: number | null
   start: Point
-  origin: DustSource
+  origin: Polygon
 }
 
 type Props = {
@@ -68,9 +69,14 @@ const KINDS: { kind: Kind; label: string; help: string }[] = [
     help: "Click to place a fire, or drag to place one of the size you want. Drag a fire to move it and its edge to change the size. The light is strongest in the middle and fades out to the edge.",
   },
   {
-    kind: "dust",
-    label: "Dust",
-    help: "Click corners round a window or opening, click the first corner to close it. Drag a corner or the inside to move it. Dust floats from the polygon into the room and thins out as it goes. It only shows in sunny weather.",
+    kind: "water",
+    label: "Water",
+    help: "Click corners round water seen through a window or opening, click the first corner to close it. A polygon inside another is a hole. Drag a corner or the inside to move it, double-click an edge of the selected polygon to add a corner. The water ripples, and dust comes in through it.",
+  },
+  {
+    kind: "sky",
+    label: "Sky",
+    help: "Click corners round sky seen through a window or opening, click the first corner to close it. A polygon inside another is a hole, for bars and roofs. Drag a corner or the inside to move it, double-click an edge of the selected polygon to add a corner. Clouds, rain and fog show in it, and dust comes in through it. Clouds and dust show in sunny and cloudy weather.",
   },
 ]
 
@@ -93,6 +99,36 @@ const isInside = (polygon: number[], [x, y]: Point) => {
   return inside
 }
 
+// The edge of a polygon nearest to a point, as the corner it starts at, how far
+// away it is and the closest point on it
+const findEdge = (polygon: Polygon, [x, y]: Point) => {
+  let best: { corner: number; distance: number; point: Point } | null = null
+  const corners = polygon.length / 2
+
+  for (let i = 0; i < corners; i++) {
+    const j = (i + 1) % corners
+    const [ax, ay, bx, by] = [
+      polygon[i * 2],
+      polygon[i * 2 + 1],
+      polygon[j * 2],
+      polygon[j * 2 + 1],
+    ]
+    const [dx, dy] = [bx - ax, by - ay]
+    const length = dx * dx + dy * dy
+    const t = length
+      ? Math.min(1, Math.max(0, ((x - ax) * dx + (y - ay) * dy) / length))
+      : 0
+    const [px, py] = [ax + t * dx, ay + t * dy]
+    const distance = Math.hypot(x - px, y - py)
+
+    if (!best || distance < best.distance) {
+      best = { corner: i, distance, point: [Math.round(px), Math.round(py)] }
+    }
+  }
+
+  return best
+}
+
 const movePolygon = (
   origin: number[],
   corner: number | null,
@@ -105,18 +141,25 @@ const movePolygon = (
       : value
   )
 
-// Place the light sources of a building picture, fires and dust. A fire is a
-// circle with light that is strongest in the middle and fades out to the edge.
-// Dust floats in from polygons round windows and openings. Saving writes
-// constants/buildings/fires.json and dust.json. A building without either
-// keeps its light mask picture, with one the picture is not used any more.
-const BuildingSceneEditor = ({ town, location, weather, zoom }: Props) => {
+// Place what makes a building picture alive: fires, and the water and sky seen
+// through its windows. A fire is a circle with light that is strongest in the
+// middle and fades out to the edge. Water and sky are polygons, even-odd so a
+// polygon inside another is a hole. Dust comes in through the water and the
+// sky. Saving writes constants/buildings/fires.json and the file of the town
+// in constants/buildings/areas.
+const Editor = ({
+  town,
+  location,
+  weather,
+  zoom,
+  savedAreas,
+}: Props & { savedAreas: BuildingAreas }) => {
   const imageRef = useRef<HTMLImageElement>(null)
   const svgRef = useRef<SVGSVGElement>(null)
   const [kind, setKind] = useState<Kind>("fires")
   const [data, setData] = useState<Data>(() => ({
     fires: [...getLocationFires(town, location)],
-    dust: [...getLocationDust(town, location)],
+    areas: savedAreas,
   }))
   const [saved, setSaved] = useState(data)
   const [history, setHistory] = useState<Data[]>([])
@@ -128,19 +171,19 @@ const BuildingSceneEditor = ({ town, location, weather, zoom }: Props) => {
   const [points, setPoints] = useState<Point[]>([])
   const [pointer, setPointer] = useState<Point | null>(null)
   const [shapeDrag, setShapeDrag] = useState<ShapeDrag | null>(null)
-  const [draftShape, setDraftShape] = useState<DustSource | null>(null)
+  const [draftShape, setDraftShape] = useState<Polygon | null>(null)
   const [showShapes, setShowShapes] = useState(true)
-  const [showGuide, setShowGuide] = useState(false)
   const [status, setStatus] = useState("")
-  const ambience = getLocationAmbience(town, location)!
+  const isArea = kind !== "fires"
   const changed = {
     fires: JSON.stringify(data.fires) !== JSON.stringify(saved.fires),
-    dust: JSON.stringify(data.dust) !== JSON.stringify(saved.dust),
+    water: data.areas.water !== saved.areas.water,
+    sky: data.areas.sky !== saved.areas.sky,
   }
-  const isChanged = changed.fires || changed.dust
+  const isChanged = changed.fires || changed.water || changed.sky
 
   // The scene follows what is placed, not what is being dragged
-  const masks = useBuildingMasks(town, location, data.fires, data.dust)
+  const masks = useBuildingMasks(town, location, data.fires, data.areas)
   const ambienceRef = useAmbienceCanvas(
     imageRef,
     createBuildingSceneRenderer,
@@ -152,6 +195,9 @@ const BuildingSceneEditor = ({ town, location, weather, zoom }: Props) => {
     setHistory([...history, data])
     setData(next)
   }
+
+  const setAreas = (next: Polygon[]) =>
+    commit({ ...data, areas: { ...data.areas, [kind]: next } })
 
   const undo = () => {
     const previous = history.at(-1)
@@ -171,13 +217,17 @@ const BuildingSceneEditor = ({ town, location, weather, zoom }: Props) => {
       return
     }
 
-    if (selected !== null) {
-      commit({
-        ...data,
-        [kind]: data[kind].filter((_, i) => i !== selected),
-      })
-      setSelected(null)
+    if (selected === null) {
+      return
     }
+
+    if (isArea) {
+      setAreas(data.areas[kind].filter((_, i) => i !== selected))
+    } else {
+      commit({ ...data, fires: data.fires.filter((_, i) => i !== selected) })
+    }
+
+    setSelected(null)
   }
 
   const chooseKind = (next: Kind) => {
@@ -249,11 +299,12 @@ const BuildingSceneEditor = ({ town, location, weather, zoom }: Props) => {
   }
 
   // A corner of a polygon within reach of the pointer, else the last polygon
-  // the pointer is inside
+  // the pointer is inside, so a hole is picked before what it is a hole in
   const hitShape = (point: Point) => {
     const range = reach(CORNER_REACH)
+    const polygons = data.areas[kind as AreaKind]
 
-    for (const [index, polygon] of data.dust.entries()) {
+    for (const [index, polygon] of polygons.entries()) {
       for (let i = 0; i < polygon.length; i += 2) {
         if (
           Math.hypot(point[0] - polygon[i], point[1] - polygon[i + 1]) <= range
@@ -263,9 +314,43 @@ const BuildingSceneEditor = ({ town, location, weather, zoom }: Props) => {
       }
     }
 
-    const index = data.dust.findLastIndex((polygon) => isInside(polygon, point))
+    // The edge of the selected polygon counts too, so double-clicking it to add
+    // a corner does not start a new polygon
+    if (selected !== null && polygons[selected]) {
+      const edge = findEdge(polygons[selected], point)
+
+      if (edge && edge.distance <= range) {
+        return { index: selected, corner: null }
+      }
+    }
+
+    const index = polygons.findLastIndex((polygon) => isInside(polygon, point))
 
     return index >= 0 ? { index, corner: null } : null
+  }
+
+  // Double-click an edge of the selected polygon to add a corner there
+  const handleDoubleClick = (event: MouseEvent<SVGSVGElement>) => {
+    if (!isArea || selected === null || points.length) {
+      return
+    }
+
+    const polygon = data.areas[kind][selected]
+    const edge = polygon && findEdge(polygon, toPicture(event))
+
+    if (!edge || edge.distance > reach(CORNER_REACH)) {
+      return
+    }
+
+    const at = (edge.corner + 1) * 2
+
+    setAreas(
+      data.areas[kind].map((existing, i) =>
+        i === selected
+          ? [...existing.slice(0, at), ...edge.point, ...existing.slice(at)]
+          : existing
+      )
+    )
   }
 
   const handlePointerDown = (event: PointerEvent<SVGSVGElement>) => {
@@ -274,15 +359,15 @@ const BuildingSceneEditor = ({ town, location, weather, zoom }: Props) => {
 
     event.currentTarget.setPointerCapture(event.pointerId)
 
-    if (kind === "dust") {
+    if (isArea) {
       // Clicking the first corner closes the polygon being drawn
       if (points.length) {
         if (
           points.length >= 3 &&
           Math.hypot(x - points[0][0], y - points[0][1]) <= reach(CORNER_REACH)
         ) {
-          commit({ ...data, dust: [...data.dust, points.flat()] })
-          setSelected(data.dust.length)
+          setAreas([...data.areas[kind], points.flat()])
+          setSelected(data.areas[kind].length)
           setPoints([])
         } else {
           setPoints([...points, point])
@@ -298,9 +383,9 @@ const BuildingSceneEditor = ({ town, location, weather, zoom }: Props) => {
         setShapeDrag({
           ...target,
           start: point,
-          origin: data.dust[target.index],
+          origin: data.areas[kind][target.index],
         })
-        setDraftShape(data.dust[target.index])
+        setDraftShape(data.areas[kind][target.index])
       } else {
         setSelected(null)
         setPoints([point])
@@ -329,7 +414,7 @@ const BuildingSceneEditor = ({ town, location, weather, zoom }: Props) => {
   const handlePointerMove = (event: PointerEvent<SVGSVGElement>) => {
     const [x, y] = toPicture(event)
 
-    if (kind === "dust") {
+    if (isArea) {
       setPointer([x, y])
 
       if (shapeDrag) {
@@ -375,18 +460,17 @@ const BuildingSceneEditor = ({ town, location, weather, zoom }: Props) => {
   }
 
   const handlePointerUp = () => {
-    if (kind === "dust") {
+    if (isArea) {
       if (
         shapeDrag &&
         draftShape &&
         JSON.stringify(draftShape) !== JSON.stringify(shapeDrag.origin)
       ) {
-        commit({
-          ...data,
-          dust: data.dust.map((polygon, i) =>
+        setAreas(
+          data.areas[kind].map((polygon, i) =>
             i === shapeDrag.index ? draftShape : polygon
-          ),
-        })
+          )
+        )
       }
 
       setShapeDrag(null)
@@ -420,8 +504,14 @@ const BuildingSceneEditor = ({ town, location, weather, zoom }: Props) => {
   const save = async () => {
     setStatus("Saving…")
 
+    const payloads = {
+      fires: { kind: "fires", data: data.fires },
+      water: { kind: "buildingWater", data: data.areas.water },
+      sky: { kind: "buildingSky", data: data.areas.sky },
+    }
+
     try {
-      for (const name of ["fires", "dust"] as const) {
+      for (const name of ["fires", "water", "sky"] as const) {
         if (!changed[name]) {
           continue
         }
@@ -429,10 +519,9 @@ const BuildingSceneEditor = ({ town, location, weather, zoom }: Props) => {
         const response = await fetch(SAVE_PATH, {
           method: "POST",
           body: JSON.stringify({
-            kind: name,
+            ...payloads[name],
             town,
             variant: toSlug(location),
-            data: data[name],
           }),
         })
         const result = await response.json()
@@ -457,14 +546,16 @@ const BuildingSceneEditor = ({ town, location, weather, zoom }: Props) => {
       : drag?.mode === "create" && draft
         ? [...data.fires, draft]
         : data.fires
-  const shownDust =
-    draftShape && shapeDrag
-      ? data.dust.map((polygon, i) =>
+  const shownPolygons = isArea
+    ? draftShape && shapeDrag
+      ? data.areas[kind].map((polygon, i) =>
           i === shapeDrag.index ? draftShape : polygon
         )
-      : data.dust
-  const count = data[kind].length
-  const selectedItem = selected !== null ? data[kind][selected] : undefined
+      : data.areas[kind]
+    : []
+  const count = isArea ? data.areas[kind].length : data.fires.length
+  const selectedFire =
+    !isArea && selected !== null ? data.fires[selected] : undefined
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -510,42 +601,30 @@ const BuildingSceneEditor = ({ town, location, weather, zoom }: Props) => {
           Back to saved
         </Button>
 
-        {[
-          [
-            kind === "fires" ? "Circles" : "Polygons",
-            showShapes,
-            setShowShapes,
-          ],
-          ["Old light picture", showGuide, setShowGuide],
-        ].map(([label, checked, onChange]) => (
-          <div key={label as string} className="flex items-center gap-2">
-            <Switch
-              id={`building-editor-${label}`}
-              checked={checked as boolean}
-              onCheckedChange={onChange as (value: boolean) => void}
-            />
-            <Label htmlFor={`building-editor-${label}`}>
-              {label as string}
-            </Label>
-          </div>
-        ))}
+        <div className="flex items-center gap-2">
+          <Switch
+            id="building-editor-shapes"
+            checked={showShapes}
+            onCheckedChange={setShowShapes}
+          />
+
+          <Label htmlFor="building-editor-shapes">
+            {isArea ? "Polygons" : "Circles"}
+          </Label>
+        </div>
       </div>
 
       <p className="text-muted-foreground text-sm">
         {KINDS.find((option) => option.kind === kind)!.help} Delete removes the
         selected one (the last corner of a polygon being drawn), Escape
-        deselects or stops a polygon, Ctrl+Z undoes. Without fires or dust the
-        building keeps its old light picture, with one the picture is not used
-        any more.
+        deselects or stops a polygon, Ctrl+Z undoes.
       </p>
 
       {/* Always one line high, so the picture never moves under the pointer */}
       <div className="flex h-9 items-center gap-4 overflow-hidden text-sm whitespace-nowrap">
         <span className="text-muted-foreground">
-          {count} {kind === "fires" ? "fires" : "polygons"}
-          {selectedItem &&
-            kind === "fires" &&
-            `, selected [${selectedItem.join(", ")}]`}
+          {count} {isArea ? "polygons" : "fires"}
+          {selectedFire && `, selected [${selectedFire.join(", ")}]`}
           {isChanged && ", not saved"}
         </span>
 
@@ -574,16 +653,6 @@ const BuildingSceneEditor = ({ town, location, weather, zoom }: Props) => {
             className="pointer-events-none absolute inset-0"
           />
 
-          {showGuide && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={ambience.light}
-              alt=""
-              draggable={false}
-              className="pointer-events-none absolute inset-0 size-full opacity-60 mix-blend-screen"
-            />
-          )}
-
           <svg
             ref={svgRef}
             viewBox={`0 0 ${BUILDING_WIDTH} ${BUILDING_HEIGHT}`}
@@ -593,9 +662,10 @@ const BuildingSceneEditor = ({ town, location, weather, zoom }: Props) => {
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
             onPointerCancel={handlePointerUp}
+            onDoubleClick={handleDoubleClick}
           >
             {showShapes &&
-              kind === "fires" &&
+              !isArea &&
               shownFires.map(([x, y, radius], i) => (
                 <g
                   key={i}
@@ -622,36 +692,50 @@ const BuildingSceneEditor = ({ town, location, weather, zoom }: Props) => {
                 </g>
               ))}
 
-            {showShapes &&
-              kind === "dust" &&
-              shownDust.map((polygon, i) => (
-                <g
-                  key={i}
-                  className={i === selected ? "stroke-gold" : "stroke-warning"}
-                >
-                  <polygon
-                    points={polygon.join(" ")}
+            {showShapes && isArea && (
+              <>
+                {/* Even-odd, like the mask, so holes show as holes */}
+                <path
+                  d={shownPolygons
+                    .map((polygon) => `M${polygon.join(" ")}Z`)
+                    .join("")}
+                  fillRule="evenodd"
+                  className="fill-warning/30"
+                />
+
+                {shownPolygons.map((polygon, i) => (
+                  <g
+                    key={i}
                     className={
-                      i === selected ? "fill-gold/30" : "fill-warning/30"
+                      i === selected ? "stroke-gold" : "stroke-warning"
                     }
-                    strokeWidth={i === selected ? 4 : 3}
-                    vectorEffect="non-scaling-stroke"
-                  />
+                  >
+                    <polygon
+                      points={polygon.join(" ")}
+                      fill="none"
+                      strokeWidth={i === selected ? 4 : 2}
+                      vectorEffect="non-scaling-stroke"
+                    />
 
-                  {i === selected &&
-                    Array.from({ length: polygon.length / 2 }, (_, corner) => (
-                      <circle
-                        key={corner}
-                        cx={polygon[corner * 2]}
-                        cy={polygon[corner * 2 + 1]}
-                        r={6}
-                        className="fill-gold stroke-none"
-                      />
-                    ))}
-                </g>
-              ))}
+                    {i === selected &&
+                      Array.from(
+                        { length: polygon.length / 2 },
+                        (_, corner) => (
+                          <circle
+                            key={corner}
+                            cx={polygon[corner * 2]}
+                            cy={polygon[corner * 2 + 1]}
+                            r={6}
+                            className="fill-gold stroke-none"
+                          />
+                        )
+                      )}
+                  </g>
+                ))}
+              </>
+            )}
 
-            {kind === "dust" && points.length > 0 && (
+            {isArea && points.length > 0 && (
               <g className="stroke-gold">
                 <polyline
                   points={[...points, ...(pointer ? [pointer] : [])]
@@ -677,6 +761,24 @@ const BuildingSceneEditor = ({ town, location, weather, zoom }: Props) => {
         </div>
       </div>
     </div>
+  )
+}
+
+// The polygons of a building are loaded the way the game loads them, before
+// the editor starts with them
+const BuildingSceneEditor = (props: Props) => {
+  const [areas, setAreas] = useState<BuildingAreas>()
+
+  useEffect(() => {
+    loadLocationAreas(props.town, props.location).then((loaded) =>
+      setAreas(loaded ?? { sky: [], water: [] })
+    )
+  }, [props.town, props.location])
+
+  return areas ? (
+    <Editor {...props} savedAreas={areas} />
+  ) : (
+    <p className="text-muted-foreground p-4 text-sm">Loading…</p>
   )
 }
 

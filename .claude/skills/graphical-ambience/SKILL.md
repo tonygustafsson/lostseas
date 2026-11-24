@@ -10,11 +10,10 @@ life on top of them: the sea ripples, clouds drift, flags wave, people, cats and
 rats walk the streets, gulls fly past, and rain or fog changes the mood. The
 shader only knows where things are from the masks and data below.
 
-The harbours have no mask pictures any more, everything they need is JSON data
-(plus the sprite sheet of walkers). Only the building interiors still use PNG
-masks. Nothing is generated from the pictures. The data is made by hand, in the
-mask editor, or by looking at the picture and writing it (see the last
-section).
+Neither the harbours nor the building interiors have mask pictures any more,
+everything they need is JSON data (plus the sprite sheet of walkers). Nothing
+is generated from the pictures. The data is made by hand, in the mask editors,
+or by looking at the picture and writing it (see the last section).
 
 ## Where the code is
 
@@ -30,59 +29,63 @@ section).
 - `constants/townMaps.ts` holds the picture sizes (desktop 2172x724, mobile
   941x1672) and gives each town's masks and data.
 
-## Image masks for building interiors (PNG files in `public/img`)
+## Building interiors (`constants/buildings`)
 
-Only the building interiors use mask pictures, read as textures. There is one
-per town and building, `<town>/<building>.png` (see `getLocationAmbience` in
-`utils/location.ts`). The channels carry the meaning.
-
-- `location-sky-masks` and `location-water-masks`: the sky and sea seen through
-  windows and arches.
-- `location-light-masks`: red is a flame or lantern glass, green the glow round
-  it and blue the dust zone.
-
-The harbour pictures have `desktop` and `mobile` variants, they are different
-pictures with different data.
-
-A building with fires in `constants/buildings/fires.json` does not use its
-light PNG, see the next section. Buildings without fires work as described
-above.
-
-## Fires and dust in buildings (`constants/buildings`)
-
-Both are per town and building slug (`tavern`, `city-hall`), in pixels of the
-building picture (1605x980).
+Everything is per town and building slug (`tavern`, `city-hall`), in pixels of
+the building picture (1605x980). The shader (`buildingSceneShader.ts`) reads
+three mask textures, water, sky and light. They are all drawn in the browser by
+`useBuildingMasks`, which gives `BuildingScene` its masks.
 
 - `fires.json`, circles `[x, y, radius]`. Light is strongest in the middle and
   fades to nothing at the radius.
-- `dust.json`, polygons `[x, y, x, y, ...]` round windows and openings. Dust
-  floats out of them into the room and thins as it goes, so it also shows
-  where the light is dim. It only shows in sunny weather (`u_sun`).
+- `areas/<town>.json`, per building `sky` and `water`, lists of polygons
+  `[x, y, x, y, ...]` for the sky and the water seen through windows and
+  arches. Even-odd, so a polygon inside another is a hole (window bars, roofs).
+  They are one file for each town, loaded on demand by `loadLocationAreas`
+  (`utils/location.ts`), because all 96 buildings are a lot of numbers. Do not
+  import them statically. `preloadBuildingScene` starts the load.
+- Dust has no data of its own. It comes in through the sky and water polygons
+  (`getDustSources` in `lightMask.ts`, bits under `MIN_DUST_SOURCE` are left
+  out) and only shows in sunny weather (`u_sun`).
 
-`makeLightMaskUrl` (`lightMask.ts`) draws both in the browser into a light mask
-in the same channels as the PNGs: green glow and red flame (the middle 40 % of
-a fire, where the shader brightens the picture) for fires, and blue for dust.
-Dust is the polygon at full strength plus copies grown and blurred a little
-more each (`DUST_SPREAD`), so the spread is tuned there. The shader
-(`buildingSceneShader.ts`) puts a mote in fewer grid cells where the dust is
-weaker, `DUST_DENSITY` is the share of cells in full dust, so that is the knob
-for how much dust there is. `useBuildingMasks`
-gives `BuildingScene` its masks, the generated light when a building has fires
-or dust, and the three PNGs when it has neither. A building with only one of
-the two has none of the other, so give both.
+`drawAreaMask` (`areaMask.ts`, shared with the harbour, which uses the
+`makeAreaMaskUrl` version) draws sky and water at half size, not blurred for
+buildings (`BUILDING_AREA`), the texture filtering softens the edge.
+`drawLightMask` (`lightMask.ts`) draws the light mask: green glow and red flame (the middle 40 % of a fire, where the
+shader brightens the picture) for fires, and blue for dust. Blue here is only a
+channel of the mask, the shader does not look at the colour of the picture. Dust is the polygon at full strength plus copies grown and
+blurred a little more each (`DUST_SPREAD`), so the spread is tuned there. The
+shader puts a mote in fewer grid cells where the dust is weaker,
+`DUST_DENSITY` is the share of cells in full dust, so that is the knob for how
+much dust there is.
 
-The first dust polygons were made from the sky and water masks (the openings
-where outdoors shows), which is why they follow window panes and sea views.
-Fix them by hand in the editor.
+For speed the masks go to the GPU as canvases (`CanvasMask` in
+`useAmbienceCanvas.ts`), never encoded to a picture and decoded again, which
+was most of the cost of entering a building. The dust is drawn at a quarter of
+the size because it is blurred anyway, and the fog in the shader uses three
+layers of noise (`mist`), five made it twice as slow as any other weather.
+`preloadBuildingScene` (called when a building is hovered in the harbour) loads
+the polygons and builds the shader in the background (`warmUpBuildingSceneShader`).
 
-Place both in the `Ambience editors/Building` story
-(`stories/ambience-editors/BuildingSceneEditor.tsx`), Fires and Dust tabs.
-Fires: click or drag to place, drag to move, drag the edge to resize. Dust:
-click corners, click the first one to close, drag a corner or the inside to
-move. The "Old light picture" switch shows the PNG as a guide. Save writes the
-JSON through `.storybook/maskEditorServer.ts` (kinds `fires` and `dust`, the
-building slug in place of the variant, restart Storybook after changing that
-file).
+The polygons were first made automatically from the building pictures and the
+mask PNGs that used to be here (deleted, they are in the git history). The sky
+was traced from the PNGs. The water was found from the picture, because the
+old water masks reached over the shore, the town and distant hills: sea colour
+(hue 178 to 225 degrees, saturation 0.58 and up, value 0.45 and up, never
+where the sky is), only where it connects to the water the old masks marked.
+Treat them as a first draft. Sky, hills and sea are all blue, so some sea is
+missing (the left window of the Fort-Louis city hall) and a bit of coast can
+slip in. Fix those in the editor. For a new building, draw them by hand.
+
+Edit all of it in the `Ambience editors/Building` story
+(`stories/ambience-editors/BuildingSceneEditor.tsx`), tabs Fires, Water and
+Sky. Fires: click or drag to place, drag to move, drag the edge to resize.
+Water and sky: click corners, click the first one to close, drag a corner or
+the inside to move, double-click an edge of the selected polygon to add a
+corner, a polygon drawn inside another is a hole. Save writes the JSON through
+`.storybook/maskEditorServer.ts` (kinds `fires`, `buildingSky` and
+`buildingWater`, the building slug in place of the variant, restart Storybook
+after changing that file).
 
 ## JSON data (`constants/harbor`)
 
@@ -104,7 +107,7 @@ pixels of the original harbour picture, not of the copy the browser loads
   the one with the lower ground wins.
 - `water.json`, the water that ripples, per town and variant a list of polygons
   `[x, y, x, y, ...]`. The game draws them into a mask in the browser
-  (`makeAreaMaskUrl` in `frontMask.ts`) at half size, slightly blurred. Even-odd,
+  (`makeAreaMaskUrl` in `areaMask.ts`) at half size, slightly blurred. Even-odd,
   so a polygon inside another is a hole (boats, piers). Water that reaches the
   edge of the picture carries on past it, so the edge is not blurred. The
   ripples, the ripple edge guard and the fog read this mask.
@@ -152,6 +155,16 @@ seconds to build on a Windows GPU.
 - `walkerLayer` in `townMapShader.ts` is one loop over the list that looks up the
   sheet and hides walkers behind the front mask. The sheet is texture
   `u_walkSprites`, last in `TEXTURES`.
+
+## Keeping it quick to run
+
+The renderer draws only while on screen, at most 30 times a second, only the
+part of the canvas the screen shows, and with no more canvas pixels than the
+picture has in what is shown. That last one counts the picture the way it is
+scaled to cover its box, a building on a phone is cropped to about a third of
+its width in a tall box, so the height decides (`imageRatio` in
+`ambienceRenderer.ts`). Counting the width only made the phone canvas 80 %
+bigger than the picture it showed.
 
 ## Keeping the shader quick to build
 

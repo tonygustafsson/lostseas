@@ -4,7 +4,11 @@
 // and fires. The weather shows in the sky outside, and a rainy day makes the
 // room a little darker.
 
-import { createAmbienceRenderer, SHADER_COMMON } from "./ambienceRenderer"
+import {
+  createAmbienceRenderer,
+  SHADER_COMMON,
+  warmUpShader,
+} from "./ambienceRenderer"
 
 const FRAGMENT_SHADER = `
 ${SHADER_COMMON}
@@ -32,6 +36,22 @@ const vec3 DUST_COLOR = vec3(1.0, 0.96, 0.86);
 const float DUST_DENSITY = 0.19;
 const vec3 FOG_COLOR = vec3(0.86, 0.88, 0.9);
 const vec3 GLOOM_COLOR = vec3(0.04, 0.05, 0.08);
+
+// Mist is soft, a few layers of noise are enough and the fog was the most
+// expensive weather with five
+float mist(vec2 p) {
+  float value = 0.0;
+  float amplitude = 0.5;
+
+  for (int i = 0; i < 3; i++) {
+    value += amplitude * noise(p);
+    p = p * 2.03 + vec2(1.7, 9.2);
+    amplitude *= 0.5;
+  }
+
+  // Three layers add up to less than the five of fbm, scaled to the same range
+  return value * 1.107;
+}
 
 // Between -1 and 1. Lights a little apart get their own rhythm: a slow
 // breathing, a quick flutter and now and then a short dip.
@@ -94,8 +114,8 @@ void main() {
   }
 
   if (outside > 0.01 && u_fog > 0.0) {
-    float mist = fbm(p / shown.x * vec2(4.0, 8.0) + vec2(-u_time * 0.04, 0.0));
-    color = over(color, FOG_COLOR, min(0.6 + 0.4 * mist, 0.95) * u_fog * outside);
+    float density = mist(p / shown.x * vec2(4.0, 8.0) + vec2(-u_time * 0.04, 0.0));
+    color = over(color, FOG_COLOR, min(0.6 + 0.4 * density, 0.95) * u_fog * outside);
   }
 
   if (skyMask > 0.01 && u_rain > 0.0) {
@@ -141,3 +161,7 @@ const TEXTURES = ["u_image", "u_water", "u_sky", "u_light"] as const
 // getWeatherAmbience.
 export const createBuildingSceneRenderer = (canvas: HTMLCanvasElement) =>
   createAmbienceRenderer(canvas, FRAGMENT_SHADER, TEXTURES)
+
+// Builds the shader in the background before a building is entered, so the
+// scene gets it ready. See warmUpShader.
+export const warmUpBuildingSceneShader = () => warmUpShader(FRAGMENT_SHADER)

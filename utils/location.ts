@@ -1,4 +1,3 @@
-import dustConfig from "@/constants/buildings/dust.json"
 import firesConfig from "@/constants/buildings/fires.json"
 import { NATIONS, TOWNS } from "@/constants/locations"
 
@@ -37,50 +36,42 @@ export const getLocationBackground = (
   location: Character["location"]
 ) => `/img/location/${town}/${toSlug(location)}.png`
 
-export type LocationAmbience = {
-  sky: string
-  water: string
-  light: string
-}
-
-// Sky, water and light masks used to animate a building interior
-export const getLocationAmbience = (
-  town: Character["town"],
-  location: Character["location"]
-): LocationAmbience | undefined => {
-  if (!town) return undefined
-
-  const path = `${town}/${toSlug(location)}.png`
-
-  return {
-    sky: `/img/location-sky-masks/${path}`,
-    water: `/img/location-water-masks/${path}`,
-    light: `/img/location-light-masks/${path}`,
-  }
-}
-
 // A fire is a circle in pixels of the building picture, [x, y, radius]
 export type Fire = [x: number, y: number, radius: number]
 
 const FIRES = firesConfig as unknown as Record<string, Record<string, Fire[]>>
 const NO_FIRES: Fire[] = []
 
-// The fires of a building. Without any, its light mask picture is used instead.
+// The fires of a building, the lights that flicker in its picture
 export const getLocationFires = (
   town: Character["town"],
   location: Character["location"]
 ) => (town && FIRES[town]?.[toSlug(location)]) || NO_FIRES
 
-// A dust source is a polygon round a window or opening, [x, y, x, y, ...] in
-// pixels of the building picture. Dust floats from it into the room.
-export type DustSource = number[]
+// A polygon, [x, y, x, y, ...] in pixels of the building picture. Polygons
+// inside polygons are holes.
+export type Polygon = number[]
 
-const DUST = dustConfig as Record<string, Record<string, DustSource[]>>
-const NO_DUST: DustSource[] = []
+// The sky and the water seen through the windows and arches of a building
+export type BuildingAreas = { sky: Polygon[]; water: Polygon[] }
 
-// The dust sources of a building. Without any, its light mask picture decides
-// where dust floats.
-export const getLocationDust = (
+// The sky and water polygons of a building, from the file of its town in
+// constants/buildings/areas. Loaded when a building is entered, not with the
+// rest of the game, because they are a lot of numbers for all 96 buildings.
+// Undefined when there are none, then there is no sky or water to animate.
+export const loadLocationAreas = async (
   town: Character["town"],
   location: Character["location"]
-) => (town && DUST[town]?.[toSlug(location)]) || NO_DUST
+): Promise<BuildingAreas | undefined> => {
+  if (!town) {
+    return undefined
+  }
+
+  try {
+    const areas = await import(`../constants/buildings/areas/${town}.json`)
+
+    return areas.default[toSlug(location)]
+  } catch {
+    return undefined
+  }
+}

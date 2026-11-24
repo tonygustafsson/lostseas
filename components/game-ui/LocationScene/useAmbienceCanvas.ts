@@ -13,6 +13,10 @@ import {
 // dependency
 const SEPARATOR = "|"
 
+// A mask that is drawn on a canvas, which goes to the GPU as it is. The key
+// says which one it is, and is new when the canvas is.
+export type CanvasMask = { key: string; canvas: HTMLCanvasElement }
+
 type Options = {
   mobileMasks?: string[]
   // Undefined until known, like the weather before the player has loaded
@@ -39,14 +43,28 @@ type Options = {
 export const useAmbienceCanvas = (
   imageRef: RefObject<HTMLImageElement | null>,
   createRenderer: (canvas: HTMLCanvasElement) => AmbienceRenderer | null,
-  masks: string[] | undefined,
+  masks: (string | CanvasMask)[] | undefined,
   { mobileMasks, uniforms, arrays, frameArrays }: Options
 ) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const rendererRef = useRef<AmbienceRenderer | null>(null)
-  const masksKey = masks?.join(SEPARATOR)
+  const canvasesRef = useRef(new Map<string, HTMLCanvasElement>())
+  const masksKey = masks
+    ?.map((mask) => (typeof mask === "string" ? mask : mask.key))
+    .join(SEPARATOR)
   const mobileMasksKey = mobileMasks?.join(SEPARATOR)
   const hasUniforms = !!uniforms
+
+  // Before the effect below, which looks the canvases up by their key
+  useEffect(() => {
+    canvasesRef.current.clear()
+
+    masks?.forEach((mask) => {
+      if (typeof mask !== "string") {
+        canvasesRef.current.set(mask.key, mask.canvas)
+      }
+    })
+  }, [masks])
 
   useEffect(() => {
     const container = containerRef.current
@@ -80,7 +98,7 @@ export const useAmbienceCanvas = (
 
     let isCancelled = false
     let latestLoad = 0
-    const maskLoads = new Map<string, Promise<HTMLImageElement>>()
+    const maskLoads = new Map<string, Promise<TexImageSource>>()
 
     const getMaskSources = () => {
       const isDesktop = window.matchMedia(TOWN_MAP_DESKTOP_MEDIA).matches
@@ -92,7 +110,10 @@ export const useAmbienceCanvas = (
 
     const loadMask = (src: string) => {
       if (!maskLoads.has(src)) {
-        maskLoads.set(src, loadImage(src))
+        // A canvas is ready as it is, no file to fetch and decode
+        const canvas = canvasesRef.current.get(src)
+
+        maskLoads.set(src, canvas ? Promise.resolve(canvas) : loadImage(src))
       }
 
       return maskLoads.get(src)!
@@ -114,9 +135,9 @@ export const useAmbienceCanvas = (
       // fresh copy of the same file has its real size
       Promise.all([
         loadImage(image.currentSrc),
-        ...getMaskSources().map(loadMask),
+        Promise.all(getMaskSources().map(loadMask)),
       ])
-        .then(([picture, ...textures]) => {
+        .then(([picture, textures]) => {
           if (!isCancelled && load === latestLoad) {
             renderer.setTextures([picture, ...textures])
           }

@@ -70,13 +70,21 @@ const KINDS = {
       config[town] = { ...config[town], [location]: data }
     },
   },
-  // Polygons round the openings dust floats in from, in a building. The
+  // Polygons round the sky and the water seen from inside a building. They
+  // are in a file for each town, which the game loads on demand, and the
   // location takes the place of the variant.
-  dust: {
-    file: "../buildings/dust.json",
+  buildingSky: {
+    file: "../buildings/areas/{town}.json",
     size: 0,
     set: (config: Config, town: string, location: string, data: unknown) => {
-      config[town] = { ...config[town], [location]: data }
+      config[location] = { ...config[location], sky: data }
+    },
+  },
+  buildingWater: {
+    file: "../buildings/areas/{town}.json",
+    size: 0,
+    set: (config: Config, town: string, location: string, data: unknown) => {
+      config[location] = { ...config[location], water: data }
     },
   },
   // Street levels, [x start, x end, feet, half width, person size]
@@ -90,6 +98,9 @@ const KINDS = {
 } as const
 
 const BUILDINGS = ["bank", "city-hall", "market", "shipyard", "shop", "tavern"]
+
+// Kinds that belong to a building, the location takes the place of the variant
+const BUILDING_KINDS = { fires: true, buildingSky: true, buildingWater: true }
 
 type Config = Record<string, any>
 
@@ -108,7 +119,7 @@ const save = async (body: string, root: string) => {
     !settings ||
     !/^[a-z-]+$/.test(town) ||
     !(
-      kind === "fires" || kind === "dust" ? BUILDINGS : ["desktop", "mobile"]
+      Object.hasOwn(BUILDING_KINDS, kind) ? BUILDINGS : ["desktop", "mobile"]
     ).includes(variant) ||
     !Array.isArray(data) ||
     !data.every(
@@ -125,11 +136,17 @@ const save = async (body: string, root: string) => {
     throw new Error("Not a kind, a town, a variant and a list of numbers")
   }
 
-  const path = join(root, FOLDER, settings.file)
+  const path = join(root, FOLDER, settings.file.replace("{town}", town))
   const config = JSON.parse(await readFile(path, "utf8"))
 
   if (
-    !["sprites", "water", "sky", "fires", "dust"].includes(kind) &&
+    ![
+      "sprites",
+      "water",
+      "sky",
+      "fires",
+      ...Object.keys(BUILDING_KINDS),
+    ].includes(kind) &&
     !(config.towns ?? config)[town]
   ) {
     throw new Error(`There is no ${town} in ${settings.file}`)

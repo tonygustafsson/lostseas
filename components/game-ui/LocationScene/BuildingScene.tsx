@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { useRef } from "react"
 
-import { getLocationAmbience, getLocationBackground } from "@/utils/location"
+import { getLocationBackground } from "@/utils/location"
 
 import BackToTown from "./BackToTown"
 import BuildingIntro from "./BuildingIntro"
@@ -18,7 +18,6 @@ type Props = {
 
 const BuildingScene = ({ town, location, weather }: Props) => {
   const imageRef = useRef<HTMLImageElement>(null)
-  const ambience = getLocationAmbience(town, location)
   const masks = useBuildingMasks(town, location)
   // Rippling water, the weather outside, dust and flickering lights
   const ambienceRef = useAmbienceCanvas(
@@ -42,7 +41,7 @@ const BuildingScene = ({ town, location, weather }: Props) => {
           className="object-cover select-none"
         />
 
-        {ambience && (
+        {town && (
           <div
             ref={ambienceRef}
             aria-hidden
