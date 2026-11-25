@@ -301,6 +301,16 @@ describe("trade text utils", () => {
     expect(describeItems([])).toBe("")
   })
 
+  it("describeItems counts equipment in itself", () => {
+    expect(
+      describeItems([
+        { item: "cannons", quantity: 2 },
+        { item: "repairKits", quantity: 1 },
+        { item: "repairKits", quantity: 3 },
+      ])
+    ).toBe("2 cannons, 1 repair kit, 3 repair kits")
+  })
+
   it("formatAmountChange shows the change only when there is one", () => {
     expect(formatAmountChange("food", 20, 10)).toBe("20 → 10 crates")
     expect(formatAmountChange("food", 0, 1)).toBe("0 → 1 crate")

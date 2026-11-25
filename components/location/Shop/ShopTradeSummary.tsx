@@ -11,8 +11,9 @@ import ShopTradeTotals from "./ShopTradeTotals"
 type Props = {
   gold: number
   changes: TradeChange[]
-  cargoAfter: number
-  cargoCapacity: number
+  /** Leave out the cargo for goods that don't use the hold, like equipment */
+  cargoAfter?: number
+  cargoCapacity?: number
   isTrading?: boolean
   onReset: () => void
   onTransfer: () => void
@@ -31,7 +32,9 @@ const ShopTradeSummary = ({
   const goldAfter = gold + getTradeGold(changes)
   const isShort = goldAfter < 0
   // Selling is always allowed, even when the fleet is already overloaded
-  const isOverCapacity = cargoAfter > cargoCapacity && addsCargo(changes)
+  const hasCargo = cargoAfter !== undefined && cargoCapacity !== undefined
+  const isOverCapacity =
+    hasCargo && cargoAfter > cargoCapacity && addsCargo(changes)
 
   const problems = [
     isShort && {
@@ -40,7 +43,7 @@ const ShopTradeSummary = ({
     },
     isOverCapacity && {
       title: "Not enough cargo space",
-      text: `You need room for ${formatNumber(cargoAfter - cargoCapacity)} more in your hold. Buy less or sell something to make the trade.`,
+      text: `You need room for ${formatNumber((cargoAfter ?? 0) - (cargoCapacity ?? 0))} more in your hold. Buy less or sell something to make the trade.`,
     },
   ].filter((problem) => !!problem)
 
@@ -54,7 +57,7 @@ const ShopTradeSummary = ({
         changes={changes}
         cargoAfter={cargoAfter}
         cargoCapacity={cargoCapacity}
-        className="sm:grid-cols-4"
+        className={hasCargo ? "sm:grid-cols-4" : "sm:grid-cols-3"}
       />
 
       {problems.map(({ title, text }) => (

@@ -543,8 +543,7 @@ describe("takeLoot", () => {
     expect(sea?.attackSuccessReport).toEqual(report)
     expect(result.log).toMatchObject({
       type: "loot",
-      message:
-        "Took 8 crates of food, 1 barrel of rum, 2 cannons of cannons as loot.",
+      message: "Took 8 crates of food, 1 barrel of rum, 2 cannons as loot.",
     })
   })
 

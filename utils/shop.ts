@@ -4,6 +4,7 @@ import {
 } from "@/constants/merchandise"
 import { formatGold, formatNumber } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
+import { snakeCaseToTitleCase } from "@/utils/string"
 
 /** One item to trade. A negative quantity sells, a positive one buys. */
 export type TradeChange = { item: keyof Inventory; quantity: number }
@@ -143,7 +144,15 @@ export const formatQuantity = (item: keyof Inventory, amount: number) =>
 /** A list of items, like "5 crates of food, 1 barrel of water". */
 export const describeItems = (items: TradeChange[]) =>
   items
-    .map(({ item, quantity }) => `${formatQuantity(item, quantity)} of ${item}`)
+    .map(({ item, quantity }) => {
+      const name = snakeCaseToTitleCase(item).toLowerCase()
+      const { unit } = MERCHANDISE[item]
+
+      // Equipment is counted in itself, like "3 repair kits", not "3 kits of repair kits"
+      return name.endsWith(unit)
+        ? `${formatNumber(quantity)} ${name.slice(0, -unit.length)}${getUnit(item, quantity)}`
+        : `${formatQuantity(item, quantity)} of ${name}`
+    })
     .join(", ")
 
 /** What was sold and bought, like "Sold 5 crates of food. Bought 1 barrel of water." */

@@ -1,32 +1,30 @@
-import { Coins, Hammer, Ship } from "lucide-react"
+import { Ship } from "lucide-react"
 import { useState } from "react"
+import { GiPirateCannon } from "react-icons/gi"
 
 import LocationNavigation from "@/components/LocationNavigation"
 
-import ShipyardBuy from "./Buy"
-import ShipyardRepair from "./Repair"
-import ShipyardSell from "./Sell"
+import ShipyardEquipment from "./Equipment"
+import ShipyardShips from "./Ships"
 
-export type ShipyardTab = "buy" | "sell" | "repair"
+type ShipyardTab = "ships" | "equipment"
 
 const Shipyard = () => {
-  const [tab, setTab] = useState<ShipyardTab>("buy")
+  const [tab, setTab] = useState<ShipyardTab>("ships")
 
   return (
     <>
       <LocationNavigation
         items={[
-          { id: "buy", label: "Buy", icon: <Ship /> },
-          { id: "sell", label: "Sell", icon: <Coins /> },
-          { id: "repair", label: "Repair", icon: <Hammer /> },
+          { id: "ships", label: "Ships", icon: <Ship /> },
+          { id: "equipment", label: "Equipment", icon: <GiPirateCannon /> },
         ]}
         currentTab={tab}
         setCurrentTab={setTab}
       />
 
-      {tab === "buy" && <ShipyardBuy />}
-      {tab === "sell" && <ShipyardSell />}
-      {tab === "repair" && <ShipyardRepair />}
+      {tab === "ships" && <ShipyardShips />}
+      {tab === "equipment" && <ShipyardEquipment />}
     </>
   )
 }

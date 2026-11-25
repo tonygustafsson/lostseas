@@ -9,6 +9,7 @@ import {
   repairShip,
   sellFittings,
   sellShip,
+  tradeFittings,
 } from "@/utils/actions/shipyard"
 import type { ActionResult } from "@/utils/actions/types"
 import { patchDeep } from "@/utils/patchDeep"
@@ -290,6 +291,74 @@ describe("sellFittings", () => {
         quantity: Number.MAX_SAFE_INTEGER,
       }),
       "Invalid quantity"
+    )
+  })
+})
+
+describe("tradeFittings", () => {
+  it("sells first so the gold can pay for what is bought", () => {
+    const { buy: kitPrice } = MERCHANDISE.repairKits
+    const { sell: cannonPrice } = MERCHANDISE.cannons
+    const player = atShipyard({
+      character: { gold: kitPrice - cannonPrice },
+      inventory: { cannons: 3, repairKits: 0 },
+    })
+
+    const result = expectSuccess(
+      tradeFittings(player, {
+        changes: [
+          { item: "repairKits", quantity: 1 },
+          { item: "cannons", quantity: -1 },
+        ],
+      })
+    )
+
+    expect(result.player.character.gold).toBe(0)
+    expect(result.player.inventory?.cannons).toBe(2)
+    expect(result.player.inventory?.repairKits).toBe(1)
+    expect(result.data.gold).toBe(cannonPrice - kitPrice)
+    expect(result.log?.type).toBe("trade")
+  })
+
+  it("trades nothing when any part fails", () => {
+    const player = atShipyard({
+      character: { gold: 0 },
+      inventory: { cannons: 3 },
+    })
+
+    expectError(
+      tradeFittings(player, {
+        changes: [
+          { item: "cannons", quantity: -1 },
+          { item: "repairKits", quantity: 1000 },
+        ],
+      }),
+      "Not enough gold"
+    )
+  })
+
+  it("rejects shop goods", () => {
+    expectError(
+      tradeFittings(atShipyard(), {
+        changes: [{ item: "food", quantity: 1 }],
+      }),
+      "Not a valid item"
+    )
+  })
+
+  it.each([undefined, [], "cannons"])("rejects changes %s", (changes) => {
+    expectError(
+      tradeFittings(atShipyard(), { changes } as never),
+      "Nothing to trade"
+    )
+  })
+
+  it("rejects trading outside the shipyard", () => {
+    expectError(
+      tradeFittings(createTestPlayer({ inventory: { cannons: 5 } }), {
+        changes: [{ item: "cannons", quantity: -1 }],
+      }),
+      "You must be at Shipyard to do this."
     )
   })
 })

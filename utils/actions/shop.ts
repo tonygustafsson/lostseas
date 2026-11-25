@@ -120,14 +120,17 @@ export const sellItem = (
 
 type TradeResult = { sold: TradeData[]; bought: TradeData[]; gold: number }
 
+type TradeStep = (player: Player, input: TradeChange) => ActionResult<TradeData>
+
 /**
- * Buys and sells several items in one go. A negative quantity sells, a
- * positive one buys. All sales happen first, so their gold can pay for the
- * purchases. If any part fails, nothing is traded.
+ * Buys and sells several items in one go with the given buy and sell actions.
+ * A negative quantity sells, a positive one buys. All sales happen first, so
+ * their gold can pay for the purchases. If any part fails, nothing is traded.
  */
-export const tradeItems = (
+export const runTrade = (
   player: Player,
-  { changes }: { changes: TradeChange[] }
+  changes: TradeChange[],
+  { buy, sell }: { buy: TradeStep; sell: TradeStep }
 ): ActionResult<TradeResult> => {
   if (!Array.isArray(changes) || changes.length === 0) {
     return { error: "Nothing to trade" }
@@ -157,7 +160,7 @@ export const tradeItems = (
   const bought: TradeData[] = []
 
   for (const { item, quantity } of sales) {
-    const result = sellItem(current, { item, quantity: -quantity })
+    const result = sell(current, { item, quantity: -quantity })
 
     if ("error" in result) {
       return result
@@ -168,7 +171,7 @@ export const tradeItems = (
   }
 
   for (const { item, quantity } of purchases) {
-    const result = buyItem(current, { item, quantity })
+    const result = buy(current, { item, quantity })
 
     if ("error" in result) {
       return result
@@ -187,3 +190,9 @@ export const tradeItems = (
     data: { sold, bought, gold },
   }
 }
+
+/** Trades several shop goods in one go. See runTrade. */
+export const tradeItems = (
+  player: Player,
+  { changes }: { changes: TradeChange[] }
+) => runTrade(player, changes, { buy: buyItem, sell: sellItem })

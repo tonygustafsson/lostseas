@@ -10,8 +10,9 @@ import { formatSigned, getTradeGold, type TradeChange } from "@/utils/shop"
 type Props = {
   gold: number
   changes: TradeChange[]
-  cargoAfter: number
-  cargoCapacity: number
+  /** Leave out for goods that don't use the hold, and the cargo tile is hidden */
+  cargoAfter?: number
+  cargoCapacity?: number
   className?: string
 }
 
@@ -63,7 +64,9 @@ const ShopTradeTotals = ({
   const goldAfter = gold + tradeGold
   const isShort = goldAfter < 0
   // Selling is always allowed, even when the fleet is already overloaded
-  const isOverCapacity = cargoAfter > cargoCapacity && addsCargo(changes)
+  const hasCargo = cargoAfter !== undefined && cargoCapacity !== undefined
+  const isOverCapacity =
+    hasCargo && cargoAfter > cargoCapacity && addsCargo(changes)
 
   return (
     <dl className={cn("grid grid-cols-2 gap-2", className)}>
@@ -94,13 +97,15 @@ const ShopTradeTotals = ({
         {formatNumber(goldAfter)}
       </Tile>
 
-      <Tile
-        label={isOverCapacity ? "Over capacity" : "Cargo after trade"}
-        icon={<GiCargoCrate />}
-        className={cn(isOverCapacity && "text-error")}
-      >
-        {formatNumber(cargoAfter)} / {formatNumber(cargoCapacity)}
-      </Tile>
+      {hasCargo && (
+        <Tile
+          label={isOverCapacity ? "Over capacity" : "Cargo after trade"}
+          icon={<GiCargoCrate />}
+          className={cn(isOverCapacity && "text-error")}
+        >
+          {formatNumber(cargoAfter)} / {formatNumber(cargoCapacity)}
+        </Tile>
+      )}
     </dl>
   )
 }

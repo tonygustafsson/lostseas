@@ -37,7 +37,7 @@ export const colorUsage: ColorUsage[] = [
     "name": "gold",
     "token": "--color-gold",
     "css": "var(--color-gold)",
-    "count": 147,
+    "count": 148,
     "variants": {
       "/20": 5,
       "/10": 13,
@@ -52,7 +52,7 @@ export const colorUsage: ColorUsage[] = [
     "utilities": {
       "border": 18,
       "bg": 20,
-      "text": 78,
+      "text": 79,
       "var()": 2,
       "via": 14,
       "from": 4,
@@ -88,6 +88,7 @@ export const colorUsage: ColorUsage[] = [
       "components/location/Sea/AttackReportItem.tsx": 1,
       "components/location/Sea/JourneyProgress.tsx": 1,
       "components/location/Sea/ShipMeetingContent.tsx": 1,
+      "components/location/Shipyard/ShipForSale.tsx": 1,
       "components/location/Shop/ShopBuyLimit.tsx": 2,
       "components/location/Shop/ShopQuantityDialog.tsx": 1,
       "components/location/Shop/ShopTradeChange.tsx": 1,
@@ -129,14 +130,14 @@ export const colorUsage: ColorUsage[] = [
     "name": "muted-foreground",
     "token": "--color-muted-foreground",
     "css": "var(--color-muted-foreground)",
-    "count": 115,
+    "count": 118,
     "variants": {
       "/10": 2,
       "/15": 2,
       "/25": 1
     },
     "utilities": {
-      "text": 110,
+      "text": 113,
       "bg": 4,
       "var()": 1
     },
@@ -171,6 +172,9 @@ export const colorUsage: ColorUsage[] = [
       "components/location/Sea/JourneyProgress.tsx": 2,
       "components/location/Sea/LootPicker.tsx": 1,
       "components/location/Sea/ShipMeetingContent.tsx": 4,
+      "components/location/Shipyard/OwnedShip.tsx": 1,
+      "components/location/Shipyard/ShipForSale.tsx": 1,
+      "components/location/Shipyard/Ships.tsx": 1,
       "components/location/Shop/ShopBuyLimit.tsx": 1,
       "components/location/Shop/ShopQuantityDialog.tsx": 1,
       "components/location/Shop/ShopSuppliesDialog.tsx": 2,
@@ -220,10 +224,10 @@ export const colorUsage: ColorUsage[] = [
     "name": "background",
     "token": "--color-background",
     "css": "var(--color-background)",
-    "count": 60,
+    "count": 61,
     "variants": {
       "/95": 9,
-      "/80": 4,
+      "/80": 5,
       "/55": 3,
       "/70": 3,
       "/20": 3,
@@ -232,7 +236,7 @@ export const colorUsage: ColorUsage[] = [
       "/90": 2
     },
     "utilities": {
-      "bg": 35,
+      "bg": 36,
       "from": 5,
       "via": 7,
       "to": 10,
@@ -259,6 +263,7 @@ export const colorUsage: ColorUsage[] = [
       "components/location/Bank/VentureCard.tsx": 2,
       "components/location/Sea/JourneyProgress.tsx": 1,
       "components/location/Sea/LootPicker.tsx": 1,
+      "components/location/Shipyard/ShipForSale.tsx": 1,
       "components/LocationNavigation.tsx": 2,
       "components/Map/DestinationConfirm.tsx": 2,
       "components/Map/SeaMapTowns.tsx": 1,
@@ -278,7 +283,7 @@ export const colorUsage: ColorUsage[] = [
     "name": "error",
     "token": "--color-error",
     "css": "var(--color-error)",
-    "count": 60,
+    "count": 61,
     "variants": {
       "/15": 2,
       "/40": 7,
@@ -289,7 +294,7 @@ export const colorUsage: ColorUsage[] = [
     },
     "utilities": {
       "bg": 16,
-      "text": 33,
+      "text": 34,
       "border": 7,
       "shadow": 1,
       "var()": 1,
@@ -307,7 +312,8 @@ export const colorUsage: ColorUsage[] = [
       "components/location/Sea/BattleContent.tsx": 6,
       "components/location/Sea/SeaEventDialog.tsx": 1,
       "components/location/Sea/ShipMeetingContent.tsx": 8,
-      "components/location/Shipyard/Sell.tsx": 1,
+      "components/location/Shipyard/OwnedShip.tsx": 1,
+      "components/location/Shipyard/ShipForSale.tsx": 1,
       "components/location/Shop/ShopTradeTotals.tsx": 2,
       "components/location/Tavern/Cards.tsx": 3,
       "components/LogBookEntry.tsx": 1,
@@ -331,10 +337,10 @@ export const colorUsage: ColorUsage[] = [
     "name": "foreground",
     "token": "--color-foreground",
     "css": "var(--color-foreground)",
-    "count": 56,
+    "count": 59,
     "variants": {
       "/75": 6,
-      "/80": 2,
+      "/80": 3,
       "/85": 2,
       "/5": 3,
       "/70": 5,
@@ -342,7 +348,7 @@ export const colorUsage: ColorUsage[] = [
       "/60": 1
     },
     "utilities": {
-      "text": 46,
+      "text": 49,
       "bg": 5,
       "var()": 1,
       "ring": 3,
@@ -362,6 +368,7 @@ export const colorUsage: ColorUsage[] = [
       "components/location/Bank/QuickAmounts.tsx": 2,
       "components/location/Bank/VentureCard.tsx": 2,
       "components/location/Sea/ShipMeetingContent.tsx": 1,
+      "components/location/Shipyard/ShipForSale.tsx": 3,
       "components/npc/TalkDialog.tsx": 1,
       "components/RadialProgressBar.tsx": 1,
       "components/RingShimmer.tsx": 1,
@@ -387,10 +394,10 @@ export const colorUsage: ColorUsage[] = [
     "name": "transparent",
     "token": "transparent",
     "css": "transparent",
-    "count": 53,
+    "count": 54,
     "variants": {},
     "utilities": {
-      "from": 17,
+      "from": 18,
       "border": 9,
       "to": 12,
       "text": 6,
@@ -404,6 +411,7 @@ export const colorUsage: ColorUsage[] = [
       "components/guide/GuideChapter.tsx": 1,
       "components/guide/GuideMenu.tsx": 1,
       "components/location/Bank/VentureCard.tsx": 1,
+      "components/location/Shipyard/ShipForSale.tsx": 1,
       "components/location/Tavern/TavernEventDialog.tsx": 2,
       "components/LocationNavigation.tsx": 7,
       "components/Logo.tsx": 1,
@@ -428,7 +436,7 @@ export const colorUsage: ColorUsage[] = [
     "name": "card",
     "token": "--color-card",
     "css": "var(--color-card)",
-    "count": 52,
+    "count": 54,
     "variants": {
       "/75": 3,
       "/80": 7,
@@ -440,9 +448,9 @@ export const colorUsage: ColorUsage[] = [
       "/70": 1
     },
     "utilities": {
-      "bg": 43,
+      "bg": 44,
       "from": 3,
-      "to": 4,
+      "to": 5,
       "via": 2
     },
     "files": {
@@ -457,7 +465,8 @@ export const colorUsage: ColorUsage[] = [
       "components/location/Bank/QuickAmounts.tsx": 1,
       "components/location/Bank/VentureCard.tsx": 2,
       "components/location/Sea/ShipMeetingContent.tsx": 1,
-      "components/location/Shipyard/Buy.tsx": 1,
+      "components/location/Shipyard/OwnedShip.tsx": 1,
+      "components/location/Shipyard/ShipForSale.tsx": 2,
       "components/location/Shop/ShopTradeControls.tsx": 1,
       "components/location/Shop/ShopTradeSummary.tsx": 1,
       "components/location/Tavern/Cards.tsx": 1,
@@ -530,13 +539,13 @@ export const colorUsage: ColorUsage[] = [
     "name": "parchment",
     "token": "--color-parchment",
     "css": "var(--color-parchment)",
-    "count": 47,
+    "count": 48,
     "variants": {
       "/80": 2,
       "/15": 1
     },
     "utilities": {
-      "text": 44,
+      "text": 45,
       "bg": 3
     },
     "files": {
@@ -555,6 +564,7 @@ export const colorUsage: ColorUsage[] = [
       "components/location/Bank/Balances.tsx": 1,
       "components/location/Bank/BankArea.tsx": 1,
       "components/location/Sea/JourneyProgress.tsx": 2,
+      "components/location/Shipyard/ShipForSale.tsx": 1,
       "components/LocationNavigation.tsx": 2,
       "components/Map/DestinationConfirm.tsx": 1,
       "components/menu/DayCard.tsx": 2,
@@ -569,12 +579,12 @@ export const colorUsage: ColorUsage[] = [
     "name": "border",
     "token": "--color-border",
     "css": "var(--color-border)",
-    "count": 43,
+    "count": 42,
     "variants": {
       "/50": 1
     },
     "utilities": {
-      "border": 37,
+      "border": 36,
       "divide": 1,
       "bg": 3,
       "ring": 1,
@@ -603,7 +613,6 @@ export const colorUsage: ColorUsage[] = [
       "components/LogBookEntry.tsx": 1,
       "components/Map/TownPicker.tsx": 1,
       "components/Map/ZoomControl.tsx": 1,
-      "components/MerchandiseShopItem.tsx": 1,
       "components/npc/TalkDialog.tsx": 1,
       "components/Screenshots.tsx": 1,
       "components/settings/PasskeyList.tsx": 1,
@@ -723,6 +732,42 @@ export const colorUsage: ColorUsage[] = [
   },
   {
     "kind": "token",
+    "name": "sea",
+    "token": "--color-sea",
+    "css": "var(--color-sea)",
+    "count": 26,
+    "variants": {
+      "/30": 4,
+      "/40": 2,
+      "/20": 2,
+      "/50": 2,
+      "/15": 3,
+      "/5": 3
+    },
+    "utilities": {
+      "bg": 8,
+      "border": 8,
+      "text": 7,
+      "shadow": 1,
+      "from": 1,
+      "ring": 1
+    },
+    "files": {
+      "components/game-ui/LocationScene/BuildingScene.tsx": 1,
+      "components/guide/GuideMenu.tsx": 1,
+      "components/location/Sea/JourneyProgress.tsx": 3,
+      "components/location/Shipyard/ShipForSale.tsx": 5,
+      "components/menu/DayCard.tsx": 1,
+      "components/MerchandiseCrate.tsx": 1,
+      "components/Sound/Equalizer.tsx": 1,
+      "components/Sound/SoundChannel.tsx": 5,
+      "components/Sound/SoundToggle.tsx": 4,
+      "components/ui/button.tsx": 1,
+      "components/ui/switch.tsx": 3
+    }
+  },
+  {
+    "kind": "token",
     "name": "warning",
     "token": "--color-warning",
     "css": "var(--color-warning)",
@@ -756,70 +801,6 @@ export const colorUsage: ColorUsage[] = [
   },
   {
     "kind": "token",
-    "name": "sea",
-    "token": "--color-sea",
-    "css": "var(--color-sea)",
-    "count": 21,
-    "variants": {
-      "/30": 4,
-      "/40": 2,
-      "/5": 3,
-      "/15": 2,
-      "/20": 1,
-      "/50": 1
-    },
-    "utilities": {
-      "bg": 8,
-      "border": 6,
-      "text": 5,
-      "from": 1,
-      "ring": 1
-    },
-    "files": {
-      "components/game-ui/LocationScene/BuildingScene.tsx": 1,
-      "components/guide/GuideMenu.tsx": 1,
-      "components/location/Sea/JourneyProgress.tsx": 3,
-      "components/menu/DayCard.tsx": 1,
-      "components/MerchandiseCrate.tsx": 1,
-      "components/Sound/Equalizer.tsx": 1,
-      "components/Sound/SoundChannel.tsx": 5,
-      "components/Sound/SoundToggle.tsx": 4,
-      "components/ui/button.tsx": 1,
-      "components/ui/switch.tsx": 3
-    }
-  },
-  {
-    "kind": "token",
-    "name": "input",
-    "token": "--color-input",
-    "css": "var(--color-input)",
-    "count": 18,
-    "variants": {
-      "/30": 10,
-      "/50": 2,
-      "/80": 1
-    },
-    "utilities": {
-      "bg": 15,
-      "border": 3
-    },
-    "files": {
-      "components/crew/DismissCrewMembers.tsx": 1,
-      "components/crew/GiveGold.tsx": 1,
-      "components/crew/GiveMedicine.tsx": 1,
-      "components/location/Shop/ShopTradeControls.tsx": 1,
-      "components/MerchandiseShopItem.tsx": 1,
-      "components/ui/badge.tsx": 1,
-      "components/ui/button-group.tsx": 1,
-      "components/ui/button.tsx": 2,
-      "components/ui/input.tsx": 2,
-      "components/ui/select.tsx": 3,
-      "components/ui/switch.tsx": 2,
-      "components/ui/tabs.tsx": 2
-    }
-  },
-  {
-    "kind": "token",
     "name": "ring",
     "token": "--color-ring",
     "css": "var(--color-ring)",
@@ -844,6 +825,35 @@ export const colorUsage: ColorUsage[] = [
       "components/ui/input.tsx": 2,
       "components/ui/select.tsx": 2,
       "components/ui/tabs.tsx": 3
+    }
+  },
+  {
+    "kind": "token",
+    "name": "input",
+    "token": "--color-input",
+    "css": "var(--color-input)",
+    "count": 17,
+    "variants": {
+      "/30": 9,
+      "/50": 2,
+      "/80": 1
+    },
+    "utilities": {
+      "bg": 14,
+      "border": 3
+    },
+    "files": {
+      "components/crew/DismissCrewMembers.tsx": 1,
+      "components/crew/GiveGold.tsx": 1,
+      "components/crew/GiveMedicine.tsx": 1,
+      "components/location/Shop/ShopTradeControls.tsx": 1,
+      "components/ui/badge.tsx": 1,
+      "components/ui/button-group.tsx": 1,
+      "components/ui/button.tsx": 2,
+      "components/ui/input.tsx": 2,
+      "components/ui/select.tsx": 3,
+      "components/ui/switch.tsx": 2,
+      "components/ui/tabs.tsx": 2
     }
   },
   {

@@ -5,6 +5,7 @@ import { POST as buyShip } from "@/app/api/shipyard/buyShip/route"
 import { POST as repairShip } from "@/app/api/shipyard/repairShip/route"
 import { POST as sellFittings } from "@/app/api/shipyard/sellFittings/route"
 import { POST as sellShip } from "@/app/api/shipyard/sellShip/route"
+import { POST as trade } from "@/app/api/shipyard/trade/route"
 import { patchDeep } from "@/utils/patchDeep"
 
 import { createTestPlayer } from "../helpers/createTestPlayer"
@@ -45,6 +46,19 @@ const routes = [
     name: "sellFittings",
     call: () => sellFittings(request({ item: "cannons", quantity: 2 })),
     fields: ["item", "quantity", "totalQuantity", "totalPrice"],
+  },
+  {
+    name: "trade",
+    call: () =>
+      trade(
+        request({
+          changes: [
+            { item: "cannons", quantity: -2 },
+            { item: "repairKits", quantity: 3 },
+          ],
+        })
+      ),
+    fields: ["sold", "bought", "gold"],
   },
   {
     name: "buyShip",

@@ -5,7 +5,8 @@ export const SHIP_TYPES = {
     maxCrewMembers: 20,
     buy: 1500,
     sell: 750,
-    description: "This is a standard ship. Affordable and quite basic.",
+    description:
+      "A sturdy all-rounder that is cheap to buy, with a fair hold and a modest crew.",
   },
   Merchantman: {
     cargoCapacity: 800,
@@ -22,7 +23,8 @@ export const SHIP_TYPES = {
     maxCrewMembers: 50,
     buy: 4000,
     sell: 2000,
-    description: "This is a war ship, great in battle.",
+    description:
+      "A heavily armed warship with a stout hull and a large crew, built for battle.",
   },
   Frigate: {
     cargoCapacity: 1000,
@@ -31,7 +33,7 @@ export const SHIP_TYPES = {
     buy: 10000,
     sell: 5000,
     description:
-      "This is the top of the line battle ship. Quite costly but can handle a huge crew and a lot of cannons.",
+      "The finest warship afloat. Costly, but she carries a huge crew and many guns.",
   },
 }
 

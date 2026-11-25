@@ -4,7 +4,9 @@ import { TITLE_INFO } from "@/constants/title"
 import { isPositiveSafeInteger } from "@/utils/number"
 import { patchDeep } from "@/utils/patchDeep"
 import { createNewShip, getOwnedShip } from "@/utils/ship"
+import type { TradeChange } from "@/utils/shop"
 
+import { runTrade } from "./shop"
 import type { ActionResult } from "./types"
 
 type FittingsInput = { item: keyof Inventory; quantity: number }
@@ -127,6 +129,12 @@ export const sellFittings = (
     data: { item, quantity, totalQuantity, totalPrice },
   }
 }
+
+/** Buys and sells several kinds of equipment in one go, all or nothing. */
+export const tradeFittings = (
+  player: Player,
+  { changes }: { changes: TradeChange[] }
+) => runTrade(player, changes, { buy: buyFittings, sell: sellFittings })
 
 export const buyShip = (
   player: Player,

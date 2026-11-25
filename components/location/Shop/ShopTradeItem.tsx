@@ -38,7 +38,8 @@ const ShopTradeItem = ({
   return (
     <MerchandiseCrate
       title={title}
-      image={`/img/cards/shop/${item}.png`}
+      // Shop goods and shipyard equipment, file names all lower case
+      image={`/img/cards/${MERCHANDISE[item].availableAt}/${item.toLowerCase()}.png`}
       // What the player will have once the trade goes through
       label={formatQuantity(item, target)}
     >

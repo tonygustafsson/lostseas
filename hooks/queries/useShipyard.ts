@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 import { useToasts } from "@/app/stores/toasts"
-import { MERCHANDISE } from "@/constants/merchandise"
 import { SHIP_REPAIR_COST, SHIP_TYPES } from "@/constants/ship"
 import { PLAYER_QUERY_KEY } from "@/constants/system"
 import apiRequest from "@/utils/apiRequest"
@@ -135,145 +134,6 @@ export const useShipyard = () => {
     },
   })
 
-  const { mutate: buyFittings, isPending: isBuyingFittings } = useMutation({
-    mutationFn: (data: { item: keyof Inventory; quantity: number }) =>
-      apiRequest("/api/shipyard/buyFittings", data, "POST"),
-    onMutate: async (data: { item: keyof Inventory; quantity: number }) => {
-      await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
-
-      const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
-
-      if (previous) {
-        const price =
-          MERCHANDISE[data.item as keyof typeof MERCHANDISE].buy * data.quantity
-        const prevQuantity = previous.inventory?.[data.item] ?? 0
-
-        const dbUpdate: DeepPartial<Player> = {
-          character: {
-            gold: previous.character.gold - price,
-          },
-          inventory: {
-            [data.item]: prevQuantity + data.quantity,
-          },
-        }
-
-        const newPlayer = patchDeep(previous, dbUpdate)
-        queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
-      }
-
-      return { previous }
-    },
-    onSuccess: (response, _, context) => {
-      const {
-        updatedPlayer,
-        error,
-        quantity,
-        item,
-        totalPrice,
-        totalQuantity,
-      } = response?.data
-
-      if (error) {
-        handleError(`Could not buy ${item}`, error, context?.previous)
-        return
-      }
-
-      if (updatedPlayer) {
-        queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
-      }
-
-      const unit =
-        quantity === 1
-          ? MERCHANDISE[item as keyof Inventory].singleUnit
-          : MERCHANDISE[item as keyof Inventory].unit
-
-      setToast({
-        title: `You bought ${quantity} ${unit} of ${item}`,
-        message: `It cost you ${formatGold(totalPrice)} and your now have ${totalQuantity} ${unit} of ${item}`,
-        variant: "success",
-      })
-
-      playSoundEffect("transaction")
-    },
-    onError: (err, variables, context: { previous?: Player } | undefined) => {
-      handleError(
-        `Could not buy ${variables?.item}`,
-        String(err),
-        context?.previous
-      )
-    },
-  })
-
-  const { mutate: sellFittings, isPending: isSellingFittings } = useMutation({
-    mutationFn: (data: { item: keyof Inventory; quantity: number }) =>
-      apiRequest("/api/shipyard/sellFittings", data, "POST"),
-    onMutate: async (data: { item: keyof Inventory; quantity: number }) => {
-      await queryClient.cancelQueries({ queryKey: [PLAYER_QUERY_KEY] })
-
-      const previous = queryClient.getQueryData<Player>([PLAYER_QUERY_KEY])
-
-      if (previous) {
-        const price =
-          MERCHANDISE[data.item as keyof typeof MERCHANDISE].sell *
-          data.quantity
-        const prevQuantity = previous.inventory?.[data.item] ?? 0
-
-        const dbUpdate: DeepPartial<Player> = {
-          character: {
-            gold: previous.character.gold + price,
-          },
-          inventory: {
-            [data.item]: prevQuantity - data.quantity,
-          },
-        }
-
-        const newPlayer = patchDeep(previous, dbUpdate)
-        queryClient.setQueryData([PLAYER_QUERY_KEY], newPlayer)
-      }
-
-      return { previous }
-    },
-    onSuccess: (response, _, context) => {
-      const {
-        updatedPlayer,
-        error,
-        quantity,
-        item,
-        totalPrice,
-        totalQuantity,
-      } = response?.data
-
-      if (error) {
-        handleError(`Could not sell ${item}`, error, context?.previous)
-        return
-      }
-
-      if (updatedPlayer) {
-        queryClient.setQueryData([PLAYER_QUERY_KEY], updatedPlayer)
-      }
-
-      const unit =
-        quantity === 1
-          ? MERCHANDISE[item as keyof Inventory].singleUnit
-          : MERCHANDISE[item as keyof Inventory].unit
-
-      setToast({
-        title: `You sold ${quantity} ${unit} of ${item}`,
-        message: `It received ${formatGold(totalPrice)} and your now have ${totalQuantity} ${unit} of ${item}`,
-        variant: "success",
-      })
-
-      playSoundEffect("transaction")
-    },
-    onError: (err, variables, context: { previous?: Player } | undefined) => {
-      handleError(
-        `Could not sell ${variables?.item}`,
-        String(err),
-        context?.previous
-      )
-    },
-  })
-
   const { mutate: repairShip, isPending: isRepairingShip } = useMutation({
     mutationFn: (data: { id: Ship["id"] }) =>
       apiRequest("/api/shipyard/repairShip", data, "POST"),
@@ -334,10 +194,6 @@ export const useShipyard = () => {
     isBuyingShip,
     sellShip,
     isSellingShip,
-    buyFittings,
-    isBuyingFittings,
-    sellFittings,
-    isSellingFittings,
     repairShip,
     isRepairingShip,
   }

@@ -57,7 +57,7 @@ const CrateLabel = ({
   </div>
 )
 
-/** Gold info button that shows a description, for the controls in a crate. */
+/** Sea-blue info button that shows a description, for the controls in a crate. */
 export const MerchandiseInfo = ({
   title,
   description,
