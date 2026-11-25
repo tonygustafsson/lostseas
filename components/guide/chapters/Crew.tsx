@@ -1,5 +1,5 @@
 import { TAVERN_ITEMS } from "@/constants/tavern"
-import { MEDICINE_HEALTH_PER_BOX } from "@/utils/crew"
+import { MEDICINE_HEALTH_PER_BOTTLE } from "@/utils/crew"
 import { formatGold } from "@/utils/number"
 
 import {
@@ -43,8 +43,8 @@ const Crew = () => (
       Sea battles and tavern brawls hurt. Nobody dies, but an exhausted crew
       won&apos;t start a new voyage. Heal them with a remedy from the
       apothecary, supper at the tavern, or Give medicine in Manage Crew. Each
-      box of medicine gives {MEDICINE_HEALTH_PER_BOX} health shared across the
-      whole crew, so a big crew needs more boxes.
+      bottle of medicine gives {MEDICINE_HEALTH_PER_BOTTLE} health shared across
+      the whole crew, so a big crew needs more bottles.
     </p>
 
     <h3>The tavern</h3>

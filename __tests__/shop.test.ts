@@ -283,7 +283,7 @@ describe("trade text utils", () => {
   it("getUnit uses the single unit only for one", () => {
     expect(getUnit("food", 1)).toBe("crate")
     expect(getUnit("food", 0)).toBe("crates")
-    expect(getUnit("medicine", 2)).toBe("boxes")
+    expect(getUnit("medicine", 2)).toBe("bottles")
   })
 
   it("formatQuantity adds the unit", () => {

@@ -25,7 +25,7 @@ export const elementOpacity: Record<string, number> = {
   "75": 3,
   "80": 8,
   "85": 1,
-  "90": 2,
+  "90": 1,
   "95": 1,
   "100": 8
 }
@@ -45,14 +45,14 @@ export const colorUsage: ColorUsage[] = [
       "/30": 4,
       "/40": 7,
       "/50": 4,
-      "/60": 15,
+      "/60": 13,
       "/70": 4,
       "/25": 1
     },
     "utilities": {
-      "border": 20,
+      "border": 18,
       "bg": 20,
-      "text": 76,
+      "text": 78,
       "var()": 2,
       "via": 14,
       "from": 4,
@@ -84,13 +84,14 @@ export const colorUsage: ColorUsage[] = [
       "components/location/Bank/QuickAmounts.tsx": 2,
       "components/location/Bank/VentureCard.tsx": 5,
       "components/location/Cityhall/HandOverCard.tsx": 2,
+      "components/location/Market/MarketOffer.tsx": 1,
       "components/location/Sea/AttackReportItem.tsx": 1,
       "components/location/Sea/JourneyProgress.tsx": 1,
       "components/location/Sea/ShipMeetingContent.tsx": 1,
       "components/location/Shop/ShopBuyLimit.tsx": 2,
       "components/location/Shop/ShopQuantityDialog.tsx": 1,
       "components/location/Shop/ShopTradeChange.tsx": 1,
-      "components/location/Shop/ShopTradeItem.tsx": 3,
+      "components/location/Shop/ShopTradeItem.tsx": 2,
       "components/location/Shop/ShopTradeTotals.tsx": 2,
       "components/location/Tavern/Cards.tsx": 4,
       "components/location/Tavern/TavernEventDialog.tsx": 2,
@@ -128,14 +129,14 @@ export const colorUsage: ColorUsage[] = [
     "name": "muted-foreground",
     "token": "--color-muted-foreground",
     "css": "var(--color-muted-foreground)",
-    "count": 111,
+    "count": 115,
     "variants": {
       "/10": 2,
       "/15": 2,
       "/25": 1
     },
     "utilities": {
-      "text": 106,
+      "text": 110,
       "bg": 4,
       "var()": 1
     },
@@ -163,16 +164,18 @@ export const colorUsage: ColorUsage[] = [
       "components/location/Bank/Balances.tsx": 2,
       "components/location/Bank/VentureCard.tsx": 3,
       "components/location/Market/index.tsx": 1,
+      "components/location/Market/MarketApothecary.tsx": 1,
+      "components/location/Market/MarketOffer.tsx": 1,
       "components/location/Sea/AttackReport.tsx": 1,
       "components/location/Sea/AttackReportItem.tsx": 1,
       "components/location/Sea/JourneyProgress.tsx": 2,
       "components/location/Sea/LootPicker.tsx": 1,
       "components/location/Sea/ShipMeetingContent.tsx": 4,
-      "components/location/Shop/index.tsx": 1,
       "components/location/Shop/ShopBuyLimit.tsx": 1,
       "components/location/Shop/ShopQuantityDialog.tsx": 1,
-      "components/location/Shop/ShopSuppliesDialog.tsx": 1,
+      "components/location/Shop/ShopSuppliesDialog.tsx": 2,
       "components/location/Shop/ShopTradeChange.tsx": 1,
+      "components/location/Shop/ShopTradeItem.tsx": 2,
       "components/location/Shop/ShopTradeTotals.tsx": 1,
       "components/location/Tavern/Cards.tsx": 3,
       "components/LocationNavigation.tsx": 2,
@@ -217,7 +220,7 @@ export const colorUsage: ColorUsage[] = [
     "name": "background",
     "token": "--color-background",
     "css": "var(--color-background)",
-    "count": 66,
+    "count": 60,
     "variants": {
       "/95": 9,
       "/80": 4,
@@ -225,15 +228,14 @@ export const colorUsage: ColorUsage[] = [
       "/70": 3,
       "/20": 3,
       "/50": 1,
-      "/60": 10,
+      "/60": 9,
       "/90": 2
     },
     "utilities": {
-      "bg": 40,
+      "bg": 35,
       "from": 5,
       "via": 7,
       "to": 10,
-      "text-shadow": 1,
       "text": 3
     },
     "files": {
@@ -257,7 +259,6 @@ export const colorUsage: ColorUsage[] = [
       "components/location/Bank/VentureCard.tsx": 2,
       "components/location/Sea/JourneyProgress.tsx": 1,
       "components/location/Sea/LootPicker.tsx": 1,
-      "components/location/Shop/ShopTradeItem.tsx": 6,
       "components/LocationNavigation.tsx": 2,
       "components/Map/DestinationConfirm.tsx": 2,
       "components/Map/SeaMapTowns.tsx": 1,
@@ -274,67 +275,10 @@ export const colorUsage: ColorUsage[] = [
   },
   {
     "kind": "token",
-    "name": "foreground",
-    "token": "--color-foreground",
-    "css": "var(--color-foreground)",
-    "count": 58,
-    "variants": {
-      "/75": 6,
-      "/80": 2,
-      "/85": 2,
-      "/5": 3,
-      "/70": 5,
-      "/10": 1,
-      "/60": 1
-    },
-    "utilities": {
-      "text": 48,
-      "bg": 5,
-      "var()": 1,
-      "ring": 3,
-      "fill": 1
-    },
-    "files": {
-      "app/guide/page.tsx": 2,
-      "app/privacy/page.tsx": 3,
-      "components/game-ui/LocationScene/BuildingScene.tsx": 1,
-      "components/guide/chapters/Towns.tsx": 1,
-      "components/guide/GuideChapter.tsx": 2,
-      "components/guide/GuideMenu.tsx": 1,
-      "components/guide/GuideNavigation.tsx": 1,
-      "components/guide/GuideTip.tsx": 1,
-      "components/location/Bank/Balances.tsx": 1,
-      "components/location/Bank/BankArea.tsx": 1,
-      "components/location/Bank/QuickAmounts.tsx": 2,
-      "components/location/Bank/VentureCard.tsx": 2,
-      "components/location/Sea/ShipMeetingContent.tsx": 1,
-      "components/location/Shop/ShopTradeItem.tsx": 2,
-      "components/npc/TalkDialog.tsx": 1,
-      "components/RadialProgressBar.tsx": 1,
-      "components/RingShimmer.tsx": 1,
-      "components/StartPageScreen.tsx": 9,
-      "components/ui/accordion.tsx": 1,
-      "components/ui/alert.tsx": 2,
-      "components/ui/badge.tsx": 1,
-      "components/ui/button.tsx": 4,
-      "components/ui/card.tsx": 1,
-      "components/ui/dialog.tsx": 1,
-      "components/ui/input.tsx": 1,
-      "components/ui/popover.tsx": 1,
-      "components/ui/select.tsx": 1,
-      "components/ui/sheet.tsx": 1,
-      "components/ui/switch.tsx": 1,
-      "components/ui/table.tsx": 1,
-      "components/ui/tabs.tsx": 6,
-      "components/ui/tooltip.tsx": 3
-    }
-  },
-  {
-    "kind": "token",
     "name": "error",
     "token": "--color-error",
     "css": "var(--color-error)",
-    "count": 58,
+    "count": 60,
     "variants": {
       "/15": 2,
       "/40": 7,
@@ -345,7 +289,7 @@ export const colorUsage: ColorUsage[] = [
     },
     "utilities": {
       "bg": 16,
-      "text": 31,
+      "text": 33,
       "border": 7,
       "shadow": 1,
       "var()": 1,
@@ -356,6 +300,8 @@ export const colorUsage: ColorUsage[] = [
       "components/CargoMeter.tsx": 1,
       "components/drawer/drawerContent/Fleet.tsx": 1,
       "components/location/Bank/VentureCard.tsx": 1,
+      "components/location/Market/MarketApothecary.tsx": 1,
+      "components/location/Market/MarketOffer.tsx": 1,
       "components/location/Sea/AttackReport.tsx": 3,
       "components/location/Sea/AttackReportItem.tsx": 3,
       "components/location/Sea/BattleContent.tsx": 6,
@@ -381,18 +327,74 @@ export const colorUsage: ColorUsage[] = [
     }
   },
   {
+    "kind": "token",
+    "name": "foreground",
+    "token": "--color-foreground",
+    "css": "var(--color-foreground)",
+    "count": 56,
+    "variants": {
+      "/75": 6,
+      "/80": 2,
+      "/85": 2,
+      "/5": 3,
+      "/70": 5,
+      "/10": 1,
+      "/60": 1
+    },
+    "utilities": {
+      "text": 46,
+      "bg": 5,
+      "var()": 1,
+      "ring": 3,
+      "fill": 1
+    },
+    "files": {
+      "app/guide/page.tsx": 2,
+      "app/privacy/page.tsx": 3,
+      "components/game-ui/LocationScene/BuildingScene.tsx": 1,
+      "components/guide/chapters/Towns.tsx": 1,
+      "components/guide/GuideChapter.tsx": 2,
+      "components/guide/GuideMenu.tsx": 1,
+      "components/guide/GuideNavigation.tsx": 1,
+      "components/guide/GuideTip.tsx": 1,
+      "components/location/Bank/Balances.tsx": 1,
+      "components/location/Bank/BankArea.tsx": 1,
+      "components/location/Bank/QuickAmounts.tsx": 2,
+      "components/location/Bank/VentureCard.tsx": 2,
+      "components/location/Sea/ShipMeetingContent.tsx": 1,
+      "components/npc/TalkDialog.tsx": 1,
+      "components/RadialProgressBar.tsx": 1,
+      "components/RingShimmer.tsx": 1,
+      "components/StartPageScreen.tsx": 9,
+      "components/ui/accordion.tsx": 1,
+      "components/ui/alert.tsx": 2,
+      "components/ui/badge.tsx": 1,
+      "components/ui/button.tsx": 4,
+      "components/ui/card.tsx": 1,
+      "components/ui/dialog.tsx": 1,
+      "components/ui/input.tsx": 1,
+      "components/ui/popover.tsx": 1,
+      "components/ui/select.tsx": 1,
+      "components/ui/sheet.tsx": 1,
+      "components/ui/switch.tsx": 1,
+      "components/ui/table.tsx": 1,
+      "components/ui/tabs.tsx": 6,
+      "components/ui/tooltip.tsx": 3
+    }
+  },
+  {
     "kind": "palette",
     "name": "transparent",
     "token": "transparent",
     "css": "transparent",
-    "count": 55,
+    "count": 53,
     "variants": {},
     "utilities": {
-      "from": 18,
+      "from": 17,
       "border": 9,
       "to": 12,
-      "bg": 10,
-      "text": 6
+      "text": 6,
+      "bg": 9
     },
     "files": {
       "app/guide/page.tsx": 1,
@@ -402,7 +404,6 @@ export const colorUsage: ColorUsage[] = [
       "components/guide/GuideChapter.tsx": 1,
       "components/guide/GuideMenu.tsx": 1,
       "components/location/Bank/VentureCard.tsx": 1,
-      "components/location/Shop/ShopTradeItem.tsx": 2,
       "components/location/Tavern/TavernEventDialog.tsx": 2,
       "components/LocationNavigation.tsx": 7,
       "components/Logo.tsx": 1,
@@ -427,22 +428,22 @@ export const colorUsage: ColorUsage[] = [
     "name": "card",
     "token": "--color-card",
     "css": "var(--color-card)",
-    "count": 54,
+    "count": 52,
     "variants": {
       "/75": 3,
       "/80": 7,
       "/85": 2,
       "/50": 1,
       "/90": 4,
-      "/70": 2,
       "/10": 1,
-      "/30": 1
+      "/30": 1,
+      "/70": 1
     },
     "utilities": {
       "bg": 43,
       "from": 3,
-      "to": 5,
-      "via": 3
+      "to": 4,
+      "via": 2
     },
     "files": {
       "app/guide/page.tsx": 2,
@@ -458,7 +459,6 @@ export const colorUsage: ColorUsage[] = [
       "components/location/Sea/ShipMeetingContent.tsx": 1,
       "components/location/Shipyard/Buy.tsx": 1,
       "components/location/Shop/ShopTradeControls.tsx": 1,
-      "components/location/Shop/ShopTradeItem.tsx": 3,
       "components/location/Shop/ShopTradeSummary.tsx": 1,
       "components/location/Tavern/Cards.tsx": 1,
       "components/LocationNavigation.tsx": 1,
@@ -467,6 +467,7 @@ export const colorUsage: ColorUsage[] = [
       "components/Map/ZoomControl.tsx": 1,
       "components/menu/MenuCard.tsx": 2,
       "components/MerchandiseCard.tsx": 2,
+      "components/MerchandiseCrate.tsx": 1,
       "components/npc/NpcPortraitCard.tsx": 1,
       "components/Select.tsx": 1,
       "components/settings/UserIdDisplay.tsx": 1,
@@ -482,10 +483,10 @@ export const colorUsage: ColorUsage[] = [
     "name": "success",
     "token": "--color-success",
     "css": "var(--color-success)",
-    "count": 51,
+    "count": 50,
     "variants": {
       "/15": 2,
-      "/10": 10,
+      "/10": 9,
       "/40": 6,
       "/25": 1,
       "/20": 4,
@@ -493,7 +494,7 @@ export const colorUsage: ColorUsage[] = [
       "/50": 1
     },
     "utilities": {
-      "bg": 18,
+      "bg": 17,
       "text": 22,
       "border": 6,
       "shadow": 2,
@@ -503,7 +504,7 @@ export const colorUsage: ColorUsage[] = [
     "files": {
       "components/advisor/AdvisorTips.tsx": 4,
       "components/location/Cityhall/HandOverCard.tsx": 2,
-      "components/location/Market/index.tsx": 2,
+      "components/location/Market/MarketOffer.tsx": 1,
       "components/location/Sea/AttackReport.tsx": 3,
       "components/location/Sea/AttackReportItem.tsx": 3,
       "components/location/Sea/BattleContent.tsx": 3,
@@ -529,14 +530,14 @@ export const colorUsage: ColorUsage[] = [
     "name": "parchment",
     "token": "--color-parchment",
     "css": "var(--color-parchment)",
-    "count": 46,
+    "count": 47,
     "variants": {
       "/80": 2,
       "/15": 1
     },
     "utilities": {
       "text": 44,
-      "bg": 2
+      "bg": 3
     },
     "files": {
       "app/guide/page.tsx": 3,
@@ -557,6 +558,7 @@ export const colorUsage: ColorUsage[] = [
       "components/LocationNavigation.tsx": 2,
       "components/Map/DestinationConfirm.tsx": 1,
       "components/menu/DayCard.tsx": 2,
+      "components/MerchandiseCrate.tsx": 1,
       "components/StartPageScreen.tsx": 13,
       "components/ui/slider.tsx": 1,
       "components/ui/switch.tsx": 1
@@ -620,13 +622,13 @@ export const colorUsage: ColorUsage[] = [
     "name": "muted",
     "token": "--color-muted",
     "css": "var(--color-muted)",
-    "count": 38,
+    "count": 37,
     "variants": {
       "/30": 2,
       "/50": 5
     },
     "utilities": {
-      "bg": 37,
+      "bg": 36,
       "var()": 1
     },
     "files": {
@@ -640,7 +642,6 @@ export const colorUsage: ColorUsage[] = [
       "components/location/Sea/BattleContent.tsx": 1,
       "components/location/Sea/ShipMeetingContent.tsx": 1,
       "components/location/Shop/ShopQuantityDialog.tsx": 1,
-      "components/location/Shop/ShopTradeItem.tsx": 1,
       "components/location/Shop/ShopTradeTotals.tsx": 1,
       "components/Map/TownPicker.tsx": 2,
       "components/menu/CharacterCard.tsx": 1,
@@ -758,7 +759,7 @@ export const colorUsage: ColorUsage[] = [
     "name": "sea",
     "token": "--color-sea",
     "css": "var(--color-sea)",
-    "count": 20,
+    "count": 21,
     "variants": {
       "/30": 4,
       "/40": 2,
@@ -770,7 +771,7 @@ export const colorUsage: ColorUsage[] = [
     "utilities": {
       "bg": 8,
       "border": 6,
-      "text": 4,
+      "text": 5,
       "from": 1,
       "ring": 1
     },
@@ -779,6 +780,7 @@ export const colorUsage: ColorUsage[] = [
       "components/guide/GuideMenu.tsx": 1,
       "components/location/Sea/JourneyProgress.tsx": 3,
       "components/menu/DayCard.tsx": 1,
+      "components/MerchandiseCrate.tsx": 1,
       "components/Sound/Equalizer.tsx": 1,
       "components/Sound/SoundChannel.tsx": 5,
       "components/Sound/SoundToggle.tsx": 4,
@@ -1372,6 +1374,90 @@ export const colorUsage: ColorUsage[] = [
     },
     "files": {
       "components/menu/StatCard.tsx": 1
+    }
+  },
+  {
+    "kind": "literal",
+    "name": "oklch(1_0_0/45%)",
+    "token": "Function literal",
+    "css": "oklch(1_0_0/45%)",
+    "count": 1,
+    "variants": {
+      "/45": 1
+    },
+    "utilities": {},
+    "files": {
+      "components/MerchandiseCrate.tsx": 1
+    }
+  },
+  {
+    "kind": "literal",
+    "name": "oklch(0_0_0/25%)",
+    "token": "Function literal",
+    "css": "oklch(0_0_0/25%)",
+    "count": 1,
+    "variants": {
+      "/25": 1
+    },
+    "utilities": {},
+    "files": {
+      "components/MerchandiseCrate.tsx": 1
+    }
+  },
+  {
+    "kind": "literal",
+    "name": "oklch(0_0_0/50%)",
+    "token": "Function literal",
+    "css": "oklch(0_0_0/50%)",
+    "count": 1,
+    "variants": {
+      "/50": 1
+    },
+    "utilities": {},
+    "files": {
+      "components/MerchandiseCrate.tsx": 1
+    }
+  },
+  {
+    "kind": "literal",
+    "name": "oklch(0_0_0/45%)",
+    "token": "Function literal",
+    "css": "oklch(0_0_0/45%)",
+    "count": 1,
+    "variants": {
+      "/45": 1
+    },
+    "utilities": {},
+    "files": {
+      "components/MerchandiseCrate.tsx": 1
+    }
+  },
+  {
+    "kind": "literal",
+    "name": "oklch(0_0_0/60%)",
+    "token": "Function literal",
+    "css": "oklch(0_0_0/60%)",
+    "count": 1,
+    "variants": {
+      "/60": 1
+    },
+    "utilities": {},
+    "files": {
+      "components/MerchandiseCrate.tsx": 1
+    }
+  },
+  {
+    "kind": "literal",
+    "name": "oklch(1_0_0/10%)",
+    "token": "Function literal",
+    "css": "oklch(1_0_0/10%)",
+    "count": 1,
+    "variants": {
+      "/10": 1
+    },
+    "utilities": {},
+    "files": {
+      "components/MerchandiseCrate.tsx": 1
     }
   },
   {

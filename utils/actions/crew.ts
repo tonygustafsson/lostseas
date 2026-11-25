@@ -86,7 +86,7 @@ export const giveMedicine = (
   const medicine = toWholeNumber(input.medicine)
 
   if (!medicine) {
-    return { error: "You need to give at least 1 box of medicine" }
+    return { error: "You need to give at least 1 bottle of medicine" }
   }
 
   if (!player.crewMembers.count) {

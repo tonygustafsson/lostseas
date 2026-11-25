@@ -1,6 +1,4 @@
-import MerchandiseCard from "@/components/MerchandiseCard"
-import MerchandiseIcon from "@/components/MerchandiseIcon"
-import { Badge } from "@/components/ui/badge"
+import MerchandiseCrate from "@/components/MerchandiseCrate"
 import { Button } from "@/components/ui/button"
 import { APOTHECARY_REMEDIES, type Remedy } from "@/constants/apothecary"
 import { getRemedyResult } from "@/utils/apothecary"
@@ -19,7 +17,7 @@ const MarketApothecary = ({ player, onBuy, isBuying }: Props) => (
       immediately upon purchase and will not be part of your inventory.
     </p>
 
-    <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+    <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {(Object.keys(APOTHECARY_REMEDIES) as Remedy[]).map((remedy) => {
         const { label, description, healthIncrease } =
           APOTHECARY_REMEDIES[remedy]
@@ -28,45 +26,46 @@ const MarketApothecary = ({ player, onBuy, isBuying }: Props) => (
           remedy
         )
 
-        const disabled =
-          !hasCrew || healed <= 0 || price > player.character.gold || !!isBuying
+        // Why the remedy can't be bought, shown above the button
+        const problem = !hasCrew
+          ? "You have no crew to heal"
+          : healed <= 0
+            ? "Your crew is already healthy"
+            : price > player.character.gold
+              ? "You cannot afford this"
+              : null
 
         return (
-          <MerchandiseCard
-            key={`apothecary-${remedy}`}
+          <MerchandiseCrate
+            key={remedy}
             title={label}
             image={`/img/cards/market/${remedy}.png`}
-            icon={<MerchandiseIcon item={remedy} />}
-            disabled={disabled}
-            body={
-              <>
-                <p>{description}</p>
+            label={`+${healthIncrease}% health`}
+          >
+            <p className="text-sm">{description}</p>
 
-                <p className="mt-4">
-                  This option would increase your crew&apos;s health to{" "}
-                  {newHealth}%
-                </p>
+            {hasCrew && healed > 0 && (
+              <p className="text-muted-foreground text-xs">
+                Your crew&apos;s health goes up to {newHealth}%
+              </p>
+            )}
 
-                <div className="mt-4 flex flex-wrap items-center gap-2">
-                  <Badge variant="secondary">Price: {formatGold(price)}</Badge>
+            <div className="mt-auto flex flex-col gap-2">
+              {problem && <p className="text-error text-xs">{problem}</p>}
 
-                  <Badge variant="secondary">+{healthIncrease}% health</Badge>
-                </div>
-              </>
-            }
-            actions={
               <Button
                 size="sm"
+                variant="secondary"
                 onClick={() => onBuy(remedy)}
-                disabled={disabled}
+                disabled={!!problem || !!isBuying}
               >
-                Buy
+                Buy for {formatGold(price)}
               </Button>
-            }
-          />
+            </div>
+          </MerchandiseCrate>
         )
       })}
-    </div>
+    </ul>
   </>
 )
 

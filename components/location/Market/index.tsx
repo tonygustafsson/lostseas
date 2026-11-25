@@ -3,18 +3,13 @@ import { FlaskConical, MessageCircle, Store } from "lucide-react"
 import { useState } from "react"
 
 import LocationNavigation from "@/components/LocationNavigation"
-import MerchandiseCard from "@/components/MerchandiseCard"
-import MerchandiseIcon from "@/components/MerchandiseIcon"
 import TownNpc, { getFirstName, useTownNpcTalk } from "@/components/npc/TownNpc"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { MERCHANDISE } from "@/constants/merchandise"
 import { useMarket } from "@/hooks/queries/useMarket"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-import { formatGold } from "@/utils/number"
-import { capitalize } from "@/utils/string"
+import { getCargo } from "@/utils/cargo"
 
 import MarketApothecary from "./MarketApothecary"
+import MarketOffer from "./MarketOffer"
 
 type MarketTab = "traders" | "apothecary" | "talk"
 
@@ -61,62 +56,25 @@ const Market = () => {
       )}
 
       {tab === "traders" && hasOffers && (
-        <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
-          {Object.entries(items || {}).map(([item, { price, quantity }]) => {
-            const inventoryItem = item as keyof LocationStateMarketItems
-            const canAffortIt =
-              price * quantity <= (player?.character.gold || 0)
-            const { buy } = MERCHANDISE[inventoryItem]
-            const discount = Math.round((1 - price / buy) * 100)
-
-            return (
-              <MerchandiseCard
-                key={`market-${item}`}
-                title={capitalize(item)}
-                image={`/img/cards/${MERCHANDISE[inventoryItem].availableAt}/${item}.png`}
-                indicator={
-                  player?.inventory?.[inventoryItem]?.toString() || "0"
-                }
-                icon={<MerchandiseIcon item={inventoryItem} />}
-                disabled={!canAffortIt}
-                body={
-                  <>
-                    <p>
-                      You find <strong>{quantity}</strong>{" "}
-                      {quantity === 1
-                        ? MERCHANDISE[inventoryItem].singleUnit
-                        : MERCHANDISE[inventoryItem].unit}{" "}
-                      of {item} for <strong>{formatGold(price)}</strong>.
-                    </p>
-
-                    <p>{MERCHANDISE[inventoryItem].description}</p>
-
-                    <div className="mt-4 flex flex-wrap items-center gap-2">
-                      <Badge variant="secondary">
-                        Price: {formatGold(price * quantity)}
-                      </Badge>
-
-                      {discount > 0 && (
-                        <Badge className="bg-success/10 text-success">
-                          {discount}% discount
-                        </Badge>
-                      )}
-                    </div>
-                  </>
-                }
-                actions={
-                  <Button
-                    size="sm"
-                    onClick={() => handleAccept(inventoryItem)}
-                    disabled={!canAffortIt}
-                  >
-                    Buy
-                  </Button>
-                }
-              />
-            )
-          })}
-        </div>
+        <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {(
+            Object.entries(items || {}) as [
+              keyof LocationStateMarketItems,
+              { price: number; quantity: number },
+            ][]
+          ).map(([item, { price, quantity }]) => (
+            <MarketOffer
+              key={item}
+              item={item}
+              price={price}
+              quantity={quantity}
+              owned={player?.inventory?.[item] ?? 0}
+              gold={player?.character.gold ?? 0}
+              cargoFree={player ? getCargo(player).free : 0}
+              onBuy={() => handleAccept(item)}
+            />
+          ))}
+        </ul>
       )}
 
       {tab === "apothecary" && player && (

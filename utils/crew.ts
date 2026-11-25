@@ -1,11 +1,11 @@
-export const MEDICINE_HEALTH_PER_BOX = 20
+export const MEDICINE_HEALTH_PER_BOTTLE = 20
 
 export const getMedicineEffectiveness = (
   noOfCrewMemers: number,
   crewHealth: number,
   medicine: number
 ) => {
-  const effectiveness = (medicine / noOfCrewMemers) * MEDICINE_HEALTH_PER_BOX
+  const effectiveness = (medicine / noOfCrewMemers) * MEDICINE_HEALTH_PER_BOTTLE
 
   if (crewHealth + effectiveness > 100) {
     return 100

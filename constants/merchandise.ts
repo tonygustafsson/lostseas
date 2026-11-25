@@ -80,8 +80,8 @@ export const MERCHANDISE: Record<
   medicine: {
     buy: 15,
     sell: 10,
-    singleUnit: "box",
-    unit: "boxes",
+    singleUnit: "bottle",
+    unit: "bottles",
     description:
       "Willow bark, bitter herbs and a splash of something stronger. Give it to your crew to bring their health back up.",
     availableAt: "shop",

@@ -32,6 +32,7 @@ export const NoChanges: Story = {
   args: { changes: [] },
   play: async ({ canvas }) => {
     await expect(canvas.getByText("No changes")).toBeVisible()
+    await expect(canvas.queryByRole("alert")).toBeNull()
     await expect(
       canvas.getByRole("button", { name: "Transfer" })
     ).toBeDisabled()
@@ -43,6 +44,9 @@ export const ShortOfGold: Story = {
   play: async ({ canvas }) => {
     await expect(canvas.getByText("Short of gold")).toBeVisible()
     await expect(canvas.getByText("−60")).toBeVisible()
+    await expect(canvas.getByRole("alert")).toHaveTextContent(
+      "You are 50 gold short"
+    )
     await expect(
       canvas.getByRole("button", { name: "Transfer" })
     ).toBeDisabled()
@@ -57,6 +61,9 @@ export const OverCapacity: Story = {
   },
   play: async ({ canvas }) => {
     await expect(canvas.getByText("Over capacity")).toBeVisible()
+    await expect(canvas.getByRole("alert")).toHaveTextContent(
+      "You need room for 20 more in your hold"
+    )
     await expect(
       canvas.getByRole("button", { name: "Transfer" })
     ).toBeDisabled()

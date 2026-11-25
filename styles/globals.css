@@ -11,6 +11,11 @@
   --gold: oklch(0.78 0.13 85);
   --gold-light: oklch(0.93 0.09 95);
   --gold-dark: oklch(0.48 0.09 70);
+  /* Pixel-art wood takes its hue from this colour, with this much of it */
+  --wood-tint: var(--sea-dark);
+  --wood-chroma: 0.012;
+  /* Near-black outlines and text on the pixel-art wood */
+  --wood-ink: oklch(from var(--wood-tint) 0.13 calc(var(--wood-chroma) / 2) h);
   /* Sea glass for bars that measure things, so gold stays free for actions */
   --sea: oklch(0.72 0.09 210);
   --sea-dark: oklch(0.45 0.07 225);
@@ -205,6 +210,73 @@ html {
     0 0 0 1px var(--gold-dark),
     0 16px 48px oklch(0 0 0 / 60%),
     0 0 32px oklch(from var(--gold) l c h / 20%);
+}
+
+/* Hi-bit pixel art, in the spirit of Sea of Stars. One art pixel is --px
+   wide (2px), so everything lines up on the same grid. The wood is dark,
+   painted to match the sea: --wood-tint with most of its colour taken out. */
+
+/* Wooden planks with a colour ramp, dithered edges, grain, knots and joints.
+   Set --wood-shade to light faces that point up (0.1) or darken faces in
+   shadow (-0.1), which is what makes a box look solid. */
+@utility pixel-wood {
+  --px-size: var(--px, 2px);
+  background-color: oklch(
+    from var(--wood-tint) calc(0.3 + var(--wood-shade, 0)) var(--wood-chroma) h
+  );
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 24' shape-rendering='crispEdges'%3E%3Cg fill='%23fff' fill-opacity='.22'%3E%3Crect x='0' y='0' width='64' height='1'/%3E%3Crect x='42' y='1' width='1' height='9'/%3E%3Crect x='0' y='12' width='64' height='1'/%3E%3Crect x='14' y='13' width='1' height='9'/%3E%3C/g%3E%3Cg fill='%23fff' fill-opacity='.09'%3E%3Crect x='0' y='1' width='1' height='1'/%3E%3Crect x='2' y='1' width='1' height='1'/%3E%3Crect x='4' y='1' width='1' height='1'/%3E%3Crect x='6' y='1' width='1' height='1'/%3E%3Crect x='8' y='1' width='1' height='1'/%3E%3Crect x='10' y='1' width='1' height='1'/%3E%3Crect x='12' y='1' width='1' height='1'/%3E%3Crect x='14' y='1' width='1' height='1'/%3E%3Crect x='16' y='1' width='1' height='1'/%3E%3Crect x='18' y='1' width='1' height='1'/%3E%3Crect x='20' y='1' width='1' height='1'/%3E%3Crect x='22' y='1' width='1' height='1'/%3E%3Crect x='24' y='1' width='1' height='1'/%3E%3Crect x='26' y='1' width='1' height='1'/%3E%3Crect x='28' y='1' width='1' height='1'/%3E%3Crect x='30' y='1' width='1' height='1'/%3E%3Crect x='32' y='1' width='1' height='1'/%3E%3Crect x='34' y='1' width='1' height='1'/%3E%3Crect x='36' y='1' width='1' height='1'/%3E%3Crect x='38' y='1' width='1' height='1'/%3E%3Crect x='40' y='1' width='1' height='1'/%3E%3Crect x='42' y='1' width='1' height='1'/%3E%3Crect x='44' y='1' width='1' height='1'/%3E%3Crect x='46' y='1' width='1' height='1'/%3E%3Crect x='48' y='1' width='1' height='1'/%3E%3Crect x='50' y='1' width='1' height='1'/%3E%3Crect x='52' y='1' width='1' height='1'/%3E%3Crect x='54' y='1' width='1' height='1'/%3E%3Crect x='56' y='1' width='1' height='1'/%3E%3Crect x='58' y='1' width='1' height='1'/%3E%3Crect x='60' y='1' width='1' height='1'/%3E%3Crect x='62' y='1' width='1' height='1'/%3E%3Crect x='2' y='2' width='5' height='1'/%3E%3Crect x='31' y='2' width='4' height='1'/%3E%3Crect x='54' y='2' width='10' height='1'/%3E%3Crect x='49' y='4' width='10' height='1'/%3E%3Crect x='36' y='6' width='5' height='1'/%3E%3Crect x='21' y='7' width='10' height='1'/%3E%3Crect x='1' y='13' width='1' height='1'/%3E%3Crect x='3' y='13' width='1' height='1'/%3E%3Crect x='5' y='13' width='1' height='1'/%3E%3Crect x='7' y='13' width='1' height='1'/%3E%3Crect x='9' y='13' width='1' height='1'/%3E%3Crect x='11' y='13' width='1' height='1'/%3E%3Crect x='13' y='13' width='1' height='1'/%3E%3Crect x='15' y='13' width='1' height='1'/%3E%3Crect x='17' y='13' width='1' height='1'/%3E%3Crect x='19' y='13' width='1' height='1'/%3E%3Crect x='21' y='13' width='1' height='1'/%3E%3Crect x='23' y='13' width='1' height='1'/%3E%3Crect x='25' y='13' width='1' height='1'/%3E%3Crect x='27' y='13' width='1' height='1'/%3E%3Crect x='29' y='13' width='1' height='1'/%3E%3Crect x='31' y='13' width='1' height='1'/%3E%3Crect x='33' y='13' width='1' height='1'/%3E%3Crect x='35' y='13' width='1' height='1'/%3E%3Crect x='37' y='13' width='1' height='1'/%3E%3Crect x='39' y='13' width='1' height='1'/%3E%3Crect x='41' y='13' width='1' height='1'/%3E%3Crect x='43' y='13' width='1' height='1'/%3E%3Crect x='45' y='13' width='1' height='1'/%3E%3Crect x='47' y='13' width='1' height='1'/%3E%3Crect x='49' y='13' width='1' height='1'/%3E%3Crect x='51' y='13' width='1' height='1'/%3E%3Crect x='53' y='13' width='1' height='1'/%3E%3Crect x='55' y='13' width='1' height='1'/%3E%3Crect x='57' y='13' width='1' height='1'/%3E%3Crect x='59' y='13' width='1' height='1'/%3E%3Crect x='61' y='13' width='1' height='1'/%3E%3Crect x='63' y='13' width='1' height='1'/%3E%3Crect x='3' y='14' width='9' height='1'/%3E%3Crect x='17' y='14' width='5' height='1'/%3E%3Crect x='39' y='16' width='11' height='1'/%3E%3Crect x='60' y='16' width='4' height='1'/%3E%3Crect x='3' y='19' width='10' height='1'/%3E%3Crect x='23' y='6' width='1' height='1'/%3E%3Crect x='53' y='17' width='1' height='1'/%3E%3C/g%3E%3Cg fill='%23000' fill-opacity='.18'%3E%3Crect x='1' y='9' width='1' height='1'/%3E%3Crect x='3' y='9' width='1' height='1'/%3E%3Crect x='5' y='9' width='1' height='1'/%3E%3Crect x='7' y='9' width='1' height='1'/%3E%3Crect x='9' y='9' width='1' height='1'/%3E%3Crect x='11' y='9' width='1' height='1'/%3E%3Crect x='13' y='9' width='1' height='1'/%3E%3Crect x='15' y='9' width='1' height='1'/%3E%3Crect x='17' y='9' width='1' height='1'/%3E%3Crect x='19' y='9' width='1' height='1'/%3E%3Crect x='21' y='9' width='1' height='1'/%3E%3Crect x='23' y='9' width='1' height='1'/%3E%3Crect x='25' y='9' width='1' height='1'/%3E%3Crect x='27' y='9' width='1' height='1'/%3E%3Crect x='29' y='9' width='1' height='1'/%3E%3Crect x='31' y='9' width='1' height='1'/%3E%3Crect x='33' y='9' width='1' height='1'/%3E%3Crect x='35' y='9' width='1' height='1'/%3E%3Crect x='37' y='9' width='1' height='1'/%3E%3Crect x='39' y='9' width='1' height='1'/%3E%3Crect x='41' y='9' width='1' height='1'/%3E%3Crect x='43' y='9' width='1' height='1'/%3E%3Crect x='45' y='9' width='1' height='1'/%3E%3Crect x='47' y='9' width='1' height='1'/%3E%3Crect x='49' y='9' width='1' height='1'/%3E%3Crect x='51' y='9' width='1' height='1'/%3E%3Crect x='53' y='9' width='1' height='1'/%3E%3Crect x='55' y='9' width='1' height='1'/%3E%3Crect x='57' y='9' width='1' height='1'/%3E%3Crect x='59' y='9' width='1' height='1'/%3E%3Crect x='61' y='9' width='1' height='1'/%3E%3Crect x='63' y='9' width='1' height='1'/%3E%3Crect x='0' y='10' width='64' height='1'/%3E%3Crect x='11' y='2' width='4' height='1'/%3E%3Crect x='24' y='2' width='3' height='1'/%3E%3Crect x='45' y='2' width='4' height='1'/%3E%3Crect x='6' y='3' width='4' height='1'/%3E%3Crect x='14' y='3' width='9' height='1'/%3E%3Crect x='30' y='3' width='3' height='1'/%3E%3Crect x='41' y='3' width='9' height='1'/%3E%3Crect x='6' y='4' width='5' height='1'/%3E%3Crect x='18' y='4' width='8' height='1'/%3E%3Crect x='38' y='4' width='4' height='1'/%3E%3Crect x='21' y='5' width='6' height='1'/%3E%3Crect x='2' y='6' width='4' height='1'/%3E%3Crect x='18' y='6' width='9' height='1'/%3E%3Crect x='51' y='6' width='3' height='1'/%3E%3Crect x='51' y='7' width='4' height='1'/%3E%3Crect x='5' y='8' width='8' height='1'/%3E%3Crect x='24' y='8' width='8' height='1'/%3E%3Crect x='37' y='8' width='10' height='1'/%3E%3Crect x='54' y='8' width='7' height='1'/%3E%3Crect x='40' y='1' width='1' height='9'/%3E%3Crect x='1' y='21' width='1' height='1'/%3E%3Crect x='3' y='21' width='1' height='1'/%3E%3Crect x='5' y='21' width='1' height='1'/%3E%3Crect x='7' y='21' width='1' height='1'/%3E%3Crect x='9' y='21' width='1' height='1'/%3E%3Crect x='11' y='21' width='1' height='1'/%3E%3Crect x='13' y='21' width='1' height='1'/%3E%3Crect x='15' y='21' width='1' height='1'/%3E%3Crect x='17' y='21' width='1' height='1'/%3E%3Crect x='19' y='21' width='1' height='1'/%3E%3Crect x='21' y='21' width='1' height='1'/%3E%3Crect x='23' y='21' width='1' height='1'/%3E%3Crect x='25' y='21' width='1' height='1'/%3E%3Crect x='27' y='21' width='1' height='1'/%3E%3Crect x='29' y='21' width='1' height='1'/%3E%3Crect x='31' y='21' width='1' height='1'/%3E%3Crect x='33' y='21' width='1' height='1'/%3E%3Crect x='35' y='21' width='1' height='1'/%3E%3Crect x='37' y='21' width='1' height='1'/%3E%3Crect x='39' y='21' width='1' height='1'/%3E%3Crect x='41' y='21' width='1' height='1'/%3E%3Crect x='43' y='21' width='1' height='1'/%3E%3Crect x='45' y='21' width='1' height='1'/%3E%3Crect x='47' y='21' width='1' height='1'/%3E%3Crect x='49' y='21' width='1' height='1'/%3E%3Crect x='51' y='21' width='1' height='1'/%3E%3Crect x='53' y='21' width='1' height='1'/%3E%3Crect x='55' y='21' width='1' height='1'/%3E%3Crect x='57' y='21' width='1' height='1'/%3E%3Crect x='59' y='21' width='1' height='1'/%3E%3Crect x='61' y='21' width='1' height='1'/%3E%3Crect x='63' y='21' width='1' height='1'/%3E%3Crect x='0' y='22' width='64' height='1'/%3E%3Crect x='2' y='15' width='9' height='1'/%3E%3Crect x='17' y='15' width='4' height='1'/%3E%3Crect x='27' y='15' width='6' height='1'/%3E%3Crect x='37' y='15' width='10' height='1'/%3E%3Crect x='55' y='15' width='7' height='1'/%3E%3Crect x='23' y='16' width='5' height='1'/%3E%3Crect x='3' y='17' width='9' height='1'/%3E%3Crect x='19' y='17' width='4' height='1'/%3E%3Crect x='34' y='17' width='5' height='1'/%3E%3Crect x='48' y='17' width='3' height='1'/%3E%3Crect x='55' y='17' width='5' height='1'/%3E%3Crect x='4' y='18' width='3' height='1'/%3E%3Crect x='14' y='18' width='9' height='1'/%3E%3Crect x='50' y='18' width='4' height='1'/%3E%3Crect x='21' y='19' width='4' height='1'/%3E%3Crect x='49' y='19' width='5' height='1'/%3E%3Crect x='5' y='20' width='11' height='1'/%3E%3Crect x='28' y='20' width='7' height='1'/%3E%3Crect x='60' y='20' width='4' height='1'/%3E%3Crect x='12' y='13' width='1' height='9'/%3E%3Crect x='22' y='5' width='5' height='2'/%3E%3Crect x='18' y='5' width='3' height='1'/%3E%3Crect x='29' y='6' width='4' height='1'/%3E%3Crect x='52' y='16' width='5' height='2'/%3E%3Crect x='48' y='16' width='3' height='1'/%3E%3Crect x='59' y='17' width='4' height='1'/%3E%3C/g%3E%3Cg fill='%23000' fill-opacity='.32'%3E%3Crect x='62' y='3' width='2' height='1'/%3E%3Crect x='3' y='5' width='10' height='1'/%3E%3Crect x='34' y='5' width='4' height='1'/%3E%3Crect x='50' y='5' width='10' height='1'/%3E%3Crect x='4' y='7' width='8' height='1'/%3E%3Crect x='36' y='7' width='4' height='1'/%3E%3Crect x='63' y='7' width='1' height='1'/%3E%3Crect x='32' y='14' width='11' height='1'/%3E%3Crect x='49' y='14' width='9' height='1'/%3E%3Crect x='3' y='16' width='11' height='1'/%3E%3Crect x='31' y='18' width='8' height='1'/%3E%3Crect x='30' y='19' width='8' height='1'/%3E%3Crect x='61' y='19' width='3' height='1'/%3E%3Crect x='43' y='20' width='11' height='1'/%3E%3Crect x='22' y='4' width='5' height='1'/%3E%3Crect x='22' y='7' width='5' height='1'/%3E%3Crect x='21' y='5' width='1' height='2'/%3E%3Crect x='27' y='5' width='1' height='2'/%3E%3Crect x='52' y='15' width='5' height='1'/%3E%3Crect x='52' y='18' width='5' height='1'/%3E%3Crect x='51' y='16' width='1' height='2'/%3E%3Crect x='57' y='16' width='1' height='2'/%3E%3C/g%3E%3Cg fill='%23000' fill-opacity='.6'%3E%3Crect x='0' y='11' width='64' height='1'/%3E%3Crect x='41' y='1' width='1' height='10'/%3E%3Crect x='0' y='23' width='64' height='1'/%3E%3Crect x='13' y='13' width='1' height='10'/%3E%3Crect x='24' y='5' width='2' height='1'/%3E%3Crect x='54' y='16' width='2' height='1'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: calc(var(--px-size) * 64) calc(var(--px-size) * 24);
+  border-color: var(--wood-ink);
+}
+
+/* Shading on the inside walls of an open box: hard steps that dither out */
+@utility pixel-recess {
+  --px-size: var(--px, 2px);
+  --dither: repeating-conic-gradient(
+    oklch(0 0 0 / 35%) 0 25%,
+    transparent 0 50%
+  );
+  box-shadow:
+    inset 0 0 0 var(--px-size) oklch(0 0 0 / 80%),
+    inset 0 calc(var(--px-size) * 3) 0 oklch(0 0 0 / 50%),
+    inset 0 calc(var(--px-size) * 6) 0 oklch(0 0 0 / 25%),
+    inset calc(var(--px-size) * 3) 0 0 oklch(0 0 0 / 35%),
+    inset calc(var(--px-size) * -3) 0 0 oklch(0 0 0 / 35%);
+  background:
+    var(--dither) 0 calc(var(--px-size) * 6) / calc(var(--px-size) * 2)
+      calc(var(--px-size) * 2) repeat-x,
+    var(--dither) calc(var(--px-size) * 3) 0 / calc(var(--px-size) * 2)
+      calc(var(--px-size) * 2) repeat-y,
+    var(--dither) calc(100% - var(--px-size) * 3) 0 / calc(var(--px-size) * 2)
+      calc(var(--px-size) * 2) repeat-y;
+}
+
+/* A round iron rivet, 4 by 4 pixels with a lit corner and a dark rim */
+@utility pixel-nail {
+  --px-size: var(--px, 2px);
+  width: calc(var(--px-size) * 4);
+  height: calc(var(--px-size) * 4);
+  clip-path: polygon(
+    25% 0,
+    75% 0,
+    75% 25%,
+    100% 25%,
+    100% 75%,
+    75% 75%,
+    75% 100%,
+    25% 100%,
+    25% 75%,
+    0 75%,
+    0 25%,
+    25% 25%
+  );
+  background:
+    linear-gradient(oklch(1 0 0 / 55%), oklch(1 0 0 / 55%)) var(--px-size)
+      var(--px-size) / var(--px-size) var(--px-size) no-repeat,
+    linear-gradient(oklch(0 0 0 / 50%), oklch(0 0 0 / 50%))
+      calc(var(--px-size) * 2) calc(var(--px-size) * 2) /
+      calc(var(--px-size) * 2) calc(var(--px-size) * 2) no-repeat,
+    oklch(from var(--wood-tint) 0.5 0.01 h);
 }
 
 /* Polished bar with diagonal stripes, so even a short bar shows the effect.

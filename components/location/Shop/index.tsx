@@ -82,6 +82,7 @@ const Shop = () => {
         owned={owned}
         target={getPlannedAmount(inventory, targets, item)}
         max={Math.min(affordable, storable)}
+        storable={storable}
         limitedBy={storable < affordable ? "cargo" : "gold"}
         crewMembers={
           item === "food" || item === "water" ? crewMembers : undefined
@@ -93,11 +94,6 @@ const Shop = () => {
 
   return (
     <div className="flex flex-col gap-8">
-      <p className="text-muted-foreground text-sm">
-        Set how much of each item you want to own. Below what you have sells,
-        above it buys. Nothing changes until you press Transfer.
-      </p>
-
       {summary}
 
       <section aria-labelledby="shop-necessities-heading">
@@ -130,7 +126,9 @@ const Shop = () => {
           />
         </div>
 
-        <ul className="flex flex-col gap-2">{necessities.map(renderItem)}</ul>
+        <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {necessities.map(renderItem)}
+        </ul>
       </section>
 
       {utilities.length > 0 && (
@@ -145,7 +143,9 @@ const Shop = () => {
               Utilities
             </h2>
 
-            <ul className="flex flex-col gap-2">{utilities.map(renderItem)}</ul>
+            <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {utilities.map(renderItem)}
+            </ul>
           </section>
         </>
       )}
@@ -179,7 +179,7 @@ const Shop = () => {
               </Button>
             </div>
 
-            <ul className="flex flex-col gap-2">
+            <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {barterGoods.map(renderItem)}
             </ul>
           </section>

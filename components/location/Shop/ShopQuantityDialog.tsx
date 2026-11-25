@@ -33,11 +33,15 @@ type Props = {
   target: number
   /** The most the player can own with the gold and cargo space left. */
   max: number
+  /** The most that fits in the hold, which the steps can go up to even without the gold. */
+  storable: number
   /** What stops the player from owning more than max. */
   limitedBy: BuyLimit
   /** Crew to feed, for food and water only. */
   crewMembers?: number
   onChange: (target: number) => void
+  /** For the Adjust button that opens the dialog. */
+  className?: string
 }
 
 const ShopQuantityDialog = ({
@@ -45,16 +49,23 @@ const ShopQuantityDialog = ({
   owned,
   target,
   max,
+  storable,
   limitedBy,
   crewMembers,
   onChange,
+  className,
 }: Props) => {
   const title = snakeCaseToTitleCase(item)
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button type="button" variant="secondary" size="sm">
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          className={className}
+        >
           <SlidersHorizontal aria-hidden="true" />
           Adjust
         </Button>
@@ -104,7 +115,7 @@ const ShopQuantityDialog = ({
           <ShopTradeControls
             item={item}
             target={target}
-            max={max}
+            max={storable}
             onChange={onChange}
           />
         </div>
@@ -118,12 +129,12 @@ const ShopQuantityDialog = ({
               onClick={() =>
                 onChange(
                   step > 0
-                    ? Math.min(target + step, max)
+                    ? Math.min(target + step, storable)
                     : Math.max(0, target + step)
                 )
               }
               disabled={
-                (step < 0 && target === 0) || (step > 0 && target >= max)
+                (step < 0 && target === 0) || (step > 0 && target >= storable)
               }
             >
               {step > 0 ? `+${step}` : `−${-step}`}

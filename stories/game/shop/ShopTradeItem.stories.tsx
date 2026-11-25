@@ -12,6 +12,7 @@ const meta = {
     owned: 40,
     target: 40,
     max: 196,
+    storable: 300,
     limitedBy: "gold",
     crewMembers: 80,
     onChange: fn(),
@@ -20,7 +21,7 @@ const meta = {
     const [target, setTarget] = useState(args.target)
 
     return (
-      <ul>
+      <ul className="max-w-sm">
         <ShopTradeItem
           {...args}
           target={target}
@@ -53,20 +54,46 @@ export const NothingOwned: Story = {
   },
 }
 
+export const Row: Story = {
+  render: (args) => (
+    <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <ShopTradeItem {...args} item="food" />
+
+      <ShopTradeItem {...args} item="spices" owned={0} target={0} />
+
+      <ShopTradeItem {...args} item="silk" owned={12} target={20} />
+    </ul>
+  ),
+}
+
 export const LimitedByCargo: Story = {
-  args: { max: 60, limitedBy: "cargo" },
+  args: { max: 60, storable: 60, limitedBy: "cargo" },
   play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole("button", { name: "Adjust" }))
+
     await expect(
-      canvas.getByText("Up to 60 crates, limited by cargo space")
+      await screen.findByText("Up to 60 crates, limited by cargo space")
     ).toBeVisible()
 
-    await userEvent.click(canvas.getByRole("button", { name: "Adjust" }))
-    await userEvent.click(await screen.findByRole("button", { name: "+50" }))
+    await userEvent.click(screen.getByRole("button", { name: "+50" }))
 
     await expect(screen.getByRole("button", { name: "+10" })).toBeDisabled()
     await expect(
       screen.getAllByRole("button", { name: "One more Food" }).at(-1)
     ).toBeDisabled()
+  },
+}
+
+export const AboveWhatYouCanAfford: Story = {
+  args: { max: 45 },
+  play: async ({ args, canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole("button", { name: "Adjust" }))
+    await userEvent.click(await screen.findByRole("button", { name: "+50" }))
+
+    await expect(args.onChange).toHaveBeenLastCalledWith(90)
+
+    await userEvent.click(screen.getByRole("button", { name: "Buy max" }))
+    await expect(args.onChange).toHaveBeenLastCalledWith(45)
   },
 }
 

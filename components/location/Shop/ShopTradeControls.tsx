@@ -3,6 +3,7 @@ import { Minus, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils"
 import { snakeCaseToTitleCase } from "@/utils/string"
 
 type Props = {
@@ -10,9 +11,16 @@ type Props = {
   target: number
   max: number
   onChange: (target: number) => void
+  className?: string
 }
 
-const ShopTradeControls = ({ item, target, max, onChange }: Props) => {
+const ShopTradeControls = ({
+  item,
+  target,
+  max,
+  onChange,
+  className,
+}: Props) => {
   const label = snakeCaseToTitleCase(item)
 
   const change = (value: number) => {
@@ -26,7 +34,7 @@ const ShopTradeControls = ({ item, target, max, onChange }: Props) => {
   }
 
   return (
-    <ButtonGroup className="bg-card rounded-4xl">
+    <ButtonGroup className={cn("bg-card rounded-4xl", className)}>
       <Button
         type="button"
         variant="outline"
@@ -43,7 +51,7 @@ const ShopTradeControls = ({ item, target, max, onChange }: Props) => {
         inputMode="numeric"
         value={target.toString()}
         onChange={changeInput}
-        className="border-border bg-input/30 h-8 w-16 rounded-none text-center"
+        className="border-border bg-input/30 h-8 w-16 grow rounded-none text-center"
       />
 
       <Button

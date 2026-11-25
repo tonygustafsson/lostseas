@@ -1,19 +1,11 @@
-import { Info } from "lucide-react"
-import Image from "next/image"
-
-import MerchandiseIcon from "@/components/MerchandiseIcon"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+import MerchandiseCrate, {
+  MerchandiseInfo,
+} from "@/components/MerchandiseCrate"
 import { MERCHANDISE } from "@/constants/merchandise"
-import { formatAmountChange } from "@/utils/shop"
+import { formatQuantity } from "@/utils/shop"
 import { snakeCaseToTitleCase } from "@/utils/string"
 
-import ShopBuyLimit, { type BuyLimit } from "./ShopBuyLimit"
+import { type BuyLimit } from "./ShopBuyLimit"
 import ShopQuantityDialog from "./ShopQuantityDialog"
 import ShopTradeChange from "./ShopTradeChange"
 import ShopTradeControls from "./ShopTradeControls"
@@ -23,6 +15,8 @@ type Props = {
   owned: number
   target: number
   max: number
+  /** The most that fits in the hold. Planning above max is allowed, the summary stops a trade the player can't pay for. */
+  storable: number
   limitedBy: BuyLimit
   /** Crew to feed, for food and water only */
   crewMembers?: number
@@ -34,6 +28,7 @@ const ShopTradeItem = ({
   owned,
   target,
   max,
+  storable,
   limitedBy,
   crewMembers,
   onChange,
@@ -41,97 +36,66 @@ const ShopTradeItem = ({
   const title = snakeCaseToTitleCase(item)
 
   return (
-    <li className="bg-card relative overflow-hidden rounded-xl border">
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-2/3 select-none md:w-1/2">
-        <Image
-          src={`/img/cards/shop/${item}.png`}
-          alt=""
-          fill
-          sizes="50vw"
-          className="object-cover opacity-90"
-        />
+    <MerchandiseCrate
+      title={title}
+      image={`/img/cards/shop/${item}.png`}
+      // What the player will have once the trade goes through
+      label={formatQuantity(item, target)}
+    >
+      <div className="flex items-start justify-between gap-2 text-xs">
+        {target !== owned && (
+          <ShopTradeChange item={item} owned={owned} target={target} />
+        )}
 
-        <div className="via-card/70 to-card absolute inset-y-0 -right-px left-0 bg-linear-to-r from-transparent" />
+        {/* Gold per unit */}
+        <dl className="ml-auto flex gap-3 whitespace-nowrap">
+          <div className="flex gap-1">
+            <dt className="text-muted-foreground">Buy</dt>
+            <dd className="text-gold font-semibold tabular-nums">
+              {MERCHANDISE[item].buy}
+            </dd>
+          </div>
+
+          <div className="flex gap-1">
+            <dt className="text-muted-foreground">Sell</dt>
+            <dd className="text-gold font-semibold tabular-nums">
+              {MERCHANDISE[item].sell}
+            </dd>
+          </div>
+        </dl>
       </div>
 
-      <div className="relative flex flex-col gap-4 p-4 md:flex-row md:items-center">
-        <div className="flex flex-1 items-center gap-4">
-          <span
-            aria-hidden="true"
-            className="border-gold/60 bg-background flex size-12 shrink-0 items-center justify-center rounded-full border"
-          >
-            <MerchandiseIcon item={item} size="sm" />
-          </span>
+      {/* On a narrow card the picker gets its own full row, with Adjust
+          and info below it */}
+      <div className="mt-auto flex flex-col gap-2 @3xs:flex-row @3xs:items-center @3xs:justify-between">
+        <ShopTradeControls
+          item={item}
+          target={target}
+          max={storable}
+          onChange={onChange}
+          className="w-full @3xs:w-auto"
+        />
 
-          <div className="flex flex-1 flex-col gap-1">
-            <div className="flex items-center gap-2">
-              <h3 className="text-shadow-background font-serif text-xl font-semibold text-shadow-sm">
-                {title}
-              </h3>
-
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    size="icon-xs"
-                    variant="outline"
-                    aria-label={`About ${title}`}
-                    className="bg-background text-gold border-gold/60 hover:bg-muted rounded-full"
-                  >
-                    <Info />
-                  </Button>
-                </PopoverTrigger>
-
-                <PopoverContent>{MERCHANDISE[item].description}</PopoverContent>
-              </Popover>
-            </div>
-
-            <div className="flex flex-wrap gap-1">
-              <Badge className="bg-background text-foreground">
-                Buy {MERCHANDISE[item].buy}
-              </Badge>
-
-              <Badge className="bg-background text-foreground">
-                Sell {MERCHANDISE[item].sell}
-              </Badge>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-background/60 flex items-center justify-between gap-2 rounded-xl px-4 py-2 md:w-48 md:flex-col md:items-end md:gap-1 md:bg-transparent md:p-0">
-          <p className="text-lg font-semibold tabular-nums">
-            {formatAmountChange(item, owned, target)}
-          </p>
-
-          <ShopTradeChange
-            item={item}
-            owned={owned}
-            target={target}
-            className="text-xs"
-          />
-
-          <ShopBuyLimit item={item} max={max} limitedBy={limitedBy} />
-        </div>
-
-        <div className="flex items-center justify-between gap-2">
-          <ShopTradeControls
-            item={item}
-            target={target}
-            max={max}
-            onChange={onChange}
-          />
-
+        <div className="flex items-center gap-1">
           <ShopQuantityDialog
+            className="flex-1 @3xs:flex-none"
             item={item}
             owned={owned}
             target={target}
             max={max}
+            storable={storable}
             limitedBy={limitedBy}
             crewMembers={crewMembers}
             onChange={onChange}
           />
+
+          <MerchandiseInfo
+            title={title}
+            description={MERCHANDISE[item].description}
+          />
         </div>
       </div>
-    </li>
+    </MerchandiseCrate>
   )
 }
 

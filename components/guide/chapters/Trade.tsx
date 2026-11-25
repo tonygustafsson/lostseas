@@ -48,7 +48,7 @@ const Trade = () => (
     <h3>Cargo space</h3>
 
     <p>
-      Every crate, barrel, box, bolt and bale takes one slot in your hold.
+      Every crate, barrel, bottle, bolt and bale takes one slot in your hold.
       Cannons and repair kits take none, presumably because the crew sleeps on
       them. You can always sell, but you can only buy what fits.
     </p>

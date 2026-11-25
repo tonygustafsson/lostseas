@@ -135,7 +135,7 @@ describe("giveGold", () => {
 
 describe("giveMedicine", () => {
   it("raises health by medicine per crew member", () => {
-    // 4 boxes for 20 crew raise health by 4
+    // 4 bottles for 20 crew raise health by 4
     const player = deepFreeze(
       createTestPlayer({
         crewMembers: { health: 50 },
@@ -170,7 +170,7 @@ describe("giveMedicine", () => {
         }),
         { medicine } as never
       ),
-      "You need to give at least 1 box of medicine"
+      "You need to give at least 1 bottle of medicine"
     )
   })
 

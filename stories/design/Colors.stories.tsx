@@ -73,6 +73,7 @@ const gameTokens: { title: string; tokens: Token[] }[] = [
   },
   { title: "Sea", tokens: [{ name: "sea" }, { name: "sea-dark" }] },
   { title: "Text", tokens: [{ name: "parchment" }] },
+  { title: "Wood", tokens: [{ name: "wood-ink", text: "parchment" }] },
   {
     title: "Status",
     tokens: [
@@ -291,6 +292,17 @@ const roles: Role[] = [
         <h3 className="text-parchment font-serif text-2xl">The harbour</h3>
         <p>Ships come and go with the tide.</p>
         <p className="text-muted-foreground text-sm">Open from dawn</p>
+      </div>
+    ),
+  },
+  {
+    title: "Wood ink for pixel-art wood",
+    tokens: ["wood-ink", "sea-dark", "parchment"],
+    use: "Outlines on the pixel-art crates in the shop (the pixel-wood utility sets it as the border), and text and borders on the parchment labels nailed to them.",
+    why: "The wood takes its hue from --wood-tint (sea-dark) and its strength from --wood-chroma, so the crates sit in the sea palette. Wood ink is a near-black of the same hue, so the outlines never look like a different colour.",
+    example: (
+      <div className="bg-parchment border-2 border-(--wood-ink) px-6 py-1 font-serif font-bold tracking-widest text-(--wood-ink) uppercase">
+        Food
       </div>
     ),
   },
