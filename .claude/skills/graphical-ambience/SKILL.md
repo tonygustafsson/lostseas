@@ -57,7 +57,10 @@ channel of the mask, the shader does not look at the colour of the picture. Dust
 blurred a little more each (`DUST_SPREAD`), so the spread is tuned there. The
 shader puts a mote in fewer grid cells where the dust is weaker,
 `DUST_DENSITY` is the share of cells in full dust, so that is the knob for how
-much dust there is.
+much dust there is. The same blue channel draws the slanting light shafts
+(`beams` in the shader, `BEAM_ALPHA` for how strong), only inside the room and
+only in sunny weather. The picture layers also ease from a 6% zoom to 1 when a
+building is entered (`animate-settle` in `globals.css`).
 
 For speed the masks go to the GPU as canvases (`CanvasMask` in
 `useAmbienceCanvas.ts`), never encoded to a picture and decoded again, which

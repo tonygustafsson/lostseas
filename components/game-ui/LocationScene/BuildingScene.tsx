@@ -5,14 +5,13 @@ import { ReactNode, useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { getBuilding } from "@/constants/townMaps"
 import { cn } from "@/lib/utils"
-import { getLocationBackground, getLocationFires } from "@/utils/location"
+import { getLocationBackground } from "@/utils/location"
 
 import BackToTown from "./BackToTown"
 import BuildingIntro from "./BuildingIntro"
 import {
   createBuildingBackRenderer,
   createBuildingDustRenderer,
-  MAX_FIRES,
 } from "./buildingSceneShader"
 import { BUILDING_HEIGHT, BUILDING_WIDTH } from "./lightMask"
 import { useAmbienceCanvas } from "./useAmbienceCanvas"
@@ -20,7 +19,7 @@ import { useBuildingMasks } from "./useBuildingMasks"
 import { usePanScene } from "./usePanScene"
 import { getWeatherAmbience } from "./weatherAmbience"
 
-export type HiddenPart = "water" | "sky" | "dust" | "fire" | "intro"
+export type HiddenPart = "water" | "sky" | "dust" | "beams" | "fire" | "intro"
 
 type Props = {
   town: Character["town"]
@@ -60,6 +59,7 @@ const BuildingScene = ({ town, location, weather, hide }: Props) => {
     u_hideWater: isHidden("water"),
     u_hideSky: isHidden("sky"),
     u_hideDust: isHidden("dust"),
+    u_hideBeams: isHidden("beams"),
     u_hideFire: isHidden("fire"),
   }
   // Rippling water, the weather and gulls outside, dust and flickering lights
@@ -71,16 +71,6 @@ const BuildingScene = ({ town, location, weather, hide }: Props) => {
   )
   // The dust drifts over the intro card as well, dimmer there
   const cardRef = useRef<HTMLDivElement>(null)
-  // Fires heat the border of the card, padded as the shader has fixed slots
-  const getFireArray = () => {
-    const values = new Array(MAX_FIRES * 4).fill(0)
-
-    getLocationFires(town, location)
-      .slice(0, MAX_FIRES)
-      .forEach(([x, y, radius], i) => values.splice(i * 4, 3, x, y, radius))
-
-    return { u_fires: { size: 4 as const, values } }
-  }
   // Measured on the box when the card or scene changes size, not on every
   // frame, as reading the layout that often can force the browser to redo it.
   // The canvas pans under the card, so the pan is added on every frame.
@@ -101,7 +91,6 @@ const BuildingScene = ({ town, location, weather, hide }: Props) => {
     masks,
     {
       uniforms,
-      arrays: { desktop: getFireArray() },
       frameArrays: { desktop: getCardArray },
     }
   )
@@ -141,7 +130,7 @@ const BuildingScene = ({ town, location, weather, hide }: Props) => {
     >
       {/* The layers are as wide as the picture, wider than a phone, and pan together */}
       <PanLayer>
-        <div className="absolute inset-0 opacity-80">
+        <div className="motion-safe:animate-settle absolute inset-0 opacity-80">
           <Image
             ref={imageRef}
             src={getLocationBackground(town, location)}
@@ -168,7 +157,7 @@ const BuildingScene = ({ town, location, weather, hide }: Props) => {
           <div
             ref={dustRef}
             aria-hidden
-            className="absolute inset-0 motion-reduce:hidden"
+            className="motion-safe:animate-settle absolute inset-0 motion-reduce:hidden"
           />
         </PanLayer>
       )}

@@ -545,11 +545,17 @@ export const createAmbienceRenderer = (
         )
         hasTextures = true
       }),
-    // New values fade in, the first ones apply straight away
+    // New values fade in, the first ones apply straight away. So do the
+    // switches of the story that hide a part of the scene, as a fade would make
+    // it hard to see what they change.
     setUniforms: (values: AmbienceUniforms) =>
       whenReady(() => {
         Object.entries(values).forEach(([name, target]) => {
-          if (uniforms[name]) {
+          if (uniforms[name] && name.startsWith("u_hide")) {
+            uniforms[name].value = target
+            uniforms[name].target = target
+            gl.uniform1f(uniforms[name].location, target)
+          } else if (uniforms[name]) {
             uniforms[name].target = target
           } else {
             const location = gl.getUniformLocation(program, name)

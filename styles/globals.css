@@ -132,6 +132,17 @@ html {
 
   --animate-equalizer: equalizer 1s ease-in-out infinite;
   --animate-ring-shimmer: ring-shimmer 1s linear forwards;
+  --animate-settle: settle 1.25s ease-out;
+
+  /* A building picture coming to rest, as if the camera has stopped walking */
+  @keyframes settle {
+    from {
+      transform: scale(1.06);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
 
   /* One lap around the logo rim, fading out as it finishes */
   @keyframes ring-shimmer {

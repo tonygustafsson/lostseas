@@ -39,7 +39,7 @@ const meta = {
     },
     hide: {
       control: "check",
-      options: ["water", "sky", "dust", "fire", "intro"],
+      options: ["water", "sky", "dust", "beams", "fire", "intro"],
     },
   },
   decorators: [

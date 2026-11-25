@@ -11,10 +11,6 @@ import {
   warmUpShader,
 } from "./ambienceRenderer"
 import { BUILDING_GULLS, getGullArrays } from "./gulls"
-import { BUILDING_HEIGHT, BUILDING_WIDTH } from "./lightMask"
-
-// Fires that can heat the border of the intro card, the most any building has
-export const MAX_FIRES = 32
 
 // The parts of main(), in the order they are drawn
 const WEATHER_PART = `
@@ -58,7 +54,15 @@ const WEATHER_PART = `
 const DUST_PART = `
   // Less dust over the sky itself, it floats inside. It only shows in
   // sunlight.
-  float dustZone = light.b * (1.0 - 0.6 * skyMask) * u_sun * (1.0 - u_hideDust);
+  float sunLight = light.b * u_sun;
+  float dustZone = sunLight * (1.0 - 0.6 * skyMask) * (1.0 - u_hideDust);
+
+  // Light shafts only fall inside the room, not over the view outside
+  if (sunLight > 0.01 && u_hideBeams < 1.0) {
+    float inside = (1.0 - skyMask) * (1.0 - texture2D(u_water, uv).a);
+
+    color = beams(color, p, min(light.b, 1.0) * u_sun * inside);
+  }
 
   if (dustZone > 0.01) {
     color = dust(color, p, 14.0, 0.08, 31.0, dustZone);
@@ -81,32 +85,6 @@ const LIGHTS_PART = `
   }
 `
 
-// Fires near the card make its border glow like embers, licking upwards
-const FIRE_BORDER_PART = `
-  float edge = cardEdge(v_uv * u_size);
-
-  if (abs(edge) < 9.0) {
-    float heat = 0.0;
-
-    for (int i = 0; i < MAX_FIRES; i++) {
-      vec4 fire = u_fires[i];
-
-      if (fire.z > 0.0) {
-        vec2 at = fire.xy / PICTURE_SIZE * shown + (u_size - shown) * 0.5;
-        float reach = fire.z / PICTURE_SIZE.x * shown.x * FIRE_REACH;
-        float closeness = 1.0 - smoothstep(0.0, reach, length(v_uv * u_size - at));
-
-        heat += closeness * closeness * (0.75 + 0.25 * flicker(fire.xy));
-      }
-    }
-
-    float lick = 0.6 + 0.4 * noise(v_uv * u_size / 8.0 - vec2(0.0, u_time * 3.0));
-    float glow = exp(-abs(edge) / 2.1) * min(heat * 1.75, 1.0) * lick * (1.0 - u_hideFire);
-
-    color = over(color, mix(EMBER_COLOR, FLAME_COLOR, glow), glow * 0.68);
-  }
-`
-
 // The dust can be left out or drawn alone, for a canvas of its own over the
 // intro card. The editor draws everything on one canvas.
 type Layer = "all" | "scene" | "dust"
@@ -123,10 +101,6 @@ uniform vec2 u_imageSize;
 // The intro card in CSS pixels on the canvas: x, y, width and height. Dust
 // over it is dimmer, as the dark card makes it stand out.
 uniform vec4 u_card;
-const int MAX_FIRES = ${MAX_FIRES};
-// The fires of the building as x, y and radius in pixels of its picture. A
-// radius of 0 is an unused slot.
-uniform vec4 u_fires[MAX_FIRES];
 
 // The weather, see weatherAmbience.ts
 uniform float u_cloudCover;
@@ -145,6 +119,7 @@ uniform vec4 u_gull[GULL_COUNT];
 uniform float u_hideWater;
 uniform float u_hideSky;
 uniform float u_hideDust;
+uniform float u_hideBeams;
 uniform float u_hideFire;
 
 // Water ripple strength in CSS pixels, the sea is far away in most interiors
@@ -153,12 +128,12 @@ const vec3 GLOW_COLOR = vec3(1.0, 0.72, 0.36);
 const vec3 DUST_COLOR = vec3(1.0, 0.96, 0.86);
 // Share of grid cells that hold a mote in full dust
 const float DUST_DENSITY = 0.19;
+// Light shafts: how far they lean (sideways per pixel down), their colour and
+// how strongly they show at most
+const float BEAM_SLANT = 0.55;
+const vec3 BEAM_COLOR = vec3(1.0, 0.9, 0.7);
+const float BEAM_ALPHA = 0.3;
 const vec3 FOG_COLOR = vec3(0.86, 0.88, 0.9);
-const vec2 PICTURE_SIZE = vec2(${BUILDING_WIDTH}.0, ${BUILDING_HEIGHT}.0);
-// How far from a fire its heat reaches the card, in radiuses of the fire
-const float FIRE_REACH = 5.0;
-const vec3 EMBER_COLOR = vec3(1.0, 0.28, 0.04);
-const vec3 FLAME_COLOR = vec3(1.0, 0.8, 0.35);
 const vec3 GLOOM_COLOR = vec3(0.04, 0.05, 0.08);
 // Matches the card's rounded corners and how much of the dust shows over it
 const float CARD_RADIUS = 24.0;
@@ -204,6 +179,22 @@ float flicker(vec2 p) {
   return clamp((slow * 0.6 + fast * 0.4) * 2.2 - 1.1 - dip * 0.8, -1.0, 1.0);
 }
 
+// Slanting shafts of sunlight coming in from the openings, drifting slowly
+// sideways. Strength is how much light there is at the point, up to 1.
+vec4 beams(vec4 base, vec2 p, float strength) {
+  float across = p.x - p.y * BEAM_SLANT;
+  float drift = u_time * 0.12;
+  float wide = noise(vec2(across / 120.0 + drift, 3.0));
+  float thin = noise(vec2(across / 40.0 - drift * 0.6, 8.0));
+  float shaft = smoothstep(0.4, 0.85, wide * 0.7 + thin * 0.3);
+
+  return over(
+    base,
+    BEAM_COLOR,
+    shaft * strength * BEAM_ALPHA * dustVisibility(v_uv * u_size)
+  );
+}
+
 // Some cells of a grid, cell CSS pixels wide, hold a mote drifting slowly up
 // and sideways, circling a little and catching the light now and then. The
 // thinner the dust (zone, up to 1), the fewer cells hold one, so it fades out
@@ -245,7 +236,7 @@ void main() {
   vec4 color = vec4(0.0);
 
 ${layer !== "dust" ? WEATHER_PART : ""}
-${layer !== "scene" ? DUST_PART + FIRE_BORDER_PART : ""}
+${layer !== "scene" ? DUST_PART : ""}
 ${layer !== "dust" ? LIGHTS_PART : ""}
 
   gl_FragColor = color;
