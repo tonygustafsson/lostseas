@@ -4,8 +4,10 @@ import { Box } from "lucide-react"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { useShop } from "@/hooks/queries/useShop"
+import { useWarnOnUnsavedChanges } from "@/hooks/useWarnOnUnsavedChanges"
 import {
   getCargoAfterTrade,
   getCargoCapacity,
@@ -23,7 +25,7 @@ import {
   type TradeTargets,
 } from "@/utils/shop"
 
-import ShopNecessitiesPresets from "./ShopNecessitiesPresets"
+import ShopSuppliesDialog from "./ShopSuppliesDialog"
 import ShopTradeItem from "./ShopTradeItem"
 import ShopTradeSummary from "./ShopTradeSummary"
 
@@ -31,6 +33,10 @@ const Shop = () => {
   const { data: player } = useGetPlayer()
   const { trade, isTrading } = useShop()
   const [targets, setTargets] = useState<TradeTargets>({})
+
+  useWarnOnUnsavedChanges(
+    getTradeChanges(player?.inventory, targets).length > 0
+  )
 
   if (!player) return null
 
@@ -102,13 +108,25 @@ const Shop = () => {
           Necessities
         </h2>
 
-        <div className="mb-4">
-          <ShopNecessitiesPresets
+        <div className="mb-8">
+          <ShopSuppliesDialog
             crewMembers={crewMembers}
             food={getPlannedAmount(inventory, targets, "food")}
             water={getPlannedAmount(inventory, targets, "water")}
-            freeCargo={cargoCapacity - cargoAfter}
+            gold={player.character.gold}
+            changes={changes}
+            cargoAfter={cargoAfter}
+            cargoCapacity={cargoCapacity}
+            canSellBarterGoods={hasPlannedBarterGoods(
+              barterGoods,
+              inventory,
+              targets
+            )}
             onApply={applyTargets}
+            onSellBarterGoods={() =>
+              applyTargets(getSellBarterGoodsTargets(barterGoods))
+            }
+            onReset={() => setTargets({})}
           />
         </div>
 
@@ -116,43 +134,56 @@ const Shop = () => {
       </section>
 
       {utilities.length > 0 && (
-        <section aria-labelledby="shop-utilities-heading">
-          <h2
-            id="shop-utilities-heading"
-            className="mb-4 font-serif text-2xl font-semibold"
-          >
-            Utilities
-          </h2>
+        <>
+          <Separator />
 
-          <ul className="flex flex-col gap-2">{utilities.map(renderItem)}</ul>
-        </section>
+          <section aria-labelledby="shop-utilities-heading">
+            <h2
+              id="shop-utilities-heading"
+              className="mb-4 font-serif text-2xl font-semibold"
+            >
+              Utilities
+            </h2>
+
+            <ul className="flex flex-col gap-2">{utilities.map(renderItem)}</ul>
+          </section>
+        </>
       )}
 
       {barterGoods.length > 0 && (
-        <section aria-labelledby="shop-barter-heading">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
+        <>
+          <Separator />
+
+          <section aria-labelledby="shop-barter-heading">
             <h2
               id="shop-barter-heading"
-              className="font-serif text-2xl font-semibold"
+              className="mb-4 font-serif text-2xl font-semibold"
             >
               Barter goods
             </h2>
 
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() =>
-                applyTargets(getSellBarterGoodsTargets(barterGoods))
-              }
-              disabled={!hasPlannedBarterGoods(barterGoods, inventory, targets)}
-            >
-              <Box aria-hidden="true" />
-              Sell all barter goods
-            </Button>
-          </div>
+            <div className="mb-8">
+              <Button
+                size="lg"
+                variant="secondary"
+                className="w-full sm:w-auto"
+                onClick={() =>
+                  applyTargets(getSellBarterGoodsTargets(barterGoods))
+                }
+                disabled={
+                  !hasPlannedBarterGoods(barterGoods, inventory, targets)
+                }
+              >
+                <Box aria-hidden="true" />
+                Sell all barter goods
+              </Button>
+            </div>
 
-          <ul className="flex flex-col gap-2">{barterGoods.map(renderItem)}</ul>
-        </section>
+            <ul className="flex flex-col gap-2">
+              {barterGoods.map(renderItem)}
+            </ul>
+          </section>
+        </>
       )}
 
       {summary}

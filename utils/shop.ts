@@ -111,27 +111,6 @@ export const getPlannedAmount = (
   item: keyof Inventory
 ) => targets[item] ?? inventory?.[item] ?? 0
 
-/**
- * Food and water targets that last the crew the given number of days. Tops up
- * from the planned amounts and never lowers them, so a planned purchase of
- * more than the preset needs is kept.
- */
-export const getNecessitiesTargets = (
-  {
-    crewMembers,
-    food,
-    water,
-  }: { crewMembers: CrewMembers["count"]; food: number; water: number },
-  days: number
-): TradeTargets => {
-  const needed = getSuppliesNeeded(crewMembers, days)
-
-  return {
-    food: Math.max(food, needed.food),
-    water: Math.max(water, needed.water),
-  }
-}
-
 /** Targets that sell all the given barter goods. */
 export const getSellBarterGoodsTargets = (
   barterGoods: (keyof Inventory)[]

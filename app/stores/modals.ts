@@ -9,6 +9,7 @@ export type ModalId =
   | "welcome"
   | "removeShip"
   | "abandonQuest"
+  | "leaveBuilding"
   | "dismissCrewMembers"
   | "screenshot"
   | "departureWarnings"

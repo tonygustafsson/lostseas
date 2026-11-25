@@ -14,7 +14,6 @@ import {
   getDaysWorthOfNecessities,
   getGoldLeftForItem,
   getItemChange,
-  getNecessitiesTargets,
   getPlannedAmount,
   getSellBarterGoodsTargets,
   getShopItems,
@@ -27,7 +26,6 @@ import {
 } from "@/utils/shop"
 
 import { createTestPlayer, deepFreeze } from "./helpers/createTestPlayer"
-import { createSeededRandom } from "./helpers/seededRandom"
 
 describe("shop utils", () => {
   it.each([
@@ -167,52 +165,6 @@ describe("trade draft utils", () => {
   it("getAffordableTarget buys what the gold allows on top of what is owned", () => {
     expect(getAffordableTarget("food", 5, 50)).toBe(8)
     expect(getAffordableTarget("food", 5, -40)).toBe(5)
-  })
-
-  it("getNecessitiesTargets tops up food and water for the days", () => {
-    // 20 crew use 1 food and 2 water a day
-    expect(
-      getNecessitiesTargets({ crewMembers: 20, food: 5, water: 50 }, 10)
-    ).toEqual({ food: 10, water: 50 })
-  })
-
-  it("getNecessitiesTargets keeps a planned purchase larger than it needs", () => {
-    // The player plans to own 100 water, more than 10 days need
-    expect(
-      getNecessitiesTargets({ crewMembers: 20, food: 0, water: 100 }, 10)
-    ).toEqual({ food: 10, water: 100 })
-  })
-
-  it("getNecessitiesTargets tops up from a planned sale", () => {
-    // The player planned to sell all food, so the preset buys it back
-    expect(
-      getNecessitiesTargets({ crewMembers: 20, food: 0, water: 40 }, 5)
-    ).toEqual({ food: 5, water: 40 })
-  })
-
-  it("getNecessitiesTargets always lasts the requested days and never lowers", () => {
-    const random = createSeededRandom(42)
-
-    for (let i = 0; i < 2000; i++) {
-      const crewMembers = random.int(1, 300)
-      const days = random.int(1, 60)
-      const food = random.int(0, 100)
-      const water = random.int(0, 200)
-
-      const targets = getNecessitiesTargets({ crewMembers, food, water }, days)
-      const context = `crew ${crewMembers}, days ${days}, ${food} food, ${water} water`
-
-      expect(targets.food, context).toBeGreaterThanOrEqual(food)
-      expect(targets.water, context).toBeGreaterThanOrEqual(water)
-      expect(
-        getDaysWorthOfNecessities({
-          crewMembers,
-          food: targets.food,
-          water: targets.water,
-        }),
-        context
-      ).toBeGreaterThanOrEqual(days)
-    }
   })
 
   it("getSellBarterGoodsTargets sets every barter good the local shop accepts to zero", () => {

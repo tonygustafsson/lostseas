@@ -39,8 +39,10 @@ const Trade = () => (
     <p>
       You can change several goods at once, so the gold from one sale can pay
       for another purchase. Nothing happens until you press Transfer, and then
-      the whole trade goes through or none of it does. The day buttons top up
-      food and water for that many days at sea, counting what you already have.
+      the whole trade goes through or none of it does. The stock up button opens
+      a window where you can top up food and water for a number of days at sea,
+      counting what you already have. It also shows your gold and cargo after
+      the trade, and can sell all your barter goods.
     </p>
 
     <h3>Cargo space</h3>

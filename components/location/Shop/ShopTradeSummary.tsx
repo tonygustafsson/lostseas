@@ -1,12 +1,10 @@
-import { ArrowLeftRight, Coins } from "lucide-react"
-import type { ReactNode } from "react"
-import { GiCargoCrate } from "react-icons/gi"
+import { ArrowLeftRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
 import { addsCargo } from "@/utils/cargo"
-import { formatNumber } from "@/utils/number"
-import { formatSigned, getTradeGold, type TradeChange } from "@/utils/shop"
+import { getTradeGold, type TradeChange } from "@/utils/shop"
+
+import ShopTradeTotals from "./ShopTradeTotals"
 
 type Props = {
   gold: number
@@ -18,42 +16,6 @@ type Props = {
   onTransfer: () => void
 }
 
-const Tile = ({
-  label,
-  icon,
-  className,
-  children,
-}: {
-  label: string
-  icon: ReactNode
-  className?: string
-  children: ReactNode
-}) => (
-  <div className="bg-muted flex flex-col items-start gap-1 rounded-xl border px-2 py-2 sm:flex-row sm:items-center sm:gap-4 sm:px-4">
-    <span
-      aria-hidden="true"
-      className="text-gold [&_svg]:size-5 sm:[&_svg]:size-8"
-    >
-      {icon}
-    </span>
-
-    <div className="min-w-0">
-      <dt className="text-muted-foreground font-serif text-xs sm:text-sm">
-        {label}
-      </dt>
-
-      <dd
-        className={cn(
-          "text-lg leading-tight font-semibold tabular-nums",
-          className
-        )}
-      >
-        {children}
-      </dd>
-    </div>
-  </div>
-)
-
 const ShopTradeSummary = ({
   gold,
   changes,
@@ -64,9 +26,7 @@ const ShopTradeSummary = ({
   onTransfer,
 }: Props) => {
   const hasChanges = changes.length > 0
-  const tradeGold = getTradeGold(changes)
-  const goldAfter = gold + tradeGold
-  const isShort = goldAfter < 0
+  const isShort = gold + getTradeGold(changes) < 0
   // Selling is always allowed, even when the fleet is already overloaded
   const isOverCapacity = cargoAfter > cargoCapacity && addsCargo(changes)
 
@@ -75,42 +35,13 @@ const ShopTradeSummary = ({
       aria-label="Trade summary"
       className="bg-card flex flex-col gap-4 rounded-2xl border p-4 lg:flex-row lg:items-center"
     >
-      <dl className="grid flex-1 grid-cols-2 gap-2 sm:grid-cols-4">
-        <Tile label="Gold now" icon={<Coins />}>
-          {formatNumber(gold)}
-        </Tile>
-
-        <Tile
-          label={
-            hasChanges
-              ? `${changes.length} ${changes.length === 1 ? "change" : "changes"}`
-              : "No changes"
-          }
-          icon={<ArrowLeftRight />}
-          className={cn(
-            tradeGold > 0 && "text-success",
-            tradeGold < 0 && "text-gold"
-          )}
-        >
-          {formatSigned(tradeGold)}
-        </Tile>
-
-        <Tile
-          label={isShort ? "Short of gold" : "After trade"}
-          icon={<Coins />}
-          className={cn(isShort && "text-error")}
-        >
-          {formatNumber(goldAfter)}
-        </Tile>
-
-        <Tile
-          label={isOverCapacity ? "Over capacity" : "Cargo after trade"}
-          icon={<GiCargoCrate />}
-          className={cn(isOverCapacity && "text-error")}
-        >
-          {formatNumber(cargoAfter)} / {formatNumber(cargoCapacity)}
-        </Tile>
-      </dl>
+      <ShopTradeTotals
+        gold={gold}
+        changes={changes}
+        cargoAfter={cargoAfter}
+        cargoCapacity={cargoCapacity}
+        className="flex-1 sm:grid-cols-4"
+      />
 
       <div className="flex gap-2 *:flex-1 lg:*:flex-none">
         <Button
