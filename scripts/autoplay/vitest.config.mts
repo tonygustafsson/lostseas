@@ -1,16 +1,16 @@
 import path from "path"
 import { defineConfig } from "vitest/config"
 
-const projectRoot = path.resolve(__dirname, "../..")
+const projectRoot = path.resolve(import.meta.dirname, "../..")
 
 // Runs the bot with Vitest, which already knows the @ paths and mocks.
 // Kept apart from the test config so npm test never plays hundreds of games.
 export default defineConfig({
-  root: __dirname,
+  root: import.meta.dirname,
   resolve: {
     alias: {
       "@": projectRoot,
-      "server-only": path.resolve(__dirname, "serverOnlyStub.ts"),
+      "server-only": path.resolve(import.meta.dirname, "serverOnlyStub.ts"),
     },
   },
   test: {

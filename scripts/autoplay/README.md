@@ -100,7 +100,7 @@ Run a baseline, change a constant like `QUEST_REWARDS` or the title levels, and 
 - `checks.ts` holds the state rules.
 - `fuzz.ts` holds the junk input cases.
 - `report.ts` collects the numbers and formats the summary.
-- `autoplay.run.ts` is the entry point. It runs as a single Vitest test so the `@/` paths and test helpers work. `vitest.config.ts` keeps it apart from `npm test`.
+- `autoplay.run.ts` is the entry point. It runs as a single Vitest test so the `@/` paths and test helpers work. `vitest.config.mts` keeps it apart from `npm test`.
 
 ## Keeping it up to date
 

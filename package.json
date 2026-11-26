@@ -15,7 +15,7 @@
     "generate:walker-sprites": "node scripts/generate-walker-sprites/index.mjs",
     "generate:gull-sprites": "node scripts/generate-gull-sprites/index.mjs",
     "scan:colors": "node scripts/scan-colors/index.mjs",
-    "autoplay": "vitest run --config scripts/autoplay/vitest.config.ts"
+    "autoplay": "vitest run --config scripts/autoplay/vitest.config.mts"
   },
   "dependencies": {
     "@hookform/resolvers": "7.0.7",

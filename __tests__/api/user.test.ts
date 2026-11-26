@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 
 import { GET as getLogs } from "@/app/api/logs/get/route"
 import { GET as getStatistics } from "@/app/api/statistics/get/route"
+import { POST as deleteUser } from "@/app/api/user/delete/route"
 import { GET as getUser } from "@/app/api/user/get/route"
 import { GET as getRandomCharacter } from "@/app/api/user/getRandomCharacter/route"
 import { POST as login } from "@/app/api/user/login/route"
@@ -28,6 +29,7 @@ const mocks = vi.hoisted(() => ({
   playerId: undefined as string | undefined,
   player: undefined as Player | undefined,
   savePlayer: vi.fn(),
+  deletePlayer: vi.fn(),
   getLog: vi.fn(),
   getStatistics: vi.fn(),
 }))
@@ -41,6 +43,7 @@ vi.mock("next/headers", () => ({
 vi.mock("@/firebase/db", () => ({
   getPlayer: async () => mocks.player,
   savePlayer: mocks.savePlayer,
+  deletePlayer: mocks.deletePlayer,
   getLog: mocks.getLog,
   getStatistics: mocks.getStatistics,
 }))
@@ -340,5 +343,54 @@ describe("POST /api/user/reset", () => {
     mocks.savePlayer.mockRejectedValue(new Error("Database down"))
 
     expect((await reset(request({}))).status).toBe(500)
+  })
+})
+
+describe("POST /api/user/delete", () => {
+  it("deletes the player and their passkeys, and clears the cookie", async () => {
+    const response = await deleteUser(request({}))
+
+    expect(response.status).toBe(200)
+    expect(await response.json()).toEqual({ success: true })
+    expect(mocks.deletePlayer).toHaveBeenCalledWith(PLAYER_ID, ["credential-1"])
+    expect(response.cookies.get(PLAYER_ID_COOKIE_NAME)?.value).toBe("")
+  })
+
+  it("returns 401 without a player cookie and deletes nothing", async () => {
+    mocks.playerId = undefined
+
+    expect((await deleteUser(request({}))).status).toBe(401)
+    expect(mocks.deletePlayer).not.toHaveBeenCalled()
+  })
+
+  it("returns 401 when the player does not exist and deletes nothing", async () => {
+    mocks.player = undefined
+
+    expect((await deleteUser(request({}))).status).toBe(401)
+    expect(mocks.deletePlayer).not.toHaveBeenCalled()
+  })
+
+  it.each([undefined, "text/plain", "application/x-www-form-urlencoded"])(
+    "rejects a non-JSON request (%s) without deleting anything",
+    async (contentType) => {
+      const response = await deleteUser(
+        new Request("http://localhost/api/user/delete", {
+          method: "POST",
+          headers: contentType ? { "Content-Type": contentType } : {},
+        })
+      )
+
+      expect(response.status).toBe(415)
+      expect(mocks.deletePlayer).not.toHaveBeenCalled()
+    }
+  )
+
+  it("returns 500 and keeps the cookie when deleting fails", async () => {
+    mocks.deletePlayer.mockRejectedValue(new Error("Database down"))
+
+    const response = await deleteUser(request({}))
+
+    expect(response.status).toBe(500)
+    expect(response.cookies.get(PLAYER_ID_COOKIE_NAME)).toBeUndefined()
   })
 })

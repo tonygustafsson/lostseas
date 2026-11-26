@@ -6,6 +6,7 @@ import { POST as continueJourney } from "@/app/api/sea/continueJourney/route"
 import { POST as fleeShip } from "@/app/api/sea/fleeShip/route"
 import { POST as ignoreShip } from "@/app/api/sea/ignoreShip/route"
 import { POST as startJourney } from "@/app/api/sea/startJourney/route"
+import { POST as takeLoot } from "@/app/api/sea/takeLoot/route"
 import { patchDeep } from "@/utils/patchDeep"
 
 import { createTestPlayer } from "../helpers/createTestPlayer"
@@ -131,6 +132,22 @@ const routes = [
     body: { success: true, escaped: true },
   },
   {
+    name: "takeLoot",
+    call: () => takeLoot(request({ loot: { food: 2 } })),
+    player: () => atSea({ lootOffer: { food: 5 }, justMetAShip: true }),
+    invalid: () => atSea(),
+    error: "There is no loot to take.",
+    status: 409,
+    log: expect.stringMatching(/^Took .*loot\./),
+    body: {
+      day: 4,
+      totalDays: 7,
+      destination: "havana",
+      destinationReached: false,
+      shipMeetingState: null,
+    },
+  },
+  {
     name: "battleMove",
     call: () => battleMove(request({ action: "evade" })),
     player: () =>
@@ -210,6 +227,48 @@ describe.each(routes)(
     })
   }
 )
+
+describe("POST /api/sea/takeLoot", () => {
+  beforeEach(() => {
+    mocks.player = atSea({ lootOffer: { food: 5 }, justMetAShip: true })
+  })
+
+  it("adds the chosen loot to the hold and removes the offer", async () => {
+    await takeLoot(request({ loot: { food: 2 } }))
+
+    const [savedPlayer] = mocks.savePlayer.mock.calls[0]
+
+    // 50 food and 2 taken, minus the day's food for 10 crew while sailing on
+    expect(savedPlayer.inventory.food).toBe(51)
+    expect(savedPlayer.locationStates.sea.lootOffer).toBeUndefined()
+  })
+
+  it.each([
+    ["more than the loot holds", { loot: { food: 6 } }],
+    ["goods that are not in the loot", { loot: { rum: 1 } }],
+    ["a prototype key", { loot: { constructor: 1 } }],
+    ["a negative amount", { loot: { food: -1 } }],
+    ["a loot that is not an object", { loot: "food" }],
+    ["no loot at all", {}],
+  ])("returns 400 and saves nothing for %s", async (_name, body) => {
+    const response = await takeLoot(request(body))
+
+    expect(response.status).toBe(400)
+    expect(mocks.savePlayer).not.toHaveBeenCalled()
+  })
+
+  it("returns 400 when the body is not JSON", async () => {
+    const response = await takeLoot(
+      new Request("http://localhost/api/sea/takeLoot", {
+        method: "POST",
+        body: "not json",
+      })
+    )
+
+    expect(response.status).toBe(400)
+    expect(mocks.savePlayer).not.toHaveBeenCalled()
+  })
+})
 
 describe("POST /api/sea/startJourney", () => {
   it("answers success false without saving when the advisor blocks travel", async () => {
