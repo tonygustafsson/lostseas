@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import ShipHealthBadge from "@/components/ships/ShipHealthBadge"
 
 const meta = {
-  title: "game/Shipyard/ShipHealthBadge",
+  title: "components/ShipHealthBadge",
   component: ShipHealthBadge,
   args: { health: 85, className: undefined },
   argTypes: {

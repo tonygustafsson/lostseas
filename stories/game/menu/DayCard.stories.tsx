@@ -23,22 +23,4 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const PartlySunny: Story = {}
-
-export const Rainy: Story = { args: { weather: "rainy" } }
-
-export const Cloudy: Story = { args: { weather: "cloudy" } }
-
-export const Sunny: Story = { args: { weather: "sunny" } }
-
-export const Foggy: Story = { args: { weather: "foggy" } }
-
-export const AllWeathers: Story = {
-  render: ({ day }) => (
-    <div className="flex flex-col gap-4">
-      {(Object.keys(WEATHER_NAMES) as WeatherType[]).map((weather) => (
-        <DayCard key={weather} day={day} weather={weather} />
-      ))}
-    </div>
-  ),
-}
+export const Default: Story = { name: "DayCard" }

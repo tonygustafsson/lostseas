@@ -17,15 +17,4 @@ const meta = {
 } satisfies Meta<typeof CharacterCard>
 export default meta
 type Story = StoryObj<typeof meta>
-export const Default: Story = {}
-export const LongName: Story = {
-  args: {
-    player: {
-      ...player,
-      character: {
-        ...player.character,
-        name: "Captain Morgan of the Spanish Main",
-      },
-    },
-  },
-}
+export const Default: Story = { name: "CharacterCard" }

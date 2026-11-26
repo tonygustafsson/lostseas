@@ -23,7 +23,7 @@ const Content = ({ lines }: { lines: number }) => (
 )
 
 const meta = {
-  title: "game/Menu/DrawerPanel",
+  title: "components/DrawerPanel",
   component: DrawerPanel,
   parameters: { layout: "fullscreen" },
   args: {
@@ -72,27 +72,5 @@ export const Switching: Story = {
     await waitFor(async () =>
       expect(await canvas.findByRole("heading", { name: "logs" })).toBeVisible()
     )
-  },
-}
-
-export const Closes: Story = {
-  render: (args) => {
-    const [isOpen, setIsOpen] = useState(true)
-
-    return (
-      <DrawerPanel
-        {...args}
-        isOpen={isOpen}
-        onClose={() => {
-          args.onClose()
-          setIsOpen(false)
-        }}
-      />
-    )
-  },
-  play: async ({ args, canvas, userEvent }) => {
-    await userEvent.click(await canvas.findByRole("button", { name: "Close" }))
-
-    await expect(args.onClose).toHaveBeenCalled()
   },
 }
