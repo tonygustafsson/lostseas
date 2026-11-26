@@ -68,7 +68,3 @@ export const NoCrew: Story = {
   play: ({ canvas }) =>
     expectAllDisabledWith(canvas, "You have no crew to heal"),
 }
-
-export const Buying: Story = {
-  args: { player: withCrew(40, 5000), isBuying: true },
-}

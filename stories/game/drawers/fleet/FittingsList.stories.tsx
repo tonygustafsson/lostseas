@@ -4,8 +4,8 @@ import useModal from "@/app/stores/modals"
 import Modal from "@/components/Modal"
 import FittingsList from "@/components/ships/FittingsList"
 
-import { player } from "../../fixtures"
-import PlayerPreview from "../../PlayerPreview"
+import { player } from "../../../fixtures"
+import PlayerPreview from "../../../PlayerPreview"
 
 type Args = {
   cannons: number
@@ -16,7 +16,7 @@ type Args = {
 
 // FittingsList reads the player from the query cache, so the args build one
 const meta = {
-  title: "game/Shipyard/FittingsList",
+  title: "game/Drawers/Fleet/FittingsList",
   component: FittingsList,
   args: { cannons: 8, repairKits: 3, shipHealth: 85 },
   argTypes: {
@@ -51,10 +51,3 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {}
-
-export const SingleOfEach: Story = { args: { cannons: 1, repairKits: 1 } }
-
-// Repair kits cannot be used when every ship is at full health
-export const FullHealth: Story = { args: { shipHealth: 100 } }
-
-export const Empty: Story = { args: { cannons: 0, repairKits: 0 } }

@@ -11,7 +11,7 @@ type Args = {
 }
 
 const meta = {
-  title: "game/Fleet/WantedPirateCard",
+  title: "game/Drawers/Fleet/WantedPirateCard",
   args: {
     name: 'Jack "Mad" Flint',
     crimeId: "rum-warehouse",

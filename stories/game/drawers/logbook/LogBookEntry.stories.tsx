@@ -26,7 +26,7 @@ const entry = {
 } satisfies Parameters<typeof LogBookEntry>[0]["entry"]
 
 const meta = {
-  title: "game/Log book/LogBookEntry",
+  title: "game/Drawers/Log book/LogBookEntry",
   component: LogBookEntry,
   args: { entry },
   decorators: [

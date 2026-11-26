@@ -13,7 +13,7 @@ const ships: Player["ships"] = {
 }
 
 const meta = {
-  title: "game/Fleet/HoldChart",
+  title: "game/Drawers/Fleet/HoldChart",
   component: HoldChart,
   args: {
     ships,

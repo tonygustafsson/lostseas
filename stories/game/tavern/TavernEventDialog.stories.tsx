@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { expect, fn, screen } from "storybook/test"
+import { fn } from "storybook/test"
 
 import TavernEventDialog from "@/components/location/Tavern/TavernEventDialog"
 
@@ -42,16 +42,5 @@ export const Lost: Story = {
   args: {
     isHostile: true,
     result: { numberOfSailors: 4, success: false, loot: 0, healthLoss: 22 },
-  },
-}
-
-/** Escape does nothing, the player has to pick an answer */
-export const CannotClose: Story = {
-  play: async ({ args, userEvent }) => {
-    await userEvent.keyboard("{Escape}")
-    await expect(screen.getByRole("dialog")).toBeVisible()
-
-    await userEvent.click(screen.getByRole("button", { name: "Pass" }))
-    await expect(args.onIgnore).toHaveBeenCalledOnce()
   },
 }

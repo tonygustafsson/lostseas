@@ -3,11 +3,11 @@ import { expect, screen } from "storybook/test"
 
 import ManageCrewDialog from "@/components/crew/ManageCrewDialog"
 
-import { player } from "../../fixtures"
-import PlayerPreview from "../../PlayerPreview"
+import { player } from "../../../fixtures"
+import PlayerPreview from "../../../PlayerPreview"
 
 const meta = {
-  title: "game/Fleet/ManageCrewDialog",
+  title: "game/Drawers/Fleet/ManageCrewDialog",
   component: ManageCrewDialog,
   parameters: { player },
   decorators: [

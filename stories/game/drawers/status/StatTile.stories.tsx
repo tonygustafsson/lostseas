@@ -5,7 +5,7 @@ import { GiProgression } from "react-icons/gi"
 import StatTile from "@/components/StatTile"
 
 const meta = {
-  title: "game/Status/StatTile",
+  title: "game/Drawers/Status/StatTile",
   component: StatTile,
   args: {
     label: "Gold",

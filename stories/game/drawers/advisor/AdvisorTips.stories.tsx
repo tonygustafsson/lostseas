@@ -3,8 +3,8 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import AdvisorTips from "@/components/advisor/AdvisorTips"
 import { TOWNS } from "@/constants/locations"
 
-import { player } from "../../fixtures"
-import PlayerPreview from "../../PlayerPreview"
+import { player } from "../../../fixtures"
+import PlayerPreview from "../../../PlayerPreview"
 
 const allClear: Player = {
   ...player,
@@ -21,7 +21,7 @@ const warnings: Player = {
 }
 
 const meta = {
-  title: "game/Town/AdvisorTips",
+  title: "game/Drawers/Advisor/AdvisorTips",
   component: AdvisorTips,
   parameters: { player: warnings },
   args: {

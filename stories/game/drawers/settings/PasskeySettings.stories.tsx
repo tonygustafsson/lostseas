@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import PasskeySettings from "@/components/settings/PasskeySettings"
 
-import { player } from "../../fixtures"
-import PlayerPreview from "../../PlayerPreview"
+import { player } from "../../../fixtures"
+import PlayerPreview from "../../../PlayerPreview"
 
 const meta = {
-  title: "components/settings/PasskeySettings",
+  title: "game/Drawers/Settings/PasskeySettings",
   component: PasskeySettings,
   decorators: [
     (Story) => (

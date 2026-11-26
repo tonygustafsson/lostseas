@@ -18,21 +18,10 @@ const readyToSail = inHarbor({
   crewMembers: { ...player.crewMembers, count: 16 },
 })
 
-const fewWarnings = inHarbor({
-  crewMembers: { ...player.crewMembers, mood: 20 },
-})
-
-const manyWarnings = inHarbor({
-  character: { ...player.character, location: "Harbor", loan: 500 },
-  crewMembers: { count: 40, health: 10, mood: 0 },
-  inventory: { ...player.inventory, food: 5, water: 4 },
-  locationStates: { harbor: { lastHarborReason: "arrived" } },
-})
-
 const meta = {
   title: "game/Harbor/Harbor",
   component: HarborScene,
-  parameters: { player: fewWarnings },
+  parameters: { player: readyToSail },
   args: { town: "kingston" },
   argTypes: {
     town: {
@@ -54,13 +43,4 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const ReadyToSail: Story = { parameters: { player: readyToSail } }
-export const FewWarnings: Story = {}
-export const ManyWarnings: Story = { parameters: { player: manyWarnings } }
-export const Mobile: Story = {
-  parameters: {
-    player: manyWarnings,
-    viewport: { value: "iphone12" },
-  },
-  globals: { viewport: { value: "iphone12" } },
-}
+export const Harbor: Story = {}

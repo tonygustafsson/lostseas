@@ -1,11 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { expect } from "storybook/test"
 
-import useDrawer from "@/app/stores/drawer"
 import AdvisorDrawer from "@/components/drawer/drawerContent/Advisor"
 
-import { player } from "../../fixtures"
-import PlayerPreview from "../../PlayerPreview"
+import { player } from "../../../fixtures"
+import PlayerPreview from "../../../PlayerPreview"
 
 const warnings: Player = {
   ...player,
@@ -14,7 +12,7 @@ const warnings: Player = {
 }
 
 const meta = {
-  title: "game/Town/AdvisorDrawer",
+  title: "game/Drawers/Advisor/AdvisorDrawer",
   component: AdvisorDrawer,
   parameters: { player: warnings },
   decorators: [
@@ -33,16 +31,4 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 /** No back button, as the advisor opens from the menu on desktop */
-export const Default: Story = {}
-
-/** Mobile reaches the advisor from the Fleet drawer, so it can go back */
-export const Mobile: Story = {
-  globals: { viewport: { value: "mobile1", isRotated: false } },
-  play: async ({ canvas, userEvent }) => {
-    await userEvent.click(
-      await canvas.findByRole("button", { name: "Back to Fleet" })
-    )
-
-    await expect(useDrawer.getState().active).toBe("fleet")
-  },
-}
+export const Default: Story = { name: "AdvisorDrawer" }

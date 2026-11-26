@@ -5,11 +5,11 @@ import useModal from "@/app/stores/modals"
 import Modal from "@/components/Modal"
 import RemoveAccount from "@/components/settings/RemoveAccount"
 
-import { player } from "../../fixtures"
-import PlayerPreview from "../../PlayerPreview"
+import { player } from "../../../fixtures"
+import PlayerPreview from "../../../PlayerPreview"
 
 const meta = {
-  title: "components/settings/RemoveAccount",
+  title: "game/Drawers/Settings/RemoveAccount",
   component: RemoveAccount,
   args: { player },
   beforeEach: () => {

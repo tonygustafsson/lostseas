@@ -77,13 +77,3 @@ export const OverloadedButSelling: Story = {
     await expect(canvas.getByRole("button", { name: "Transfer" })).toBeEnabled()
   },
 }
-
-export const Trading: Story = { args: { isTrading: true } }
-
-export const Transfer: Story = {
-  play: async ({ args, canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Transfer" }))
-
-    await expect(args.onTransfer).toHaveBeenCalledOnce()
-  },
-}

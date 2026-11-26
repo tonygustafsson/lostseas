@@ -3,8 +3,8 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import LogsDrawer from "@/components/drawer/drawerContent/Logs"
 import type { LogRecord } from "@/firebase/db"
 
-import { player } from "../../fixtures"
-import PlayerPreview from "../../PlayerPreview"
+import { player } from "../../../fixtures"
+import PlayerPreview from "../../../PlayerPreview"
 
 const voyage: [number, LogType, string][] = [
   [1, "beginning", "Created new character Morgan Reed."],
@@ -42,7 +42,7 @@ const logs: LogRecord[] = voyage.map(([day, type, message], index) => ({
 }))
 
 const meta = {
-  title: "game/Log book/LogsDrawer",
+  title: "game/Drawers/Log book/LogsDrawer",
   component: LogsDrawer,
   parameters: { logs },
   decorators: [

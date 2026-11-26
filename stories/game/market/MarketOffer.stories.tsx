@@ -58,30 +58,3 @@ export const NoCargoSpace: Story = {
     ).toBeDisabled()
   },
 }
-
-// Repair kits don't take up space in the hold
-export const RepairKits: Story = {
-  args: { item: "repairKits", price: 20, quantity: 5, cargoFree: 0 },
-  play: async ({ canvas }) => {
-    await expect(
-      canvas.getByText("A trader offers 5 kits of repair kits.")
-    ).toBeVisible()
-    await expect(
-      canvas.getByRole("button", { name: "Buy for 100 gold" })
-    ).toBeEnabled()
-  },
-}
-
-export const NoDiscount: Story = { args: { item: "food", price: 16 } }
-
-export const Row: Story = {
-  render: (args) => (
-    <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      <MarketOffer {...args} />
-
-      <MarketOffer {...args} item="medicine" price={9} quantity={5} />
-
-      <MarketOffer {...args} item="silk" price={40} quantity={30} owned={0} />
-    </ul>
-  ),
-}

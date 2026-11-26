@@ -63,10 +63,6 @@ export const WantedPirate: Story = {
   },
 }
 
-export const WithoutDescription: Story = {
-  args: { description: undefined },
-}
-
 export const Disabled: Story = {
   args: { disabled: true },
 }

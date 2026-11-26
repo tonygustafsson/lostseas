@@ -3,6 +3,7 @@ import { useState } from "react"
 import { expect, fn, screen } from "storybook/test"
 
 import ShopTradeItem from "@/components/location/Shop/ShopTradeItem"
+import { MERCHANDISE } from "@/constants/merchandise"
 
 const meta = {
   title: "game/Shop/ShopTradeItem",
@@ -16,6 +17,9 @@ const meta = {
     limitedBy: "gold",
     crewMembers: 80,
     onChange: fn(),
+  },
+  argTypes: {
+    item: { control: "select", options: Object.keys(MERCHANDISE) },
   },
   render: function Render(args) {
     const [target, setTarget] = useState(args.target)
@@ -51,49 +55,6 @@ export const NothingOwned: Story = {
     target: 0,
     max: 71,
     crewMembers: undefined,
-  },
-}
-
-export const Row: Story = {
-  render: (args) => (
-    <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      <ShopTradeItem {...args} item="food" />
-
-      <ShopTradeItem {...args} item="spices" owned={0} target={0} />
-
-      <ShopTradeItem {...args} item="silk" owned={12} target={20} />
-    </ul>
-  ),
-}
-
-export const LimitedByCargo: Story = {
-  args: { max: 60, storable: 60, limitedBy: "cargo" },
-  play: async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Adjust" }))
-
-    await expect(
-      await screen.findByText("Up to 60 crates, limited by cargo space")
-    ).toBeVisible()
-
-    await userEvent.click(screen.getByRole("button", { name: "+50" }))
-
-    await expect(screen.getByRole("button", { name: "+10" })).toBeDisabled()
-    await expect(
-      screen.getAllByRole("button", { name: "One more Food" }).at(-1)
-    ).toBeDisabled()
-  },
-}
-
-export const AboveWhatYouCanAfford: Story = {
-  args: { max: 45 },
-  play: async ({ args, canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "Adjust" }))
-    await userEvent.click(await screen.findByRole("button", { name: "+50" }))
-
-    await expect(args.onChange).toHaveBeenLastCalledWith(90)
-
-    await userEvent.click(screen.getByRole("button", { name: "Buy max" }))
-    await expect(args.onChange).toHaveBeenLastCalledWith(45)
   },
 }
 

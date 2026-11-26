@@ -61,7 +61,7 @@ export const Empty: Story = { args: { max: 0 } }
 export const Disabled: Story = { args: { disabled: true } }
 
 // Fixed sums, like the bank's loans. Sums above max can't be picked
-export const FixedAmounts: Story = {
+export const TakeALoan: Story = {
   args: {
     title: "Take a loan",
     verb: "Borrow",

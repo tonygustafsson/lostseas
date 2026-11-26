@@ -3,8 +3,8 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import BuildingScene from "@/components/game-ui/LocationScene/BuildingScene"
 import { TOWNS } from "@/constants/locations"
 
-import { player } from "../../fixtures"
-import PlayerPreview from "../../PlayerPreview"
+import { player } from "../fixtures"
+import PlayerPreview from "../PlayerPreview"
 
 const LOCATIONS: TownLocation[] = [
   "Bank",
@@ -24,7 +24,7 @@ const WEATHER: WeatherType[] = [
 ]
 
 const meta = {
-  title: "game/Town/BuildingScene",
+  title: "game/BuildingScene",
   component: BuildingScene,
   args: { town: "cap-francais", location: "Tavern", weather: "partlySunny" },
   argTypes: {
@@ -56,13 +56,4 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Tavern: Story = {}
-export const Bank: Story = { args: { location: "Bank" } }
-export const CityHall: Story = { args: { location: "City hall" } }
-export const Market: Story = { args: { location: "Market" } }
-export const Shipyard: Story = { args: { location: "Shipyard" } }
-export const Shop: Story = { args: { location: "Shop" } }
-export const Mobile: Story = {
-  parameters: { viewport: { value: "iphone12" } },
-  globals: { viewport: { value: "iphone12" } },
-}
+export const Default: Story = { name: "BuildingScene" }

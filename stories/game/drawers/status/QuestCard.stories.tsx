@@ -3,8 +3,8 @@ import { fn } from "storybook/test"
 
 import QuestCard from "@/components/quests/QuestCard"
 
-import { player } from "../../fixtures"
-import PlayerPreview from "../../PlayerPreview"
+import { player } from "../../../fixtures"
+import PlayerPreview from "../../../PlayerPreview"
 import {
   deliveryQuest,
   findPersonFoundQuest,
@@ -12,10 +12,10 @@ import {
   itemRewardQuest,
   messageChainQuest,
   procurementQuest,
-} from "../../questFixtures"
+} from "../../../questFixtures"
 
 const meta = {
-  title: "game/Status/QuestCard",
+  title: "game/Drawers/Status/QuestCard",
   component: QuestCard,
   args: { quest: deliveryQuest, onAbandon: fn(), disabled: false },
   decorators: [

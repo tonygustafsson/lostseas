@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import FleetDrawer from "@/components/drawer/drawerContent/Fleet"
 
-import { player } from "../../fixtures"
-import PlayerPreview from "../../PlayerPreview"
+import { player } from "../../../fixtures"
+import PlayerPreview from "../../../PlayerPreview"
 
 const withPrisoners: Player = {
   ...player,
@@ -24,7 +24,7 @@ const withPrisoners: Player = {
 }
 
 const meta = {
-  title: "game/Fleet/FleetDrawer",
+  title: "game/Drawers/Fleet/FleetDrawer",
   component: FleetDrawer,
   parameters: { player },
   decorators: [

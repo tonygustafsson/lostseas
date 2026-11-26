@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import CargoMeter from "@/components/CargoMeter"
 
 const meta = {
-  title: "game/Fleet/CargoMeter",
+  title: "game/Drawers/Fleet/CargoMeter",
   component: CargoMeter,
   args: { load: 60, capacity: 300, label: "Cargo" },
 } satisfies Meta<typeof CargoMeter>

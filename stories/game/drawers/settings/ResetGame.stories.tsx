@@ -11,11 +11,11 @@ import {
   STARTING_TITLE,
 } from "@/constants/player"
 
-import { player } from "../../fixtures"
-import PlayerPreview from "../../PlayerPreview"
+import { player } from "../../../fixtures"
+import PlayerPreview from "../../../PlayerPreview"
 
 const meta = {
-  title: "components/settings/ResetGame",
+  title: "game/Drawers/Settings/ResetGame",
   component: ResetGame,
   args: { player },
   beforeEach: () => {

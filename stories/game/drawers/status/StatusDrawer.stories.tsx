@@ -2,9 +2,9 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import StatusDrawer from "@/components/drawer/drawerContent/Status"
 
-import { player, statistics } from "../../fixtures"
-import PlayerPreview from "../../PlayerPreview"
-import { quests } from "../../questFixtures"
+import { player, statistics } from "../../../fixtures"
+import PlayerPreview from "../../../PlayerPreview"
+import { quests } from "../../../questFixtures"
 
 const veteran: Player = {
   ...player,
@@ -21,7 +21,7 @@ const veteran: Player = {
 }
 
 const meta = {
-  title: "game/Status/StatusDrawer",
+  title: "game/Drawers/Status/StatusDrawer",
   component: StatusDrawer,
   parameters: { player: veteran, statistics },
   decorators: [

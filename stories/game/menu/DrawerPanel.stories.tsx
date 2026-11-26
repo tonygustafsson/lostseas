@@ -49,10 +49,6 @@ export const LongContent: Story = {
   args: { children: <Content lines={30} /> },
 }
 
-export const Mobile: Story = {
-  globals: { viewport: { value: "mobile1", isRotated: false } },
-}
-
 /** A new id slides the open drawer out first, then the next one in */
 export const Switching: Story = {
   render: (args) => {

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { fn } from "storybook/test"
 
 import VentureCard from "@/components/location/Bank/VentureCard"
+import { VENTURES } from "@/constants/ventures"
 
 const meta = {
   title: "game/Bank/VentureCard",
@@ -12,6 +13,9 @@ const meta = {
     gold: 5000,
     onInvest: fn(),
     onCollect: fn(),
+  },
+  argTypes: {
+    ventureId: { control: "select", options: Object.keys(VENTURES) },
   },
   decorators: [
     (Story) => (
@@ -27,16 +31,9 @@ export const Available: Story = {}
 export const CannotAfford: Story = {
   args: { ventureId: "silverFleet", gold: 1200 },
 }
-export const AtSea: Story = {
+export const Ongoing: Story = {
   args: { share: { investedDay: 5, returnDay: 26 } },
-}
-export const ReturnsTomorrow: Story = {
-  args: { share: { investedDay: 4, returnDay: 11 } },
 }
 export const Returned: Story = {
   args: { share: { investedDay: 1, returnDay: 10 } },
-}
-export const LowRisk: Story = { args: { ventureId: "sugarConvoy" } }
-export const Mobile: Story = {
-  globals: { viewport: { value: "mobile1", isRotated: false } },
 }

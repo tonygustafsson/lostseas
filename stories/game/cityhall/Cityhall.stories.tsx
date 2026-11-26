@@ -23,43 +23,6 @@ const atCityhall = ({
   } as Character,
 })
 
-const treasures: Player["treasures"] = {
-  "treasure-1": {
-    id: "treasure-1",
-    name: "Inca mask",
-    rewarder: "kingston",
-  },
-  "treasure-2": {
-    id: "treasure-2",
-    name: "Cursed star",
-    rewarder: "kingston",
-  },
-  // Belongs to another town, so it is not offered here
-  "treasure-3": { id: "treasure-3", name: "Golden hen", rewarder: "havana" },
-}
-
-const wantedPirates: Player["wantedPirates"] = {
-  "pirate-1": {
-    id: "pirate-1",
-    name: 'Jack "Mad" Flint',
-    crimeId: "rum-warehouse",
-    rewarder: "kingston",
-  },
-  "pirate-2": {
-    id: "pirate-2",
-    name: 'Grace "Bloody" Morgan',
-    crimeId: "sacked-town",
-    rewarder: "kingston",
-  },
-  // Wanted in another town, so it is not offered here
-  "pirate-3": {
-    id: "pirate-3",
-    name: 'Diego "Salty" Mendoza',
-    crimeId: "mail-ship",
-    rewarder: "cap-francais",
-  },
-}
-
 const meta = {
   title: "game/City hall/Cityhall",
   component: Cityhall,
@@ -122,34 +85,6 @@ export const CitizenshipOffer: Story = {
   parameters: {
     player: atCityhall({
       character: { town: "havana", battles: { Holland: { won: 20 } } },
-    }),
-  },
-}
-
-export const WithTreasures: Story = {
-  parameters: { player: atCityhall({ treasures }) },
-}
-
-export const WithWantedPirates: Story = {
-  parameters: { player: atCityhall({ wantedPirates }) },
-}
-
-export const WithTreasuresAndWantedPirates: Story = {
-  parameters: {
-    player: atCityhall({
-      treasures,
-      wantedPirates,
-      character: { battles: { France: { won: 14 } } },
-    }),
-  },
-}
-
-/** Treasures and pirates aboard belong to other towns, so nothing is offered */
-export const NothingToHandOverHere: Story = {
-  parameters: {
-    player: atCityhall({
-      treasures: { "treasure-3": treasures["treasure-3"] },
-      wantedPirates: { "pirate-3": wantedPirates["pirate-3"] },
     }),
   },
 }

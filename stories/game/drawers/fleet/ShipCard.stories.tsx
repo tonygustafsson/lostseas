@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import ShipCard from "@/components/ships/ShipCard"
 
-import { player } from "../../fixtures"
-import PlayerPreview from "../../PlayerPreview"
+import { player } from "../../../fixtures"
+import PlayerPreview from "../../../PlayerPreview"
 
 const meta = {
-  title: "game/Shipyard/ShipCard",
+  title: "game/Drawers/Fleet/ShipCard",
   component: ShipCard,
   args: {
     ship: player.ships.endeavour,

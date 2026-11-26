@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import InventoryItemCard from "@/components/InventoryItemCard"
 
 const meta = {
-  title: "game/Inventory/InventoryItemCard",
+  title: "game/Drawers/Inventory/InventoryItemCard",
   component: InventoryItemCard,
   args: {
     item: "food",

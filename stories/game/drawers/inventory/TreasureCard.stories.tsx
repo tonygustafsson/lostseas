@@ -4,7 +4,7 @@ import InventoryItemCard from "@/components/InventoryItemCard"
 import TreasureCard from "@/components/TreasureCard"
 
 const meta = {
-  title: "game/Inventory/TreasureCard",
+  title: "game/Drawers/Inventory/TreasureCard",
   component: TreasureCard,
   args: {
     treasure: { id: "treasure-1", name: "Inca mask", rewarder: "havana" },
