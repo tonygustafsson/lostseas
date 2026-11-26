@@ -12,7 +12,7 @@ export const useMapModal = () => {
 
     setModal({
       id: "map",
-      title: "Pick your destination",
+      title: "Set sail",
       fullWidth: true,
       content: <Map currentTown={player?.character.town} />,
     })

@@ -86,9 +86,7 @@ const ShopSuppliesDialog = ({
 
       <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="font-serif text-2xl">
-            Stock up for a voyage
-          </DialogTitle>
+          <DialogTitle>Stock up for a voyage</DialogTitle>
 
           <DialogDescription>
             {crewMembers === 0

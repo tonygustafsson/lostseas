@@ -1,16 +1,14 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import { GiBandana } from "react-icons/gi"
 
 import useModal from "@/app/stores/modals"
-import MerchandiseCard from "@/components/MerchandiseCard"
-import { ButtonGroup } from "@/components/ui/button-group"
-import { Input } from "@/components/ui/input"
+import CrewAction, { CrewActionChange } from "@/components/crew/CrewAction"
+import CrewQuantity from "@/components/crew/CrewQuantity"
+import { Button } from "@/components/ui/button"
 import { useCrew } from "@/hooks/queries/useCrew"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
-
-import { Button } from "../ui/button"
 
 const DismissCrewMembers = () => {
   const { data: player } = useGetPlayer()
@@ -21,28 +19,21 @@ const DismissCrewMembers = () => {
 
   const [quantity, setQuantity] = useState(1)
 
-  const changeQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value === "") {
-      setQuantity(1)
-    } else {
-      setQuantity(parseInt(e.target.value))
-    }
+  if (!player) {
+    return null
   }
 
-  const increase = () => {
-    setQuantity((prev) => prev + 1)
-  }
+  const { count } = player.crewMembers
 
-  const decrease = () => {
-    if (quantity > 1) {
-      setQuantity((prev) => prev - 1)
-    }
-  }
+  // The crew can shrink after dismissing, so the amount follows it down
+  const amount = Math.min(quantity, Math.max(count, 1))
 
-  const isDisabled = useMemo(
-    () => (player?.crewMembers.count || 0) < quantity || quantity < 1,
-    [player?.crewMembers, quantity]
-  )
+  const isDisabled = count < amount
+
+  const handleSubmit = () => {
+    dismiss({ count: amount })
+    removeModal("dismissCrewMembers")
+  }
 
   const openDismissModal = () => {
     setModal({
@@ -51,9 +42,10 @@ const DismissCrewMembers = () => {
       content: (
         <div className="flex flex-col gap-4">
           <p>
-            Are you sure you want to dismiss {quantity} crew members? They can
-            be hard to get back.
+            Are you sure you want to dismiss {amount} crew members? They can be
+            hard to get back.
           </p>
+
           <div className="flex gap-2">
             <Button size="sm" onClick={handleSubmit}>
               Yes, dismiss them
@@ -72,61 +64,37 @@ const DismissCrewMembers = () => {
     })
   }
 
-  const handleSubmit = () => {
-    dismiss({ count: quantity })
-    removeModal("dismissCrewMembers")
-  }
-
   return (
-    <MerchandiseCard
-      title="Dismiss crew members"
-      indicator={player?.crewMembers.count.toString() || "0"}
-      icon={<GiBandana className="text-gold h-7 w-7" />}
-      disabled={isDisabled}
-      fullWidth
-      body={
-        <p>
-          Crew members cost resources when travling, sometimes it can be useful
-          to let them go.
-        </p>
+    <CrewAction
+      icon={<GiBandana />}
+      title="Dismiss crew"
+      owned={`${count} aboard`}
+      description="Fewer mouths to feed at sea, but good sailors are hard to find again."
+      change={
+        <CrewActionChange
+          label="Crew"
+          from={count}
+          max={count}
+          to={Math.max(0, count - amount)}
+        />
       }
-      actions={
-        <>
-          <ButtonGroup className="w-fit">
-            <Button
-              type="button"
-              variant="outline"
-              size="icon-sm"
-              onClick={decrease}
-            >
-              -
-            </Button>
+    >
+      <CrewQuantity
+        value={amount}
+        max={count}
+        label="Crew members to dismiss"
+        onChange={setQuantity}
+      />
 
-            <Input
-              value={quantity.toString()}
-              onChange={changeQuantity}
-              type="number"
-              className={`border-border bg-input/30 h-8 w-12 [appearance:textfield] rounded-none text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ${
-                quantity < 10 ? "w-10" : ""
-              } ${quantity < 100 ? "w-12" : ""} ${quantity < 1000 ? "w-14" : ""}`}
-            />
-
-            <Button
-              type="button"
-              variant="outline"
-              size="icon-sm"
-              onClick={increase}
-            >
-              +
-            </Button>
-          </ButtonGroup>
-
-          <Button size="sm" disabled={isDisabled} onClick={openDismissModal}>
-            Dismiss
-          </Button>
-        </>
-      }
-    />
+      <Button
+        size="sm"
+        variant="destructive"
+        disabled={isDisabled}
+        onClick={openDismissModal}
+      >
+        Dismiss
+      </Button>
+    </CrewAction>
   )
 }
 

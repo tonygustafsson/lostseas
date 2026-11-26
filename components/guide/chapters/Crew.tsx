@@ -33,7 +33,7 @@ const Crew = () => (
     <p>
       Mood slowly drops on long voyages and jumps after a win in battle. Let it
       hit rock bottom and your crew refuse to leave port until you make it up to
-      them. Buy a round at the tavern, or use Give gold in Manage Crew. The
+      them. Buy a round at the tavern, or give them gold in Manage Crew. The
       bigger the crew, the more it costs to keep them sweet.
     </p>
 
@@ -42,9 +42,9 @@ const Crew = () => (
     <p>
       Sea battles and tavern brawls hurt. Nobody dies, but an exhausted crew
       won&apos;t start a new voyage. Heal them with a remedy from the
-      apothecary, supper at the tavern, or Give medicine in Manage Crew. Each
-      bottle of medicine gives {MEDICINE_HEALTH_PER_BOTTLE} health shared across
-      the whole crew, so a big crew needs more bottles.
+      apothecary, supper at the tavern, or give them medicine in Manage Crew.
+      Each bottle of medicine gives {MEDICINE_HEALTH_PER_BOTTLE} health shared
+      across the whole crew, so a big crew needs more bottles.
     </p>
 
     <h3>The tavern</h3>

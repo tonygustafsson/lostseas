@@ -96,7 +96,7 @@ const TalkDialog = ({
           </div>
 
           <div className="flex flex-col gap-2">
-            <DialogTitle className="font-serif text-xl">{npc.name}</DialogTitle>
+            <DialogTitle className="px-0 text-xl">{npc.name}</DialogTitle>
             <DialogDescription>
               {capitalize(getNpcPlace(npc))}
             </DialogDescription>

@@ -12,7 +12,6 @@ const drawers: DrawerId[] = [
   "settings",
   "advisor",
   "logs",
-  "manageCrew",
 ]
 
 const contents = {

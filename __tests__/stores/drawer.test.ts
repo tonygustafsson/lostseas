@@ -23,4 +23,18 @@ describe("drawer store", () => {
 
     expect(playSoundEffect).not.toHaveBeenCalled()
   })
+
+  it("switches straight to another drawer", () => {
+    useDrawer.getState().open("fleet")
+    useDrawer.getState().open("logs")
+
+    expect(useDrawer.getState().active).toBe("logs")
+  })
+
+  it("closes", () => {
+    useDrawer.getState().open("fleet")
+    useDrawer.getState().close()
+
+    expect(useDrawer.getState().active).toBeNull()
+  })
 })

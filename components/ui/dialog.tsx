@@ -61,7 +61,7 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "gilded-frame data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-6 rounded-xl p-8 text-sm duration-100 sm:max-w-md",
+          "gilded-frame sea-scrollbar data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-6 rounded-xl p-6 text-sm duration-100 sm:max-w-md",
           className
         )}
         {...props}
@@ -71,7 +71,7 @@ function DialogContent({
           <DialogPrimitive.Close data-slot="dialog-close" asChild>
             <Button
               variant="outline"
-              className="text-gold hover:text-gold absolute top-7 right-7"
+              className="text-gold hover:text-gold absolute top-6 right-6"
               size="icon-sm"
             >
               <XIcon />
@@ -128,7 +128,11 @@ function DialogTitle({
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn("text-gold text-base leading-none font-medium", className)}
+      className={cn(
+        // Same height as the close button, and room beside the title for it
+        "text-gold flex min-h-8 items-center justify-center gap-2 px-12 text-center font-serif text-2xl font-medium",
+        className
+      )}
       {...props}
     />
   )

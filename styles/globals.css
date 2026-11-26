@@ -212,6 +212,31 @@ html {
     0 0 32px oklch(from var(--gold) l c h / 20%);
 }
 
+@utility sea-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--sea) transparent;
+}
+
+/* The gilded frame for something that touches the screen edge, like a drawer.
+   Put a border on the inside edge (border-l-4 or border-r-4) and set --edge-x
+   to 1 for a left edge or -1 for a right edge. */
+@utility gilded-edge {
+  border-image: linear-gradient(
+      to bottom,
+      var(--gold-dark),
+      var(--gold-light) 20%,
+      var(--gold) 40%,
+      var(--gold-dark) 50%,
+      var(--gold) 60%,
+      var(--gold-light) 80%,
+      var(--gold-dark)
+    )
+    1;
+  box-shadow:
+    inset calc(2px * var(--edge-x, 1)) 0 0 var(--gold-dark),
+    0 0 32px oklch(from var(--gold) l c h / 20%);
+}
+
 /* Hi-bit pixel art, in the spirit of Sea of Stars. One art pixel is --px
    wide (2px), so everything lines up on the same grid. The wood is dark,
    painted to match the sea: --wood-tint with most of its colour taken out. */

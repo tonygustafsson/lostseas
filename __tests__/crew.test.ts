@@ -18,6 +18,11 @@ describe("crew utils", () => {
     expect(getGoldEffectiveness(5, 90, 25)).toBe(95)
   })
 
+  it("effectiveness leaves health and mood alone when there is no crew", () => {
+    expect(getMedicineEffectiveness(0, 40, 5)).toBe(40)
+    expect(getGoldEffectiveness(0, 40, 500)).toBe(40)
+  })
+
   it("getMannedCannons returns cannons when crew/2 greater than cannons, else half crew floor", () => {
     expect(getMannedCannons(10 as any, 4 as any)).toBe(4)
     expect(getMannedCannons(3 as any, 5 as any)).toBe(1)

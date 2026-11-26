@@ -1,16 +1,15 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import { FaCoins } from "react-icons/fa"
 
-import MerchandiseCard from "@/components/MerchandiseCard"
-import { ButtonGroup } from "@/components/ui/button-group"
-import { Input } from "@/components/ui/input"
+import CrewAction, { CrewActionChange } from "@/components/crew/CrewAction"
+import CrewQuantity from "@/components/crew/CrewQuantity"
+import { Button } from "@/components/ui/button"
 import { useCrew } from "@/hooks/queries/useCrew"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getGoldEffectiveness } from "@/utils/crew"
-
-import { Button } from "../ui/button"
+import { formatGold } from "@/utils/number"
 
 const GiveGold = () => {
   const { data: player } = useGetPlayer()
@@ -18,101 +17,49 @@ const GiveGold = () => {
 
   const [quantity, setQuantity] = useState(1)
 
-  const changeQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value === "") {
-      setQuantity(1)
-    } else {
-      setQuantity(parseInt(e.target.value))
-    }
+  if (!player) {
+    return null
   }
 
-  const increase = () => {
-    setQuantity((prev) => prev + 1)
-  }
+  const owned = player.character.gold || 0
+  const { count, mood } = player.crewMembers
 
-  const decrease = () => {
-    if (quantity > 1) {
-      setQuantity((prev) => prev - 1)
-    }
-  }
+  // The stock can shrink after giving, so the amount follows it down
+  const amount = Math.min(quantity, Math.max(owned, 1))
 
-  const effectiveness = useMemo(
-    () =>
-      getGoldEffectiveness(
-        player?.crewMembers.count || 0,
-        player?.crewMembers.mood || 0,
-        quantity
-      ),
-    [player?.crewMembers, quantity]
-  )
-
-  const isDisabled =
-    (player?.character.gold || 0) < quantity ||
-    !(quantity >= 1) ||
-    !player?.crewMembers.count ||
-    player.crewMembers.mood >= 100
-
-  const handleSubmit = () => {
-    giveGold({ gold: quantity })
-  }
+  const isDisabled = owned < amount || !count || mood >= 100
 
   return (
-    <MerchandiseCard
-      title="Give gold"
-      indicator={player?.character.gold?.toString() || "0"}
-      icon={<FaCoins className="text-gold h-7 w-7" />}
-      disabled={isDisabled}
-      fullWidth
-      body={
-        <>
-          <p>
-            Give some gold to your crew members to improve their mood. More crew
-            members means more gold needed.
-          </p>
-
-          <p>
-            Your crew will have a mood of <strong>{effectiveness}%</strong> with
-            the current amount.
-          </p>
-        </>
+    <CrewAction
+      icon={<FaCoins />}
+      title="Gold"
+      owned={<span className="text-gold">{formatGold(owned)}</span>}
+      description="Lifts your crew's mood. A larger crew needs more gold."
+      change={
+        <CrewActionChange
+          label="Mood"
+          from={mood}
+          to={getGoldEffectiveness(count, mood, amount)}
+          suffix="%"
+        />
       }
-      actions={
-        <>
-          <ButtonGroup className="w-fit">
-            <Button
-              type="button"
-              variant="outline"
-              size="icon-sm"
-              onClick={decrease}
-            >
-              -
-            </Button>
+    >
+      <CrewQuantity
+        value={amount}
+        max={owned}
+        label="Gold"
+        onChange={setQuantity}
+      />
 
-            <Input
-              value={quantity.toString()}
-              onChange={changeQuantity}
-              type="number"
-              className={`border-border bg-input/30 h-8 w-12 [appearance:textfield] rounded-none text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ${
-                quantity < 10 ? "w-10" : ""
-              } ${quantity < 100 ? "w-12" : ""} ${quantity < 1000 ? "w-14" : ""}`}
-            />
-
-            <Button
-              type="button"
-              variant="outline"
-              size="icon-sm"
-              onClick={increase}
-            >
-              +
-            </Button>
-          </ButtonGroup>
-
-          <Button size="sm" disabled={isDisabled} onClick={handleSubmit}>
-            Give gold
-          </Button>
-        </>
-      }
-    />
+      <Button
+        size="sm"
+        variant="secondary"
+        disabled={isDisabled}
+        onClick={() => giveGold({ gold: amount })}
+      >
+        Give
+      </Button>
+    </CrewAction>
   )
 }
 

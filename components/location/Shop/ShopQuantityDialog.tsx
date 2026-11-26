@@ -73,7 +73,7 @@ const ShopQuantityDialog = ({
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 font-serif text-2xl">
+          <DialogTitle>
             <MerchandiseIcon item={item} size="sm" className="text-gold" />
             {title}
           </DialogTitle>

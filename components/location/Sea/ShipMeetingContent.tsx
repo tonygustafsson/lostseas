@@ -106,7 +106,7 @@ const ShipMeetingContent = ({
     <div className="flex min-w-0 flex-col gap-4">
       <div className="flex items-center gap-4">
         <div className="flex min-w-0 flex-1 flex-col gap-1">
-          <DialogTitle className="font-serif text-xl leading-tight wrap-break-word md:text-2xl">
+          <DialogTitle className="justify-start px-0 text-left text-xl leading-tight wrap-break-word md:text-2xl">
             {getTitle(shipMeeting, relation)}
           </DialogTitle>
 

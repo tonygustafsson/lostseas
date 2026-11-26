@@ -3,13 +3,7 @@ import { create } from "zustand"
 import { playSoundEffect } from "@/utils/sound"
 
 export type DrawerId =
-  | "inventory"
-  | "status"
-  | "fleet"
-  | "settings"
-  | "advisor"
-  | "logs"
-  | "manageCrew"
+  "inventory" | "status" | "fleet" | "settings" | "advisor" | "logs"
 
 type DrawerStore = {
   active: DrawerId | null
@@ -24,13 +18,7 @@ const useDrawer = create<DrawerStore>((set) => ({
       playSoundEffect("parrot")
     }
 
-    if (!!useDrawer.getState().active) {
-      // Close and open it after 0.1 second so that you can animate a transition from one drawer to another
-      useDrawer.getState().close()
-      setTimeout(() => set({ active: drawer }), 100)
-    } else {
-      set({ active: drawer })
-    }
+    set({ active: drawer })
   },
   close: () => set({ active: null }),
 }))

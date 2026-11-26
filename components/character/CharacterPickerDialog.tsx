@@ -40,11 +40,9 @@ const CharacterPickerDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] overflow-y-auto p-4 sm:max-w-4xl sm:p-8">
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-4xl">
         <DialogHeader>
-          <DialogTitle className="text-center font-serif text-xl font-bold">
-            Choose a character
-          </DialogTitle>
+          <DialogTitle>Choose a character</DialogTitle>
         </DialogHeader>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">

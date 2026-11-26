@@ -80,7 +80,7 @@ const TavernEventDialog = ({
           />
         </div>
 
-        <DialogTitle className="from-gold-light via-gold to-gold-dark mt-6 bg-linear-to-b bg-clip-text font-serif text-2xl font-bold text-transparent">
+        <DialogTitle className="from-gold-light via-gold to-gold-dark mt-6 bg-linear-to-b bg-clip-text px-0 font-bold text-transparent">
           {title}
         </DialogTitle>
 

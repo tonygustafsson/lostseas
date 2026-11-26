@@ -27,11 +27,7 @@ const SoundButton = () => {
     setModal({
       id: "sound",
       title: "Sound",
-      content: (
-        <div className="-mt-4">
-          <SoundControls />
-        </div>
-      ),
+      content: <SoundControls />,
     })
 
   return (

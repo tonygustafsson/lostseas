@@ -7,7 +7,6 @@ import AdvisorDrawer from "./drawerContent/Advisor"
 import FleetDrawer from "./drawerContent/Fleet"
 import InventoryDrawer from "./drawerContent/Inventory"
 import LogsDrawer from "./drawerContent/Logs"
-import ManageCrewDrawer from "./drawerContent/ManageCrew"
 import SettingsDrawer from "./drawerContent/Settings"
 import StatusDrawer from "./drawerContent/Status"
 
@@ -18,7 +17,6 @@ const ComponentMap: Record<DrawerId, React.FC> = {
   settings: SettingsDrawer,
   advisor: AdvisorDrawer,
   logs: LogsDrawer,
-  manageCrew: ManageCrewDrawer,
 }
 
 const Drawer = () => {
@@ -28,7 +26,12 @@ const Drawer = () => {
   const DrawerComponent = activeDrawer ? ComponentMap[activeDrawer] : null
 
   return (
-    <DrawerPanel isOpen={isOpen} onClose={closeDrawer} className="sm:w-lg">
+    <DrawerPanel
+      isOpen={isOpen}
+      onClose={closeDrawer}
+      id={activeDrawer}
+      className="sm:w-lg"
+    >
       {DrawerComponent ? <DrawerComponent /> : null}
     </DrawerPanel>
   )

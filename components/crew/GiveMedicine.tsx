@@ -1,17 +1,14 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useState } from "react"
 
-import MerchandiseCard from "@/components/MerchandiseCard"
+import CrewAction, { CrewActionChange } from "@/components/crew/CrewAction"
+import CrewQuantity from "@/components/crew/CrewQuantity"
 import MerchandiseIcon from "@/components/MerchandiseIcon"
-import { ButtonGroup } from "@/components/ui/button-group"
-import { Input } from "@/components/ui/input"
-import { MERCHANDISE } from "@/constants/merchandise"
+import { Button } from "@/components/ui/button"
 import { useCrew } from "@/hooks/queries/useCrew"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
 import { getMedicineEffectiveness } from "@/utils/crew"
-
-import { Button } from "../ui/button"
 
 const GiveMedicine = () => {
   const { data: player } = useGetPlayer()
@@ -19,98 +16,49 @@ const GiveMedicine = () => {
 
   const [quantity, setQuantity] = useState(1)
 
-  const changeQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value === "") {
-      setQuantity(1)
-    } else {
-      setQuantity(parseInt(e.target.value))
-    }
+  if (!player) {
+    return null
   }
 
-  const increase = () => {
-    setQuantity((prev) => prev + 1)
-  }
+  const owned = player.inventory?.medicine || 0
+  const { count, health } = player.crewMembers
 
-  const decrease = () => {
-    if (quantity > 1) {
-      setQuantity((prev) => prev - 1)
-    }
-  }
+  // The stock can shrink after giving, so the amount follows it down
+  const amount = Math.min(quantity, Math.max(owned, 1))
 
-  const effectiveness = useMemo(
-    () =>
-      getMedicineEffectiveness(
-        player?.crewMembers.count || 0,
-        player?.crewMembers.health || 0,
-        quantity
-      ),
-    [player?.crewMembers, quantity]
-  )
-
-  const isDisabled =
-    (player?.inventory?.medicine || 0) < quantity ||
-    !(quantity >= 1) ||
-    !player?.crewMembers.count ||
-    player.crewMembers.health >= 100
-
-  const handleSubmit = () => {
-    giveMedicine({ medicine: quantity })
-  }
+  const isDisabled = owned < amount || !count || health >= 100
 
   return (
-    <MerchandiseCard
-      title="Give medicine"
-      image="/img/cards/shop/medicine.png"
-      indicator={player?.inventory?.medicine?.toString() || "0"}
+    <CrewAction
       icon={<MerchandiseIcon item="medicine" />}
-      disabled={isDisabled}
-      fullWidth
-      body={
-        <>
-          <p>{MERCHANDISE.medicine.description}</p>
-          <p>
-            Your crew will have a health of <strong>{effectiveness}%</strong>{" "}
-            with the current amount.
-          </p>
-        </>
+      title="Medicine"
+      owned={owned ? `${owned} in the hold` : "None in the hold"}
+      description="Brings your crew's health back up. A larger crew needs more bottles."
+      change={
+        <CrewActionChange
+          label="Health"
+          from={health}
+          to={getMedicineEffectiveness(count, health, amount)}
+          suffix="%"
+        />
       }
-      actions={
-        <>
-          <ButtonGroup className="w-fit">
-            <Button
-              type="button"
-              variant="outline"
-              size="icon-sm"
-              onClick={decrease}
-            >
-              -
-            </Button>
+    >
+      <CrewQuantity
+        value={amount}
+        max={owned}
+        label="Bottles of medicine"
+        onChange={setQuantity}
+      />
 
-            <Input
-              value={quantity.toString()}
-              onChange={changeQuantity}
-              type="number"
-              className={`border-border bg-input/30 h-8 w-12 [appearance:textfield] rounded-none text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ${
-                quantity < 10 ? "w-10" : ""
-              } ${quantity < 100 ? "w-12" : ""} ${quantity < 1000 ? "w-14" : ""}`}
-            />
-
-            <Button
-              type="button"
-              variant="outline"
-              size="icon-sm"
-              onClick={increase}
-            >
-              +
-            </Button>
-          </ButtonGroup>
-
-          <Button size="sm" disabled={isDisabled} onClick={handleSubmit}>
-            Give medicine
-          </Button>
-        </>
-      }
-    />
+      <Button
+        size="sm"
+        variant="secondary"
+        disabled={isDisabled}
+        onClick={() => giveMedicine({ medicine: amount })}
+      >
+        Give
+      </Button>
+    </CrewAction>
   )
 }
 

@@ -5,6 +5,11 @@ export const getMedicineEffectiveness = (
   crewHealth: number,
   medicine: number
 ) => {
+  // Nobody to heal, and dividing by zero would turn into 100
+  if (noOfCrewMemers < 1) {
+    return crewHealth
+  }
+
   const effectiveness = (medicine / noOfCrewMemers) * MEDICINE_HEALTH_PER_BOTTLE
 
   if (crewHealth + effectiveness > 100) {
@@ -19,6 +24,10 @@ export const getGoldEffectiveness = (
   crewMood: number,
   gold: number
 ) => {
+  if (noOfCrewMemers < 1) {
+    return crewMood
+  }
+
   const effectiveness = gold / noOfCrewMemers
 
   if (crewMood + effectiveness > 100) {

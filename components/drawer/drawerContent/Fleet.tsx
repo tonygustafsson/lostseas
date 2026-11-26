@@ -3,17 +3,16 @@
 import { GiShoonerSailboat } from "react-icons/gi"
 import { MdGroups } from "react-icons/md"
 
-import useDrawer from "@/app/stores/drawer"
 import AdvisorDrawerTrigger from "@/components/advisor/AdvisorDrawerTrigger"
 import CargoMeter from "@/components/CargoMeter"
 import type { StatisticsSeries } from "@/components/charts/chartConfig"
 import HoldChart from "@/components/charts/HoldChart"
 import StatisticsSeriesChart from "@/components/charts/StatisticsSeriesChart"
+import ManageCrewDialog from "@/components/crew/ManageCrewDialog"
 import DayCard from "@/components/menu/DayCard"
 import RadialProgressBar from "@/components/RadialProgressBar"
 import FittingsList from "@/components/ships/FittingsList"
 import ShipList from "@/components/ships/ShipList"
-import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import WantedPirateCard from "@/components/WantedPirateCard"
 import { useGetPlayer } from "@/hooks/queries/usePlayer"
@@ -30,8 +29,6 @@ const FleetDrawer = () => {
   const { data: player } = useGetPlayer()
 
   const { data: stats = [] } = useGetStatistics(player?.id)
-
-  const { open: openDrawer } = useDrawer()
 
   if (!player) {
     return null
@@ -114,13 +111,7 @@ const FleetDrawer = () => {
         </div>
       </div>
 
-      <Button
-        className="mt-4 w-full"
-        variant="outline"
-        onClick={() => openDrawer("manageCrew")}
-      >
-        Manage Crew
-      </Button>
+      <ManageCrewDialog className="mt-4 w-full" />
 
       {wantedPirates.length > 0 && (
         <>

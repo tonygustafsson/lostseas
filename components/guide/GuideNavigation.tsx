@@ -61,15 +61,18 @@ const GuideNavigation = () => {
       <DrawerPanel
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        className="pt-12 sm:w-lg lg:hidden"
+        className="sm:w-lg lg:hidden"
       >
-        <GuideMenu
-          activeId={activeId}
-          onNavigate={(id) => {
-            setIsOpen(false)
-            scrollToChapter(id)
-          }}
-        />
+        {/* Clears the close button */}
+        <div className="pt-8">
+          <GuideMenu
+            activeId={activeId}
+            onNavigate={(id) => {
+              setIsOpen(false)
+              scrollToChapter(id)
+            }}
+          />
+        </div>
       </DrawerPanel>
 
       <aside className="bg-foreground/5 border-border sticky top-8 hidden max-h-[calc(100dvh-4rem)] self-start overflow-y-auto rounded-3xl border p-4 backdrop-blur-sm lg:block">
