@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { NPC_LINES, PERSONALITIES } from "@/constants/dialogue"
 import { TOWNS } from "@/constants/locations"
 import { getNpcImage, NPCS, PLACEMENT_LOCATION } from "@/constants/npcs"
+import { getTownName } from "@/utils/location"
 
 const towns = Object.keys(TOWNS) as Town[]
 const placements = Object.keys(PLACEMENT_LOCATION) as NpcPlacement[]
@@ -136,7 +137,7 @@ const AllNpcs = ({ town, placement }: Args) => {
         <section key={name} className="flex flex-col gap-6">
           <h2 className="text-parchment flex items-center gap-2 font-serif text-3xl">
             <Flag nation={TOWNS[name].nation} size={32} decorative />
-            {name}
+            {getTownName(name)}
           </h2>
 
           <div className="grid gap-6 xl:grid-cols-3">
@@ -155,9 +156,9 @@ const AllNpcs = ({ town, placement }: Args) => {
 }
 
 const meta = {
-  title: "game/Townsfolk/All NPCs",
+  title: "game/Townsfolk/NPCs",
   component: AllNpcs,
-  args: { town: "All", placement: "All" },
+  args: { town: "kingston", placement: "All" },
   argTypes: {
     town: { control: "select", options: ["All", ...towns] },
     placement: { control: "select", options: ["All", ...placements] },
@@ -168,12 +169,4 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const AllTowns: Story = {}
-
-export const OneTown: Story = {
-  args: { town: "kingston" },
-}
-
-export const Governors: Story = {
-  args: { placement: "governor" },
-}
+export const Default: Story = { name: "NPCs" }

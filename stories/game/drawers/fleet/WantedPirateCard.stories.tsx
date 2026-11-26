@@ -36,12 +36,4 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {}
-
-export const HighestBounty: Story = {
-  args: {
-    name: 'Grace "Bloody" Morgan',
-    crimeId: "sacked-town",
-    rewarder: "cap-francais",
-  },
-}
+export const Default: Story = { name: "WantedPirateCard" }

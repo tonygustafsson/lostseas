@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import InventoryItemCard from "@/components/InventoryItemCard"
+import { MERCHANDISE } from "@/constants/merchandise"
 
 const meta = {
   title: "game/Drawers/Inventory/InventoryItemCard",
@@ -8,6 +9,9 @@ const meta = {
   args: {
     item: "food",
     quantity: 180,
+  },
+  argTypes: {
+    item: { control: "select", options: Object.keys(MERCHANDISE) },
   },
   decorators: [
     (Story) => (
@@ -21,8 +25,4 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {}
-
-export const SingleUnit: Story = { args: { item: "cannons", quantity: 1 } }
-
-export const RepairKits: Story = { args: { item: "repairKits", quantity: 4 } }
+export const Default: Story = { name: "InventoryItemCard" }

@@ -63,16 +63,6 @@ export const Tired: Story = {
   },
 }
 
-/** Talking again to an NPC who tired of it earlier in the visit */
-export const StillTired: Story = {
-  args: {
-    line: {
-      kind: "tired",
-      text: "You again? I told you, captain, I am all talked out.",
-    },
-  },
-}
-
 const question: TalkLine = {
   kind: "question",
   text: "Tell me, captain, what is the finest thing a sailor can own?",
@@ -90,18 +80,6 @@ export const Question: Story = {
 export const ReplyShown: Story = {
   args: {
     line: question,
-    reply:
-      "Bigger than mine? Ha! There is not a bird in the Caribbean brave enough.",
-  },
-}
-
-/** A tired NPC says their farewell after the reply */
-export const TiredAfterReply: Story = {
-  args: {
-    line: {
-      ...question,
-      farewell: "That will do for one sitting, captain.",
-    },
     reply:
       "Bigger than mine? Ha! There is not a bird in the Caribbean brave enough.",
   },
@@ -152,20 +130,4 @@ export const HandIn: Story = {
       },
     },
   },
-}
-
-/** Buttons are disabled while a request is on its way */
-export const Pending: Story = {
-  args: { isPending: true },
-}
-
-export const PendingAnswer: Story = {
-  args: {
-    line: question,
-    isPending: true,
-  },
-}
-
-export const Closed: Story = {
-  args: { open: false },
 }

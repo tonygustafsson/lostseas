@@ -13,6 +13,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
+  name: "SoundBoard",
   play: async ({ canvas }) => {
     await expect(canvas.getByText("Music")).toBeInTheDocument()
     await expect(canvas.getByText("Ambience")).toBeInTheDocument()

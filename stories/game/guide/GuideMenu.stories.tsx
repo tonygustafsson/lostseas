@@ -26,6 +26,4 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {}
-export const AppChapterActive: Story = { args: { activeId: "account" } }
-export const NothingActive: Story = { args: { activeId: undefined } }
+export const Default: Story = { name: "GuideMenu" }

@@ -55,17 +55,3 @@ export const NoMedicineOrGold: Story = {
     },
   },
 }
-
-/** A healthy, happy crew needs nothing */
-export const ContentCrew: Story = {
-  parameters: {
-    player: {
-      ...player,
-      crewMembers: { ...player.crewMembers, health: 100, mood: 100 },
-    },
-  },
-}
-
-export const Closed: Story = {
-  play: undefined,
-}

@@ -5,7 +5,7 @@ import { fn } from "storybook/test"
 import TypewriterText from "@/components/npc/TypewriterText"
 
 const meta = {
-  title: "game/Townsfolk/TypewriterText",
+  title: "components/TypewriterText",
   component: TypewriterText,
   args: {
     text: "Three days out of Nassau the cook swore the fog was following us. By the fifth day it had started asking for rum.",

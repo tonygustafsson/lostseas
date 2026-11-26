@@ -42,14 +42,3 @@ export const Merchantman: Story = {
     ship: { ...player.ships.endeavour, name: "Sequitur", type: "Merchantman" },
   },
 }
-
-export const RemoveBlocked: Story = {
-  args: { removeBlocker: "You cannot remove your last ship" },
-}
-
-export const RemoveWarning: Story = {
-  args: {
-    removeWarning:
-      "This leaves you overloaded by 120. You cannot leave port until you sell goods or buy another ship.",
-  },
-}
