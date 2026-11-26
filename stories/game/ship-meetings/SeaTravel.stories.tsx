@@ -95,43 +95,6 @@ const totalLoss: Player = {
   },
 }
 
-const fleetVictory: Player = {
-  ...victory,
-  ships: {
-    ...victory.ships,
-    blackPearl: {
-      id: "blackPearl",
-      name: "Black Pearl",
-      type: "Frigate",
-      health: 53,
-      createdDay: 1,
-    },
-  },
-}
-
-const capturedPirate: WantedPirate = {
-  id: "story-pirate",
-  name: 'Anne "Black-eyed" Rourke',
-  crimeId: "kidnapped-bishop",
-  rewarder: "cap-francais",
-}
-
-const pirateVictory: Player = {
-  ...victory,
-  treasures: {},
-  wantedPirates: { [capturedPirate.id]: capturedPirate },
-  locationStates: {
-    sea: {
-      ...victory.locationStates!.sea!,
-      attackSuccessReport: {
-        ...victory.locationStates!.sea!.attackSuccessReport!,
-        foundTreasure: false,
-        capturedPirate,
-      },
-    },
-  },
-}
-
 const meeting = (shipMeeting: ShipMeetingState): Player => ({
   ...player,
   character: { ...player.character, location: "Sea", town: undefined },
@@ -200,47 +163,8 @@ const battleMidway = inBattle({
   ],
 })
 
-const battleLastRound = inBattle({
-  enemyStrength: 35,
-  playerStrength: 70,
-  rounds: [
-    {
-      action: "fire",
-      hit: true,
-      enemyDamage: 33,
-      playerDamage: 0,
-      shipDamage: 0,
-      crewDamage: 0,
-    },
-    {
-      action: "fire",
-      hit: false,
-      enemyDamage: 0,
-      playerDamage: 21,
-      shipDamage: 6,
-      crewDamage: 4,
-    },
-    {
-      action: "evade",
-      hit: true,
-      enemyDamage: 0,
-      playerDamage: 0,
-      shipDamage: 0,
-      crewDamage: 0,
-    },
-    {
-      action: "evade",
-      hit: false,
-      enemyDamage: 0,
-      playerDamage: 9,
-      shipDamage: 2,
-      crewDamage: 2,
-    },
-  ],
-})
-
 const meta = {
-  title: "game/Sea/SeaTravel",
+  title: "game/Ship meetings/SeaTravel",
   component: SeaEventDialog,
   parameters: { player },
   argTypes: {
@@ -306,8 +230,6 @@ type Story = StoryObj<SeaTravelArgs>
 export const Victory: Story = { parameters: { player: victory } }
 export const Defeat: Story = { parameters: { player: defeat } }
 export const TotalLoss: Story = { parameters: { player: totalLoss } }
-export const FleetVictory: Story = { parameters: { player: fleetVictory } }
-export const PirateVictory: Story = { parameters: { player: pirateVictory } }
 export const EnemyShip: Story = {
   args: { nation: "France", shipType: "Galleon", isAggressive: false },
   parameters: { player: enemyShip },
@@ -324,10 +246,6 @@ export const PirateShip: Story = {
   args: { nation: "Pirate", shipType: "Brig", isAggressive: false },
   parameters: { player: pirateShip },
 }
-export const AggressivePirateShip: Story = {
-  args: { nation: "Pirate", shipType: "Brig", isAggressive: true },
-  parameters: { player: pirateShip },
-}
 
 export const BattleStart: Story = {
   args: { nation: "France", shipType: "Galleon" },
@@ -340,8 +258,4 @@ export const BattleAfterFailedFlee: Story = {
 export const BattleMidway: Story = {
   args: { nation: "France", shipType: "Galleon" },
   parameters: { player: battleMidway },
-}
-export const BattleLastRound: Story = {
-  args: { nation: "France", shipType: "Galleon" },
-  parameters: { player: battleLastRound },
 }

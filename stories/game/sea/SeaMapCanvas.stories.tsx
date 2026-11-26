@@ -1,13 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { type ComponentProps, useState } from "react"
+import type { ComponentProps } from "react"
 import { fn } from "storybook/test"
 
-import DestinationConfirm from "@/components/Map/DestinationConfirm"
 import SeaMapCanvas from "@/components/Map/SeaMapCanvas"
 import { TOWNS } from "@/constants/locations"
-import { getJourneyLength, getSuppliesDays } from "@/utils/journey"
-
-import { player } from "../../fixtures"
+import { getJourneyLength } from "@/utils/journey"
 
 const towns = Object.keys(TOWNS)
 const weather: WeatherType[] = [
@@ -17,39 +14,6 @@ const weather: WeatherType[] = [
   "rainy",
   "foggy",
 ]
-
-// Mirrors the map modal: picking a town opens the confirm card on top
-const MapWithConfirm = ({
-  initialDestination,
-}: {
-  initialDestination?: Town
-}) => {
-  const [destination, setDestination] = useState(initialDestination)
-
-  return (
-    <div className="relative">
-      <SeaMapCanvas
-        weather="partlySunny"
-        currentTown={player.character.town}
-        selectedTown={destination}
-        suppliesDays={getSuppliesDays(player).days}
-        onSelectTown={setDestination}
-      />
-
-      {destination && (
-        <DestinationConfirm
-          key={destination}
-          player={player}
-          origin={player.character.town!}
-          destination={destination}
-          isPending={false}
-          onConfirm={fn()}
-          onCancel={() => setDestination(undefined)}
-        />
-      )}
-    </div>
-  )
-}
 
 const meta = {
   title: "game/Sea/SeaMapCanvas",
@@ -114,16 +78,6 @@ export const AtSea: StoryObj<AtSeaArgs> = {
   },
 }
 
-export const Rainy: StoryObj<AtSeaArgs> = {
-  ...AtSea,
-  args: { ...AtSea.args, weather: "rainy" },
-}
-
-export const Foggy: StoryObj<AtSeaArgs> = {
-  ...AtSea,
-  args: { ...AtSea.args, weather: "foggy" },
-}
-
 export const LimitedSupplies: Story = {
   args: {
     currentTown: "havana",
@@ -137,9 +91,4 @@ export const LimitedSupplies: Story = {
 export const Paused: StoryObj<AtSeaArgs> = {
   ...AtSea,
   args: { ...AtSea.args, isPaused: true },
-}
-
-export const WithDestinationConfirm: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => <MapWithConfirm initialDestination="havana" />,
 }

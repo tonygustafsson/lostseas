@@ -8,7 +8,6 @@ import { player } from "../../fixtures"
 
 // The fixture player is British and sails from Kingston.
 // Havana (Spain) is 7 days away and needs 28 food and 56 water.
-// Fort Louis (France, at war with Great Britain) is 10 days away and needs 40 food and 80 water.
 const withSupplies = (food: number, water: number) => ({
   ...player,
   inventory: { ...player.inventory, food, water },
@@ -58,24 +57,4 @@ export const JustEnoughSupplies: Story = {
 
 export const ShortOnFood: Story = {
   args: { player: withSupplies(4, 160) },
-}
-
-export const ShortOnWater: Story = {
-  args: { player: withSupplies(100, 10) },
-}
-
-export const ShortOnBoth: Story = {
-  args: { player: withSupplies(4, 10) },
-}
-
-export const EmptyHold: Story = {
-  args: { player: withSupplies(0, 0) },
-}
-
-export const EnemyPortOutOfReach: Story = {
-  args: { destination: "fort-louis", player: withSupplies(100, 20) },
-}
-
-export const SettingSail: Story = {
-  args: { isPending: true },
 }

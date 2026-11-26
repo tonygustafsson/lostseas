@@ -4,7 +4,7 @@ import { expect, fn } from "storybook/test"
 import LootPicker from "@/components/location/Sea/LootPicker"
 
 const meta = {
-  title: "game/Sea/LootPicker",
+  title: "game/Ship meetings/LootPicker",
   component: LootPicker,
   args: {
     offer: { food: 8, rum: 3, silk: 5, cannons: 2 },
@@ -48,5 +48,3 @@ export const AlmostFull: Story = {
     })
   },
 }
-
-export const Taking: Story = { args: { isTaking: true } }

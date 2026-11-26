@@ -23,6 +23,7 @@ const preview: Preview = {
           "game",
           [
             "Sea",
+            "Ship meetings",
             "Harbor",
             "Town",
             "Shop",
