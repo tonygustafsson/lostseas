@@ -77,7 +77,7 @@ const LocationNavigation = <T extends string>({
                   )}
 
                   {indicator && (
-                    <span className="bg-info text-background absolute -top-1 -right-1 flex size-5 items-center justify-center rounded-full motion-safe:animate-pulse">
+                    <span className="bg-gold text-background absolute -top-1 -right-1 flex size-5 items-center justify-center rounded-full">
                       <ScrollText
                         role="img"
                         aria-label="Quest"

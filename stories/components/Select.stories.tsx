@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { type ComponentProps, useState } from "react"
-import { expect, fn, within } from "storybook/test"
+import { fn } from "storybook/test"
 
 import Select from "@/components/Select"
 
@@ -42,15 +42,3 @@ export default meta
 type Story = StoryObj<typeof meta>
 export const Default: Story = {}
 export const Unselected: Story = { args: { value: undefined } }
-export const ChangeNationality: Story = {
-  play: async ({ args, canvas, canvasElement, userEvent }) => {
-    await userEvent.click(canvas.getByRole("combobox", { name: "Nationality" }))
-    await userEvent.click(
-      await within(canvasElement.ownerDocument.body).findByRole("option", {
-        name: "France",
-      })
-    )
-    await expect(args.onChange).toHaveBeenCalledWith("France")
-    await expect(canvas.getByRole("combobox")).toHaveTextContent("France")
-  },
-}

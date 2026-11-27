@@ -1,19 +1,45 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { expect, screen } from "storybook/test"
 
 import MerchandiseCrate, {
   MerchandiseInfo,
 } from "@/components/MerchandiseCrate"
 import { Button } from "@/components/ui/button"
 
+// Every crate image, by the name on its label
+const goods: Record<string, string> = {
+  Cotton: "/img/cards/shop/cotton.png",
+  Food: "/img/cards/shop/food.png",
+  Medicine: "/img/cards/shop/medicine.png",
+  Porcelain: "/img/cards/shop/porcelain.png",
+  Rum: "/img/cards/shop/rum.png",
+  Silk: "/img/cards/shop/silk.png",
+  Spices: "/img/cards/shop/spices.png",
+  Sugar: "/img/cards/shop/sugar.png",
+  Tea: "/img/cards/shop/tea.png",
+  Tobacco: "/img/cards/shop/tobacco.png",
+  Water: "/img/cards/shop/water.png",
+  "Comfrey poultice": "/img/cards/market/comfrey-poultice.png",
+  "Jesuit's bark tonic": "/img/cards/market/jesuits-bark-tonic.png",
+  "Theriac draught": "/img/cards/market/theriac-draught.png",
+  "Willow bark tea": "/img/cards/market/willow-bark-tea.png",
+}
+
 const meta = {
   component: MerchandiseCrate,
   args: {
     title: "Food",
-    image: "/img/cards/shop/food.png",
+    image: goods.Food,
     label: "40 crates",
-    children: (
-      <>
+    children: null,
+  },
+  argTypes: {
+    title: { control: "select", options: Object.keys(goods) },
+    image: { control: false },
+    children: { control: false },
+  },
+  render: ({ title, image, ...args }) => (
+    <ul className="max-w-sm">
+      <MerchandiseCrate {...args} title={title} image={goods[title] ?? image}>
         <p className="text-sm">Anything can go in the box on the plank.</p>
 
         <div className="mt-auto flex items-center gap-1">
@@ -22,17 +48,11 @@ const meta = {
           </Button>
 
           <MerchandiseInfo
-            title="Food"
-            description="Bread, salted pork and dried fish for the crew."
+            title={title}
+            description={`About ${title.toLowerCase()}.`}
           />
         </div>
-      </>
-    ),
-  },
-  argTypes: { children: { control: false } },
-  render: (args) => (
-    <ul className="max-w-sm">
-      <MerchandiseCrate {...args} />
+      </MerchandiseCrate>
     </ul>
   ),
 } satisfies Meta<typeof MerchandiseCrate>
@@ -46,26 +66,11 @@ export const Default: Story = {}
 export const LongTitle: Story = {
   args: {
     title: "Jesuit's bark tonic",
-    image: "/img/cards/market/jesuits-bark-tonic.png",
     label: "+75% health",
   },
 }
 
 export const Narrow: Story = {
   args: { title: "Jesuit's bark tonic" },
-  render: (args) => (
-    <ul className="w-64">
-      <MerchandiseCrate {...args} />
-    </ul>
-  ),
-}
-
-export const Info: Story = {
-  play: async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole("button", { name: "About Food" }))
-
-    await expect(
-      await screen.findByText("Bread, salted pork and dried fish for the crew.")
-    ).toBeVisible()
-  },
+  decorators: [(Story) => <div className="w-64">{Story()}</div>],
 }

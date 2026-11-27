@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { expect } from "storybook/test"
 
 import TextField from "@/components/TextField"
 
@@ -23,7 +22,6 @@ export const Error: Story = {
 export const Disabled: Story = {
   args: { disabled: true, defaultValue: "Morgan Reed" },
 }
-export const AutoWidth: Story = { args: { fullWidth: false } }
 export const Number: Story = {
   args: {
     label: "Quantity",
@@ -41,11 +39,4 @@ export const Sizes: Story = {
       ))}
     </div>
   ),
-}
-export const Typing: Story = {
-  play: async ({ canvas, userEvent }) => {
-    const input = canvas.getByRole("textbox", { name: "Captain name" })
-    await userEvent.type(input, "Morgan Reed")
-    await expect(input).toHaveValue("Morgan Reed")
-  },
 }

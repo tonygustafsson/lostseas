@@ -28,6 +28,7 @@ const accounts: RememberedAccount[] = [
 ]
 
 const meta = {
+  title: "game/Login/SignInOptions",
   component: SignInOptions,
   parameters: { rememberedAccounts: accounts },
   // Seeds this browser's remembered accounts and restores them afterwards

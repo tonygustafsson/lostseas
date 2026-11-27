@@ -30,6 +30,7 @@ const accounts: RememberedAccount[] = [
 ]
 
 const meta = {
+  title: "game/Login/RememberedAccountList",
   component: RememberedAccountList,
   args: { accounts, onSelect: fn(), onForget: fn() },
   argTypes: {
@@ -82,5 +83,3 @@ export const LongName: Story = {
     ],
   },
 }
-
-export const Empty: Story = { args: { accounts: [] } }

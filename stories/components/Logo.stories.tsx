@@ -16,8 +16,3 @@ export const Default: Story = {}
 export const MarkOnly: Story = {
   render: (args) => <LogoMark {...args} />,
 }
-
-export const LargeMark: Story = {
-  args: { className: "size-32" },
-  render: (args) => <LogoMark {...args} />,
-}

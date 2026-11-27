@@ -40,11 +40,3 @@ export const QuestIndicator: Story = {
     ],
   },
 }
-
-export const TalkSelected: Story = {
-  args: { currentTab: "talk" },
-}
-
-export const QuestIndicatorSelected: Story = {
-  args: { ...QuestIndicator.args, currentTab: "talk" },
-}

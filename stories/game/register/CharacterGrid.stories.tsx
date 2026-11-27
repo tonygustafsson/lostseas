@@ -7,6 +7,7 @@ import CharacterGrid from "@/components/character/CharacterGrid"
 const nations: Nation[] = ["England", "France", "Spain", "Holland"]
 
 const meta = {
+  title: "game/Register/CharacterGrid",
   component: CharacterGrid,
   args: { nationality: "Holland", selectedId: "mateo-salazar", onSelect: fn() },
   argTypes: {
@@ -32,10 +33,4 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {}
-
-export const NothingSelected: Story = { args: { selectedId: undefined } }
-
-export const England: Story = {
-  args: { nationality: "England", selectedId: undefined },
-}
+export const CharacterGridStory: Story = { name: "CharacterGrid" }
