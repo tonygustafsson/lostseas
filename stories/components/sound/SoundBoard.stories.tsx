@@ -4,7 +4,7 @@ import { expect } from "storybook/test"
 import SoundBoard from "./SoundBoard"
 
 const meta = {
-  title: "components/sound/SoundBoard",
+  title: "components/Sound/SoundBoard",
   component: SoundBoard,
   parameters: { layout: "padded" },
 } satisfies Meta<typeof SoundBoard>

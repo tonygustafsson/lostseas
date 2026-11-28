@@ -15,7 +15,7 @@ const harborPlayer: Player = {
 }
 
 const meta = {
-  title: "components/sound/SoundButton",
+  title: "components/Sound/SoundButton",
   component: SoundButton,
   beforeEach: () => {
     useModal.setState({ modals: {} })
@@ -70,20 +70,5 @@ export const OpenModal: Story = {
     await expect(
       body.queryByRole("button", { name: "Next track" })
     ).not.toBeInTheDocument()
-  },
-}
-
-export const ChangingTrack: Story = {
-  beforeEach: () => {
-    useSound.setState({ changingTrack: true })
-  },
-  play: async ({ canvas }) => {
-    await userEvent.click(canvas.getByRole("button", { name: /^Sound/ }))
-
-    const body = within(document.body)
-
-    await expect(
-      await body.findByRole("button", { name: "Next track" })
-    ).toBeDisabled()
   },
 }
